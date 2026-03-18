@@ -1,0 +1,121 @@
+library:
+  name: '@wisemen/vue-core-api-utils'
+  version: '0.0.3'
+  repository: 'https://github.com/wisemen-digital/wisemen-core'
+  description: 'Type-safe Vue 3 composables for API data fetching with AsyncResult error handling'
+
+generated_from:
+  domain_map: '_artifacts/domain_map.yaml'
+  skill_spec: '_artifacts/skill_spec.md'
+generated_at: '2026-03-18T00:00:00Z'
+
+skills:
+  - name: 'Getting Started'
+    slug: 'getting-started'
+    type: 'lifecycle'
+    domain: 'result-handling'
+    path: 'packages/web/api-utils/skills/getting-started/SKILL.md'
+    description: 'Install plugin, define typed query keys, create API composables with error codes'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/getting-started/installation.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/plugin/apiUtilsPlugin.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts'
+    requires: []
+
+  - name: 'Handling AsyncResult Types'
+    slug: 'asyncresult-handling'
+    type: 'core'
+    domain: 'result-handling'
+    path: 'packages/web/api-utils/skills/asyncresult-handling/SKILL.md'
+    description: 'Three states (Loading, Ok, Err), pattern matching, safe value extraction, exhaustive handling'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/concepts/result-types.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts'
+    requires:
+      - 'getting-started'
+
+  - name: 'Writing Queries'
+    slug: 'writing-queries'
+    type: 'core'
+    domain: 'data-fetching'
+    path: 'packages/web/api-utils/skills/writing-queries/SKILL.md'
+    description: 'Single resource queries with caching, parameter reactivity, stale times, factory composables'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/query.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/overview.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/query.composable.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/factory/createApiQueryUtils.ts'
+    requires:
+      - 'getting-started'
+      - 'asyncresult-handling'
+
+  - name: 'Writing Infinite Queries'
+    slug: 'writing-infinitequeries'
+    type: 'core'
+    domain: 'data-fetching'
+    path: 'packages/web/api-utils/skills/writing-infinitequeries/SKILL.md'
+    description: 'Offset and keyset pagination with infinite scroll, factory composables, backend-driven strategy'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/paginated-query.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/offsetInfiniteQuery.composable.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/keysetInfiniteQuery.composable.ts'
+    requires:
+      - 'writing-queries'
+    subsystems:
+      - 'Offset Pagination'
+      - 'Keyset Pagination'
+
+  - name: 'Writing Mutations'
+    slug: 'writing-mutations'
+    type: 'core'
+    domain: 'mutations-cache'
+    path: 'packages/web/api-utils/skills/writing-mutations/SKILL.md'
+    description: 'Create/update/delete with typed factory composables, query key invalidation, result handling'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/mutation.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/mutation/mutation.composable.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/factory/createApiMutationUtils.ts'
+    requires:
+      - 'getting-started'
+      - 'asyncresult-handling'
+      - 'writing-queries'
+
+  - name: 'Cache Management'
+    slug: 'cache-management'
+    type: 'core'
+    domain: 'mutations-cache'
+    path: 'packages/web/api-utils/skills/cache-management/SKILL.md'
+    description: 'Type-safe QueryClient: get/set/update/invalidate, predicate-based updates, cache reads'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/query-client.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/utils/query-client/queryClient.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/factory/createApiQueryClientUtils.ts'
+    requires:
+      - 'writing-queries'
+      - 'writing-mutations'
+
+  - name: 'Building Optimistic UIs'
+    slug: 'optimistic-uis'
+    type: 'composition'
+    domain: 'performance'
+    path: 'packages/web/api-utils/skills/optimistic-uis/SKILL.md'
+    description: 'Combine mutations + cache updates + AsyncResult for instant feedback without refetch'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/query-client.md'
+    requires:
+      - 'writing-mutations'
+      - 'cache-management'
+      - 'asyncresult-handling'
+
+  - name: 'Understanding Foundations'
+    slug: 'foundations'
+    type: 'core'
+    domain: 'foundations'
+    path: 'packages/web/api-utils/skills/foundations/SKILL.md'
+    description: 'neverthrow Result types, @tanstack/vue-query caching strategy, Vue reactivity, shared cache'
+    sources:
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/concepts/result-types.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/overview.md'
+      - 'wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts'
+    requires:
+      - 'asyncresult-handling'
