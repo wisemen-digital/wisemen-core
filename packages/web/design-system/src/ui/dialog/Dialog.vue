@@ -26,7 +26,7 @@ const emit = defineEmits<{
 }>()
 
 const isOpen = defineModel<boolean>('isOpen', {
-  required: true,
+  default: false,
 })
 
 const style = computed<CreateDialogStyle>(() => createDialogStyle({

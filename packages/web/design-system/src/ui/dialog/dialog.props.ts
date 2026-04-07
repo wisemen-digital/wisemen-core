@@ -7,10 +7,6 @@ export interface DialogProps {
    */
   hasCloseButton?: boolean
   /**
-   * Whether the dialog is open.
-   */
-  isOpen: boolean
-  /**
    * Whether to prevent closing the dialog by clicking outside.
    * @default false
    */

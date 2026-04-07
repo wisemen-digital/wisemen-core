@@ -2,6 +2,7 @@
 import type { Form } from 'formango'
 import { useId } from 'vue'
 
+import { useUnsavedChanges } from '@/composables/unsaved-changes/unsavedChanges.composable'
 import { useProvideFormContext } from '@/ui/form/form.context'
 
 const props = withDefaults(defineProps<{
@@ -15,8 +16,7 @@ const props = withDefaults(defineProps<{
 const id = useId()
 
 if (props.promptOnUnsavedChanges) {
-  // TODO: implement prompt on unsaved changes when confirm dialog is ready
-  // useUnsavedChanges(props.form.isDirty)
+  useUnsavedChanges(props.form.isDirty)
 }
 
 useProvideFormContext({

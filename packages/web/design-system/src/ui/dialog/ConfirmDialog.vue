@@ -21,10 +21,6 @@ const props = withDefaults(defineProps<ConfirmDialogProps>(), {
   onConfirm: null,
 })
 
-const isOpen = defineModel<boolean>('isOpen', {
-  required: true,
-})
-
 const isLoading = ref<boolean>(false)
 
 async function onConfirmClick(): Promise<void> {
@@ -57,7 +53,6 @@ function onClose(): void {
 
 <template>
   <Dialog
-    v-model:is-open="isOpen"
     :has-close-button="false"
     :size="props.size"
     :prevent-click-outside="props.preventClickOutside"

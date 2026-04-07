@@ -18,10 +18,6 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const isOpen = defineModel<boolean>('isOpen', {
-  required: true,
-})
-
 const id = useId()
 
 function onClose(): void {
@@ -31,7 +27,6 @@ function onClose(): void {
 
 <template>
   <Dialog
-    v-model:is-open="isOpen"
     :has-close-button="props.hasCloseButton"
     :size="props.size"
     :prevent-click-outside="props.preventClickOutside"
