@@ -15,7 +15,27 @@ const props = withDefaults(defineProps<DialogHeaderProps>(), {
   hasDivider: true,
   description: null,
   icon: null,
+  iconVariant: 'brand',
 })
+
+const iconVariantClasses = {
+  brand: {
+    bg: 'bg-brand-secondary',
+    text: 'text-brand-primary',
+  },
+  error: {
+    bg: 'bg-error-secondary',
+    text: 'text-error-primary',
+  },
+  success: {
+    bg: 'bg-success-secondary',
+    text: 'text-success-primary',
+  },
+  warning: {
+    bg: 'bg-warning-secondary',
+    text: 'text-warning-primary',
+  },
+}
 
 const dialogContext = useInjectDialogContext(null)
 </script>
@@ -32,14 +52,13 @@ const dialogContext = useInjectDialogContext(null)
     >
       <div
         v-if="props.icon !== null"
-        class="
-          flex size-10 shrink-0 items-center justify-center rounded-full
-          bg-brand-secondary
-        "
+        :class="iconVariantClasses[props.iconVariant].bg"
+        class="flex size-10 shrink-0 items-center justify-center rounded-full"
       >
         <Component
           :is="props.icon"
-          class="size-5 text-brand-primary"
+          :class="iconVariantClasses[props.iconVariant].text"
+          class="size-5"
         />
       </div>
 

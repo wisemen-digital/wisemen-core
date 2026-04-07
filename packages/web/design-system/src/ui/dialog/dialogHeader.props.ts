@@ -27,4 +27,10 @@ export interface DialogHeaderProps {
    * Optional featured icon component displayed at the start of the header.
    */
   icon?: Component | null
+
+  /**
+   * Color variant applied to the icon container and icon itself.
+   * @default 'brand'
+   */
+  iconVariant?: 'brand' | 'error' | 'success' | 'warning'
 }

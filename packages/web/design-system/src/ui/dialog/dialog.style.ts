@@ -13,7 +13,7 @@ export const createDialogStyle = tv({
       dark:border-black/10
     `,
     contentPositioner: `
-      fixed inset-x-0 bottom-0 z-50 flex w-full flex-col
+      z-modal fixed inset-x-0 bottom-0 flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
     `,
@@ -21,7 +21,7 @@ export const createDialogStyle = tv({
     header: 'sticky top-0 z-10 bg-primary',
     innerContent: '',
     overlay: `
-      fixed inset-0 z-50 bg-linear-to-t from-black/50 to-black/25
+      z-modal fixed inset-0 bg-linear-to-t from-black/50 to-black/25
       will-change-[opacity]
     `,
   },
