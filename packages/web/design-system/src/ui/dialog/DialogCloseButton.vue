@@ -12,7 +12,7 @@ import { UIIconButton } from '@/ui/button/index'
     <UIIconButton
       :icon="XCloseIcon"
       label="close dialog"
-      class="absolute top-0 right-0 z-10 m-md"
+      class="absolute top-0 right-0 z-10 m-lg"
       variant="tertiary"
     />
   </RekaDialogClose>

@@ -63,7 +63,6 @@ function onOpenChange(value: boolean): void {
     emit('close')
   }
 }
-
 </script>
 
 <template>
