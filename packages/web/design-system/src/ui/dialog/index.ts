@@ -9,7 +9,7 @@ export type { DialogFooterButtonProps as UIDialogFooterButtonProps } from '@/ui/
 export { default as UIDialogFooterCancel } from '@/ui/dialog/DialogFooterCancel.vue'
 export { default as UIDialogFooterPrimary } from '@/ui/dialog/DialogFooterPrimary.vue'
 export { default as UIDialogFooterSecondary } from '@/ui/dialog/DialogFooterSecondary.vue'
+export { default as UIDialogFooterSubmit } from '@/ui/dialog/DialogFooterSubmit.vue'
 export type { DialogHeaderProps as UIDialogHeaderProps } from '@/ui/dialog/dialogHeader.props'
 export { default as UIDialogHeader } from '@/ui/dialog/DialogHeader.vue'
 export { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
-
