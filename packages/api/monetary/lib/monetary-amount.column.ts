@@ -8,7 +8,7 @@ export type MonetaryAmountColumnOptions = {
   currency: Currency
   monetaryPrecision: number
   type?: 'int' | 'int2' | 'int4' | 'int8' | 'integer' | 'tinyint' | 'smallint' | 'mediumint' | 'bigint'
-  default: Monetary
+  default?: Monetary
 } & Omit<ColumnOptions, 'type' | 'transformer' | 'default'>
 
 /** Stores the amount as an int */

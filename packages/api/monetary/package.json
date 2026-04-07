@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/monetary",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "publishConfig": {
     "access": "public"
   },
@@ -41,7 +41,7 @@
   "contributors": [
     "Kobe Kwanten"
   ],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

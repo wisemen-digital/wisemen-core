@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/time",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "publishConfig": {
     "access": "public"
   },
@@ -41,7 +41,7 @@
   "contributors": [
     "Jonas Vannieuwenhuijsen"
   ],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/date-time-range",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "publishConfig": {
     "access": "public"
   },
@@ -23,7 +23,7 @@
     "release": "pnpx release-it"
   },
   "author": "Maarten Sijmkens",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

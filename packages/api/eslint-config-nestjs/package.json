@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/eslint-config-nestjs",
-  "version": "0.2.11",
+  "version": "0.2.13",
   "publishConfig": {
     "access": "public"
   },
@@ -12,11 +12,10 @@
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/eslint-config-nestjs"
   },
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "@eslint/eslintrc": "catalog:lint",
     "@eslint/js": "catalog:lint",

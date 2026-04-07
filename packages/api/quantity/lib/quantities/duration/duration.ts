@@ -22,6 +22,10 @@ export class Duration extends Quantity<DurationUnit, Duration> {
     return value / DISTANCE_MULTIPLIERS[unit]
   }
 
+  get nanoseconds (): number {
+    return this.asNumber(DurationUnit.NANOSECONDS)
+  }
+
   get milliseconds (): number {
     return this.asNumber(DurationUnit.MILLISECONDS)
   }

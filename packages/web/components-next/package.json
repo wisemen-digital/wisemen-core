@@ -4,9 +4,9 @@
     "access": "public"
   },
   "type": "module",
-  "version": "2.2.3",
+  "version": "3.0.1",
   "private": false,
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

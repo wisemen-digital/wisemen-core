@@ -19,7 +19,7 @@ export abstract class SortQuery {
 }
 
 export abstract class FilterQuery {
-  [key: string]: FilterQuery | string | string[] | undefined | ((...args: unknown[]) => unknown)
+  [key: string]: unknown
 }
 
 export abstract class SearchQuery {

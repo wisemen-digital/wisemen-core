@@ -12,6 +12,14 @@ export class TestFileStorage extends FileStorage {
     return Promise.resolve('https://local.test/upload-url')
   }
 
+  createTemporaryPreviewUrl (
+    _key: string,
+    _mimeType?: string,
+    _expiresInSeconds?: number
+  ): Promise<string> {
+    return Promise.resolve('https://local.test/preview-url')
+  }
+
   createTemporaryDownloadUrl (
     _key: string,
     _name: string,
