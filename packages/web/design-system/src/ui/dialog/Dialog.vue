@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { InfoCircleIcon } from '@wisemen/vue-core-icons'
 import {
   DialogContent as RekaDialogContent,
   DialogOverlay as RekaDialogOverlay,
   DialogRoot as RekaDialogRoot,
 } from 'reka-ui'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+} from 'vue'
 
 import { useProvideDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogProps } from '@/ui/dialog/dialog.props'
@@ -12,6 +16,7 @@ import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
+import RowLayout from '@/ui/row-layout/RowLayout.vue'
 
 const props = withDefaults(defineProps<DialogProps>(), {
   hasCloseButton: true,
@@ -64,6 +69,8 @@ function onOpenChange(value: boolean): void {
   }
 }
 
+// test
+const isOpentest = ref(false)
 </script>
 
 <template>
@@ -84,8 +91,29 @@ function onOpenChange(value: boolean): void {
       @pointer-down-outside="onPointerDownOutside"
     >
       <div :class="style.content()">
+        <button
+          @click="isOpentest = !isOpentest"
+        >
+          toggle
+        </button>
         <slot />
         <DialogCloseButton v-if="props.hasCloseButton" />
+      </div>
+      <div
+        :class="[
+          style.chin(),
+          isOpentest ? 'translate-y-0' : '-translate-y-16',
+        ]"
+        class="
+          -mt-4 max-h-16 rounded-b-[calc(1rem+5px)] border-5 border-t-0
+          border-transparent bg-white/80 bg-clip-padding p-sm px-md pt-4
+          dark:border-black/10
+        "
+      >
+        <RowLayout>
+          <InfoCircleIcon class="size-4 text-primary" />
+          <span>hint text </span>
+        </RowLayout>
       </div>
     </RekaDialogContent>
   </RekaDialogRoot>

@@ -5,6 +5,7 @@ import { tv } from '@/styles/tailwindVariants.lib'
 export const createDialogStyle = tv({
   slots: {
     body: 'flex-1 overflow-y-auto px-xl py-xs',
+    chin: 'absolute top-full -z-10 w-full transition-transform duration-200',
     content: `
       flex max-h-[90vh] w-full flex-col overflow-hidden rounded-[calc(1rem+5px)]
       border-5 border-white/10 bg-primary bg-clip-padding shadow-xl
