@@ -11,7 +11,6 @@ import {
 } from 'reka-ui'
 import {
   computed,
-  nextTick,
   ref,
   useAttrs,
   useId,
@@ -69,6 +68,7 @@ const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle
 // we need to keep a copied version of the modelValue to reflect changes immediately.
 const copiedModelValue = ref<number | null>(modelValue.value)
 const isEditing = ref<boolean>(false)
+const rawInputValue = ref<string>('')
 
 watch(
   () => modelValue.value,
@@ -93,6 +93,31 @@ const {
 } = useInput(id, props)
 
 const deviceLocale = navigator.language
+
+/**
+ * Parses a localized number string into a number.
+ * @param value the string value to parse
+ * @param locale the locale to use for parsing
+ * @returns the parsed number
+ */
+function parseIntlNumber(value: string, locale: string): number {
+  const example = new Intl.NumberFormat(locale).format(12_345.6)
+
+  const group = example.match(/[\s.,`]/g)?.[0]
+  const decimal = example.match(/[\s.,`](?=\d+$)/)?.[0]
+
+  let normalized = value
+
+  if (group) {
+    normalized = normalized.replaceAll(group, '')
+  }
+
+  if (decimal) {
+    normalized = normalized.replace(decimal, '.')
+  }
+
+  return Number(normalized)
+}
 
 function applyLocaleNormalization(value: string, locale: string): string {
   const example = new Intl.NumberFormat(locale).format(12_345.6)
@@ -120,7 +145,7 @@ function applyLocaleNormalization(value: string, locale: string): string {
  *   the intent is ambiguous so we fall back to the locale to decide.
  * - Otherwise, the single separator is treated as the decimal separator.
  */
-function parseIntlNumber(value: string, locale: string): number {
+function formatNumber(value: string, locale: string): number {
   // Strip space and backtick — always thousands separators
   let normalized = value.replaceAll(/[\s`]/g, '')
 
@@ -168,17 +193,15 @@ function onInput(event: InputEvent): void {
   const target = event.target as HTMLInputElement
   const value = target.value
 
+  rawInputValue.value = value
+
   if (value === '') {
     modelValue.value = null
 
     return
   }
 
-  console.log('value', value)
-
   const valueAsNumber = parseIntlNumber(value, deviceLocale)
-
-  console.log('valueAsNumber', valueAsNumber)
 
   if (Number.isNaN(valueAsNumber)) {
     return
@@ -191,20 +214,21 @@ function onEnterKeyDown(): void {
   isEditing.value = false
 }
 
-async function onBlur(event: FocusEvent): Promise<void> {
-  emit('blur', event)
-  await nextTick()
+function onBlur(event: FocusEvent): void {
+  // rawInputValue captured in onInput — target.value is already empty here (reka cleared it)
+  const parsed = formatNumber(rawInputValue.value, deviceLocale)
+
+  // Update the model so reka recomputes textValue → inputValue → re-renders formatted
+  if (!Number.isNaN(parsed)) {
+    copiedModelValue.value = parsed
+    modelValue.value = parsed
+  }
+
   isEditing.value = false
-  copiedModelValue.value = modelValue.value
+  emit('blur', event)
 }
 
 watch(copiedModelValue, () => {
-  if (isEditing.value) {
-    return
-  }
-
-  console.log('copiedModelValue', copiedModelValue.value)
-
   modelValue.value = copiedModelValue.value ?? null
 })
 </script>
