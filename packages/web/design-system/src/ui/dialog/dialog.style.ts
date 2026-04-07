@@ -7,13 +7,14 @@ export const createDialogStyle = tv({
     body: 'flex-1 overflow-y-auto px-xl py-xs',
     chin: 'absolute top-full -z-10 w-full transition-transform duration-200',
     content: `
-      flex max-h-[90vh] w-full flex-col overflow-hidden rounded-[calc(1rem+5px)]
-      border-5 border-white/10 bg-primary bg-clip-padding shadow-xl
-      sm:max-h-[85vh]
+      flex max-h-[90vh] w-full flex-col overflow-hidden
+      rounded-t-[calc(1rem+5px)] rounded-b-none border-5 border-b-0
+      border-white/10 bg-primary bg-clip-padding shadow-xl
+      sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-b-5
       dark:border-black/10
     `,
     contentPositioner: `
-      fixed inset-x-0 bottom-0 z-50 flex w-full flex-col
+      z-modal fixed inset-x-0 bottom-0 flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
     `,
@@ -21,7 +22,7 @@ export const createDialogStyle = tv({
     header: 'sticky top-0 z-10 bg-primary',
     innerContent: '',
     overlay: `
-      fixed inset-0 z-50 bg-linear-to-t from-black/50 to-black/25
+      z-modal fixed inset-0 bg-linear-to-t from-black/50 to-black/25
       will-change-[opacity]
     `,
   },

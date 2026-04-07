@@ -69,6 +69,13 @@ export class MyService {
 ## Features
 
 - Create temporary upload/download URLs
+- Create temporary preview URLs for inline browser rendering
 - Upload file using buffers or streams
 - Download file
 - Delete file
+
+## URL Types
+
+- `createTemporaryPreviewUrl(...)`: creates a temporary signed read URL intended for inline preview in the browser.
+- `createTemporaryDownloadUrl(...)`: creates a temporary signed read URL that forces a file download.
+- `getPublicUrl(...)`: returns the public object URL and only works when the file is already publicly accessible.

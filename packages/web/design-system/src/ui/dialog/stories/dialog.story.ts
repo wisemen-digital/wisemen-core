@@ -3,6 +3,7 @@ import type {
   StoryObj,
 } from '@storybook/vue3-vite'
 
+import ConfirmDialogPlayground from './ConfirmDialogPlayground.vue'
 import DialogPlayground from './DialogPlayground.vue'
 import DialogScrollablePlayground from './DialogScrollablePlayground.vue'
 
@@ -45,6 +46,29 @@ export const Default: Story = {
     preventEsc: false,
     size: 'md',
   },
+}
+
+export const Confirm: StoryObj<typeof ConfirmDialogPlayground> = {
+  args: {
+    isDestructive: true,
+    preventClickOutside: false,
+    preventEsc: false,
+    size: 'xs',
+  },
+  argTypes: {
+    isDestructive: {
+      control: 'boolean',
+    },
+  },
+  render: (args) => ({
+    components: {
+      ConfirmDialogPlayground,
+    },
+    setup: () => ({
+      args,
+    }),
+    template: '<ConfirmDialogPlayground v-bind="args" />',
+  }),
 }
 
 export const Scrollable: StoryObj<typeof DialogScrollablePlayground> = {

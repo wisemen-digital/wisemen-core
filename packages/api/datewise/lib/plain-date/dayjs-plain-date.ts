@@ -30,6 +30,7 @@ export class DayjsPlainDate implements PlainDate {
   constructor (date: number | string)
   constructor (date: string | number | Date)
   constructor (date: PlainDateInput)
+  constructor (input?: PlainDateInput, format?: string)
   constructor (input?: PlainDateInput, format: string = 'YYYY-MM-DD') {
     if (input === undefined) {
       this.date = dayjs()

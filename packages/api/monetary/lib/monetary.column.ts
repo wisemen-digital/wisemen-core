@@ -6,7 +6,7 @@ import { PrecisionLossError } from './precision-loss-error.js'
 export type MonetaryOptions = {
   currencyPrecisions?: Record<Currency, number>
   defaultPrecision: number
-  default: Monetary
+  default?: Monetary
 } & Omit<ColumnOptions, 'type' | 'transformer' | 'default'>
 
 export interface MonetaryJSON {
