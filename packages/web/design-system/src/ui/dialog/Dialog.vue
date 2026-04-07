@@ -4,10 +4,7 @@ import {
   DialogOverlay as RekaDialogOverlay,
   DialogRoot as RekaDialogRoot,
 } from 'reka-ui'
-import {
-  computed,
-  ref,
-} from 'vue'
+import { computed } from 'vue'
 
 import { useProvideDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogProps } from '@/ui/dialog/dialog.props'
@@ -67,8 +64,6 @@ function onOpenChange(value: boolean): void {
   }
 }
 
-// test
-const isOpentest = ref(false)
 </script>
 
 <template>
@@ -89,26 +84,8 @@ const isOpentest = ref(false)
       @pointer-down-outside="onPointerDownOutside"
     >
       <div :class="style.content()">
-        <button
-          @click="isOpentest = !isOpentest"
-        >
-          toggle
-        </button>
         <slot />
         <DialogCloseButton v-if="props.hasCloseButton" />
-      </div>
-      <div
-        :class="[
-          style.chin(),
-          isOpentest ? 'translate-y-0' : '-translate-y-16',
-        ]"
-        class="
-          -mt-4 max-h-16 rounded-b-[calc(1rem+5px)] border-5 border-t-0
-          border-white/10 bg-white/80 bg-clip-padding p-sm pt-4
-          dark:border-black/10
-        "
-      >
-        <span>hint text </span>
       </div>
     </RekaDialogContent>
   </RekaDialogRoot>
