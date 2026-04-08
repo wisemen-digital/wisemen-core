@@ -32,6 +32,7 @@ export default defineConfig({
         'vue-i18n',
         'vue-router',
         'reka-ui',
+        'temporal-polyfill',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
@@ -40,6 +41,7 @@ export default defineConfig({
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
           'reka-ui': 'RekaUI',
+          'temporal-polyfill': 'Temporal',
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',
           'vue-router': 'VueRouter',

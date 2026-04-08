@@ -53,6 +53,7 @@
     "@vueuse/router": "catalog:vue",
     "motion-v": "catalog:peer",
     "reka-ui": "catalog:peer",
+    "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer"
