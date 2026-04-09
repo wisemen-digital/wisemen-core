@@ -10,7 +10,7 @@ import { NamedConnectionOptions } from '#src/connections/nats-connection.manager
 const NATS_CONSUMER_KEY = Symbol('wisemen.nats-consumer')
 
 export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
-  /** The NATS client class decorated with `@NatsClient` */
+  /** The NATS connection class decorated with `@NatsConnection` */
   connection?: ClassConstructor<unknown>
   streamName: string
 }

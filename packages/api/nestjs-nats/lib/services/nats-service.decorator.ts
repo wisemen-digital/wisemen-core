@@ -9,7 +9,7 @@ import type { CreateServiceConfig } from '#src/nats-application.js'
 const NATS_SERVICE_KEY = Symbol('wisemen.nats-service')
 
 export interface NatsServiceConfig extends ServiceConfig {
-  /** The NATS client class decorated with `@NatsClient` */
+  /** The NATS connection class decorated with `@NatsConnection` */
   connection?: ClassConstructor<unknown>
 }
 

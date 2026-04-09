@@ -10,7 +10,7 @@ import { NamedConnectionOptions } from '#src/connections/nats-connection.manager
 const NATS_SUBSCRIBER_KEY = Symbol('wisemen.nats-subscriber')
 
 export interface NatsSubscriptionOptions extends Omit<SubscriptionOptions, 'callback'> {
-  /** The NATS connection class decorated with `@NatsClient` */
+  /** The NATS connection class decorated with `@NatsConnection` */
   connection?: ClassConstructor<unknown>
   subject: string
   name?: string
