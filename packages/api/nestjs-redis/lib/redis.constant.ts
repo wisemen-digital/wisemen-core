@@ -1,0 +1,2 @@
+export const REDIS_PING_INTERVAL = 10_000
+export const REDIS_DEFAULT_TTL = 7_200
