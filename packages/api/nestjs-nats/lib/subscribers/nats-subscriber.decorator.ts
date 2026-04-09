@@ -20,7 +20,11 @@ export type NatsSubscriberConfigFunction = (configService: ConfigService) => Nat
 
 export function NatsSubscriber (options: NatsSubscriberConfigFunction): ClassDecorator {
   return applyDecorators(
-    (target: ClassConstructor<unknown>): ClassDecorator => NatsSubscriberHandler(target),
+    (target: ClassConstructor<unknown>): void => {
+      const handlerDecorator = NatsSubscriberHandler(target)
+
+      handlerDecorator(target)
+    },
     (target: ClassConstructor<unknown>): void => {
       Reflect.defineMetadata(NATS_SUBSCRIBER_KEY, options, target)
     }

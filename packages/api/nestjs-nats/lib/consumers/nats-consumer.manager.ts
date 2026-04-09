@@ -59,7 +59,7 @@ export class NatsConsumerManager {
   }
 
   async close (): Promise<void> {
-    const promises = this.consumers.values().map(c => c.close())
+    const promises = Array.from(this.consumers.values()).map(c => c.close())
 
     await Promise.allSettled(promises)
   }
@@ -74,7 +74,7 @@ export class NatsConsumerManager {
     }
 
     try {
-      const info = manager.consumers.info(streamName, config.durable_name)
+      const info = await manager.consumers.info(streamName, config.durable_name)
 
       await manager.consumers.update(streamName, config.durable_name, config)
 

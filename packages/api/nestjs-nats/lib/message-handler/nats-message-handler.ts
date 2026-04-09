@@ -52,6 +52,8 @@ export class NatsMessageHandlerFunction {
           span.setAttribute('exceptions.message', e.message)
           span.setAttribute('exception.stacktrace', e.stack ?? '')
         }
+
+        throw e
       } finally {
         span.end()
       }

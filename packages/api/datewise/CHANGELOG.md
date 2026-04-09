@@ -1,5 +1,29 @@
 # @wisemen/datewise
 
+## 0.1.10
+
+### Patch Changes
+
+- [#825](https://github.com/wisemen-digital/wisemen-core/pull/825) [`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - bump dependencies
+
+- Updated dependencies [[`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a)]:
+  - @wisemen/pagination@0.1.1
+  - @wisemen/quantity@0.6.1
+
+## 0.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`959c850`](https://github.com/wisemen-digital/wisemen-core/commit/959c850769865c477309253bde938de94fe2f63f)]:
+  - @wisemen/pagination@0.1.0
+  - @wisemen/quantity@0.6.0
+
+## 0.1.8
+
+### Patch Changes
+
+- [#817](https://github.com/wisemen-digital/wisemen-core/pull/817) [`d3c7794`](https://github.com/wisemen-digital/wisemen-core/commit/d3c7794a6843db18f2c057bd3a2b4c47e6d6f65b) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - support construction of plain date with format
+
 ## 0.1.7
 
 ### Patch Changes

@@ -23,7 +23,7 @@ interface SubscribeOptions {
 }
 
 @Injectable()
-export class NatsSimpleClient implements OnModuleInit, OnModuleDestroy {
+export class NatsClient implements OnModuleInit, OnModuleDestroy {
   private _client?: NatsConnection
   private _cache?: KV
 
@@ -103,21 +103,21 @@ export class NatsSimpleClient implements OnModuleInit, OnModuleDestroy {
     this.client.publish(subject, message, { headers: natsHeaders })
   }
 
-  async getCachedValue (key: string): Promise<string | null> {
+  async getValue (key: string): Promise<string | null> {
     const result = await this.cache.get(key)
 
     if (result != null && result.operation === 'PUT') {
-      String(result.value)
+      return String(result.value)
     }
 
     return null
   }
 
-  async putCachedValue (key: string, value: string): Promise<void> {
+  async putValue (key: string, value: string): Promise<void> {
     await this.cache.put(key, value)
   }
 
-  async deleteCachedValue (key: string): Promise<void> {
+  async deleteValue (key: string): Promise<void> {
     await this.cache.delete(key)
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-typeorm",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -39,7 +39,7 @@
     "@wisemen/eslint-config-nestjs": "workspace:*"
   },
   "author": "Joren Vandeweyer",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

@@ -5,7 +5,7 @@ export { NatsClientModule } from './nats.client.module.js'
 export type { NatsClientModuleOptions, NatsClientModuleAsyncOptions } from './nats.client.options.js'
 
 // Simple client (fire-and-forget pub/sub)
-export { NatsSimpleClient } from './nats.client.js'
+export { NatsClient as NatsSimpleClient } from './nats.client.js'
 
 // Errors
 export { NatsUnavailableError } from './errors/nats-unavailable.error.js'
@@ -17,9 +17,9 @@ export { natsSubject } from './nats-subject.js'
 export { CloudEvent } from './cloud-event/cloud-event.js'
 
 // Connection client decorator
-export { NatsClient } from './clients/nats-client.decorator.js'
-export type { NatsClientConfigFunction } from './clients/nats-client.decorator.js'
-export type { NamedConnectionOptions } from './clients/nats-connection.manager.js'
+export { NatsConnection as NatsClient } from './connections/nats-connection.decorator.js'
+export type { NatsConnectionConfigFunction as NatsClientConfigFunction } from './connections/nats-connection.decorator.js'
+export type { NamedConnectionOptions } from './connections/nats-connection.manager.js'
 
 // Stream decorator
 export { NatsStream } from './streams/nats-stream.decorator.js'

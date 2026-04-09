@@ -19,7 +19,11 @@ export type NatsConsumerConfigFunction = (configService: ConfigService) => NatsC
 
 export function NatsConsumer (options: NatsConsumerConfigFunction): ClassDecorator {
   return applyDecorators(
-    (target: ClassConstructor<unknown>): ClassDecorator => NatsConsumerHandler(target),
+    (target: ClassConstructor<unknown>): void => {
+      const handlerDecorator = NatsConsumerHandler(target)
+
+      handlerDecorator(target)
+    },
     (target: ClassConstructor<unknown>): void => {
       Reflect.defineMetadata(NATS_CONSUMER_KEY, options, target)
     }

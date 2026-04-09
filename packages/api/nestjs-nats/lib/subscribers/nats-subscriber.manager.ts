@@ -53,7 +53,7 @@ export class NatsSubscriberManager {
   }
 
   async close (): Promise<void> {
-    const promises = this.subscribers.values().map(subscription => subscription.close())
+    const promises = Array.from(this.subscribers.values()).map(subscription => subscription.close())
 
     await Promise.allSettled(promises)
   }

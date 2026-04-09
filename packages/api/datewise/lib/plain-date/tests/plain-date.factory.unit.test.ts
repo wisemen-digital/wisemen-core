@@ -160,6 +160,26 @@ describe('PlainDate factory', () => {
     })
   })
 
+  describe('format string YYYYMMDD', () => {
+    it('returns WiseDate for valid YYYYMMDD date string', () => {
+      const result = factory('20240101', 'YYYYMMDD')
+
+      expect(result).toBeInstanceOf(DayjsPlainDate)
+      expect(result.format('YYYY-MM-DD')).toBe('2024-01-01')
+    })
+
+    it('returns WiseDate for another valid YYYYMMDD date string', () => {
+      const result = factory('20251225', 'YYYYMMDD')
+
+      expect(result).toBeInstanceOf(DayjsPlainDate)
+      expect(result.format('YYYY-MM-DD')).toBe('2025-12-25')
+    })
+
+    it('throws for invalid YYYYMMDD date string', () => {
+      expect(() => factory('20241301', 'YYYYMMDD')).toThrow()
+    })
+  })
+
   describe('edge cases', () => {
     it('handles empty string by throwing error', () => {
       expect(() => factory('')).toThrow()

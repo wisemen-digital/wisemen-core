@@ -1,5 +1,5 @@
 import { type DynamicModule, Module } from '@nestjs/common'
-import { NatsSimpleClient } from './nats.client.js'
+import { NatsClient } from './nats.client.js'
 import { NATS_CLIENT_OPTIONS_TOKEN } from './tokens.js'
 import type { NatsClientModuleAsyncOptions } from './nats.client.options.js'
 
@@ -16,9 +16,9 @@ export class NatsClientModule {
           useFactory: options.useFactory,
           inject: options.inject ?? []
         },
-        NatsSimpleClient
+        NatsClient
       ],
-      exports: [NatsSimpleClient]
+      exports: [NatsClient]
     }
   }
 }

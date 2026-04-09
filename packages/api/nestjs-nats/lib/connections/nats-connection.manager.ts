@@ -34,7 +34,7 @@ export class NatsConnectionManager {
     return newConnection
   }
 
-  async tryConnect (connectionOptions: ConnectionOptions): Promise<NatsConnection> {
+  async tryConnect (connectionOptions: NamedConnectionOptions): Promise<NatsConnection> {
     try {
       const connection = await connect(connectionOptions)
 

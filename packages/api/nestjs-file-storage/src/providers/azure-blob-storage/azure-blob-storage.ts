@@ -79,6 +79,25 @@ export class AzureBlobStorage extends FileStorage {
     })
   }
 
+  public async createTemporaryPreviewUrl (
+    key: string,
+    mimeType?: string,
+    expiresInSeconds?: number
+  ): Promise<string> {
+    this.validateKey(key)
+
+    const blobClient = this.containerClient.getBlockBlobClient(key)
+
+    const expiresIn = expiresInSeconds ?? AZURE_BLOB_STORAGE_DOWNLOAD_URL_EXPIRES_S
+
+    return await blobClient.generateSasUrl({
+      permissions: BlobSASPermissions.from({ read: true }),
+      expiresOn: dayjs().add(expiresIn, 'second').toDate(),
+      contentType: mimeType,
+      contentDisposition: 'inline'
+    })
+  }
+
   public async createTemporaryDownloadUrl (
     key: string,
     name: string,

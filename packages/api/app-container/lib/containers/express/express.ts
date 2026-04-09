@@ -1,28 +1,31 @@
-/* eslint-disable no-console */
+import type { Server, ServerResponse } from 'http'
+import express, { type Express } from 'express'
 import type { INestApplicationContext } from '@nestjs/common'
-import { FastifyAdapter } from '@nestjs/platform-fastify'
-import { fastify, FastifyInstance, type FastifyReply, type FastifyRequest, type FastifyServerOptions } from 'fastify'
+import { ExpressAdapter } from '@nestjs/platform-express'
 
-const port = Number(process.env.PORT) || 3000
+const port = process.env.PORT ?? 3000
 
 type State = 'starting' | 'ready' | 'shutdown' | 'unknown'
 
-export abstract class ProbedContainer {
-  private adapter?: FastifyAdapter
+export abstract class ExpressContainer {
+  private readonly app: Express
+  private readonly server: Server
   private state: State
-  private server: FastifyInstance
 
   protected nest?: INestApplicationContext
-  protected getFastifyOptions (): FastifyServerOptions {
-    return {}
-  }
 
-  abstract bootstrap (app: FastifyAdapter): Promise<INestApplicationContext>
+  abstract bootstrap (app: ExpressAdapter): Promise<INestApplicationContext>
 
   constructor () {
     this.state = 'starting'
 
+    this.app = express()
+    this.server = this.app.listen(port, () => {
+      console.log('server started')
+    })
+
     this.enableShutdownHooks()
+    this.enableProbes()
 
     void this._init()
   }
@@ -40,18 +43,13 @@ export abstract class ProbedContainer {
   }
 
   protected async init (): Promise<void> {
-    this.server = fastify(this.getFastifyOptions())
+    const adapter = new ExpressAdapter(this.app)
 
-    this.adapter = new FastifyAdapter(this.server)
+    adapter.setHttpServer(this.server)
 
-    this.enableProbes()
-
-    this.nest = await this.bootstrap(this.adapter)
+    this.nest = await this.bootstrap(adapter)
 
     await this.nest.init()
-
-    await this.server.listen({ port, host: '0.0.0.0' })
-    console.log('Server listening on port', port)
 
     this.state = 'ready'
   }
@@ -64,6 +62,13 @@ export abstract class ProbedContainer {
     this.state = 'shutdown'
 
     try {
+      await new Promise<void>((resolve, reject) => {
+        this.server.close((err) => {
+          if (err) reject(err)
+          else resolve()
+        })
+      })
+
       await this.nest?.close()
 
       console.log('application closed')
@@ -83,37 +88,43 @@ export abstract class ProbedContainer {
   }
 
   private enableProbes (): void {
-    if (this.server == null) return
-
-    this.server.get('/', (_: FastifyRequest, res: FastifyReply) => {
+    this.app.get('/', (_, res) => {
       this.version(res)
     })
-    this.server.get('/health', (_: FastifyRequest, res: FastifyReply) => {
+    this.app.get('/health', (_, res) => {
       this.liveness(res)
     })
-    this.server.get('/ready', (_: FastifyRequest, res: FastifyReply) => {
+    this.app.get('/ready', (_, res) => {
       this.readiness(res)
     })
   }
 
-  private liveness (res: FastifyReply): void {
-    res.status(200).type('text/plain').send('OK')
+  private liveness (res: ServerResponse): void {
+    res.writeHead(200, { 'Content-Type': 'text/plain' })
+    res.write('OK')
+    res.end()
   }
 
-  private readiness (res: FastifyReply): void {
+  private readiness (res: ServerResponse): void {
     if (this.state === 'ready') {
-      res.status(200).type('text/plain').send('OK')
+      res.writeHead(200, { 'Content-Type': 'text/plain' })
+      res.write('OK')
     } else {
-      res.status(500).type('text/plain').send('not OK')
+      res.writeHead(500, { 'Content-Type': 'text/plain' })
+      res.write('not OK')
     }
+
+    res.end()
   }
 
-  private version (res: FastifyReply): void {
-    res.status(200).type('application/json').send({
+  private version (res: ServerResponse): void {
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.write(JSON.stringify({
       env: process.env.NODE_ENV,
       commit: process.env.COMMIT,
       build: process.env.BUILD_NUMBER,
       version: process.env.VERSION
-    })
+    }))
+    res.end()
   }
 }

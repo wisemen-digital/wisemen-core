@@ -10,6 +10,10 @@ export class NatsAuthorizationRequestParser {
   parse (msg: ServiceMsg, xKeyPair?: KeyPair): ParsedAuthorizationRequest {
     const data = this.extractMessageData(msg, xKeyPair)
 
+    if (data === null) {
+      throw new Error('No payload in NATS authorization request')
+    }
+
     const authorizationRequest = new TextDecoder('utf-8').decode(data)
     const requestClaim = decode<NatsAuthorizationRequest>(authorizationRequest)
 
@@ -34,7 +38,7 @@ export class NatsAuthorizationRequestParser {
     }
   }
 
-  private extractMessageData (msg: ServiceMsg, xKeyPair?: KeyPair): Uint8Array | undefined {
+  private extractMessageData (msg: ServiceMsg, xKeyPair?: KeyPair): Uint8Array | null {
     const xKey = msg.headers?.get('Nats-Server-Xkey')
 
     if (xKey === undefined) {
@@ -49,6 +53,6 @@ export class NatsAuthorizationRequestParser {
       throw new Error('Received encrypted message, but no xKeyPair has been set to decrypt')
     }
 
-    return xKeyPair.open(msg.data, xKey) ?? undefined
+    return xKeyPair.open(msg.data, xKey)
   }
 }
