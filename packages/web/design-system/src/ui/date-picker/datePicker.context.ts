@@ -1,16 +1,10 @@
-import type {
-  ComputedRef,
-  InjectionKey,
-} from 'vue'
+import type { InjectionKey } from 'vue'
 import {
   inject,
   provide,
 } from 'vue'
 
-import type { DatePickerStyle } from '@/ui/date-picker/datePicker.style'
-
 interface DatePickerContext {
-  datePickerStyle: ComputedRef<DatePickerStyle>
   onClose: () => void
 }
 

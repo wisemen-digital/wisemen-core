@@ -17,18 +17,18 @@ const props = defineProps<{
 }>()
 
 const {
-  datePickerStyle, onClose,
+  onClose,
 } = useInjectDatePickerContext()
 </script>
 
 <template>
-  <RekaDatePickerGrid :class="datePickerStyle.grid()">
+  <RekaDatePickerGrid class="w-full border-collapse select-none">
     <RekaDatePickerGridHead>
-      <RekaDatePickerGridRow :class="datePickerStyle.gridRow()">
+      <RekaDatePickerGridRow class="flex">
         <RekaDatePickerHeadCell
           v-for="day in props.weekDays"
           :key="day"
-          :class="datePickerStyle.headCell()"
+          class="flex-1 py-xs text-center text-xs font-medium text-tertiary"
         >
           {{ day }}
         </RekaDatePickerHeadCell>
@@ -39,27 +39,44 @@ const {
       <RekaDatePickerGridRow
         v-for="(week, weekIndex) in props.month.rows"
         :key="weekIndex"
-        :class="datePickerStyle.gridRow()"
+        class="flex py-xxs"
       >
         <RekaDatePickerCell
           v-for="date in week"
           :key="date.toString()"
           :date="date"
-          :class="datePickerStyle.cell()"
+          class="relative flex-1 p-0 text-center text-xs"
         >
           <RekaDatePickerCellTrigger
             v-slot="{ today }"
             :day="date"
             :month="props.month.value"
-            :class="datePickerStyle.cellTrigger()"
-            class="group/cell"
+            class="
+              group/cell inline-flex size-9 shrink-0 items-center justify-center
+              rounded-full text-xs font-normal text-secondary transition-colors
+              duration-100 outline-none
+              not-data-disabled:hover:bg-primary-hover
+              focus-visible:ring-2 focus-visible:ring-fg-brand-primary
+              data-disabled:pointer-events-none data-disabled:text-disabled
+              data-disabled:opacity-50
+              data-outside-view:pointer-events-none
+              data-outside-view:text-disabled
+              data-selected:bg-brand-solid data-selected:text-primary-on-brand
+              data-selected:hover:bg-brand-solid-hover
+              data-unavailable:pointer-events-none
+              data-unavailable:text-disabled data-unavailable:line-through
+            "
             @click="onClose"
           >
             {{ date.day }}
 
             <span
               v-if="today"
-              :class="datePickerStyle.todayIndicator()"
+              class="
+                absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full
+                bg-brand-solid
+                group-data-selected/cell:bg-white
+              "
             />
           </RekaDatePickerCellTrigger>
         </RekaDatePickerCell>

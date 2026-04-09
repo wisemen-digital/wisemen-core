@@ -1,6 +1,6 @@
 import { tv } from '@/styles/tailwindVariants.lib'
 
-export const createDatePickerStyle = tv({
+export const createDateRangePickerStyle = tv({
   slots: {
     trigger: `
       flex size-full min-w-0 cursor-pointer items-center bg-transparent text-xs
@@ -21,4 +21,4 @@ export const createDatePickerStyle = tv({
   },
 })
 
-export type DatePickerStyle = ReturnType<typeof createDatePickerStyle>
+export type DateRangePickerStyle = ReturnType<typeof createDateRangePickerStyle>

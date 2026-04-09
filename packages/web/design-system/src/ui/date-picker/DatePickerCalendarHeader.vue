@@ -12,17 +12,12 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
-import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
 
 const i18n = useI18n()
-
-const {
-  datePickerStyle,
-} = useInjectDatePickerContext()
 </script>
 
 <template>
-  <RekaDatePickerHeader :class="datePickerStyle.header()">
+  <RekaDatePickerHeader class="flex items-center justify-between">
     <RekaDatePickerPrev :as-child="true">
       <IconButton
         :icon="ChevronLeftIcon"
@@ -32,7 +27,7 @@ const {
       />
     </RekaDatePickerPrev>
 
-    <RekaDatePickerHeading :class="datePickerStyle.heading()" />
+    <RekaDatePickerHeading class="text-sm font-semibold text-primary" />
 
     <RekaDatePickerNext :as-child="true">
       <IconButton
