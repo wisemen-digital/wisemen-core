@@ -3,8 +3,8 @@ import { jetstreamManager } from '@nats-io/jetstream'
 import { jserrors } from '@nats-io/jetstream/internal'
 import type { NatsConnection } from '@nats-io/transport-node'
 import { Logger } from '@nestjs/common'
+import { NatsConnectionManager } from '#src/connections/nats-connection.manager.js'
 import type { CreateStreamConfig } from '#src/nats-application.js'
-import type { NatsConnectionManager } from '#src/clients/nats-connection.manager.js'
 
 export class NatsStreamManager {
   constructor (private connectionManager: NatsConnectionManager) {}

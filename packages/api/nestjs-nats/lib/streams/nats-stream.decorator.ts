@@ -1,9 +1,9 @@
 import type { ClassConstructor } from 'class-transformer'
 import type { ConfigService } from '@nestjs/config'
 import type { RetentionPolicy } from '@nats-io/jetstream'
+import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
+import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 import type { CreateStreamConfig } from '#src/nats-application.js'
-import { getNatsConnectionOptions } from '#src/clients/nats-client.decorator.js'
-import type { NamedConnectionOptions } from '#src/clients/nats-connection.manager.js'
 
 const NATS_STREAM_KEY = Symbol('wisemen.nats-stream')
 

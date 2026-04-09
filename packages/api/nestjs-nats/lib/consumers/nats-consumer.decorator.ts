@@ -4,8 +4,8 @@ import type { ConsumerConfig } from '@nats-io/jetstream'
 import type { ConfigService } from '@nestjs/config'
 import { NatsConsumerHandler } from './nats-consumer-handler.decorator.js'
 import type { NatsConsumerConfig as CreateNatsConsumerConfig } from './nats-consumer.manager.js'
-import type { NamedConnectionOptions } from '#src/clients/nats-connection.manager.js'
-import { getNatsConnectionOptions } from '#src/clients/nats-client.decorator.js'
+import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
+import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 
 const NATS_CONSUMER_KEY = Symbol('wisemen.nats-consumer')
 

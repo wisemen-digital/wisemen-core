@@ -2,9 +2,9 @@ import type { ClassConstructor } from 'class-transformer'
 import type { ServiceConfig } from '@nats-io/services'
 import { applyDecorators, Injectable } from '@nestjs/common'
 import type { ConfigService } from '@nestjs/config'
-import { getNatsConnectionOptions } from '#src/clients/nats-client.decorator.js'
+import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
+import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 import type { CreateServiceConfig } from '#src/nats-application.js'
-import type { NamedConnectionOptions } from '#src/clients/nats-connection.manager.js'
 
 const NATS_SERVICE_KEY = Symbol('wisemen.nats-service')
 

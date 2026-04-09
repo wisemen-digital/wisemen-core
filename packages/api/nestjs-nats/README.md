@@ -42,14 +42,14 @@ export class NatsAppModule {}
 ### 2. Define a connection client
 
 ```ts
-import { NatsClient } from '@wisemen/nestjs-nats'
+import { NatsConnection } from '@wisemen/nestjs-nats'
 import type { ConfigService } from '@nestjs/config'
 
-@NatsClient((config: ConfigService) => ({
+@NatsConnection((config: ConfigService) => ({
   name: 'default',
   servers: config.getOrThrow('NATS_ENDPOINT'),
 }))
-export class MyNatsClient {}
+export class MyNatsConnection {}
 ```
 
 ### 3. Subscribe to messages
@@ -72,7 +72,7 @@ export class MySubscriber {
 ### 4. Simple client (fire-and-forget publish)
 
 ```ts
-import { NatsSimpleClient, NatsClientModule } from '@wisemen/nestjs-nats'
+import { NatsClient, NatsClientModule } from '@wisemen/nestjs-nats'
 
 @Module({
   imports: [NatsClientModule],
@@ -82,7 +82,7 @@ export class AppModule {}
 
 @Injectable()
 export class MyService {
-  constructor(private readonly nats: NatsSimpleClient) {}
+  constructor(private readonly nats: NatsClient) {}
 
   async notifySomething(): Promise<void> {
     this.nats.publish('my.subject', new TextEncoder().encode(JSON.stringify({ hello: 'world' })))

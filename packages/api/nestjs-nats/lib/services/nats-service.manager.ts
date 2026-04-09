@@ -2,8 +2,8 @@ import { Logger } from '@nestjs/common'
 import { Svcm } from '@nats-io/services'
 import type { NatsConnection } from '@nats-io/transport-node'
 import { NatsService } from './nats-service.js'
+import { NatsConnectionManager } from '#src/connections/nats-connection.manager.js'
 import type { CreateServiceConfig } from '#src/nats-application.js'
-import type { NatsConnectionManager } from '#src/clients/nats-connection.manager.js'
 
 export class NatsServiceManager {
   private services: Map<string, NatsService> = new Map()

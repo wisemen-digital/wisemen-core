@@ -4,8 +4,8 @@ import type { SubscriptionOptions } from '@nats-io/transport-node'
 import type { ConfigService } from '@nestjs/config'
 import type { NatsSubscriberConfig } from './nats-subscriber.manager.js'
 import { NatsSubscriberHandler } from './nats-subscriber-handler.decorator.js'
-import { getNatsConnectionOptions } from '#src/clients/nats-client.decorator.js'
-import type { NamedConnectionOptions } from '#src/clients/nats-connection.manager.js'
+import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
+import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 
 const NATS_SUBSCRIBER_KEY = Symbol('wisemen.nats-subscriber')
 

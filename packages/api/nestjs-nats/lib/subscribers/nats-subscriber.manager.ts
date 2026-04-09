@@ -1,8 +1,7 @@
 import { Logger } from '@nestjs/common'
 import type { NatsConnection, SubscriptionOptions } from '@nats-io/transport-node'
 import { NatsSubscription } from './nats-subscription.js'
-import type { NamedConnectionOptions } from '#src/clients/nats-connection.manager.js'
-import type { NatsConnectionManager } from '#src/clients/nats-connection.manager.js'
+import { NamedConnectionOptions, NatsConnectionManager } from '#src/connections/nats-connection.manager.js'
 
 export interface NatsSubscriberConfig extends Omit<SubscriptionOptions, 'callback'> {
   connectionOptions?: NamedConnectionOptions
