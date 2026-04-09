@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-file-storage",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publishConfig": {
     "access": "public"
   },
@@ -50,7 +50,7 @@
     }
   },
   "author": "Pieter Pauwels",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

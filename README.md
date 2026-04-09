@@ -85,7 +85,7 @@ After this setup, all future releases will be automatic through the changeset wo
 
 ## License
 
-This project is licensed under the [PolyForm Strict License 1.0.0](./LICENSE).
+This project is licensed under the [PolyForm Strict License 1.0.0](./LICENSE.md).
 
 **Wisemen Core** is developed primarily for internal use by the Wisemen agency. We make this codebase freely available for non-commercial purposes, allowing the community to learn from and use our tools at no cost. However, commercial use by other agencies or organizations requires explicit permission.
 
@@ -100,6 +100,6 @@ We offer flexible commercial licenses, support contracts, and custom arrangement
 Please get in touch at **sales@wisemen.digital** (or your preferred contact) if you'd like to discuss licensing options.
 
 
-For more details about what you can and cannot do with this software, please refer to the [LICENSE](./LICENSE) file.
+For more details about what you can and cannot do with this software, please refer to the [LICENSE](./LICENSE.md) file.
 
 *Thank you for respecting the license and supporting years of development on wisemen-core!*

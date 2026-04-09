@@ -1,7 +1,7 @@
 import type { INestApplicationContext } from '@nestjs/common'
-import { ProbedContainer } from './default.js'
+import { ExpressContainer } from './express.js'
 
-export abstract class JobContainer extends ProbedContainer {
+export abstract class JobContainer extends ExpressContainer {
   abstract execute (nest: INestApplicationContext): Promise<void>
 
   protected async init (): Promise<void> {

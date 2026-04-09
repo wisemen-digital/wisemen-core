@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pagination",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -21,7 +21,7 @@
     "release": "pnpx release-it"
   },
   "author": "Joren Vandeweyer",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
