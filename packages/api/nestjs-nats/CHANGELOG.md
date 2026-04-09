@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0
+
+### Minor Changes
+
+- [#835](https://github.com/wisemen-digital/wisemen-core/pull/835) [`d8c814a`](https://github.com/wisemen-digital/wisemen-core/commit/d8c814a4528d005655bf27a5500b9fd349632517) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: rename exports
+
 ## 0.1.1
 
 ### Patch Changes
