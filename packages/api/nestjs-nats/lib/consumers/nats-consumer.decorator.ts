@@ -11,7 +11,7 @@ const NATS_CONSUMER_KEY = Symbol('wisemen.nats-consumer')
 
 export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
   /** The NATS client class decorated with `@NatsClient` */
-  client?: ClassConstructor<unknown>
+  connection?: ClassConstructor<unknown>
   streamName: string
 }
 
@@ -51,8 +51,8 @@ export function getNatsConsumerConfig (
   const name = consumerConfig.name ?? target.name
   let connectionOptions: NamedConnectionOptions | undefined = undefined
 
-  if (consumerConfig.client) {
-    connectionOptions = getNatsConnectionOptions(consumerConfig.client, config)
+  if (consumerConfig.connection) {
+    connectionOptions = getNatsConnectionOptions(consumerConfig.connection, config)
   }
 
   return { ...consumerConfig, name, connectionOptions }

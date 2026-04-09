@@ -8,14 +8,14 @@ import type { CreateStreamConfig } from '#src/nats-application.js'
 const NATS_STREAM_KEY = Symbol('wisemen.nats-stream')
 
 type LimitsStreamConfig = Omit<CreateStreamConfig, 'connectionOptions'> & {
-  client?: ClassConstructor<unknown>
+  connection?: ClassConstructor<unknown>
   retention: typeof RetentionPolicy.Limits
 } & Required<Pick<CreateStreamConfig, 'retention' | 'max_age' | 'max_bytes' | 'max_msgs'>>
 
 export type NatsLimitsStreamConfigFunction = (configService: ConfigService) => LimitsStreamConfig
 
 type StreamConfig = Omit<CreateStreamConfig, 'connectionOptions'> & {
-  client?: ClassConstructor<unknown>
+  connection?: ClassConstructor<unknown>
   retention: Exclude<RetentionPolicy, typeof RetentionPolicy.Limits>
 } & Required<Pick<CreateStreamConfig, 'retention'>>
 
@@ -48,8 +48,8 @@ export function getNatsStreamConfig (
   const streamConfig = configFn(config)
   let connectionOptions: NamedConnectionOptions | undefined = undefined
 
-  if (streamConfig.client) {
-    connectionOptions = getNatsConnectionOptions(streamConfig.client, config)
+  if (streamConfig.connection) {
+    connectionOptions = getNatsConnectionOptions(streamConfig.connection, config)
   }
 
   return { ...streamConfig, connectionOptions }
