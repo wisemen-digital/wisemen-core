@@ -1,0 +1,62 @@
+{
+  "name": "@wisemen/nestjs-nats",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm build",
+    "test": "node --test ./dist/lib/**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "dependencies": {
+    "@nats-io/jetstream": "catalog:backend",
+    "@nats-io/jwt": "catalog:backend",
+    "@nats-io/kv": "catalog:backend",
+    "@nats-io/nkeys": "catalog:backend",
+    "@nats-io/services": "catalog:backend",
+    "@nats-io/transport-node": "catalog:backend",
+    "@wisemen/api-error": "workspace:*",
+    "@wisemen/opentelemetry": "workspace:*",
+    "change-case": "catalog:backend"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/config": "catalog:backend-peer",
+    "@nestjs/core": "catalog:backend-peer",
+    "@opentelemetry/api": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "rxjs": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "typescript": "catalog:peer"
+  },
+  "author": "Wisemen",
+  "license": "GPL",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-nats"
+  }
+}
