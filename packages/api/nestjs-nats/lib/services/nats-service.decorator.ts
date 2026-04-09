@@ -9,8 +9,8 @@ import type { CreateServiceConfig } from '#src/nats-application.js'
 const NATS_SERVICE_KEY = Symbol('wisemen.nats-service')
 
 export interface NatsServiceConfig extends ServiceConfig {
-  /** The NATS client class decorated with `@NatsClient` */
-  client?: ClassConstructor<unknown>
+  /** The NATS connection class decorated with `@NatsConnection` */
+  connection?: ClassConstructor<unknown>
 }
 
 export type NatsServiceConfigFunction = (config: ConfigService) => NatsServiceConfig
@@ -43,8 +43,8 @@ export function getNatsServiceConfig (
   const serviceConfig = configFn(config)
   let connectionOptions: NamedConnectionOptions | undefined
 
-  if (serviceConfig.client !== undefined) {
-    connectionOptions = getNatsConnectionOptions(serviceConfig.client, config)
+  if (serviceConfig.connection !== undefined) {
+    connectionOptions = getNatsConnectionOptions(serviceConfig.connection, config)
   }
 
   return { ...serviceConfig, connectionOptions }
