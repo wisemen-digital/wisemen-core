@@ -1,5 +1,12 @@
 # @wisemen/pgboss-nestjs-job
 
+## 3.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`4af27de`](https://github.com/wisemen-digital/wisemen-core/commit/4af27de58a8a6b47053bd65e682dccbb100ff290)]:
+  - @wisemen/opentelemetry@0.1.3
+
 ## 3.3.4
 
 ### Patch Changes
