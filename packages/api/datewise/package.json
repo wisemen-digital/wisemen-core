@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/datewise",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "publishConfig": {
     "access": "public"
   },
@@ -37,7 +37,7 @@
   },
   "author": "Wisemen",
   "contributors": [],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

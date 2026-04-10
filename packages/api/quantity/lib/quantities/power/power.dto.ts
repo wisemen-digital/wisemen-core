@@ -1,11 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsNumber } from 'class-validator'
+import { Type } from 'class-transformer'
 import { QuantityDto } from '../../quantity.dto.js'
 import { PowerUnitApiProperty, PowerUnit } from './power-unit.enum.js'
 import { Power } from './power.js'
 
 export class PowerDto extends QuantityDto<Power> {
   @ApiProperty({ type: Number })
+  @Type(() => Number)
   @IsNumber()
   value: number
 
