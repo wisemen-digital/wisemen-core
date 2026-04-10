@@ -14,7 +14,8 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "eslint": "9.39.2"
+    "eslint": "9.39.2",
+    "oxlint": "1.56.0"
   },
   "dependencies": {
     "@eslint/eslintrc": "catalog:lint",
@@ -28,6 +29,8 @@
     "eslint-plugin-unused-imports": "catalog:lint",
     "globals": "catalog:lint",
     "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint"
+    "typescript-eslint": "catalog:lint",
+    "oxlint": "catalog:lint",
+    "@typescript-eslint/eslint-plugin": "catalog:lint"
   }
 }

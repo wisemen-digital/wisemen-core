@@ -18,12 +18,14 @@ catalogs:
     "@vue/devtools-api": "^6.6.4"
   lint:
     "eslint": "9.39.2"
+    "oxlint": "1.56.0"
     "@wisemen/eslint-config-vue": "2.0.0"
-    "@wisemen/eslint-config-nestjs": "0.2.8"
+    "@wisemen/eslint-config-nestjs": "0.2.11"
     "@antfu/eslint-config": "7.2.0"
     "@eslint/eslintrc": "3.3.3"
     "@eslint/js": "9.39.2"
     "@intlify/eslint-plugin-vue-i18n": "4.1.1"
+    "@typescript-eslint/eslint-plugin": "8.57.1"
     "@typescript-eslint/parser": "8.53.1"
     "@stylistic/eslint-plugin": "5.8.0"
     "@vitest/eslint-plugin": "1.6.9"
@@ -51,7 +53,6 @@ catalogs:
     "@typescript-eslint/type-utils": "8.56.0"
     "@typescript-eslint/utils": "8.53.1"
     "eslint-plugin-storybook": 10.2.1
-
   build:
     "tsdown": "0.18.4"
     "husky": "^9.1.7"
@@ -223,4 +224,3 @@ catalogs:
     "typeorm": "0.3.28"
     "wkx": "0.5.0"
     "yaml": "2.8.2"
-    

@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "import"
+  ],
+  "categories": {
+    "correctness": "off"
+  },
+  "env": {
+    "builtin": true,
+    "node": true
+  },
+  // "jsPlugins": [
+  //   "eslint-plugin-import-typescript",
+  //   "@stylistic/eslint-plugin",
+  //   "eslint-plugin-unused-imports",
+  //   "./custom-rules/plugin.js"
+  // ],
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "src/modules/localization/generated/i18n.generated.ts"
+  ],
+  // "options": {
+  //   "typeAware": true
+  // },
+  "extends": [
+    "./configs/default.json",
+    "./configs/imports.json",
+    "./configs/overrides.json"
+  ]
+}

@@ -1,7 +1,5 @@
-import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import globals from 'globals'
-import unicorn from 'eslint-plugin-unicorn'
 import eslintImportTypescript from 'eslint-plugin-import-typescript'
 
 /**
@@ -10,6 +8,7 @@ import eslintImportTypescript from 'eslint-plugin-import-typescript'
 const config = [
   {
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname
@@ -17,34 +16,18 @@ const config = [
       globals: {
         ...globals.node
       }
-    }
-  },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  {
+    },
+    plugins: {
+      '@typescript-eslint': tseslint.plugin
+    },
     rules: {
-      'no-undef': 'error',
-      'no-console': 'warn',
-      'curly': [
-        'error', 'multi-line'
-      ],
-      '@typescript-eslint/strict-boolean-expressions': 'error',
-      '@typescript-eslint/no-extraneous-class': 'off',
-      '@typescript-eslint/no-import-type-side-effects': 'error',
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          args: 'all',
-          argsIgnorePattern: '^_',
-          caughtErrors: 'all',
-          caughtErrorsIgnorePattern: '^_',
-          destructuredArrayIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-          ignoreRestSiblings: true
-        }
-      ],
       '@typescript-eslint/naming-convention': [
         'error',
+        { selector: 'default', format: ['camelCase'], leadingUnderscore: 'allow' },
+        { selector: 'variable', format: ['camelCase', 'PascalCase', 'UPPER_CASE'], leadingUnderscore: 'allow' },
+        { selector: 'import', format: ['camelCase', 'PascalCase'] },
+        { selector: 'objectLiteralProperty', format: null },
+        { selector: 'typeLike', format: ['PascalCase'] },
         { selector: 'interface', format: ['PascalCase'] },
         { selector: 'class', format: ['PascalCase'] }
       ],
@@ -63,44 +46,6 @@ const config = [
       'node_modules',
       'src/modules/localization/generated/i18n.generated.ts'
     ]
-  },
-  {
-    plugins: {
-      unicorn
-    },
-    rules: {
-      'unicorn/filename-case': [
-        'error',
-        {
-          case: 'kebabCase'
-        }
-      ]
-    }
-  },
-  {
-    rules: {
-      '@typescript-eslint/no-unsafe-enum-comparison': 'off',
-      '@stylistic/padding-line-between-statements': ['off'],
-      'import/order': [
-        'error',
-        {
-          pathGroups: [
-            {
-              pattern: '#src/utils/opentelemetry/otel-*-sdk.js',
-              group: 'builtin',
-              position: 'before'
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    files: ['**/*.test.ts'],
-    rules: {
-      '@typescript-eslint/unbound-method': 'off',
-      'no-magic-numbers': 'off'
-    }
   },
   {
     plugins: {
