@@ -185,6 +185,12 @@ catalogs:
     "eslint-plugin-storybook": "10.2.13"
     "vue-component-meta": 3.2.6
   backend:
+    "@nats-io/jetstream": "^3.3.1"
+    "@nats-io/jwt": "^0.0.10-5"
+    "@nats-io/kv": "^3.3.1"
+    "@nats-io/nkeys": "^2.0.3"
+    "@nats-io/services": "^3.3.1"
+    "@nats-io/transport-node": "^3.3.1"
     "@aws-sdk/client-s3": "3.1013.0"
     "@aws-sdk/lib-storage": "3.1013.0"
     "@aws-sdk/s3-request-presigner": "3.1013.0"
@@ -240,6 +246,7 @@ catalogs:
     "pg": "8.20.0"
     "pg-boss": "12.15.0"
     "qs": "6.15.0"
+    "redis": "5.11.0"
     "reflect-metadata": "0.2.2"
     "rxjs": "7.8.2"
     "twilio": "5.13.1"
