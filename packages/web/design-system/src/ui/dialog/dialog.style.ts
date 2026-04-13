@@ -5,13 +5,16 @@ import { tv } from '@/styles/tailwindVariants.lib'
 export const createDialogStyle = tv({
   slots: {
     body: 'flex-1 overflow-y-auto px-xl py-xs',
-    chin: 'absolute top-full -z-10 w-full transition-transform duration-200',
+    chin: `
+      absolute top-0 -z-10 w-full rounded-t-[calc(1rem+5px)] rounded-b-none
+      shadow-xl transition-transform duration-200
+      sm:rounded-[calc(1rem+5px)]
+    `,
     content: `
       flex max-h-[90vh] w-full flex-col overflow-hidden
-      rounded-t-[calc(1rem+5px)] rounded-b-none border-5 border-b-0
-      border-white/10 bg-primary bg-clip-padding shadow-xl
-      sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-b-5
-      dark:border-black/10
+      rounded-t-[calc(1rem+5px)] rounded-b-none border-[5px] border-transparent
+      bg-primary bg-clip-padding
+      sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)]
     `,
     contentPositioner: `
       z-modal fixed inset-x-0 bottom-0 flex w-full flex-col

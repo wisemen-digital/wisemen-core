@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import {
   CheckCircleIcon,
+  InfoCircleIcon,
   SearchMdIcon,
 } from '@wisemen/vue-core-icons'
 
+import { UIButton } from '@/ui/button'
 import Checkbox from '@/ui/checkbox/Checkbox.vue'
 import type { DialogSize } from '@/ui/dialog/dialog.props'
 import Dialog from '@/ui/dialog/Dialog.vue'
 import DialogBody from '@/ui/dialog/DialogBody.vue'
+import { useDialogChin } from '@/ui/dialog/dialogChin.composable'
 import DialogFooter from '@/ui/dialog/DialogFooter.vue'
 import DialogFooterCancel from '@/ui/dialog/DialogFooterCancel.vue'
 import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
@@ -33,10 +36,13 @@ const emit = defineEmits<{
 function onClose(): void {
   emit('close')
 }
+
+const dialogChin = useDialogChin()
 </script>
 
 <template>
   <Dialog
+    :chin="dialogChin.chin"
     :is-open="isOpen"
     :size="size"
     :prevent-click-outside="preventClickOutside"
@@ -51,6 +57,22 @@ function onClose(): void {
 
     <DialogBody>
       <div class="grid grid-cols-2 gap-lg">
+        <UIButton
+          label="open chin"
+          @click="() => {
+            dialogChin.open({
+              icon: InfoCircleIcon,
+              text: 'You have unsaved changes. this is really long text to test the chin height. make it longer and longer and longer',
+              variant: 'default',
+            })
+          }"
+        />
+        <UIButton
+          label="close chin"
+          @click="() => {
+            dialogChin.close()
+          }"
+        />
         <TextField
           :model-value="null"
           :icon-left="SearchMdIcon"
