@@ -12,105 +12,11 @@ export class StringFormatUtil {
   }
 
   /**
-   * Mask an email address, showing only the first character of the local part.
-   * E.g., "john@example.com" → "j***@example.com".
-   */
-  static maskEmail(email: string): string {
-    const [
-      local,
-      domain,
-    ] = email.split('@')
-
-    if (local == null || domain == null) {
-      return email
-    }
-
-    const visibleChars = Math.min(1, local.length)
-
-    return `${local.slice(0, visibleChars)}${'*'.repeat(local.length - visibleChars)}@${domain}`
-  }
-
-  /**
-   * Mask an IBAN number, showing only the country code and last 4 characters.
-   * E.g., "BE68 5390 0754 7034" → "BE** **** **** 7034".
-   */
-  static maskIban(iban: string): string {
-    const cleaned = iban.replace(/\s/g, '')
-
-    if (cleaned.length < 8) {
-      return iban
-    }
-
-    const countryCode = cleaned.slice(0, 2)
-    const lastFour = cleaned.slice(-4)
-    const maskedLength = cleaned.length - 2 - 4
-    const masked = countryCode + '*'.repeat(maskedLength) + lastFour
-
-    return masked.replace(/(.{4})/g, '$1 ').trim()
-  }
-
-  /**
-   * Mask a phone number, preserving formatting and showing only the last 4 digits.
-   * E.g., "+1 (555) 123-4567" → "+* (***) ***-4567".
-   */
-  static maskPhone(phone: string): string {
-    const digits = phone.replace(/\D/g, '')
-
-    if (digits.length < 4) {
-      return phone
-    }
-
-    const lastFour = digits.slice(-4)
-    const masked = '*'.repeat(digits.length - 4) + lastFour
-
-    let result = ''
-    let digitIndex = 0
-
-    for (const char of phone) {
-      if (/\d/.test(char)) {
-        result += masked[digitIndex++]
-      }
-      else {
-        result += char
-      }
-    }
-
-    return result
-  }
-
-  /**
    * Collapse all whitespace sequences into a single space and trim.
    * E.g., "  hello   world  " → "hello world".
    */
   static normalizeWhitespace(str: string): string {
     return str.replace(/\s+/g, ' ').trim()
-  }
-
-  /**
-   * Combine first and last name with null-safety.
-   * E.g., toFullName("John", "Doe") → "John Doe", toFullName("John", null) → "John".
-   */
-  static toFullName(firstName: string | null | undefined, lastName: string | null | undefined): string {
-    return [
-      firstName,
-      lastName,
-    ]
-      .filter((part): part is string => part != null && part.trim().length > 0)
-      .join(' ')
-  }
-
-  /**
-   * Extract initials from a full name.
-   * E.g., "John Doe" → "JD", "Alice Bob Charlie" → "AB".
-   */
-  static toInitials(fullName: string, maxInitials = 2): string {
-    return fullName
-      .trim()
-      .split(/\s+/)
-      .filter((part) => part.length > 0)
-      .map((part) => part[0].toUpperCase())
-      .slice(0, maxInitials)
-      .join('')
   }
 
   /**
