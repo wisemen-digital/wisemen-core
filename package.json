@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "author": "Wisemen",
-  "packageManager": "pnpm@10.7.0",
+  "packageManager": "pnpm@10.33.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "workspaces": [
     "packages/**"
