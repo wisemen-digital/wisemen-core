@@ -4,7 +4,9 @@ import { QUERY_CONFIG } from '@/config/config'
 
 import type { UseQueryOptions } from './query.composable'
 
-export function usePrefetchQuery<TResData>(query: UseQueryOptions<TResData>) {
+export function usePrefetchQuery<TResData, TErrorCode extends string = string>(
+  query: UseQueryOptions<TResData, TErrorCode>,
+) {
   const queryClient = useQueryClient()
 
   function getQueryKey(): unknown[] {

@@ -1,9 +1,9 @@
 import { after, before, beforeEach, describe, it } from 'node:test'
 import { expect } from 'expect'
-import { ColumnType } from 'typeorm'
 import { dataSource } from './sql/datasource.js'
 import { IntRangeTest } from './sql/int-range-test.entity.js'
 import { MultiIntRangeTest } from './sql/multi-int-range-test.entity.js'
+import { IntegrationTestSetup } from './sql/test-setup.js'
 import { IntRange } from '#src/int-range.js'
 import { OverlapsWith } from '#src/typeorm/overlaps-with.js'
 import { ContainsValue } from '#src/typeorm/contains-value.js'
@@ -11,22 +11,21 @@ import { Succeeds } from '#src/typeorm/succeeds.js'
 import { Precedes } from '#src/typeorm/precedes.js'
 
 describe('IntRangeColumn', () => {
+  let setup: IntegrationTestSetup
+
   before(async () => {
-    dataSource.driver.supportedDataTypes.push(
-      'int8range' as ColumnType,
-      'int8multirange' as ColumnType
-    )
-    await dataSource.initialize()
-    await dataSource.synchronize(true)
+    setup = new IntegrationTestSetup()
+
+    await setup.setup()
   })
 
   beforeEach(async () => {
-    await dataSource.manager.clear(IntRangeTest)
-    await dataSource.manager.clear(MultiIntRangeTest)
+    await setup.clear(IntRangeTest)
+    await setup.clear(MultiIntRangeTest)
   })
 
   after(async () => {
-    await dataSource.destroy()
+    await setup.teardown()
   })
 
   describe('serialization and deserialization', () => {

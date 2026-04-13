@@ -17,10 +17,12 @@ if (typeof __VUE_PROD_DEVTOOLS__ === 'undefined') {
   globalThis.__VUE_PROD_DEVTOOLS__ = false
 }
 
+const PSEUDO_SELECTOR_REGEX = /(:\S*)$/
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   base: '/wisemen-core/docs/',
-  title: 'Vue Core',
+  title: 'Wisemen Core',
   rewrites: {
     home: 'index',
   },
@@ -65,7 +67,7 @@ export default defineConfig({
               const [
                 selector,
                 pseudo = '',
-              ] = _selector.split(/(:\S*)$/)
+              ] = _selector.split(PSEUDO_SELECTOR_REGEX)
 
               return selector + prefix + pseudo
             },

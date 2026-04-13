@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/twilio",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -22,21 +22,20 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
-    "twilio": "catalog:backend"
-  },
-  "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
+    "twilio": "catalog:backend",
     "@wisemen/api-error": "workspace:*"
   },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer"
+  },
   "devDependencies": {
-    "@wisemen/api-error": "workspace:*",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

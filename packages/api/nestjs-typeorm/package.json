@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-typeorm",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -15,22 +15,21 @@
   ],
   "scripts": {
     "lint": "eslint lib",
-    "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "pnpm run build",
     "test": "node --env-file=.env --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/config": "catalog:backend",
-    "@nestjs/typeorm": "catalog:backend",
-    "change-case": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "pg": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/config": "catalog:backend-peer",
+    "@nestjs/typeorm": "catalog:backend-peer",
+    "change-case": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "pg": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -40,7 +39,7 @@
     "@wisemen/eslint-config-nestjs": "workspace:*"
   },
   "author": "Joren Vandeweyer",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

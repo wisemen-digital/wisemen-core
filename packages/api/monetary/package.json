@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/monetary",
-  "version": "0.3.0",
+  "version": "0.4.2",
   "publishConfig": {
     "access": "public"
   },
@@ -24,17 +24,15 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
-    "@wisemen/nestjs-typeorm": "workspace:*",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "@wisemen/nestjs-typeorm": "workspace:*",
     "eslint": "catalog:lint",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
@@ -43,10 +41,13 @@
   "contributors": [
     "Kobe Kwanten"
   ],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/monetary"
+  },
+  "dependencies": {
+    "@wisemen/nestjs-typeorm": "workspace:*"
   }
 }

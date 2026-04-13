@@ -7,24 +7,9 @@ import {
   useInjectThemeProviderContext,
   useProvideThemeProviderContext,
 } from '@/ui/theme-provider/themeProvider.context'
+import type { ThemeProviderProps } from '@/ui/theme-provider/themeProvider.props'
 
-const props = withDefaults(defineProps<{
-  /**
-   * The appearance of the application ('dark', 'light', 'system').
-   * @default false
-   */
-  appearance?: Appearance | null
-  /**
-   * Whether to render the child component directly without any wrapping element.
-   * @default false
-   */
-  asChild?: boolean
-  /**
-   * The chosen theme for the application.
-   * @default null
-   */
-  theme?: string & {} | 'default' | null
-}>(), {
+const props = withDefaults(defineProps<ThemeProviderProps>(), {
   appearance: null,
   asChild: false,
   theme: null,

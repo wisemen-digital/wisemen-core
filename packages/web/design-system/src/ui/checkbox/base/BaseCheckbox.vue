@@ -65,13 +65,16 @@ useProvideCheckboxContext({
     :error-message="props.errorMessage"
     :is-disabled="props.isDisabled"
     :is-required="props.isRequired"
+    :disabled-reason="props.disabledReason"
     :hint="props.hint"
     :label="props.label"
     :is-horizontal="true"
     :class="props.class"
     :style="props.style"
     :for="id"
+    :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-label-hidden="props.isLabelHidden"
   >
     <RekaCheckboxRoot
       :id="id"

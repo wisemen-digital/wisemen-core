@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/time",
-  "version": "0.0.30",
+  "version": "0.0.32",
   "publishConfig": {
     "access": "public"
   },
@@ -15,19 +15,18 @@
   ],
   "scripts": {
     "lint": "eslint --cache",
-    "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "pnpm run build",
     "test": "node --test \"**/*.test.js\"",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "class-validator": "catalog:backend",
-    "dayjs": "catalog:backend",
-    "@nestjs/common": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer",
+    "@nestjs/common": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -42,7 +41,7 @@
   "contributors": [
     "Jonas Vannieuwenhuijsen"
   ],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

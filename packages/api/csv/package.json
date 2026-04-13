@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/csv",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "access": "public"
   },
@@ -16,7 +16,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
-    "test": "node --test",
+    "test": "node --test dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -28,7 +28,7 @@
     "typescript": "catalog:peer"
   },
   "author": "Maarten Sijmkens",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

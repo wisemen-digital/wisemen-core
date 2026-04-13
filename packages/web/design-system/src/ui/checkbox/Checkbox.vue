@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { BaseCheckboxProps } from '@/ui/checkbox/base/baseCheckbox.props'
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
+import type { CheckboxProps } from '@/ui/checkbox/checkbox.props'
 
-const props = defineProps<Omit<BaseCheckboxProps, 'isIndeterminate'>>()
+const props = defineProps<CheckboxProps>()
 
 const emit = defineEmits<{
   blur: []

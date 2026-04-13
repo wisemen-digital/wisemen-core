@@ -50,7 +50,7 @@ export class MockGenerator {
     if (!schema.items) {
       return Array.from({
         length,
-      }, () => null)
+      }).fill(null)
     }
 
     if (Array.isArray(schema.items)) {
@@ -59,7 +59,7 @@ export class MockGenerator {
 
     return Array.from({
       length,
-    }, () => this.generateValue(schema.items as Schema))
+    }).fill(this.generateValue(schema.items as Schema))
   }
 
   private generateByType(schema: Schema): unknown {

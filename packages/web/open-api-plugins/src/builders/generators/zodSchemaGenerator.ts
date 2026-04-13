@@ -5,6 +5,8 @@ import type {
   ZodGeneratorOptions,
 } from '../types'
 
+const VALID_IDENTIFIER_REGEX = /^[a-z_]\w*$/i
+
 /**
  * Generates a Zod schema string from a JSON schema
  * @param schema - JSON Schema
@@ -227,7 +229,7 @@ function generateZodObject(schema: ExtendedSchema, options: ZodGeneratorOptions)
     key,
     propSchema,
   ] of Object.entries(schema.properties)) {
-    const safePropName = /^[a-z_]\w*$/i.test(key) ? key : `"${key}"`
+    const safePropName = VALID_IDENTIFIER_REGEX.test(key) ? key : `"${key}"`
     let propType = generateZodSchemaInternal(propSchema as ExtendedSchema, options)
 
     if (!required.has(key)) {

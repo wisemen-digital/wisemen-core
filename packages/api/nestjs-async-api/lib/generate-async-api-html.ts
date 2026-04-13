@@ -265,7 +265,15 @@ function renderLinkedList (items: string[], prefix: string, emptyLabel: string):
   }
 
   const links = items
-    .map(item => `<a href="#${toAnchorId(prefix, item)}">${escapeHTML(item)}</a>`)
+    .map((item) => {
+      if (prefix === 'message') {
+        const eventRef = `/api/async-api/${encodeURIComponent(item)}`
+
+        return `<a href="${escapeHTML(eventRef)}">${escapeHTML(item)}</a>`
+      }
+
+      return `<a href="#${toAnchorId(prefix, item)}">${escapeHTML(item)}</a>`
+    })
     .join(', ')
 
   return `<p class="links">${links}</p>`
@@ -594,13 +602,15 @@ export function generateAsyncAPIHTML (
 
   const messageBlocks = lookups.messages.map((message) => {
     const messageSchema = message.schemaName ?? ''
+    const eventRef = `/api/async-api/${encodeURIComponent(message.name)}`
 
     return `
-    <details class="item" id="${toAnchorId('message', message.name)}">
+    <details class="item" id="${toAnchorId('message', message.name)}" data-message-name="${escapeHTML(message.name)}">
       <summary>
         <span class="title">${escapeHTML(message.name)}</span>
         ${messageSchema !== '' ? `<span class="muted">Schema: ${escapeHTML(messageSchema)}</span>` : ''}
       </summary>
+      <p><strong>Ref:</strong> <a href="${escapeHTML(eventRef)}">${escapeHTML(eventRef)}</a></p>
       <div class="detail-grid">
         <div>
           <h4>Schema</h4>
@@ -794,6 +804,16 @@ export function generateAsyncAPIHTML (
       text-decoration: underline;
     }
 
+    .event-ref a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .event-ref a:hover {
+      text-decoration: underline;
+    }
+
     pre {
       overflow-x: auto;
       background: #111827;
@@ -849,6 +869,76 @@ export function generateAsyncAPIHTML (
       ${schemaBlocks || '<p class="muted">No schemas found.</p>'}
     </section>
   </main>
+  <script>
+    (() => {
+      const channelDetails = Array.from(document.querySelectorAll('#channels details.item[id]'))
+      const messageDetails = Array.from(document.querySelectorAll('details[data-message-name]'))
+
+      const updateHash = (id) => {
+        if (id === '') {
+          return
+        }
+
+        const nextHash = '#' + id
+
+        if (window.location.hash !== nextHash) {
+          history.replaceState(null, '', nextHash)
+        }
+      }
+
+      const focusDetailsById = (id) => {
+        if (id === '') {
+          return false
+        }
+
+        const target = document.getElementById(id)
+
+        if (target instanceof HTMLDetailsElement) {
+          target.open = true
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+          return true
+        }
+
+        return false
+      }
+
+      for (const channelDetail of channelDetails) {
+        channelDetail.addEventListener('toggle', () => {
+          if (!channelDetail.open) {
+            return
+          }
+
+          updateHash(channelDetail.id)
+        })
+      }
+
+      window.addEventListener('hashchange', () => {
+        const hashId = window.location.hash.replace(/^#/, '')
+
+        focusDetailsById(hashId)
+      })
+
+      const hashId = window.location.hash.replace(/^#/, '')
+      const openedByHash = focusDetailsById(hashId)
+
+      const asyncApiPrefix = '/api/async-api/'
+      const isEventPath = window.location.pathname.startsWith(asyncApiPrefix)
+
+      if (!openedByHash && isEventPath) {
+        const rawEventName = window.location.pathname.slice(asyncApiPrefix.length)
+        const eventNameFromPath = rawEventName.endsWith('/') ? rawEventName.slice(0, -1) : rawEventName
+        const eventName = decodeURIComponent(eventNameFromPath)
+        const targetMessage = messageDetails.find((element) => element.getAttribute('data-message-name') === eventName)
+
+        if (targetMessage !== undefined) {
+          targetMessage.open = true
+          targetMessage.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          updateHash(targetMessage.id)
+        }
+      }
+    })()
+  </script>
 </body>
 </html>
 `

@@ -1,5 +1,8 @@
-import type { ApiResult } from './apiError.type'
-import type { QueryParams } from './query.type'
+import type {
+  ApiResult,
+  AsyncApiResult,
+} from './apiError.type'
+import type { QueryParams } from './queryOptions'
 
 export interface OffsetPaginationParams {
   limit: number
@@ -34,8 +37,16 @@ export interface KeysetPaginationResponse<TData> {
     next: unknown
   }
 }
-export type OffsetPaginationResult<TData> = ApiResult<OffsetPaginationResponse<TData>>
-export type KeysetPaginationResult<TData> = ApiResult<KeysetPaginationResponse<TData>>
+export type OffsetPaginationResult<TData, TErrorCode extends string = string>
+  = ApiResult<OffsetPaginationResponse<TData>, TErrorCode>
+export type KeysetPaginationResult<TData, TErrorCode extends string = string>
+  = ApiResult<KeysetPaginationResponse<TData>, TErrorCode>
+
+export type KeysetPaginationAsyncResult<TData, TErrorCode extends string = string>
+  = AsyncApiResult<KeysetPaginationResponse<TData>, TErrorCode>
+
+export type OffsetPaginationAsyncResult<TData, TErrorCode extends string = string>
+  = AsyncApiResult<OffsetPaginationResponse<TData>, TErrorCode>
 
 export interface PaginatedDataDto<TSchema> {
   items: TSchema[]

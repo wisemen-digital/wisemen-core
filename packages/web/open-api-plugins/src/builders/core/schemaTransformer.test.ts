@@ -13,6 +13,8 @@ import {
   sanitizeSchema,
 } from './schemaTransformer'
 
+const SCHEMA_SUFFIX_REGEX = /Schema$/
+
 describe('schema Transformer', () => {
   describe('irToSchema', () => {
     it('converts simple string schema', () => {
@@ -816,7 +818,7 @@ describe('schema Transformer', () => {
 
       const result = collectSchemas(schemas)
 
-      expect(result[0].constName).toMatch(/Schema$/)
+      expect(result[0].constName).toMatch(SCHEMA_SUFFIX_REGEX)
       expect(result[0].constName).not.toContain('-')
     })
 

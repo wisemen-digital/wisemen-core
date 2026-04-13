@@ -38,6 +38,7 @@ export const kbdKeysMap = {
 export type KbdKey = keyof typeof kbdKeysMap
 export type KbdKeySpecific = keyof KbdKeysSpecificMap
 
+const MACINTOSH_REGEX = /Macintosh;/
 const IS_MACOS = isMacos()
 
 function isMacos(): boolean {
@@ -45,7 +46,7 @@ function isMacos(): boolean {
     return false
   }
 
-  return /Macintosh;/.test(navigator.userAgent)
+  return MACINTOSH_REGEX.test(navigator.userAgent)
 }
 
 export const useKbd = createSharedComposable(() => {

@@ -1,17 +1,12 @@
 <script setup lang="ts">
+import type { ActionTooltipProps } from '@/ui/action-tooltip/actionTooltip.props'
 import KeyboardShortcut from '@/ui/keyboard-shortcut/KeyboardShortcut.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
-import type { TooltipProps } from '@/ui/tooltip/tooltip.props'
 import Tooltip from '@/ui/tooltip/Tooltip.vue'
 import TooltipContent from '@/ui/tooltip/TooltipContent.vue'
 import TooltipText from '@/ui/tooltip/TooltipText.vue'
 
-interface Props extends Pick<TooltipProps, 'disableCloseOnTriggerClick' | 'isDisabled' | 'popoverAlign' | 'popoverSide'> {
-  keyboardShortcut?: string | null
-  label?: string | null
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ActionTooltipProps>(), {
   isDisabled: false,
   disableCloseOnTriggerClick: false,
   keyboardShortcut: null,

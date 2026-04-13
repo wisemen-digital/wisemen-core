@@ -27,6 +27,7 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
       'error',
       'all',
     ],
+    'e18e/prefer-spread-syntax': 'off',
     'func-style': [
       'error',
       'declaration',
@@ -67,11 +68,11 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
         },
       },
     ],
+
     'style/arrow-parens': [
       'error',
       'always',
     ],
-
     'style/object-curly-newline': [
       'error',
       {

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-file-storage",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "publishConfig": {
     "access": "public"
   },
@@ -26,14 +26,14 @@
     "expect": "catalog:test"
   },
   "peerDependencies": {
-    "@aws-sdk/client-s3": "catalog:backend",
-    "@aws-sdk/lib-storage": "catalog:backend",
-    "@aws-sdk/s3-request-presigner": "catalog:backend",
-    "@azure/storage-blob": "catalog:backend",
-    "@nestjs/common": "catalog:backend",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "dayjs": "catalog:backend"
+    "@aws-sdk/client-s3": "catalog:backend-peer",
+    "@aws-sdk/lib-storage": "catalog:backend-peer",
+    "@aws-sdk/s3-request-presigner": "catalog:backend-peer",
+    "@azure/storage-blob": "catalog:backend-peer",
+    "@nestjs/common": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer"
   },
   "peerDependenciesMeta": {
     "@aws-sdk/client-s3": {
@@ -50,7 +50,7 @@
     }
   },
   "author": "Pieter Pauwels",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

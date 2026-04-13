@@ -3,22 +3,30 @@ import { tv } from '@/styles/tailwindVariants.lib'
 export const createButtonStyle = tv({
   compoundVariants: [
     {
-      class: 'dark:rounded-[0.35rem] dark:px-md',
+      class: {
+        container: 'dark:rounded-[0.35rem] dark:px-md',
+      },
       size: 'md',
       variant: 'primary',
     },
     {
-      class: 'dark:rounded-[0.3rem] dark:px-lg',
+      class: {
+        container: 'dark:rounded-[0.3rem] dark:px-lg',
+      },
       size: 'lg',
       variant: 'primary',
     },
     {
-      class: 'dark:rounded-[0.2rem] dark:px-sm',
+      class: {
+        container: 'dark:rounded-[0.2rem] dark:px-sm',
+      },
       size: 'sm',
       variant: 'primary',
     },
     {
-      class: `dark:rounded-[0.15rem] dark:px-xs`,
+      class: {
+        container: `dark:rounded-[0.15rem] dark:px-xs`,
+      },
       size: 'xs',
       variant: 'primary',
     },
@@ -88,6 +96,8 @@ export const createButtonStyle = tv({
           focus-visible:outline-fg-error-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:bg-error-50
+          dark:border-error-700
+          dark:data-interactive:hover:bg-error-700/20
         `,
       },
       'destructive-tertiary': {
@@ -98,6 +108,7 @@ export const createButtonStyle = tv({
         label: `
           text-error-primary
           group-disabled/button:text-disabled
+          dark:text-error-700
         `,
         loader: `
           text-error-primary
@@ -106,7 +117,8 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-error-primary
-          data-interactive:hover:bg-error-primary
+          data-interactive:hover:bg-error-50
+          dark:data-interactive:hover:bg-error-700/20
         `,
       },
       'minimal-color': {
@@ -126,6 +138,7 @@ export const createButtonStyle = tv({
           border-transparent
           focus-visible:outline-fg-brand-primary
           data-interactive:hover:bg-brand-50
+          dark:data-interactive:hover:bg-brand-700/20
         `,
       },
       'primary': {
@@ -147,7 +160,7 @@ export const createButtonStyle = tv({
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:brightness-95
-          dark:p-px
+          dark:border-gray-900 dark:p-px
           not-data-disabled:dark:glassy
         `,
       },
@@ -168,7 +181,8 @@ export const createButtonStyle = tv({
           border-secondary bg-primary
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
-          data-interactive:hover:bg-secondary
+          data-interactive:hover:bg-primary-hover
+          dark:border-primary
         `,
       },
       'tertiary': {

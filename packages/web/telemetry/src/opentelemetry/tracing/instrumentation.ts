@@ -3,6 +3,8 @@ import { registerInstrumentations } from '@opentelemetry/instrumentation'
 import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch'
 import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction'
 
+const ALL_CORS_URLS_REGEX = /.*/
+
 /**
  * Register default OpenTelemetry instrumentations for web applications.
  * This includes Fetch and User Interaction instrumentations.
@@ -22,7 +24,7 @@ export function registerAppInstrumentations(
         ],
       }),
       new FetchInstrumentation({
-        propagateTraceHeaderCorsUrls: /.*/,
+        propagateTraceHeaderCorsUrls: ALL_CORS_URLS_REGEX,
       }),
       ...(instrumentations ?? []),
     ],

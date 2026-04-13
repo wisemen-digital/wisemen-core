@@ -1,98 +1,172 @@
 # Overview
 
-The `@wisemen/vue-core-api-utils` package provides a set of composables built on top of TanStack Query (Vue Query) that integrate seamlessly with Vue 3 and TypeScript. All queries and mutations return `ApiResult` types from `neverthrow` for structured error handling.
+The `@wisemen/vue-core-api-utils` package provides a set of composables built on top of TanStack Query (Vue Query) that integrate seamlessly with Vue 3 and TypeScript. All queries and mutations return `AsyncResult` types for structured error handling.
+
+## Getting Started
+
+Before using any composables, make sure you've completed the [installation steps](../getting-started/installation.md). Your API service layer should export typed composables like this:
+
+```typescript
+// src/api/index.ts
+
+import type {
+  ApiResult as ApiUtilsApiResult,
+  KeysetPaginationResult as ApiUtilsKeysetPaginationResult,
+  OffsetPaginationResult as ApiUtilsOffsetPaginationResult,
+} from '@wisemen/vue-core-api-utils'
+import { createApiUtils } from '@wisemen/vue-core-api-utils'
+
+import type { ProjectQueryKeys } from '@/types/queryKey.type'
+
+export type ERROR_KEYS = 'NOT_FOUND' | 'UNAUTHORIZED' | 'SERVER_ERROR'
+
+export const {
+  useKeysetInfiniteQuery,
+  useMutation,
+  useOffsetInfiniteQuery,
+  useQueryClient,
+  usePrefetchKeysetInfiniteQuery,
+  usePrefetchOffsetInfiniteQuery,
+  usePrefetchQuery,
+  useQuery,
+} = createApiUtils<ProjectQueryKeys, ERROR_KEYS>()
+
+export type ApiResult<T> = ApiUtilsApiResult<T, ERROR_KEYS>
+export type OffsetPaginationResult<T> = ApiUtilsOffsetPaginationResult<T, ERROR_KEYS>
+export type KeysetPaginationResult<T> = ApiUtilsKeysetPaginationResult<T, ERROR_KEYS>
+```
 
 ## Core Concepts
 
-### ApiResult
+### AsyncResult
 
-All queries and mutations return an `ApiResult<T>` type from `neverthrow`, which is either:
-- `Ok<T>`: Contains the successful result value
-- `Err<E>`: Contains the error
+All queries and mutations return an `AsyncResult<T, E>` type which can be in three states:
+- **Loading**: Data is being fetched
+- **Ok**: Contains the successful result value
+- **Err**: Contains the error
 
-This forces you to handle both success and error cases explicitly.
+This makes handling loading, success, and error states explicit and type-safe.
 
 ```typescript
-// Check if result is an error
-if (result.value.isErr()) {
-  console.error(result.value.error)
-} else {
-  console.log(result.value.value)
+// Check result state
+if (result.value.isLoading()) {
+  console.log('Loading...')
+} else if (result.value.isOk()) {
+  console.log('Success:', result.value.getValue())
+} else if (result.value.isErr()) {
+  console.error('Error:', result.value.getError())
 }
 
-// Or use pattern matching
-result.value.match(
-  (data) => {
-    // Success case
-  },
-  (error) => {
-    // Error case
-  }
-)
+// Or use exhaustive pattern matching
+result.value.match({
+  loading: () => console.log('Loading...'),
+  ok: (data) => console.log('Success:', data),
+  err: (error) => console.error('Error:', error),
+})
 ```
 
 ## Available Composables
 
 ### Queries
 
-- **`useQuery`**: Fetch a single resource
-- **`useOffsetInfiniteQuery`**: Fetch paginated data with infinite scrolling
+- **`useQuery`**: Fetch a single resource with automatic caching
+- **`useOffsetInfiniteQuery`**: Fetch paginated data with offset-based pagination
+- **`useKeysetInfiniteQuery`**: Fetch paginated data with keyset-based pagination
 - **`usePrefetchQuery`**: Prefetch data before it's needed
+- **`usePrefetchOffsetInfiniteQuery`**: Prefetch paginated data with offset pagination
+- **`usePrefetchKeysetInfiniteQuery`**: Prefetch paginated data with keyset pagination
 
 ### Mutations
 
-- **`useMutation`**: Create, update, or delete resources
+- **`useMutation`**: Create, update, or delete resources with automatic cache invalidation
+- **`useQueryClient`**: Type-safe utilities to update the cache before the server responds
+
+## Return Values
+
+All composables return an object with:
+
+**Queries:**
+- `result`: ComputedRef to an AsyncResult containing the data or error
+- `isFetching`: Whether data is being fetched
+- `refetch`: Function to manually refetch the data
+- `isLoading`: Whether the query is initially loading
+- `isError`: Whether an error has occurred
+- `isSuccess`: Whether the query succeeded
+
+**Mutations:**
+- `result`: ComputedRef to an AsyncResult containing the response or error
+- `execute`: Function to trigger the mutation
+- `isLoading`: Whether the mutation is in progress
 
 ## Quick Examples
 
 ### Detail Query
 
-Fetch a single contact by UUID:
-
 ```typescript
-import { useQuery } from '@wisemen/vue-core-api-utils'
+// src/composables/useUser.ts
 
-export function useContactDetailQuery(contactUuid: ComputedRef<ContactUuid>) {
-  return useQuery({
-    queryFn: () => ContactService.getByUuid(toValue(contactUuid)),
-    queryKey: {
-      contactDetail: {
-        contactUuid,
-      },
-    },
-    staleTime: TimeUtil.seconds(30),
+import { useQuery } from '@/api'
+import { UserService } from '@/services'
+
+export function useUserDetail(userId: string) {
+  return useQuery('userDetail', {
+    params: { userId: computed(() => userId) },
+    queryFn: () => UserService.getById(userId),
+    staleTime: 1000 * 60 * 5, // 5 minutes
   })
 }
 ```
 
-Usage:
+Usage in a component:
 
 ```vue
 <script setup lang="ts">
-const { result, isLoading } = useContactDetailQuery(computed(() => props.contactUuid))
+import { useUserDetail } from '@/composables'
+
+const props = defineProps<{ userId: string }>()
+
+const { result, isLoading, refetch } = useUserDetail(props.userId)
 </script>
+
+<template>
+  <div v-if="isLoading" class="loading">Loading user...</div>
+  <div v-else-if="result.isOk()" class="user-card">
+    <h1>{{ result.getValue().name }}</h1>
+    <p>{{ result.getValue().email }}</p>
+  </div>
+  <div v-else-if="result.isErr()" class="error">
+    <p>Failed to load user: {{ result.getError().message }}</p>
+    <button @click="refetch">Retry</button>
+  </div>
+</template>
 ```
 
-### Index Query with Infinite Scroll
-
-Fetch paginated contacts:
+### Paginated List Query
 
 ```typescript
-import { useOffsetInfiniteQuery } from '@wisemen/vue-core-api-utils'
+// src/composables/useUserList.ts
 
-export function useContactIndexQuery(options: InfiniteQueryOptions<ContactIndexQueryParams>) {
-  return useOffsetInfiniteQuery({
-    queryFn: (pagination) => ContactService.getAll({
-      filters: options.params.filters.value,
-      pagination,
-      search: options.params.search.value,
-      sort: options.params.sort.value,
-    }),
-    queryKey: {
-      contactIndex: {
-        queryParams: options.params,
-      },
+import { ref, computed } from 'vue'
+import { useOffsetInfiniteQuery } from '@/api'
+import { UserService } from '@/services'
+
+export function useUserList() {
+  const search = ref('')
+  const sort = ref<Sort[]>([])
+  const filters = ref({})
+
+  return useOffsetInfiniteQuery('userList', {
+    params: {
+      search: computed(() => search.value),
+      sort: computed(() => sort.value),
+      filters: computed(() => filters.value),
     },
+    queryFn: (pagination) => UserService.getAll({
+      search: search.value,
+      sort: sort.value,
+      filters: filters.value,
+      ...pagination,
+    }),
   })
 }
 ```
@@ -101,47 +175,44 @@ Usage:
 
 ```vue
 <script setup lang="ts">
-const {
-  result,
-  isLoading,
-  fetchNextPage,
-} = useContactIndexQuery({
-  params: {
-    filters: filters.values,
-    search: search.debouncedSearch,
-    sort: sort.values,
-  },
-})
+import { useUserList } from '@/composables'
 
-const resultData = computed<ApiResult<ContactIndex[]>>(() => {
-  return result.value.map((data) => data.data)
+const { result, isFetching, fetchNextPage } = useUserList()
+
+const users = computed(() => {
+  if (result.value.isOk()) {
+    return result.value.getValue().data
+  }
+  return []
 })
 </script>
 
 <template>
-  <ContactOverviewTable
-    v-if="!resultData.isErr()"
-    :data="resultData.value"
-    :is-loading="isLoading"
-    @next-page="fetchNextPage"
-  />
+  <div>
+    <div v-if="isFetching" class="loading">Fetching...</div>
+    <ul v-else>
+      <li v-for="user in users" :key="user.id">{{ user.name }}</li>
+    </ul>
+    <button @click="fetchNextPage" :disabled="isFetching">Load More</button>
+  </div>
 </template>
 ```
 
 ### Create Mutation
 
-Create a new contact:
-
 ```typescript
-import { useMutation } from '@wisemen/vue-core-api-utils'
+// src/composables/useCreateUser.ts
 
-export function useContactCreateMutation() {
+import { useMutation } from '@/api'
+import { UserService } from '@/services'
+
+export function useCreateUser() {
   return useMutation({
-    queryFn: async (queryOptions: { body: ContactCreateForm }) => {
-      return await ContactService.create(queryOptions.body)
+    queryFn: async (body: CreateUserRequest) => {
+      return await UserService.create(body)
     },
     queryKeysToInvalidate: {
-      contactIndex: {},
+      userList: {},
     },
   })
 }
@@ -151,187 +222,173 @@ Usage:
 
 ```vue
 <script setup lang="ts">
-const contactCreateMutation = useContactCreateMutation()
+import { useCreateUser } from '@/composables'
 
-const form = useForm({
-  schema: contactCreateFormSchema,
-  onSubmit: async (values) => {
-    const result = await contactCreateMutation.execute({
-      body: values,
-    })
+const { execute, isLoading, result } = useCreateUser()
 
-    result.match(
-      (contactUuid) => {
-        router.push({ name: 'contact-detail', params: { contactUuid } })
-      },
-      (error) => {
-        errorToast.show(error)
-      }
-    )
+async function handleSubmit(form: CreateUserRequest) {
+  await execute(form)
+  
+  if (result.value.isOk()) {
+    console.log('User created:', result.value.getValue())
+  }
+}
+</script>
+
+<template>
+  <form @submit.prevent="handleSubmit">
+    <!-- Form inputs -->
+    <button :disabled="isLoading">
+      {{ isLoading ? 'Creating...' : 'Create User' }}
+    </button>
+    <div v-if="result.isErr()" class="error">
+      {{ result.getError().message }}
+    </div>
+  </form>
+</template>
+```
+
+### Optimistic Updates
+
+```typescript
+// src/composables/useUpdateUser.ts
+
+import { useMutation } from '@/api'
+import { UserService } from '@/services'
+
+export function useUpdateUser(userId: string) {
+  return useMutation({
+    queryFn: async (body: UpdateUserRequest) => {
+      return await UserService.update(userId, body)
+    },
+    queryKeysToInvalidate: {
+      userDetail: { userId },
+      userList: {},
+    },
+  })
+}
+```
+
+For type-safe query client operations, see the [Type-Safe Query Client](./query-client.md) guide.
+
+## Error Handling
+
+Errors are always returned as part of the result object, never thrown:
+
+```typescript
+const { result } = useUserDetail('123')
+
+// Always safe - no try/catch needed
+result.value.match({
+  loading: () => { /* handle loading */ },
+  ok: (user) => { /* handle success */ },
+  err: (error) => {
+    // Handle specific error types
+    switch (error.code) {
+      case 'NOT_FOUND':
+        console.log('User not found')
+        break
+      case 'UNAUTHORIZED':
+        console.log('Not authorized to view this user')
+        break
+      default:
+        console.log('Unknown error')
+    }
   },
 })
-</script>
 ```
 
-### Update Mutation
-
-Update an existing contact:
-
-```typescript
-import { useMutation } from '@wisemen/vue-core-api-utils'
-
-export function useContactUpdateMutation() {
-  return useMutation({
-    queryFn: async (queryOptions: {
-      body: ContactUpdateForm
-      params: { contactUuid: ContactUuid }
-    }) => {
-      return await ContactService.update(queryOptions.params.contactUuid, queryOptions.body)
-    },
-    queryKeysToInvalidate: {
-      contactDetail: {
-        contactUuid: (params) => params.contactUuid,
-      },
-      contactIndex: {},
-    },
-  })
-}
-```
-
-Usage:
 
 ```vue
 <script setup lang="ts">
-const contactUpdateMutation = useContactUpdateMutation()
+import { useCreateUser } from '@/composables'
 
-const form = useForm({
-  initialState: ContactUpdateTransformer.toForm(props.contact),
-  schema: contactUpdateFormSchema,
-  onSubmit: async (values) => {
-    const response = await contactUpdateMutation.execute({
-      body: values,
-      params: { contactUuid: props.contact.uuid },
-    })
+const { execute, isLoading, result } = useCreateUser()
 
-    if (response.isErr()) {
-      errorToast.show(response.error)
-      return
-    }
-
-    await router.push({ name: 'contact-detail', params: { contactUuid: props.contact.uuid } })
-  },
-})
-</script>
-```
-
-### Delete Mutation
-
-Delete a contact:
-
-```typescript
-import { useMutation } from '@wisemen/vue-core-api-utils'
-
-export function useContactDeleteMutation() {
-  return useMutation({
-    queryFn: async (queryOptions: { params: { contactUuid: ContactUuid } }) => {
-      return await ContactService.delete(queryOptions.params.contactUuid)
-    },
-    queryKeysToInvalidate: {
-      contactIndex: {},
-    },
-  })
-}
-```
-
-Usage:
-
-```vue
-<script setup lang="ts">
-const contactDeleteMutation = useContactDeleteMutation()
-
-async function onDeleteContact() {
-  const response = await contactDeleteMutation.execute({
-    params: { contactUuid: props.contact.uuid },
-  })
-
-  response.match(
-    async () => {
-      await router.push({ name: 'contact-overview' })
-    },
-    (error) => {
-      apiErrorToast.show(error)
-    }
-  )
+async function handleSubmit(form: CreateUserRequest) {
+  await execute(form)
+  
+  if (result.value.isOk()) {
+    console.log('User created:', result.value.getValue())
+  }
 }
 </script>
+
+<template>
+  <form @submit.prevent="handleSubmit">
+    <!-- Form inputs -->
+    <button :disabled="isLoading">
+      {{ isLoading ? 'Creating...' : 'Create User' }}
+    </button>
+    <div v-if="result.isErr()" class="error">
+      {{ result.getError().message }}
+    </div>
+  </form>
+</template>
 ```
 
 ## Services
 
 Services act as an abstraction layer between your API client and your queries/mutations. They handle:
-- Calling API endpoints using the generated client
+- Calling API endpoints
 - Transforming data between DTOs and domain models
-- Error handling by wrapping promises in `ApiResult`
+- Returning `ApiResult` types for error handling
 
 ### Service Example
 
 ```typescript
-export class ContactService {
-  static async getByUuid(contactUuid: ContactUuid): Promise<ApiResult<ContactDetail>> {
-    // Call API and wrap in ApiResult
-    const result = await ApiUtil.fromPromise(viewContactDetailV1({
-      path: { uuid: contactUuid },
-    }))
+// src/services/user.service.ts
 
-    // Transform DTO to domain model
-    return result.map((response) => {
-      return ContactDetailTransformer.fromDto(response.data)
-    })
+import { UserApi } from '@/client'
+import type { ApiResult } from '@/api'
+
+export class UserService {
+  static async getById(userId: string): Promise<ApiResult<User>> {
+    try {
+      const response = await UserApi.getById(userId)
+      return { ok: true, data: response.data }
+    } catch (error) {
+      return { ok: false, error: error.message }
+    }
   }
 
-  static async create(form: ContactCreateForm): Promise<ApiResult<ContactUuid>> {
-    // Transform form to DTO
-    const dto = ContactCreateTransformer.toDto(form)
+  static async create(body: CreateUserRequest): Promise<ApiResult<User>> {
+    try {
+      const response = await UserApi.create(body)
+      return { ok: true, data: response.data }
+    } catch (error) {
+      return { ok: false, error: error.message }
+    }
+  }
 
-    // Call API
-    const result = await ApiUtil.fromPromise(createContactV1({
-      body: dto,
-    }))
+  static async update(userId: string, body: UpdateUserRequest): Promise<ApiResult<User>> {
+    try {
+      const response = await UserApi.update(userId, body)
+      return { ok: true, data: response.data }
+    } catch (error) {
+      return { ok: false, error: error.message }
+    }
+  }
 
-    // Extract and return UUID
-    return result.map((res) => res.data.uuid as ContactUuid)
+  static async delete(userId: string): Promise<ApiResult<void>> {
+    try {
+      await UserApi.delete(userId)
+      return { ok: true, data: undefined }
+    } catch (error) {
+      return { ok: false, error: error.message }
+    }
   }
 }
 ```
 
-### ApiUtil.fromPromise
+## Next Steps
 
-The `ApiUtil.fromPromise` utility wraps API calls and converts them to `ApiResult`:
+For more detailed information on specific topics, see:
 
-```typescript
-export class ApiUtil {
-  static async fromPromise<T>(promise: PromiseLike<T>, message?: string): Promise<ApiResult<T>> {
-    return await ResultAsync.fromPromise(promise, (error) => {
-      return ApiErrorUtil.handleApiError({ error, message })
-    })
-  }
-}
-```
-
-This ensures:
-- All API calls return consistent `ApiResult` types
-- Errors are properly transformed and typed
-- Type safety is maintained throughout the chain
-
-See the [Services Documentation](./service.md) for complete details on creating service classes.
-
-## Detailed Documentation
-
-For more detailed examples and explanations, see:
-
-- [Services Documentation](./service.md) - How to create service classes that integrate with the API utils
 - [Query Documentation](./query.md) - Single resource fetching with `useQuery`
-- [Paginated Query Documentation](./paginated-query.md) - Paginated data with infinite scrolling
+- [Paginated Query Documentation](./paginated-query.md) - Paginated data with offset and keyset pagination
+- [Mutation Documentation](./mutation.md) - Creating, updating, and deleting resources
+- [Result Types Documentation](../concepts/result-types.md) - Understanding AsyncResult and error handling
 - [Mutations Documentation](./mutation.md) - Create, update, and delete operations
 ## Best Practices
 

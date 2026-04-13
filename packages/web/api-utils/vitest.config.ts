@@ -20,7 +20,9 @@ export default defineConfig({
     environment: 'jsdom',
     exclude: [
       ...configDefaults.exclude,
+      'dist/**',
     ],
     root: fileURLToPath(new URL('./', META_URL)),
+    setupFiles: [],
   },
 })

@@ -1,16 +1,15 @@
 <script setup lang="ts" generic="TValue extends AcceptableValue">
 import type { AcceptableValue } from 'reka-ui'
-import {
-  computed,
-  useId,
-} from 'vue'
+import { RadioGroupRoot as RekaRadioGroupRoot } from 'reka-ui'
+import { computed } from 'vue'
 
-import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
+import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import { useProvideRadioGroupContext } from '@/ui/radio-group/radioGroup.context'
 import type { RadioGroupProps } from '@/ui/radio-group/radioGroup.props'
 
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   isDisabled: false,
+  disabledReason: null,
   hideErrorMessage: false,
   orientation: 'vertical',
 })
@@ -18,8 +17,6 @@ const props = withDefaults(defineProps<RadioGroupProps>(), {
 const modelValue = defineModel<TValue>({
   required: true,
 })
-
-const id = props.id ?? useId()
 
 useProvideRadioGroupContext({
   isDisabled: computed<boolean>(() => props.isDisabled),
@@ -29,17 +26,16 @@ useProvideRadioGroupContext({
 </script>
 
 <template>
-  <InputWrapper
-    :error-message="props.errorMessage"
-    :is-disabled="props.isDisabled"
-    :is-required="props.isRequired"
-    :hint="props.hint"
-    :label="props.label"
-    :class="props.class"
-    :style="props.style"
-    :for="id"
-    :hide-error-message="props.hideErrorMessage"
+  <ActionTooltip
+    :is-disabled="!props.isDisabled || props.disabledReason == null"
+    :label="props.disabledReason"
   >
-    <slot />
-  </InputWrapper>
+    <RekaRadioGroupRoot
+      v-model="modelValue"
+      :orientation="props.orientation"
+      :disabled="props.isDisabled"
+    >
+      <slot />
+    </RekaRadioGroupRoot>
+  </ActionTooltip>
 </template>

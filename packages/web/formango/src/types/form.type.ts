@@ -350,7 +350,7 @@ export interface UseForm<T extends StandardSchemaV1> {
   form: Form<T>
   /**
    * Called when the form is valid and submitted.
-   * @param data The current form data.
+   * @param cb - Callback invoked with the current form data when the form is valid and submitted.
    */
   onSubmitForm: (cb: (data: StandardSchemaV1.InferOutput<T>) => void) => void
 }

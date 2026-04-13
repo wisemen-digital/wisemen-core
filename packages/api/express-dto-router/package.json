@@ -1,6 +1,6 @@
 {
   "name": "@appwise/express-dto-router",
-  "version": "1.1.17",
+  "version": "1.1.19",
   "publishConfig": {
     "access": "public"
   },
@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "eslint lib",
     "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --test",
@@ -20,12 +20,12 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@sentry/node": "catalog:backend",
-    "@sentry/tracing": "catalog:backend",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "express": "catalog:backend",
-    "qs": "catalog:backend"
+    "@sentry/node": "catalog:backend-peer",
+    "@sentry/tracing": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "express": "catalog:backend-peer",
+    "qs": "catalog:backend-peer"
   },
   "devDependencies": {
     "@sentry/types": "catalog:backend",
@@ -37,7 +37,7 @@
     "typescript": "catalog:peer"
   },
   "author": "Joren Vandeweyer",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

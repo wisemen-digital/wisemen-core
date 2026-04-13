@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/address",
-  "version": "0.3.1",
+  "version": "0.3.6",
   "publishConfig": {
     "access": "public"
   },
@@ -9,7 +9,7 @@
     ".": "./dist/index.js"
   },
   "imports": {
-    "#*": "./lib/*"
+    "#src/*": "./dist/*"
   },
   "scripts": {
     "prebuild": "rm -rf ./dist",
@@ -22,25 +22,25 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "dependencies": {
     "@wisemen/coordinates": "workspace:*",
-    "@wisemen/validators": "workspace:*",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@wisemen/validators": "workspace:*"
   },
   "devDependencies": {
-    "@wisemen/coordinates": "workspace:*",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "@wisemen/validators": "workspace:*",
     "eslint": "catalog:lint",
     "expect": "catalog:test",
     "typescript": "catalog:peer",
     "pg": "catalog:backend"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

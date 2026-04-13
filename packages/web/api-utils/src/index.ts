@@ -1,13 +1,75 @@
-export * from './composables/mutation/mutation.composable'
-export * from './composables/query/keysetInfiniteQuery.composable'
-export * from './composables/query/offsetInfiniteQuery.composable'
-export * from './composables/query/prefetchQuery.composable'
-export * from './composables/query/query.composable'
 export {
+  AsyncResult,
+  AsyncResultErr,
+  AsyncResultLoading,
+  AsyncResultOk,
+} from './async-result/asyncResult'
+export type { UseMutationReturnType } from './composables/mutation/mutation.composable'
+export type { KeysetInfiniteQueryOptions } from './composables/query/keysetInfiniteQuery.composable'
+export type { OffsetInfiniteQueryOptions } from './composables/query/offsetInfiniteQuery.composable'
+export type {
+  UseQueryOptions, UseQueryReturnType,
+} from './composables/query/query.composable'
+export {
+  getQueryClient as getTanstackQueryClient,
+  initializeApiUtils,
   type QueryConfig, setQueryConfig,
 } from './config/config'
-export * from './types/apiError.type'
-export * from './types/pagination.type'
-export * from './types/query.type'
-export * from './types/queryKeys.type'
-export * from './types/sort.type'
+export type {
+  CreateApiInfiniteQueryUtilsReturnType,
+  CreateApiMutationUtilsReturnType,
+  CreateApiPrefetchInfiniteQueryUtilsReturnType,
+  CreateApiPrefetchQueryUtilsReturnType,
+  CreateApiQueryClientUtilsReturnType,
+  CreateApiQueryUtilsReturnType,
+} from './factory/createApiUtils'
+export {
+  createApiInfiniteQueryUtils,
+  createApiMutationUtils,
+  createApiPrefetchInfiniteQueryUtils,
+  createApiPrefetchQueryUtils,
+  createApiQueryClientUtils,
+  createApiQueryUtils,
+  createApiUtils,
+} from './factory/createApiUtils'
+export * from './factory/createApiUtils.types'
+export { apiUtilsPlugin } from './plugin/apiUtilsPlugin'
+export {
+  ApiError,
+  ApiErrorObject,
+  ApiExpectedError,
+  ApiKnownErrorObject,
+  ApiResult,
+  ApiUnexpectedError,
+  ApiUnknownErrorObject,
+  AsyncApiResult,
+} from './types/apiError.type'
+export {
+  KeysetPagination,
+  KeysetPaginationParams,
+  KeysetPaginationResponse,
+  KeysetPaginationResult,
+  OffsetPagination,
+  OffsetPaginationParams,
+  OffsetPaginationResponse,
+  OffsetPaginationResult,
+  PaginatedDataDto,
+} from './types/pagination.type'
+export type {
+  InfiniteQueryOptions,
+  QueryParams,
+  WithFilterQuery,
+  WithSearchQuery,
+  WithSortQuery,
+  WithStaticFilterQuery,
+} from './types/queryOptions'
+export {
+  Sort,
+  SortDirection,
+} from './types/sort.type'
+export {
+  QueryClient,
+  QueryClientUpdateOptions,
+} from './utils/query-client/queryClient'
+export { SortUtil } from './utils/sort/sort.utils'
+export type { QueryClient as TanstackQueryClient } from '@tanstack/vue-query'

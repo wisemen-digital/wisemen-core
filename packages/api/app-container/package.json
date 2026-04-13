@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/app-container",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -8,24 +8,29 @@
   "directories": {
     "example": "examples"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "type": "module",
+  "exports": {
+    "./express": {
+      "types": "./dist/express/index.d.ts",
+      "import": "./dist/express/index.js"
+    },
+    "./fastify": {
+      "types": "./dist/fastify/index.d.ts",
+      "import": "./dist/fastify/index.js"
+    }
+  },
   "files": [
     "dist/"
   ],
   "scripts": {
     "lint": "eslint lib",
     "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --test",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
-  },
-  "dependencies": {
-    "fastify": "5.7.4"
   },
   "devDependencies": {
     "@nestjs/common": "catalog:backend",
@@ -35,10 +40,32 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint",
+    "fastify": ">=5.8.4",
     "typescript": "catalog:peer"
   },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/platform-express": "catalog:backend-peer",
+    "@nestjs/platform-fastify": "catalog:backend-peer",
+    "express": "catalog:backend-peer",
+    "fastify": "catalog:backend-peer"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/platform-express": {
+      "optional": true
+    },
+    "@nestjs/platform-fastify": {
+      "optional": true
+    },
+    "express": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    }
+  },
   "author": "Joren Vandeweyer",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

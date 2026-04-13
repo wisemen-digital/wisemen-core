@@ -24,9 +24,13 @@ interface Token {
   exp: number
 }
 
+const HYPHEN_REGEX = /-/g
+const UNDERSCORE_REGEX = /_/g
+const TRAILING_SLASH_REGEX = /\/$/
+
 function decodeToken(token: string): Token {
   const base64Url = token.split('.')[1]
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const base64 = base64Url.replace(HYPHEN_REGEX, '+').replace(UNDERSCORE_REGEX, '/')
   const jsonPayload = decodeURIComponent(
     atob(base64)
       .split('')
@@ -46,7 +50,7 @@ export class ApiClient {
   * @returns base url without trailing slash
   */
   private getBaseUrl(): string {
-    return this.options.baseUrl.replace(/\/$/, '')
+    return this.options.baseUrl.replace(TRAILING_SLASH_REGEX, '')
   }
 
   private async getNewAccessToken(refreshToken: string): Promise<OAuth2Tokens> {

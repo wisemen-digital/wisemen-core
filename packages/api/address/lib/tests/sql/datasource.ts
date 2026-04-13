@@ -8,7 +8,7 @@ export const dataSource = new DataSource({
   extra: { max: 50 },
   logging: false,
   synchronize: false,
-  migrationsRun: true,
+  migrationsRun: false,
   entities: [
     'dist/**/*.entity.js'
   ]

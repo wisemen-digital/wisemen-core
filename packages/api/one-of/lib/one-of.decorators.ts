@@ -58,6 +58,20 @@ export function OneOfResponse (
   }
 }
 
+export function OneOfTypesApiProperty (
+  forClass: ClassConstructor<unknown>,
+  options?: ApiPropertyOptions
+): PropertyDecorator {
+  return (target: object, propertyKey: string | symbol) => {
+    const decorators = new OneOfDecorators(forClass)
+    const decorator = decorators.OneOfTypesApiPropertyDecorator(options)
+
+    CALLBACKS.subscribeTypesProperty(forClass, target, propertyKey, options)
+
+    return decorator(target, propertyKey)
+  }
+}
+
 export function OneOfApiProperty (
   forClass: ClassConstructor<unknown>,
   options?: ApiPropertyOptions
@@ -124,11 +138,13 @@ class OneOfDecoratorCallbacks {
   private apiProperties: Map<ClassConstructor<unknown>, PropertyDecoratorArgs[]>
   private apiExtraModels: Map<ClassConstructor<unknown>, ClassDecoratorArgs[]>
   private apiResponses: Map<ClassConstructor<unknown>, MethodDecoratorArgs[]>
+  private typesApiProperties: Map<ClassConstructor<unknown>, PropertyDecoratorArgs[]>
 
   constructor () {
     this.apiProperties = new Map()
     this.apiExtraModels = new Map()
     this.apiResponses = new Map()
+    this.typesApiProperties = new Map()
   }
 
   subscribeApiProperty (
@@ -167,15 +183,29 @@ class OneOfDecoratorCallbacks {
     this.apiResponses.set(toClass, subscribers)
   }
 
+  subscribeTypesProperty (
+    toClass: ClassConstructor<unknown>,
+    target: object,
+    propertyKey: string | symbol,
+    options?: ApiPropertyOptions
+  ): void {
+    const subscribers = this.typesApiProperties.get(toClass) ?? []
+
+    subscribers.push({ target, propertyKey, options })
+    this.typesApiProperties.set(toClass, subscribers)
+  }
+
   reRender (ofClass: ClassConstructor<unknown>): void {
     const apiPropertySubscribers = this.apiProperties.get(ofClass) ?? []
     const extraModelsSubscribers = this.apiExtraModels.get(ofClass) ?? []
     const apiResponseSubscribers = this.apiResponses.get(ofClass) ?? []
+    const typesPropertySubscribers = this.typesApiProperties.get(ofClass) ?? []
 
     if (
       apiPropertySubscribers.length === 0
       && extraModelsSubscribers.length === 0
       && apiPropertySubscribers.length === 0
+      && typesPropertySubscribers.length === 0
     ) {
       return
     }
@@ -203,6 +233,14 @@ class OneOfDecoratorCallbacks {
 
       subscribeDecorator(subscriber.target, subscriber.propertyKey, subscriber.descriptor)
     }
+
+    const typesApiPropertyDecorator = decorators.OneOfTypesApiPropertyDecorator
+
+    for (const subscriber of typesPropertySubscribers) {
+      const propertyDecorator = typesApiPropertyDecorator(subscriber.options)
+
+      propertyDecorator(subscriber.target, subscriber.propertyKey)
+    }
   }
 }
 
@@ -217,6 +255,7 @@ class OneOfDecorators {
   private responseDecorator: (options?: OneOfApiResponseOptions) => MethodDecorator
   private propertyDecorator: (options?: ApiPropertyOptions) => PropertyDecorator
   private extraModelsDecorator: () => ClassDecorator
+  private typesDecorator: (options?: ApiPropertyOptions) => PropertyDecorator
 
   constructor (forClass: ClassConstructor<unknown>) {
     this.forClass = forClass
@@ -241,6 +280,10 @@ class OneOfDecorators {
 
   get OneOfApiExtraModelsDecorator (): (() => ClassDecorator) {
     return this.extraModelsDecorator
+  }
+
+  get OneOfTypesApiPropertyDecorator (): ((options?: ApiPropertyOptions) => PropertyDecorator) {
+    return this.typesDecorator
   }
 
   private generateName (type: string): string {
@@ -299,6 +342,13 @@ class OneOfDecorators {
         ApiExtraModels(...extraModels),
         ApiResponse({ ...options, schema: { oneOf: references } })
       )
+    }
+
+    this.typesDecorator = (options?: ApiPropertyOptions): PropertyDecorator => {
+      return ApiProperty({
+        ...options,
+        enum: [...this.discriminatedTypes.keys()]
+      })
     }
   }
 

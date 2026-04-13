@@ -16,6 +16,14 @@ import { useKbd } from '@/composables/kbd.composable'
 
 type Handler = (e?: any) => void
 
+const CHAINED_SHORTCUT_REGEX = /^[^-]+.*-.*[^-]+$/
+const COMBINED_SHORTCUT_REGEX = /^[^_]+.*_.*[^_]+$/
+const LETTER_REGEX = /^[a-z]$/i
+const DIGIT_REGEX = /^\d$/
+const FUNCTION_KEY_REGEX = /^f\d+$/i
+const ALPHABET_KEY_CODE_REGEX = /^Key[A-Z]$/i
+const ALPHABET_KEY_REGEX = /^[a-z]{1}$/i
+
 export interface ShortcutConfig {
   handler: Handler
   usingInput?: boolean | string
@@ -44,8 +52,6 @@ interface Shortcut {
   // keyCode?: number
 }
 
-const chainedShortcutRegex = /^[^-]+.*-.*[^-]+$/
-const combinedShortcutRegex = /^[^_]+.*_.*[^_]+$/
 // keyboard keys which can be combined with Shift modifier (in addition to alphabet keys)
 const shiftableKeys = [
   'arrowleft',
@@ -61,15 +67,15 @@ const shiftableKeys = [
 // Simple key to code conversion for layout independence
 function convertKeyToCode(key: string): string {
   // Handle single letters
-  if (/^[a-z]$/i.test(key)) {
+  if (LETTER_REGEX.test(key)) {
     return `Key${key.toUpperCase()}`
   }
   // Handle digits
-  if (/^\d$/.test(key)) {
+  if (DIGIT_REGEX.test(key)) {
     return `Digit${key}`
   }
   // Handle function keys
-  if (/^f\d+$/i.test(key)) {
+  if (FUNCTION_KEY_REGEX.test(key)) {
     return key.toUpperCase()
   }
   // Handle common special keys
@@ -130,11 +136,11 @@ export function useKeyboardShortcut(config: MaybeRef<ShortcutsConfig>, options: 
       // Parse key and modifiers
       let shortcut: Partial<Shortcut>
 
-      if (key.includes('-') && key !== '-' && !key.includes('_') && !key.match(chainedShortcutRegex)?.length) {
+      if (key.includes('-') && key !== '-' && !key.includes('_') && !key.match(CHAINED_SHORTCUT_REGEX)?.length) {
         console.warn(`[Shortcut] Invalid key: "${key}"`)
       }
 
-      if (key.includes('_') && key !== '_' && !key.match(combinedShortcutRegex)?.length) {
+      if (key.includes('_') && key !== '_' && !key.match(COMBINED_SHORTCUT_REGEX)?.length) {
         console.warn(`[Shortcut] Invalid key: "${key}"`)
       }
 
@@ -238,7 +244,7 @@ export function useKeyboardShortcut(config: MaybeRef<ShortcutsConfig>, options: 
       return
     }
 
-    const alphabetKey = layoutIndependent ? /^Key[A-Z]$/i.test(e.code) : /^[a-z]{1}$/i.test(e.key)
+    const alphabetKey = layoutIndependent ? ALPHABET_KEY_CODE_REGEX.test(e.code) : ALPHABET_KEY_REGEX.test(e.key)
     const shiftableKey = layoutIndependent ? shiftableCodes.has(e.code) : shiftableKeys.includes(e.key.toLowerCase())
 
     let chainedKey

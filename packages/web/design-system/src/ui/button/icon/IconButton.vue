@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<IconButtonProps>(), {
   isDisabled: false,
   isLoading: false,
   isTooltipDisabled: false,
+  disabledReason: null,
   form: null,
   keyboardShortcut: null,
   size: 'md',
@@ -52,6 +53,22 @@ function onClick(event: MouseEvent): void {
   emit('click', event)
 }
 
+const isTooltipDisabled = computed<boolean>(() => {
+  if (props.isDisabled && props.disabledReason !== null) {
+    return false
+  }
+
+  return props.isTooltipDisabled
+})
+
+const tooltipLabel = computed<string>(() => {
+  if (props.isDisabled && props.disabledReason !== null) {
+    return props.disabledReason
+  }
+
+  return props.tooltipLabel ?? props.label
+})
+
 useProvideIconButtonContext({
   iconButtonStyle,
 })
@@ -59,8 +76,8 @@ useProvideIconButtonContext({
 
 <template>
   <ActionTooltip
-    :is-disabled="props.isTooltipDisabled"
-    :label="props.tooltipLabel ?? props.label"
+    :is-disabled="isTooltipDisabled"
+    :label="tooltipLabel"
     :keyboard-shortcut="props.keyboardShortcut"
   >
     <!-- This component contains a lot of hacky code to get the glassy look working -->

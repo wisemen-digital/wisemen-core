@@ -8,6 +8,12 @@ export abstract class FileStorage {
     isPublic?: boolean
   ): Promise<string>
 
+  abstract createTemporaryPreviewUrl (
+    key: string,
+    mimeType?: string,
+    expiresInSeconds?: number
+  ): Promise<string>
+
   abstract createTemporaryDownloadUrl (
     key: string,
     name: string,
@@ -42,4 +48,14 @@ export abstract class FileStorage {
   abstract delete (
     key: string
   ): Promise<void>
+
+  abstract list (options?: {
+    prefix?: string
+    startAfter?: string
+  }): Promise<FileIndex[]>
+}
+
+export type FileIndex = {
+  key?: string
+  lastModified?: Date
 }

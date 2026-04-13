@@ -24,9 +24,7 @@ const parsedFiles = computed<string[]>(() => JSON.parse(decodeURIComponent(props
 
 const tabItems = computed<TabItem[]>(() => {
   // Sort parsedFiles by first 'Demo.vue' and then by the file name
-  const parsedFilesSorted = [
-    ...parsedFiles.value,
-  ].sort((a, b) => {
+  const parsedFilesSorted = parsedFiles.value.toSorted((a, b) => {
     if (a === 'Demo.vue') {
       return -1
     }

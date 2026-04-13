@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/one-of",
-  "version": "0.0.11",
+  "version": "0.0.14",
   "publishConfig": {
     "access": "public"
   },
@@ -21,12 +21,12 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "reflect-metadata": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -37,7 +37,7 @@
   },
   "author": "Kobe Kwanten",
   "contributors": [],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

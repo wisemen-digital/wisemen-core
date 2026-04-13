@@ -4,9 +4,9 @@
     "access": "public"
   },
   "type": "module",
-  "version": "4.0.6",
+  "version": "5.0.1",
   "private": true,
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
@@ -36,7 +36,7 @@
     "type-check": "vue-tsc --noEmit",
     "pub:release": "pnpm publish --access public",
     "test:unit": "vitest --run",
-    "test": "vitest --run",
+    "test": "vitest --run --passWithNoTests",
     "lint": "eslint .",
     "cleanup": "rimraf dist/ node_modules/ .turbo/",
     "lint:fix": "eslint . --fix",

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/coordinates",
-  "version": "0.0.20",
+  "version": "0.0.25",
   "publishConfig": {
     "access": "public"
   },
@@ -15,34 +15,32 @@
   ],
   "scripts": {
     "lint": "eslint lib",
-    "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "pnpm run build",
     "test": "node --test dist/tests/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "dependencies": {
-    "wkx": "catalog:backend"
+    "wkx": "catalog:backend",
+    "@wisemen/quantity": "workspace:*"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@wisemen/quantity": "workspace:*",
-    "@nestjs/swagger": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "@wisemen/quantity": "workspace:*",
     "eslint": "catalog:lint",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

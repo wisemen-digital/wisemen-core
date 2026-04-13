@@ -25,6 +25,6 @@
     "src/**/*",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.vue"
-  ]
+    "src/**/*.vue",
+    "vitest.setup.ts"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/api-error",
-  "version": "0.0.11",
+  "version": "0.0.13",
   "publishConfig": {
     "access": "public"
   },
@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "eslint lib",
     "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --test",
@@ -21,20 +21,20 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "expect": "catalog:test"
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
+    "expect": "catalog:test",
     "eslint": "catalog:lint",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

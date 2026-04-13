@@ -1,11 +1,8 @@
 import type { Component } from 'vue'
 
-export interface IconButtonProps {
-  /**
-   * Disables the button, preventing user interaction.
-   * @default false
-   */
-  isDisabled?: boolean
+import type { DisabledWithReason } from '@/types/disabledWithReason.type'
+
+export interface IconButtonProps extends DisabledWithReason {
   /**
    * Shows a loading state and disables interaction.
    * @default false

@@ -5,6 +5,7 @@ import type { AdaptiveContentBlock } from '@/ui/adaptive-content/adaptiveContent
 
 interface AdaptiveContentContext {
   registerBlock: (block: AdaptiveContentBlock) => void
+  scheduleLayoutEvaluation: () => void
   unregisterBlock: (id: string) => void
   visibleBlockIds: ComputedRef<Set<string>>
 }

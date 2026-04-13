@@ -30,6 +30,8 @@ interface AdaptiveContentBlockWithWidth extends AdaptiveContentBlock {
 const containerRef = useTemplateRef('container')
 let resizeObserver: ResizeObserver | null = null
 let isLayoutScheduled = false
+let isEvaluating = false
+let isPendingEvaluation = false
 
 const blocks = ref<Map<string, AdaptiveContentBlockWithWidth>>(new Map())
 const visibleBlockIds = ref<Set<string>>(new Set())
@@ -51,6 +53,12 @@ function unregisterBlock(id: string): void {
 }
 
 function scheduleLayoutEvaluation(): void {
+  if (isEvaluating) {
+    isPendingEvaluation = true
+
+    return
+  }
+
   if (isLayoutScheduled) {
     return
   }
@@ -66,7 +74,7 @@ function scheduleLayoutEvaluation(): void {
 function groupBlocksByPriority(): Map<number, AdaptiveContentBlockWithWidth[]> {
   const blocksSortedByPriority: [string, AdaptiveContentBlockWithWidth][] = [
     ...blocks.value.entries(),
-  ].sort((a, b) => a[1].priority - b[1].priority)
+  ].toSorted((a, b) => a[1].priority - b[1].priority)
 
   const groupedBlocks = new Map<number, AdaptiveContentBlockWithWidth[]>()
 
@@ -86,7 +94,7 @@ function groupBlocksByPriority(): Map<number, AdaptiveContentBlockWithWidth[]> {
 function getSortedPriorities(blocks: Map<number, AdaptiveContentBlockWithWidth[]>): number[] {
   return [
     ...blocks.keys(),
-  ].sort((a, b) => a - b)
+  ].toSorted((a, b) => a - b)
 }
 
 function getContainerElement(): HTMLElement | null {
@@ -100,6 +108,7 @@ async function evaluateLayout(): Promise<void> {
     return
   }
 
+  isEvaluating = true
   visibleBlockIds.value = new Set()
 
   const blocksPerPriority = groupBlocksByPriority()
@@ -133,6 +142,13 @@ async function evaluateLayout(): Promise<void> {
       break
     }
   }
+
+  isEvaluating = false
+
+  if (isPendingEvaluation) {
+    isPendingEvaluation = false
+    scheduleLayoutEvaluation()
+  }
 }
 
 onMounted(() => {
@@ -146,6 +162,7 @@ onBeforeUnmount(() => {
 
 useProvideAdaptiveContentContext({
   registerBlock,
+  scheduleLayoutEvaluation,
   unregisterBlock,
   visibleBlockIds: computed<Set<string>>(() => visibleBlockIds.value),
 })

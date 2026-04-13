@@ -17,12 +17,14 @@ const props = withDefaults(defineProps<KeyboardKeyProps>(), {
   variant: null,
 })
 
+const WINDOWS_REGEX = /windows/i
+
 const {
   theme,
 } = injectThemeProviderContext()
 
 const isWindows = computed<boolean>(() => (
-  /windows/i.test(navigator.userAgent)
+  WINDOWS_REGEX.test(navigator.userAgent)
 ))
 
 const macKeyMap = new Map<KeyboardKey, string>([

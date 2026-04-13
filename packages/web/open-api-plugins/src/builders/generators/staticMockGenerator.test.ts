@@ -7,6 +7,11 @@ import {
 import type { Schema } from '../types'
 import { generateStaticMockCode } from './staticMockGenerator'
 
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
+const EMAIL_REGEX = /@/
+const URI_REGEX = /^https?:\/\//
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
+
 describe('static Mock Generator', () => {
   describe('generateStaticMockCode', () => {
     it('generates correct mock for string with email format', () => {
@@ -375,7 +380,7 @@ describe('static Mock Generator', () => {
       const unquoted = result.slice(1, -1)
 
       expect(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(unquoted),
+        UUID_REGEX.test(unquoted),
       ).toBeTruthy()
     })
 
@@ -387,7 +392,7 @@ describe('static Mock Generator', () => {
       const result = generateStaticMockCode(schema, 'Email')
       const unquoted = result.slice(1, -1)
 
-      expect(unquoted).toMatch(/@/)
+      expect(unquoted).toMatch(EMAIL_REGEX)
     })
 
     it('handles uri/url format', () => {
@@ -398,7 +403,7 @@ describe('static Mock Generator', () => {
       const result = generateStaticMockCode(schema, 'URI')
       const unquoted = result.slice(1, -1)
 
-      expect(unquoted).toMatch(/^https?:\/\//)
+      expect(unquoted).toMatch(URI_REGEX)
     })
 
     it('handles date-time format', () => {
@@ -420,7 +425,7 @@ describe('static Mock Generator', () => {
       const result = generateStaticMockCode(schema, 'Date')
       const unquoted = result.slice(1, -1)
 
-      expect(/^\d{4}-\d{2}-\d{2}$/.test(unquoted)).toBeTruthy()
+      expect(DATE_REGEX.test(unquoted)).toBeTruthy()
     })
 
     it('handles time format with fallback', () => {

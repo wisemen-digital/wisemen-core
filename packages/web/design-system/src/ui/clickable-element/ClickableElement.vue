@@ -2,10 +2,9 @@
 import { Primitive } from 'reka-ui'
 import { twMerge } from 'tailwind-merge'
 
-const props = withDefaults(defineProps<{
-  isDefaultCursor?: boolean
-  class?: string
-}>(), {
+import type { ClickableElementProps } from '@/ui/clickable-element/clickableElement.props'
+
+const props = withDefaults(defineProps<ClickableElementProps>(), {
   isDefaultCursor: false,
   class: '',
 })

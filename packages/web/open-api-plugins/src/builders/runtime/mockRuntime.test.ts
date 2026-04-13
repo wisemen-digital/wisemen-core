@@ -6,6 +6,12 @@ import {
 
 import { generateMock } from './mockRuntime'
 
+const PATTERN_PLACEHOLDER_REGEX = /^x+$/
+const EMAIL_PATTERN_REGEX = /@/
+const URI_PATTERN_REGEX = /^https?:\/\//
+const DATE_PATTERN_REGEX = /^\d{4}-\d{2}-\d{2}$/
+const TIME_PATTERN_REGEX = /^\d{2}:\d{2}:\d{2}/
+
 describe('custom Mock Runtime', () => {
   describe('generateMock', () => {
     it('generates mock from simple string schema', () => {
@@ -420,7 +426,7 @@ describe('custom Mock Runtime', () => {
 
       expect(typeof result).toBe('string')
 
-      expect(result).toMatch(/^x+$/)
+      expect(result).toMatch(PATTERN_PLACEHOLDER_REGEX)
     })
 
     it('handles uuid format with placeholder', () => {
@@ -443,7 +449,7 @@ describe('custom Mock Runtime', () => {
       const result = generateMock(schema)
 
       expect(typeof result).toBe('string')
-      expect(result).toMatch(/@/)
+      expect(result).toMatch(EMAIL_PATTERN_REGEX)
     })
 
     it('handles uri format', () => {
@@ -454,7 +460,7 @@ describe('custom Mock Runtime', () => {
       const result = generateMock(schema)
 
       expect(typeof result).toBe('string')
-      expect(result).toMatch(/^https?:\/\//)
+      expect(result).toMatch(URI_PATTERN_REGEX)
     })
 
     it('handles date-time format', () => {
@@ -476,7 +482,7 @@ describe('custom Mock Runtime', () => {
       const result = generateMock(schema)
 
       expect(typeof result).toBe('string')
-      expect(/^\d{4}-\d{2}-\d{2}$/.test(result as string)).toBeTruthy()
+      expect(DATE_PATTERN_REGEX.test(result as string)).toBeTruthy()
     })
 
     it('handles time format', () => {
@@ -487,7 +493,7 @@ describe('custom Mock Runtime', () => {
       const result = generateMock(schema)
 
       expect(typeof result).toBe('string')
-      expect(/^\d{2}:\d{2}:\d{2}/.test(result as string)).toBeTruthy()
+      expect(TIME_PATTERN_REGEX.test(result as string)).toBeTruthy()
     })
 
     it.todo('applies overrides to nested properties')

@@ -1,19 +1,17 @@
 import type { Component } from 'vue'
 
+import type { DisabledWithReason } from '@/types/disabledWithReason.type'
+import { DISABLED_WITH_REASON_DEFAULTS } from '@/types/disabledWithReason.type'
+
 /**
  * Shared properties for input elements.
  */
-export interface Input {
+export interface Input extends DisabledWithReason {
   /**
    * The id of the element.
    * @default null
    */
   id?: string | null
-  /**
-   * Determines whether the element is disabled. When `true`, the element becomes non-interactive.
-   * @default false
-   */
-  isDisabled?: boolean
   /**
    * Whether the input is read-only. When `true`, the input value cannot be changed.
    * @default false
@@ -39,17 +37,17 @@ export interface Input {
   style?: Record<string, string> | null
 }
 
-export interface InputWrapper {
-  /**
-   * Determines whether the element is disabled. When `true`, styles indicate the element is non-interactive.
-   * @default false
-   */
-  isDisabled?: boolean
+export interface InputWrapper extends DisabledWithReason {
   /**
    * Whether the label and hint are displayed horizontally.
    * @default false
    */
   isHorizontal?: boolean
+  /**
+   * Whether the label is visually hidden but still accessible to screen readers.
+   * @default false
+   */
+  isLabelHidden?: boolean
   /**
    * Whether the input is required. When `true`, an asterisk is shown next to the label.
    * @default false
@@ -66,6 +64,12 @@ export interface InputWrapper {
    */
   for?: string | null
   /**
+   * The help text displayed in a tooltip next to the label.
+   * When provided, a help circle icon is shown next to the label.
+   * @default null
+   */
+  helpText?: string | null
+  /**
    * Determines whether to hide the error message visually.
    * @default false
    */
@@ -75,6 +79,7 @@ export interface InputWrapper {
    * @default null
    */
   hint?: string | null
+
   /**
    * The label of the input.
    * @default null
@@ -122,8 +127,8 @@ export interface AutocompleteInput {
 }
 
 export const INPUT_DEFAULTS = {
+  ...DISABLED_WITH_REASON_DEFAULTS,
   id: null,
-  isDisabled: false,
   isReadonly: false,
   isRequired: false,
   name: null,
@@ -132,11 +137,13 @@ export const INPUT_DEFAULTS = {
 } satisfies Input
 
 export const INPUT_META_DEFAULTS = {
-  isDisabled: false,
+  ...DISABLED_WITH_REASON_DEFAULTS,
   isHorizontal: false,
+  isLabelHidden: false,
   isRequired: false,
   errorMessage: null,
   for: null,
+  helpText: null,
   hideErrorMessage: false,
   hint: null,
   label: null,

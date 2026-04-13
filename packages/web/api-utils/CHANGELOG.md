@@ -1,5 +1,21 @@
 # @wisemen/vue-core-query
 
+## 1.0.1
+
+### Patch Changes
+
+- [#825](https://github.com/wisemen-digital/wisemen-core/pull/825) [`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - bump dependencies
+
+## 1.0.0
+
+### Major Changes
+
+- [#665](https://github.com/wisemen-digital/wisemen-core/pull/665) [`244acf8`](https://github.com/wisemen-digital/wisemen-core/commit/244acf8948b3f9ca9787409f1856a9f791dd7e52) Thanks [@Robbe95](https://github.com/Robbe95)! - Rewrote entire library to support typesafe queries and typesafe optimistic updates
+
+### Patch Changes
+
+- [#665](https://github.com/wisemen-digital/wisemen-core/pull/665) [`8f075e2`](https://github.com/wisemen-digital/wisemen-core/commit/8f075e27d9d3c637ea633f5e36f72fb53362287f) Thanks [@Robbe95](https://github.com/Robbe95)! - Updated linter
+
 ## 0.0.2
 
 ### Patch Changes

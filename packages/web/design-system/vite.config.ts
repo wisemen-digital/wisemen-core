@@ -10,8 +10,8 @@ const projectRootDir = resolve(__dirname)
 export default defineConfig({
   build: {
     lib: {
-      name: 'vue-core',
-      cssFileName: 'style',
+      name: 'vue-core-design-system',
+      cssFileName: 'index',
       entry: [
         resolve(__dirname, 'src/index.ts'),
       ],
@@ -26,13 +26,19 @@ export default defineConfig({
 
     rollupOptions: {
       external: [
+        '@vueuse/core',
+        '@vueuse/router',
         'vue',
         'vue-i18n',
         'vue-router',
         'reka-ui',
       ],
       output: {
+        // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
+        // Only relevant when consumed via <script> tags without a bundler.
         globals: {
+          '@vueuse/core': 'VueUseCore',
+          '@vueuse/router': 'VueUseRouter',
           'reka-ui': 'RekaUI',
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',

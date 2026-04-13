@@ -1,13 +1,13 @@
 import { Readable } from 'stream'
 import { Injectable } from '@nestjs/common'
-import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { validateSync } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 import { S3Config } from '#src/providers/s3/s3.config.js'
 import { S3_DOWNLOAD_URL_EXPIRES_S, S3_UPLOAD_EXPIRES_MS, S3_UPLOAD_URL_EXPIRES_S } from '#src/providers/s3/s3.constants.js'
-import { FileStorage } from '#src/providers/file-storage-provider.js'
+import { FileIndex, FileStorage } from '#src/providers/file-storage-provider.js'
 
 @Injectable()
 export class S3 extends FileStorage {
@@ -86,6 +86,25 @@ export class S3 extends FileStorage {
 
     return await getSignedUrl(this.client, command, {
       expiresIn: expiresInSeconds ?? S3_UPLOAD_URL_EXPIRES_S
+    })
+  }
+
+  public createTemporaryPreviewUrl (
+    key: string,
+    mimeType?: string,
+    expiresInSeconds?: number
+  ): Promise<string> {
+    this.validateKey(key)
+
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: key,
+      ResponseContentType: mimeType,
+      ResponseContentDisposition: 'inline'
+    })
+
+    return getSignedUrl(this.client, command, {
+      expiresIn: expiresInSeconds ?? S3_DOWNLOAD_URL_EXPIRES_S
     })
   }
 
@@ -194,5 +213,23 @@ export class S3 extends FileStorage {
     })
 
     await this.client.send(command)
+  }
+
+  public async list (options?: {
+    prefix?: string
+    startAfter?: string
+  }): Promise<FileIndex[]> {
+    const command = new ListObjectsV2Command({
+      Bucket: this.bucketName,
+      Prefix: options?.prefix,
+      StartAfter: options?.startAfter
+    })
+
+    const result = await this.client.send(command)
+
+    return result.Contents?.map(item => ({
+      key: item.Key,
+      lastModified: item.LastModified
+    })) ?? []
   }
 }

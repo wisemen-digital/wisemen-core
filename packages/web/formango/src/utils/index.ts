@@ -3,6 +3,10 @@
 /* eslint-disable no-implicit-coercion */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable unicorn/no-keyword-prefix */
+
+const UUID_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+const HEX_CHARS_REGEX = /[xy]/g
+
 function isObject(value: unknown): boolean {
   return value !== null && typeof value === 'object'
 }
@@ -140,7 +144,7 @@ export function generateId(): string {
 const x = <number>0
 
 export function generateUuid(): string {
-  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  const uuid = UUID_TEMPLATE.replace(HEX_CHARS_REGEX, (c) => {
     const r = Math.random() * 16 | x
     const v = c === 'x' ? r : (r & 0x3 | 0x8)
 

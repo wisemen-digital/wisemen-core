@@ -4,8 +4,8 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.1.1",
-  "license": "MIT",
+  "version": "0.2.1",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
@@ -17,8 +17,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "style": "./dist/index.css"
-    }
+    },
+    "./style": "./dist/index.css",
+    "./source.css": "./dist/source.css"
   },
+  "style": "./dist/index.css",
   "main": "./dist/index.umd.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,7 +30,8 @@
     "./dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && pnpm build:source",
+    "build:source": "cat src/styles/source.css src/styles/utilities.css > dist/source.css",
     "dev": "vite build --watch",
     "pub:release": "pnpm publish --access public",
     "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
@@ -45,6 +49,8 @@
     "build-storybook": "storybook build"
   },
   "peerDependencies": {
+    "@vueuse/core": "catalog:vue",
+    "@vueuse/router": "catalog:vue",
     "motion-v": "catalog:peer",
     "reka-ui": "catalog:peer",
     "vue": "catalog:peer",
@@ -63,7 +69,6 @@
     "@chromatic-com/storybook": "catalog:storybook",
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-docs": "catalog:storybook",
-    "@storybook/addon-onboarding": "catalog:storybook",
     "@storybook/addon-vitest": "catalog:storybook",
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
@@ -74,7 +79,7 @@
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint",
-    "eslint-plugin-storybook": "catalog:lint",
+    "eslint-plugin-storybook": "catalog:storybook",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "playwright": "catalog:test",

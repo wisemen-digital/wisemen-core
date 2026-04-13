@@ -1,10 +1,10 @@
 {
-  "name": "@wisemen/vue-core-monorepo",
+  "name": "@wisemen/wisemen-core",
   "type": "module",
   "version": "0.0.0",
   "author": "Wisemen",
   "packageManager": "pnpm@10.7.0",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "workspaces": [
     "packages/**"
   ],
@@ -15,7 +15,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "type-check": "turbo run type-check",
-    "cleanup": "turbo run cleanup",
+    "cleanup": "turbo run cleanup && rimraf .turbo dist coverage .eslintcache",
     "story:dev": "turbo watch story:dev",
     "story:build": "turbo run story:build",
     "changeset:release": "pnpm build && changeset publish",
@@ -28,6 +28,7 @@
     "build-storybook": "storybook build -c ./packages/web/design-system/.storybook -o ./static/storybook"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.6.0",
     "@commitlint/cli": "catalog:tooling",
     "@commitlint/config-conventional": "catalog:tooling",
     "husky": "catalog:build",
@@ -43,7 +44,25 @@
       "axios@>=1.0.0 <1.12.0": ">=1.12.0",
       "lodash@>=4.0.0 <=4.17.22": ">=4.17.23",
       "esbuild@<=0.24.2": ">=0.25.0",
-      "vite": "npm:rolldown-vite@7.3.1"
+      "vite": "npm:rolldown-vite@7.3.1",
+      "minimatch@<3.1.3": ">=3.1.3",
+      "minimatch@>=9.0.0 <9.0.6": ">=9.0.6",
+      "fast-xml-parser@>=4.0.0-beta.3 <=5.5.6": ">=5.5.7",
+      "ajv@>=7.0.0-alpha.0 <8.18.0 ": ">=8.18.0",
+      "ajv@<6.14.0": ">=6.14.0",
+      "@eslint/eslintrc>ajv": "6.14.0",
+      "eslint>ajv": "6.14.0",
+      "flatted@<=3.4.1": ">=3.4.2",
+      "serialize-javascript@<=7.0.2": ">=7.0.3",
+      "lodash@<=4.17.23": "4.18.0",
+      "path-to-regexp@>=8.0.0 <8.4.0": "8.4.0",
+      "yaml@>=2.0.0 <2.8.3": "2.8.3",
+      "picomatch@>=4.0.0 <4.0.4": "4.0.4",
+      "picomatch@<2.3.2": "2.3.2",
+      "brace-expansion@>=4.0.0 <5.0.5": "5.0.5",
+      "brace-expansion@>=2.0.0 <2.0.3": "2.0.3",
+      "brace-expansion@<1.1.13": "1.1.13",
+      "fastify@<5.8.4": "5.8.4"
     }
   }
 }

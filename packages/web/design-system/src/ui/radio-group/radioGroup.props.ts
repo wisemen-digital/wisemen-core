@@ -5,11 +5,6 @@ import type {
 
 export interface RadioGroupProps extends Input, InputWrapper {
   /**
-   * Whether the radio group is disabled.
-   * @default false
-   */
-  isDisabled?: boolean
-  /**
    * Controls the keyboard navigation direction of the radio group.
    * @default 'vertical'
    */

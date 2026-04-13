@@ -1,19 +1,22 @@
 {
   "name": "@wisemen/node-doc-processor",
-  "version": "1.2.7",
+  "version": "1.3.2",
   "publishConfig": {
     "access": "public"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
   "files": [
     "dist/"
   ],
   "scripts": {
     "lint": "eslint lib",
     "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --test",
@@ -21,18 +24,17 @@
     "release": "pnpx release-it"
   },
   "author": "Pieter Pauwels",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/node-doc-processor"
   },
-  "peerDependencies": {
-    "@wisemen/pgboss-nestjs-job": "workspace:*"
-  },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "@wisemen/pgboss-nestjs-job": "workspace:*",
     "eslint": "catalog:lint"
+  },
+  "dependencies": {
+    "@wisemen/pgboss-nestjs-job": "workspace:*"
   }
 }

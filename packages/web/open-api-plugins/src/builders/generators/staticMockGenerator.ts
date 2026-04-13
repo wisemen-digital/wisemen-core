@@ -18,6 +18,8 @@ export function generateStaticMockCode(schema: Schema, typeName: string): string
   return generateStaticMockInternal(schema as ExtendedSchema, typeName, 0)
 }
 
+const VALID_IDENTIFIER_REGEX = /^[a-z_]\w*$/i
+
 function generateStaticMockInternal(
   schema: ExtendedSchema,
   typeName: string,
@@ -246,7 +248,7 @@ function generateStaticObject(schema: ExtendedSchema, typeName: string, depth: n
     }
 
     const propValue = generateStaticMockInternal(propSchema as ExtendedSchema, typeName, depth + 1)
-    const safePropName = /^[a-z_]\w*$/i.test(key) ? key : `"${key}"`
+    const safePropName = VALID_IDENTIFIER_REGEX.test(key) ? key : `"${key}"`
 
     properties.push(`${safePropName}: ${propValue}`)
   }

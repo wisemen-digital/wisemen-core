@@ -1,103 +1,184 @@
-# Index Query with Infinite Scroll
+# Paginated Query with Infinite Scroll
 
-This example demonstrates how to use `useOffsetInfiniteQuery` from `@wisemen/vue-core-api-utils` to fetch paginated data with infinite scrolling.
+This example demonstrates how to use `useOffsetInfiniteQuery` and `useKeysetInfiniteQuery` from `@wisemen/vue-core-api-utils` to fetch paginated data with infinite scrolling.
 
-## Query Definition
+## Offset Pagination (Page-based)
+
+Best for displaying traditional paginated lists where you know the total count:
 
 ```typescript
-// src/modules/contact/api/queries/contactIndex.query.ts
-import { useOffsetInfiniteQuery } from '@wisemen/vue-core-api-utils'
+// src/composables/useContactList.ts
 
-import { ContactService } from '@/modules/contact/api/services/contact.service'
-import type { ContactIndexQueryParams } from '@/modules/contact/models/contact/index/contactIndexQueryParams.model'
-import type { InfiniteQueryOptions } from '@/types/query.type'
+import { ref } from 'vue'
+import { useOffsetInfiniteQuery } from '@/api'
+import { ContactService } from '@/services'
 
-export function useContactIndexQuery(options: InfiniteQueryOptions<ContactIndexQueryParams>) {
-  return useOffsetInfiniteQuery({
-    queryFn: (pagination) => ContactService.getAll({
-      filters: options.params.filters.value,
-      pagination,
-      search: options.params.search.value,
-      sort: options.params.sort.value,
-    }),
-    queryKey: {
-      contactIndex: {
-        queryParams: options.params,
-      },
+export function useContactList() {
+  const search = ref('')
+  const sort = ref<Sort[]>([])
+  const filters = ref({})
+
+  return useOffsetInfiniteQuery('contactList', {
+    params: {
+      search: computed(() => search.value),
+      sort: computed(() => sort.value),
+      filters: computed(() => filters.value),
     },
+    queryFn: (pagination) => ContactService.getAll({
+      search: search.value,
+      sort: sort.value,
+      filters: filters.value,
+      ...pagination,
+    }),
   })
 }
 ```
 
-## Usage in Vue Component
+### Usage in Vue Component
 
 ```vue
 <script setup lang="ts">
-import type { ApiResult } from '@wisemen/vue-core-api-utils'
 import { computed } from 'vue'
+import { useContactList } from '@/composables'
 
-import { useContactIndexQuery } from '@/modules/contact/api/queries/contactIndex.query'
-import type { ContactIndex } from '@/modules/contact/models/contact/index/contactIndex.model'
+const { result, isLoading, isFetching, fetchNextPage } = useContactList()
 
-const filters = useFilters({ /* ... */ })
-const sort = useSort({ /* ... */ })
-const search = useSearch()
-
-// Using the query
-const {
-  isLoading,
-  fetchNextPage,
-  result,
-} = useContactIndexQuery({
-  params: {
-    filters: filters.values,
-    search: search.debouncedSearch,
-    sort: sort.values,
-  },
-})
-
-// Transform result to ApiResult for error handling
-const resultData = computed<ApiResult<ContactIndex[]>>(() => {
-  return result.value.map((data) => data.data)
+const contacts = computed(() => {
+  if (result.value.isOk()) {
+    return result.value.getValue().data
+  }
+  return []
 })
 </script>
 
 <template>
   <div>
-    <!-- Only render when result is successful -->
-    <ContactOverviewTable
-      v-if="!resultData.isErr()"
-      :data="resultData.value"
-      :is-loading="isLoading"
-      @next-page="fetchNextPage"
-    />
+    <div v-if="isLoading" class="loading">Loading contacts...</div>
+    <template v-else>
+      <ul v-if="result.isOk()">
+        <li v-for="contact in contacts" :key="contact.id">
+          {{ contact.name }}
+        </li>
+      </ul>
+      <div v-else-if="result.isErr()" class="error">
+        Failed to load contacts: {{ result.getError().message }}
+      </div>
+    </template>
+    <button
+      @click="fetchNextPage"
+      :disabled="isFetching"
+      class="load-more"
+    >
+      {{ isFetching ? 'Loading...' : 'Load More' }}
+    </button>
   </div>
 </template>
 ```
 
-### Returned Properties
+## Keyset Pagination (Cursor-based)
 
-- **`result`**: A `Ref<ApiResult<...>>` containing the query data or error
-- **`isLoading`**: A `Ref<boolean>` indicating if the initial query is loading
-- **`fetchNextPage`**: A function to load the next page of data
-- **`hasNextPage`**: A `Ref<boolean>` indicating if there are more pages to load
-- **`isFetchingNextPage`**: A `Ref<boolean>` indicating if the next page is currently being fetched
-
-## Working with Results
-
-The query returns a `result` that is an `ApiResult` type from `neverthrow`. This allows you to handle success and error states elegantly:
+Best for large datasets or real-time data where the total count is unknown:
 
 ```typescript
-// Check if result is an error
-if (resultData.value.isErr()) {
-  // Handle error
-  console.error(resultData.value.error)
-} else {
-  // Access data safely
-  const data = resultData.value.value
-}
+// src/composables/useContactListKeyset.ts
 
-// Or use pattern matching
+import { ref } from 'vue'
+import { useKeysetInfiniteQuery } from '@/api'
+import { ContactService } from '@/services'
+
+export function useContactListKeyset() {
+  const search = ref('')
+  const sort = ref<Sort[]>([])
+
+  return useKeysetInfiniteQuery('contactListKeyset', {
+    params: {
+      search: computed(() => search.value),
+      sort: computed(() => sort.value),
+    },
+    queryFn: (pagination) => ContactService.getAllKeyset({
+      search: search.value,
+      sort: sort.value,
+      ...pagination,
+    }),
+    limit: 20,
+  })
+}
+```
+
+### Usage in Vue Component
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useContactListKeyset } from '@/composables'
+
+const { result, isFetching, fetchNextPage } = useContactListKeyset()
+
+const contacts = computed(() => {
+  if (result.value.isOk()) {
+    return result.value.getValue().data
+  }
+  return []
+})
+</script>
+
+<template>
+  <div>
+    <ul v-if="result.isOk()">
+      <li v-for="contact in contacts" :key="contact.id">
+        {{ contact.name }}
+      </li>
+    </ul>
+    <div v-else-if="result.isErr()" class="error">
+      {{ result.getError().message }}
+    </div>
+    <button
+      @click="fetchNextPage"
+      :disabled="isFetching"
+    >
+      {{ isFetching ? 'Loading...' : 'Load More' }}
+    </button>
+  </div>
+</template>
+```
+
+## Return Values
+
+- **`result`**: ComputedRef to an AsyncResult containing the paginated data
+- **`isLoading`**: Whether the initial query is loading
+- **`isFetching`**: Whether any fetch is in progress (including loading more pages)
+- **`fetchNextPage`**: Function to load the next page of data
+- **`hasNextPage`**: Whether there are more pages available
+- **`isFetchingNextPage`**: Whether the next page is currently being fetched
+
+## Handling Pagination Results
+
+The paginated results contain both data and metadata:
+
+```typescript
+if (result.value.isOk()) {
+  const paginationResult = result.value.getValue()
+  
+  // Access the flattened data
+  const allItems = paginationResult.data
+  
+  // Access pagination metadata
+  const metadata = paginationResult.meta
+  
+  // For offset pagination
+  console.log(metadata.offset, metadata.limit, metadata.total)
+  
+  // For keyset pagination
+  console.log(metadata.next) // Cursor for next page
+}
+```
+
+## Best Practices
+
+1. **Keep filters in refs** - This allows the query to automatically refetch when filters change
+2. **Use computed for display** - Transform the result only when needed for rendering
+3. **Handle empty results** - Show appropriate messaging when there's no data
+4. **Prefetch on hover** - Use `usePrefetchOffsetInfiniteQuery` to load data before user interaction
 resultData.value.match(
   (data) => {
     // Success case

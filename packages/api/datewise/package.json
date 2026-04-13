@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/datewise",
-  "version": "0.1.4",
+  "version": "0.1.10",
   "publishConfig": {
     "access": "public"
   },
@@ -21,30 +21,30 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/swagger": "catalog:backend",
-    "@wisemen/pagination": "workspace:*",
-    "@wisemen/quantity": "workspace:*",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "dayjs": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@nestjs/common": "catalog:backend",
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "@wisemen/pagination": "workspace:*",
-    "@wisemen/quantity": "workspace:*",
     "eslint": "catalog:lint",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },
   "author": "Wisemen",
   "contributors": [],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/datewise"
+  },
+  "dependencies": {
+    "@wisemen/pagination": "workspace:*",
+    "@wisemen/quantity": "workspace:*"
   }
 }

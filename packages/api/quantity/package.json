@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/quantity",
-  "version": "0.3.4",
+  "version": "0.6.1",
   "publishConfig": {
     "access": "public"
   },
@@ -11,35 +11,35 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
-    "test": "node --test ./dist/**/*.test.js",
+    "pretest": "pnpm run build",
+    "test": "node --test './dist/**/*.test.js'",
     "lint": "eslint --cache",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
-    "@wisemen/nestjs-typeorm": "workspace:*",
-    "class-transformer": "catalog:backend",
-    "class-validator": "catalog:backend",
-    "typeorm": "catalog:backend"
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "@wisemen/nestjs-typeorm": "workspace:*",
     "eslint": "catalog:lint",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },
   "author": "Maarten Sijmkens",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/quantity"
+  },
+  "dependencies": {
+    "@wisemen/nestjs-typeorm": "workspace:*"
   }
 }

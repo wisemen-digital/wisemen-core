@@ -15,6 +15,9 @@ import {
   indent,
 } from './codeGenerator'
 
+const ZOD_IMPORTS_REGEX = /import \{ z \}/g
+const NEWLINE_REGEX = /\n/
+
 describe('code Generator', () => {
   describe('generateWithMethods', () => {
     it('generates with methods for object with properties', () => {
@@ -151,7 +154,7 @@ describe('code Generator', () => {
         mockStrategy: 'zod',
       })
 
-      const zodImports = result.match(/import \{ z \}/g)
+      const zodImports = result.match(ZOD_IMPORTS_REGEX)
 
       expect(zodImports).toHaveLength(1)
     })
@@ -294,7 +297,7 @@ describe('code Generator', () => {
     it('includes proper formatting', () => {
       const result = generateBuilderOptionsType()
 
-      expect(result).toMatch(/\n/)
+      expect(result).toMatch(NEWLINE_REGEX)
       expect(result).toContain('{')
       expect(result).toContain('}')
     })

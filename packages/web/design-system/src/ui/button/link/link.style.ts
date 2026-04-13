@@ -3,22 +3,30 @@ import { tv } from '@/styles/tailwindVariants.lib'
 export const createLinkStyle = tv({
   compoundVariants: [
     {
-      class: 'dark:rounded-[0.35rem] dark:px-md',
+      class: {
+        container: 'dark:rounded-[0.35rem] dark:px-md',
+      },
       size: 'md',
       variant: 'primary',
     },
     {
-      class: 'dark:rounded-[0.3rem] dark:px-lg',
+      class: {
+        container: 'dark:rounded-[0.3rem] dark:px-lg',
+      },
       size: 'lg',
       variant: 'primary',
     },
     {
-      class: 'dark:rounded-[0.2rem] dark:px-sm',
+      class: {
+        container: 'dark:rounded-[0.2rem] dark:px-sm',
+      },
       size: 'sm',
       variant: 'primary',
     },
     {
-      class: `dark:rounded-[0.15rem] dark:px-xs`,
+      class: {
+        container: `dark:rounded-[0.15rem] dark:px-xs`,
+      },
       size: 'xs',
       variant: 'primary',
     },
@@ -28,8 +36,8 @@ export const createLinkStyle = tv({
     icon: `shrink-0`,
     label: ``,
     root: `
-      group/link shrink-0 cursor-pointer items-center justify-center border
-      outline-2 outline-offset-1 outline-transparent duration-100
+      group/link inline-flex shrink-0 cursor-pointer items-center justify-center
+      border outline-2 outline-offset-1 outline-transparent duration-100
     `,
     rowLayout: `
       duration-100 [grid-area:stack]
@@ -71,11 +79,15 @@ export const createLinkStyle = tv({
       },
       'destructive-tertiary': {
         icon: `text-error-primary`,
-        label: `text-error-primary`,
+        label: `
+          text-error-primary
+          dark:text-error-700
+        `,
         root: `
           border-transparent
-          hover:bg-error-primary
+          hover:bg-error-50
           focus-visible:outline-fg-error-primary
+          dark:hover:bg-error-700/20
         `,
       },
       'primary': {
@@ -96,6 +108,7 @@ export const createLinkStyle = tv({
           border-secondary bg-primary
           hover:bg-primary-hover
           focus-visible:outline-fg-brand-primary
+          dark:border-primary
         `,
       },
       'tertiary': {

@@ -36,6 +36,7 @@ export interface FileUploadProps extends InteractableElement {
    * Confirms the upload of a file. In the case of a image, a blur hash can be provided to
    * generate a placeholder while the image is being uploaded.
    *
+   * @param uuid - The unique identifier of the file being uploaded.
    * @param blurHash - The blur hash of the image, or `null` if not applicable.
    * @returns A promise that resolves when the upload is confirmed.
    */

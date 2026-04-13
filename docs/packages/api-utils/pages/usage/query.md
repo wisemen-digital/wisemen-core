@@ -5,107 +5,122 @@ This example demonstrates how to use `useQuery` and `usePrefetchQuery` from `@wi
 ## Query Definition
 
 ```typescript
-// src/modules/contact/api/queries/contactDetail.query.ts
-import type { UseQueryOptions } from '@wisemen/vue-core-api-utils'
-import {
-  usePrefetchQuery,
-  useQuery,
-} from '@wisemen/vue-core-api-utils'
-import type { ComputedRef } from 'vue'
-import { toValue } from 'vue'
+// src/composables/useContactDetail.ts
 
-import { ContactService } from '@/modules/contact/api/services/contact.service'
-import type { ContactUuid } from '@/modules/contact/models/contact/contactUuid.model'
-import type { ContactDetail } from '@/modules/contact/models/contact/detail/contactDetail.model'
-import { TimeUtil } from '@/utils/time.util'
+import { useQuery, usePrefetchQuery } from '@/api'
+import { ContactService } from '@/services'
+import type { ContactUuid } from '@/types'
 
-// Base query options - reusable configuration
-export function contactDetailQuery(contactUuid: ComputedRef<ContactUuid>): UseQueryOptions<ContactDetail> {
-  return {
-    staleTime: TimeUtil.seconds(30),
-    queryFn: () => ContactService.getByUuid(toValue(contactUuid)),
-    queryKey: {
-      contactDetail: {
-        contactUuid,
-      },
-    },
-  }
+export function useContactDetail(contactUuid: string) {
+  return useQuery('contactDetail', {
+    params: { contactUuid: computed(() => contactUuid) },
+    queryFn: () => ContactService.getByUuid(contactUuid),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  })
 }
 
-// Main query hook
-export function useContactDetailQuery(contactUuid: ComputedRef<ContactUuid>) {
-  return useQuery(contactDetailQuery(contactUuid))
-}
-
-// Prefetch hook for optimistic data loading
-export function useContactDetailPrefetchQuery(contactUuid: ComputedRef<ContactUuid>) {
-  return usePrefetchQuery(contactDetailQuery(contactUuid))
+export function usePrefetchContactDetail(contactUuid: string) {
+  return usePrefetchQuery('contactDetail', {
+    params: { contactUuid: computed(() => contactUuid) },
+    queryFn: () => ContactService.getByUuid(contactUuid),
+  })
 }
 ```
 
 ## Usage in Vue Component
 
-### Basic Usage
+### Basic Usage with Result Handling
 
 ```vue
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useContactDetailQuery } from '@/modules/contact/api/queries/contactDetail.query'
-import type { ContactUuid } from '@/modules/contact/models/contact/contactUuid.model'
+import { useContactDetail } from '@/composables'
 
 const props = defineProps<{
-  contactUuid: ContactUuid
+  contactUuid: string
 }>()
 
-// Using the query
-const contactDetailQuery = useContactDetailQuery(computed(() => props.contactUuid))
+const { result, isLoading, refetch } = useContactDetail(props.contactUuid)
 </script>
 
 <template>
   <div>
-    <!-- Query is passed to a data provider component -->
-    <AppDataProviderView :queries="{ contact: contactDetailQuery }">
-      <template #default="{ data }">
-        <ContactDetailView :contact="data.contact" />
-      </template>
-    </AppDataProviderView>
+    <div v-if="isLoading" class="loading">Loading contact...</div>
+    <div v-else-if="result.isOk()" class="contact-detail">
+      <h1>{{ result.getValue().name }}</h1>
+      <p>Email: {{ result.getValue().email }}</p>
+    </div>
+    <div v-else-if="result.isErr()" class="error">
+      <p>Failed to load contact: {{ result.getError().message }}</p>
+      <button @click="refetch">Retry</button>
+    </div>
   </div>
 </template>
 ```
 
-### Direct Usage with Result Handling
+### Using Pattern Matching
 
 ```vue
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useContactDetailQuery } from '@/modules/contact/api/queries/contactDetail.query'
+import { useContactDetail } from '@/composables'
 
 const props = defineProps<{
-  contactUuid: ContactUuid
+  contactUuid: string
 }>()
 
-const { result, isLoading, error } = useContactDetailQuery(computed(() => props.contactUuid))
-
-// Access data using result
-const contactData = computed(() => {
-  return result.value.match(
-    (data) => data,
-    () => null
-  )
-})
+const { result, isLoading } = useContactDetail(props.contactUuid)
 </script>
 
 <template>
   <div>
     <div v-if="isLoading">Loading...</div>
-    <div v-else-if="result.isErr()">Error: {{ error }}</div>
-    <div v-else-if="contactData">
-      <h1>{{ contactData.firstName }} {{ contactData.lastName }}</h1>
-      <p>{{ contactData.email }}</p>
-    </div>
+    <template v-else>
+      <div
+        v-if="result.isOk()"
+        class="contact"
+      >
+        <h2>{{ result.getValue().name }}</h2>
+        <p>{{ result.getValue().email }}</p>
+      </div>
+      <div v-else-if="result.isErr()" class="error-message">
+        {{ result.getError().message }}
+      </div>
+    </template>
   </div>
 </template>
 ```
+
+## Return Values
+
+- **`result`**: ComputedRef to an AsyncResult containing the contact data or error
+- **`isLoading`**: Whether the query is initially loading
+- **`isFetching`**: Whether data is being fetched (includes background refetches)
+- **`isError`**: Whether an error has occurred
+- **`isSuccess`**: Whether the query succeeded
+- **`refetch`**: Function to manually refetch the data
+
+## Error States
+
+The `result` property makes all error states explicit and type-safe:
+
+```typescript
+if (result.value.isLoading()) {
+  // Initial load in progress
+}
+
+if (result.value.isOk()) {
+  const contact = result.value.getValue()
+  // Contact data is fully typed
+}
+
+if (result.value.isErr()) {
+  const error = result.value.getError()
+  // Handle specific error codes
+  if (error.code === 'NOT_FOUND') {
+    // Contact doesn't exist
+  }
+}
+```
+
 
 ## Prefetching Data
 
@@ -146,9 +161,9 @@ The query returns a `result` that is an `ApiResult` type from `neverthrow`:
 ```typescript
 // Check if result is an error
 if (result.value.isErr()) {
-  console.error('Error:', result.value.error)
+  console.error('Error:', result.value.getError())
 } else {
-  console.log('Data:', result.value.value)
+  console.log('Data:', result.value.getValue())
 }
 
 // Pattern matching

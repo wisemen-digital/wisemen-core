@@ -4,6 +4,24 @@ import type {
   Schema,
 } from '../types'
 
+const ARRAY_ITEM_REGEX = /z\.array\(([^)]+)\)/
+const MIN_ITEMS_REGEX = /\.min\((\d+)\)/
+const MAX_ITEMS_REGEX = /\.max\((\d+)\)/
+const MIN_REGEX = /\.min\(([^)]+)\)/
+const MAX_REGEX = /\.max\(([^)]+)\)/
+const GT_REGEX = /\.gt\(([^)]+)\)/
+const LT_REGEX = /\.lt\(([^)]+)\)/
+const PHONE_REGEX = '\\+?[1-9]\\d{1,14}'
+const ENUM_REGEX = /z\.enum\(\[([^\]]+)\]\)/
+const REGEX_PATTERN_REGEX = /\.regex\(\/([^/]+)\/\)/
+const UNION_REGEX = /z\.union\(\[([^\]]+)\]\)/
+const PROPERTY_PATTERN_REGEX = /^(\w+|"[^"]+"|'[^']'):([\s\S]*)$/
+const QUOTE_PATTERN_REGEX = /['"]/g
+const KEY_PATTERN_REGEX = /^(?:\w+|"[^"]+"|'[^']+')$/
+const IDENTIFIER_REGEX = /^[a-z_]\w*$/i
+const UUID_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+const HEX_CHARS = '[xy]'
+
 export interface ZodGeneratorOptions {
   useNullable?: boolean
   useOptional?: boolean
@@ -114,7 +132,7 @@ class ZodMockGenerator {
     zodSchemaString: string,
     overrides: Record<string, unknown>,
   ): unknown[] {
-    const itemTypeMatch = zodSchemaString.match(/z\.array\(([^)]+)\)/)
+    const itemTypeMatch = zodSchemaString.match(ARRAY_ITEM_REGEX)
 
     if (!itemTypeMatch || !itemTypeMatch[1]) {
       return []
@@ -133,8 +151,8 @@ class ZodMockGenerator {
       })
     }
 
-    const minMatch = zodSchemaString.match(/\.min\((\d+)\)/)
-    const maxMatch = zodSchemaString.match(/\.max\((\d+)\)/)
+    const minMatch = zodSchemaString.match(MIN_ITEMS_REGEX)
+    const maxMatch = zodSchemaString.match(MAX_ITEMS_REGEX)
 
     const minLength = minMatch?.[1] ? Number.parseInt(minMatch[1]) : 1
     const maxLength = maxMatch?.[1] ? Number.parseInt(maxMatch[1]) : 3
@@ -142,9 +160,7 @@ class ZodMockGenerator {
 
     return Array.from({
       length,
-    }, () => {
-      return this.generateFromSchemaString(itemSchema, {})
-    })
+    }).fill(this.generateFromSchemaString(itemSchema, {}))
   }
 
   private generateBooleanMock(): boolean {
@@ -184,7 +200,7 @@ class ZodMockGenerator {
   }
 
   private generateEnumMock(zodSchemaString: string): unknown {
-    const enumMatch = zodSchemaString.match(/z\.enum\(\[([^\]]+)\]\)/)
+    const enumMatch = zodSchemaString.match(ENUM_REGEX)
 
     if (!enumMatch || !enumMatch[1]) {
       return null
@@ -210,7 +226,7 @@ class ZodMockGenerator {
   }
 
   private generateFromRegex(zodSchemaString: string): string {
-    const regexMatch = zodSchemaString.match(/\.regex\(\/([^/]+)\/\)/)
+    const regexMatch = zodSchemaString.match(REGEX_PATTERN_REGEX)
 
     if (!regexMatch) {
       return this.generateRandomString(10)
@@ -218,7 +234,7 @@ class ZodMockGenerator {
 
     const pattern = regexMatch[1]
 
-    if (pattern?.includes('\\+?[1-9]\\d{1,14}')) {
+    if (pattern?.includes(PHONE_REGEX)) {
       return `+1${Math.floor(Math.random() * 9_000_000_000) + 1_000_000_000}`
     }
 
@@ -227,10 +243,10 @@ class ZodMockGenerator {
 
   private generateNumberMock(zodSchemaString: string): number {
     const isInt = zodSchemaString.includes('.int()')
-    const minMatch = zodSchemaString.match(/\.min\(([^)]+)\)/)
-    const maxMatch = zodSchemaString.match(/\.max\(([^)]+)\)/)
-    const gtMatch = zodSchemaString.match(/\.gt\(([^)]+)\)/)
-    const ltMatch = zodSchemaString.match(/\.lt\(([^)]+)\)/)
+    const minMatch = zodSchemaString.match(MIN_REGEX)
+    const maxMatch = zodSchemaString.match(MAX_REGEX)
+    const gtMatch = zodSchemaString.match(GT_REGEX)
+    const ltMatch = zodSchemaString.match(LT_REGEX)
 
     let min = isInt ? 0 : 0.0
 
@@ -335,8 +351,8 @@ class ZodMockGenerator {
       return this.generateFromRegex(zodSchemaString)
     }
 
-    const minMatch = zodSchemaString.match(/\.min\((\d+)\)/)
-    const maxMatch = zodSchemaString.match(/\.max\((\d+)\)/)
+    const minMatch = zodSchemaString.match(MIN_ITEMS_REGEX)
+    const maxMatch = zodSchemaString.match(MAX_ITEMS_REGEX)
 
     const minLength = minMatch?.[1] ? Number.parseInt(minMatch[1]) : 5
     const maxLength = maxMatch?.[1] ? Number.parseInt(maxMatch[1]) : 15
@@ -346,7 +362,7 @@ class ZodMockGenerator {
   }
 
   private generateUnionMock(zodSchemaString: string, overrides: Record<string, unknown>): unknown {
-    const unionMatch = zodSchemaString.match(/z\.union\(\[([^\]]+)\]\)/)
+    const unionMatch = zodSchemaString.match(UNION_REGEX)
 
     if (!unionMatch || !unionMatch[1]) {
       return null
@@ -385,7 +401,7 @@ class ZodMockGenerator {
   }
 
   private generateUUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    return UUID_TEMPLATE.replace(new RegExp(HEX_CHARS, 'g'), (c) => {
       const r = (Math.random() * 16) | 0
       const v = c === 'x' ? r : (r & 0x3) | 0x8
 
@@ -442,7 +458,7 @@ class ZodMockGenerator {
     const key = str.substring(0, colonIndex).trim()
     const value = str.substring(colonIndex + 1).trim()
 
-    const keyValid = /^(?:\w+|"[^"]+"|'[^']+')$/.test(key)
+    const keyValid = KEY_PATTERN_REGEX.test(key)
     const valueValid = value.length > 0 && this.hasBalancedBrackets(value)
 
     return keyValid && valueValid
@@ -462,10 +478,10 @@ class ZodMockGenerator {
         continue
       }
 
-      const match = trimmed.match(/^(\w+|"[^"]+"|'[^']'):([\s\S]*)$/)
+      const match = trimmed.match(PROPERTY_PATTERN_REGEX)
 
       if (match && match[1] && match[2]) {
-        const key = match[1].replace(/['"]/g, '')
+        const key = match[1].replace(QUOTE_PATTERN_REGEX, '')
         const schema = match[2].trim()
 
         properties.push([
@@ -815,7 +831,7 @@ function generateZodObject(schema: ExtendedSchema, options: ZodGeneratorOptions)
     key,
     propSchema,
   ] of Object.entries(schema.properties)) {
-    const safePropName = /^[a-z_]\w*$/i.test(key) ? key : `"${key}"`
+    const safePropName = IDENTIFIER_REGEX.test(key) ? key : `"${key}"`
     let propType = generateZodSchemaInternal(propSchema as ExtendedSchema, options)
 
     if (!required.has(key)) {

@@ -12,6 +12,13 @@ import {
   generateZodSchema,
 } from './zodMockGenerator'
 
+const EMAIL_REGEX = /^[\w.-]+@[\w.-]+\.\w+$/
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+const URL_REGEX = /^https?:\/\/.+/
+const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
+const DATETIME_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
+const PHONE_REGEX = /^\+1\d{10}$/
+
 describe('zod Mock Generator', () => {
   describe('generateZodSchema', () => {
     it('generates z.string() for string type', () => {
@@ -302,7 +309,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^[\w.-]+@[\w.-]+\.\w+$/)
+        expect(result).toMatch(EMAIL_REGEX)
       })
 
       it('generates UUID for z.string().uuid()', () => {
@@ -310,7 +317,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+        expect(result).toMatch(UUID_REGEX)
       })
 
       it('generates URL for z.string().url()', () => {
@@ -318,7 +325,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^https?:\/\/.+/)
+        expect(result).toMatch(URL_REGEX)
       })
 
       it('generates date for z.string().date()', () => {
@@ -326,7 +333,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+        expect(result).toMatch(DATE_REGEX)
       })
 
       it('generates datetime for z.string().datetime()', () => {
@@ -334,7 +341,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
+        expect(result).toMatch(DATETIME_REGEX)
       })
 
       it('generates string with min length for z.string().min()', () => {
@@ -593,7 +600,7 @@ describe('zod Mock Generator', () => {
         const obj = result as Record<string, unknown>
 
         expect(typeof obj.id).toBe('string')
-        expect(obj.id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
+        expect(obj.id).toMatch(UUID_REGEX)
         expect(Array.isArray(obj.tags)).toBeTruthy()
         expect([
           'active',
@@ -763,7 +770,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^\+1\d{10}$/)
+        expect(result).toMatch(PHONE_REGEX)
       })
 
       it('generates random string for custom regex pattern', () => {
@@ -853,7 +860,7 @@ describe('zod Mock Generator', () => {
         const result = generateMockFromZodSchema(zodSchema)
 
         expect(typeof result).toBe('string')
-        expect(result).toMatch(/^[\w.-]+@[\w.-]+\.\w+$/)
+        expect(result).toMatch(EMAIL_REGEX)
       })
 
       it('handles union with empty array returns null', () => {

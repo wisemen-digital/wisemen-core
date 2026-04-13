@@ -15,6 +15,10 @@ import type {
 export const rawPathRegexp
   = /^(.+?(?:\.([a-z0-9]+))?)(#[\w-]+)?(?: ?\{(\d+(?:[,-]\d+)*)? ?(\S+)?\})? ?(?:\[(.+)\])?$/
 
+const KEBAB_TO_CAMEL_REGEX = /-([a-z])/g
+const SCRIPT_SETUP_REGEX = /<script setup>/g
+const COMPONENT_PREVIEW_REGEX = /<ComponentPreview name="([^"]+)" \/>/g
+
 function rawPathToToken(rawPath: string) {
   const [
     filepath = '',
@@ -38,14 +42,14 @@ function rawPathToToken(rawPath: string) {
 }
 
 function kebabCaseToCamelCase(str: string): string {
-  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase()).replaceAll('/', '_')
+  return str.replace(KEBAB_TO_CAMEL_REGEX, (g) => g[1].toUpperCase()).replaceAll('/', '_')
 }
 
 // eslint-disable-next-line unicorn/no-anonymous-default-export
 export default function (md: MarkdownRenderer): void {
   md.core.ruler.after('inline', 'component-preview', (state) => {
     function insertComponentImport(importString: string): void {
-      const index = state.tokens.findIndex((i) => i.type === 'html_block' && i.content.match(/<script setup>/g))
+      const index = state.tokens.findIndex((i) => i.type === 'html_block' && i.content.match(SCRIPT_SETUP_REGEX))
 
       if (index === -1) {
         const importComponent = new state.Token('html_block', '', 0)
@@ -60,17 +64,14 @@ export default function (md: MarkdownRenderer): void {
       }
     }
 
-    // Define the regular expression to match the desired patternß
-    const regex = /<ComponentPreview name="([^"]+)" \/>/g
-
     // Iterate through the Markdown content and replace the pattern
-    state.src = state.src.replace(regex, (match, componentName) => {
+    state.src = state.src.replace(COMPONENT_PREVIEW_REGEX, (match, componentName) => {
       const pathName = `../../components/${componentName}`
       const convertedName = kebabCaseToCamelCase(componentName)
 
       insertComponentImport(`import ${convertedName} from '${pathName}/Demo.vue'`)
 
-      const index = state.tokens.findIndex((i) => i.content.match(regex))
+      const index = state.tokens.findIndex((i) => i.content.match(COMPONENT_PREVIEW_REGEX))
 
       const {
         realPath, path: _path,

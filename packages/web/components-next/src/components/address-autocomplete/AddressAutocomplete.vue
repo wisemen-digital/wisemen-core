@@ -29,6 +29,8 @@ const modelValue = defineModel<Address | null>({
   required: true,
 })
 
+const BUS_NUMBER_REGEX = /\/\s*(\d+)/
+
 const {
   googleMapsApiKey,
 } = useInjectConfigContext()
@@ -71,13 +73,12 @@ async function onSearch(searchTerm: string): Promise<void> {
     // E.g. Street 23/11 => Street 23/bus 11
     let formattedAddress = searchTerm
 
-    const regex = /\/\s*(\d+)/
-    const match = searchTerm.match(regex)
+    const match = searchTerm.match(BUS_NUMBER_REGEX)
 
     if (match !== null && match[1] !== undefined) {
       const busNumber = match[1]
 
-      formattedAddress = formattedAddress.replace(regex, `/bus ${busNumber}`)
+      formattedAddress = formattedAddress.replace(BUS_NUMBER_REGEX, `/bus ${busNumber}`)
     }
 
     const results = await autocompleteService.fetchAutocompleteSuggestions({
