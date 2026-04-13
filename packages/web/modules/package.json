@@ -1,0 +1,75 @@
+{
+  "name": "@wisemen/vue-core-modules",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "5.0.1",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/modules"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "prerelease": "pnpm version prerelease --preid=alpha",
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "precommit": "pnpm type-check && test:unit && pnpm build-only",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "pub:release": "pnpm publish --access public",
+    "test:unit": "vitest --run",
+    "test": "vitest --run --passWithNoTests",
+    "lint": "eslint .",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint:fix": "eslint . --fix",
+    "story:dev": "histoire dev",
+    "story:build": "histoire build",
+    "story:preview": "histoire preview"
+  },
+  "peerDependencies": {
+    "@wisemen/vue-core-components": "workspace:*",
+    "motion-v": "catalog:vue",
+    "vue": "catalog:vue",
+    "vue-i18n": "catalog:vue"
+  },
+  "devDependencies": {
+    "@histoire/plugin-vue": "catalog:stories",
+    "@tailwindcss/vite": "catalog:vite",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vue/test-utils": "catalog:test",
+    "@vue/tsconfig": "catalog:vue",
+    "@vueuse/core": "catalog:vue",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-components": "workspace:*",
+    "eslint": "catalog:lint",
+    "highlight-words": "catalog:general",
+    "histoire": "catalog:stories",
+    "husky": "catalog:build",
+    "reka-ui": "catalog:vue",
+    "tailwindcss": "catalog:style",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vite-plugin-dts": "catalog:vite",
+    "vitest": "catalog:test",
+    "vue": "catalog:vue",
+    "vue-tsc": "catalog:vue"
+  }
+}

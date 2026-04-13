@@ -1,0 +1,41 @@
+{
+  "name": "@wisemen/nestjs-async-api",
+  "version": "0.1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./dist/lib/index.js"
+  },
+  "imports": {
+    "#*": "./lib/*"
+  },
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node  --test ./dist/**/*.test.js",
+    "lint": "eslint --cache",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "dependencies": {
+    "change-case": "catalog:backend",
+    "yaml": "catalog:backend",
+    "@nestjs/swagger": "catalog:backend"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "typescript": "catalog:peer"
+  },
+  "author": "Kobe Kwanten",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/nestjs-async-api"
+  }
+}

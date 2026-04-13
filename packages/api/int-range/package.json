@@ -1,0 +1,50 @@
+{
+  "name": "@wisemen/int-range",
+  "version": "0.0.6",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --enable-source-maps --env-file=.env.test --test ./dist/**/*.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "author": "Wisemen Digital",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/int-range"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "dependencies": {
+    "@wisemen/pagination": "workspace:*"
+  }
+}

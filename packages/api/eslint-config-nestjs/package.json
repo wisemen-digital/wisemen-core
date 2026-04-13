@@ -1,0 +1,39 @@
+{
+  "name": "@wisemen/eslint-config-nestjs",
+  "version": "0.2.13",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "",
+  "main": "eslint.config.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/eslint-config-nestjs"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "peerDependencies": {
+    "eslint": "9.39.2",
+    "oxlint": "1.56.0"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "dependencies": {
+    "@eslint/eslintrc": "catalog:lint",
+    "@eslint/js": "catalog:lint",
+    "@stylistic/eslint-plugin": "catalog:lint",
+    "@types/node": "catalog:backend",
+    "eslint": "catalog:lint",
+    "eslint-plugin-import-typescript": "catalog:lint",
+    "eslint-plugin-import-x": "catalog:lint",
+    "eslint-plugin-unicorn": "catalog:lint",
+    "eslint-plugin-unused-imports": "catalog:lint",
+    "globals": "catalog:lint",
+    "typescript": "catalog:peer",
+    "typescript-eslint": "catalog:lint",
+    "oxlint": "catalog:lint",
+    "@typescript-eslint/eslint-plugin": "catalog:lint"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@wisemen/validators",
+  "version": "0.0.23",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "node --test ./dist/**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Joren Vandeweyer",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/validators"
+  },
+  "dependencies": {
+    "@wisemen/time": "workspace:*"
+  }
+}

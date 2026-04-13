@@ -8,6 +8,7 @@ import {
   VcThemeProvider,
   VcToastContainer,
 } from '@wisemen/vue-core-components'
+import { useData } from 'vitepress'
 import {
   computed,
   ref,
@@ -20,7 +21,12 @@ const props = defineProps<{
 
 type Tab = 'code' | 'preview'
 
+const {
+  isDark,
+} = useData()
+
 const parsedFiles = computed<string[]>(() => JSON.parse(decodeURIComponent(props.files ?? '')))
+const appearance = computed<'dark' | 'light'>(() => isDark.value ? 'dark' : 'light')
 
 const selectedTab = ref<Tab>('preview')
 const selectedFileTab = ref<string>('Demo.vue')
@@ -33,7 +39,10 @@ const selectedFileTab = ref<string>('Demo.vue')
       teleport-target-selector="#teleport-target"
       google-maps-api-key="AIzaSyATX2fY3BZwaKeURsQhwpEVLmLRr27s4vw"
     >
-      <VcThemeProvider class="vp-raw">
+      <VcThemeProvider
+        :appearance="appearance"
+        class="vp-raw"
+      >
         <VcTabs
           v-model="selectedTab"
           :class-config="{

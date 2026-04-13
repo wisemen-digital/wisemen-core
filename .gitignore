@@ -23,5 +23,7 @@ dist
 *storybook.log
 storybook-static
 **/storybook-static
+static
+**/static
 
 **/.eslintcache

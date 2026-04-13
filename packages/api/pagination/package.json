@@ -1,0 +1,46 @@
+{
+  "name": "@wisemen/pagination",
+  "version": "0.1.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run build",
+    "test": "node --test",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "author": "Joren Vandeweyer",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/pagination"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "dependencies": {
+    "@wisemen/validators": "workspace:*"
+  }
+}

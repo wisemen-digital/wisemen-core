@@ -1,0 +1,412 @@
+/* ========================================================================== */
+/* DESIGN TOKENS                                                              */
+/* ========================================================================== */
+
+/*
+ * Tailwind provides its own spacing scale.
+ * To avoid conflicts or overrides, custom spacing tokens are defined
+ * outside the `@theme` block.
+ */
+:root {
+  /* Spacing Scale (Used for margin, padding, gap) */
+  --spacing-none: 0rem; /* 0px */
+  --spacing-xxs: 0.125rem; /* 2px */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.375rem; /* 6px */
+  --spacing-md: 0.5rem; /* 8px */
+  --spacing-lg: 0.75rem; /* 12px */
+  --spacing-xl: 1rem; /* 16px */
+  --spacing-2xl: 1.25rem; /* 20px */
+  --spacing-3xl: 1.5rem; /* 24px */
+  --spacing-4xl: 2rem; /* 32px */
+  --spacing-5xl: 2.5rem; /* 40px */
+  --spacing-6xl: 3rem; /* 48px */
+  --spacing-7xl: 4rem; /* 64px */
+  --spacing-8xl: 5rem; /* 80px */
+  --spacing-9xl: 6rem; /* 96px */
+  --spacing-10xl: 8rem; /* 128px */
+  --spacing-11xl: 10rem; /* 160px */
+}
+
+@theme inline {
+  --color-*: initial;
+
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  --color-brand-25: var(--brand-25);
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
+
+  --color-error-25: var(--error-25);
+  --color-error-50: var(--error-50);
+  --color-error-100: var(--error-100);
+  --color-error-200: var(--error-200);
+  --color-error-300: var(--error-300);
+  --color-error-400: var(--error-400);
+  --color-error-500: var(--error-500);
+  --color-error-600: var(--error-600);
+  --color-error-700: var(--error-700);
+  --color-error-800: var(--error-800);
+  --color-error-900: var(--error-900);
+  --color-error-950: var(--error-950);
+
+  --color-warning-25: var(--warning-25);
+  --color-warning-50: var(--warning-50);
+  --color-warning-100: var(--warning-100);
+  --color-warning-200: var(--warning-200);
+  --color-warning-300: var(--warning-300);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
+  --color-warning-800: var(--warning-800);
+  --color-warning-900: var(--warning-900);
+  --color-warning-950: var(--warning-950);
+
+  --color-success-25: var(--success-25);
+  --color-success-50: var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-200: var(--success-200);
+  --color-success-300: var(--success-300);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
+  --color-success-700: var(--success-700);
+  --color-success-800: var(--success-800);
+  --color-success-900: var(--success-900);
+  --color-success-950: var(--success-950);
+
+  --color-blue-25: var(--blue-25);
+  --color-blue-50: var(--blue-50);
+  --color-blue-100: var(--blue-100);
+  --color-blue-200: var(--blue-200);
+  --color-blue-300: var(--blue-300);
+  --color-blue-400: var(--blue-400);
+  --color-blue-500: var(--blue-500);
+  --color-blue-600: var(--blue-600);
+  --color-blue-700: var(--blue-700);
+  --color-blue-800: var(--blue-800);
+  --color-blue-900: var(--blue-900);
+  --color-blue-950: var(--blue-950);
+
+  --color-pink-25: var(--pink-25);
+  --color-pink-50: var(--pink-50);
+  --color-pink-100: var(--pink-100);
+  --color-pink-200: var(--pink-200);
+  --color-pink-300: var(--pink-300);
+  --color-pink-400: var(--pink-400);
+  --color-pink-500: var(--pink-500);
+  --color-pink-600: var(--pink-600);
+  --color-pink-700: var(--pink-700);
+  --color-pink-800: var(--pink-800);
+  --color-pink-900: var(--pink-900);
+  --color-pink-950: var(--pink-950);
+
+  --color-purple-25: var(--purple-25);
+  --color-purple-50: var(--purple-50);
+  --color-purple-100: var(--purple-100);
+  --color-purple-200: var(--purple-200);
+  --color-purple-300: var(--purple-300);
+  --color-purple-400: var(--purple-400);
+  --color-purple-500: var(--purple-500);
+  --color-purple-600: var(--purple-600);
+  --color-purple-700: var(--purple-700);
+  --color-purple-800: var(--purple-800);
+  --color-purple-900: var(--purple-900);
+  --color-purple-950: var(--purple-950);
+
+  --color-gray-25: var(--gray-25);
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+  --color-gray-950: var(--gray-950);
+
+  --color-fg-primary: var(--fg-primary);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-fg-secondary-hover: var(--fg-secondary-hover);
+  --color-fg-tertiary: var(--fg-tertiary);
+  --color-fg-tertiary-hover: var(--fg-tertiary-hover);
+  --color-fg-quaternary: var(--fg-quaternary);
+  --color-fg-quaternary-hover: var(--fg-quaternary-hover);
+  --color-fg-white: var(--fg-white);
+  --color-fg-disabled: var(--fg-disabled);
+  --color-fg-disabled-subtle: var(--fg-disabled-subtle);
+  --color-fg-brand-primary: var(--fg-brand-primary);
+  --color-fg-brand-primary-alt: var(--fg-brand-primary-alt);
+  --color-fg-brand-secondary: var(--fg-brand-secondary);
+  --color-fg-brand-secondary-alt: var(--fg-brand-secondary-alt);
+  --color-fg-brand-secondary-hover: var(--fg-brand-secondary-hover);
+  --color-fg-error-primary: var(--fg-error-primary);
+  --color-fg-error-secondary: var(--fg-error-secondary);
+  --color-fg-warning-primary: var(--fg-warning-primary);
+  --color-fg-warning-secondary: var(--fg-warning-secondary);
+  --color-fg-success-primary: var(--fg-success-primary);
+  --color-fg-success-secondary: var(--fg-success-secondary);
+
+  /* ------------------------------------------------------------------------ */
+  /* TEXT COLORS                                                              */
+  /* ------------------------------------------------------------------------ */
+
+  --text-color-primary: var(--text-primary);
+  --text-color-primary-on-brand: var(--text-primary-on-brand);
+  --text-color-secondary: var(--text-secondary);
+  --text-color-secondary-hover: var(--text-secondary-hover);
+  --text-color-secondary-on-brand: var(--text-secondary-on-brand);
+  --text-color-tertiary: var(--text-tertiary);
+  --text-color-teriary-on-brand: var(--text-teriary-on-brand);
+  --text-color-quaternary: var(--text-quaternary);
+  --text-color-quaternary-on-brand: var(--text-quaternary-on-brand);
+  --text-color-white: var(--text-white);
+  --text-color-disabled: var(--text-disabled);
+  --text-color-placeholder: var(--text-placeholder);
+  --text-color-placeholder-subtle: var(--text-placeholder-subtle);
+  --text-color-brand-primary: var(--text-brand-primary);
+  --text-color-brand-secondary: var(--text-brand-secondary);
+  --text-color-brand-secondary-hover: var(--text-brand-secondary-hover);
+  --text-color-brand-tertiary: var(--text-brand-tertiary);
+  --text-color-brand-tertiary-alt: var(--text-brand-tertiary-alt);
+  --text-color-error-primary: var(--text-error-primary);
+  --text-color-error-primary-hover: var(--text-error-primary-hover);
+  --text-color-warning-primary: var(--text-warning-primary);
+  --text-color-success-primary: var(--text-success-primary);
+
+  /* ------------------------------------------------------------------------ */
+  /* BACKGROUND COLORS                                                        */
+  /* ------------------------------------------------------------------------ */
+
+  --background-color-primary: var(--bg-primary);
+  --background-color-primary-alt: var(--bg-primary-alt);
+  --background-color-primary-hover: var(--bg-primary-hover);
+  --background-color-primary-solid: var(--bg-primary-solid);
+  --background-color-secondary: var(--bg-secondary);
+  --background-color-secondary-alt: var(--bg-secondary-alt);
+  --background-color-secondary-hover: var(--bg-secondary-hover);
+  --background-color-secondary-subtle: var(--bg-secondary-subtle);
+  --background-color-secondary-solid: var(--bg-secondary-solid);
+  --background-color-tertiary: var(--bg-tertiary);
+  --background-color-quaternary: var(--bg-quaternary);
+  --background-color-active: var(--bg-active);
+  --background-color-disabled: var(--bg-disabled);
+  --background-color-disabled-subtle: var(--bg-disabled-subtle);
+  --background-color-overlay: var(--bg-overlay);
+  --background-color-brand-primary: var(--bg-brand-primary);
+  --background-color-brand-primary-alt: var(--bg-brand-primary-alt);
+  --background-color-brand-secondary: var(--bg-brand-secondary);
+  --background-color-brand-solid: var(--bg-brand-solid);
+  --background-color-brand-solid-hover: var(--bg-brand-solid-hover);
+  --background-color-brand-section: var(--bg-brand-section);
+  --background-color-brand-section-subtle: var(--bg-brand-section-subtle);
+  --background-color-error-primary: var(--bg-error-primary);
+  --background-color-error-secondary: var(--bg-error-secondary);
+  --background-color-error-solid: var(--bg-error-solid);
+  --background-color-warning-primary: var(--bg-warning-primary);
+  --background-color-warning-secondary: var(--bg-warning-secondary);
+  --background-color-warning-solid: var(--bg-warning-solid);
+  --background-color-success-primary: var(--bg-success-primary);
+  --background-color-success-secondary: var(--bg-success-secondary);
+  --background-color-success-solid: var(--bg-success-solid);
+
+  /* ------------------------------------------------------------------------ */
+  /* BORDER COLORS                                                            */
+  /* ------------------------------------------------------------------------ */
+
+  --border-color-primary: var(--border-primary);
+  --border-color-secondary: var(--border-secondary);
+  --border-color-secondary-alt: var(--border-secondary-alt);
+  --border-color-tertiary: var(--border-tertiary);
+  --border-color-disabled: var(--border-disabled);
+  --border-color-disabled-subtle: var(--border-disabled-subtle);
+  --border-color-brand: var(--border-brand);
+  --border-color-brand-alt: var(--border-brand-alt);
+  --border-color-error: var(--border-error);
+  --border-color-error-subtle: var(--border-error-subtle);
+
+  /* ------------------------------------------------------------------------ */
+  /* SPACING                                                                  */
+  /* ------------------------------------------------------------------------ */
+
+  --margin-none: var(--spacing-none);
+  --margin-xxs: var(--spacing-xxs);
+  --margin-xs: var(--spacing-xs);
+  --margin-sm: var(--spacing-sm);
+  --margin-md: var(--spacing-md);
+  --margin-lg: var(--spacing-lg);
+  --margin-xl: var(--spacing-xl);
+  --margin-2xl: var(--spacing-2xl);
+  --margin-3xl: var(--spacing-3xl);
+  --margin-4xl: var(--spacing-4xl);
+  --margin-5xl: var(--spacing-5xl);
+  --margin-6xl: var(--spacing-6xl);
+  --margin-7xl: var(--spacing-7xl);
+  --margin-8xl: var(--spacing-8xl);
+  --margin-9xl: var(--spacing-9xl);
+  --margin-10xl: var(--spacing-10xl);
+  --margin-11xl: var(--spacing-11xl);
+
+  --padding-none: var(--spacing-none);
+  --padding-xxs: var(--spacing-xxs);
+  --padding-xs: var(--spacing-xs);
+  --padding-sm: var(--spacing-sm);
+  --padding-md: var(--spacing-md);
+  --padding-lg: var(--spacing-lg);
+  --padding-xl: var(--spacing-xl);
+  --padding-2xl: var(--spacing-2xl);
+  --padding-3xl: var(--spacing-3xl);
+  --padding-4xl: var(--spacing-4xl);
+  --padding-5xl: var(--spacing-5xl);
+  --padding-6xl: var(--spacing-6xl);
+  --padding-7xl: var(--spacing-7xl);
+  --padding-8xl: var(--spacing-8xl);
+  --padding-9xl: var(--spacing-9xl);
+  --padding-10xl: var(--spacing-10xl);
+  --padding-11xl: var(--spacing-11xl);
+
+  --gap-none: var(--spacing-none);
+  --gap-xxs: var(--spacing-xxs);
+  --gap-xs: var(--spacing-xs);
+  --gap-sm: var(--spacing-sm);
+  --gap-md: var(--spacing-md);
+  --gap-lg: var(--spacing-lg);
+  --gap-xl: var(--spacing-xl);
+  --gap-2xl: var(--spacing-2xl);
+  --gap-3xl: var(--spacing-3xl);
+  --gap-4xl: var(--spacing-4xl);
+  --gap-5xl: var(--spacing-5xl);
+  --gap-6xl: var(--spacing-6xl);
+  --gap-7xl: var(--spacing-7xl);
+  --gap-8xl: var(--spacing-8xl);
+  --gap-9xl: var(--spacing-9xl);
+  --gap-10xl: var(--spacing-10xl);
+  --gap-11xl: var(--spacing-11xl);
+
+  /* ------------------------------------------------------------------------ */
+  /* BORDER RADIUS                                                            */
+  /* ------------------------------------------------------------------------ */
+
+  --radius-*: initial;
+  --radius-none: 0rem;
+  --radius-xxs: 0.125rem;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.625rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.25rem;
+  --radius-4xl: 1.5rem;
+  --radius-full: 62.5rem;
+
+  /* ------------------------------------------------------------------------ */
+  /* LINE HEIGHTS                                                             */
+  /* ------------------------------------------------------------------------ */
+  --line-height-*: initial;
+  --line-height-xs: 1.125rem; /* 18px */
+  --line-height-sm: 1.25rem; /* 20px */
+  --line-height-md: 1.5rem; /* 24px */
+  --line-height-lg: 1.75rem; /* 28px */
+  --line-height-xl: 2rem; /* 32px */
+  --line-height-2xl: 2rem; /* 32px (display-xs) */
+  --line-height-3xl: 2.375rem; /* 38px (display-sm) */
+  --line-height-4xl: 2.75rem; /* 44px (display-md) */
+  --line-height-5xl: 3.75rem; /* 60px (display-lg) */
+  --line-height-6xl: 4.5rem; /* 72px (display-xl) */
+  --line-height-7xl: 5.625rem; /* 90px (display-2xl) */
+
+  /* ------------------------------------------------------------------------ */
+  /* FONT SIZES& LINE HEIGHTS                                                 */
+  /* ------------------------------------------------------------------------ */
+
+  --text-*: initial;
+  --text-xxs: 0.6875rem; /* 11px */
+  --text-xxs--line-height: var(--line-height-xs);
+  --text-xs: 0.75rem; /* 12px */
+  --text-xs--line-height: var(--line-height-xs);
+  --text-sm: 0.875rem;
+  --text-sm--line-height: var(--line-height-sm);
+  --text-md: 1rem;
+  --text-md--line-height: var(--line-height-md);
+  --text-lg: 1.125rem;
+  --text-lg--line-height: var(--line-height-lg);
+  --text-xl: 1.25rem;
+  --text-xl--line-height: var(--line-height-xl);
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: var(--line-height-2xl);
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: var(--line-height-3xl);
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: var(--line-height-4xl);
+  --text-5xl: 3rem;
+  --text-5xl--line-height: var(--line-height-5xl);
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: var(--line-height-6xl);
+  --text-7xl: 4.5rem;
+  --text-7xl--line-height: var(--line-height-7xl);
+
+  /* ------------------------------------------------------------------------ */
+  /* FONT WEIGHTS                                                             */
+  /* ------------------------------------------------------------------------ */
+
+  --font-weight-*: initial;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* ------------------------------------------------------------------------ */
+  /* SHADOWS                                                                  */
+  /* ------------------------------------------------------------------------ */
+
+  --shadow-*: initial;
+  --shadow-xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0px 1px 3px 0px rgba(10, 13, 18, 0.1);
+  --shadow: -2px 5px 10px 0px #00000036;
+  --shadow-lg: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 12px 16px -4px rgba(16, 24, 40, 0.03);
+  --shadow-keyboard-key:
+    0px 0px 0px 0.909px rgba(10, 13, 18, 0.18) inset, 0px -1.818px 0px 0px rgba(10, 13, 18, 0.05) inset,
+    0px 0.909px 1.818px 0px rgba(10, 13, 18, 0.05);
+
+  /* ------------------------------------------------------------------------ */
+  /* ANIMATIONS                                                               */
+  /* ------------------------------------------------------------------------ */
+
+  --animate-spinner: loading-spinner-rotate 2s linear infinite;
+  --animate-spinner-path: loading-spinner-path 1.5s ease-in-out infinite;
+
+  @keyframes loading-spinner-rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loading-spinner-path {
+    0% {
+      stroke-dasharray: 1, 200;
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -35px;
+    }
+    100% {
+      stroke-dasharray: 89, 200;
+      stroke-dashoffset: -124px;
+    }
+  }
+}

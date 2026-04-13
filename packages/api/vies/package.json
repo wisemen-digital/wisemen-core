@@ -1,0 +1,40 @@
+{
+  "name": "@wisemen/vies",
+  "version": "0.0.15",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --test",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "typescript": "catalog:peer"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/config": "catalog:backend-peer",
+    "axios": "catalog:backend-peer"
+  },
+  "author": "Yu Hang Hu",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/vies"
+  }
+}

@@ -9,12 +9,12 @@ import {
   <VcRouterLinkTabs>
     <template #items>
       <VcRouterLinkTabsItem
-        to="/vue-core/packages/components/components/router-link-tabs/router-link-tabs.html"
+        to="/wisemen-core/packages/components/components/router-link-tabs/router-link-tabs.html"
       >
         Router Link tabs docs
       </VcRouterLinkTabsItem>
       <VcRouterLinkTabsItem
-        to="/vue-core/packages/components/components/tabs/tabs.html"
+        to="/wisemen-core/packages/components/components/tabs/tabs.html"
       >
         Tabs docs
       </VcRouterLinkTabsItem>

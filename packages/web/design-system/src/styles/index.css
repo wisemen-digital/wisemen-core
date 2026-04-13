@@ -1,0 +1,5 @@
+@import './themes/default.css';
+@import './core/colors.css';
+@import './core/tokens.css';
+@import 'tailwindcss';
+@import './utilities.css';

@@ -1,0 +1,95 @@
+{
+  "name": "@wisemen/vue-core-design-system",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.2.1",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/design-system"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "style": "./dist/index.css"
+    },
+    "./style": "./dist/index.css",
+    "./source.css": "./dist/source.css"
+  },
+  "style": "./dist/index.css",
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "vite build && pnpm build:source",
+    "build:source": "cat src/styles/source.css src/styles/utilities.css > dist/source.css",
+    "dev": "vite build --watch",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --run --coverage",
+    "type-check": "vue-tsc --noEmit",
+    "storybook:clean": "rimraf node_modules/.cache node_modules/.vite",
+    "storybook": "pnpm storybook:clean && storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build"
+  },
+  "peerDependencies": {
+    "@vueuse/core": "catalog:vue",
+    "@vueuse/router": "catalog:vue",
+    "motion-v": "catalog:peer",
+    "reka-ui": "catalog:peer",
+    "vue": "catalog:peer",
+    "vue-i18n": "catalog:peer",
+    "vue-router": "catalog:peer"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "catalog:vite",
+    "@wisemen/vue-core-icons": "workspace:*",
+    "tailwind-merge": "catalog:style",
+    "tailwind-variants": "catalog:style",
+    "tailwindcss": "catalog:style",
+    "vue-component-meta": "catalog:storybook"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "catalog:storybook",
+    "@storybook/addon-a11y": "catalog:storybook",
+    "@storybook/addon-docs": "catalog:storybook",
+    "@storybook/addon-vitest": "catalog:storybook",
+    "@storybook/vue3": "catalog:storybook",
+    "@storybook/vue3-vite": "catalog:storybook",
+    "@types/node": "catalog:types",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vitest/browser-playwright": "catalog:test",
+    "@vitest/coverage-v8": "catalog:test",
+    "@vue/test-utils": "catalog:test",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint",
+    "eslint-plugin-storybook": "catalog:storybook",
+    "jsdom": "catalog:test",
+    "motion-v": "catalog:peer",
+    "playwright": "catalog:test",
+    "reka-ui": "catalog:peer",
+    "storybook": "catalog:storybook",
+    "typescript": "catalog:build",
+    "vite-plugin-dts": "catalog:vite",
+    "vitest": "catalog:test",
+    "vue": "catalog:peer",
+    "vue-router": "catalog:peer",
+    "vue-tsc": "catalog:vue"
+  }
+}

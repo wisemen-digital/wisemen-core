@@ -1,0 +1,43 @@
+{
+  "name": "@wisemen/nestjs-api-2-pdf",
+  "version": "0.1.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "lint": "eslint --cache",
+    "lint:fix": "eslint --cache --fix"
+  },
+  "dependencies": {
+    "axios": "catalog:backend"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@wisemen/opentelemetry": "workspace:*",
+    "eslint": "catalog:lint",
+    "typescript": "catalog:peer"
+  },
+  "author": "Wisemen",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-api-2-pdf"
+  }
+}

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { VcThemeProvider } from '@wisemen/vue-core-components'
+import { useData } from 'vitepress'
+import { computed } from 'vue'
 
 interface PropDef {
   name?: string
@@ -15,6 +17,11 @@ interface PropsTableProps {
 }
 
 const props = defineProps<PropsTableProps>()
+const {
+  isDark,
+} = useData()
+
+const appearance = computed<'dark' | 'light'>(() => isDark.value ? 'dark' : 'light')
 
 // Sort by required and then alphabetically by name
 function sortProps(props: PropDef[]): PropDef[] {
@@ -36,7 +43,7 @@ function sortProps(props: PropDef[]): PropDef[] {
 </script>
 
 <template>
-  <VcThemeProvider>
+  <VcThemeProvider :appearance="appearance">
     <h2 id="props">
       Props
     </h2>

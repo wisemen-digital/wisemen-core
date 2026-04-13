@@ -18,7 +18,7 @@ You can access the ESLint Inspector directly from this documentation site:
 
 <div class="tip custom-block" style="padding-top: 8px">
   <p style="font-size: 1.1em; margin-bottom: 12px;">
-    👉 <strong><a href="/vue-core/eslint-inspector/" target="_blank">Open ESLint Inspector</a></strong>
+    👉 <strong><a href="/wisemen-core/eslint-inspector/" target="_blank">Open ESLint Inspector</a></strong>
   </p>
   <p style="margin: 0; font-size: 0.95em;">
     The inspector will open in a new window where you can explore all the rules included in <code>@wisemen/eslint-config-vue</code>.

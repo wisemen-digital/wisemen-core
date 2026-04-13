@@ -1,0 +1,48 @@
+{
+  "name": "@wisemen/pgboss-nestjs-job",
+  "version": "3.3.5",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm build",
+    "test": "node --test ./dist/**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "author": "Joren Vandeweyer",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/pgboss-nestjs-job"
+  },
+  "dependencies": {
+    "pg-boss": "catalog:backend",
+    "@wisemen/nestjs-typeorm": "workspace:*",
+    "@wisemen/opentelemetry": "workspace:*"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/core": "catalog:backend-peer",
+    "@opentelemetry/api": "catalog:backend-peer",
+    "@sentry/nestjs": "catalog:backend-peer",
+    "colors": "catalog:backend-peer",
+    "rxjs": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "typescript": "catalog:peer"
+  }
+}

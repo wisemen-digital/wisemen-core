@@ -1,0 +1,59 @@
+{
+  "name": "@wisemen/nestjs-file-storage",
+  "version": "0.2.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "lint": "eslint --cache",
+    "test": "pnpm clean && pnpm build && node --enable-source-maps --experimental-test-isolation=none --test ./dist/**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "expect": "catalog:test"
+  },
+  "peerDependencies": {
+    "@aws-sdk/client-s3": "catalog:backend-peer",
+    "@aws-sdk/lib-storage": "catalog:backend-peer",
+    "@aws-sdk/s3-request-presigner": "catalog:backend-peer",
+    "@azure/storage-blob": "catalog:backend-peer",
+    "@nestjs/common": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer"
+  },
+  "peerDependenciesMeta": {
+    "@aws-sdk/client-s3": {
+      "optional": true
+    },
+    "@aws-sdk/lib-storage": {
+      "optional": true
+    },
+    "@aws-sdk/s3-request-presigner": {
+      "optional": true
+    },
+    "@azure/storage-blob": {
+      "optional": true
+    }
+  },
+  "author": "Pieter Pauwels",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/nestjs-file-storage"
+  }
+}

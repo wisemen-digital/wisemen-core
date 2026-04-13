@@ -1,9 +1,0 @@
-{
-  "component.number_field.decrement": "Decrement",
-  "component.number_field.increment": "Increment",
-  "component.keyboard_shortcut.sequence_label": "then",
-  "components.sidebar.global_search.label": "Search",
-  "components.sidebar.title": "Sidebar",
-  "components.sidebar.description": "The sidebar contains navigation links and other important actions.",
-  "components.sidebar.sign_out": "Sign out"
-}

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { VcThemeProvider } from '@wisemen/vue-core-components'
+import { useData } from 'vitepress'
+import { computed } from 'vue'
 
 interface MethodDef {
   name: string
@@ -12,6 +14,11 @@ interface MethodsTableProps {
 }
 
 const props = defineProps<MethodsTableProps>()
+const {
+  isDark,
+} = useData()
+
+const appearance = computed<'dark' | 'light'>(() => isDark.value ? 'dark' : 'light')
 
 // Sort by name
 function sortMethods(methods: MethodDef[]): MethodDef[] {
@@ -20,7 +27,7 @@ function sortMethods(methods: MethodDef[]): MethodDef[] {
 </script>
 
 <template>
-  <VcThemeProvider>
+  <VcThemeProvider :appearance="appearance">
     <h2 id="methods">
       Methods
     </h2>

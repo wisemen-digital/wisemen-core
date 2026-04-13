@@ -5,6 +5,7 @@ import {
   VcSelectItem,
   VcThemeProvider,
 } from '@wisemen/vue-core-components'
+import { useData } from 'vitepress'
 import {
   computed,
   reactive,
@@ -22,6 +23,11 @@ interface Props<U extends (...args: any[]) => Record<string, string>> {
 }
 
 const props = defineProps<Props<any>>()
+const {
+  isDark,
+} = useData()
+
+const appearance = computed<'dark' | 'light'>(() => isDark.value ? 'dark' : 'light')
 
 const {
   variants,
@@ -54,7 +60,7 @@ for (const variant in variants) {
 
 <template>
   <VcConfigProvider locale="en-NL">
-    <VcThemeProvider>
+    <VcThemeProvider :appearance="appearance">
       <h2 id="default-styles">
         Default styles
       </h2>

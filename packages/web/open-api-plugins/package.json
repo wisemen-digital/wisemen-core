@@ -1,0 +1,52 @@
+{
+  "name": "@wisemen/open-api-plugins",
+  "type": "module",
+  "version": "1.0.3",
+  "description": "OpenAPI plugins for code generation",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://github.com/wisemen-digital/wisemen-core",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/open-api-plugins"
+  },
+  "keywords": [
+    "openapi",
+    "codegen",
+    "plugins"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "test": "vitest --run",
+    "typecheck": "pnpm tsc"
+  },
+  "peerDependencies": {
+    "@hey-api/openapi-ts": "catalog:peer"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build"
+  }
+}

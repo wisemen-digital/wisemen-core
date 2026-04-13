@@ -1,0 +1,76 @@
+{
+  "name": "@wisemen/vue-core-configs",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.3",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/template-typescript"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./i18n": {
+      "types": "./dist/i18n.d.mts",
+      "import": "./dist/i18n.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --run --passWithNoTests",
+    "typecheck": "pnpm tsc"
+  },
+  "peerDependencies": {
+    "@hey-api/openapi-ts": "catalog:peer",
+    "@tanstack/vue-query": "catalog:peer",
+    "@vitejs/plugin-vue": "catalog:peer",
+    "tailwind-variants": "catalog:peer",
+    "vite": "catalog:peer",
+    "vite-plugin-pwa": "catalog:peer",
+    "vitest": "catalog:peer",
+    "vue": "catalog:peer",
+    "vue-i18n": "catalog:peer",
+    "zod": "catalog:peer"
+  },
+  "dependencies": {
+    "@wisemen/vue-core-i18n-factory": "workspace:*",
+    "defu": "catalog:general"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "catalog:openapi",
+    "@tanstack/vue-query": "catalog:vue",
+    "@types/node": "catalog:types",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint",
+    "tailwind-variants": "catalog:style",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vite-plugin-pwa": "catalog:vite",
+    "vitest": "catalog:test",
+    "vue-i18n": "catalog:vue",
+    "zod": "catalog:general"
+  }
+}

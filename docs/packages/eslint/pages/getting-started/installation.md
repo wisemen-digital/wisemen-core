@@ -148,5 +148,5 @@ eslint src/**/*.{js,ts,vue}
 
 ## Need Help?
 
-- [Report issues](https://github.com/wisemen-digital/vue-core/issues)
-- [View source code](https://github.com/wisemen-digital/vue-core/tree/main/packages/eslint-config)
+- [Report issues](https://github.com/wisemen-digital/wisemen-core/issues)
+- [View source code](https://github.com/wisemen-digital/wisemen-core/tree/main/packages/eslint-config)

@@ -1,0 +1,67 @@
+{
+  "name": "formango",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "3.2.3",
+  "private": false,
+  "description": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/formango"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --run",
+    "typecheck": "pnpm tsc"
+  },
+  "peerDependencies": {
+    "vue": "catalog:peer",
+    "zod": "catalog:peer"
+  },
+  "dependencies": {
+    "@vue/devtools-api": "catalog:vue",
+    "clone-deep": "catalog:general"
+  },
+  "devDependencies": {
+    "@standard-schema/spec": "catalog:general",
+    "@types/clone-deep": "catalog:types",
+    "@vitest/coverage-v8": "catalog:test",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint",
+    "tailwindcss": "catalog:style",
+    "vite": "catalog:vite",
+    "vitest": "catalog:test",
+    "vue": "catalog:vue"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}

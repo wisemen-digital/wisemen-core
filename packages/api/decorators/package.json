@@ -1,0 +1,40 @@
+{
+  "name": "@wisemen/decorators",
+  "version": "0.0.17",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --test",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "author": "Kobe Kwanten",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/decorators"
+  },
+  "dependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@nestjs/swagger": "catalog:backend"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer",
+    "@wisemen/eslint-config-nestjs": "workspace:*"
+  }
+}

@@ -1,1 +1,0 @@
-# Tanstack query wrapper

@@ -1,0 +1,45 @@
+{
+  "name": "@wisemen/quantity",
+  "version": "0.6.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm run build",
+    "test": "node --test './dist/**/*.test.js'",
+    "lint": "eslint --cache",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Maarten Sijmkens",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/quantity"
+  },
+  "dependencies": {
+    "@wisemen/nestjs-typeorm": "workspace:*"
+  }
+}

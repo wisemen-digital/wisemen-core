@@ -1,0 +1,76 @@
+{
+  "name": "@wisemen/eslint-config-vue",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "2.1.2",
+  "description": "Eslint config for Vue.js projects",
+  "author": "Wisemen",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/eslint-config"
+  },
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "pub:release": "pnpm publish --access public",
+    "eslint": "eslint . --fix",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "build": " tsdown",
+    "dev": "tsdown --watch",
+    "lint": "eslint .",
+    "eslint-stats": "eslint . --stats -f json",
+    "test": "vitest --run",
+    "pack": "pnpm pack"
+  },
+  "peerDependencies": {
+    "eslint": "catalog:peer"
+  },
+  "dependencies": {
+    "@antfu/eslint-config": "catalog:lint",
+    "@eslint/eslintrc": "catalog:lint",
+    "@intlify/eslint-plugin-vue-i18n": "catalog:lint",
+    "@typescript-eslint/parser": "catalog:lint",
+    "@vitest/eslint-plugin": "catalog:lint",
+    "@wisemen/eslint-plugin-vue": "workspace:*",
+    "eslint": "catalog:lint",
+    "eslint-flat-config-utils": "catalog:lint",
+    "eslint-plugin-better-tailwindcss": "catalog:lint",
+    "eslint-plugin-check-file": "catalog:lint",
+    "eslint-plugin-format": "catalog:lint",
+    "eslint-plugin-import-newlines": "catalog:lint",
+    "eslint-plugin-newline-destructuring": "catalog:lint",
+    "eslint-plugin-path": "catalog:lint",
+    "eslint-plugin-perfectionist": "catalog:lint",
+    "eslint-plugin-project-structure": "catalog:lint",
+    "eslint-plugin-require-explicit-generics": "catalog:lint",
+    "eslint-plugin-simple-import-sort": "catalog:lint",
+    "eslint-plugin-unused-imports": "catalog:lint",
+    "eslint-plugin-vuejs-accessibility": "catalog:lint",
+    "eslint-typegen": "catalog:lint",
+    "globals": "catalog:lint"
+  },
+  "devDependencies": {
+    "tailwindcss": "catalog:style",
+    "tsdown": "catalog:build",
+    "vitest": "catalog:test"
+  }
+}

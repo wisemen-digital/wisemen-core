@@ -1,1 +1,0 @@
-# @wisemen/vue-core-template-vue

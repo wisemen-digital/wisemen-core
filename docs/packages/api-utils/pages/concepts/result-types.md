@@ -1,357 +1,389 @@
-# Result Types and Neverthrow
+# AsyncResult Type
 
-## Why Result Types?
+## What is AsyncResult?
 
-Traditional error handling in JavaScript/TypeScript uses try-catch blocks and throwing exceptions. While familiar, this approach has several drawbacks:
+`AsyncResult<T, E>` is a type-safe way to handle async operations that can be in one of three states:
 
-### Problems with Traditional Error Handling
+- **Loading**: The request is in flight
+- **Ok**: The request succeeded with a value of type `T`
+- **Err**: The request failed with an error of type `E`
+
+This replaces the need for separate `isLoading`, `data`, and `error` states across your application.
 
 ```typescript
-// ❌ Traditional approach - errors are invisible in the type system
-async function getUser(id: string): Promise<User> {
-  const response = await fetch(`/api/users/${id}`)
-  if (!response.ok) {
-    throw new Error('User not found') // Error is not reflected in return type
-  }
-  return response.json()
+import type { AsyncResult } from '@wisemen/vue-core-api-utils'
+
+type ApiError = {
+  code: string
+  message: string
 }
 
-// The caller has no way to know this function can throw
-const user = await getUser('123') // What errors can this throw? 🤷‍♂️
+// A query for user data
+type UserAsyncResult = AsyncResult<User, ApiError>
+
+// This can be:
+// - Loading (request in progress)
+// - Ok(user: User) (request succeeded)
+// - Err(error: ApiError) (request failed)
 ```
 
-**Issues:**
-1. **Hidden errors**: The type system doesn't show that errors can occur
-2. **Forgotten error handling**: Easy to forget to catch errors
-3. **Type safety**: Error types are not checked at compile time
-4. **Composition**: Difficult to compose error-prone operations
-5. **Debugging**: Stack traces can be lost when re-throwing errors
+## The Three States
 
-### The Result Type Solution
+### Loading State
 
-Result types make errors explicit in the type system using a union type that represents either success or failure:
+The request is in flight:
 
 ```typescript
-// ✅ Result type approach - errors are part of the type
-import type { Result } from 'neverthrow'
+const result = useQuery('userDetail', {
+  params: { userId: computed(() => '123') },
+  queryFn: () => UserService.getById('123'),
+})
 
-type UserError =
-  | { code: 'USER_NOT_FOUND'; message: string }
-  | { code: 'NETWORK_ERROR'; message: string }
+if (result.value.isLoading()) {
+  // Show loading spinner
+}
+```
 
-async function getUser(id: string): Promise<Result<User, UserError>> {
-  const response = await fetch(`/api/users/${id}`)
+### Success State
 
-  if (!response.ok) {
-    return err({
-      code: 'USER_NOT_FOUND',
-      message: `User ${id} not found`
+The request succeeded:
+
+```typescript
+if (result.value.isOk()) {
+  const user = result.value.getValue()
+  // user is typed as User
+  console.log(user.name)
+}
+```
+
+### Error State
+
+The request failed:
+
+```typescript
+if (result.value.isErr()) {
+  const error = result.value.getError()
+  // error is typed as ApiError
+  console.log(error.message)
+}
+```
+
+## Why AsyncResult?
+
+### Problems with Traditional State Management
+
+```typescript
+// ❌ Multiple separate states - easy to get inconsistent
+const isLoading = ref(false)
+const data = ref<User | null>(null)
+const error = ref<Error | null>(null)
+
+// Can you have both data AND error? What if loading is true but data exists?
+// The type system doesn't prevent invalid state combinations
+```
+
+### AsyncResult Solution
+
+```typescript
+// ✅ Single state - impossible to get inconsistent
+const result = useQuery('userDetail', {
+  queryFn: () => UserService.getById('123'),
+})
+
+// result.value is ALWAYS in exactly one valid state
+// The type system enforces this
+```
+
+## Using AsyncResult in Vue Components
+
+### Simple Pattern Matching
+
+```vue
+<script setup lang="ts">
+import { useQuery } from '@/api'
+import { UserService } from '@/services'
+
+const { result } = useQuery('userDetail', {
+  params: { userId: computed(() => props.userId) },
+  queryFn: () => UserService.getById(props.userId),
+})
+</script>
+
+<template>
+  <div>
+    <!-- Loading state -->
+    <div v-if="result.isLoading()" class="spinner">
+      Loading...
+    </div>
+
+    <!-- Success state -->
+    <div v-else-if="result.isOk()" class="user-card">
+      <h1>{{ result.getValue().name }}</h1>
+      <p>{{ result.getValue().email }}</p>
+    </div>
+
+    <!-- Error state -->
+    <div v-else-if="result.isErr()" class="error-message">
+      {{ result.getError().message }}
+    </div>
+  </div>
+</template>
+```
+
+### Using `match()` for Cleaner Code
+
+```vue
+<script setup lang="ts">
+import { useQuery } from '@/api'
+
+const { result } = useQuery('userDetail', { /* ... */ })
+
+const displayContent = computed(() => {
+  return result.value.match(
+    (user) => ({
+      type: 'success',
+      content: `Welcome, ${user.name}!`,
+    }),
+    (error) => ({
+      type: 'error',
+      content: error.message,
+    }),
+    () => ({
+      type: 'loading',
+      content: 'Loading...',
     })
-  }
+  )
+})
+</script>
 
-  const data = await response.json()
-  return ok(data)
+<template>
+  <div :class="displayContent.type">
+    {{ displayContent.content }}
+  </div>
+</template>
+```
+
+## Extracting Data from AsyncResult
+
+### Getting the Success Value
+
+```typescript
+const result = useQuery('userDetail', { /* ... */ })
+
+// Get the value (only when isOk())
+if (result.value.isOk()) {
+  const user = result.value.getValue()
 }
 
-// The type system forces you to handle both success AND error cases
-const result = await getUser('123')
+// Get the value with fallback
+const user = result.value.getValueOr({ name: 'Unknown' })
+```
 
-if (result.isOk()) {
-  console.log(result.value) // Type: User
-} else {
-  console.log(result.error) // Type: UserError
+### Getting the Error
+
+```typescript
+// Get the error (only when isErr())
+if (result.value.isErr()) {
+  const error = result.value.getError()
+  console.error(`Error ${error.code}: ${error.message}`)
 }
 ```
 
-**Benefits:**
-1. **Explicit errors**: The return type shows exactly what can go wrong
-2. **Type safety**: The compiler ensures you handle errors
-3. **Better composition**: Easy to chain operations with error handling
-4. **No exceptions**: Errors are values, not exceptions
-5. **Functional style**: Enables functional programming patterns
-
-## Understanding Neverthrow
-
-[Neverthrow](https://github.com/supermacro/neverthrow) is a TypeScript library that implements the Result type pattern. It provides a `Result<T, E>` type that represents either:
-- **Ok(value)**: A successful result containing a value of type `T`
-- **Err(error)**: A failed result containing an error of type `E`
-
-### Core Concepts
+## Real-World Example: User Profile Page
 
 ```typescript
-import { ok, err, Result } from 'neverthrow'
+// src/composables/useUserProfile.ts
 
-// Creating results
-const success: Result<number, string> = ok(42)
-const failure: Result<number, string> = err('Something went wrong')
+import { computed } from 'vue'
+import { useQuery } from '@/api'
+import { UserService } from '@/services'
+import type { User, ApiError } from '@/types'
 
-// Checking result type
-if (success.isOk()) {
-  console.log(success.value) // 42
-}
-
-if (failure.isErr()) {
-  console.log(failure.error) // 'Something went wrong'
-}
-```
-
-## Using Result Types in Non-API Calls
-
-Result types aren't just for API calls - they're useful for any operation that can fail. Here are common use cases:
-
-### 1. File Operations
-
-```typescript
-import { ok, err, Result } from 'neverthrow'
-
-type FileError =
-  | { code: 'FILE_TOO_LARGE'; maxSize: number }
-  | { code: 'INVALID_FILE_TYPE'; allowedTypes: string[] }
-  | { code: 'FILE_READ_ERROR'; message: string }
-
-function validateFileSize(
-  file: File,
-  maxSize: number
-): Result<File, FileError> {
-  if (file.size > maxSize) {
-    return err({ code: 'FILE_TOO_LARGE', maxSize })
-  }
-  return ok(file)
-}
-
-function validateFileType(
-  file: File,
-  allowedTypes: string[]
-): Result<File, FileError> {
-  if (!allowedTypes.includes(file.type)) {
-    return err({ code: 'INVALID_FILE_TYPE', allowedTypes })
-  }
-  return ok(file)
-}
-
-async function readFileAsDataUrl(file: File): Promise<Result<string, FileError>> {
-  return new Promise((resolve) => {
-    const reader = new FileReader()
-
-    reader.onload = () => {
-      resolve(ok(reader.result as string))
-    }
-
-    reader.onerror = () => {
-      resolve(err({
-        code: 'FILE_READ_ERROR',
-        message: 'Failed to read file'
-      }))
-    }
-
-    reader.readAsDataURL(file)
+export function useUserProfile(userId: string) {
+  // Query returns AsyncResult<User, ApiError>
+  const { result: userResult, refetch } = useQuery('userDetail', {
+    params: { userId: computed(() => userId) },
+    queryFn: () => UserService.getById(userId),
+    staleTime: 1000 * 60 * 5,
   })
-}
 
-// Composing file operations
-async function processImageUpload(file: File): Promise<Result<string, FileError>> {
-  const maxSize = 5 * 1024 * 1024 // 5MB
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
-
-  return validateFileSize(file, maxSize)
-    .andThen(validFile => validateFileType(validFile, allowedTypes))
-    .asyncAndThen(validFile => readFileAsDataUrl(validFile))
-}
-
-// Usage
-const result = await processImageUpload(file)
-
-result.match(
-  (dataUrl) => {
-    imagePreview.value = dataUrl
-    showSuccessMessage('Image uploaded successfully')
-  },
-  (error) => {
-    switch (error.code) {
-      case 'FILE_TOO_LARGE':
-        showError(`File is too large. Max size: ${error.maxSize / 1024 / 1024}MB`)
-        break
-      case 'INVALID_FILE_TYPE':
-        showError(`Invalid file type. Allowed: ${error.allowedTypes.join(', ')}`)
-        break
-      case 'FILE_READ_ERROR':
-        showError(error.message)
-        break
+  // Computed for display logic
+  const isLoading = computed(() => userResult.value.isLoading())
+  const hasError = computed(() => userResult.value.isErr())
+  const errorMessage = computed(() => {
+    if (userResult.value.isErr()) {
+      return userResult.value.getError().message
     }
-  }
-)
-```
-
-### 2. Business Logic
-
-```typescript
-import { ok, err, Result } from 'neverthrow'
-
-type BusinessError =
-  | { code: 'INSUFFICIENT_BALANCE'; required: number; available: number }
-  | { code: 'ACCOUNT_LOCKED'; reason: string }
-  | { code: 'INVALID_AMOUNT'; amount: number }
-
-interface Account {
-  id: string
-  balance: number
-  isLocked: boolean
-}
-
-function checkAccountStatus(account: Account): Result<Account, BusinessError> {
-  if (account.isLocked) {
-    return err({
-      code: 'ACCOUNT_LOCKED',
-      reason: 'Account is temporarily locked'
-    })
-  }
-  return ok(account)
-}
-
-function validateAmount(amount: number): Result<number, BusinessError> {
-  if (amount <= 0) {
-    return err({ code: 'INVALID_AMOUNT', amount })
-  }
-  return ok(amount)
-}
-
-function checkBalance(
-  account: Account,
-  amount: number
-): Result<{ account: Account; amount: number }, BusinessError> {
-  if (account.balance < amount) {
-    return err({
-      code: 'INSUFFICIENT_BALANCE',
-      required: amount,
-      available: account.balance
-    })
-  }
-  return ok({ account, amount })
-}
-
-// Composing business logic
-function processWithdrawal(
-  account: Account,
-  amount: number
-): Result<Account, BusinessError> {
-  return checkAccountStatus(account)
-    .andThen(validAccount =>
-      validateAmount(amount).map(() => validAccount)
-    )
-    .andThen(validAccount =>
-      checkBalance(validAccount, amount)
-    )
-    .map(({ account, amount }) => ({
-      ...account,
-      balance: account.balance - amount,
-    }))
-}
-
-// Usage
-const result = processWithdrawal(userAccount, withdrawalAmount)
-
-result.match(
-  (updatedAccount) => {
-    account.value = updatedAccount
-    showSuccess('Withdrawal successful')
-  },
-  (error) => {
-    switch (error.code) {
-      case 'INSUFFICIENT_BALANCE':
-        showError(
-          `Insufficient balance. Required: $${error.required}, Available: $${error.available}`
-        )
-        break
-      case 'ACCOUNT_LOCKED':
-        showError(error.reason)
-        break
-      case 'INVALID_AMOUNT':
-        showError('Invalid withdrawal amount')
-        break
+    return null
+  })
+  const user = computed(() => {
+    if (userResult.value.isOk()) {
+      return userResult.value.getValue()
     }
+    return null
+  })
+
+  async function updateProfile(updates: Partial<User>) {
+    if (!user.value) return
+
+    const result = await useMutation({
+      queryFn: () => UserService.update(userId, updates),
+    }).execute(updates)
+
+    if (result.isOk()) {
+      await refetch()
+    }
+
+    return result
   }
+
+  return {
+    isLoading,
+    hasError,
+    errorMessage,
+    user,
+    updateProfile,
+  }
+}
+```
+
+Component usage:
+
+```vue
+<script setup lang="ts">
+import { useUserProfile } from '@/composables'
+
+const props = defineProps<{ userId: string }>()
+const { isLoading, hasError, errorMessage, user } = useUserProfile(props.userId)
+</script>
+
+<template>
+  <div class="user-profile">
+    <div v-if="isLoading" class="loading">
+      <span>Loading profile...</span>
+    </div>
+
+    <div v-else-if="hasError" class="error">
+      <p>{{ errorMessage }}</p>
+      <button @click="refetch">Retry</button>
+    </div>
+
+    <div v-else-if="user" class="profile">
+      <h1>{{ user.name }}</h1>
+      <p>{{ user.email }}</p>
+    </div>
+  </div>
+</template>
+```
+
+## Combining Multiple AsyncResults
+
+### Waiting for Multiple Queries
+
+```typescript
+import { combineResults } from '@wisemen/vue-core-api-utils'
+
+const { result: userResult } = useQuery('userDetail', { /* ... */ })
+const { result: postsResult } = useQuery('userPosts', { /* ... */ })
+
+const combined = computed(() => 
+  combineResults([userResult.value, postsResult.value])
 )
+
+// combined is AsyncResult<[User, Post[]], ApiError>
+// All loading states are combined
+// If any fails, the error is propagated
 ```
 
-## Common Patterns
+## Handling Errors
 
-### 1. Chaining Operations with `andThen`
-
-```typescript
-function getUserById(id: string): Result<User, Error> { /* ... */ }
-function getUserPosts(userId: string): Result<Post[], Error> { /* ... */ }
-
-const result = getUserById('123')
-  .andThen(user => getUserPosts(user.id))
-
-// Type: Result<Post[], Error>
-```
-
-### 2. Transforming Success Values with `map`
+### Pattern Matching on Error Types
 
 ```typescript
-const result = getUserById('123')
-  .map(user => user.email)
+const result = useQuery('userDetail', { /* ... */ })
 
-// Type: Result<string, Error>
-```
-
-### 3. Transforming Error Values with `mapErr`
-
-```typescript
-const result = getUserById('123')
-  .mapErr(error => ({
-    code: 'USER_FETCH_FAILED',
-    originalError: error,
-  }))
-```
-
-### 4. Pattern Matching with `match`
-
-```typescript
-const message = result.match(
-  (user) => `Welcome, ${user.name}!`,
-  (error) => `Error: ${error.message}`
-)
-```
-
-### 5. Combining Multiple Results
-
-```typescript
-import { combine } from 'neverthrow'
-
-const results = await Promise.all([
-  fetchUser(),
-  fetchPosts(),
-  fetchComments(),
-])
-
-const combined = combine(results)
-// Type: Result<[User, Post[], Comment[]], Error>
-
-combined.match(
-  ([user, posts, comments]) => {
-    // All succeeded
+result.value.match(
+  (user) => {
+    console.log('Success:', user)
   },
   (error) => {
-    // At least one failed
+    // error is typed as ApiError
+    switch (error.code) {
+      case 'NOT_FOUND':
+        showUserNotFoundMessage()
+        break
+      case 'UNAUTHORIZED':
+        redirectToLogin()
+        break
+      case 'NETWORK_ERROR':
+        showRetryButton()
+        break
+      default:
+        showGenericErrorMessage(error.message)
+    }
+  },
+  () => {
+    console.log('Loading...')
   }
 )
+```
+
+### Transforming Results
+
+```typescript
+// Transform the success value
+const userNameResult = userResult.value.map(user => user.name)
+// Type: AsyncResult<string, ApiError>
+
+// Transform the error
+const errorMessage = userResult.value.mapErr(error => error.message)
+// Type: AsyncResult<User, string>
+
+// Transform both
+const displayText = userResult.value.match(
+  (user) => `User: ${user.name}`,
+  (error) => `Error: ${error.message}`,
+  () => 'Loading...'
+)
+```
+
+## Type Safety
+
+AsyncResult enforces type safety at compile time:
+
+```typescript
+const result = useQuery('userDetail', { /* ... */ })
+
+// ✅ This is safe - getValue() only works when isOk()
+if (result.value.isOk()) {
+  const name = result.value.getValue().name
+}
+
+// ❌ This is a type error - getValue() called when not Ok
+const name = result.value.getValue().name // ERROR!
+
+// ✅ Better - use unwrapOr() with a default
+const name = result.value.unwrapOr({ name: 'Unknown' }).name
 ```
 
 ## Best Practices
 
-1. **Define Clear Error Types**: Use discriminated unions for errors with specific error codes
-2. **Use Result for Fallible Operations**: Any function that can fail should return a Result
-3. **Compose with andThen**: Chain multiple operations that can fail
-4. **Handle All Error Cases**: Use pattern matching to handle all possible error scenarios
-5. **Keep Error Types Specific**: Each module should define its own error types
-6. **Document Error Codes**: Document what each error code means and when it occurs
-7. **Avoid Throwing**: Once you're using Result types, avoid throwing exceptions
-8. **Test Both Paths**: Always test both success and error cases
+1. **Check state before accessing data**: Always use `isOk()`, `isErr()`, or `isLoading()` before extracting data
+2. **Use `match()` for complex logic**: It's cleaner and safer than multiple `if` statements
+3. **Create computed properties**: Extract display logic into computed properties for reusability
+4. **Handle all three states**: Don't forget the loading state in your UI
+5. **Type your composables**: Return AsyncResult types from your composables for clarity
+6. **Use error codes**: Define specific error codes instead of generic error messages
+7. **Document what can fail**: Make it clear in your function signatures what errors can occur
 
-## Further Reading
+## AsyncResult vs Promise
 
-- [Neverthrow Documentation](https://github.com/supermacro/neverthrow)
-- [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/)
-- [Error Handling in TypeScript](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+| Aspect | Promise | AsyncResult |
+|--------|---------|------------|
+| Error Type | Exceptions (stack loss) | Typed errors |
+| State Visibility | Hidden in promise state | Explicit in type |
+| Loading State | Need separate ref | Built-in |
+| Type Safety | Limited error typing | Full type safety |
+| Composition | `.catch()`, `.finally()` | `.map()`, `.match()` |
+| Vue Integration | Works but verbose | Native reactive support |
+

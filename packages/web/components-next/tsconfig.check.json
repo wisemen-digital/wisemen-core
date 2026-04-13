@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": false,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext"
+  },
+  "exclude": [
+    "src/**/__tests__/*",
+    "**/*.test.ts",
+    "**/*.test.js",
+    "src/**/*.story.vue",
+    "src/**/story/*"
+  ],
+  // tsconfig for type-check only
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}

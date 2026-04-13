@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "author": "",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "keywords": [],
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "eslint": "catalog:lint",
     "markdown-it": "catalog:docs",
     "motion-v": "catalog:vue",
+    "oxc-minify": "catalog:docs",
     "postcss": "catalog:style",
     "postcss-prefix-selector": "catalog:style",
     "tailwindcss": "catalog:style",

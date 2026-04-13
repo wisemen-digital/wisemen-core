@@ -1,0 +1,54 @@
+{
+  "name": "@wisemen/date-range",
+  "version": "0.0.26",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --test ./dist/**/*.js",
+    "lint": "eslint --cache",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "dependencies": {
+    "@wisemen/pagination": "workspace:*",
+    "@wisemen/validators": "workspace:*",
+    "@wisemen/wise-date": "workspace:*"
+  },
+  "peerDependencies": {
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Kobe Kwanten",
+  "contributors": [],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/date-range"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "@wisemen/time",
+  "version": "0.0.32",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint --cache",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm run build",
+    "test": "node --test \"**/*.test.js\"",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+    "class-validator": "catalog:backend-peer",
+    "dayjs": "catalog:backend-peer",
+    "@nestjs/common": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@nestjs/common": "catalog:backend",
+    "typeorm": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Kobe Kwanten",
+  "contributors": [
+    "Jonas Vannieuwenhuijsen"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/time"
+  }
+}

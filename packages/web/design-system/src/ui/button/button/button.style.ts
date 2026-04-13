@@ -1,0 +1,238 @@
+import { tv } from '@/styles/tailwindVariants.lib'
+
+export const createButtonStyle = tv({
+  compoundVariants: [
+    {
+      class: {
+        container: 'dark:rounded-[0.35rem] dark:px-md',
+      },
+      size: 'md',
+      variant: 'primary',
+    },
+    {
+      class: {
+        container: 'dark:rounded-[0.3rem] dark:px-lg',
+      },
+      size: 'lg',
+      variant: 'primary',
+    },
+    {
+      class: {
+        container: 'dark:rounded-[0.2rem] dark:px-sm',
+      },
+      size: 'sm',
+      variant: 'primary',
+    },
+    {
+      class: {
+        container: `dark:rounded-[0.15rem] dark:px-xs`,
+      },
+      size: 'xs',
+      variant: 'primary',
+    },
+  ],
+  slots: {
+    container: `grid size-full items-center [grid-template-areas:'stack']`,
+    icon: `shrink-0`,
+    label: ``,
+    loader: `mx-auto items-center duration-100 [grid-area:stack]`,
+    root: `
+      group/button shrink-0 cursor-pointer items-center justify-center border
+      outline-2 outline-offset-1 outline-transparent duration-100
+      not-data-interactive:cursor-not-allowed
+    `,
+    rowLayout: `
+      duration-100 [grid-area:stack]
+      group-not-disabled/button:group-active/button:scale-98
+    `,
+  },
+  variants: {
+    isLoading: {
+      false: {
+        loader: `invisible opacity-0`,
+        rowLayout: `opacity-100`,
+      },
+      true: {
+        loader: `opacity-100`,
+        rowLayout: `invisible opacity-0`,
+      },
+    },
+    variant: {
+      'destructive-primary': {
+        icon: `
+          text-white
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-white
+          group-disabled/button:text-disabled
+        `,
+        loader: `
+          text-white
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-error-600 bg-error-solid
+          focus-visible:outline-fg-error-primary
+          disabled:border-disabled-subtle disabled:bg-disabled
+          data-interactive:hover:brightness-95
+        `,
+      },
+      'destructive-secondary': {
+        icon: `
+          text-error-600
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-error-600
+          group-disabled/button:text-disabled
+        `,
+        loader: `
+          text-error-600
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-error-200
+          focus-visible:outline-fg-error-primary
+          disabled:border-disabled-subtle disabled:bg-disabled
+          data-interactive:hover:bg-error-50
+          dark:border-error-700
+          dark:data-interactive:hover:bg-error-700/20
+        `,
+      },
+      'destructive-tertiary': {
+        icon: `
+          text-error-primary
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-error-primary
+          group-disabled/button:text-disabled
+          dark:text-error-700
+        `,
+        loader: `
+          text-error-primary
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-transparent
+          focus-visible:outline-fg-error-primary
+          data-interactive:hover:bg-error-50
+          dark:data-interactive:hover:bg-error-700/20
+        `,
+      },
+      'minimal-color': {
+        icon: `
+          text-brand-primary
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-brand-primary
+          group-disabled/button:text-disabled
+        `,
+        loader: `
+          text-brand-primary
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-transparent
+          focus-visible:outline-fg-brand-primary
+          data-interactive:hover:bg-brand-50
+          dark:data-interactive:hover:bg-brand-700/20
+        `,
+      },
+      'primary': {
+        container: `dark:glassy-inner-content`,
+        icon: `
+          text-primary-on-brand
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-primary-on-brand
+          group-disabled/button:text-disabled
+        `,
+        loader: `
+          text-primary-on-brand
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-brand-600 bg-brand-solid
+          focus-visible:outline-fg-brand-primary
+          disabled:border-disabled-subtle disabled:bg-disabled
+          data-interactive:hover:brightness-95
+          dark:border-gray-900 dark:p-px
+          not-data-disabled:dark:glassy
+        `,
+      },
+      'secondary': {
+        icon: `
+          text-secondary
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-secondary
+          group-disabled/button:text-disabled
+        `,
+        loader: `
+          text-secondary
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-secondary bg-primary
+          focus-visible:outline-fg-brand-primary
+          disabled:border-disabled-subtle disabled:bg-disabled
+          data-interactive:hover:bg-primary-hover
+          dark:border-primary
+        `,
+      },
+      'tertiary': {
+        icon: `
+          text-secondary
+          group-disabled/button:text-disabled
+        `,
+        label: `
+          text-secondary
+          group-disabled/button:text-disabled
+        `,
+        loader: `
+          text-secondary
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-transparent
+          focus-visible:outline-fg-brand-primary
+          data-interactive:hover:bg-primary-hover
+        `,
+      },
+    },
+    size: {
+      lg: {
+        icon: `size-4`,
+        label: `text-sm`,
+        loader: `size-4`,
+        root: 'h-8 min-w-8 rounded-sm px-lg',
+      },
+      md: {
+        icon: `size-3.5`,
+        label: `text-xs`,
+        loader: `size-3.5`,
+        root: 'h-7 min-w-7 rounded-sm px-md',
+      },
+      sm: {
+        icon: `size-3.5`,
+        label: `text-xs`,
+        loader: `size-3.5`,
+        root: 'h-6 min-w-6 rounded-xs px-sm',
+      },
+      xs: {
+        icon: `size-3.5`,
+        label: `text-xs`,
+        loader: `size-3.5`,
+        root: 'h-5.5 min-w-5.5 rounded-xs px-xs',
+      },
+    },
+
+  },
+})
+
+export type ButtonStyle = ReturnType<typeof createButtonStyle>

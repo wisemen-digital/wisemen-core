@@ -1,3 +1,11 @@
-* @NickBanken @JeffreyNijs @maltsavkiryl @Blocken-Jordy @JeroenVanC @Robbe95 @wouterlms @Tanya-Amber-L
+# Root level files
+* @jorenvandeweyer @PauwelsPieter @maartensijmkens @Kobe-Kwanten @NickBanken @JeffreyNijs @maltsavkiryl @Blocken-Jordy @JeroenVanC @Robbe95 @wouterlms
 
-/packages/components-next @wouterlms
+# Documentation
+/docs/ @jorenvandeweyer @PauwelsPieter @maartensijmkens @Kobe-Kwanten @NickBanken @JeffreyNijs @maltsavkiryl @Blocken-Jordy @JeroenVanC @Robbe95 @wouterlms
+
+# API packages
+/packages/api/ @jorenvandeweyer @PauwelsPieter @maartensijmkens @Kobe-Kwanten
+
+# Web packages
+/packages/web/ @NickBanken @JeffreyNijs @maltsavkiryl @Blocken-Jordy @JeroenVanC @Robbe95 @wouterlms

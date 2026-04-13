@@ -1,0 +1,50 @@
+{
+  "name": "@appwise/express-dto-router",
+  "version": "1.1.19",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --test",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+    "@sentry/node": "catalog:backend-peer",
+    "@sentry/tracing": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "express": "catalog:backend-peer",
+    "qs": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@sentry/types": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "@types/express": "catalog:backend",
+    "@types/node": "catalog:backend",
+    "@types/qs": "catalog:backend",
+    "typescript": "catalog:peer"
+  },
+  "author": "Joren Vandeweyer",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/express-dto-router"
+  },
+  "bugs": {
+    "url": "https://github.com/wisemen-digital/node-core/issues"
+  },
+  "homepage": "https://github.com/wisemen-digital/node-core/packages/express-dto-router#readme"
+}

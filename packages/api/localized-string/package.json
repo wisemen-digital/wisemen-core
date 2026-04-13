@@ -1,0 +1,47 @@
+{
+  "name": "@wisemen/localized-string",
+  "version": "0.0.8",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --env-file=.env.test --test ./**/*.test.js",
+    "lint": "eslint --cache",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "dependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@nestjs/swagger": "catalog:backend",
+    "class-transformer": "catalog:backend",
+    "class-validator": "catalog:backend",
+    "typeorm": "catalog:backend"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Wisemen",
+  "contributors": [],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/localized-string"
+  }
+}
