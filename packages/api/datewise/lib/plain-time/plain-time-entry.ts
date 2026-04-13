@@ -22,6 +22,7 @@ export interface PlainTimeFn {
   isValidTimeString(value?: string | null): boolean
   max (...times: PlainTimeInput[]): PlainTime
   min (...times: PlainTimeInput[]): PlainTime
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   STRING_FORMAT: typeof STRING_FORMAT
 }
 

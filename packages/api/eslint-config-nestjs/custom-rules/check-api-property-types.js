@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/max-len */
 /**
  * ESLint rule to verify that TypeScript property types match @ApiProperty decorator options
  *

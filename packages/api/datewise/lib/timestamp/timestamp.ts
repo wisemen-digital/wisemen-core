@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { UnitType, ManipulateType, OpUnitType, Dayjs } from 'dayjs'
 import { Duration } from '@wisemen/quantity'
 import { PlainDate } from '../plain-date/plain-date.js'
