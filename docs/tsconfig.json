@@ -6,9 +6,8 @@
       "esnext",
       "dom"
     ],
-    "baseUrl": ".",
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "paths": {
       "@docs/*": [
         "./*"

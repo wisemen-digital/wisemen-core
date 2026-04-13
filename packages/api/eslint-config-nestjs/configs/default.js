@@ -30,7 +30,11 @@ const config = [
         { selector: 'objectLiteralProperty', format: null },
         { selector: 'typeLike', format: ['PascalCase'] },
         { selector: 'interface', format: ['PascalCase'] },
-        { selector: 'class', format: ['PascalCase'] }
+        { selector: 'class', format: ['PascalCase'] },
+        { selector: 'enumMember', format: ['UPPER_CASE'] },
+        { selector: 'classProperty', format: ['camelCase', 'UPPER_CASE'], leadingUnderscore: 'allow' },
+        { selector: 'function', format: ['camelCase', 'PascalCase'] },
+        { selector: 'classicAccessor', format: ['camelCase', 'PascalCase'] },
       ],
       'nonblock-statement-body-position': [
         'error', 'beside'

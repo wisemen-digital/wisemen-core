@@ -6,10 +6,10 @@ export abstract class Dto {}
 
 export async function validateDto<T extends Dto> (
   data: unknown,
-  DtoConstructor?: ClassConstructor<T>,
+  dtoConstructor?: ClassConstructor<T>,
   groups?: string[]
 ): Promise<T | undefined> {
-  if (DtoConstructor == null) {
+  if (dtoConstructor == null) {
     return undefined
   }
 
@@ -24,7 +24,7 @@ export async function validateDto<T extends Dto> (
     throw new CustomError([error])
   }
 
-  const dto = plainToInstance(DtoConstructor, data)
+  const dto = plainToInstance(dtoConstructor, data)
 
   const errors = await validate(dto, {
     whitelist: true,

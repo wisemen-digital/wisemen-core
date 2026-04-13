@@ -24,6 +24,7 @@
     "release": "pnpx release-it"
   },
   "devDependencies": {
+    "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "expect": "catalog:test"
   },

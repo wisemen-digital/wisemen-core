@@ -2,7 +2,7 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./lib",
     "declaration": true,
     "target": "esnext",
     "module": "NodeNext",
@@ -23,6 +23,8 @@
     "./lib/**/*.ts"
   ],
   "exclude": [
+    "./lib/test-utils.ts",
+    "./lib/**/*.spec.ts"
   ],
   "ts-node": {
     "transpileOnly": true
