@@ -1,0 +1,52 @@
+{
+  "name": "@wisemen/typeorm-to-dbml",
+  "version": "0.0.1",
+  "description": "Convert a TypeScript project using TypeORM decorators to a DBML diagram.",
+  "keywords": [
+    "typeorm",
+    "dbml",
+    "database",
+    "schema",
+    "diagram"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    "#src/*": "./dist/*"
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint": "eslint lib",
+    "build": "tsc",
+    "clean": "rm -rf ./dist",
+    "start": "node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ts-morph": "^21.0.0",
+    "typeorm": "catalog:backend",
+    "yargs": "^18.0.0"
+  },
+  "devDependencies": {
+    "@types/yargs": "^17.0.35",
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "typescript": "catalog:peer"
+  },
+  "author": "Pieter Pauwels",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/typeorm-to-dbml"
+  }
+}
