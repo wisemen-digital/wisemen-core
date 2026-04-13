@@ -117,7 +117,7 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-error-primary
-          data-interactive:hover:bg-error-50
+          data-interactive:hover:bg-error-500/12
           dark:data-interactive:hover:bg-error-700/20
         `,
       },
