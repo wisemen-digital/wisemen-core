@@ -4,28 +4,28 @@ export const createLinkStyle = tv({
   compoundVariants: [
     {
       class: {
-        container: 'dark:rounded-[0.35rem] dark:px-md',
+        container: 'dark:rounded-[0.31rem] dark:px-md',
       },
       size: 'md',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.3rem] dark:px-lg',
+        container: 'dark:rounded-[0.44rem] dark:px-lg',
       },
       size: 'lg',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.2rem] dark:px-sm',
+        container: 'dark:rounded-[0.19rem] dark:px-sm',
       },
       size: 'sm',
       variant: 'primary',
     },
     {
       class: {
-        container: `dark:rounded-[0.15rem] dark:px-xs`,
+        container: `dark:rounded-[0.06rem] dark:px-xs`,
       },
       size: 'xs',
       variant: 'primary',
@@ -49,17 +49,17 @@ export const createLinkStyle = tv({
       lg: {
         icon: `size-4`,
         label: `text-sm`,
-        root: 'h-8 min-w-8 rounded-sm px-lg',
+        root: 'h-8 min-w-8 rounded-lg px-lg',
       },
       md: {
         icon: `size-3.5`,
         label: `text-xs`,
-        root: 'h-7 min-w-7 rounded-sm px-md',
+        root: 'h-7 min-w-7 rounded-md px-md',
       },
       sm: {
         icon: `size-3.5`,
         label: `text-xs`,
-        root: 'h-6 min-w-6 rounded-xs px-sm',
+        root: 'h-6 min-w-6 rounded-sm px-sm',
       },
       xs: {
         icon: `size-3.5`,
