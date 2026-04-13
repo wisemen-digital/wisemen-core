@@ -17,7 +17,9 @@
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --env-file=.env.test --test ./**/*.test.js",
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint --cache",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },

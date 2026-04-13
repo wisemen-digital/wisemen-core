@@ -2,6 +2,7 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./",
     "declaration": true,
     "target": "esnext",
     "module": "NodeNext",
@@ -9,9 +10,9 @@
       "node",
     ],
     "moduleResolution": "nodenext",
-    "baseUrl": ".",
     "paths": {
-      "#src/*": ["lib/*"]
+      "#src/*": ["./lib/*"],
+      "@wisemen/pgboss-nestjs-job": ["../pgboss-nestjs-job/lib/index.ts"]
     },
     "sourceMap": true,
     "esModuleInterop": true,

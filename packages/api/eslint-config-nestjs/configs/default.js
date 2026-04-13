@@ -7,6 +7,7 @@ import eslintImportTypescript from 'eslint-plugin-import-typescript'
  */
 const config = [
   {
+    files: ['**/*.ts', "lib/**/*.js"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {

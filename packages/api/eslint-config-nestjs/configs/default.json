@@ -117,11 +117,6 @@
       "multi-line"
     ],
     "@typescript-eslint/strict-boolean-expressions": "error",
-    "@typescript-eslint/no-import-type-side-effects": "error",
-    "@typescript-eslint/naming-convention": [
-      "error",
-      { "selector": "interface", "format": ["PascalCase"] },
-      { "selector": "class", "format": ["PascalCase"] }
-    ]
+    "@typescript-eslint/no-import-type-side-effects": "error"
   }
 }

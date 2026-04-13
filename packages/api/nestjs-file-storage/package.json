@@ -16,7 +16,9 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "test": "pnpm clean && pnpm build && node --enable-source-maps --experimental-test-isolation=none --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
