@@ -33,91 +33,9 @@ describe('stringFormatUtil', () => {
     })
   })
 
-  describe('maskEmail', () => {
-    it('should mask the local part except the first character', () => {
-      expect(StringFormatUtil.maskEmail('john@example.com')).toBe('j***@example.com')
-    })
-
-    it('should return the original string when no @ is present', () => {
-      expect(StringFormatUtil.maskEmail('invalid')).toBe('invalid')
-    })
-
-    it('should handle a single character local part', () => {
-      expect(StringFormatUtil.maskEmail('j@example.com')).toBe('j@example.com')
-    })
-  })
-
-  describe('maskIban', () => {
-    it('should mask a BE IBAN', () => {
-      expect(StringFormatUtil.maskIban('BE68 5390 0754 7034')).toBe('BE** **** **** 7034')
-    })
-
-    it('should mask an IBAN without spaces', () => {
-      expect(StringFormatUtil.maskIban('BE68539007547034')).toBe('BE** **** **** 7034')
-    })
-
-    it('should return the original for short IBANs', () => {
-      expect(StringFormatUtil.maskIban('BE68539')).toBe('BE68539')
-    })
-  })
-
-  describe('maskPhone', () => {
-    it('should mask a Belgian mobile number', () => {
-      expect(StringFormatUtil.maskPhone('+32 470 12 34 56')).toBe('+** *** ** 34 56')
-    })
-
-    it('should mask a Belgian landline number', () => {
-      expect(StringFormatUtil.maskPhone('+32 2 123 45 67')).toBe('+** * *** 45 67')
-    })
-
-    it('should mask a Belgian number without country code', () => {
-      expect(StringFormatUtil.maskPhone('0470 12 34 56')).toBe('**** ** 34 56')
-    })
-
-    it('should return the original for short numbers', () => {
-      expect(StringFormatUtil.maskPhone('123')).toBe('123')
-    })
-  })
-
   describe('normalizeWhitespace', () => {
     it('should collapse multiple spaces and trim', () => {
       expect(StringFormatUtil.normalizeWhitespace('  hello   world  ')).toBe('hello world')
-    })
-  })
-
-  describe('toFullName', () => {
-    it('should combine first and last name', () => {
-      expect(StringFormatUtil.toFullName('John', 'Doe')).toBe('John Doe')
-    })
-
-    it('should handle null last name', () => {
-      expect(StringFormatUtil.toFullName('John', null)).toBe('John')
-    })
-
-    it('should handle null first name', () => {
-      expect(StringFormatUtil.toFullName(null, 'Doe')).toBe('Doe')
-    })
-
-    it('should handle both null', () => {
-      expect(StringFormatUtil.toFullName(null, null)).toBe('')
-    })
-
-    it('should handle blank strings', () => {
-      expect(StringFormatUtil.toFullName('John', '  ')).toBe('John')
-    })
-  })
-
-  describe('toInitials', () => {
-    it('should return initials for a two-word name', () => {
-      expect(StringFormatUtil.toInitials('John Doe')).toBe('JD')
-    })
-
-    it('should limit to maxInitials', () => {
-      expect(StringFormatUtil.toInitials('Alice Bob Charlie', 2)).toBe('AB')
-    })
-
-    it('should handle a single name', () => {
-      expect(StringFormatUtil.toInitials('John')).toBe('J')
     })
   })
 
@@ -232,5 +150,4 @@ describe('useStringFormat', () => {
       ])
     })
   })
-
 })

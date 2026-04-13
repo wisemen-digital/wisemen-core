@@ -1,3 +1,14 @@
+const WHITESPACE_REGEX = /\s+/g
+const PROTOCOL_REGEX = /^https?:\/\//
+const WWW_REGEX = /^www\./
+const TRAILING_SLASH_REGEX = /\/+$/
+const SENTENCE_CASE_REGEX = /(^\s*\w|[.!?]\s+\w)/g
+const DIACRITICS_REGEX = /[\u0300-\u036F]/g
+const NON_SLUG_REGEX = /[^a-z0-9\s-]/g
+const WHITESPACE_UNDERSCORE_REGEX = /[\s_]+/g
+const MULTIPLE_HYPHEN_REGEX = /-+/g
+const WORD_BOUNDARY_REGEX = /\b\w/g
+
 export class StringFormatUtil {
   /**
    * Format a nullable string, returning a fallback if the value is null, undefined, or blank.
@@ -16,7 +27,7 @@ export class StringFormatUtil {
    * E.g., "  hello   world  " → "hello world".
    */
   static normalizeWhitespace(str: string): string {
-    return str.replace(/\s+/g, ' ').trim()
+    return str.replace(WHITESPACE_REGEX, ' ').trim()
   }
 
   /**
@@ -25,9 +36,9 @@ export class StringFormatUtil {
    */
   static toPrettyUrl(url: string): string {
     return url
-      .replace(/^https?:\/\//, '')
-      .replace(/^www\./, '')
-      .replace(/\/+$/, '')
+      .replace(PROTOCOL_REGEX, '')
+      .replace(WWW_REGEX, '')
+      .replace(TRAILING_SLASH_REGEX, '')
   }
 
   /**
@@ -37,7 +48,7 @@ export class StringFormatUtil {
   static toSentenceCase(str: string): string {
     return str
       .toLowerCase()
-      .replace(/(^\s*\w|[.!?]\s+\w)/g, (char) => char.toUpperCase())
+      .replace(SENTENCE_CASE_REGEX, (char) => char.toUpperCase())
   }
 
   /**
@@ -48,12 +59,12 @@ export class StringFormatUtil {
   static toSlug(str: string): string {
     return str
       .normalize('NFD')
-      .replace(/[\u0300-\u036F]/g, '')
+      .replace(DIACRITICS_REGEX, '')
       .toLowerCase()
       .trim()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/[\s_]+/g, '-')
-      .replace(/-+/g, '-')
+      .replace(NON_SLUG_REGEX, '')
+      .replace(WHITESPACE_UNDERSCORE_REGEX, '-')
+      .replace(MULTIPLE_HYPHEN_REGEX, '-')
   }
 
   /**
@@ -61,7 +72,7 @@ export class StringFormatUtil {
    * E.g., "hello world" → "Hello World".
    */
   static toTitleCase(str: string): string {
-    return str.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase())
+    return str.toLowerCase().replace(WORD_BOUNDARY_REGEX, (char) => char.toUpperCase())
   }
 
   /**

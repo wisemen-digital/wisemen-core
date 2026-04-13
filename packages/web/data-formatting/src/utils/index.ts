@@ -1,2 +1,2 @@
-export * from "./numberFormat.util";
-export * from "./stringFormat.util";
+export * from './numberFormat.util'
+export * from './stringFormat.util'

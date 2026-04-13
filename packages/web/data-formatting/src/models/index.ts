@@ -1,2 +1,2 @@
-export * from "./locale.model";
-export * from "./name.model";
+export * from './locale.model'
+export * from './name.model'
