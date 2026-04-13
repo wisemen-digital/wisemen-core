@@ -1,5 +1,3 @@
-import { useDataFormatConfig } from '@/composables/config.composable'
-
 export class NumberFormatUtil {
   /**
    * Clamp a number within a range.
@@ -7,20 +5,6 @@ export class NumberFormatUtil {
    */
   static clamp(value: number, min: number, max: number): number {
     return Math.min(Math.max(value, min), max)
-  }
-
-  static format(value: number, precision = 0): string {
-    const {
-      locale,
-    } = useDataFormatConfig()
-
-    return new Intl.NumberFormat(locale.value, {
-      maximumFractionDigits: precision,
-    }).format(value)
-  }
-
-  static randomBetween(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
   /**
