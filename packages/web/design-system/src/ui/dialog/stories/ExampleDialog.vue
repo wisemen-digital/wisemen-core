@@ -97,6 +97,7 @@ const dialogChin = useDialogChin()
                   dialogChin.close()
                 },
                 label: 'Save',
+                variant: 'default',
               },
               secondaryAction: {
                 type: 'button',
@@ -104,7 +105,7 @@ const dialogChin = useDialogChin()
                   dialogChin.close()
                 },
                 label: 'discard',
-                isDestructive: true,
+                variant: 'destructive',
               },
 
             })

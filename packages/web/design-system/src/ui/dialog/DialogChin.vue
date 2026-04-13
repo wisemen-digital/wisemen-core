@@ -53,6 +53,18 @@ const variantFromColor: Record<NonNullable<chinConfig['variant']>, string> = {
 }
 
 const overlayFromColor = computed<string>(() => props.chin?.variant != null ? variantFromColor[props.chin.variant] : 'from-white/60')
+
+const buttonVariantMap = {
+  brand: 'minimal-color',
+  default: 'tertiary',
+  destructive: 'destructive-tertiary',
+} as const
+
+const linkVariantMap = {
+  brand: 'primary',
+  default: 'tertiary',
+  destructive: 'destructive-tertiary',
+} as const
 const iconColor = computed<string>(() => props.chin?.variant === 'error' ? 'text-error-500' : 'text-primary')
 
 const {
@@ -123,7 +135,7 @@ const {
                     :is-loading="props.chin.secondaryAction.isLoading"
                     :is-disabled="props.chin.secondaryAction.isDisabled"
                     :disabled-reason="props.chin.secondaryAction.disabledReason"
-                    :variant="props.chin.secondaryAction.isDestructive ? 'destructive-tertiary' : 'tertiary'"
+                    :variant="buttonVariantMap[props.chin.secondaryAction.variant ?? 'default']"
                     @click="props.chin.secondaryAction.action"
                   />
                   <UILink
@@ -131,7 +143,7 @@ const {
                     :label="props.chin.secondaryAction.label"
                     :to="props.chin.secondaryAction.to"
                     :link="props.chin.secondaryAction.link"
-                    :variant="props.chin.secondaryAction.isDestructive ? 'destructive-tertiary' : 'tertiary'"
+                    :variant="linkVariantMap[props.chin.secondaryAction.variant ?? 'default']"
                   />
                   <UIIconButton
                     v-else-if="props.chin.secondaryAction.type === 'icon-button'"
@@ -140,7 +152,7 @@ const {
                     :is-loading="props.chin.secondaryAction.isLoading"
                     :is-disabled="props.chin.secondaryAction.isDisabled"
                     :disabled-reason="props.chin.secondaryAction.disabledReason"
-                    :variant="props.chin.secondaryAction.isDestructive ? 'destructive-tertiary' : 'tertiary'"
+                    :variant="linkVariantMap[props.chin.secondaryAction.variant ?? 'default']"
                     @click="props.chin.secondaryAction.action"
                   />
                 </template>
@@ -151,7 +163,7 @@ const {
                     :is-loading="props.chin.primaryAction.isLoading"
                     :is-disabled="props.chin.primaryAction.isDisabled"
                     :disabled-reason="props.chin.primaryAction.disabledReason"
-                    :variant="props.chin.primaryAction.isDestructive ? 'destructive-primary' : 'minimal-color'"
+                    :variant="buttonVariantMap[props.chin.primaryAction.variant ?? 'brand']"
                     @click="props.chin.primaryAction.action"
                   />
                   <UILink
@@ -159,7 +171,7 @@ const {
                     :label="props.chin.primaryAction.label"
                     :to="props.chin.primaryAction.to"
                     :link="props.chin.primaryAction.link"
-                    :variant="props.chin.primaryAction.isDestructive ? 'destructive-primary' : 'primary'"
+                    :variant="linkVariantMap[props.chin.primaryAction.variant ?? 'brand']"
                   />
                   <UIIconButton
                     v-else-if="props.chin.primaryAction.type === 'icon-button'"
@@ -168,7 +180,7 @@ const {
                     :is-loading="props.chin.primaryAction.isLoading"
                     :is-disabled="props.chin.primaryAction.isDisabled"
                     :disabled-reason="props.chin.primaryAction.disabledReason"
-                    :variant="props.chin.primaryAction.isDestructive ? 'destructive-primary' : 'primary'"
+                    :variant="linkVariantMap[props.chin.primaryAction.variant ?? 'brand']"
                     @click="props.chin.primaryAction.action"
                   />
                 </template>

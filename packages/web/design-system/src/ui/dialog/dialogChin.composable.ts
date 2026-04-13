@@ -6,17 +6,16 @@ import {
 import type { RouteLocationRaw } from 'vue-router'
 
 export interface ChinButtonAction {
-  isDestructive?: boolean
   isDisabled?: boolean
   isLoading?: boolean
   action: () => Promise<void> | void
   disabledReason?: string | null
   label: string
   type: 'button'
+  variant?: 'brand' | 'default' | 'destructive'
 }
 
 export interface ChinLinkAction {
-  isDestructive?: boolean
   label: string
   link?: {
     href: string
@@ -25,10 +24,10 @@ export interface ChinLinkAction {
   } | null
   to?: RouteLocationRaw | null
   type: 'link'
+  variant?: 'brand' | 'default' | 'destructive'
 }
 
 export interface ChinIconButtonAction {
-  isDestructive?: boolean
   isDisabled?: boolean
   isLoading?: boolean
   action: () => Promise<void> | void
@@ -36,6 +35,7 @@ export interface ChinIconButtonAction {
   icon: Component
   label: string
   type: 'icon-button'
+  variant?: 'brand' | 'default' | 'destructive'
 }
 
 export type ChinAction = ChinButtonAction | ChinIconButtonAction | ChinLinkAction
