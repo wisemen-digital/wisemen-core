@@ -78,6 +78,7 @@ After this setup, all future releases will be automatic through the changeset wo
 - **[Time](./packages/time)** – Time utilities
 - **[Transformer](./packages/transformer)** – Data transformation utilities
 - **[Twilio](./packages/twilio)** – Twilio integration utilities
+- **[TypeORM to DBML](./packages/typeorm-to-dbml)** – Convert TypeORM entities to DBML
 - **[Validators](./packages/validators)** – Validation utilities and schemas
 - **[VIES](./packages/vies)** – VIES VAT validation
 - **[Wise Date](./packages/wise-date)** – Advanced date utilities
