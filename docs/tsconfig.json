@@ -7,7 +7,7 @@
       "dom"
     ],
     "module": "esnext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "paths": {
       "@docs/*": [
         "./*"
