@@ -107,8 +107,8 @@ describe('DateTimeRange unit tests', () => {
         Inclusivity.EXCLUSIVE
       )
 
-      expect(dateRange.from.isSame(now)).toBe(true)
-      expect(dateRange.until.isSame(now.add(1, 'ms'))).toBe(true)
+      expect(dateRange.inclLower.isSame(now)).toBe(true)
+      expect(dateRange.exclUpper.isSame(now.add(1, 'ms'))).toBe(true)
     })
 
     it('Creates a range of 2 ms [now, now + 1ms]', () => {
@@ -116,8 +116,8 @@ describe('DateTimeRange unit tests', () => {
 
       const dateRange = new DateTimeRange(now, now.add(1, 'ms'))
 
-      expect(dateRange.from.isSame(now)).toBe(true)
-      expect(dateRange.until.isSame(now.add(1, 'ms'))).toBe(true)
+      expect(dateRange.inclLower.isSame(now)).toBe(true)
+      expect(dateRange.exclUpper.isSame(now.add(1, 'ms'))).toBe(true)
     })
 
     it('Creates a half open range (-infinity, today]', () => {
@@ -566,8 +566,8 @@ describe('DateTimeRange unit tests', () => {
       const second = new DateTimeRange(new PastInfinity(), new FutureInfinity())
       const overlap = first.overlap(second)
 
-      expect(overlap.from.isPastInfinity()).toBe(true)
-      expect(overlap.until.isFutureInfinity()).toBe(true)
+      expect(overlap.inclLower.isPastInfinity()).toBe(true)
+      expect(overlap.exclUpper.isFutureInfinity()).toBe(true)
     })
 
     it('overlap between (-infinity, today] and (-infinity, +infinity) is (-infinity, today]', () => {
@@ -577,8 +577,8 @@ describe('DateTimeRange unit tests', () => {
 
       const overlap = first.overlap(second)
 
-      expect(overlap.from.isPastInfinity()).toBe(true)
-      expect(overlap.until.isSame(now)).toBe(true)
+      expect(overlap.inclLower.isPastInfinity()).toBe(true)
+      expect(overlap.exclUpper.isSame(now)).toBe(true)
     })
 
     it('overlap between [today, +infinity) and (-infinity, +infinity) is [today, +infinity)', () => {
@@ -587,8 +587,8 @@ describe('DateTimeRange unit tests', () => {
       const second = new DateTimeRange(new PastInfinity(), new FutureInfinity())
       const overlap = first.overlap(second)
 
-      expect(overlap.from.isSame(now)).toBe(true)
-      expect(overlap.until.isFutureInfinity()).toBe(true)
+      expect(overlap.inclLower.isSame(now)).toBe(true)
+      expect(overlap.exclUpper.isFutureInfinity()).toBe(true)
     })
 
     it('overlap between [now, now] and [now, now] is [now, now]', () => {
@@ -642,8 +642,8 @@ describe('DateTimeRange unit tests', () => {
       const second = new DateTimeRange(now.subtract(1, 'ms'), now.add(1, 'ms'))
       const overlap = first.overlap(second)
 
-      expect(overlap.from.isSame(now)).toBe(true)
-      expect(overlap.until.isSame(now.add(1, 'ms'))).toBe(true)
+      expect(overlap.inclLower.isSame(now)).toBe(true)
+      expect(overlap.exclUpper.isSame(now.add(1, 'ms'))).toBe(true)
     })
 
     it('overlap between [now -1ms, now +1ms) and [now -1ms, now +1ms] is [now -1ms, now]', () => {
@@ -1030,8 +1030,8 @@ describe('DateTimeRange unit tests', () => {
 
       const newRange = range.setUntil(newUntil)
 
-      expect(newRange.from.isSame(range.from)).toBe(true)
-      expect(newRange.until.isSame(newUntil)).toBe(true)
+      expect(newRange.inclLower.isSame(range.inclLower)).toBe(true)
+      expect(newRange.exclUpper.isSame(newUntil)).toBe(true)
     })
 
     it('accepts Date objects as input', () => {
@@ -1042,7 +1042,7 @@ describe('DateTimeRange unit tests', () => {
 
       const newRange = range.setUntil(newUntil)
 
-      expect(newRange.until.isSame(timestamp(newUntil))).toBe(true)
+      expect(newRange.exclUpper.isSame(timestamp(newUntil))).toBe(true)
     })
   })
 
@@ -1055,8 +1055,8 @@ describe('DateTimeRange unit tests', () => {
 
       const newRange = range.setFrom(newFrom)
 
-      expect(newRange.from.isSame(newFrom)).toBe(true)
-      expect(newRange.until.isSame(range.until)).toBe(true)
+      expect(newRange.inclLower.isSame(newFrom)).toBe(true)
+      expect(newRange.exclUpper.isSame(range.exclUpper)).toBe(true)
     })
 
     it('accepts Date objects as input', () => {
@@ -1067,12 +1067,12 @@ describe('DateTimeRange unit tests', () => {
 
       const newRange = range.setFrom(newFrom)
 
-      expect(newRange.from.isSame(timestamp(newFrom))).toBe(true)
+      expect(newRange.inclLower.isSame(timestamp(newFrom))).toBe(true)
     })
   })
 
   describe('precedes', () => {
-    it('returns true if this.until is same as other.from and this.until is not future infinity', () => {
+    it('returns true if this.exclUpper is same as other.inclLower and this.exclUpper is not future infinity', () => {
       const now = timestamp()
       const range1 = new DateTimeRange(now, now.add(1, 'second'))
       const range2 = new DateTimeRange(now.add(1, 'second'), now.add(2, 'second'))
@@ -1080,7 +1080,7 @@ describe('DateTimeRange unit tests', () => {
       expect(range1.precedes(range2)).toBe(true)
     })
 
-    it('returns false if this.until is future infinity', () => {
+    it('returns false if this.exclUpper is future infinity', () => {
       const now = timestamp()
       const range1 = new DateTimeRange(now, new FutureInfinity())
       const range2 = new DateTimeRange(now.add(100, 'ms'), now.add(200, 'ms'))
@@ -1088,7 +1088,7 @@ describe('DateTimeRange unit tests', () => {
       expect(range1.precedes(range2)).toBe(false)
     })
 
-    it('returns false if this.until + 1ms is not same as other.from', () => {
+    it('returns false if this.exclUpper + 1ms is not same as other.inclLower', () => {
       const now = timestamp()
       const range1 = new DateTimeRange(now, now.add(1, 'second'))
       const range2 = new DateTimeRange(now.add(2, 'second'), now.add(3, 'second'))
@@ -1116,7 +1116,7 @@ describe('DateTimeRange unit tests', () => {
   })
 
   describe('succeeds', () => {
-    it('returns true if this.from - 1ms is same as other.until and this.from is not past infinity', () => {
+    it('returns true if this.inclLower - 1ms is same as other.exclUpper and this.inclLower is not past infinity', () => {
       const now = timestamp()
       const range1 = new DateTimeRange(now, now.add(1, 'second'))
       const range2 = new DateTimeRange(now.add(1, 'second'), new FutureInfinity())
@@ -1217,8 +1217,8 @@ describe('DateTimeRange unit tests', () => {
       const b = new DateTimeRange(now.add(1, 'day'), now.add(3, 'days'))
       const merged = a.merge(b)
 
-      expect(merged.from.isSame(a.from)).toBe(true)
-      expect(merged.until.isSame(b.until)).toBe(true)
+      expect(merged.inclLower.isSame(a.inclLower)).toBe(true)
+      expect(merged.exclUpper.isSame(b.exclUpper)).toBe(true)
     })
 
     it('merges when one range is contained within the other', () => {
@@ -1237,8 +1237,8 @@ describe('DateTimeRange unit tests', () => {
 
       const merged = a.merge(b)
 
-      expect(merged.from.isSame(a.from)).toBe(true)
-      expect(merged.until.isSame(b.until)).toBe(true)
+      expect(merged.inclLower.isSame(a.inclLower)).toBe(true)
+      expect(merged.exclUpper.isSame(b.exclUpper)).toBe(true)
     })
 
     it('throws if ranges do not overlap (disjoint)', () => {
@@ -1254,8 +1254,8 @@ describe('DateTimeRange unit tests', () => {
       const infinite = new DateTimeRange(new PastInfinity(), new FutureInfinity())
       const merged = infinite.merge(finite)
 
-      expect(merged.from.isPastInfinity()).toBe(true)
-      expect(merged.until.isFutureInfinity()).toBe(true)
+      expect(merged.inclLower.isPastInfinity()).toBe(true)
+      expect(merged.exclUpper.isFutureInfinity()).toBe(true)
     })
   })
 
@@ -1267,8 +1267,8 @@ describe('DateTimeRange unit tests', () => {
 
       const merged = range1.mergeAdjacent(range2)
 
-      expect(merged.from.isSame(range2.from)).toBe(true)
-      expect(merged.until.isSame(range1.until)).toBe(true)
+      expect(merged.inclLower.isSame(range2.inclLower)).toBe(true)
+      expect(merged.exclUpper.isSame(range1.exclUpper)).toBe(true)
     })
 
     it('merges when other range succeeds this range (sets until)', () => {
@@ -1278,8 +1278,8 @@ describe('DateTimeRange unit tests', () => {
 
       const merged = range1.mergeAdjacent(range2)
 
-      expect(merged.from.isSame(range1.from)).toBe(true)
-      expect(merged.until.isSame(range2.until)).toBe(true)
+      expect(merged.inclLower.isSame(range1.inclLower)).toBe(true)
+      expect(merged.exclUpper.isSame(range2.exclUpper)).toBe(true)
     })
 
     it('throws if ranges are not adjacent', () => {
