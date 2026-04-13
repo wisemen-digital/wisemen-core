@@ -207,11 +207,11 @@ describe('RRule unit tests', () => {
       const occurrences = Array.from(rrule.occurrences())
 
       expect(occurrences).toHaveLength(5)
-      expect(occurrences[0].from.isSame(start)).toBe(true)
-      expect(occurrences[1].from.isSame(start.add(7, 'days'))).toBe(true)
-      expect(occurrences[2].from.isSame(start.add(14, 'days'))).toBe(true)
-      expect(occurrences[3].from.isSame(start.add(21, 'days'))).toBe(true)
-      expect(occurrences[4].from.isSame(start.add(28, 'days'))).toBe(true)
+      expect(occurrences[0].inclLower.isSame(start)).toBe(true)
+      expect(occurrences[1].inclLower.isSame(start.add(7, 'days'))).toBe(true)
+      expect(occurrences[2].inclLower.isSame(start.add(14, 'days'))).toBe(true)
+      expect(occurrences[3].inclLower.isSame(start.add(21, 'days'))).toBe(true)
+      expect(occurrences[4].inclLower.isSame(start.add(28, 'days'))).toBe(true)
     })
 
     it('generates daily occurrences for a range, except for excepted start timestamps', () => {
