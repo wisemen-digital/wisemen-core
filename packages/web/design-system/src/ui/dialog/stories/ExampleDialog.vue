@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import {
+  AlertSquareIcon,
   CheckCircleIcon,
-  InfoCircleIcon,
   SearchMdIcon,
 } from '@wisemen/vue-core-icons'
 
-import { UIButton } from '@/ui/button'
 import Checkbox from '@/ui/checkbox/Checkbox.vue'
 import type { DialogSize } from '@/ui/dialog/dialog.props'
 import Dialog from '@/ui/dialog/Dialog.vue'
@@ -57,22 +56,6 @@ const dialogChin = useDialogChin()
 
     <DialogBody>
       <div class="grid grid-cols-2 gap-lg">
-        <UIButton
-          label="open chin"
-          @click="() => {
-            dialogChin.open({
-              icon: InfoCircleIcon,
-              text: 'You have unsaved changes. this is really long text to test the chin height. make it longer and longer and longer',
-              variant: 'default',
-            })
-          }"
-        />
-        <UIButton
-          label="close chin"
-          @click="() => {
-            dialogChin.close()
-          }"
-        />
         <TextField
           :model-value="null"
           :icon-left="SearchMdIcon"
@@ -102,7 +85,30 @@ const dialogChin = useDialogChin()
         />
         <DialogFooterPrimary
           label="Open dialog"
-          @click="onClose"
+          @click="() => {
+            dialogChin.open({
+              icon: AlertSquareIcon,
+              text: 'You have unsaved changes',
+              variant: 'error',
+              primaryAction: {
+                type: 'button',
+                action: () => {
+                  console.log('save')
+                  dialogChin.close()
+                },
+                label: 'Save',
+              },
+              secondaryAction: {
+                type: 'button',
+                action: () => {
+                  dialogChin.close()
+                },
+                label: 'discard',
+                isDestructive: true,
+              },
+
+            })
+          }"
         />
       </template>
     </DialogFooter>

@@ -10,7 +10,11 @@ import {
   watch,
 } from 'vue'
 
-import { UIButton } from '@/ui/button'
+import {
+  UIButton,
+  UIIconButton,
+  UILink,
+} from '@/ui/button'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { useInjectDialogContext } from '@/ui/dialog/dialog.context'
 import type { chinConfig } from '@/ui/dialog/dialogChin.composable'
@@ -35,7 +39,7 @@ watch(chinContentRef, (el) => {
       entry,
     ],
   ) => {
-    chinHeight.value = entry.contentRect.height
+    chinHeight.value = entry?.contentRect.height ?? 0
   })
 
   observer.observe(el)
@@ -91,25 +95,84 @@ const {
           justify="end"
           class="h-full p-lg px-xl"
         >
-          <div ref="chinContent">
+          <div
+            ref="chinContent"
+            class="w-full"
+          >
             <RowLayout
               align="center"
+              justify="between"
             >
-              <Component
-                :is="props.chin?.icon"
-                v-if="chin?.icon"
-                :class="iconColor"
-                class="size-4 shrink-0 text-error-500"
-              />
-              <span class="text-xs font-medium">{{ chin?.text }}</span>
-              <UIButton
-                variant="tertiary"
-                label="Discard"
-              />
-              <UIButton
-                variant="minimal-color"
-                label="Save"
-              />
+              <RowLayout>
+                <Component
+                  :is="props.chin?.icon"
+                  v-if="chin?.icon"
+                  :class="iconColor"
+                  class="size-4 shrink-0 text-error-500"
+                />
+                <span class="text-xs font-medium">{{ chin?.text }}</span>
+              </RowLayout>
+              <RowLayout
+                items="center"
+                gap="none"
+              >
+                <template v-if="props.chin?.secondaryAction">
+                  <UIButton
+                    v-if="props.chin.secondaryAction.type === 'button'"
+                    :label="props.chin.secondaryAction.label"
+                    :is-loading="props.chin.secondaryAction.isLoading"
+                    :is-disabled="props.chin.secondaryAction.isDisabled"
+                    :disabled-reason="props.chin.secondaryAction.disabledReason"
+                    :variant="props.chin.secondaryAction.isDestructive ? 'destructive-tertiary' : 'tertiary'"
+                    @click="props.chin.secondaryAction.action"
+                  />
+                  <UILink
+                    v-else-if="props.chin.secondaryAction.type === 'link'"
+                    :label="props.chin.secondaryAction.label"
+                    :to="props.chin.secondaryAction.to"
+                    :link="props.chin.secondaryAction.link"
+                    :variant="props.chin.secondaryAction.isDestructive ? 'destructive-tertiary' : 'tertiary'"
+                  />
+                  <UIIconButton
+                    v-else-if="props.chin.secondaryAction.type === 'icon-button'"
+                    :icon="props.chin.secondaryAction.icon"
+                    :label="props.chin.secondaryAction.label"
+                    :is-loading="props.chin.secondaryAction.isLoading"
+                    :is-disabled="props.chin.secondaryAction.isDisabled"
+                    :disabled-reason="props.chin.secondaryAction.disabledReason"
+                    :variant="props.chin.secondaryAction.isDestructive ? 'destructive-tertiary' : 'tertiary'"
+                    @click="props.chin.secondaryAction.action"
+                  />
+                </template>
+                <template v-if="props.chin?.primaryAction">
+                  <UIButton
+                    v-if="props.chin.primaryAction.type === 'button'"
+                    :label="props.chin.primaryAction.label"
+                    :is-loading="props.chin.primaryAction.isLoading"
+                    :is-disabled="props.chin.primaryAction.isDisabled"
+                    :disabled-reason="props.chin.primaryAction.disabledReason"
+                    :variant="props.chin.primaryAction.isDestructive ? 'destructive-primary' : 'minimal-color'"
+                    @click="props.chin.primaryAction.action"
+                  />
+                  <UILink
+                    v-else-if="props.chin.primaryAction.type === 'link'"
+                    :label="props.chin.primaryAction.label"
+                    :to="props.chin.primaryAction.to"
+                    :link="props.chin.primaryAction.link"
+                    :variant="props.chin.primaryAction.isDestructive ? 'destructive-primary' : 'primary'"
+                  />
+                  <UIIconButton
+                    v-else-if="props.chin.primaryAction.type === 'icon-button'"
+                    :icon="props.chin.primaryAction.icon"
+                    :label="props.chin.primaryAction.label"
+                    :is-loading="props.chin.primaryAction.isLoading"
+                    :is-disabled="props.chin.primaryAction.isDisabled"
+                    :disabled-reason="props.chin.primaryAction.disabledReason"
+                    :variant="props.chin.primaryAction.isDestructive ? 'destructive-primary' : 'primary'"
+                    @click="props.chin.primaryAction.action"
+                  />
+                </template>
+              </RowLayout>
             </RowLayout>
           </div>
         </ColumnLayout>
