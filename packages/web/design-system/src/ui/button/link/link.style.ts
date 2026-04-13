@@ -34,7 +34,7 @@ export const createLinkStyle = tv({
   slots: {
     container: `grid size-full [grid-template-areas:'stack']`,
     icon: `shrink-0`,
-    label: ``,
+    label: `font-medium`,
     root: `
       group/link inline-flex shrink-0 cursor-pointer items-center justify-center
       border outline-2 outline-offset-1 outline-transparent duration-100
