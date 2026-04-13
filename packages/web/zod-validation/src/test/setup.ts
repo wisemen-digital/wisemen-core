@@ -4,7 +4,7 @@ import {
 } from 'vitest'
 import type { Composer } from 'vue-i18n'
 
-import { initializeZodValidationConfig } from '#/config/config.js'
+import { initializeZodValidationConfig } from '#/config/config.ts'
 
 beforeEach(() => {
   const mockI18n: Partial<Composer> = {

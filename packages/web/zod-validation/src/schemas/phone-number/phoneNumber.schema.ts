@@ -1,7 +1,7 @@
 import { parsePhoneNumberWithError } from 'libphonenumber-js'
 import { z } from 'zod'
 
-import { getZodValidationConfig } from '#/config/config.js'
+import { getZodValidationConfig } from '#/config/config.ts'
 
 export const phoneNumberSchema = z.string().refine((val) => {
   try {
