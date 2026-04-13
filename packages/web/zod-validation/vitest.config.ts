@@ -22,5 +22,8 @@ export default defineConfig({
       ...configDefaults.exclude,
     ],
     root: fileURLToPath(new URL('./', META_URL)),
+    setupFiles: [
+      './src/test/setup.ts',
+    ],
   },
 })

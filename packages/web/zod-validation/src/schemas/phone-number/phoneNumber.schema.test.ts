@@ -67,7 +67,8 @@ describe('phoneNumberSchema', () => {
     const result = phoneNumberSchema.safeParse('invalid')
 
     expect(result.success).toBeFalsy()
-
-    expect(result.error!.issues[0].message).toBeDefined()
+    expect(result.error!.issues[0].message).toBe(
+      'package.zod_validation.invalid_phone_number',
+    )
   })
 })
