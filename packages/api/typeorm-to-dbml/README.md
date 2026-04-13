@@ -44,9 +44,7 @@ The tool supports the following TypeORM decorators:
   - **Options**:
     - `type`: Explicitly sets the column type (e.g., `{ type: 'jsonb' }`).
     - `nullable`: Marks the column as nullable (e.g., `{ nullable: true }`).
-    - `default`: Sets a default value for the column (e.g., `{ default: true }`).
-
-- **`@ManyToOne`**: Extracts the target entity to create a foreign key relationship.
+    - `default`: Sets a default value for the column (e.g., `{ default: true }`).- **`@ManyToOne`**: Extracts the target entity to create a foreign key relationship.
 
 - **`@OneToOne`**: Extracts the target entity to create a one-to-one relationship.
 
@@ -57,6 +55,8 @@ The tool supports the following TypeORM decorators:
 - **`@UpdateDateColumn`**: Creates a `timestamp` column for last update date.
 
 - **`@DeleteDateColumn`**: Creates a nullable `timestamp` column for soft delete date.
+
+- All other properties that contain a decorator are documented as a column of type `unknown`.
 
 ### Type Mapping (When type is not explicitly specified)
 

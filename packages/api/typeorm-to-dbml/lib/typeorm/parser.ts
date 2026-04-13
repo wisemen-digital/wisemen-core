@@ -265,6 +265,14 @@ export function processEntity (
       continue
     }
 
+    if (hasDecorator(property, 'OneToMany')) {
+      continue
+    }
+
+    if (hasDecorator(property, 'ManyToMany')) {
+      continue
+    }
+
     if (hasDecorator(property, 'CreateDateColumn')) {
       tableDefinition += `  ${propertyName} timestamp [default: 'now()']\n`
 
@@ -282,6 +290,22 @@ export function processEntity (
 
       continue
     }
+
+    const nullable = isNullable(property)
+    const defaultValue = getColumnDefault(property)
+
+    const settings: string[] = []
+
+    if (nullable) {
+      settings.push('null')
+    }
+    if (defaultValue !== null) {
+      settings.push(`default: '${defaultValue}'`)
+    }
+    const settingsStr
+      = settings.length > 0 ? ` [${settings.join(', ')}]` : ''
+
+    tableDefinition += `  ${propertyName} unknown ${settingsStr}\n`
   }
 
   tableDefinition += `}\n`

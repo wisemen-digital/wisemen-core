@@ -20,6 +20,9 @@ export class User {
   @Column({ type: 'jsonb' })
   customFields: object
 
+  @CustomColumn()
+  customColumn: object
+
   @OneToMany(() => UserRole, role => role.user)
   userRoles?: Array<Relation<UserRole>>
 }
