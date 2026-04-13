@@ -12,9 +12,17 @@
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/eslint-config-nestjs"
   },
-  "scripts": {},
+  "scripts": {
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint"
+  },
   "keywords": [],
   "author": "",
+  "peerDependencies": {
+    "eslint": "9.39.4",
+    "oxlint": "1.56.0"
+  },
   "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "@eslint/eslintrc": "catalog:lint",
@@ -28,6 +36,8 @@
     "eslint-plugin-unused-imports": "catalog:lint",
     "globals": "catalog:lint",
     "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint"
+    "typescript-eslint": "catalog:lint",
+    "oxlint": "catalog:lint",
+    "@typescript-eslint/eslint-plugin": "catalog:lint"
   }
 }
