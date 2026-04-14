@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/coordinates",
-  "version": "0.0.21",
+  "version": "0.0.25",
   "publishConfig": {
     "access": "public"
   },
@@ -14,11 +14,12 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
-    "prebuild": "rm -rf ./dist",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "pnpm run build",
     "test": "node --test dist/tests/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
@@ -41,7 +42,7 @@
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

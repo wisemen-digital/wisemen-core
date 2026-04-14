@@ -16,25 +16,23 @@ import { useI18n } from 'vue-i18n'
 import MainSidebarContent from '@/ui/sidebar/components/MainSidebarContent.vue'
 import MainSidebarTransition from '@/ui/sidebar/components/MainSidebarTransition.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
-import type { MainSidebarVariant } from '@/ui/sidebar/types/mainSidebar.type'
+import type { MainSidebarProps } from '@/ui/sidebar/mainSidebar.props'
 
-const props = withDefaults(defineProps<{
-  variant?: MainSidebarVariant
-}>(), {
-  variant: 'icons-with-labels',
+const props = withDefaults(defineProps<MainSidebarProps>(), {
+  collapsedVariant: 'hidden',
 })
 
 const {
   isFloatingSidebar,
   isSidebarOpen,
-  setVariant,
+  setCollapsedVariant,
   sidebarWidth,
 } = useMainSidebar()
 
 const i18n = useI18n()
 const isReduceMotionEnabledOnDevice = useReducedMotion()
 
-setVariant(props.variant)
+setCollapsedVariant(props.collapsedVariant)
 </script>
 
 <template>
@@ -104,7 +102,7 @@ setVariant(props.variant)
     </AnimatePresence>
   </DialogRoot>
   <AnimatePresence
-    v-else-if="variant === 'icons-with-labels'"
+    v-else-if="collapsedVariant === 'hidden'"
     :initial="false"
   >
     <MainSidebarTransition
@@ -132,7 +130,7 @@ setVariant(props.variant)
     :initial="false"
     :animate="{ width: sidebarWidth }"
     :transition="{
-      duration: isReduceMotionEnabledOnDevice ? 0 : 0.1,
+      duration: isReduceMotionEnabledOnDevice ? 0 : 0.3,
       type: 'spring',
       bounce: 0,
     }"

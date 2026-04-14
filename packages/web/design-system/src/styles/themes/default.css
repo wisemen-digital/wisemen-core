@@ -1,4 +1,43 @@
 .default.light {
+  --blue-25: #f5f8ff;
+  --blue-50: #eff4ff;
+  --blue-100: #d1e0ff;
+  --blue-200: #b2ccff;
+  --blue-300: #84adff;
+  --blue-400: #528bff;
+  --blue-500: #2970ff;
+  --blue-600: #155eef;
+  --blue-700: #004eeb;
+  --blue-800: #0040c1;
+  --blue-900: #00359e;
+  --blue-950: #002266;
+
+  --pink-25: #fef6fb;
+  --pink-50: #fdf2fa;
+  --pink-100: #fce7f6;
+  --pink-200: #fcceee;
+  --pink-300: #faa7e0;
+  --pink-400: #f670c7;
+  --pink-500: #ee46bc;
+  --pink-600: #dd2590;
+  --pink-700: #c11574;
+  --pink-800: #9e165f;
+  --pink-900: #851651;
+  --pink-950: #4e0d30;
+
+  --purple-25: #fafaff;
+  --purple-50: #f4f3ff;
+  --purple-100: #ebe9fe;
+  --purple-200: #d9d6fe;
+  --purple-300: #bdb4fe;
+  --purple-400: #9b8afb;
+  --purple-500: #7a5af8;
+  --purple-600: #6938ef;
+  --purple-700: #5925dc;
+  --purple-800: #4a1fb8;
+  --purple-900: #3e1c96;
+  --purple-950: #27115f;
+
   --brand-25: #fcfaff;
   --brand-50: #f9f5ff;
   --brand-100: #f4ebff;
@@ -69,6 +108,45 @@
 }
 
 .default.dark {
+  --blue-25: #f5f8ff;
+  --blue-50: #eff4ff;
+  --blue-100: #d1e0ff;
+  --blue-200: #b2ccff;
+  --blue-300: #84adff;
+  --blue-400: #528bff;
+  --blue-500: #2970ff;
+  --blue-600: #155eef;
+  --blue-700: #004eeb;
+  --blue-800: #0040c1;
+  --blue-900: #00359e;
+  --blue-950: #002266;
+
+  --pink-25: #fef6fb;
+  --pink-50: #fdf2fa;
+  --pink-100: #fce7f6;
+  --pink-200: #fcceee;
+  --pink-300: #faa7e0;
+  --pink-400: #f670c7;
+  --pink-500: #ee46bc;
+  --pink-600: #dd2590;
+  --pink-700: #c11574;
+  --pink-800: #9e165f;
+  --pink-900: #851651;
+  --pink-950: #4e0d30;
+
+  --purple-25: #fafaff;
+  --purple-50: #f4f3ff;
+  --purple-100: #ebe9fe;
+  --purple-200: #d9d6fe;
+  --purple-300: #bdb4fe;
+  --purple-400: #9b8afb;
+  --purple-500: #7a5af8;
+  --purple-600: #6938ef;
+  --purple-700: #5925dc;
+  --purple-800: #4a1fb8;
+  --purple-900: #3e1c96;
+  --purple-950: #27115f;
+
   --brand-25: #fcfaff;
   --brand-50: #f9f5ff;
   --brand-100: #f4ebff;
@@ -139,6 +217,45 @@
 }
 
 .default.system {
+  --blue-25: #f5f8ff;
+  --blue-50: #eff4ff;
+  --blue-100: #d1e0ff;
+  --blue-200: #b2ccff;
+  --blue-300: #84adff;
+  --blue-400: #528bff;
+  --blue-500: #2970ff;
+  --blue-600: #155eef;
+  --blue-700: #004eeb;
+  --blue-800: #0040c1;
+  --blue-900: #00359e;
+  --blue-950: #002266;
+
+  --pink-25: #fef6fb;
+  --pink-50: #fdf2fa;
+  --pink-100: #fce7f6;
+  --pink-200: #fcceee;
+  --pink-300: #faa7e0;
+  --pink-400: #f670c7;
+  --pink-500: #ee46bc;
+  --pink-600: #dd2590;
+  --pink-700: #c11574;
+  --pink-800: #9e165f;
+  --pink-900: #851651;
+  --pink-950: #4e0d30;
+
+  --purple-25: #fafaff;
+  --purple-50: #f4f3ff;
+  --purple-100: #ebe9fe;
+  --purple-200: #d9d6fe;
+  --purple-300: #bdb4fe;
+  --purple-400: #9b8afb;
+  --purple-500: #7a5af8;
+  --purple-600: #6938ef;
+  --purple-700: #5925dc;
+  --purple-800: #4a1fb8;
+  --purple-900: #3e1c96;
+  --purple-950: #27115f;
+
   --brand-25: #fcfaff;
   --brand-50: #f9f5ff;
   --brand-100: #f4ebff;
@@ -208,6 +325,45 @@
   --white: #ffffff;
 
   @media (prefers-color-scheme: dark) {
+    --blue-25: #f5f8ff;
+    --blue-50: #eff4ff;
+    --blue-100: #d1e0ff;
+    --blue-200: #b2ccff;
+    --blue-300: #84adff;
+    --blue-400: #528bff;
+    --blue-500: #2970ff;
+    --blue-600: #155eef;
+    --blue-700: #004eeb;
+    --blue-800: #0040c1;
+    --blue-900: #00359e;
+    --blue-950: #002266;
+
+    --pink-25: #fef6fb;
+    --pink-50: #fdf2fa;
+    --pink-100: #fce7f6;
+    --pink-200: #fcceee;
+    --pink-300: #faa7e0;
+    --pink-400: #f670c7;
+    --pink-500: #ee46bc;
+    --pink-600: #dd2590;
+    --pink-700: #c11574;
+    --pink-800: #9e165f;
+    --pink-900: #851651;
+    --pink-950: #4e0d30;
+
+    --purple-25: #fafaff;
+    --purple-50: #f4f3ff;
+    --purple-100: #ebe9fe;
+    --purple-200: #d9d6fe;
+    --purple-300: #bdb4fe;
+    --purple-400: #9b8afb;
+    --purple-500: #7a5af8;
+    --purple-600: #6938ef;
+    --purple-700: #5925dc;
+    --purple-800: #4a1fb8;
+    --purple-900: #3e1c96;
+    --purple-950: #27115f;
+
     --brand-25: #fcfaff;
     --brand-50: #f9f5ff;
     --brand-100: #f4ebff;

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-api-2-pdf",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +17,9 @@
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware ",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "lint:fix": "eslint --cache --fix"
   },
   "dependencies": {
@@ -34,7 +36,7 @@
     "typescript": "catalog:peer"
   },
   "author": "Wisemen",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

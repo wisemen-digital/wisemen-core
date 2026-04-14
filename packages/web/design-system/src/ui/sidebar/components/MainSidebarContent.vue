@@ -1,21 +1,29 @@
 <script setup lang="ts">
+import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
+const {
+  sidebarContainerPadding,
+} = useMainSidebar()
 </script>
 
 <template>
   <div
     class="flex h-full flex-col justify-between overflow-hidden text-primary"
   >
-    <div class="p-lg">
+    <div
+      :style="{ padding: sidebarContainerPadding }"
+    >
       <slot name="header" />
     </div>
     <nav
-      class="flex h-full flex-col gap-2xl overflow-y-auto p-md"
+      :style="{ padding: sidebarContainerPadding }"
+      class="flex h-full flex-col gap-2xl overflow-y-auto"
     >
       <slot name="navigation" />
     </nav>
     <div
-      class="flex flex-col gap-sm p-md"
+      :style="{ padding: sidebarContainerPadding }"
+      class="flex flex-col gap-sm"
     >
       <slot name="footer" />
     </div>

@@ -7,10 +7,10 @@ vi.mock('vue-i18n', () => ({
   }),
 }))
 
-const ResizeObserverMock = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}))
+class ResizeObserverMock {
+  disconnect = vi.fn()
+  observe = vi.fn()
+  unobserve = vi.fn()
+}
 
 vi.stubGlobal('ResizeObserver', ResizeObserverMock)

@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useKbd } from '@/composables/kbd.composable'
+import type { KeyboardShortcutProps } from '@/ui/keyboard-shortcut/keyboardShortcut.props'
 import { UIRowLayout } from '@/ui/row-layout/index'
 
 interface CombinationSeparatorPart {
@@ -22,9 +23,7 @@ interface KeyPart {
 
 type ShortcutPart = CombinationSeparatorPart | KeyPart | SequenceSeparatorPart
 
-const props = defineProps<{
-  keyboardShortcut: string
-}>()
+const props = defineProps<KeyboardShortcutProps>()
 
 const COMBINATION_SEPARATOR = '_' // meta_k
 const SEQUENCE_SEPARATOR = '-' // g-d

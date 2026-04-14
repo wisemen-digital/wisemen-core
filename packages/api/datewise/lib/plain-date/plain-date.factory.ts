@@ -15,7 +15,7 @@ export function factory (date: Date): DayjsPlainDate
 export function factory (date: 'infinity' | '+infinity'): FutureInfinityDate
 export function factory (date: '-infinity'): PastInfinityDate
 export function factory (date: PlainDateInput): PlainDate
-export function factory (date?: PlainDateInput | null): PlainDate | null {
+export function factory (date?: PlainDateInput | null, format?: string): PlainDate | null {
   switch (date) {
     case null: return null
     case undefined: return new DayjsPlainDate()
@@ -41,7 +41,7 @@ export function factory (date?: PlainDateInput | null): PlainDate | null {
         return new PastInfinityDate()
       }
 
-      return new DayjsPlainDate(date)
+      return new DayjsPlainDate(date, format)
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/api-error",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "publishConfig": {
     "access": "public"
   },
@@ -11,9 +11,11 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
     "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --test",
@@ -31,10 +33,12 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "expect": "catalog:test",
     "eslint": "catalog:lint",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "oxlint": "catalog:lint",
+    "oxlint-tsgolint": "catalog:lint"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

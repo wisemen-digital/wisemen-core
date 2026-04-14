@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pagination",
-  "version": "0.0.13",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -11,17 +11,19 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run build",
     "test": "node --test",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "author": "Joren Vandeweyer",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

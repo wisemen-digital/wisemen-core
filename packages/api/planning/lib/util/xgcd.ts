@@ -1,15 +1,15 @@
 export function xgcd (a: number, b: number): [number, number, number] {
-  let [old_r, r] = [a, b]
-  let [old_s, s] = [1, 0]
-  let [old_t, t] = [0, 1]
+  let [oldR, r] = [a, b]
+  let [oldS, s] = [1, 0]
+  let [oldT, t] = [0, 1]
 
   while (r !== 0) {
-    const quotient = Math.floor(old_r / r);
+    const quotient = Math.floor(oldR / r);
 
-    [old_r, r] = [r, old_r - quotient * r];
-    [old_s, s] = [s, old_s - quotient * s];
-    [old_t, t] = [t, old_t - quotient * t]
+    [oldR, r] = [r, oldR - quotient * r];
+    [oldS, s] = [s, oldS - quotient * s];
+    [oldT, t] = [t, oldT - quotient * t]
   }
 
-  return [old_r, old_s, old_t]
+  return [oldR, oldS, oldT]
 }

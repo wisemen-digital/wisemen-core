@@ -89,6 +89,25 @@ export class S3 extends FileStorage {
     })
   }
 
+  public createTemporaryPreviewUrl (
+    key: string,
+    mimeType?: string,
+    expiresInSeconds?: number
+  ): Promise<string> {
+    this.validateKey(key)
+
+    const command = new GetObjectCommand({
+      Bucket: this.bucketName,
+      Key: key,
+      ResponseContentType: mimeType,
+      ResponseContentDisposition: 'inline'
+    })
+
+    return getSignedUrl(this.client, command, {
+      expiresIn: expiresInSeconds ?? S3_DOWNLOAD_URL_EXPIRES_S
+    })
+  }
+
   public createTemporaryDownloadUrl (
     key: string,
     name: string,

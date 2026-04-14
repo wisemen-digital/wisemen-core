@@ -10,7 +10,13 @@ import type {
   TestId,
 } from '@/utils/props.util'
 
-export interface DateFieldProps extends TestId, InteractableElement, FormElement, SharedDateProps, CustomizableElement<'dateField'> {
+export interface DateFieldProps
+  extends
+  TestId,
+  InteractableElement,
+  FormElement,
+  SharedDateProps,
+  CustomizableElement<'dateField'> {
   /**
    * Whether the input is loading.
    * @default false
@@ -21,6 +27,11 @@ export interface DateFieldProps extends TestId, InteractableElement, FormElement
    * @default 'off'
    */
   autocomplete?: 'off' | 'on'
+  /**
+   * Whether the picker should remain open after a selection is made.
+   * @default false
+   */
+  dontCloseOnSelect?: boolean
   /**
    * Hides the date picker dropdown trigger when set to `true`.
    *

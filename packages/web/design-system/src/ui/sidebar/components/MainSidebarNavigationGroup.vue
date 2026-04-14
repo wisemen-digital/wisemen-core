@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{
 })
 
 const {
-  isSidebarOpen, variant,
+  isSidebarOpen, collapsedVariant,
 } = useMainSidebar()
 </script>
 
@@ -18,15 +18,18 @@ const {
     <span
       v-if="props.label !== null"
       :class="{
-        'opacity-0': variant === 'icons-only' && !isSidebarOpen,
+        'opacity-0': collapsedVariant === 'minified' && !isSidebarOpen,
       }"
-      class="block px-lg pb-sm text-xs font-medium text-quaternary"
+      class="
+        block px-sm pb-sm text-xs font-medium text-quaternary transition-opacity
+        duration-150 ease-in-out
+      "
     >
       {{ props.label }}
     </span>
 
     <UIColumnLayout
-      :align="variant === 'icons-only' ? 'center' : 'start'"
+      align="start"
       gap="xs"
     >
       <slot />

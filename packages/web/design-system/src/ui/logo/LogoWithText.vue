@@ -1,12 +1,9 @@
 <script setup lang="ts">
+import type { LogoWithTextProps } from '@/ui/logo/logo.props'
 import Logo from '@/ui/logo/Logo.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 
-const props = defineProps<{
-  name: string
-  size: 'sm' | 'xs' | 'xxs'
-  src: string | null
-}>()
+const props = defineProps<LogoWithTextProps>()
 </script>
 
 <template>

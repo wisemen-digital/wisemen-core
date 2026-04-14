@@ -1,6 +1,6 @@
 // badge.variants.ts
 
-import { tv } from 'tailwind-variants'
+import { tv } from '@/styles/tailwindVariants.lib'
 
 export const badgeVariants = tv({
   compoundVariants: [
@@ -30,11 +30,11 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: 'border-brand-700 bg-brand-700',
+        base: 'border-brand-500 bg-brand-500',
         dot: 'bg-white',
         icon: 'text-primary-on-brand',
         label: 'text-primary-on-brand',
-        separator: 'bg-brand-700',
+        separator: 'bg-brand-500',
       },
       color: 'brand',
       variant: 'solid',
@@ -89,11 +89,11 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: 'border-error-700 bg-error-700',
+        base: 'border-error-500 bg-error-500',
         dot: 'bg-white',
         icon: 'text-white',
         label: 'text-white',
-        separator: 'bg-error-700',
+        separator: 'bg-error-500',
       },
       color: 'error',
       variant: 'solid',
@@ -148,11 +148,11 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: 'border-gray-700 bg-gray-700',
+        base: 'border-gray-500 bg-gray-500',
         dot: 'bg-white',
         icon: 'text-white',
         label: 'text-white',
-        separator: 'bg-gray-700',
+        separator: 'bg-gray-500',
       },
       color: 'gray',
       variant: 'solid',
@@ -207,11 +207,11 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: 'border-success-950 bg-success-950',
+        base: 'border-success-500 bg-success-500',
         dot: 'bg-white',
         icon: 'text-white',
         label: 'text-white',
-        separator: 'bg-success-950',
+        separator: 'bg-success-500',
       },
       color: 'success',
       variant: 'solid',
@@ -237,6 +237,124 @@ export const badgeVariants = tv({
         `,
       },
       color: 'success',
+      variant: 'translucent',
+    },
+
+    // blue
+    {
+      class: {
+        base: `
+          border-blue-400
+          dark:border-blue-600
+        `,
+        dot: 'bg-blue-500',
+        icon: `
+          text-blue-700
+          dark:text-blue-300
+        `,
+        label: `
+          text-blue-700
+          dark:text-blue-300
+        `,
+        separator: `
+          bg-blue-400
+          dark:bg-blue-600
+        `,
+      },
+      color: 'blue',
+      variant: 'outline',
+    },
+    {
+      class: {
+        base: 'border-blue-600 bg-blue-600',
+        dot: 'bg-white',
+        icon: 'text-white',
+        label: 'text-white',
+        separator: 'bg-blue-600',
+      },
+      color: 'blue',
+      variant: 'solid',
+    },
+    {
+      class: {
+        base: `
+          border-blue-200 bg-blue-25
+          dark:border-blue-800 dark:bg-blue-950
+        `,
+        dot: 'bg-blue-500',
+        icon: `
+          text-blue-700
+          dark:text-blue-200
+        `,
+        label: `
+          text-blue-700
+          dark:text-blue-200
+        `,
+        separator: `
+          bg-blue-200
+          dark:bg-blue-800
+        `,
+      },
+      color: 'blue',
+      variant: 'translucent',
+    },
+
+    // pink
+    {
+      class: {
+        base: `
+          border-pink-400
+          dark:border-pink-600
+        `,
+        dot: 'bg-pink-500',
+        icon: `
+          text-pink-700
+          dark:text-pink-300
+        `,
+        label: `
+          text-pink-700
+          dark:text-pink-300
+        `,
+        separator: `
+          bg-pink-400
+          dark:bg-pink-600
+        `,
+      },
+      color: 'pink',
+      variant: 'outline',
+    },
+    {
+      class: {
+        base: 'border-pink-500 bg-pink-500',
+        dot: 'bg-white',
+        icon: 'text-white',
+        label: 'text-white',
+        separator: 'bg-pink-500',
+      },
+      color: 'pink',
+      variant: 'solid',
+    },
+    {
+      class: {
+        base: `
+          border-pink-200 bg-pink-25
+          dark:border-pink-800 dark:bg-pink-950
+        `,
+        dot: 'bg-pink-500',
+        icon: `
+          text-pink-700
+          dark:text-pink-200
+        `,
+        label: `
+          text-pink-700
+          dark:text-pink-200
+        `,
+        separator: `
+          bg-pink-200
+          dark:bg-pink-800
+        `,
+      },
+      color: 'pink',
       variant: 'translucent',
     },
 
@@ -266,22 +384,34 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: 'border-purple-700 bg-purple-700',
+        base: 'border-purple-500 bg-purple-500',
         dot: 'bg-white',
         icon: 'text-white',
         label: 'text-white',
-        separator: 'bg-purple-700',
+        separator: 'bg-purple-500',
       },
       color: 'purple',
       variant: 'solid',
     },
     {
       class: {
-        base: `border-purple-200 bg-purple-50`,
+        base: `
+          border-purple-200 bg-purple-25
+          dark:border-purple-800 dark:bg-purple-950
+        `,
         dot: 'bg-purple-500',
-        icon: `text-purple-700`,
-        label: `text-purple-700`,
-        separator: `bg-purple-200`,
+        icon: `
+          text-purple-700
+          dark:text-purple-200
+        `,
+        label: `
+          text-purple-700
+          dark:text-purple-200
+        `,
+        separator: `
+          bg-purple-200
+          dark:bg-purple-800
+        `,
       },
       color: 'purple',
       variant: 'translucent',
@@ -313,11 +443,11 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: 'border-warning-700 bg-warning-700',
+        base: 'border-warning-500 bg-warning-500',
         dot: 'bg-white',
         icon: 'text-white',
         label: 'text-white',
-        separator: 'bg-warning-700',
+        separator: 'bg-warning-500',
       },
       color: 'warning',
       variant: 'solid',
@@ -376,14 +506,14 @@ export const badgeVariants = tv({
     },
 
     color: {
-      'blue': {},
-      'blue-light': {},
-      'brand': {},
-      'error': {},
-      'gray': {},
-      'purple': {},
-      'success': {},
-      'warning': {},
+      blue: {},
+      brand: {},
+      error: {},
+      gray: {},
+      pink: {},
+      purple: {},
+      success: {},
+      warning: {},
     },
 
     variant: {

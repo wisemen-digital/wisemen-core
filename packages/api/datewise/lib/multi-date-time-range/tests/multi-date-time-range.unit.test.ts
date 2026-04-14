@@ -29,8 +29,8 @@ describe('MultiDateTimeRange unit tests', () => {
       const multi = new MultiDateTimeRange([a, b])
 
       expect(multi.length).toBe(1)
-      expect(multi.ranges[0].from.isSame(a.from)).toBe(true)
-      expect(multi.ranges[0].until.isSame(b.until)).toBe(true)
+      expect(multi.ranges[0].inclLower.isSame(a.inclLower)).toBe(true)
+      expect(multi.ranges[0].exclUpper.isSame(b.exclUpper)).toBe(true)
     })
 
     it('merges adjacent ranges at construction', () => {
@@ -59,8 +59,8 @@ describe('MultiDateTimeRange unit tests', () => {
 
       multi.add(new DateTimeRange(timestamp('2024-01-03'), timestamp('2024-01-10')))
       expect(multi.length).toBe(1)
-      expect(multi.ranges[0].from.isSame(timestamp('2024-01-01'))).toBe(true)
-      expect(multi.ranges[0].until.isSame(timestamp('2024-01-10'))).toBe(true)
+      expect(multi.ranges[0].inclLower.isSame(timestamp('2024-01-01'))).toBe(true)
+      expect(multi.ranges[0].exclUpper.isSame(timestamp('2024-01-10'))).toBe(true)
     })
 
     it('merges with an adjacent range', () => {
@@ -80,8 +80,8 @@ describe('MultiDateTimeRange unit tests', () => {
 
       multi.add(three)
       expect(multi.length).toBe(1)
-      expect(multi.ranges[0].from.isSame(one.from)).toBe(true)
-      expect(multi.ranges[0].until.isSame(two.until)).toBe(true)
+      expect(multi.ranges[0].inclLower.isSame(one.inclLower)).toBe(true)
+      expect(multi.ranges[0].exclUpper.isSame(two.exclUpper)).toBe(true)
     })
 
     it('handles infinite ranges', () => {
@@ -91,8 +91,8 @@ describe('MultiDateTimeRange unit tests', () => {
 
       multi.add(infinite)
       expect(multi.length).toBe(1)
-      expect(multi.ranges[0].from.isPastInfinity()).toBe(true)
-      expect(multi.ranges[0].until.isFutureInfinity()).toBe(true)
+      expect(multi.ranges[0].inclLower.isPastInfinity()).toBe(true)
+      expect(multi.ranges[0].exclUpper.isFutureInfinity()).toBe(true)
     })
   })
 
@@ -120,10 +120,10 @@ describe('MultiDateTimeRange unit tests', () => {
 
       expect(diff.length).toBe(2)
       // [2024-01-01,2024-01-04] and [2024-01-07,2024-01-10]
-      expect(diff.ranges[0].from.isSame(timestamp('2024-01-01'))).toBe(true)
-      expect(diff.ranges[0].until.isSame(b.from)).toBe(true)
-      expect(diff.ranges[1].from.isSame(b.until)).toBe(true)
-      expect(diff.ranges[1].until.isSame(timestamp('2024-01-10'))).toBe(true)
+      expect(diff.ranges[0].inclLower.isSame(timestamp('2024-01-01'))).toBe(true)
+      expect(diff.ranges[0].exclUpper.isSame(b.inclLower)).toBe(true)
+      expect(diff.ranges[1].inclLower.isSame(b.exclUpper)).toBe(true)
+      expect(diff.ranges[1].exclUpper.isSame(timestamp('2024-01-10'))).toBe(true)
     })
 
     it('removes fully contained range', () => {
@@ -134,10 +134,10 @@ describe('MultiDateTimeRange unit tests', () => {
       const diff = multiA.diff(multiB)
 
       expect(diff.length).toBe(2)
-      expect(diff.ranges[0].from.isSame(timestamp('2024-01-01'))).toBe(true)
-      expect(diff.ranges[0].until.isSame(inner.from)).toBe(true)
-      expect(diff.ranges[1].from.isSame(inner.until)).toBe(true)
-      expect(diff.ranges[1].until.isSame(timestamp('2024-01-10'))).toBe(true)
+      expect(diff.ranges[0].inclLower.isSame(timestamp('2024-01-01'))).toBe(true)
+      expect(diff.ranges[0].exclUpper.isSame(inner.inclLower)).toBe(true)
+      expect(diff.ranges[1].inclLower.isSame(inner.exclUpper)).toBe(true)
+      expect(diff.ranges[1].exclUpper.isSame(timestamp('2024-01-10'))).toBe(true)
     })
 
     it('returns empty multi range when diff results in no ranges', () => {

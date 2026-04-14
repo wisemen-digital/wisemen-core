@@ -41,6 +41,7 @@ const props = withDefaults(defineProps<DateRangeFieldProps>(), {
   allowDeselect: false,
   autocomplete: 'off',
   classConfig: null,
+  dontCloseOnSelect: false,
   errorMessage: null,
   hideDatePicker: false,
   hint: null,

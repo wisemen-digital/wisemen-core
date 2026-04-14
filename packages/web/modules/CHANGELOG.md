@@ -1,5 +1,23 @@
 # @wisemen/vue-core-modules
 
+## 5.0.1
+
+### Patch Changes
+
+- [#825](https://github.com/wisemen-digital/wisemen-core/pull/825) [`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - bump dependencies
+
+- Updated dependencies [[`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a)]:
+  - @wisemen/vue-core-components@3.0.1
+
+## 5.0.0
+
+### Patch Changes
+
+- [#665](https://github.com/wisemen-digital/wisemen-core/pull/665) [`8f075e2`](https://github.com/wisemen-digital/wisemen-core/commit/8f075e27d9d3c637ea633f5e36f72fb53362287f) Thanks [@Robbe95](https://github.com/Robbe95)! - Updated linter
+
+- Updated dependencies [[`8f075e2`](https://github.com/wisemen-digital/wisemen-core/commit/8f075e27d9d3c637ea633f5e36f72fb53362287f), [`d295b6b`](https://github.com/wisemen-digital/wisemen-core/commit/d295b6b9ad0dd749b779f55dcea787f457ba7adf)]:
+  - @wisemen/vue-core-components@3.0.0
+
 ## 4.0.6
 
 ### Patch Changes

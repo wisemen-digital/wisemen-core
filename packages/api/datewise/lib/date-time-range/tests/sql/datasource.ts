@@ -11,6 +11,7 @@ export const dataSource = new DataSource({
   migrationsRun: true,
   entities: [
     'dist/**/date-time-range-test.entity.js',
-    'dist/**/multi-date-time-range-test.entity.js'
+    'dist/**/multi-date-time-range-test.entity.js',
+    'dist/**/finite-date-time-range-test.entity.js'
   ]
 })

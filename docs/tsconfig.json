@@ -6,7 +6,6 @@
       "esnext",
       "dom"
     ],
-    "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
     "paths": {

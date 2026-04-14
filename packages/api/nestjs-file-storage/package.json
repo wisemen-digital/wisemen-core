@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-file-storage",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "publishConfig": {
     "access": "public"
   },
@@ -16,12 +16,15 @@
   "scripts": {
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "test": "pnpm clean && pnpm build && node --enable-source-maps --experimental-test-isolation=none --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "devDependencies": {
+    "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "expect": "catalog:test"
   },
@@ -50,7 +53,7 @@
     }
   },
   "author": "Pieter Pauwels",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "import"
+  ],
+  "categories": {
+    "correctness": "off"
+  },
+  "env": {
+    "builtin": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "src/modules/localization/generated/i18n.generated.ts"
+  ],
+  "extends": [
+    "./configs/default.json",
+    "./configs/imports.json",
+    "./configs/overrides.json"
+  ]
+}
