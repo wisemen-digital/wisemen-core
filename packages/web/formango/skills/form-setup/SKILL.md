@@ -10,7 +10,7 @@ description: >
   with formango.
 type: core
 library: formango
-library_version: "3.2.1"
+library_version: "3.2.3"
 sources:
   - "wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts"
   - "wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts"
