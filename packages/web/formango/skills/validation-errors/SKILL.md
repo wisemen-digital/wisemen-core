@@ -28,7 +28,7 @@ This skill builds on [form-setup](../form-setup/SKILL.md). Read it first for `us
 
 ## Setup
 
-Formango validates automatically whenever form state changes via a deep watcher on the schema. No manual validation calls are needed.
+Formango validates automatically whenever form state changes via a deep watch on `form.value`. No manual validation calls are needed.
 
 ```ts
 import { useForm } from 'formango'
