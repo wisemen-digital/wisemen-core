@@ -477,14 +477,17 @@ export class QueryClient<TQueryKeys extends object> {
     let rolledBack = false
 
     return {
-      rollback: () => {
+      rollback: (): void => {
         if (rolledBack) {
           return
         }
 
         rolledBack = true
 
-        for (const [queryKey, data] of snapshots) {
+        for (const [
+          queryKey,
+          data,
+        ] of snapshots) {
           this.queryClient.setQueryData(queryKey, data)
         }
       },

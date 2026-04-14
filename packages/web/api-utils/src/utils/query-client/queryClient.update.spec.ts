@@ -550,7 +550,9 @@ describe('queryClient - update', () => {
 
       queryClient.set(queryKey, user)
 
-      const { rollback } = queryClient.update(queryKey, {
+      const {
+        rollback,
+      } = queryClient.update(queryKey, {
         by: (u) => u.id === '123',
         value: (u) => ({
           ...u,
@@ -572,7 +574,9 @@ describe('queryClient - update', () => {
 
       queryClient.set(queryKey, user)
 
-      const { rollback } = queryClient.update(queryKey, {
+      const {
+        rollback,
+      } = queryClient.update(queryKey, {
         by: (u) => u.id === '123',
         value: (u) => ({
           ...u,
@@ -610,7 +614,9 @@ describe('queryClient - update', () => {
         jane,
       ])
 
-      const { rollback } = queryClient.update('userList', {
+      const {
+        rollback,
+      } = queryClient.update('userList', {
         by: (u) => u.id === '2',
         value: (u) => ({
           ...u,
@@ -657,7 +663,9 @@ describe('queryClient - update', () => {
       queryClient.set(queryKey1, user1)
       queryClient.set(queryKey2, user2)
 
-      const { rollback } = queryClient.update('userDetail', {
+      const {
+        rollback,
+      } = queryClient.update('userDetail', {
         by: (u) => u.id === '123',
         value: (u) => ({
           ...u,
@@ -685,7 +693,9 @@ describe('queryClient - update', () => {
 
       queryClient.set(queryKey, user)
 
-      const { rollback } = queryClient.update(queryKey, {
+      const {
+        rollback,
+      } = queryClient.update(queryKey, {
         by: (u) => u.id === '123',
         value: (u) => ({
           ...u,
@@ -735,7 +745,9 @@ describe('queryClient - update', () => {
         product,
       ])
 
-      const { rollback } = queryClient.update('userDetail', {
+      const {
+        rollback,
+      } = queryClient.update('userDetail', {
         by: (u) => u.id === '123',
         value: (u) => ({
           ...u,
