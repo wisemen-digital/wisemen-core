@@ -37,7 +37,7 @@ const { execute, isLoading, result: mutationResult } = useMutation({
 
 async function handleSubmit(formData) {
   // Save original (for rollback)
-  const originalContact = contact.value?.getValue()
+  const originalContact = contact.value.isOk() ? contact.value.getValue() : null
   
   // Optimistic update: immediate cache change
   queryClient.update(['contactDetail', { contactUuid }], {
