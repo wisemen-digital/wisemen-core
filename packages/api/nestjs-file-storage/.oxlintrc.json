@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": [
+    "./node_modules/@wisemen/eslint-config-nestjs/configs/default.json",
+    "./node_modules/@wisemen/eslint-config-nestjs/configs/imports.json",
+    "./node_modules/@wisemen/eslint-config-nestjs/configs/overrides.json"
+  ],
+  "plugins": [
+    "typescript",
+    "unicorn",
+    "import"
+  ],
+  "categories": {
+    "correctness": "off"
+  },
+  "env": {
+    "builtin": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "src/modules/localization/generated/i18n.generated.ts"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off"
+  }
+}

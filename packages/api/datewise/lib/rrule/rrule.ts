@@ -84,7 +84,7 @@ export class RRuleImpl {
     }
 
     const range = this.range.overlap(during)
-    const distance = Math.ceil(range.from.diff(this.range.from, this.frequency, true))
+    const distance = Math.ceil(range.inclLower.diff(this.range.inclLower, this.frequency, true))
 
     let date = this.startDate.add(distance, this.frequency)
     let occurrenceStart = timestamp(date, this.startTime, this.timezone)

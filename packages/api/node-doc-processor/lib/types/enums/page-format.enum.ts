@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum PageFormatEnum {
   a0 = 'a0',
   a1 = 'a1',

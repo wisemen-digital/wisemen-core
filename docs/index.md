@@ -34,5 +34,8 @@ features:
   - title: 📊 Telemetry
     details: OpenTelemetry integration for monitoring and tracing Vue applications.
     link: /packages/telemetry/pages/getting-started/installation
+  - title: 📱 Zod Validation
+    details: Reusable Zod schemas with localized validation messages and i18n-factory integration.
+    link: /packages/zod-validation/pages/getting-started/installation
 
 ---
