@@ -6,6 +6,7 @@ import type { DialogSize } from '@/ui/dialog/dialog.props'
 
 withDefaults(defineProps<{
   isDestructive?: boolean
+  isOpen?: boolean
   preventClickOutside?: boolean
   preventEsc?: boolean
   size?: DialogSize
@@ -31,7 +32,7 @@ function onCancel(): void {
 
 <template>
   <ConfirmDialog
-    :is-open="true"
+    :is-open="isOpen"
     :is-destructive="isDestructive"
     :size="size"
     :prevent-click-outside="preventClickOutside"

@@ -12,7 +12,7 @@ export const createDialogStyle = tv({
       sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-b-5
       dark:border-black/10
     `,
-    contentPositioner: `
+    contentWrapper: `
       z-modal fixed inset-x-0 bottom-0 flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
@@ -29,25 +29,25 @@ export const createDialogStyle = tv({
     size: {
       'full-screen': {
         content: 'h-full max-h-full rounded-none',
-        contentPositioner: 'max-w-full',
+        contentWrapper: 'max-w-full',
       },
       'lg': {
-        contentPositioner: `sm:max-w-160`,
+        contentWrapper: `sm:max-w-160`,
       },
       'md': {
-        contentPositioner: `sm:max-w-140`,
+        contentWrapper: `sm:max-w-140`,
       },
       'sm': {
-        contentPositioner: `sm:max-w-120`,
+        contentWrapper: `sm:max-w-120`,
       },
       'xl': {
-        contentPositioner: `sm:max-w-180`,
+        contentWrapper: `sm:max-w-180`,
       },
       'xs': {
-        contentPositioner: `sm:max-w-100`,
+        contentWrapper: `sm:max-w-100`,
       },
       'xxs': {
-        contentPositioner: `sm:max-w-90`,
+        contentWrapper: `sm:max-w-90`,
       },
     },
   },

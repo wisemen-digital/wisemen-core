@@ -3,7 +3,9 @@ import {
   DialogDescription as RekaDialogDescription,
   DialogTitle as RekaDialogTitle,
 } from 'reka-ui'
+import { computed } from 'vue'
 
+import { tv } from '@/styles/tailwindVariants.lib'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { useInjectDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogHeaderProps } from '@/ui/dialog/dialogHeader.props'
@@ -11,31 +13,43 @@ import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import { UISeparator } from '@/ui/separator/index'
 
 const props = withDefaults(defineProps<DialogHeaderProps>(), {
-  hasCloseButton: true,
-  hasDivider: true,
   description: null,
   icon: null,
   iconVariant: 'brand',
+  showCloseButton: true,
+  showSeparator: true,
 })
 
-const iconVariantClasses = {
-  brand: {
-    bg: 'bg-brand-secondary',
-    text: 'text-brand-primary',
+const iconVariantStyle = tv({
+  slots: {
+    bg: '',
+    text: '',
   },
-  error: {
-    bg: 'bg-error-secondary',
-    text: 'text-error-primary',
+  variants: {
+    variant: {
+      brand: {
+        bg: 'bg-brand-secondary',
+        text: 'text-brand-primary',
+      },
+      error: {
+        bg: 'bg-error-secondary',
+        text: 'text-error-primary',
+      },
+      success: {
+        bg: 'bg-success-secondary',
+        text: 'text-success-primary',
+      },
+      warning: {
+        bg: 'bg-warning-secondary',
+        text: 'text-warning-primary',
+      },
+    },
   },
-  success: {
-    bg: 'bg-success-secondary',
-    text: 'text-success-primary',
-  },
-  warning: {
-    bg: 'bg-warning-secondary',
-    text: 'text-warning-primary',
-  },
-}
+})
+
+const iconClasses = computed(() => iconVariantStyle({
+  variant: props.iconVariant,
+}))
 
 const dialogContext = useInjectDialogContext(null)
 </script>
@@ -52,12 +66,12 @@ const dialogContext = useInjectDialogContext(null)
     >
       <div
         v-if="props.icon !== null"
-        :class="iconVariantClasses[props.iconVariant].bg"
+        :class="iconClasses.bg()"
         class="flex size-10 shrink-0 items-center justify-center rounded-full"
       >
         <Component
           :is="props.icon"
-          :class="iconVariantClasses[props.iconVariant].text"
+          :class="iconClasses.text()"
           class="size-5"
         />
       </div>
@@ -81,7 +95,7 @@ const dialogContext = useInjectDialogContext(null)
     </RowLayout>
 
     <UISeparator
-      v-if="props.hasDivider"
+      v-if="props.showSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToTop.value
           ? 'opacity-0'

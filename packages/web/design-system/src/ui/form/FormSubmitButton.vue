@@ -14,12 +14,22 @@ const props = withDefaults(defineProps<{
   variant: 'primary',
 })
 
+const KEYBOARD_SHORTCUTS = {
+  submit: {
+    keys: [
+      'meta',
+      'enter',
+    ] as ['meta', 'enter'],
+    shortcutKey: 'meta_enter' as const,
+  },
+}
+
 const {
   formId, form,
 } = useInjectFormContext()
 
 useKeyboardShortcut({
-  meta_enter: () => {
+  [KEYBOARD_SHORTCUTS.submit.shortcutKey]: () => {
     if (props.disableKeyboardShortcut) {
       return
     }
@@ -42,7 +52,7 @@ useKeyboardShortcut({
         :label="props.label"
         :form="formId"
         :variant="props.variant"
-        :keyboard-shortcut-keys="props.disableKeyboardShortcut ? null : ['meta', 'enter']"
+        :keyboard-shortcut-keys="props.disableKeyboardShortcut ? null : KEYBOARD_SHORTCUTS.submit.keys"
       />
     </slot>
   </Primitive>

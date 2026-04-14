@@ -5,7 +5,7 @@ import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import { UISeparator } from '@/ui/separator/index'
 
 const props = withDefaults(defineProps<DialogFooterProps>(), {
-  hasDivider: true,
+  showSeparator: true,
 })
 
 const dialogContext = useInjectDialogContext(null)
@@ -14,7 +14,7 @@ const dialogContext = useInjectDialogContext(null)
 <template>
   <div :class="dialogContext?.style.value.footer()">
     <UISeparator
-      v-if="props.hasDivider"
+      v-if="props.showSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToBottom.value
           ? 'opacity-0'

@@ -9,12 +9,6 @@ export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutsi
   title: string
 
   /**
-   * Whether the confirm button is disabled.
-   * @default false
-   */
-  isConfirmDisabled?: boolean
-
-  /**
    * Whether the confirm action is destructive. Makes the confirm button use the destructive-primary variant.
    * @default false
    */
@@ -22,15 +16,15 @@ export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutsi
 
   /**
    * Label for the cancel button.
-   * @default 'Cancel'
+   * @default null
    */
-  cancelLabel?: string
+  cancelLabel: string | null
 
   /**
    * Label for the confirm button.
-   * @default 'Confirm'
+   * @default null
    */
-  confirmLabel?: string
+  confirmLabel: string | null
 
   /**
    * The description displayed below the title in the dialog header.

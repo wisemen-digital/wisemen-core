@@ -14,9 +14,9 @@ import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
-  hasCloseButton: true,
   preventClickOutside: false,
   preventEsc: false,
+  showCloseButton: true,
   size: 'md',
 })
 
@@ -77,14 +77,14 @@ function onOpenChange(value: boolean): void {
     />
 
     <RekaDialogContent
-      :class="style.contentPositioner()"
+      :class="style.contentWrapper()"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
       @pointer-down-outside="onPointerDownOutside"
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="props.hasCloseButton" />
+        <DialogCloseButton v-if="props.showCloseButton" />
       </div>
     </RekaDialogContent>
   </RekaDialogRoot>

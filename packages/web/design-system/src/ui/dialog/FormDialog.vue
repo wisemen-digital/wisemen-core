@@ -2,15 +2,14 @@
 import { useId } from 'vue'
 
 import Dialog from '@/ui/dialog/Dialog.vue'
+import { useProvideFormDialogContext } from '@/ui/dialog/formDialog.context'
 import type { FormDialogProps } from '@/ui/dialog/formDialog.props'
-import FormComponent from '@/ui/form/Form.vue'
 
 const props = withDefaults(defineProps<FormDialogProps>(), {
-  hasCloseButton: true,
   preventClickOutside: false,
   preventEsc: false,
   promptOnUnsavedChanges: false,
-  renderOwnFormComponent: false,
+  showCloseButton: true,
   size: 'md',
 })
 
@@ -20,6 +19,12 @@ const emit = defineEmits<{
 
 const id = useId()
 
+useProvideFormDialogContext({
+  formId: id,
+  form: props.form,
+  promptOnUnsavedChanges: props.promptOnUnsavedChanges ?? false,
+})
+
 function onClose(): void {
   emit('close')
 }
@@ -27,24 +32,14 @@ function onClose(): void {
 
 <template>
   <Dialog
-    :has-close-button="props.hasCloseButton"
+    :has-close-button="props.showCloseButton"
     :size="props.size"
     :prevent-click-outside="props.preventClickOutside"
     :prevent-esc="props.preventEsc"
     @close="onClose"
   >
     <slot
-      v-if="props.renderOwnFormComponent"
       :form-id="id"
     />
-    <FormComponent
-      v-else
-      :form="props.form"
-      :prompt-on-unsaved-changes="props.promptOnUnsavedChanges"
-    >
-      <slot
-        :form-id="id"
-      />
-    </FormComponent>
   </Dialog>
 </template>
