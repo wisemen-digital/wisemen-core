@@ -50,7 +50,11 @@
     "vue": "catalog:peer"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "@tanstack/intent": "catalog:",
+=======
+    "@tanstack/intent": "catalog:tooling",
+>>>>>>> 10f8c29339bb0e06d97a8ba1f9c54a11f6342df1
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint",
