@@ -289,7 +289,7 @@ export function useToggleProductFavorite() {
 
 ## Error Handling and Rollback
 
-The `update` method returns a `{ rollback }` function that reverts only the cache entries that were affected by that specific update call. Other cache changes made in between are preserved.
+The `update` method returns a `{ rollback }` function that reverts only the cache entries affected by that specific `update()` call. Cache changes to unrelated query keys made in between are preserved, but writes to those same affected query keys may be overwritten because `rollback()` restores their pre-update snapshot.
 
 ```typescript
 async function updateAndHandle(updates: any) {
