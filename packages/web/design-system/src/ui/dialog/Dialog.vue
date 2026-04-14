@@ -106,14 +106,14 @@ function onOpenChange(value: boolean): void {
 @keyframes dialogContentFadeIn {
   from {
     opacity: 0;
-    transform: translateY(1rem);
+    transform: translateY(2rem);
   }
 }
 
 @keyframes dialogContentFadeOut {
   to {
     opacity: 0;
-    transform: translateY(1rem);
+    transform: translateY(2rem);
   }
 }
 

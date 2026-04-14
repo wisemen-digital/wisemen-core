@@ -6,7 +6,7 @@ export const createDialogStyle = tv({
   slots: {
     body: 'flex-1 overflow-y-auto px-xl py-xs',
     content: `
-      flex max-h-[90vh] w-full flex-col overflow-hidden
+      group/dialog flex max-h-[90vh] w-full flex-col overflow-hidden
       rounded-t-[calc(1rem+5px)] rounded-b-none border-5 border-b-0
       border-white/10 bg-primary bg-clip-padding shadow-xl
       sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-b-5

@@ -27,7 +27,10 @@ const dialogContext = useInjectDialogContext(null)
       align="center"
       justify="between"
       gap="lg"
-      class="p-xl pt-3xl"
+      class="
+        p-xl
+        group-has-data-dialog-body/dialog:pt-3xl
+      "
     >
       <div>
         <slot name="left" />

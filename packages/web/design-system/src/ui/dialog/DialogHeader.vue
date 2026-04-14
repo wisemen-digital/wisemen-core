@@ -62,7 +62,10 @@ const dialogContext = useInjectDialogContext(null)
     <RowLayout
       align="start"
       gap="xl"
-      class="p-xl pb-3xl"
+      class="
+        p-xl pb-0
+        group-has-data-dialog-body/dialog:pb-3xl
+      "
     >
       <div
         v-if="props.icon !== null"
