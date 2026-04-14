@@ -139,6 +139,7 @@ catalogs:
     "@commitlint/cli": "20.5.0"
     "@commitlint/config-conventional": "20.5.0"
     "@changesets/cli": "2.30.0"
+    "@tanstack/intent": ^0.0.29
   telemetry:
     "@opentelemetry/context-zone": "2.5.0"
     "@opentelemetry/core": "2.5.0"

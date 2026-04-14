@@ -22,8 +22,15 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "typings": "./dist/index.d.mts",
+  "keywords": [
+    "tanstack-intent",
+    "vue-query",
+    "result",
+    "error-handling"
+  ],
   "files": [
-    "./dist"
+    "dist",
+    "skills"
   ],
   "scripts": {
     "build": "tsdown",
@@ -43,6 +50,7 @@
     "vue": "catalog:peer"
   },
   "devDependencies": {
+    "@tanstack/intent": "catalog:tooling",
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint",

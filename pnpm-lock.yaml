@@ -564,6 +564,9 @@ catalogs:
     '@commitlint/config-conventional':
       specifier: 20.5.0
       version: 20.5.0
+    '@tanstack/intent':
+      specifier: ^0.0.29
+      version: 0.0.29
   types:
     '@tsconfig/node18':
       specifier: 18.2.4
@@ -1898,6 +1901,9 @@ importers:
         specifier: catalog:peer
         version: 8.2.0
     devDependencies:
+      '@tanstack/intent':
+        specifier: catalog:tooling
+        version: 0.0.29
       '@types/node':
         specifier: catalog:types
         version: 24.8.1
@@ -2352,6 +2358,9 @@ importers:
       '@standard-schema/spec':
         specifier: catalog:general
         version: 1.1.0
+      '@tanstack/intent':
+        specifier: catalog:tooling
+        version: 0.0.29
       '@types/clone-deep':
         specifier: catalog:types
         version: 4.0.4
@@ -6731,6 +6740,10 @@ packages:
     resolution: {integrity: sha512-jVA+/UpKL1vRLg6Hkao5jldawNmRo7mQYrZtNHMIVpLfLhDml5nMRUo/8MwoX2vNXvnaXNNMedrMfMugAVX1nA==}
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7
+
+  '@tanstack/intent@0.0.29':
+    resolution: {integrity: sha512-tJcWapEkXGRLHE7mQYvQS0xIWrzKm2n7fQ/lOy4LCdR1hX0Yxb9QnwRwd0oqmmr54ObP9/5sfiD8vELxL/r30g==}
+    hasBin: true
 
   '@tanstack/match-sorter-utils@8.19.4':
     resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
@@ -17353,6 +17366,11 @@ snapshots:
       '@tailwindcss/oxide': 4.1.18
       tailwindcss: 4.1.18
       vite: 7.3.1(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.98.0)(terser@5.46.1)(tsx@4.20.3)(yaml@2.8.3)
+
+  '@tanstack/intent@0.0.29':
+    dependencies:
+      cac: 6.7.14
+      yaml: 2.8.3
 
   '@tanstack/match-sorter-utils@8.19.4':
     dependencies:
