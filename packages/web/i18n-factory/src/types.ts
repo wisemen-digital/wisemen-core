@@ -79,8 +79,8 @@ export type StrictExtendedLocales<
  */
 export type ComputeMerged<
   TMessages extends Record<string, Record<string, string>>,
-  TDefaultOverrides extends Record<string, any> = Record<string, never>,
-  TExtendedLocales extends Record<string, any> = Record<string, never>,
+  TDefaultOverrides extends Record<string, any> = Record<never, never>,
+  TExtendedLocales extends Record<string, any> = Record<never, never>,
 > = Readonly<
   {
     readonly [K in keyof TMessages]: Readonly<

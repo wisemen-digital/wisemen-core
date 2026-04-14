@@ -1,10 +1,14 @@
 import type {
   ComputeMerged,
   DefaultLocaleOverrides,
-  ExtendedLocales,
-  StrictDefaultOverrides,
-  StrictExtendedLocales,
 } from './types'
+
+type LocaleMessageKeys<TMessages extends Record<string, Record<string, string>>>
+  = Extract<keyof TMessages[keyof TMessages], string>
+
+type ExtendedLocaleShape<TMessages extends Record<string, Record<string, string>>> = {
+  [K in LocaleMessageKeys<TMessages>]: string
+}
 
 /**
  * Type for the locale factory returned by createI18nFactory
@@ -14,6 +18,14 @@ export interface I18nFactory<
   TMessages extends Record<string, Record<string, string>>,
 > {
   /**
+   * Helper to define extended locales with full key autocomplete.
+   * Use this when authoring locale dictionaries in editors that struggle with nested overload inference.
+   */
+  defineExtendedLocales: <TLocale extends string>(
+    extendedLocales: { [K in TLocale]: ExtendedLocaleShape<TMessages> },
+  ) => { [K in TLocale]: ExtendedLocaleShape<TMessages> }
+
+  /**
    * Get translations with optional overrides and extensions
    * - overrideDefaults: partial overrides for default locales (individual keys can be customized)
    * - extendedLocales: new locales with complete translation dictionaries (all keys required)
@@ -21,21 +33,18 @@ export interface I18nFactory<
    */
   getTranslations: {
     (): ComputeMerged<TMessages>
-    <TDefaultOverrides extends DefaultLocaleOverrides<TMessages>>(config: {
+    (config: {
       extendedLocales?: never
-      overrideDefaults: TDefaultOverrides & StrictDefaultOverrides<TMessages, TDefaultOverrides>
-    }): ComputeMerged<TMessages, TDefaultOverrides>
-    <TExtendedLocales extends ExtendedLocales<TMessages>>(config: {
-      extendedLocales: TExtendedLocales & StrictExtendedLocales<TMessages, TExtendedLocales>
+      overrideDefaults: DefaultLocaleOverrides<TMessages>
+    }): ComputeMerged<TMessages, DefaultLocaleOverrides<TMessages>>
+    <TLocale extends string>(config: {
+      extendedLocales: { [K in TLocale]: ExtendedLocaleShape<TMessages> }
       overrideDefaults?: never
-    }): ComputeMerged<TMessages, Record<string, never>, TExtendedLocales>
-    <
-      TDefaultOverrides extends DefaultLocaleOverrides<TMessages>,
-      TExtendedLocales extends ExtendedLocales<TMessages>,
-    >(config: {
-      extendedLocales: TExtendedLocales & StrictExtendedLocales<TMessages, TExtendedLocales>
-      overrideDefaults: TDefaultOverrides & StrictDefaultOverrides<TMessages, TDefaultOverrides>
-    }): ComputeMerged<TMessages, TDefaultOverrides, TExtendedLocales>
+    }): ComputeMerged<TMessages, Record<never, never>, { [K in TLocale]: ExtendedLocaleShape<TMessages> }>
+    <TLocale extends string>(config: {
+      extendedLocales: { [K in TLocale]: ExtendedLocaleShape<TMessages> }
+      overrideDefaults: DefaultLocaleOverrides<TMessages>
+    }): ComputeMerged<TMessages, DefaultLocaleOverrides<TMessages>, { [K in TLocale]: ExtendedLocaleShape<TMessages> }>
   }
 }
 
@@ -86,6 +95,12 @@ export function createI18nFactory<
   const defaultLocales = new Set(Object.keys(messages) as (keyof TMessages & string)[])
 
   return {
+    defineExtendedLocales(
+      extendedLocales: Record<string, Record<string, string>>,
+    ): any {
+      return extendedLocales
+    },
+
     /**
      * Get translations with overrides and extensions applied
      * Merges partial overrides with defaults for known locales
