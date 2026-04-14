@@ -15,6 +15,11 @@ const DEFAULT_LOCALES = {
 
 const factory = createI18nFactory(DEFAULT_LOCALES)
 
+// ✅ VALID: No-arg call keeps default locale keys and literal values
+const _noConfig = factory.getTranslations()
+const _assertNoConfigEnUsInvalidUuid: 'Invalid UUID' = _noConfig['en-US'].invalid_uuid
+const _assertNoConfigNlBeRequired: 'Dit veld is verplicht' = _noConfig['nl-BE'].required
+
 // ✅ VALID: All valid keys in extendedLocales
 const _validExtendedLocales = factory.getTranslations({
   extendedLocales: {

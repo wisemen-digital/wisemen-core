@@ -2,8 +2,6 @@ import type {
   ComputeMerged,
   DefaultLocaleOverrides,
   ExtendedLocales,
-  StrictDefaultOverrides,
-  StrictExtendedLocales,
 } from './types'
 
 /**
@@ -21,21 +19,18 @@ export interface I18nFactory<
    */
   getTranslations: {
     (): ComputeMerged<TMessages>
-    <TDefaultOverrides extends DefaultLocaleOverrides<TMessages>>(config: {
+    (config: {
       extendedLocales?: never
-      overrideDefaults: TDefaultOverrides & StrictDefaultOverrides<TMessages, TDefaultOverrides>
-    }): ComputeMerged<TMessages, TDefaultOverrides>
-    <TExtendedLocales extends ExtendedLocales<TMessages>>(config: {
-      extendedLocales: TExtendedLocales & StrictExtendedLocales<TMessages, TExtendedLocales>
+      overrideDefaults: DefaultLocaleOverrides<TMessages>
+    }): ComputeMerged<TMessages, DefaultLocaleOverrides<TMessages>>
+    (config: {
+      extendedLocales: ExtendedLocales<TMessages>
       overrideDefaults?: never
-    }): ComputeMerged<TMessages, Record<string, never>, TExtendedLocales>
-    <
-      TDefaultOverrides extends DefaultLocaleOverrides<TMessages>,
-      TExtendedLocales extends ExtendedLocales<TMessages>,
-    >(config: {
-      extendedLocales: TExtendedLocales & StrictExtendedLocales<TMessages, TExtendedLocales>
-      overrideDefaults: TDefaultOverrides & StrictDefaultOverrides<TMessages, TDefaultOverrides>
-    }): ComputeMerged<TMessages, TDefaultOverrides, TExtendedLocales>
+    }): ComputeMerged<TMessages, Record<never, never>, ExtendedLocales<TMessages>>
+    (config: {
+      extendedLocales: ExtendedLocales<TMessages>
+      overrideDefaults: DefaultLocaleOverrides<TMessages>
+    }): ComputeMerged<TMessages, DefaultLocaleOverrides<TMessages>, ExtendedLocales<TMessages>>
   }
 }
 
