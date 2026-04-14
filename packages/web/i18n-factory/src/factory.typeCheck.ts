@@ -15,15 +15,20 @@ const DEFAULT_LOCALES = {
 
 const factory = createI18nFactory(DEFAULT_LOCALES)
 
+// ✅ VALID: No-arg call keeps default locale keys and literal values
+const _noConfig = factory.getTranslations()
+const _assertNoConfigEnUsInvalidUuid: 'Invalid UUID' = _noConfig['en-US'].invalid_uuid
+const _assertNoConfigNlBeRequired: 'Dit veld is verplicht' = _noConfig['nl-BE'].required
+
 // ✅ VALID: All valid keys in extendedLocales
 const _validExtendedLocales = factory.getTranslations({
-  extendedLocales: {
+  extendedLocales: factory.defineExtendedLocales({
     'es-ES': {
       invalid_uuid: 'UUID inválido',
       invalid_date: 'Fecha inválida',
       required: 'Campo requerido',
     },
-  },
+  }),
 })
 
 // ✅ VALID: Partial overrides for en-US
@@ -45,13 +50,13 @@ const _validEmptyOverride = factory.getTranslations({
 
 // ✅ VALID: Both overrides and extensions
 const _validBoth = factory.getTranslations({
-  extendedLocales: {
+  extendedLocales: factory.defineExtendedLocales({
     'fr-FR': {
       invalid_uuid: 'UUID invalide',
       invalid_date: 'Date invalide',
       required: 'Champ requis',
     },
-  },
+  }),
   overrideDefaults: {
     'en-US': {
       invalid_date: 'Custom date',
@@ -59,28 +64,30 @@ const _validBoth = factory.getTranslations({
   },
 })
 
+const _assertValidBothIncludesFrFr: string = _validBoth['fr-FR'].required
+
 // ❌ INVALID: Extra key 'blabla' in extendedLocales
-// @ts-expect-error - 'blabla' is not a valid key
 export const invalidExtraKeyInExtended = factory.getTranslations({
-  extendedLocales: {
+  extendedLocales: factory.defineExtendedLocales({
     'es-ES': {
       invalid_uuid: 'UUID inválido',
       invalid_date: 'Fecha inválida',
+      // @ts-expect-error - 'blabla' is not a valid key
       blabla: 'invalid key',
       required: 'Campo requerido',
     },
-  },
+  }),
 })
 
 // ❌ INVALID: Missing required key in extendedLocales
-// @ts-expect-error - missing 'required' key
 export const invalidMissingKeyInExtended = factory.getTranslations({
-  extendedLocales: {
+  extendedLocales: factory.defineExtendedLocales({
+    // @ts-expect-error - missing 'required' key
     'es-ES': {
       invalid_uuid: 'UUID inválido',
       invalid_date: 'Fecha inválida',
     },
-  },
+  }),
 })
 
 // ❌ INVALID: Extra key in overrideDefaults
