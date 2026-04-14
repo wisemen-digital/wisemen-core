@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.3
+
+### Patch Changes
+
+- [#848](https://github.com/wisemen-digital/wisemen-core/pull/848) [`3570957`](https://github.com/wisemen-digital/wisemen-core/commit/357095738640aa9e8e976f1e2a5bb2132b58c7e4) Thanks [@Robbe95](https://github.com/Robbe95)! - Improved types + added helper function to define extended locales
+
 ## 0.0.2
 
 ### Patch Changes

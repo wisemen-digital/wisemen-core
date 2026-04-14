@@ -1,5 +1,17 @@
 # @wisemen/vue-core-query
 
+## 1.1.0
+
+### Minor Changes
+
+- [#806](https://github.com/wisemen-digital/wisemen-core/pull/806) [`824ebf4`](https://github.com/wisemen-digital/wisemen-core/commit/824ebf49785c6015004cc30ce0e2f1290c6777fe) Thanks [@Robbe95](https://github.com/Robbe95)! - Added a rollback functionality to the query-client update function
+
+### Patch Changes
+
+- [#850](https://github.com/wisemen-digital/wisemen-core/pull/850) [`01f9747`](https://github.com/wisemen-digital/wisemen-core/commit/01f9747de368cec4735051f9d67fce4d98cc7130) Thanks [@Robbe95](https://github.com/Robbe95)! - Fixed types and exports of package
+
+- [#849](https://github.com/wisemen-digital/wisemen-core/pull/849) [`d0e1417`](https://github.com/wisemen-digital/wisemen-core/commit/d0e14171f6011980ddba89b06e8f7d999294e7c3) Thanks [@Robbe95](https://github.com/Robbe95)! - Added skills
+
 ## 1.0.1
 
 ### Patch Changes

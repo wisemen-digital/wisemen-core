@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -44,7 +44,6 @@
   "peerDependencies": {
     "zod": "catalog:peer",
     "vue-i18n": "catalog:peer"
-
   },
   "dependencies": {
     "@wisemen/vue-core-i18n-factory": "workspace:*",

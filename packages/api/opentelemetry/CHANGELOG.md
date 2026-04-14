@@ -1,5 +1,11 @@
 # @wisemen/opentelemetry
 
+## 0.1.4
+
+### Patch Changes
+
+- [#840](https://github.com/wisemen-digital/wisemen-core/pull/840) [`c448ae1`](https://github.com/wisemen-digital/wisemen-core/commit/c448ae1693045423b7959d7b2967b7e0a039f275) Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Reduce trace noise by requiring parent trace for redis, and ignoring pg-connect for postgres.
+
 ## 0.1.3
 
 ### Patch Changes
