@@ -240,10 +240,6 @@ catalogs:
     '@internationalized/date':
       specifier: 3.10.1
       version: 3.10.1
-  default:
-    '@tanstack/intent':
-      specifier: ^0.0.23
-      version: 0.0.23
   docs:
     markdown-it:
       specifier: 14.1.1
@@ -568,6 +564,9 @@ catalogs:
     '@commitlint/config-conventional':
       specifier: 20.5.0
       version: 20.5.0
+    '@tanstack/intent':
+      specifier: ^0.0.23
+      version: 0.0.23
   types:
     '@tsconfig/node18':
       specifier: 18.2.4
@@ -1906,7 +1905,7 @@ importers:
         version: 3.5.27(typescript@5.9.3)
     devDependencies:
       '@tanstack/intent':
-        specifier: 'catalog:'
+        specifier: catalog:tooling
         version: 0.0.23
       '@types/node':
         specifier: catalog:types
