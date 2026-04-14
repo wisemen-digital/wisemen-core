@@ -19,6 +19,7 @@ import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { useInjectDialogContext } from '@/ui/dialog/dialog.context'
 import type { chinConfig } from '@/ui/dialog/dialogChin.composable'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
+import { UIText } from '@/ui/text'
 
 const props = defineProps<{
   chin: chinConfig | null
@@ -97,15 +98,17 @@ const {
         :transition="{ duration: 0.3 }"
         :class="overlayFromColor"
         class="
-          h-full rounded-t-[calc(1rem+5px)] rounded-b-none bg-linear-to-t
+          h-full rounded-t-[calc(1rem+5px)] rounded-b-none bg-linear-to-b
           to-transparent
-          sm:rounded-[calc(1rem+5px)]
+          sm:rounded-[calc(1rem+5px)] sm:bg-linear-to-t
         "
         as="div"
       >
         <ColumnLayout
-          justify="end"
-          class="h-full p-lg px-xl"
+          class="
+            h-full justify-start p-lg px-xl
+            sm:justify-end
+          "
         >
           <div
             ref="chinContent"
@@ -122,7 +125,11 @@ const {
                   :class="iconColor"
                   class="size-4 shrink-0 text-error-500"
                 />
-                <span class="text-xs font-medium">{{ chin?.text }}</span>
+                <UIText
+                  :text="chin?.text ?? ''"
+                  :truncate="2"
+                  class="text-xs font-medium"
+                />
               </RowLayout>
               <RowLayout
                 items="center"

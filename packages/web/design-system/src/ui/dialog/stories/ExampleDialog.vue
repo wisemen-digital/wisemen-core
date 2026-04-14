@@ -43,9 +43,9 @@ const dialogChin = useDialogChin()
   <Dialog
     :chin="dialogChin.chin"
     :is-open="isOpen"
-    :size="size"
     :prevent-click-outside="preventClickOutside"
     :prevent-esc="preventEsc"
+    :size="size"
     @update:is-open="!$event && $emit('close')"
   >
     <DialogHeader
