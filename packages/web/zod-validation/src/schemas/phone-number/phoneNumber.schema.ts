@@ -13,5 +13,5 @@ export const phoneNumberSchema = z.string().refine((val) => {
     return false
   }
 }, {
-  error: () => getZodValidationConfig().i18nInstance.t('package.zod_validation.invalid_phone_number'),
+  error: getZodValidationConfig().i18nInstance.t('package.zod_validation.invalid_phone_number'),
 })
