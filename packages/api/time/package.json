@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/time",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "publishConfig": {
     "access": "public"
   },
@@ -14,11 +14,12 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint --cache",
-    "prebuild": "rm -rf ./dist",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "pnpm run build",
     "test": "node --test \"**/*.test.js\"",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
@@ -42,7 +43,7 @@
   "contributors": [
     "Jonas Vannieuwenhuijsen"
   ],
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

@@ -1,16 +1,19 @@
 <script setup lang="ts" generic="TValue extends AcceptableValue">
 import type { AcceptableValue } from 'reka-ui'
+import { CheckboxGroupRoot as RekaCheckboxGroupRoot } from 'reka-ui'
 import type { Ref } from 'vue'
 import {
   computed,
   ref,
 } from 'vue'
 
+import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import { useProvideCheckboxGroupContext } from '@/ui/checkbox-group/checkboxGroup.context'
 import type { CheckboxGroupProps } from '@/ui/checkbox-group/checkboxGroup.props'
 
 const props = withDefaults(defineProps<CheckboxGroupProps>(), {
   isDisabled: false,
+  disabledReason: null,
   orientation: 'vertical',
 })
 const modelValue = defineModel<TValue[]>({
@@ -62,5 +65,12 @@ useProvideCheckboxGroupContext({
 </script>
 
 <template>
-  <slot />
+  <ActionTooltip
+    :is-disabled="!props.isDisabled || props.disabledReason == null"
+    :label="props.disabledReason"
+  >
+    <RekaCheckboxGroupRoot v-model="modelValue">
+      <slot />
+    </RekaCheckboxGroupRoot>
+  </ActionTooltip>
 </template>

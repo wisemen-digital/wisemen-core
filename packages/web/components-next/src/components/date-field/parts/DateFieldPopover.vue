@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import {
+  ref,
+  watch,
+} from 'vue'
+
 import IconButton from '@/components/button/icon-button/IconButton.vue'
 import { useInjectDateFieldContext } from '@/components/date-field/dateField.context'
 import DatePicker from '@/components/date-picker/single/DatePicker.vue'
@@ -14,6 +19,7 @@ const {
   allowDeselect,
   classConfig,
   customClassConfig,
+  dontCloseOnSelect,
   hideDatePicker,
   label,
   locale,
@@ -21,11 +27,22 @@ const {
   placeholderValue,
   showTwoMonths,
 } = useInjectDateFieldContext()
+
+const isOpen = ref<boolean>(false)
+
+watch(modelValue, () => {
+  if (dontCloseOnSelect.value || !isOpen.value) {
+    return
+  }
+
+  isOpen.value = false
+})
 </script>
 
 <template>
   <Popover
     v-if="!hideDatePicker"
+    v-model:is-open="isOpen"
     :is-popover-arrow-hidden="true"
     popover-align="end"
   >

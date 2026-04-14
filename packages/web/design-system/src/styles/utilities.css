@@ -1,0 +1,21 @@
+@variant dark (&:where(.dark, .dark *));
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility glassy {
+  background:
+    linear-gradient(325deg, transparent 0%, transparent 80%, rgba(255, 255, 255, 0.4) 100%),
+    linear-gradient(45deg, transparent 0%, transparent 85%, rgba(0, 0, 0, 0.8) 100%),
+    linear-gradient(150deg, transparent 0%, transparent 80%, rgba(255, 255, 255, 0.4) 100%),
+    linear-gradient(225deg, transparent 0%, transparent 85%, rgba(0, 0, 0, 0.8) 100%), rgba(255, 255, 255, 0.4);
+}
+
+@utility glassy-inner-content {
+  @apply bg-linear-to-br from-secondary to-quaternary group-hover:from-primary;
+}

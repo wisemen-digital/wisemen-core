@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/validators",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "publishConfig": {
     "access": "public"
   },
@@ -11,11 +11,12 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
-    "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "npm run build",
     "test": "node --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
@@ -31,7 +32,7 @@
     "typescript": "catalog:peer"
   },
   "author": "Joren Vandeweyer",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

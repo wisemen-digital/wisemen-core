@@ -1,9 +1,9 @@
 {
   "name": "@wisemen/open-api-plugins",
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "OpenAPI plugins for code generation",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "homepage": "https://github.com/wisemen-digital/wisemen-core",
   "publishConfig": {
     "access": "public"

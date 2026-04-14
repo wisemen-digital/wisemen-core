@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/quantity",
-  "version": "0.4.0",
+  "version": "0.6.1",
   "publishConfig": {
     "access": "public"
   },
@@ -11,12 +11,13 @@
     "dist/"
   ],
   "scripts": {
-    "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
-    "test": "node --test ./dist/**/*.test.js",
-    "lint": "eslint --cache",
+    "pretest": "pnpm run build",
+    "test": "node --test './dist/**/*.test.js'",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -34,7 +35,7 @@
     "typescript": "catalog:peer"
   },
   "author": "Maarten Sijmkens",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

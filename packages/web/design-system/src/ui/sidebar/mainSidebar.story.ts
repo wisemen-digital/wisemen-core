@@ -7,6 +7,15 @@ import Playground from '@/ui/sidebar/playground.vue'
 
 const meta = {
   title: 'Components/Sidebar',
+  argTypes: {
+    collapsedVariant: {
+      control: 'select',
+      options: [
+        'minified',
+        'hidden',
+      ],
+    },
+  },
   tags: [
     'autodocs',
   ],
@@ -18,5 +27,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  args: {},
+  args: {
+    collapsedVariant: 'minified',
+  },
 }

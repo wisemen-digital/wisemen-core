@@ -1,27 +1,31 @@
 {
   "name": "@wisemen/date-time-range",
-  "version": "1.0.20",
+  "version": "1.0.22",
   "publishConfig": {
     "access": "public"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
   "files": [
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
-    "prebuild": "rm -rf ./dist",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
+    "pretest": "pnpm run build",
     "test": "node --env-file=.env.test --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "author": "Maarten Sijmkens",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

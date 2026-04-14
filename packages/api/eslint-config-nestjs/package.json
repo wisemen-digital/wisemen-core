@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/eslint-config-nestjs",
-  "version": "0.2.11",
+  "version": "0.2.13",
   "publishConfig": {
     "access": "public"
   },
@@ -13,11 +13,17 @@
     "directory": "packages/eslint-config-nestjs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "peerDependencies": {
+    "eslint": "9.39.4",
+    "oxlint": "1.56.0"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "@eslint/eslintrc": "catalog:lint",
     "@eslint/js": "catalog:lint",
@@ -30,6 +36,8 @@
     "eslint-plugin-unused-imports": "catalog:lint",
     "globals": "catalog:lint",
     "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint"
+    "typescript-eslint": "catalog:lint",
+    "oxlint": "catalog:lint",
+    "@typescript-eslint/eslint-plugin": "catalog:lint"
   }
 }

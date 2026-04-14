@@ -3,22 +3,30 @@ import { tv } from '@/styles/tailwindVariants.lib'
 export const createIconButtonStyle = tv({
   compoundVariants: [
     {
-      class: 'dark:rounded-[0.35rem]',
+      class: {
+        container: 'dark:rounded-[0.31rem]',
+      },
       size: 'md',
       variant: 'primary',
     },
     {
-      class: 'dark:rounded-[0.3rem]',
+      class: {
+        container: 'dark:rounded-[0.44rem]',
+      },
       size: 'lg',
       variant: 'primary',
     },
     {
-      class: 'dark:rounded-[0.3rem]',
+      class: {
+        container: 'dark:rounded-[0.19rem]',
+      },
       size: 'sm',
       variant: 'primary',
     },
     {
-      class: `dark:rounded-[0.15rem]`,
+      class: {
+        container: `dark:rounded-[0.06rem]`,
+      },
       size: 'xs',
       variant: 'primary',
     },
@@ -54,12 +62,12 @@ export const createIconButtonStyle = tv({
       lg: {
         icon: `size-4`,
         loader: `size-4`,
-        root: 'size-8 rounded-md',
+        root: 'size-8 rounded-lg',
       },
       md: {
         icon: `size-3.5`,
         loader: `size-3.5`,
-        root: 'size-7 rounded-sm',
+        root: 'size-7 rounded-md',
       },
       sm: {
         icon: `size-3.5`,
@@ -101,7 +109,8 @@ export const createIconButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-error-primary
-          data-interactive:hover:bg-error-primary
+          data-interactive:hover:bg-error-50
+          dark:data-interactive:hover:bg-error-700/20
         `,
       },
       'primary': {
@@ -119,8 +128,8 @@ export const createIconButtonStyle = tv({
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:brightness-95
-          dark:p-px
-          data-interactive:dark:border-none data-interactive:dark:glassy
+          dark:border-none dark:p-px
+          not-data-disabled:dark:glassy
         `,
       },
       'secondary': {
@@ -137,6 +146,7 @@ export const createIconButtonStyle = tv({
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:bg-primary-hover
+          dark:border-primary
         `,
       },
       'tertiary': {

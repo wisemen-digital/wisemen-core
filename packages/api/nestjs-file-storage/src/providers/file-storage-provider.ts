@@ -8,6 +8,12 @@ export abstract class FileStorage {
     isPublic?: boolean
   ): Promise<string>
 
+  abstract createTemporaryPreviewUrl (
+    key: string,
+    mimeType?: string,
+    expiresInSeconds?: number
+  ): Promise<string>
+
   abstract createTemporaryDownloadUrl (
     key: string,
     name: string,

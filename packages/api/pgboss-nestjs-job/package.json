@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pgboss-nestjs-job",
-  "version": "3.3.3",
+  "version": "3.3.5",
   "publishConfig": {
     "access": "public"
   },
@@ -11,17 +11,18 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
-    "prebuild": "rm -rf ./dist",
-    "clean": "rm -r ./dist",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "npm run clean && npm run build",
-    "test": "node --test",
+    "pretest": "pnpm build",
+    "test": "node --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "author": "Joren Vandeweyer",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

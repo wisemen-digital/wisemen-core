@@ -20,8 +20,10 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-vitest'),
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
-    getAbsolutePath('@storybook/addon-onboarding'),
   ],
+  core: {
+    disableWhatsNewNotifications: true,
+  },
   framework: {
     name: getAbsolutePath('@storybook/vue3-vite'),
     options: {
@@ -34,7 +36,6 @@ const config: StorybookConfig = {
   stories: [
     '../src/**/*.mdx',
     '../src/**/*.story.@(js|jsx|mjs|ts|tsx)',
-
   ],
   viteFinal(config) {
     const pluginName = 'storybook:vue-component-meta'

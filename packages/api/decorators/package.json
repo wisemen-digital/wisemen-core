@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/decorators",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "publishConfig": {
     "access": "public"
   },
@@ -11,7 +11,9 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
@@ -21,7 +23,7 @@
     "release": "pnpx release-it"
   },
   "author": "Kobe Kwanten",
-  "license": "GPL",
+  "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",

@@ -1,9 +1,9 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'expect'
-import { ColumnType } from 'typeorm'
 import { dataSource } from './sql/datasource.js'
 import { DateTimeRangeTest } from './sql/date-time-range-test.entity.js'
 import { MultiDateTimeRangeTest } from './sql/multi-date-time-range-test.entity.js'
+import { IntegrationTestSetup } from './sql/test-setup.js'
 import { DateTimeRange } from '#src/date-time-range.js'
 import { timestamp } from '#src/timestamp.factory.js'
 import { PastInfinity } from '#src/past-infinity.js'
@@ -18,34 +18,15 @@ import { StartsAfter } from '#src/typeorm/starts-after.js'
 import { EndsBefore } from '#src/typeorm/ends-before.js'
 
 describe('DateTimeRangeColumn', () => {
+  let setup: IntegrationTestSetup
+
   before(async () => {
-    dataSource.driver.supportedDataTypes.push(
-      'tstzrange3' as ColumnType,
-      'tstzmultirange3' as ColumnType
-    )
-    await dataSource.initialize()
-    await dataSource.query(`
-      DO $$
-      BEGIN
-        IF NOT EXISTS (
-          SELECT 1
-          FROM pg_type t
-          JOIN pg_namespace n ON n.oid = t.typnamespace
-          WHERE t.typname = 'tstzrange3'
-            AND n.nspname = 'public'  -- change if not public schema
-        ) THEN
-          CREATE TYPE tstzrange3 AS RANGE (
-            subtype = timestamp (3) with time zone,
-            multirange_type_name = tstzmultirange3
-          );
-        END IF;
-      END $$;
-   `)
-    await dataSource.synchronize(true)
+    setup = new IntegrationTestSetup()
+    await setup.setup()
   })
 
   after(async () => {
-    await dataSource.destroy()
+    await setup.teardown()
   })
 
   describe('serialization and deserialization', () => {

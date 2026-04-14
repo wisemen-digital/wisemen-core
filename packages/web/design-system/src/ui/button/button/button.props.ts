@@ -1,22 +1,13 @@
 import type { Component } from 'vue'
 
-export interface ButtonProps {
-  /**
-   * Disables the button, preventing user interaction.
-   * @default false
-   */
-  isDisabled?: boolean
+import type { DisabledWithReason } from '@/types/disabledWithReason.type'
+
+export interface ButtonProps extends DisabledWithReason {
   /**
    * Shows a loading state and disables interaction.
    * @default false
    */
   isLoading?: boolean
-  /**
-   * Provides a reason why the button is disabled,
-   * when provided a tooltip will be shown on hover with the provided text.
-   * @default null
-   */
-  disabledReason?: string | null
   /**
    * The form ID the button is associated with.
    * @default null

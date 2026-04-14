@@ -3,6 +3,7 @@ import { ref } from 'vue'
 
 import CheckboxGroupCheckbox from './CheckboxGroupCheckbox.vue'
 import CheckboxGroupIndeterminateCheckbox from './CheckboxGroupIndeterminateCheckbox.vue'
+import CheckboxGroupPlayground from './CheckboxGroupPlayground.vue'
 import CheckboxGroupRoot from './CheckboxGroupRoot.vue'
 
 const meta = {
@@ -39,18 +40,18 @@ export const Default: Story = {
         <CheckboxGroupRoot
           v-model="modelValue"
         >
-            <CheckboxGroupCheckbox
-              label="option 1"
-              value="option1"
-            />
-            <CheckboxGroupCheckbox
-              label="option 2"
-              value="option2"
-            />
-            <CheckboxGroupCheckbox
-              label="option 3"
-              value="option3"
-            />
+          <CheckboxGroupCheckbox
+            label="option 1"
+            value="option1"
+          />
+          <CheckboxGroupCheckbox
+            label="option 2"
+            value="option2"
+          />
+          <CheckboxGroupCheckbox
+            label="option 3"
+            value="option3"
+          />
         </CheckboxGroupRoot>
       </div>
     `,
@@ -83,8 +84,8 @@ export const Indeterminate: Story = {
             label="Select All"
           />
           <CheckboxGroupCheckbox
-              label="option 1"
-              value="option1"
+            label="option 1"
+            value="option1"
           />
           <CheckboxGroupCheckbox
             label="option 2"
@@ -173,23 +174,44 @@ export const HorizontalOrientation: Story = {
             <CheckboxGroupIndeterminateCheckbox
               label="Select All"
             />
-              <div class="flex items-center gap-lg">
-                <CheckboxGroupCheckbox
-                  label="option 1"
-                  value="option1"
-                />
-                <CheckboxGroupCheckbox
-                  label="option 2"
-                  value="option2"
-                />
-                <CheckboxGroupCheckbox
-                  label="option 3"
-                  value="option3"
-                />
-              </div>
+            <div class="flex items-center gap-lg">
+              <CheckboxGroupCheckbox
+                label="option 1"
+                value="option1"
+              />
+              <CheckboxGroupCheckbox
+                label="option 2"
+                value="option2"
+              />
+              <CheckboxGroupCheckbox
+                label="option 3"
+                value="option3"
+              />
+            </div>
           </div>
         </CheckboxGroupRoot>
       </div>
+    `,
+  }),
+}
+
+export const Playground: Story = {
+  args: {
+    modelValue: [],
+  },
+  render: () => ({
+    components: {
+      CheckboxGroupPlayground,
+    },
+    setup() {
+      const modelValue = ref<string[]>([])
+
+      return {
+        modelValue,
+      }
+    },
+    template: `
+      <CheckboxGroupPlayground v-model="modelValue" />
     `,
   }),
 }

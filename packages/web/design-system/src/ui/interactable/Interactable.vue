@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { Primitive } from 'reka-ui'
 
+import type { InteractableProps } from '@/ui/interactable/interactable.props'
 import { twMerge } from '@/utils/twMerge.util'
 
-const props = withDefaults(defineProps<{
-  class?: string | null
-}>(), {
+const props = withDefaults(defineProps<InteractableProps>(), {
   class: null,
 })
 </script>

@@ -9,46 +9,27 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"],
-      "inputs": [
-        "src/**",
-        "lib/**",
-        "tsconfig.json",
-        "tsconfig.*.json",
-        "vite.config.ts",
-        "tsdown.config.ts",
-        "package.json"
-      ]
+      "outputs": ["dist/**"]
     },
     "test": {
       "dependsOn": ["^build"],
-      "outputs": ["coverage/**"],
-      "inputs": [
-        "src/**",
-        "test/**",
-        "*.test.ts",
-        "*.spec.ts",
-        "vitest.config.ts"
-      ]
+      "outputs": ["coverage/**"]
     },
     "type-check": {
       "dependsOn": ["^build"],
-      "outputs": [],
-      "inputs": [
-        "src/**",
-        "tsconfig.json",
-        "tsconfig.*.json"
-      ]
+      "outputs": []
     },
     "lint": {
       "dependsOn": ["^build"],
-      "outputs": [],
-      "inputs": [
-        "src/**",
-        "test/**",
-        "eslint.config.*",
-        "package.json"
-      ]
+      "outputs": []
+    },
+    "lint:oxlint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint:eslint": {
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "lint:fix": {
       "dependsOn": ["^build"],

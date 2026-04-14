@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = withDefaults(defineProps<{
-  align?: 'center' | 'end' | 'start'
-  as?: string
-  gap?: '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl' | '8xl' | '9xl' | '10xl' | '11xl' | 'lg' | 'md' | 'none' | 'sm' | 'xl' | 'xs' | 'xxs'
-  justify?: 'between' | 'center' | 'end' | 'start'
-}>(), {
+import type { ColumnLayoutProps } from '@/ui/column-layout/columnLayout.props'
+
+const props = withDefaults(defineProps<ColumnLayoutProps>(), {
   align: 'start',
   as: 'div',
   gap: 'md',

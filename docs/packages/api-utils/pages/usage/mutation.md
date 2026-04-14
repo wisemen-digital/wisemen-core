@@ -410,4 +410,4 @@ queryKeysToInvalidate: {
 
 ## Type-Safe Query Client
 
-For type-safe query client operations and immediate cache modifications, see the [Type-Safe Query Client](/docs/packages/api-utils/pages/usage/query-client.md) page.
+For type-safe query client operations and immediate cache modifications, see the [Type-Safe Query Client](/packages/api-utils/pages/usage/query-client.md) page.

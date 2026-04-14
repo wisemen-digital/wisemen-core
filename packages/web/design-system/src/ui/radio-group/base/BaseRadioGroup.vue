@@ -2,6 +2,7 @@
 import { RadioGroupItem as RekaRadioGroupItem } from 'reka-ui'
 import { computed } from 'vue'
 
+import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { useProvideRadioGroupItemContext } from '@/ui/radio-group/base/baseRadioGroup.context'
 import type { BaseRadioGroupItemProps } from '@/ui/radio-group/base/baseRadioGroup.props'
@@ -13,7 +14,9 @@ import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<BaseRadioGroupItemProps>(), {
   isDisabled: false,
+  isLabelHidden: false,
   description: null,
+  disabledReason: null,
 })
 
 const emit = defineEmits<{
@@ -29,34 +32,41 @@ useProvideRadioGroupItemContext({
 </script>
 
 <template>
-  <RekaRadioGroupItem
-    :disabled="props.isDisabled"
-    :value="props.value"
-    :class="radioGroupStyle.root()"
-    @blur="emit('blur')"
-    @focus="emit('focus')"
+  <ActionTooltip
+    :is-disabled="!props.isDisabled || props.disabledReason == null"
+    :label="props.disabledReason"
   >
-    <RowLayout
-      align="start"
+    <RekaRadioGroupItem
+      :id="props.id ?? undefined"
+      :disabled="props.isDisabled"
+      :value="props.value"
+      :class="radioGroupStyle.root()"
+      @blur="emit('blur')"
+      @focus="emit('focus')"
     >
-      <div :class="radioGroupStyle.control()">
-        <RadioGroupIndicator />
-      </div>
-
-      <ColumnLayout
-        gap="none"
+      <RowLayout
+        align="start"
       >
-        <UIText
-          :text="props.label"
-          :class="radioGroupStyle.label()"
-        />
+        <div :class="radioGroupStyle.control()">
+          <RadioGroupIndicator />
+        </div>
 
-        <UIText
-          v-if="props.description"
-          :text="props.description"
-          :class="radioGroupStyle.description()"
-        />
-      </ColumnLayout>
-    </RowLayout>
-  </RekaRadioGroupItem>
+        <ColumnLayout
+          :class="props.isLabelHidden && 'sr-only'"
+          gap="none"
+        >
+          <UIText
+            :text="props.label"
+            :class="radioGroupStyle.label()"
+          />
+
+          <UIText
+            v-if="props.description"
+            :text="props.description"
+            :class="radioGroupStyle.description()"
+          />
+        </ColumnLayout>
+      </RowLayout>
+    </RekaRadioGroupItem>
+  </ActionTooltip>
 </template>

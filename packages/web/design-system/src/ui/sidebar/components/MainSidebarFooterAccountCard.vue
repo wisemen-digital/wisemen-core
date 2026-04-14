@@ -6,13 +6,15 @@ import {
 import type { Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { UIAvatar } from '@/ui/avatar/index'
+import Avatar from '@/ui/avatar/avatar/Avatar.vue'
 import { UICard } from '@/ui/card/index'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
+import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import DropdownMenu from '@/ui/dropdown-menu/DropdownMenu.vue'
 import DropdownMenuGroup from '@/ui/dropdown-menu/DropdownMenuGroup.vue'
 import DropdownMenuItem from '@/ui/dropdown-menu/DropdownMenuItem.vue'
 import { UIRowLayout } from '@/ui/row-layout/index'
+import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import { UIText } from '@/ui/text/index'
 
@@ -34,8 +36,12 @@ const props = defineProps<{
 const i18n = useI18n()
 
 const {
-  isSidebarOpen, variant,
+  isSidebarOpen,
+  collapsedVariant,
+  sidebarIconCellSize,
 } = useMainSidebar()
+
+const accountCardGridTemplateColumns = `${sidebarIconCellSize} 1fr`
 
 function onSignOut(): void {
   if (props.onSignOut == null) {
@@ -54,33 +60,42 @@ function onSignOut(): void {
     <template #trigger>
       <ClickableElement>
         <button
+          class="flex h-12 items-center justify-center"
           type="button"
-          class="flex h-10 items-center justify-center"
         >
-          <UIAvatar
-            v-if="variant === 'icons-only' && !isSidebarOpen"
-            :name="props.name"
-          />
           <UICard
-            v-else
-            class="
-              flex h-12 w-full flex-col overflow-hidden bg-primary-alt p-md
-              py-sm text-left duration-100
-              hover:bg-tertiary/50
+            :class="collapsedVariant === 'minified' && !isSidebarOpen
+              ? 'border-transparent'
+              : `
+                bg-primary-alt p-md py-sm pl-xs
+                hover:bg-tertiary/50
+              `
             "
+            :style="{
+              gridTemplateColumns: accountCardGridTemplateColumns,
+            }"
+            class="grid w-full gap-xs overflow-hidden text-left duration-100"
           >
             <UIRowLayout
-              justify="between"
-              class="overflow-hidden"
+              align="center"
+              justify="center"
+              class="h-full"
             >
+              <Avatar
+                :name="props.name"
+                :src="props.avatarUrl"
+                size="xs"
+              />
+            </UIRowLayout>
+
+            <MainSidebarFadeTransition>
               <UIRowLayout
-                gap="md"
+                v-if="collapsedVariant !== 'minified' || isSidebarOpen"
+                justify="between"
+                align="center"
+                gap="xxs"
                 class="overflow-hidden"
               >
-                <UIAvatar
-                  :src="props.avatarUrl"
-                  :name="props.name"
-                />
                 <div class="flex w-full flex-col overflow-hidden">
                   <UIText
                     :text="props.name"
@@ -91,13 +106,16 @@ function onSignOut(): void {
                     class="w-full text-xs text-tertiary"
                   />
                 </div>
+                <ColumnLayout
+                  align="start"
+                  class="h-full"
+                >
+                  <ChevronDownIcon
+                    class="mt-xxs size-4 shrink-0 text-quaternary"
+                  />
+                </ColumnLayout>
               </UIRowLayout>
-
-              <Component
-                :is="ChevronDownIcon"
-                class="size-4 shrink-0 text-quaternary"
-              />
-            </UIRowLayout>
+            </MainSidebarFadeTransition>
           </UICard>
         </button>
       </ClickableElement>

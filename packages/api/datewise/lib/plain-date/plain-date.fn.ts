@@ -11,6 +11,7 @@ export interface PlainDateFn {
   (arg: undefined): PlainDate
   (arg: PlainDateInput): PlainDate
   (arg: PlainDateInput | null): PlainDate
+  (arg: string, format: string): PlainDate
 
   today(): PlainDate
   tomorrow(): PlainDate
