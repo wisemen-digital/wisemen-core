@@ -319,7 +319,6 @@ async function updateAndHandle(updates: any) {
 
 - **Scoped** — only the queries touched by that `update` call are reverted; unrelated cache entries are unaffected.
 - **Idempotent** — calling `rollback()` more than once is safe; subsequent calls are no-ops.
-- **Multiple updates** — each `update` call returns its own independent `rollback`, so concurrent optimistic updates can each be rolled back independently.
 
 ### Cancelling in-flight queries
 
@@ -343,7 +342,7 @@ const { rollback } = queryClient.update(
 ```
 
 This is rarely needed in practice — the mutation's success invalidation will quickly bring the correct data.
-```
+
 
 ## Best Practices
 

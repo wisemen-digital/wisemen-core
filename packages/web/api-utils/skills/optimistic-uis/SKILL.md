@@ -24,18 +24,20 @@ import { computed } from 'vue'
 
 const queryClient = useQueryClient()
 const { result: contact } = useQuery('contactDetail', {
-  params: computed(() => ({ contactUuid })),
+  params: {
+    contactUuid: computed(() => contactUuid),
+  },
   queryFn: () => ContactService.getDetail(contactUuid),
 })
 
 const { execute, isLoading, result: mutationResult } = useMutation({
-  queryFn: (data) => ContactService.updateContact(contactUuid, data),
-  queryKeysToInvalidate: { contactList: (contact) => true },
+  queryFn: ({ body }) => ContactService.updateContact(contactUuid, body),
+  queryKeysToInvalidate: { contactList: {} },
 })
 
 async function handleSubmit(formData) {
   // Save original (for rollback)
-  const originalContact = contact.value?.getValue()
+  const originalContact = contact.value.isOk() ? contact.value.getValue() : null
   
   // Optimistic update: immediate cache change
   queryClient.update(['contactDetail', { contactUuid }], {

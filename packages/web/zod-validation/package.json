@@ -1,40 +1,37 @@
 {
-  "name": "@wisemen/vue-core-api-utils",
+  "name": "@wisemen/vue-core-zod-validation",
   "publishConfig": {
     "access": "public"
   },
   "type": "module",
-  "version": "1.0.1",
+  "version": "0.0.1",
+  "private": true,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api-utils"
+    "directory": "packages/web/zod-validation"
   },
   "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
+    },
+    "./i18n": {
+      "types": "./dist/i18n.d.mts",
+      "import": "./dist/i18n.mjs"
     }
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "typings": "./dist/index.d.mts",
-  "keywords": [
-    "tanstack-intent",
-    "vue-query",
-    "result",
-    "error-handling"
-  ],
   "files": [
-    "dist",
-    "skills"
+    "dist"
   ],
   "scripts": {
     "build": "tsdown",
-    "dev": "tsdown --watch",
     "pub:release": "pnpm publish --access public",
     "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
     "pub:next": "pnpm publish --no-git-checks --access public --tag next",
@@ -45,18 +42,22 @@
     "typecheck": "pnpm tsc"
   },
   "peerDependencies": {
-    "@tanstack/vue-query": "catalog:peer",
-    "neverthrow": "catalog:peer",
-    "vue": "catalog:peer"
+    "zod": "catalog:peer",
+    "vue-i18n": "catalog:peer"
+
+  },
+  "dependencies": {
+    "@wisemen/vue-core-i18n-factory": "workspace:*",
+    "libphonenumber-js": "catalog:general"
   },
   "devDependencies": {
-    "@tanstack/intent": "catalog:tooling",
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint",
+    "vue-i18n": "catalog:vue",
     "tsdown": "catalog:build",
+    "zod": "catalog:general",
     "typescript": "catalog:build",
-    "vue": "catalog:vue",
     "vitest": "catalog:test"
   }
 }
