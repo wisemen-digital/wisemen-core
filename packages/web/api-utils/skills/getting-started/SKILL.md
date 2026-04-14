@@ -4,7 +4,7 @@ description: >
   Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, define typed query keys interface, create API composables with error codes.
 type: lifecycle
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.0.1"
 sources:
   - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/getting-started/installation.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/plugin/apiUtilsPlugin.ts"
