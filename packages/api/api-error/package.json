@@ -11,7 +11,9 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
@@ -31,7 +33,9 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "expect": "catalog:test",
     "eslint": "catalog:lint",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "oxlint": "catalog:lint",
+    "oxlint-tsgolint": "catalog:lint"
   },
   "author": "Kobe Kwanten",
   "license": "SEE LICENSE IN LICENSE.md",

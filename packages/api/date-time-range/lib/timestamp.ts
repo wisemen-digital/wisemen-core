@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { UnitType, ManipulateType, OpUnitType } from 'dayjs'
 
 export interface ILocale {

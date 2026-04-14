@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface NatsAuthorizationRequest {
   server_id: {
     name: string

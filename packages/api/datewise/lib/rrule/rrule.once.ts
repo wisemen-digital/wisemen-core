@@ -38,7 +38,7 @@ export function once (options: RRuleOnceOptions | DateTimeRange): RRule {
 }
 
 function rruleFromRange (range: DateTimeRange): RRule {
-  const utcStart = range.from.setTimezone('UTC')
+  const utcStart = range.inclLower.setTimezone('UTC')
 
   return RRuleImpl.create(
     range,
