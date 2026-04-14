@@ -48,6 +48,7 @@
     "eslint": "catalog:lint",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
+    "vue": "catalog:vue",
     "vitest": "catalog:test"
   }
 }

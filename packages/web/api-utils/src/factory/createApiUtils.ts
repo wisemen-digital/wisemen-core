@@ -6,7 +6,11 @@ import { createApiPrefetchQueryUtils } from './createApiPrefetchQueryUtils'
 import { createApiQueryClientUtils } from './createApiQueryClientUtils'
 import { createApiQueryUtils } from './createApiQueryUtils'
 
-export type { CreateApiInfiniteQueryUtilsReturnType } from './createApiInfiniteQueryUtils'
+export type {
+  ApiUseKeysetInfiniteQueryReturnType,
+  ApiUseOffsetInfiniteQueryReturnType,
+  CreateApiInfiniteQueryUtilsReturnType,
+} from './createApiInfiniteQueryUtils'
 export { createApiInfiniteQueryUtils } from './createApiInfiniteQueryUtils'
 export type { CreateApiMutationUtilsReturnType } from './createApiMutationUtils'
 export { createApiMutationUtils } from './createApiMutationUtils'
