@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<DialogProps>(), {
 })
 
 const emit = defineEmits<{
+  'afterLeave': []
   'close': []
   'update:isOpen': [value: boolean]
 }>()
@@ -77,12 +78,12 @@ function onOpenChange(value: boolean): void {
       :class="style.overlay()"
       data-animation="dialog"
     />
-
     <RekaDialogContent
       :class="style.contentPositioner()"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
       @pointer-down-outside="onPointerDownOutside"
+      @after-leave="emit('afterLeave')"
     >
       <div :class="style.content()">
         <slot />
