@@ -82,6 +82,7 @@ export type {
 export {
   QueryClient,
   type QueryClientUpdateOptions,
+  type QueryClientUpdateResult,
 } from './utils/query-client/queryClient'
 export { SortUtil } from './utils/sort/sort.utils'
 export type { UseKeysetInfiniteQueryReturnType } from '@/composables/query/keysetInfiniteQuery.composable'
