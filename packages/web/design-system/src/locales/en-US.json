@@ -6,6 +6,7 @@
   "component.dashboard_page_header_sidebar_toggle.collapse": "Collapse sidebar",
   "component.dashboard_page_header_sidebar_toggle.expand": "Expand sidebar",
   "component.dashboard_page_loading_state.loading": "Loading",
+  "component.dialog.close": "Close dialog",
   "component.keyboard_shortcut.sequence_label": "then",
   "component.number_field.decrement": "Decrement",
   "component.number_field.increment": "Increment",
@@ -20,5 +21,4 @@
   "components.sidebar.global_search.label": "Search",
   "components.sidebar.sign_out": "Sign out",
   "components.sidebar.title": "Sidebar"
-
 }

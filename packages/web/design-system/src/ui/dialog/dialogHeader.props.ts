@@ -7,18 +7,6 @@ export interface DialogHeaderProps {
   title: string
 
   /**
-   * Whether to show the close button.
-   * @default true
-   */
-  hasCloseButton?: boolean
-
-  /**
-   * Whether to show the divider at the bottom of the header.
-   * @default true
-   */
-  hasDivider?: boolean
-
-  /**
    * Optional description text displayed below the title.
    */
   description?: string | null
@@ -33,4 +21,10 @@ export interface DialogHeaderProps {
    * @default 'brand'
    */
   iconVariant?: 'brand' | 'error' | 'success' | 'warning'
+
+  /**
+   * Whether to show the divider at the bottom of the header.
+   * @default true
+   */
+  showSeparator?: boolean
 }

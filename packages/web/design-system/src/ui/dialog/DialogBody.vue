@@ -20,6 +20,7 @@ onBeforeUnmount(() => {
   <div
     :ref="setBodyRef"
     :class="style.body()"
+    data-dialog-body
   >
     <slot />
   </div>

@@ -8,6 +8,7 @@ import { I18N_FACTORY_NAVIGATION } from './i18n-factory/i18nFactory.navigation'
 import type { PackageDocNavigation } from './navigation.utils'
 import { TELEMETRY_NAVIGATION } from './telemetry/telemetry.navigation'
 import { TYPE_UTILS_NAVIGATION } from './type-utils/typeUtils.navigation'
+import { ZOD_VALIDATION_NAVIGATION } from './zod-validation/zodValidation.navigation'
 
 export const PACKAGE_DOC_NAVIGATION: PackageDocNavigation[] = [
   DESIGN_SYSTEM_NAVIGATION,
@@ -18,5 +19,6 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigation[] = [
   FORMANGO_NAVIGATION,
   I18N_FACTORY_NAVIGATION,
   TELEMETRY_NAVIGATION,
+  ZOD_VALIDATION_NAVIGATION,
   TYPE_UTILS_NAVIGATION,
 ]

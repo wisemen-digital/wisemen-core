@@ -9,7 +9,7 @@ export class DateTimeRangeResponse {
   until: string
 
   constructor (dateRange: DateTimeRange) {
-    this.from = dateRange.from.toISOString()
-    this.until = dateRange.until.toISOString()
+    this.from = dateRange.inclLower.toISOString()
+    this.until = dateRange.exclUpper.toISOString()
   }
 }

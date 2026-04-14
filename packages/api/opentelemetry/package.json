@@ -21,7 +21,9 @@
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
     "test": "node --test",
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware ",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },

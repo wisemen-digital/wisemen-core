@@ -2,13 +2,14 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./lib",
     "declaration": true,
     "target": "esnext",
-    "module": "CommonJS",
+    "module": "nodenext",
     "types": [
       "node",
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "sourceMap": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,

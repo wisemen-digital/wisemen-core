@@ -2,13 +2,14 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./lib",
     "declaration": true,
     "target": "esnext",
     "module": "NodeNext",
     "types": [
       "node",
     ],
-    "rootDir": "./",
+    
     "moduleResolution": "nodenext",
     "sourceMap": true,
     "esModuleInterop": true,

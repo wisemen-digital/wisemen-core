@@ -11,12 +11,12 @@ export const createDialogStyle = tv({
       sm:top-0 sm:rounded-[calc(1rem+5px)]
     `,
     content: `
-      flex max-h-[90vh] w-full flex-col overflow-hidden
+      group/dialog flex max-h-[90vh] w-full flex-col overflow-hidden
       rounded-t-[calc(1rem+5px)] rounded-b-none border-t-[5px] border-r-[5px]
       border-l-[5px] border-transparent bg-primary bg-clip-padding
       sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
     `,
-    contentPositioner: `
+    contentWrapper: `
       z-modal fixed inset-x-0 bottom-0 flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
@@ -36,25 +36,25 @@ export const createDialogStyle = tv({
           h-[90vh]
           sm:max-h-[90vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
         `,
-        contentPositioner: `sm:max-w-[90vw]`,
+        contentWrapper: `sm:max-w-[90vw]`,
       },
       'lg': {
-        contentPositioner: `sm:max-w-160`,
+        contentWrapper: `sm:max-w-160`,
       },
       'md': {
-        contentPositioner: `sm:max-w-140`,
+        contentWrapper: `sm:max-w-140`,
       },
       'sm': {
-        contentPositioner: `sm:max-w-120`,
+        contentWrapper: `sm:max-w-120`,
       },
       'xl': {
-        contentPositioner: `sm:max-w-180`,
+        contentWrapper: `sm:max-w-180`,
       },
       'xs': {
-        contentPositioner: `sm:max-w-100`,
+        contentWrapper: `sm:max-w-100`,
       },
       'xxs': {
-        contentPositioner: `sm:max-w-90`,
+        contentWrapper: `sm:max-w-90`,
       },
     },
   },

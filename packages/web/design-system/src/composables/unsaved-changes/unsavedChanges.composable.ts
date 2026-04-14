@@ -1,5 +1,4 @@
 import type { ComputedRef } from 'vue'
-import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { onBeforeRouteLeave } from 'vue-router'
 
@@ -36,13 +35,9 @@ export function useUnsavedChanges(isDirty: ComputedRef<boolean>) {
     }
   })
 
-  onMounted(() => {
-    onbeforeunload = (): string | null => {
-      if (isDirty.value) {
-        return i18n.t('component.unsaved_changes_dialog.description')
-      }
-
-      return null
+  window.addEventListener('beforeunload', () => {
+    if (isDirty.value) {
+      return i18n.t('component.unsaved_changes_dialog.description')
     }
   })
 }

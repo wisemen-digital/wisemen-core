@@ -123,14 +123,14 @@ import { i18n } from '@your-package/i18n'
 
 // Extend with new locales
 const extended = i18n.getTranslations({
-  extendedLocales: {
+  extendedLocales: i18n.defineExtendedLocales({
     'de-DE': {
       'component.title': 'Komponententitel',
       'component.description': 'Eine nützliche Komponente',
       'error.required': 'Erforderlich',
       'error.invalid': 'Ungültige Eingabe',
     },
-  },
+  }),
 })
 ```
 
@@ -176,13 +176,13 @@ Include JSDoc comments to help consumers understand what keys must be provided:
  * @example
  * ```ts
  * const translations = formFactory.getTranslations({
- *   extendedLocales: {
+ *   extendedLocales: formFactory.defineExtendedLocales({
  *     'es-ES': {
  *       'mypackage.form.title': 'Formulario',
  *       'mypackage.form.submit': 'Enviar',
  *       'mypackage.errors.required': 'Campo requerido',
- *     }
- *   }
+ *     },
+ *   })
  * })
  * ```
  */

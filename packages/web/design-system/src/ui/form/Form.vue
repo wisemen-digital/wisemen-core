@@ -20,7 +20,7 @@ if (props.promptOnUnsavedChanges) {
 }
 
 useProvideFormContext({
-  formId: id,
+  formId: props.id ?? id,
   form: props.form,
 })
 </script>

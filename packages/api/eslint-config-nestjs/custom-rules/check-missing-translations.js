@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { readFileSync, existsSync, statSync } from 'fs'
 import { join } from 'path'
 
