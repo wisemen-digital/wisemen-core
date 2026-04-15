@@ -1,5 +1,11 @@
 # @wisemen/vue-core-format
 
+## 0.0.2
+
+### Patch Changes
+
+- [#853](https://github.com/wisemen-digital/wisemen-core/pull/853) [`457406d`](https://github.com/wisemen-digital/wisemen-core/commit/457406d2f81641dd366bc0b3307d66e89413c043) Thanks [@Robbe95](https://github.com/Robbe95)! - Fixed peer dependency of vue
+
 ## 0.0.1
 
 ### Patch Changes
