@@ -13,7 +13,7 @@ export function createApiMutationUtils<TQueryKeys extends object, TErrorCode ext
 CreateApiMutationUtilsReturnType<TQueryKeys, TErrorCode> {
   function useMutation<TReqData = void, TResData = void, TParams = void>(
     options: ApiUseMutationOptions<TQueryKeys, TReqData, TResData, TParams, TErrorCode>,
-  ): UseMutationReturnType<TReqData, TResData, TParams> {
+  ): UseMutationReturnType<TReqData, TResData, TParams, TErrorCode> {
     return useMutationComposable({
       isDebug: options.isDebug,
       queryFn: options.queryFn,
