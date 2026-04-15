@@ -6,7 +6,7 @@ export class PhoneFormatUtil {
    * Mask a phone number, preserving formatting and showing only the last 4 digits.
    * E.g., "+1 (555) 123-4567" → "+* (***) ***-4567".
    */
-  static maskPhone(phone: string): string {
+  static mask(phone: string): string {
     const digits = phone.replace(NON_DIGIT_REGEX, '')
 
     if (digits.length < 4) {
