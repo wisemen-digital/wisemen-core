@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-nats",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +17,9 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",

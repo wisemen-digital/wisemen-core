@@ -2,6 +2,7 @@
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "./lib",
     "declaration": true,
     "target": "esnext",
     "module": "NodeNext",
@@ -9,9 +10,9 @@
       "node",
     ],
     "moduleResolution": "nodenext",
-    "baseUrl": ".",
+    
     "paths": {
-      "#src/*": ["lib/*"]
+      "#src/*": ["./lib/*"]
     },
     "sourceMap": true,
     "esModuleInterop": true,

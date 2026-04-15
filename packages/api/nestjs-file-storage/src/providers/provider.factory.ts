@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { TestFileStorage } from './test/test-file-storage.js'
 import { FileStorageProvider } from './provider.enum.js'
 import { FileStorage } from './file-storage-provider.js'

@@ -4,28 +4,28 @@ export const createIconButtonStyle = tv({
   compoundVariants: [
     {
       class: {
-        container: 'dark:rounded-[0.35rem]',
+        container: 'dark:rounded-[0.31rem]',
       },
       size: 'md',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.3rem]',
+        container: 'dark:rounded-[0.44rem]',
       },
       size: 'lg',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.2rem]',
+        container: 'dark:rounded-[0.19rem]',
       },
       size: 'sm',
       variant: 'primary',
     },
     {
       class: {
-        container: `dark:rounded-[0.15rem]`,
+        container: `dark:rounded-[0.06rem]`,
       },
       size: 'xs',
       variant: 'primary',
@@ -62,12 +62,12 @@ export const createIconButtonStyle = tv({
       lg: {
         icon: `size-4`,
         loader: `size-4`,
-        root: 'size-8 rounded-md',
+        root: 'size-8 rounded-lg',
       },
       md: {
         icon: `size-3.5`,
         loader: `size-3.5`,
-        root: 'size-7 rounded-sm',
+        root: 'size-7 rounded-md',
       },
       sm: {
         icon: `size-3.5`,
