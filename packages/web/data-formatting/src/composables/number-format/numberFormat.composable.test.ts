@@ -8,11 +8,12 @@ import { useDataFormatConfig } from '@/composables/config.composable'
 import { useNumberFormat } from '@/composables/number-format/numberFormat.composable'
 
 describe('useNumberFormat', () => {
+  const dataConfig = useDataFormatConfig()
   const numberFormat = useNumberFormat()
 
   describe('format', () => {
     it('should format a number with default precision', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -20,7 +21,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should format a number with specified precision', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -28,7 +29,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should format a number with nl locale', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'nl-BE',
       })
 
@@ -38,33 +39,25 @@ describe('useNumberFormat', () => {
 
   describe('toPercent', () => {
     it('should format as percentage', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
-      const {
-        toPercent,
-      } = useNumberFormat()
-
-      expect(toPercent(0.125, 1)).toBe('12.5%')
+      expect(numberFormat.toPercent(0.125, 1)).toBe('12.5%')
     })
 
     it('should format 100% without decimals', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
-      const {
-        toPercent,
-      } = useNumberFormat()
-
-      expect(toPercent(1)).toBe('100%')
+      expect(numberFormat.toPercent(1)).toBe('100%')
     })
   })
 
   describe('toCompact', () => {
     it('should format large numbers in compact notation', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -72,7 +65,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should not compact small numbers', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -82,7 +75,7 @@ describe('useNumberFormat', () => {
 
   describe('toFileSize', () => {
     it('should format 0 bytes', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -90,7 +83,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should format bytes', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -98,7 +91,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should format kilobytes', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -106,7 +99,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should format megabytes', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -116,7 +109,7 @@ describe('useNumberFormat', () => {
 
   describe('toRange', () => {
     it('should format a number range', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
@@ -124,7 +117,7 @@ describe('useNumberFormat', () => {
     })
 
     it('should format with precision', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en-US',
       })
 
