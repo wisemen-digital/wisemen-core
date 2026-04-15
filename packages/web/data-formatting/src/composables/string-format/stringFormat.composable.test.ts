@@ -8,11 +8,12 @@ import { useDataFormatConfig } from '@/composables/config.composable'
 import { useStringFormat } from '@/composables/string-format/stringFormat.composable'
 
 describe('useStringFormat', () => {
+  const dataConfig = useDataFormatConfig()
   const stringFormat = useStringFormat()
 
   describe('toList', () => {
     it('should format items as a conjunction list', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en',
       })
 
@@ -24,7 +25,7 @@ describe('useStringFormat', () => {
     })
 
     it('should format items as a disjunction list', () => {
-      useDataFormatConfig().update({
+      dataConfig.update({
         locale: 'en',
       })
 
