@@ -1,5 +1,11 @@
 # @wisemen/eslint-config-nestjs
 
+## 1.1.0
+
+### Minor Changes
+
+- [#856](https://github.com/wisemen-digital/wisemen-core/pull/856) [`a91470f`](https://github.com/wisemen-digital/wisemen-core/commit/a91470f06ee1249add4d769c980e2eeed6c10e94) Thanks [@senne-vanreusel](https://github.com/senne-vanreusel)! - Modify Custom rules to be oxc compatible
+
 ## 1.0.0
 
 ### Major Changes
