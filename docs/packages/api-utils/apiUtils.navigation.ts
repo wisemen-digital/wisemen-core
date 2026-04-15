@@ -2,7 +2,7 @@ import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
 
 export const API_UTILS_NAVIGATION: PackageDocNavigation = {
   link: 'pages/getting-started/installation',
-  title: 'Api utils',
+  title: 'API Utilities',
   path: 'api-utils',
   sidebar: [
     {

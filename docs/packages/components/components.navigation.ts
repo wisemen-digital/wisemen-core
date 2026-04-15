@@ -1,7 +1,7 @@
 import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
 
 export const COMPONENTS_DOC_NAVIGATION: PackageDocNavigation = {
-  link: 'index',
+  link: 'getting-started/installation',
   title: 'Components',
   path: 'components',
   sidebar: [
