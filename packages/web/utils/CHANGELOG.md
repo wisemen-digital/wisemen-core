@@ -1,5 +1,15 @@
 # @wisemen/vue-core-utils
 
+## 0.0.4
+
+### Patch Changes
+
+- [#865](https://github.com/wisemen-digital/wisemen-core/pull/865) [`d87c7b8`](https://github.com/wisemen-digital/wisemen-core/commit/d87c7b861bccbd1ffe2b08b89052a545bbc56abc) Thanks [@Robbe95](https://github.com/Robbe95)! - Improved logger to use prefix correctly
+
+- [#865](https://github.com/wisemen-digital/wisemen-core/pull/865) [`d87c7b8`](https://github.com/wisemen-digital/wisemen-core/commit/d87c7b861bccbd1ffe2b08b89052a545bbc56abc) Thanks [@Robbe95](https://github.com/Robbe95)! - Added trimOrUndefined and trimOrNull to string utils
+
+- [#865](https://github.com/wisemen-digital/wisemen-core/pull/865) [`d87c7b8`](https://github.com/wisemen-digital/wisemen-core/commit/d87c7b861bccbd1ffe2b08b89052a545bbc56abc) Thanks [@Robbe95](https://github.com/Robbe95)! - Improved isDevelopment util and exposed it
+
 ## 0.0.3
 
 ### Patch Changes
