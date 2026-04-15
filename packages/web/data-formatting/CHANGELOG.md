@@ -1,14 +1,19 @@
-# @wisemen/vue-core-template-typescript
-
-## 0.0.2
-
-### Patch Changes
-
-- f5bddce: Ran updated linter
-- fce3eff: Updated linter dependency
+# @wisemen/vue-core-data-formatting
 
 ## 0.0.1
 
 ### Patch Changes
 
-- 347cf1a: Bumped dependency versions
+- Initial release of the `@wisemen/vue-core-data-formatting` package — a collection of locale-aware formatting utilities and Vue composables for common data types.
+
+  **Composables:**
+  - `useDataFormatConfig` — configure global formatting options such as locale
+  - `useNumberFormat` — locale-aware number formatting: `format`, `toPercent`, `toCompact`, `toFileSize`, `toRange`
+  - `useStringFormat` — locale-aware string formatting: `toList`
+
+  **Utils:**
+  - `EmailFormatUtil` — mask email addresses
+  - `IbanFormatUtil` — mask IBAN numbers
+  - `PersonNameFormatUtil` — compose full names and initials from a `PersonName`
+  - `PhoneFormatUtil` — mask phone numbers
+  - `StringFormatUtil` — general-purpose string helpers: `format`, `normalizeWhitespace`, `toPrettyUrl`, `toSentenceCase`, `toSlug`, `toTitleCase`, `truncate`, `truncateMiddle`
