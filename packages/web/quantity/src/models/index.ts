@@ -1,1 +1,1 @@
-export * from './temperature.model'
+export * from './temperature/temperature.model'

@@ -1,5 +1,8 @@
-import { TemperatureDto, TemperatureUnit, Temperature as BaseTemperature } from '@wisemen/quantity'
-
+import {
+  Temperature as BaseTemperature,
+  TemperatureDto,
+  TemperatureUnit,
+} from '@wisemen/quantity'
 
 export class Temperature extends BaseTemperature {
   private getIntlUnit(unit: TemperatureUnit): string {
@@ -31,5 +34,4 @@ export class Temperature extends BaseTemperature {
       unitDisplay: 'short',
     }).format(this.getValueIn(unit))
   }
-  
 }
