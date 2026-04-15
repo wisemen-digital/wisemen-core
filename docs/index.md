@@ -22,6 +22,9 @@ features:
   - title: 📘 Type Utils
     details: Essential TypeScript utility types for Vue Core applications.
     link: /packages/type-utils/pages/getting-started/installation
+  - title: 🔤 Format
+    details: Locale-aware string and number formatting utilities, plus masking helpers for common sensitive values.
+    link: /packages/format/pages/getting-started/installation
   - title: 🌍 I18n Factory
     details: Multi-language support with flexible and extensible internationalization setup.
     link: /packages/i18n-factory/pages/getting-started/installation

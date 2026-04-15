@@ -4,6 +4,7 @@ import { CONFIGS_NAVIGATION } from './configs/configs.navigation'
 import { DESIGN_SYSTEM_NAVIGATION } from './design-system/designSystem.navigation'
 import { ESLINT_NAVIGATION } from './eslint/eslint.navigation'
 import { FORMANGO_NAVIGATION } from './formango/formango.navigation'
+import { FORMAT_NAVIGATION } from './format/format.navigation'
 import { I18N_FACTORY_NAVIGATION } from './i18n-factory/i18nFactory.navigation'
 import type { PackageDocNavigation } from './navigation.utils'
 import { TELEMETRY_NAVIGATION } from './telemetry/telemetry.navigation'
@@ -16,6 +17,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigation[] = [
   CONFIGS_NAVIGATION,
   API_UTILS_NAVIGATION,
   ESLINT_NAVIGATION,
+  FORMAT_NAVIGATION,
   FORMANGO_NAVIGATION,
   I18N_FACTORY_NAVIGATION,
   TELEMETRY_NAVIGATION,
