@@ -25,15 +25,7 @@ export type {
   CreateApiQueryClientUtilsReturnType,
   CreateApiQueryUtilsReturnType,
 } from './factory/createApiUtils'
-export {
-  createApiInfiniteQueryUtils,
-  createApiMutationUtils,
-  createApiPrefetchInfiniteQueryUtils,
-  createApiPrefetchQueryUtils,
-  createApiQueryClientUtils,
-  createApiQueryUtils,
-  createApiUtils,
-} from './factory/createApiUtils'
+export { createApiUtils } from './factory/createApiUtils'
 export type {
   ApiUseKeysetInfinitePrefetchQueryOptions,
   ApiUseKeysetInfiniteQueryOptions,
@@ -47,25 +39,25 @@ export type {
 } from './factory/createApiUtils.types'
 export { apiUtilsPlugin } from './plugin/apiUtilsPlugin'
 export type {
-  ApiError,
-  ApiErrorObject,
-  ApiExpectedError,
-  ApiKnownErrorObject,
-  ApiResult,
   ApiUnexpectedError,
   ApiUnknownErrorObject,
-  AsyncApiResult,
+  ApiError as '~ApiError',
+  ApiErrorObject as '~ApiErrorObject',
+  ApiExpectedError as '~ApiExpectedError',
+  ApiKnownErrorObject as '~ApiKnownErrorObject',
+  ApiResult as '~ApiResult',
+  AsyncApiResult as '~AsyncApiResult',
 } from './types/apiError.type'
 export type {
   KeysetPagination,
   KeysetPaginationParams,
   KeysetPaginationResponse,
-  KeysetPaginationResult,
   OffsetPagination,
   OffsetPaginationParams,
   OffsetPaginationResponse,
-  OffsetPaginationResult,
   PaginatedDataDto,
+  KeysetPaginationResult as '~KeysetPaginationResult',
+  OffsetPaginationResult as '~OffsetPaginationResult',
 } from './types/pagination.type'
 export type {
   InfiniteQueryOptions,
