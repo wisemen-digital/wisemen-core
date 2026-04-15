@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest'
 
-import { IbanFormatUtil } from '@/utils/ibanFormat.util'
+import { IbanFormatUtil } from '@/utils/iban-format/ibanFormat.util'
 
 describe('ibanFormatUtil', () => {
   describe('maskIban', () => {

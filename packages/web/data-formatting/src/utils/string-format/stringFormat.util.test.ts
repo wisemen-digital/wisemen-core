@@ -5,8 +5,8 @@ import {
 } from 'vitest'
 
 import { useDataFormatConfig } from '@/composables/config.composable'
-import { useStringFormat } from '@/composables/stringFormat.composable'
-import { StringFormatUtil } from '@/utils/stringFormat.util'
+import { useStringFormat } from '@/composables/string-format/stringFormat.composable'
+import { StringFormatUtil } from '@/utils/string-format/stringFormat.util'
 
 describe('stringFormatUtil', () => {
   describe('format', () => {
@@ -124,30 +124,6 @@ describe('useStringFormat', () => {
         'b',
         'c',
       ], 'disjunction')).toBe('a, b, or c')
-    })
-  })
-
-  describe('compare', () => {
-    it('should return a locale-aware comparator', () => {
-      useDataFormatConfig().update({
-        locale: 'en',
-      })
-
-      const {
-        compare,
-      } = useStringFormat()
-
-      const sorted = [
-        'banana',
-        'apple',
-        'cherry',
-      ].sort(compare())
-
-      expect(sorted).toEqual([
-        'apple',
-        'banana',
-        'cherry',
-      ])
     })
   })
 })

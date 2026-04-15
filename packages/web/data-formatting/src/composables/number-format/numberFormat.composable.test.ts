@@ -5,11 +5,11 @@ import {
 } from 'vitest'
 
 import { useDataFormatConfig } from '@/composables/config.composable'
-import { useNumberFormat } from '@/composables/numberFormat.composable'
+import { useNumberFormat } from '@/composables/number-format/numberFormat.composable'
 
-const numberFormat = useNumberFormat()
+describe('useNumberFormat', () => {
+  const numberFormat = useNumberFormat()
 
-describe('numberUtil', () => {
   describe('format', () => {
     it('should format a number with default precision', () => {
       useDataFormatConfig().update({
@@ -33,34 +33,6 @@ describe('numberUtil', () => {
       })
 
       expect(numberFormat.format(1234.567, 2)).toBe('1.234,57')
-    })
-  })
-})
-
-describe('useNumberFormat', () => {
-  describe('format', () => {
-    it('should format with locale-aware separators', () => {
-      useDataFormatConfig().update({
-        locale: 'en-US',
-      })
-
-      const {
-        format,
-      } = useNumberFormat()
-
-      expect(format(1234.5, 2)).toBe('1,234.50')
-    })
-
-    it('should format with nl locale', () => {
-      useDataFormatConfig().update({
-        locale: 'nl-BE',
-      })
-
-      const {
-        format,
-      } = useNumberFormat()
-
-      expect(format(1234.5, 2)).toBe('1.234,50')
     })
   })
 

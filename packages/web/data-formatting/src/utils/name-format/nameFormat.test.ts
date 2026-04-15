@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest'
 
-import { PersonNameFormatUtil } from '@/utils/nameFormat.util'
+import { PersonNameFormatUtil } from '@/utils/name-format/nameFormat.util'
 
 describe('personNameFormatUtil', () => {
   describe('toFullPersonName', () => {

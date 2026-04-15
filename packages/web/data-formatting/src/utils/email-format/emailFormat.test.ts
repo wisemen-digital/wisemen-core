@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest'
 
-import { EmailFormatUtil } from '@/utils/emailFormat.util'
+import { EmailFormatUtil } from '@/utils/email-format/emailFormat.util'
 
 describe('emailFormatUtil', () => {
   describe('mask', () => {

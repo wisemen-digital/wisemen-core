@@ -4,7 +4,7 @@ import {
   it,
 } from 'vitest'
 
-import { PhoneFormatUtil } from '@/utils/phoneFormat.util'
+import { PhoneFormatUtil } from '@/utils/phone-format/phoneFormat.util'
 
 describe('phoneFormatUtil', () => {
   describe('maskPhone', () => {

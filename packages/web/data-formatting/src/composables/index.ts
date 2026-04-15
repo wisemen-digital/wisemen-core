@@ -1,3 +1,3 @@
 export * from './config.composable'
-export * from './numberFormat.composable'
-export * from './stringFormat.composable'
+export * from './number-format/numberFormat.composable'
+export * from './string-format/stringFormat.composable'
