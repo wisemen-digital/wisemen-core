@@ -62,7 +62,7 @@ export class Logger {
     this.prefix = options.prefix ?? ''
   }
 
-  private log(level: LogLevel, message: string, ...args: unknown[]): void {
+  private log(level: LogLevel, message: any, ...args: unknown[]): void {
     const prefix = this.prefix.length > 0 ? `${this.prefix} ` : ''
     const fullMessage = `${prefix}${message}`
 
@@ -95,7 +95,7 @@ export class Logger {
   /**
    * Logs a debug message. Suppressed in production.
    */
-  debug(message: string, ...args: unknown[]): void {
+  debug(message: any, ...args: unknown[]): void {
     if (!isDevelopment()) {
       return
     }
@@ -106,14 +106,14 @@ export class Logger {
   /**
    * Logs an error. Printed in both development and production.
    */
-  error(message: string, ...args: unknown[]): void {
+  error(message: any, ...args: unknown[]): void {
     this.log('error', message, ...args)
   }
 
   /**
    * Logs an informational message. Suppressed in production.
    */
-  info(message: string, ...args: unknown[]): void {
+  info(message: any, ...args: unknown[]): void {
     if (!isDevelopment()) {
       return
     }
@@ -124,7 +124,7 @@ export class Logger {
   /**
    * Logs a warning. Printed in both development and production.
    */
-  warn(message: string, ...args: unknown[]): void {
+  warn(message: any, ...args: unknown[]): void {
     this.log('warn', message, ...args)
   }
 }
