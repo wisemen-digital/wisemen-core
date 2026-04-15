@@ -67,10 +67,8 @@ export type {
   WithSortQuery,
   WithStaticFilterQuery,
 } from './types/queryOptions'
-export type {
-  Sort,
-  SortDirection,
-} from './types/sort.type'
+export type { Sort } from './types/sort.type'
+export { SortDirection } from './types/sort.type'
 export {
   QueryClient,
   type QueryClientUpdateOptions,
