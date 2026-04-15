@@ -4,7 +4,6 @@ import {
   CheckCircleIcon,
   SearchMdIcon,
 } from '@wisemen/vue-core-icons'
-import { onUnmounted } from 'vue'
 
 import Checkbox from '@/ui/checkbox/Checkbox.vue'
 import type { DialogSize } from '@/ui/dialog/dialog.props'
@@ -38,10 +37,6 @@ function onClose(): void {
 }
 
 const dialogChin = useDialogChin()
-
-onUnmounted(() => {
-  console.log('unmount dialog')
-})
 </script>
 
 <template>
