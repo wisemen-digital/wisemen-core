@@ -1,10 +1,10 @@
-# @wisemen/vue-core-data-formatting
+# @wisemen/vue-core-format
 
 ## 0.0.1
 
 ### Patch Changes
 
-- Initial release of the `@wisemen/vue-core-data-formatting` package — a collection of locale-aware formatting utilities and Vue composables for common data types.
+- Initial release of the `@wisemen/vue-core-format` package — a collection of locale-aware formatting utilities and Vue composables for common data types.
 
   **Composables:**
   - `useDataFormatConfig` — configure global formatting options such as locale
