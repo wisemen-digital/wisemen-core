@@ -9,35 +9,35 @@ import { PersonNameFormatUtil } from '@/utils/nameFormat.util'
 describe('personNameFormatUtil', () => {
   describe('toFullPersonName', () => {
     it('should combine first and last name', () => {
-      expect(PersonNameFormatUtil.toFullPersonName({
+      expect(PersonNameFormatUtil.toFullName({
         firstName: 'John',
         lastName: 'Doe',
       })).toBe('John Doe')
     })
 
     it('should handle null last name', () => {
-      expect(PersonNameFormatUtil.toFullPersonName({
+      expect(PersonNameFormatUtil.toFullName({
         firstName: 'John',
         lastName: null,
       })).toBe('John')
     })
 
     it('should handle null first name', () => {
-      expect(PersonNameFormatUtil.toFullPersonName({
+      expect(PersonNameFormatUtil.toFullName({
         firstName: null,
         lastName: 'Doe',
       })).toBe('Doe')
     })
 
     it('should handle both null', () => {
-      expect(PersonNameFormatUtil.toFullPersonName({
+      expect(PersonNameFormatUtil.toFullName({
         firstName: null,
         lastName: null,
       })).toBe('')
     })
 
     it('should handle blank strings', () => {
-      expect(PersonNameFormatUtil.toFullPersonName({
+      expect(PersonNameFormatUtil.toFullName({
         firstName: 'John',
         lastName: '  ',
       })).toBe('John')

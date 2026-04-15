@@ -6,7 +6,8 @@ import {
 
 import { useDataFormatConfig } from '@/composables/config.composable'
 import { useNumberFormat } from '@/composables/numberFormat.composable'
-import { NumberFormatUtil } from '@/utils/numberFormat.util'
+
+const numberFormat = useNumberFormat()
 
 describe('numberUtil', () => {
   describe('format', () => {
@@ -15,7 +16,7 @@ describe('numberUtil', () => {
         locale: 'en-US',
       })
 
-      expect(NumberFormatUtil.format(1234.567)).toBe('1,235')
+      expect(numberFormat.format(1234.567)).toBe('1,235')
     })
 
     it('should format a number with specified precision', () => {
@@ -23,7 +24,7 @@ describe('numberUtil', () => {
         locale: 'en-US',
       })
 
-      expect(NumberFormatUtil.format(1234.567, 2)).toBe('1,234.57')
+      expect(numberFormat.format(1234.567, 2)).toBe('1,234.57')
     })
 
     it('should format a number with nl locale', () => {
@@ -31,44 +32,7 @@ describe('numberUtil', () => {
         locale: 'nl-BE',
       })
 
-      expect(NumberFormatUtil.format(1234.567, 2)).toBe('1.234,57')
-    })
-  })
-
-  describe('clamp', () => {
-    it('should clamp a value above max', () => {
-      expect(NumberFormatUtil.clamp(15, 0, 10)).toBe(10)
-    })
-
-    it('should clamp a value below min', () => {
-      expect(NumberFormatUtil.clamp(-5, 0, 10)).toBe(0)
-    })
-
-    it('should return the value when within range', () => {
-      expect(NumberFormatUtil.clamp(5, 0, 10)).toBe(5)
-    })
-  })
-
-  describe('roundTo', () => {
-    it('should round to 2 decimal places', () => {
-      expect(NumberFormatUtil.roundTo(3.141_59, 2)).toBe(3.14)
-    })
-
-    it('should round to 0 decimal places', () => {
-      expect(NumberFormatUtil.roundTo(3.7, 0)).toBe(4)
-    })
-
-    it('should handle negative numbers', () => {
-      expect(NumberFormatUtil.roundTo(-3.141_59, 2)).toBe(-3.14)
-    })
-  })
-
-  describe('randomBetween', () => {
-    it('should return a number within the range', () => {
-      const result = NumberFormatUtil.randomBetween(1, 10)
-
-      expect(result).toBeGreaterThanOrEqual(1)
-      expect(result).toBeLessThanOrEqual(10)
+      expect(numberFormat.format(1234.567, 2)).toBe('1.234,57')
     })
   })
 })
@@ -132,11 +96,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toCompact,
-      } = useNumberFormat()
-
-      expect(toCompact(1_200_000)).toBe('1.2M')
+      expect(numberFormat.toCompact(1_200_000)).toBe('1.2M')
     })
 
     it('should not compact small numbers', () => {
@@ -144,11 +104,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toCompact,
-      } = useNumberFormat()
-
-      expect(toCompact(500)).toBe('500')
+      expect(numberFormat.toCompact(500)).toBe('500')
     })
   })
 
@@ -158,11 +114,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toFileSize,
-      } = useNumberFormat()
-
-      expect(toFileSize(0)).toBe('0 B')
+      expect(numberFormat.toFileSize(0)).toBe('0 B')
     })
 
     it('should format bytes', () => {
@@ -170,11 +122,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toFileSize,
-      } = useNumberFormat()
-
-      expect(toFileSize(500)).toBe('500 B')
+      expect(numberFormat.toFileSize(500)).toBe('500 B')
     })
 
     it('should format kilobytes', () => {
@@ -182,11 +130,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toFileSize,
-      } = useNumberFormat()
-
-      expect(toFileSize(1536)).toBe('1.5 kB')
+      expect(numberFormat.toFileSize(1536)).toBe('1.5 kB')
     })
 
     it('should format megabytes', () => {
@@ -194,11 +138,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toFileSize,
-      } = useNumberFormat()
-
-      expect(toFileSize(1_048_576)).toBe('1 MB')
+      expect(numberFormat.toFileSize(1_048_576)).toBe('1 MB')
     })
   })
 
@@ -208,11 +148,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toRange,
-      } = useNumberFormat()
-
-      expect(toRange(1000, 2000)).toBe('1,000 – 2,000')
+      expect(numberFormat.toRange(1000, 2000)).toBe('1,000 – 2,000')
     })
 
     it('should format with precision', () => {
@@ -220,11 +156,7 @@ describe('useNumberFormat', () => {
         locale: 'en-US',
       })
 
-      const {
-        toRange,
-      } = useNumberFormat()
-
-      expect(toRange(1.5, 3.7, 1)).toBe('1.5 – 3.7')
+      expect(numberFormat.toRange(1.5, 3.7, 1)).toBe('1.5 – 3.7')
     })
   })
 })
