@@ -1,4 +1,7 @@
 {
+  "component.autocomplete.more_results_available": "More results available, keep searching to narrow down",
+  "component.autocomplete.no_results_found": "No results found",
+  "component.autocomplete.search_placeholder": "Search...",
   "component.avatar_group.overflow": "+{count}",
   "component.dashboard_page_detail_pane_toggle.collapse": "Collapse detail pane",
   "component.dashboard_page_detail_pane_toggle.expand": "Expand detail pane",

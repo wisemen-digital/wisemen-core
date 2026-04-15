@@ -1,4 +1,7 @@
 {
+  "component.autocomplete.more_results_available": "Er zijn meer resultaten beschikbaar, verfijn je zoekopdracht",
+  "component.autocomplete.no_results_found": "Geen resultaten gevonden",
+  "component.autocomplete.search_placeholder": "Zoeken...",
   "component.avatar_group.overflow": "+{count}",
   "component.dashboard_page_detail_pane_toggle.collapse": "Detailpaneel inklappen",
   "component.dashboard_page_detail_pane_toggle.expand": "Detailpaneel uitklappen",

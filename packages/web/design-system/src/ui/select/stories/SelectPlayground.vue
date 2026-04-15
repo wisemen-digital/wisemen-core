@@ -1,0 +1,74 @@
+<script setup lang="ts">
+import { ref } from 'vue'
+
+import { UISelect } from '@/ui/select'
+import { createSelectOptions } from '@/ui/select/select.type'
+import { UITextField } from '@/ui/text-field'
+
+const props = withDefaults(defineProps<{
+  isDisabled?: boolean
+  isLoading?: boolean
+  isReadonly?: boolean
+  isRequired?: boolean
+  errorMessage?: string
+  hideErrorMessage?: boolean
+  hint?: string
+  label?: string
+  placeholder?: string
+  search?: 'local' | 'remote' | null
+  size?: 'md' | 'sm'
+}>(), {
+  isDisabled: false,
+  isLoading: false,
+  isReadonly: false,
+  isRequired: false,
+  errorMessage: undefined,
+  hideErrorMessage: false,
+  hint: undefined,
+  label: 'Label',
+  placeholder: 'Select an option...',
+  search: null,
+  size: 'md',
+})
+
+const items = createSelectOptions([
+  'Apple',
+  'Banana',
+  'Cherry',
+  'Mango',
+  'Orange',
+  'Strawberry',
+])
+
+const modelValue = ref<string | null>(null)
+
+function displayFn(value: string): string {
+  return value
+}
+</script>
+
+<template>
+  <div class="flex gap-2 p-xl">
+    <UITextField
+      label="test"
+      model-value="test"
+    />
+    <UISelect
+      v-model="modelValue"
+      :display-fn="displayFn"
+      :error-message="props.errorMessage"
+      :hide-error-message="props.hideErrorMessage"
+      :hint="props.hint"
+      :is-disabled="props.isDisabled"
+      :is-loading="props.isLoading"
+      :is-readonly="props.isReadonly"
+      :is-required="props.isRequired"
+      :items="items"
+      :label="props.label"
+      :placeholder="props.placeholder"
+      :search="props.search"
+      :size="props.size"
+      class="w-72"
+    />
+  </div>
+</template>
