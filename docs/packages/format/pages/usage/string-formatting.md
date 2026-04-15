@@ -103,5 +103,5 @@ Truncates the middle of a string.
 
 ```typescript
 StringFormatUtil.truncateMiddle('Hello world', 8)
-// 'Hel…rld'
+// 'Hell…rld'
 ```
