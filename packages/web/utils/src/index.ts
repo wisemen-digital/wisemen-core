@@ -2,6 +2,7 @@ export { ArrayUtil } from '@/array/array.util'
 export {
   assert, assertDefined, assertNever,
 } from '@/assert/assert'
+export { isDevelopment } from '@/is-development/isDevelopment.util'
 export {
   Logger, logger,
 } from '@/logger/logger'
