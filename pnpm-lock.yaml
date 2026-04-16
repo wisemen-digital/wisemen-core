@@ -322,6 +322,9 @@ catalogs:
     '@typescript-eslint/parser':
       specifier: 8.53.1
       version: 8.53.1
+    '@typescript-eslint/rule-tester':
+      specifier: 8.57.1
+      version: 8.57.1
     '@typescript-eslint/scope-manager':
       specifier: 8.53.1
       version: 8.53.1
@@ -1137,7 +1140,7 @@ importers:
         specifier: catalog:lint
         version: 8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/rule-tester':
-        specifier: 8.57.1
+        specifier: catalog:lint
         version: 8.57.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/utils':
         specifier: catalog:lint
