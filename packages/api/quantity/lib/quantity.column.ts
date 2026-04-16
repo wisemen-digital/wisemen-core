@@ -5,6 +5,7 @@ export type QuantityColumnOptions<U extends string, Q extends Quantity<U, Q>>
   = Omit<ColumnOptions, 'type' | 'transformer' | 'default'> & { default?: Q }
 
 export function QuantityColumn<U extends string, Q extends Quantity<U, Q>> (
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   QuantityConstructor: QuantityConstructor<U, Q>,
   storeAsUnit: U,
   options?: QuantityColumnOptions<U, Q>
@@ -22,6 +23,7 @@ export function QuantityColumn<U extends string, Q extends Quantity<U, Q>> (
 export class QuantityTypeOrmTransformer<U extends string, Q extends Quantity<U, Q>>
 implements ValueTransformer {
   constructor (
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     private readonly QuantityConstructor: QuantityConstructor<U, Q>,
     private readonly storedUnit: U
   ) {}

@@ -15,7 +15,8 @@ export function registerInstrumentation (
     instrumentations: [
       new PgInstrumentation({
         enhancedDatabaseReporting: true,
-        requireParentSpan: true
+        requireParentSpan: true,
+        ignoreConnectSpans: true
       }),
       new HttpInstrumentation({
         requestHook: (span: Span, request: ClientRequest | IncomingMessage): void => {
@@ -52,7 +53,8 @@ export function registerInstrumentation (
           })
 
           return `${cmdName} ${args.join(' ')}`
-        }
+        },
+        requireParentSpan: true
       }),
       ...extraInstrumentations
     ]

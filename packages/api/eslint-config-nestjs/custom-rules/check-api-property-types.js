@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/max-len */
 import ts from 'typescript'
 
 /**
@@ -39,12 +38,12 @@ export default {
   },
 
   create (context) {
-    const parserServices = context.sourceCode.parserServices
-    const checker = parserServices?.program?.getTypeChecker?.()
-
     /**
      * Check if a class name matches the patterns we care about
      */
+    const parserServices = context.sourceCode.parserServices
+    const checker = parserServices?.program?.getTypeChecker?.()
+    
     function isTargetClass (className) {
       if (!className) return false
 

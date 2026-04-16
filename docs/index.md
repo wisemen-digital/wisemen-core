@@ -22,6 +22,9 @@ features:
   - title: 📘 Type Utils
     details: Essential TypeScript utility types for Vue Core applications.
     link: /packages/type-utils/pages/getting-started/installation
+  - title: 🛠️ Utils
+    details: Utility helpers for arrays, strings, numbers, UUID handling, assertions, and logging.
+    link: /packages/utils/pages/getting-started/installation
   - title: 🌍 I18n Factory
     details: Multi-language support with flexible and extensible internationalization setup.
     link: /packages/i18n-factory/pages/getting-started/installation
@@ -34,5 +37,8 @@ features:
   - title: 📊 Telemetry
     details: OpenTelemetry integration for monitoring and tracing Vue applications.
     link: /packages/telemetry/pages/getting-started/installation
+  - title: 📱 Zod Validation
+    details: Reusable Zod schemas with localized validation messages and i18n-factory integration.
+    link: /packages/zod-validation/pages/getting-started/installation
 
 ---

@@ -16,7 +16,7 @@ All methods are **fully type-safe** and work with your query keys configuration.
 
 ### Single Entity Update
 
-Update a specific query's cached data:
+Update a specific query's cached data. The `update` method returns a `{ rollback }` function that reverts the affected cache entries to their state before the update:
 
 ```typescript
 // src/composables/useUpdateContact.ts
@@ -25,7 +25,7 @@ import { useMutation } from '@/api'
 import { ContactService } from '@/services'
 import { useQueryClient } from '@/api'
 
-export function useUpdateContact(contactUuid: string, originalData: ContactDetail) {
+export function useUpdateContact(contactUuid: string) {
   const { execute } = useMutation({
     queryFn: async (body: ContactUpdateForm) => {
       return await ContactService.update(contactUuid, body)
@@ -36,7 +36,7 @@ export function useUpdateContact(contactUuid: string, originalData: ContactDetai
 
   async function update(body: Partial<ContactDetail>) {
     // Optimistically update the cache
-    queryClient.update(
+    const { rollback } = queryClient.update(
       ['contactDetail', { contactUuid }],
       {
         by: (contact) => contact.uuid === contactUuid,
@@ -47,9 +47,9 @@ export function useUpdateContact(contactUuid: string, originalData: ContactDetai
     // Execute mutation
     const result = await execute(body)
 
-    // Handle errors - rollback by restoring original data
+    // On error, rollback to the previous cache state
     if (result.isErr()) {
-      queryClient.set(['contactDetail', { contactUuid }], originalData)
+      rollback()
     }
   }
 
@@ -123,11 +123,8 @@ export function useEditContact(contactUuid: string) {
   const queryClient = useQueryClient()
 
   async function handleSave(updates: Partial<ContactDetail>) {
-    // Store original for rollback
-    const originalData = contactResult.value.getValue()
-
-    // Optimistically update the cache
-    queryClient.update(
+    // Optimistically update the cache — rollback is captured
+    const { rollback } = queryClient.update(
       ['contactDetail', { contactUuid }],
       {
         by: (contact) => contact.uuid === contactUuid,
@@ -139,11 +136,8 @@ export function useEditContact(contactUuid: string) {
     const result = await updateMutation.execute(updates)
 
     if (result.isErr()) {
-      // Rollback on error - restore original data
-      queryClient.set(
-        ['contactDetail', { contactUuid }],
-        originalData
-      )
+      // Revert to pre-update state
+      rollback()
       
       console.error('Update failed:', result.getError().message)
       return false
@@ -261,12 +255,9 @@ export function useToggleProductFavorite() {
   })
 
   async function toggle(productId: string) {
-    // Backup original state from both caches
-    const originalFromList = queryClient.get('productList')
-    const originalFromKeyset = queryClient.get('productListKeyset')
-
-    // Optimistically update in all product lists
-    queryClient.update('productList', {
+    // Optimistically update in all product lists,
+    // capturing rollback for each
+    const { rollback: rollbackList } = queryClient.update('productList', {
       by: (product) => product.id === productId,
       value: (product) => ({ 
         ...product, 
@@ -274,8 +265,7 @@ export function useToggleProductFavorite() {
       }),
     })
 
-    // Also update keyset infinite query
-    queryClient.update('productListKeyset', {
+    const { rollback: rollbackKeyset } = queryClient.update('productListKeyset', {
       by: (product) => product.id === productId,
       value: (product) => ({ 
         ...product, 
@@ -287,9 +277,9 @@ export function useToggleProductFavorite() {
     const result = await toggleMutation.execute(productId)
 
     if (result.isErr()) {
-      // Rollback both by restoring original data
-      queryClient.set('productList', originalFromList)
-      queryClient.set('productListKeyset', originalFromKeyset)
+      // Rollback both caches
+      rollbackList()
+      rollbackKeyset()
     }
   }
 
@@ -299,15 +289,12 @@ export function useToggleProductFavorite() {
 
 ## Error Handling and Rollback
 
-Always plan for failures:
+The `update` method returns a `{ rollback }` function that reverts only the cache entries affected by that specific `update()` call. Cache changes to unrelated query keys made in between are preserved, but writes to those same affected query keys may be overwritten because `rollback()` restores their pre-update snapshot.
 
 ```typescript
 async function updateAndHandle(updates: any) {
-  // Backup original
-  const original = queryClient.get(['contactDetail', { contactUuid }])
-
-  // Optimistic update
-  queryClient.update(['contactDetail', { contactUuid }], {
+  // Optimistic update — rollback is captured automatically
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }], {
     by: (item) => item.uuid === contactUuid,
     value: (item) => ({ ...item, ...updates }),
   })
@@ -316,27 +303,55 @@ async function updateAndHandle(updates: any) {
   const result = await mutation.execute(updates)
 
   if (result.isErr()) {
-    // Rollback: restore original data
-    queryClient.set(['contactDetail', { contactUuid }], original)
+    // Revert to pre-update cache state
+    rollback()
 
     // Show error to user
     showErrorNotification(result.getError().message)
     return
   }
 
-  // Success - the cache is already updated
+  // Success — the cache is already updated
 }
 ```
 
+### Rollback behavior
+
+- **Scoped** — only the queries touched by that `update` call are reverted; unrelated cache entries are unaffected.
+- **Idempotent** — calling `rollback()` more than once is safe; subsequent calls are no-ops.
+
+### Cancelling in-flight queries
+
+In rare cases a background refetch that started _before_ your optimistic update can resolve _after_ it and overwrite your optimistic value with stale server data. If you run into this, cancel in-flight queries before updating:
+
+```typescript
+import { useQueryClient as useTanstackQueryClient } from '@tanstack/vue-query'
+
+const tanstackQueryClient = useTanstackQueryClient()
+
+// Cancel any in-flight refetches for this key before the optimistic update
+await tanstackQueryClient.cancelQueries({ queryKey: ['contactDetail', { contactUuid }] })
+
+const { rollback } = queryClient.update(
+  ['contactDetail', { contactUuid }],
+  {
+    by: (contact) => contact.uuid === contactUuid,
+    value: (contact) => ({ ...contact, ...updates }),
+  }
+)
+```
+
+This is rarely needed in practice — the mutation's success invalidation will quickly bring the correct data.
+
+
 ## Best Practices
 
-1. **Always backup original data** - Store the data before optimistic update
-2. **Rollback on error** - Restore original data if mutation fails
-3. **Use for fast operations** - Best for quick updates (likes, toggles, simple edits)
-4. **Validate before updating** - Check data validity before optimistic update
-5. **Handle network errors** - Network timeouts and failures should trigger rollback
-6. **Keep predicates simple** - Use straightforward conditions in `by` function
-7. **Consider consistency** - Update both detail and list queries if affected
+1. **Use `rollback()` on error** - Destructure the rollback from `update()` and call it when the mutation fails
+2. **Use for fast operations** - Best for quick updates (likes, toggles, simple edits)
+3. **Validate before updating** - Check data validity before optimistic update
+4. **Handle network errors** - Network timeouts and failures should trigger rollback
+5. **Keep predicates simple** - Use straightforward conditions in `by` function
+6. **Consider consistency** - Update both detail and list queries if affected
 
 ## Predicate Function Tips
 
@@ -381,14 +396,13 @@ Update both detail and list caches:
 
 ```typescript
 async function updateAndRefreshLists(contactUuid: string, updates: any) {
-  // Update the detail query
-  queryClient.update(['contactDetail', { contactUuid }], {
+  // Update both detail and list queries, capturing each rollback
+  const { rollback: rollbackDetail } = queryClient.update(['contactDetail', { contactUuid }], {
     by: (contact) => contact.uuid === contactUuid,
     value: (contact) => ({ ...contact, ...updates }),
   })
 
-  // Update all list queries
-  queryClient.update('contactList', {
+  const { rollback: rollbackList } = queryClient.update('contactList', {
     by: (contact) => contact.uuid === contactUuid,
     value: (contact) => ({ ...contact, ...updates }),
   })
@@ -397,8 +411,8 @@ async function updateAndRefreshLists(contactUuid: string, updates: any) {
 
   if (result.isErr()) {
     // Rollback both
-    await queryClient.invalidate(['contactDetail', { contactUuid }])
-    await queryClient.invalidate('contactList')
+    rollbackDetail()
+    rollbackList()
   }
 }
 ```

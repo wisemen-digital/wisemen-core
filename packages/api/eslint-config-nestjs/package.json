@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/eslint-config-nestjs",
-  "version": "0.2.13",
+  "version": "1.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -13,10 +13,17 @@
     "directory": "packages/eslint-config-nestjs"
   },
   "scripts": {
-    "test": "tsx --test ./test/check-api-property-types.test.ts"
+    "test": "tsx --test ./test/check-api-property-types.test.ts",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint"
   },
   "keywords": [],
   "author": "",
+  "peerDependencies": {
+    "eslint": "9.39.4",
+    "oxlint": "1.56.0"
+  },
   "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "@eslint/eslintrc": "catalog:lint",
@@ -30,7 +37,10 @@
     "eslint-plugin-unused-imports": "catalog:lint",
     "globals": "catalog:lint",
     "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint"
+    "typescript-eslint": "catalog:lint",
+    "oxlint": "catalog:lint",
+    "@oxlint/plugins": "catalog:lint",
+    "@typescript-eslint/eslint-plugin": "catalog:lint"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "catalog:lint",

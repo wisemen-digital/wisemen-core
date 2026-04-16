@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { readFileSync, existsSync, statSync } from 'fs'
 import { join } from 'path'
 
@@ -296,21 +295,24 @@ const rule = {
     ]
   },
 
-  create (context) {
-    const filename = context.getFilename()
-    const options = context.options[0] || {}
+  createOnce (context) {
+    const options = context.options?.[0] ?? {}
     const ignored = new Set(options.ignoreLocales || [])
-
-    const isDomainEventFile = filename.includes('domain-event-type.ts')
-    const isPermissionFile = filename.includes('permission.enum.ts')
-
-    // Only run on domain-event-type.ts or permission.enum.ts
-    if (!isDomainEventFile && !isPermissionFile) {
-      return {}
-    }
+    let isDomainEventFile = false
+    let isPermissionFile = false
 
     return {
+      before () {
+        const filename = context.filename || ''
+        isDomainEventFile = filename.includes('domain-event-type.ts')
+        isPermissionFile = filename.includes('permission.enum.ts')
+      },
       Program (node) {
+        // Only run on domain-event-type.ts or permission.enum.ts
+        if (!isDomainEventFile && !isPermissionFile) {
+          return
+        }
+
         // Recalculate missing translations on each run to detect file changes
         const missingTranslations = findMissingTranslations(options)
 

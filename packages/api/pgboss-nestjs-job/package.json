@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pgboss-nestjs-job",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "publishConfig": {
     "access": "public"
   },
@@ -11,7 +11,9 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint lib",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",

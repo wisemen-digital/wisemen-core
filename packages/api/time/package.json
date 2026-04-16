@@ -14,7 +14,9 @@
     "dist/"
   ],
   "scripts": {
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm run build",

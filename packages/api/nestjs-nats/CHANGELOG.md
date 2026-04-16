@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`c448ae1`](https://github.com/wisemen-digital/wisemen-core/commit/c448ae1693045423b7959d7b2967b7e0a039f275)]:
+  - @wisemen/opentelemetry@0.1.4
+  - @wisemen/api-error@0.0.13
+
 ## 0.2.0
 
 ### Minor Changes

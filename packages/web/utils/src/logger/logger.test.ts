@@ -34,6 +34,18 @@ describe('logger', () => {
       expect(warnSpy).toHaveBeenCalledWith('something fishy')
     })
 
+    it('keeps object messages structured', () => {
+      const log = new Logger({
+        prefix: '[MyModule]',
+      })
+      const payload = {
+        count: 42,
+      }
+
+      log.warn(payload)
+      expect(warnSpy).toHaveBeenCalledWith('[MyModule]', payload)
+    })
+
     it('includes extra arguments', () => {
       const log = new Logger()
       const extra = {

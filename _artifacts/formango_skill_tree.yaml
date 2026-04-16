@@ -1,0 +1,60 @@
+# _artifacts/formango_skill_tree.yaml
+library:
+  name: 'formango'
+  version: '3.2.1'
+  repository: 'https://github.com/wisemen-digital/wisemen-core'
+  description: 'Headless, type-safe Vue 3 form validation library built on Standard Schema spec'
+
+generated_from:
+  domain_map: '_artifacts/formango_domain_map.yaml'
+  skill_spec: '_artifacts/formango_skill_spec.md'
+generated_at: '2026-03-20T00:00:00Z'
+
+skills:
+  - name: 'Form Setup & Field Binding'
+    slug: 'form-setup'
+    type: 'core'
+    domain: 'form-binding'
+    path: 'packages/web/formango/skills/form-setup/SKILL.md'
+    package: 'packages/web/formango'
+    description: 'Create a Standard Schema, call useForm with schema/initialState/onSubmit, register fields, build a toFormField mapper, compose subforms by passing Field to child components'
+    requires: []
+    sources:
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/guide/getting-started.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/api/useForm.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/api/field.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/best-practices/custom-input.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/examples/subforms.md'
+
+  - name: 'Array Fields'
+    slug: 'array-fields'
+    type: 'core'
+    domain: 'dynamic-collections'
+    path: 'packages/web/formango/skills/array-fields/SKILL.md'
+    package: 'packages/web/formango'
+    description: 'Use registerArray to manage dynamic field lists — iterate fields with v-for, register items by index, manipulate with append/remove/insert/move/empty'
+    requires:
+      - 'form-setup'
+    sources:
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/api/field-array.md'
+
+  - name: 'Validation & Error Handling'
+    slug: 'validation-errors'
+    type: 'core'
+    domain: 'validation-errors'
+    path: 'packages/web/formango/skills/validation-errors/SKILL.md'
+    package: 'packages/web/formango'
+    description: 'Schema-driven validation, displaying errors with formatErrorsToZodFormattedError, server-side errors with addErrors, i18n with Zod error maps, isDirty vs isChanged, conditional validation with refine/superRefine'
+    requires:
+      - 'form-setup'
+    sources:
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/lib/formatErrors.ts'
+      - 'wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/api/useForm.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/best-practices/i18n.md'
+      - 'wisemen-digital/wisemen-core:docs/packages/formango/examples/external-errors.md'

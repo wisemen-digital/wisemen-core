@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -22,8 +22,15 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "typings": "./dist/index.d.mts",
+  "keywords": [
+    "tanstack-intent",
+    "vue-query",
+    "result",
+    "error-handling"
+  ],
   "files": [
-    "./dist"
+    "dist",
+    "skills"
   ],
   "scripts": {
     "build": "tsdown",
@@ -43,11 +50,13 @@
     "vue": "catalog:peer"
   },
   "devDependencies": {
+    "@tanstack/intent": "catalog:tooling",
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
+    "vue": "catalog:vue",
     "vitest": "catalog:test"
   }
 }
