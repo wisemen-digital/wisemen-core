@@ -8,6 +8,8 @@ import {
   within,
 } from 'storybook/test'
 
+import SelectConfigPlayground from './SelectConfigPlayground.vue'
+import SelectMultiConfigPlayground from './SelectMultiConfigPlayground.vue'
 import SelectMultiPlayground from './SelectMultiPlayground.vue'
 import SelectPlayground from './SelectPlayground.vue'
 
@@ -162,6 +164,42 @@ export const SmallSize: Story = {
     placeholder: 'Select a fruit...',
     size: 'sm',
   },
+}
+
+export const WithItemConfig: Story = {
+  args: {
+    label: 'Fruit',
+    placeholder: 'Select a fruit...',
+  },
+  render: (args) => ({
+    components: {
+      SelectConfigPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<SelectConfigPlayground v-bind="args" />',
+  }),
+}
+
+export const MultiSelectWithItemConfig: Story = {
+  args: {
+    label: 'Users',
+    placeholder: 'Select users...',
+  },
+  render: (args) => ({
+    components: {
+      SelectMultiConfigPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<SelectMultiConfigPlayground v-bind="args" />',
+  }),
 }
 
 export const MultiSelect: Story = {

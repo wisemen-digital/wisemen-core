@@ -4,6 +4,7 @@ import type {
   Input,
   InputWrapper,
 } from '@/types/input.type'
+import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 import type { PopoverProps } from '@/ui/popover/popover.props'
 import type {
   SelectItem,
@@ -22,6 +23,14 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * Function to display the item label.
    */
   displayFn: DisplayFn<TValue>
+  /**
+   * Maps a value to its visual config (avatar, icon, status, etc.).
+   * Used both in the trigger to display the selected item and in each dropdown option.
+   * Prefer this over per-item config — especially required for paginated selects
+   * where the selected item may not be in the loaded page.
+   * @default null
+   */
+  getItemConfig?: ((value: NonNullable<GetValue<TValue>>) => MenuItemConfig | null) | null
   /**
    * The items to display in the select.
    */

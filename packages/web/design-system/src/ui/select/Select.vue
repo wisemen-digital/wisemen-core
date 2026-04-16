@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="TValue extends SelectValue | SelectValue[]">
 import { ChevronDownIcon } from '@wisemen/vue-core-icons'
 import {
+  computed,
   useAttrs,
   useId,
 } from 'vue'
@@ -12,9 +13,13 @@ import {
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
+import { UIAvatar } from '@/ui/avatar'
+import type { BadgeData } from '@/ui/badge/BadgeGroupTruncate.vue'
 import BadgeGroupTruncate from '@/ui/badge/BadgeGroupTruncate.vue'
+import { UIDot } from '@/ui/dot'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
+import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 import { UIRowLayout } from '@/ui/row-layout'
 import { useSelectValue } from '@/ui/select/composables/selectValue.composable'
 import type {
@@ -74,6 +79,40 @@ const {
   ariaInvalid,
   ariaRequired,
 } = useInput(id, props)
+
+const selectedBadges = computed<BadgeData[]>(() => {
+  if (!isMultiple(modelValue.value)) {
+    return []
+  }
+
+  return modelValue.value.map((v) => {
+    const config = props.getItemConfig?.(v as NonNullable<GetValue<TValue>>) ?? null
+
+    return {
+      avatar: config?.avatar != null
+        ? {
+            name: config.avatar.name,
+            src: config.avatar.src ?? null,
+          }
+        : null,
+      dot: config?.dot != null
+        ? {
+            color: config.dot.color ?? 'gray',
+          }
+        : null,
+      icon: config?.icon ?? null,
+      label: props.displayFn(v as NonNullable<GetValue<TValue>>),
+    }
+  })
+})
+
+const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
+  if (isMultiple(modelValue.value) || modelValue.value === null) {
+    return null
+  }
+
+  return props.getItemConfig?.(modelValue.value as NonNullable<GetValue<TValue>>) ?? null
+})
 </script>
 
 <template>
@@ -128,22 +167,45 @@ const {
         >
           <BadgeGroupTruncate
             v-if="isMultiple(modelValue)"
-            :badges="modelValue.map((v) => ({ label: props.displayFn(v as any) }))"
+            :badges="selectedBadges"
             class="-ml-xs w-full"
             size="sm"
             color="gray"
             variant="translucent"
           />
 
-          <UIText
+          <UIRowLayout
             v-else
-            :text="valueLabel!"
-            :class="{
-              'text-disabled': props.isDisabled,
-              'text-primary': !props.isDisabled,
-            }"
-            class="text-xs"
-          />
+            align="center"
+          >
+            <UIAvatar
+              v-if="selectedOptionConfig?.avatar != null"
+              :name="selectedOptionConfig.avatar.name"
+              :src="selectedOptionConfig.avatar.src"
+              :image-alt="selectedOptionConfig.avatar.imageAlt"
+              size="xxs"
+            />
+
+            <Component
+              :is="selectedOptionConfig.icon"
+              v-else-if="selectedOptionConfig?.icon != null"
+              class="size-3.5 shrink-0 text-tertiary"
+            />
+
+            <UIDot
+              v-else-if="selectedOptionConfig?.dot != null"
+              :color="selectedOptionConfig.dot.color"
+            />
+
+            <UIText
+              :text="valueLabel!"
+              :class="{
+                'text-disabled': props.isDisabled,
+                'text-primary': !props.isDisabled,
+              }"
+              class="text-xs"
+            />
+          </UIRowLayout>
         </slot>
 
         <UIText
@@ -182,14 +244,6 @@ const {
               {{ valueLabel }}
             </span>
           </button>
-        </template>
-
-        <template #option="{ value, label: optionLabel }">
-          <slot
-            :value="(value as GetValue<TValue>)"
-            :label="optionLabel"
-            name="option"
-          />
         </template>
       </SelectDropdown>
     </FieldWrapper>

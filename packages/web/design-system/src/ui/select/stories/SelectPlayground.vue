@@ -3,7 +3,6 @@ import { ref } from 'vue'
 
 import { UISelect } from '@/ui/select'
 import { createSelectOptions } from '@/ui/select/select.type'
-import { UITextField } from '@/ui/text-field'
 
 const props = withDefaults(defineProps<{
   isDisabled?: boolean
@@ -49,10 +48,6 @@ function displayFn(value: string): string {
 
 <template>
   <div class="flex gap-2 p-xl">
-    <UITextField
-      label="test"
-      model-value="test"
-    />
     <UISelect
       v-model="modelValue"
       :display-fn="displayFn"

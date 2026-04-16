@@ -8,9 +8,8 @@ import {
 import { computed } from 'vue'
 
 import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
-import { UIRowLayout } from '@/ui/row-layout'
+import { UIMenuItem } from '@/ui/menu-item'
 import { useInjectSelectContext } from '@/ui/select/select.context'
-import { UIText } from '@/ui/text'
 
 const props = withDefaults(defineProps<{
   label?: string | null
@@ -20,8 +19,11 @@ const props = withDefaults(defineProps<{
 })
 
 const {
-  size, onSelectOption,
+  getItemConfig,
+  size,
+  onSelectOption,
 } = useInjectSelectContext({
+  getItemConfig: null,
   size: computed<'md'>(() => 'md'),
   onSelectOption: () => {},
 })
@@ -35,8 +37,6 @@ const isUsingKeyboard = useIsUsingKeyboard()
     :class="{
       'data-highlighted:bg-secondary-hover': isUsingKeyboard,
       'hover:bg-secondary-hover': !isUsingKeyboard,
-      'min-h-8 p-sm': size === 'md',
-      'min-h-7 px-sm py-xs': size === 'sm',
     }"
     class="
       group/listbox-item flex w-full cursor-default items-center rounded-sm
@@ -44,28 +44,19 @@ const isUsingKeyboard = useIsUsingKeyboard()
     "
     @select="onSelectOption"
   >
-    <UIRowLayout
-      justify="between"
-      class="w-full"
+    <UIMenuItem
+      :config="getItemConfig?.(props.value) ?? null"
+      :label="props.label"
+      :size="size"
     >
-      <slot>
-        <UIText
-          v-if="props.label !== null"
-          :text="props.label"
-          :class="{
-            'text-xs': size === 'sm',
-            'text-sm': size === 'md',
-          }"
-          class="text-secondary select-none"
-        />
-      </slot>
-
-      <RekaListboxItemIndicator>
-        <Component
-          :is="CheckIcon"
-          class="size-3.5 text-tertiary"
-        />
-      </RekaListboxItemIndicator>
-    </UIRowLayout>
+      <template #right>
+        <RekaListboxItemIndicator>
+          <Component
+            :is="CheckIcon"
+            class="size-3.5 text-tertiary"
+          />
+        </RekaListboxItemIndicator>
+      </template>
+    </UIMenuItem>
   </RekaListboxItem>
 </template>

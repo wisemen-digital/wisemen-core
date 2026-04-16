@@ -13,10 +13,7 @@ import {
 import Popover from '@/ui/popover/Popover.vue'
 import { useSelectDropdown } from '@/ui/select/composables/selectDropdown.composable'
 import { useSelectValue } from '@/ui/select/composables/selectValue.composable'
-import type {
-  GetValue,
-  SelectProps,
-} from '@/ui/select/select.props'
+import type { SelectProps } from '@/ui/select/select.props'
 import type { SelectValue } from '@/ui/select/select.type'
 import SelectContent from '@/ui/select/SelectContent.vue'
 
@@ -94,6 +91,7 @@ function onUpdateIsOpen(isOpen: boolean): void {
 watch(isDropdownVisible, onUpdateIsOpen)
 
 useProvideSelectContext({
+  getItemConfig: props.getItemConfig ?? null,
   size: computed<SelectProps<any>['size']>(() => props.size),
   onSelectOption,
 })
@@ -135,15 +133,7 @@ useProvideSelectContext({
         :limit="props.limit"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"
-      >
-        <template #option="{ value }">
-          <slot
-            :value="(value as GetValue<TValue>)"
-            :label="props.displayFn(value as any)"
-            name="option"
-          />
-        </template>
-      </SelectContent>
+      />
     </template>
   </Popover>
 </template>

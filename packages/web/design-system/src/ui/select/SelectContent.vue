@@ -141,16 +141,11 @@ onBeforeUnmount(() => {
         v-for="item of displayItems"
         :key="item.key"
       >
-        <slot
+        <SelectOption
           v-if="item.type === 'option'"
+          :label="props.displayFn(item.value as any)"
           :value="item.value"
-          name="option"
-        >
-          <SelectOption
-            :label="props.displayFn(item.value as any)"
-            :value="item.value"
-          />
-        </slot>
+        />
 
         <UISeparator
           v-else-if="item.type === 'separator'"

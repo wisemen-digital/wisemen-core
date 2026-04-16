@@ -5,7 +5,7 @@ export interface RowLayoutProps {
    * Controls the vertical alignment of items within the row.
    * @default 'center'
    */
-  align?: 'center' | 'end' | 'start'
+  align?: 'baseline' | 'center' | 'end' | 'start'
   /**
    * The HTML element to render as the container.
    * @default 'div'
