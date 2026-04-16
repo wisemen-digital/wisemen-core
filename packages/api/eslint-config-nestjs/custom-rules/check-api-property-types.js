@@ -232,8 +232,18 @@ export default {
       }
 
       for (const decorator of decorators) {
-        if (!isApiPropertyDecorator(decorator) || decorator.expression.arguments.length === 0) {
+        if (!isApiPropertyDecorator(decorator)) {
           continue
+        }
+
+        if (decorator.expression.arguments.length === 0) {
+          return {
+            nullable: false,
+            required: true,
+            isArray: false,
+            hasStringType: false,
+            hasUuidFormat: false
+          }
         }
 
         const options = unwrapExpression(decorator.expression.arguments[0])

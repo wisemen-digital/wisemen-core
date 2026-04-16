@@ -70,6 +70,10 @@ ruleTester.run('check-api-property-types', checkApiPropertyTypes, {
     {
       ...getFixture('invalid-missing-both-imported-alias.ts'),
       errors: [{ messageId: 'missingUuidTypeAndFormat' }]
+    },
+    {
+      ...getFixture('invalid-missing-object.ts'),
+      errors: [{ messageId: 'missingUuidTypeAndFormat' }]
     }
   ]
 })

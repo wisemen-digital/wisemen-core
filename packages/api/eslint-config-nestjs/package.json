@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "catalog:lint",
-    "@typescript-eslint/rule-tester": "8.57.1",
+    "@typescript-eslint/rule-tester": "catalog:lint",
     "@typescript-eslint/utils": "catalog:lint",
     "tsx": "4.20.3"
   }
