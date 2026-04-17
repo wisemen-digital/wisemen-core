@@ -6,7 +6,7 @@ export { Job } from './persistence/job.entity.js'
 // Defining jobs
 export { PgBossWorkerModule } from './worker/pgboss-worker.module.js'
 export { PgBossWorkerModuleOptions } from './worker/pgboss-worker.module-options.js'
-export { QueueBouncer } from './worker/queue-bouncer.js'
+export { PgbossBouncer as QueueBouncer } from './worker/pgboss-bouncer.js'
 
 export { PgBossJob } from './jobs/job.decorator.js'
 export { PgBossJobHandler } from './jobs/job.decorator.js'
