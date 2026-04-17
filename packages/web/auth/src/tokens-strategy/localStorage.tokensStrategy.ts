@@ -20,13 +20,21 @@ export class LocalStorageTokensStrategy implements TokensStrategy {
   }
 
   public getTokens(): OAuth2Tokens | null {
-    const tokens = localStorage.getItem(this.getStorageKey(this.TOKENS_KEY))
+    const key = this.getStorageKey(this.TOKENS_KEY)
+    const tokens = localStorage.getItem(key)
 
     if (tokens === null) {
       return null
     }
 
-    return JSON.parse(tokens as string) as OAuth2Tokens
+    try {
+      return JSON.parse(tokens) as OAuth2Tokens
+    }
+    catch {
+      localStorage.removeItem(key)
+
+      return null
+    }
   }
 
   public removeCodeVerifier(): void {

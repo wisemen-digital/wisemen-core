@@ -173,6 +173,6 @@ export interface AuthPlugin<TUser> {
   /** Reactive reference to the authenticated user */
   user: ShallowRef<TUser | null>
 
-  /** Register a callback to execute on logout. */
-  onLogout: (callback: () => void) => void
+  /** Register a callback to execute on logout. Returns an unsubscribe function. */
+  onLogout: (callback: () => void) => () => void
 }

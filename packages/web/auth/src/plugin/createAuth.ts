@@ -90,12 +90,22 @@ export function createAuth<TUser>(options: AuthPluginOptions<TUser>): AuthPlugin
     }
   }
 
+  let _fetchUserPromise: Promise<TUser> | null = null
+
   function fetchUser(): Promise<TUser> {
     if (user.value !== null) {
       return Promise.resolve(user.value)
     }
 
-    return doFetchUser()
+    if (_fetchUserPromise !== null) {
+      return _fetchUserPromise
+    }
+
+    _fetchUserPromise = doFetchUser().finally(() => {
+      _fetchUserPromise = null
+    })
+
+    return _fetchUserPromise
   }
 
   function refetchUser(): Promise<TUser> {
@@ -115,12 +125,25 @@ export function createAuth<TUser>(options: AuthPluginOptions<TUser>): AuthPlugin
     setUser(null)
 
     for (const cb of logoutCallbacks) {
-      cb()
+      try {
+        cb()
+      }
+      catch (error) {
+        warnIfDev(`Logout callback threw: ${error}`)
+      }
     }
   }
 
-  function onLogout(callback: () => void): void {
+  function onLogout(callback: () => void): () => void {
     logoutCallbacks.push(callback)
+
+    return () => {
+      const index = logoutCallbacks.indexOf(callback)
+
+      if (index !== -1) {
+        logoutCallbacks.splice(index, 1)
+      }
+    }
   }
 
   function hasPermission(permission: string | string[]): boolean {

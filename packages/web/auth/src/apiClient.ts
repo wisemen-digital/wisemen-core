@@ -119,8 +119,11 @@ export class ApiClient {
           return
         }
         catch (error) {
-          const status = (error as any)?.status
-          const isClientError = typeof status === 'number' && status >= 400 && status < 500
+          const statusMatch = error instanceof Error
+            ? error.message.match(/Token refresh failed: (\d+)/)
+            : null
+          const status = statusMatch !== null ? Number(statusMatch[1]) : null
+          const isClientError = status !== null && status >= 400 && status < 500
 
           // Do not retry on client-side (4xx) refresh failures.
           if (isClientError || attempt === delays.length) {
@@ -243,7 +246,7 @@ export class ApiClient {
     const expirationSinceUnixEpoch = decodeToken(tokens.access_token).exp
 
     const tokensWithExpiration = {
-      expires_at: new Date(expirationSinceUnixEpoch * 1000).getTime(),
+      expires_at: expirationSinceUnixEpoch * 1000,
       access_token: tokens.access_token,
       id_token: tokens.id_token,
       refresh_token: tokens.refresh_token,

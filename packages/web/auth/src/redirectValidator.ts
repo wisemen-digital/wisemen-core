@@ -54,8 +54,8 @@ export class RedirectValidator {
    */
   public isValidRedirectUrl(redirectUrl: string): boolean {
     try {
-      // Only allow relative URLs that start with /
-      if (!redirectUrl.startsWith('/')) {
+      // Only allow relative URLs that start with / but reject protocol-relative URLs (//evil.com)
+      if (!redirectUrl.startsWith('/') || redirectUrl.startsWith('//')) {
         return false
       }
 
