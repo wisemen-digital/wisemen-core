@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- [#872](https://github.com/wisemen-digital/wisemen-core/pull/872) [`94518a4`](https://github.com/wisemen-digital/wisemen-core/commit/94518a48cacb22a41e78eca3090de2ce36445ac2) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: strip connection options
+
 ## 0.3.0
 
 ### Minor Changes
