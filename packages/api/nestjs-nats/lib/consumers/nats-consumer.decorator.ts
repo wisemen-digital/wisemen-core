@@ -5,13 +5,12 @@ import type { ConfigService } from '@nestjs/config'
 import { NatsConsumerHandler } from './nats-consumer-handler.decorator.js'
 import type { NatsConsumerConfig as CreateNatsConsumerConfig } from './nats-consumer.manager.js'
 import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
-import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 
 const NATS_CONSUMER_KEY = Symbol('wisemen.nats-consumer')
 
 export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
   /** The NATS connection class decorated with `@NatsConnection` */
-  connection?: ClassConstructor<unknown>
+  connection: ClassConstructor<unknown>
   streamName: string
 }
 
@@ -49,11 +48,7 @@ export function getNatsConsumerConfig (
 
   const consumerConfig = configFn(config)
   const name = consumerConfig.name ?? target.name
-  let connectionOptions: NamedConnectionOptions | undefined = undefined
-
-  if (consumerConfig.connection) {
-    connectionOptions = getNatsConnectionOptions(consumerConfig.connection, config)
-  }
+  const connectionOptions = getNatsConnectionOptions(consumerConfig.connection, config)
 
   return { ...consumerConfig, name, connectionOptions }
 }
