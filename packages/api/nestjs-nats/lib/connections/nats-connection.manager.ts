@@ -10,7 +10,6 @@ export class NatsConnectionManager {
   /**
    * @param options name must be unique —
    * using the same connection name will reuse the same connection even when options differ
-   * @default default connection options
    */
   async connect (options: NamedConnectionOptions): Promise<NatsConnection> {
     const existingConnection = this.connections.get(options.name)
