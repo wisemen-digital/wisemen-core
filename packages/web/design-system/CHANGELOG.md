@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0
+
+### Minor Changes
+
+- [#871](https://github.com/wisemen-digital/wisemen-core/pull/871) [`016ce3a`](https://github.com/wisemen-digital/wisemen-core/commit/016ce3aa01c2908ae200d2f767a33e28c29d29d6) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add correct way of exporting translations from the design system
+
 ## 0.3.0
 
 ### Minor Changes
