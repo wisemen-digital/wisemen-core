@@ -18,6 +18,10 @@
       "import": "./dist/index.js",
       "style": "./dist/index.css"
     },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
+    },
     "./style": "./dist/index.css",
     "./source.css": "./dist/source.css"
   },
