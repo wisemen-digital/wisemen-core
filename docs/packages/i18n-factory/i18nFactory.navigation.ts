@@ -2,7 +2,7 @@ import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
 
 export const I18N_FACTORY_NAVIGATION: PackageDocNavigation = {
   link: 'pages/getting-started/installation',
-  title: 'i18n-factory',
+  title: 'I18n Factory',
   path: 'i18n-factory',
   sidebar: [
     {

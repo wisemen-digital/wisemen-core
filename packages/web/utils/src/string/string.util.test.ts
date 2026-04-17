@@ -99,3 +99,30 @@ describe('stringUtil', () => {
     })
   })
 })
+
+describe('.isEmpty', () => {
+  it('correctly returns whether a string is empty', () => {
+    expect(StringUtil.isEmpty('')).toBeTruthy()
+    expect(StringUtil.isEmpty('   ')).toBeTruthy()
+    expect(StringUtil.isEmpty('a')).toBeFalsy()
+    expect(StringUtil.isEmpty(' a ')).toBeFalsy()
+  })
+})
+
+describe('.trimOrUndefined', () => {
+  it('correctly trims strings or returns undefined for empty strings', () => {
+    expect(StringUtil.trimOrUndefined('   ')).toBeUndefined()
+    expect(StringUtil.trimOrUndefined('')).toBeUndefined()
+    expect(StringUtil.trimOrUndefined('  a  ')).toBe('a')
+    expect(StringUtil.trimOrUndefined('a')).toBe('a')
+  })
+})
+
+describe('.trimOrNull', () => {
+  it('correctly trims strings or returns null for empty strings', () => {
+    expect(StringUtil.trimOrNull('   ')).toBeNull()
+    expect(StringUtil.trimOrNull('')).toBeNull()
+    expect(StringUtil.trimOrNull('  a  ')).toBe('a')
+    expect(StringUtil.trimOrNull('a')).toBe('a')
+  })
+})

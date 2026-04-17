@@ -27,6 +27,7 @@ catalogs:
     "vue-sonner": "1.3.0"
     "@vue/devtools-api": "^6.6.4"
   lint:
+    "@oxlint/plugins": "1.60.0"
     "oxlint": "1.59.0"
     "oxlint-tsgolint": "0.20.0"
     "@wisemen/eslint-config-nestjs": "0.2.13"
