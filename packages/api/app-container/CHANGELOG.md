@@ -1,5 +1,11 @@
 # @wisemen/app-container
 
+## 4.0.1
+
+### Patch Changes
+
+- [#875](https://github.com/wisemen-digital/wisemen-core/pull/875) [`584b841`](https://github.com/wisemen-digital/wisemen-core/commit/584b84101356023ae9d12156adda1e5ecfd6c83d) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: close fastify server
+
 ## 4.0.0
 
 ### Major Changes
