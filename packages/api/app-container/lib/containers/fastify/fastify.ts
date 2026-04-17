@@ -64,6 +64,7 @@ export abstract class FastifyContainer {
     this.state = 'shutdown'
 
     try {
+      await this.server.close()
       await this.nest?.close()
 
       console.log('application closed')
