@@ -1,5 +1,11 @@
 # @wisemen/app-container
 
+## 4.0.2
+
+### Patch Changes
+
+- [#876](https://github.com/wisemen-digital/wisemen-core/pull/876) [`1afed7c`](https://github.com/wisemen-digital/wisemen-core/commit/1afed7cb6d7833b9f813991b295934244abcb123) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: imports
+
 ## 4.0.1
 
 ### Patch Changes
