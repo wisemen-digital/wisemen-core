@@ -1,0 +1,11 @@
+description = "Update a managed shared skill in the canonical repository location."
+prompt = """
+Follow AGENTS.md and GEMINI.md.
+
+When updating a shared skill:
+1. Read `.agents/templates/skills/authoring-guide.md`.
+2. Edit `.agents/skills` or `.agents/templates/skills`.
+3. Do not hand-edit `.claude/skills`.
+4. Run `pnpm skills:check`.
+5. Report validation failures, sync drift, and the final canonical edits.
+"""

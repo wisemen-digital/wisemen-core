@@ -19,6 +19,15 @@ A collection of packages for Wisemen applications.
    - Release summary
 5. **Merge the changeset release PR** to automatically publish all changed packages to npm
 
+### Managed Agent Skills
+
+This repo also maintains shared AI-agent skills for Codex, Claude, and Gemini.
+
+- Canonical shared skills live in `.agents/skills`
+- New shared skills must start from `.agents/templates/skills`
+- Claude projections in `.claude/skills` are generated, not hand-authored
+- Validate and sync the managed skill system with `pnpm skills:check`
+
 ### New Package Setup
 
 When creating a new package:

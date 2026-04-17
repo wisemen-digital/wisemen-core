@@ -1,0 +1,11 @@
+description = "Create a managed shared skill from the repository templates."
+prompt = """
+Follow AGENTS.md and GEMINI.md.
+
+When creating a shared skill:
+1. Read `.agents/templates/skills/authoring-guide.md`.
+2. Scaffold the canonical skill with `pnpm skills:init --template <knowledge|workflow|scripted> --name <skill-name>`.
+3. Edit only the canonical files in `.agents/skills`.
+4. Run `pnpm skills:check`.
+5. Report the canonical changes and any generated Claude output.
+"""

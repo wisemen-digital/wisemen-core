@@ -1,0 +1,3 @@
+display_name: {{displayName}}
+short_description: {{shortDescription}}
+default_prompt: {{defaultPrompt}}

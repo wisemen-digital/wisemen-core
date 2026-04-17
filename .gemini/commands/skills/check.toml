@@ -1,0 +1,9 @@
+description = "Validate and sync the managed shared skill system."
+prompt = """
+Follow AGENTS.md and GEMINI.md.
+
+Run `pnpm skills:check` and summarize:
+- validation errors,
+- Claude sync drift,
+- any files that were corrected.
+"""

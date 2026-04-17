@@ -1,0 +1,3 @@
+display_name: Shared Skill Authoring
+short_description: Maintain the repository skill templates, canonical skills, validation, and sync workflow.
+default_prompt: Use this skill when creating or updating managed repository skills and keep the canonical `.agents/skills` workflow intact.
