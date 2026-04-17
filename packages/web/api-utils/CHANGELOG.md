@@ -1,5 +1,29 @@
 # @wisemen/vue-core-query
 
+## 1.2.0
+
+### Minor Changes
+
+- [#859](https://github.com/wisemen-digital/wisemen-core/pull/859) [`83965db`](https://github.com/wisemen-digital/wisemen-core/commit/83965db555268861f8a79dbc55b9809aec175e72) Thanks [@Robbe95](https://github.com/Robbe95)! - Cleaned up exposed functions of package
+
+### Patch Changes
+
+- [#861](https://github.com/wisemen-digital/wisemen-core/pull/861) [`80d8209`](https://github.com/wisemen-digital/wisemen-core/commit/80d820990bd9974589883d6b0622901d40c3bc05) Thanks [@Robbe95](https://github.com/Robbe95)! - Exposed SortDirection as enum, not only type
+
+- [#861](https://github.com/wisemen-digital/wisemen-core/pull/861) [`80d8209`](https://github.com/wisemen-digital/wisemen-core/commit/80d820990bd9974589883d6b0622901d40c3bc05) Thanks [@Robbe95](https://github.com/Robbe95)! - Added TErrorCodes to mutation
+
+## 1.1.0
+
+### Minor Changes
+
+- [#806](https://github.com/wisemen-digital/wisemen-core/pull/806) [`824ebf4`](https://github.com/wisemen-digital/wisemen-core/commit/824ebf49785c6015004cc30ce0e2f1290c6777fe) Thanks [@Robbe95](https://github.com/Robbe95)! - Added a rollback functionality to the query-client update function
+
+### Patch Changes
+
+- [#850](https://github.com/wisemen-digital/wisemen-core/pull/850) [`01f9747`](https://github.com/wisemen-digital/wisemen-core/commit/01f9747de368cec4735051f9d67fce4d98cc7130) Thanks [@Robbe95](https://github.com/Robbe95)! - Fixed types and exports of package
+
+- [#849](https://github.com/wisemen-digital/wisemen-core/pull/849) [`d0e1417`](https://github.com/wisemen-digital/wisemen-core/commit/d0e14171f6011980ddba89b06e8f7d999294e7c3) Thanks [@Robbe95](https://github.com/Robbe95)! - Added skills
+
 ## 1.0.1
 
 ### Patch Changes

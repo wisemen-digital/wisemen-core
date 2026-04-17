@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/eslint-config-nestjs",
-  "version": "0.2.13",
+  "version": "1.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -38,6 +38,7 @@
     "typescript": "catalog:peer",
     "typescript-eslint": "catalog:lint",
     "oxlint": "catalog:lint",
+    "@oxlint/plugins": "catalog:lint",
     "@typescript-eslint/eslint-plugin": "catalog:lint"
   }
 }

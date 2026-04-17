@@ -1,8 +1,8 @@
 import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
 
 export const TYPE_UTILS_NAVIGATION: PackageDocNavigation = {
-  link: 'index',
-  title: 'Type Utils',
+  link: '/pages/getting-started/installation',
+  title: 'Type Utilities',
   path: 'type-utils',
   sidebar: [
     {

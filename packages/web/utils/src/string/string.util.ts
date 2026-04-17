@@ -81,6 +81,30 @@ export class StringUtil {
   }
 
   /**
+   * Trims whitespace from a string, returning null if the result is empty.
+   *
+   * @example
+   * StringUtil.trimOrNull('  hello  ') // 'hello'
+   * StringUtil.trimOrNull('    ') // null
+   * StringUtil.trimOrNull(null) // null
+   */
+  static trimOrNull(value: string | null): string | null {
+    return value?.trim() || null
+  }
+
+  /**
+   * Trims whitespace from a string, returning undefined if the result is empty.
+   *
+   * @example
+   * StringUtil.trimOrUndefined('  hello  ') // 'hello'
+   * StringUtil.trimOrUndefined('    ') // undefined
+   * StringUtil.trimOrUndefined(null) // undefined
+   */
+  static trimOrUndefined(value: string | null): string | undefined {
+    return value?.trim() || undefined
+  }
+
+  /**
    * Truncates a string to the specified maximum length, appending '...' if truncated.
    *
    * @example

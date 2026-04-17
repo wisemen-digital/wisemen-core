@@ -12,6 +12,7 @@
     "build": "turbo run build",
     "dev": "turbo watch dev",
     "test": "turbo run test",
+    "repo:stats": "node --experimental-strip-types ./scripts/repoStats.ts",
     "lint:oxlint": "turbo run lint:oxlint",
     "lint:eslint": "turbo run lint:eslint",
     "lint": "turbo run lint",

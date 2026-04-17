@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0
+
+### Minor Changes
+
+- [#843](https://github.com/wisemen-digital/wisemen-core/pull/843) [`8c9d805`](https://github.com/wisemen-digital/wisemen-core/commit/8c9d805e65a17e2e550246a24e9af51ce0d7c23c) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add translucent hover state to destructive tertiary button
+
+- [#842](https://github.com/wisemen-digital/wisemen-core/pull/842) [`9616463`](https://github.com/wisemen-digital/wisemen-core/commit/961646359c0d3ad12343bb6755e9e927c9bef1cd) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Change button styling roundess + font weight to match design more
+
 ## 0.2.1
 
 ### Patch Changes
