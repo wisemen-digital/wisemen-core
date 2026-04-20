@@ -106,37 +106,42 @@ function onOpenChange(value: boolean): void {
 @keyframes dialogContentFadeIn {
   from {
     opacity: 0;
-    transform: translateY(2rem);
+    transform: translateY(3rem);
   }
 }
 
 @keyframes dialogContentFadeOut {
   to {
     opacity: 0;
-    transform: translateY(2rem);
+    transform: translateY(3rem);
   }
 }
 
 [data-animation='dialog'] {
-  animation-duration: 200ms;
-  animation-timing-function: ease-in-out;
+  animation-duration: 180ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 [data-animation='dialog'][data-state='open'] {
   animation-name: dialogOverlayFadeIn;
+  animation-duration: 400ms;
 }
 
 [data-animation='dialog'][data-state='closed'] {
   animation-name: dialogOverlayFadeOut;
+  animation-duration: 120ms;
 }
 
 [role='dialog'][data-animation='dialog'][data-state='open'] {
   animation-name: dialogContentFadeIn;
-  animation-duration: 300ms;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 [role='dialog'][data-animation='dialog'][data-state='closed'] {
   animation-name: dialogContentFadeOut;
+  animation-duration: 120ms;
+  animation-timing-function: ease-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
