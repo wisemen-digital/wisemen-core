@@ -1,10 +1,10 @@
 import { Logger } from '@nestjs/common'
-import type { NatsConnection, SubscriptionOptions } from '@nats-io/transport-node'
+import type { SubscriptionOptions } from '@nats-io/transport-node'
 import { NatsSubscription } from './nats-subscription.js'
 import { NamedConnectionOptions, NatsConnectionManager } from '#src/connections/nats-connection.manager.js'
 
 export interface NatsSubscriberConfig extends Omit<SubscriptionOptions, 'callback'> {
-  connectionOptions?: NamedConnectionOptions
+  connectionOptions: NamedConnectionOptions
   subject: string
   name: string
 }
@@ -21,19 +21,7 @@ export class NatsSubscriberManager {
       return existingSubscriber
     }
 
-    let connection: NatsConnection
-
-    try {
-      connection = await this.connectionManager.connect(config.connectionOptions)
-    } catch (e) {
-      throw new Error(
-        'Unable to create subscription connection'
-        + '\nDid you forget to add a default client to the nats application?'
-        + '\nDid you forget to set a specific client on the subscriber options?'
-        + `\nError: ${JSON.stringify(e)}`
-      )
-    }
-
+    const connection = await this.connectionManager.connect(config.connectionOptions)
     const subject = config.subject.replaceAll(/:[\w]+/g, '*')
     const rawSubscription = connection.subscribe(subject, config)
     const subscription = new NatsSubscription(rawSubscription)

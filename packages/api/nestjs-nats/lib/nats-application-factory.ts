@@ -3,14 +3,12 @@ import { ConfigService } from '@nestjs/config'
 import type { ClassConstructor } from 'class-transformer'
 import { getNatsMessageHandlerConfig, isNatsMessageHandler } from './message-handler/on-nats-message.decorator.js'
 import { NatsApplication } from './nats-application.js'
-import { getNatsConnectionOptions } from './connections/nats-connection.decorator.js'
-import type { NamedConnectionOptions } from './connections/nats-connection.manager.js'
 import { getNatsStreamConfig } from './streams/nats-stream.decorator.js'
 import { getNatsParameters, type MethodName } from './parameters/nats-parameter.js'
 import { getNatsSubscriberHandlerConfig, isNatsSubscriberHandler } from './subscribers/nats-subscriber-handler.decorator.js'
 import { getNatsConsumerHandlerConfig, isNatsConsumerHandler } from './consumers/nats-consumer-handler.decorator.js'
 import { isNatsServiceEndpoint, getNatsServiceEndpointConfig } from './services/nats-service-endpoint.decorator.js'
-import { DEFAULT_NATS_CLIENT_TOKEN, NATS_STREAMS_TOKEN } from './tokens.js'
+import { NATS_STREAMS_TOKEN } from './tokens.js'
 import type { NestjsProvider } from './providers/providers-explorer.js'
 import { ProvidersExplorer } from './providers/providers-explorer.js'
 
@@ -19,18 +17,11 @@ export class NatsApplicationFactory {
   constructor (
     private providerExplorer: ProvidersExplorer,
     private config: ConfigService,
-    @Inject(DEFAULT_NATS_CLIENT_TOKEN) private defaultClient?: ClassConstructor<unknown>,
     @Inject(NATS_STREAMS_TOKEN) private streams?: ClassConstructor<unknown>[]
   ) {}
 
   async createApp (): Promise<NatsApplication> {
-    let defaultConnectionOptions: NamedConnectionOptions | undefined = undefined
-
-    if (this.defaultClient !== undefined) {
-      defaultConnectionOptions = getNatsConnectionOptions(this.defaultClient, this.config)
-    }
-
-    const app = new NatsApplication(defaultConnectionOptions)
+    const app = new NatsApplication()
 
     for (const stream of this.streams ?? []) {
       const options = getNatsStreamConfig(stream, this.config)

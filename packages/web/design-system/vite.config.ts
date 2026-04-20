@@ -14,6 +14,7 @@ export default defineConfig({
       cssFileName: 'index',
       entry: [
         resolve(__dirname, 'src/index.ts'),
+        resolve(__dirname, 'src/locales.ts'),
       ],
       fileName: (format, name) => {
         if (format === 'es') {

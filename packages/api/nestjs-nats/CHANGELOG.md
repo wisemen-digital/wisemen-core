@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- [#872](https://github.com/wisemen-digital/wisemen-core/pull/872) [`94518a4`](https://github.com/wisemen-digital/wisemen-core/commit/94518a48cacb22a41e78eca3090de2ce36445ac2) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: strip connection options
+
+## 0.3.0
+
+### Minor Changes
+
+- [#869](https://github.com/wisemen-digital/wisemen-core/pull/869) [`dea871f`](https://github.com/wisemen-digital/wisemen-core/commit/dea871f8167868e8440ee145adfb8371f0f0de00) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: require connection parameter on decorators, remove default connection
+
 ## 0.2.1
 
 ### Patch Changes
