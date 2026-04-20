@@ -38,6 +38,7 @@ catalogs:
     "@eslint/js": "9.39.2"
     "@intlify/eslint-plugin-vue-i18n": "4.1.1"
     "@typescript-eslint/eslint-plugin": "8.57.1"
+    "@typescript-eslint/rule-tester": "8.57.1"
     "@typescript-eslint/parser": "8.53.1"
     "@stylistic/eslint-plugin": "5.8.0"
     "@vitest/eslint-plugin": "1.6.9"

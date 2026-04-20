@@ -13,6 +13,7 @@
     "directory": "packages/eslint-config-nestjs"
   },
   "scripts": {
+    "test": "tsx --test ./test/check-api-property-types.test.ts",
     "lint:oxlint": "oxlint --type-aware",
     "lint:eslint": "eslint",
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint"
@@ -40,5 +41,11 @@
     "oxlint": "catalog:lint",
     "@oxlint/plugins": "catalog:lint",
     "@typescript-eslint/eslint-plugin": "catalog:lint"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "catalog:lint",
+    "@typescript-eslint/rule-tester": "catalog:lint",
+    "@typescript-eslint/utils": "catalog:lint",
+    "tsx": "4.20.3"
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable import-typescript/no-relative-parent-imports */
 import { eslintCompatPlugin } from '@oxlint/plugins'
 
 import checkApiPropertyTypes from './check-api-property-types.js'
