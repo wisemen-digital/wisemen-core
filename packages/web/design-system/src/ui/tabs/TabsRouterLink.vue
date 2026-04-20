@@ -25,11 +25,12 @@ const props = withDefaults(defineProps<TabsProps>(), {
   isAdaptive: false,
   isFullWidth: false,
   orientation: 'horizontal',
+  underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })
 
-if (props.horizontalListPadding !== undefined && props.variant !== 'underline') {
-  console.warn('[TabsRouterLink] `horizontalListPadding` only applies to the `underline` variant.')
+if (props.underlineTabsHorizontalListPadding !== 'none' && props.variant !== 'underline') {
+  console.warn('[TabsRouterLink] `underlineTabsHorizontalListPadding` only applies to the `underline` variant.')
 }
 
 const route = useRoute()
@@ -61,7 +62,7 @@ const {
 
 const variants = computed<TabsVariants>(() => tabsVariants({
   isFullWidth: props.isFullWidth,
-  horizontalListPadding: props.horizontalListPadding,
+  underlineTabsHorizontalListPadding: props.underlineTabsHorizontalListPadding,
   variant: props.variant,
 }))
 

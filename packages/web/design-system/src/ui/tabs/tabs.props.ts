@@ -4,13 +4,9 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { DisabledWithReason } from '@/types/disabledWithReason.type'
 
 export type TabsVariant = 'button-border' | 'button-brand' | 'underline'
-export type TabsHorizontalListPadding = 'lg' | 'md' | 'sm' | 'xl'
+export type TabsHorizontalListPadding = 'lg' | 'md' | 'none' | 'sm' | 'xl'
 
 export interface TabsProps {
-  /**
-   * Controls the horizontal padding of the scroll container. Only applies to the `underline` variant.
-   */
-  horizontalListPadding?: TabsHorizontalListPadding
   /**
    * Whether the tabs should stretch to fill the full width of the container.
    * @default false
@@ -21,6 +17,11 @@ export interface TabsProps {
    * @default 'horizontal'
    */
   orientation?: 'horizontal' | 'vertical'
+
+  /**
+   * Controls the horizontal padding of the scroll container. Only applies to the `underline` variant.
+   */
+  underlineTabsHorizontalListPadding?: TabsHorizontalListPadding
   /**
    * Defines the visual style of the tabs.
    * @default 'underline'

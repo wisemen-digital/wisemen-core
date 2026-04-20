@@ -18,11 +18,12 @@ import { isTouchDevice } from '@/utils/isTouchDevice.util'
 const props = withDefaults(defineProps<TabsProps>(), {
   isFullWidth: false,
   orientation: 'horizontal',
+  underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })
 
-if (props.horizontalListPadding !== undefined && props.variant !== 'underline') {
-  console.warn('[Tabs] `horizontalListPadding` only applies to the `underline` variant.')
+if (props.underlineTabsHorizontalListPadding !== 'none' && props.variant !== 'underline') {
+  console.warn('[Tabs] `underlineTabsHorizontalListPadding` only applies to the `underline` variant.')
 }
 
 const isTouch = isTouchDevice()
@@ -55,7 +56,7 @@ function getAdaptiveDropdownRef(): HTMLDivElement | null {
 
 const variants = computed<TabsVariants>(() => tabsVariants({
   isFullWidth: props.isFullWidth,
-  horizontalListPadding: props.horizontalListPadding,
+  underlineTabsHorizontalListPadding: props.underlineTabsHorizontalListPadding,
   variant: props.variant,
 }))
 

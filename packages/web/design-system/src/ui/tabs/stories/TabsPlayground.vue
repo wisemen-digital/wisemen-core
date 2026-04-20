@@ -7,7 +7,10 @@ import {
 } from '@wisemen/vue-core-icons'
 import { ref } from 'vue'
 
-import type { TabsVariant } from '@/ui/tabs/tabs.props'
+import type {
+  TabsHorizontalListPadding,
+  TabsVariant,
+} from '@/ui/tabs/tabs.props'
 import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsContent from '@/ui/tabs/TabsContent.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
@@ -16,10 +19,12 @@ import TabsList from '@/ui/tabs/TabsList.vue'
 const props = withDefaults(defineProps<{
   isFullWidth?: boolean
   orientation?: 'horizontal' | 'vertical'
+  underlineTabsHorizontalListPadding?: TabsHorizontalListPadding
   variant?: TabsVariant
 }>(), {
   isFullWidth: false,
   orientation: 'horizontal',
+  underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })
 
@@ -31,9 +36,9 @@ const selectedTab = ref<string>('tab1')
     <Tabs
       v-model="selectedTab"
       :is-full-width="props.isFullWidth"
-      :variant="props.variant"
       :orientation="props.orientation"
-      horizontal-list-padding="lg"
+      :underline-tabs-horizontal-list-padding="props.underlineTabsHorizontalListPadding"
+      :variant="props.variant"
     >
       <TabsList>
         <TabsItem
