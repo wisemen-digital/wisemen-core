@@ -64,7 +64,7 @@ const dialogContext = useInjectDialogContext(null)
       gap="xl"
       class="
         p-xl pb-0
-        group-has-data-dialog-body/dialog:pb-3xl
+        group-has-data-dialog-body/dialog:pb-xl
       "
     >
       <div
