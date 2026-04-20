@@ -38,6 +38,20 @@ export const tabsVariants = tv({
     scrollContainer: 'no-scrollbar overflow-x-auto scroll-smooth',
   },
   variants: {
+    horizontalListPadding: {
+      lg: {
+        scrollContainer: 'px-2xl',
+      },
+      md: {
+        scrollContainer: 'px-xl',
+      },
+      sm: {
+        scrollContainer: 'px-lg',
+      },
+      xl: {
+        scrollContainer: 'px-5xl',
+      },
+    },
     isFullWidth: {
       true: {
         item: 'flex-1 justify-center',

@@ -33,6 +33,7 @@ const selectedTab = ref<string>('tab1')
       :is-full-width="props.isFullWidth"
       :variant="props.variant"
       :orientation="props.orientation"
+      horizontal-list-padding="lg"
     >
       <TabsList>
         <TabsItem

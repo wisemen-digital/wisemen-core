@@ -21,6 +21,10 @@ const props = withDefaults(defineProps<TabsProps>(), {
   variant: 'underline',
 })
 
+if (props.horizontalListPadding !== undefined && props.variant !== 'underline') {
+  console.warn('[Tabs] `horizontalListPadding` only applies to the `underline` variant.')
+}
+
 const isTouch = isTouchDevice()
 
 const modelValue = defineModel<string>({
@@ -51,6 +55,7 @@ function getAdaptiveDropdownRef(): HTMLDivElement | null {
 
 const variants = computed<TabsVariants>(() => tabsVariants({
   isFullWidth: props.isFullWidth,
+  horizontalListPadding: props.horizontalListPadding,
   variant: props.variant,
 }))
 
