@@ -22,7 +22,7 @@ const id = useId()
 useProvideFormDialogContext({
   formId: id,
   form: props.form,
-  promptOnUnsavedChanges: props.promptOnUnsavedChanges ?? false,
+  promptOnUnsavedChanges: computed<boolean>(() => props.promptOnUnsavedChanges ?? false),
 })
 
 function onClose(): void {

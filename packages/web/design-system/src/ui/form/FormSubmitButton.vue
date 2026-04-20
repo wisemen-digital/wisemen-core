@@ -19,10 +19,10 @@ const KEYBOARD_SHORTCUTS = {
     keys: [
       'meta',
       'enter',
-    ] as ['meta', 'enter'],
-    shortcutKey: 'meta_enter' as const,
+    ],
+    shortcutKey: 'meta_enter',
   },
-}
+} as const
 
 const {
   formId, form,
