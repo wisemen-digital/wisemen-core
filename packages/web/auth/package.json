@@ -32,10 +32,15 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "release": "bumpp && npm publish",
+    "test": "vitest --run",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "pkce-challenge": "catalog:general"
+  },
+  "peerDependencies": {
+    "vue": "catalog:peer",
+    "vue-router": "catalog:peer"
   },
   "devDependencies": {
     "@types/node": "catalog:types",
@@ -45,6 +50,8 @@
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
+    "vue": "catalog:vue",
+    "vue-router": "catalog:vue",
     "vitest": "catalog:test"
   }
 }

@@ -12,7 +12,7 @@ export class RedirectValidator {
 
   private isBlockedPath(path: string): boolean {
     // Extract just the pathname part (remove query string for checking)
-    const pathname = path.split('?')[0]
+    const pathname = path.split('?')[0] ?? ''
 
     return this.blockedPaths.some((blockedPath) => {
       if (blockedPath.endsWith('/*')) {

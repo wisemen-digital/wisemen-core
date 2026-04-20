@@ -24,12 +24,43 @@ interface Token {
   exp: number
 }
 
+async function parseJsonResponse<T>(response: Response, fallbackMessage: string): Promise<T> {
+  if (!response.ok) {
+    let errorMessage = fallbackMessage
+
+    try {
+      const responseError = await response.json() as Record<string, unknown>
+      const responseDescription = responseError.error_description
+      const responseMessage = responseError.error
+
+      if (typeof responseDescription === 'string' && responseDescription.length > 0) {
+        errorMessage = `${fallbackMessage}: ${responseDescription}`
+      }
+      else if (typeof responseMessage === 'string' && responseMessage.length > 0) {
+        errorMessage = `${fallbackMessage}: ${responseMessage}`
+      }
+    }
+    catch {
+      // Ignore non-json error payloads and fall back to the generic message.
+    }
+
+    throw new Error(errorMessage)
+  }
+
+  return await response.json() as T
+}
+
 const HYPHEN_REGEX = /-/g
 const UNDERSCORE_REGEX = /_/g
 const TRAILING_SLASH_REGEX = /\/$/
 
 function decodeToken(token: string): Token {
   const base64Url = token.split('.')[1]
+
+  if (base64Url === undefined) {
+    throw new Error('Invalid token payload')
+  }
+
   const base64 = base64Url.replace(HYPHEN_REGEX, '+').replace(UNDERSCORE_REGEX, '/')
   const jsonPayload = decodeURIComponent(
     atob(base64)
@@ -67,7 +98,7 @@ export class ApiClient {
       method: 'POST',
     })
 
-    return await response.json() as OAuth2Tokens
+    return await parseJsonResponse<OAuth2Tokens>(response, 'Failed to refresh access token')
   }
 
   private getTokensStrategy(): TokensStrategy {
@@ -148,7 +179,7 @@ export class ApiClient {
       }),
     })
 
-    return await response.json() as OidcUser
+    return await parseJsonResponse<OidcUser>(response, 'Failed to fetch user info')
   }
 
   public isAccessTokenExpired(): boolean {
@@ -182,7 +213,7 @@ export class ApiClient {
       method: 'POST',
     })
 
-    const tokens = await response.json() as OAuth2Tokens
+    const tokens = await parseJsonResponse<OAuth2Tokens>(response, 'Failed to exchange authorization code')
 
     this.getTokensStrategy().removeCodeVerifier()
     this.setTokens(tokens)
