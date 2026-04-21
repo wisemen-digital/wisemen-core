@@ -5,6 +5,21 @@ export default [
     tailwindConfigPath: 'src/styles/index.css',
   })),
   {
+    rules: {
+      'better-tailwindcss/no-unknown-classes': [
+        'error',
+        {
+          ignore: [
+            '^group(?:\\/(\\S*))?$',
+            '^peer(?:\\/(\\S*))?$',
+            '^custom-(?:\\S+)?$',
+            '^z-(sticky|overlay|modal|tooltip)$',
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: [
       '**/*.story.ts',
       '**/*.story.tsx',
