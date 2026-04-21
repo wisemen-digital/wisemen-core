@@ -2,7 +2,7 @@ import type { Component } from 'vue'
 
 import type { DialogProps } from '@/ui/dialog/dialog.props'
 
-export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutside' | 'preventEsc' | 'size'> {
+export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutside' | 'preventEsc'> {
   /**
    * The title displayed in the dialog header.
    */
@@ -36,12 +36,6 @@ export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutsi
    * @default null
    */
   icon?: Component | null
-
-  /**
-   * Callback invoked when the cancel button is clicked.
-   * @default null
-   */
-  onClose?: (() => void) | null
 
   /**
    * Callback invoked when the confirm button is clicked.

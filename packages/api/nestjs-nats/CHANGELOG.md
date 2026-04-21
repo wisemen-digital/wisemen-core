@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.3.1
+
+### Patch Changes
+
+- [#872](https://github.com/wisemen-digital/wisemen-core/pull/872) [`94518a4`](https://github.com/wisemen-digital/wisemen-core/commit/94518a48cacb22a41e78eca3090de2ce36445ac2) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: strip connection options
+
+## 0.3.0
+
+### Minor Changes
+
+- [#869](https://github.com/wisemen-digital/wisemen-core/pull/869) [`dea871f`](https://github.com/wisemen-digital/wisemen-core/commit/dea871f8167868e8440ee145adfb8371f0f0de00) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: require connection parameter on decorators, remove default connection
+
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`c448ae1`](https://github.com/wisemen-digital/wisemen-core/commit/c448ae1693045423b7959d7b2967b7e0a039f275)]:
+  - @wisemen/opentelemetry@0.1.4
+  - @wisemen/api-error@0.0.13
+
 ## 0.2.0
 
 ### Minor Changes

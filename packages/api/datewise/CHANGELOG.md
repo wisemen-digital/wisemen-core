@@ -1,5 +1,15 @@
 # @wisemen/datewise
 
+## 0.1.11
+
+### Patch Changes
+
+- [#845](https://github.com/wisemen-digital/wisemen-core/pull/845) [`c7942ae`](https://github.com/wisemen-digital/wisemen-core/commit/c7942ae90807975f02f077b7346ac36ca590c925) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add incl and excl upper and lower getters
+
+- Updated dependencies []:
+  - @wisemen/pagination@0.1.1
+  - @wisemen/quantity@0.6.1
+
 ## 0.1.10
 
 ### Patch Changes

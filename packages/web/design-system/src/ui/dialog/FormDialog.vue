@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useId } from 'vue'
+import {
+  computed,
+  useId,
+} from 'vue'
 
 import Dialog from '@/ui/dialog/Dialog.vue'
 import { useProvideFormDialogContext } from '@/ui/dialog/formDialog.context'
@@ -22,7 +25,7 @@ const id = useId()
 useProvideFormDialogContext({
   formId: id,
   form: props.form,
-  promptOnUnsavedChanges: props.promptOnUnsavedChanges ?? false,
+  promptOnUnsavedChanges: computed<boolean>(() => props.promptOnUnsavedChanges ?? false),
 })
 
 function onClose(): void {

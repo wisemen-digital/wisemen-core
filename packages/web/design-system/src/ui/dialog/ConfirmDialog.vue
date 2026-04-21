@@ -16,10 +16,12 @@ const props = withDefaults(defineProps<ConfirmDialogProps>(), {
   icon: null,
   preventClickOutside: false,
   preventEsc: false,
-  size: 'xs',
-  onClose: null,
   onConfirm: null,
 })
+
+const emit = defineEmits<{
+  close: []
+}>()
 
 const i18n = useI18n()
 
@@ -45,20 +47,20 @@ async function onConfirmClick(): Promise<void> {
 }
 
 function onCancelClick(): void {
-  props.onClose?.()
+  emit('close')
 }
 
 function onClose(): void {
-  props.onClose?.()
+  emit('close')
 }
 </script>
 
 <template>
   <Dialog
     :has-close-button="false"
-    :size="props.size"
     :prevent-click-outside="props.preventClickOutside"
     :prevent-esc="props.preventEsc"
+    size="xs"
     @close="onClose"
   >
     <DialogHeader

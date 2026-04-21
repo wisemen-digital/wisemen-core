@@ -34,17 +34,22 @@ function sidebarItemToFullPath(item: DefaultTheme.SidebarItem, packagePath: stri
 }
 
 export function getPackagesNavigation(): NavItem[] {
-  return PACKAGE_DOC_NAVIGATION.map((pkg) => ({
-    text: pkg.title,
-    link: toFullPackagePath(pkg),
+  return PACKAGE_DOC_NAVIGATION.map((group) => ({
+    text: group.text,
+    items: group.items.map((pkg) => ({
+      text: pkg.title,
+      link: toFullPackagePath(pkg),
+    })),
   }))
 }
 
 export function getPackagesSidebar(): DefaultTheme.SidebarMulti {
-  const transformedSidebar = PACKAGE_DOC_NAVIGATION.reduce((acc, pkg) => {
-    const packagePath = `packages/${pkg.path}`
+  const transformedSidebar = PACKAGE_DOC_NAVIGATION.reduce((acc, group) => {
+    for (const pkg of group.items) {
+      const packagePath = `packages/${pkg.path}`
 
-    acc[packagePath] = pkg.sidebar.map((item) => sidebarItemToFullPath(item, pkg.path))
+      acc[packagePath] = pkg.sidebar.map((item) => sidebarItemToFullPath(item, pkg.path))
+    }
 
     return acc
   }, {} as DefaultTheme.SidebarMulti)
