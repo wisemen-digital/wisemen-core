@@ -6,12 +6,14 @@ import {
 import { computed } from 'vue'
 
 import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
+import type { DetailPaneStyle } from '@/ui/page/detailPane.style'
+import { createDetailPaneStyle } from '@/ui/page/detailPane.style'
 
 const {
-  isFloatingDetailPane,
   isResizable,
   isResizing,
   sidebarWidth,
+  variant,
   onResizeKeyDown,
   onResizeStart,
 } = useInjectDetailPaneContext()
@@ -25,6 +27,10 @@ const duration = computed<number>(() => {
 
   return isReduceMotionEnabledOnDevice.value ? 0 : 0.3
 })
+
+const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
+  variant,
+}))
 </script>
 
 <template>
@@ -46,21 +52,17 @@ const duration = computed<number>(() => {
     :style="{
       width: sidebarWidth,
     }"
-    class="
-      absolute top-0 right-0 z-4 h-full max-w-full border-l border-secondary
-      bg-secondary
-      max-md:w-full!
-    "
+    :class="detailPaneStyle.pane()"
   >
     <!-- eslint-disable vuejs-accessibility/no-static-element-interactions -->
     <div
-      v-if="isResizable && !isFloatingDetailPane"
+      v-if="isResizable"
+      :class="detailPaneStyle.resizeHandle()"
       role="separator"
       aria-orientation="vertical"
       aria-label="Resize detail pane"
       tabindex="0"
       class="
-        absolute top-0 left-0 z-10 h-full w-0.5 cursor-col-resize
         transition-colors duration-150
         hover:bg-(--border-primary)
         focus-visible:bg-(--border-primary) focus-visible:outline-none

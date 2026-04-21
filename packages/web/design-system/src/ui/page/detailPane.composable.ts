@@ -9,7 +9,10 @@ import {
   ref,
 } from 'vue'
 
-import type { DetailPaneStorage } from '@/ui/page/detailPane.type'
+import type {
+  DetailPaneStorage,
+  DetailPaneVariant,
+} from '@/ui/page/detailPane.type'
 
 const DEFAULT_WIDTH = '20rem'
 const DEFAULT_MIN_WIDTH = '16rem'
@@ -19,6 +22,7 @@ interface UseDetailPaneOptions {
   isOpen: Ref<boolean>
   isResizable: boolean
   storage: DetailPaneStorage | null
+  variant: DetailPaneVariant
 }
 
 function remToPx(rem: string): number {
@@ -33,6 +37,7 @@ function remToPx(rem: string): number {
 export function useDetailPane(options: UseDetailPaneOptions) {
   const isResizable = options.isResizable ?? true
   const storage = options.storage
+  const variant = options.variant
 
   const width = DEFAULT_WIDTH
   const minWidth = DEFAULT_MIN_WIDTH
@@ -42,7 +47,14 @@ export function useDetailPane(options: UseDetailPaneOptions) {
     xl: 960,
   })
 
-  const isFloatingDetailPane = screen.smaller('xl')
+  const isFloatingDetailPane = computed<boolean>(() => {
+    if (variant === 'full-height-overlay' || variant === 'bordered-overlay') {
+      return true
+    }
+
+    return screen.smaller('xl').value
+  })
+
   const isFloatingOpen = ref<boolean>(false)
   const isResizing = ref<boolean>(false)
 
@@ -98,10 +110,6 @@ export function useDetailPane(options: UseDetailPaneOptions) {
   }
 
   function onResizeStart(event: PointerEvent): void {
-    if (isFloatingDetailPane.value) {
-      return
-    }
-
     event.preventDefault()
     isResizing.value = true
 
@@ -135,10 +143,6 @@ export function useDetailPane(options: UseDetailPaneOptions) {
   const RESIZE_STEP_PX = 16
 
   function onResizeKeyDown(event: KeyboardEvent): void {
-    if (isFloatingDetailPane.value) {
-      return
-    }
-
     const minPx = remToPx(minWidth)
     const maxPx = remToPx(maxWidth)
 
@@ -170,6 +174,7 @@ export function useDetailPane(options: UseDetailPaneOptions) {
     isResizing,
     sidebarWidth,
     toggleIsOpen,
+    variant,
     onResizeKeyDown,
     onResizeStart,
   }

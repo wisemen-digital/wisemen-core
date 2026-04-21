@@ -214,6 +214,7 @@ const tabsModelValue = ref<string>('tab1')
         <DashboardPage
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
+            variant: 'bordered-inline',
             storage: {
               key: 'dashboard-page-detail-pane-is-open',
               strategy: 'localStorage',
