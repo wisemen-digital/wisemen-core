@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  AlertSquareIcon,
   CheckCircleIcon,
   SearchMdIcon,
 } from '@wisemen/vue-core-icons'
@@ -8,6 +9,7 @@ import Checkbox from '@/ui/checkbox/Checkbox.vue'
 import type { DialogSize } from '@/ui/dialog/dialog.props'
 import Dialog from '@/ui/dialog/Dialog.vue'
 import DialogBody from '@/ui/dialog/DialogBody.vue'
+import { useDialogChin } from '@/ui/dialog/dialogChin.composable'
 import DialogFooter from '@/ui/dialog/DialogFooter.vue'
 import DialogFooterCancel from '@/ui/dialog/DialogFooterCancel.vue'
 import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
@@ -33,14 +35,17 @@ const emit = defineEmits<{
 function onClose(): void {
   emit('close')
 }
+
+const dialogChin = useDialogChin()
 </script>
 
 <template>
   <Dialog
+    :chin="dialogChin.chin.value"
     :is-open="isOpen"
-    :size="size"
     :prevent-click-outside="preventClickOutside"
     :prevent-esc="preventEsc"
+    :size="size"
     @update:is-open="!$event && $emit('close')"
   >
     <DialogHeader
@@ -80,7 +85,31 @@ function onClose(): void {
         />
         <DialogFooterPrimary
           label="Open dialog"
-          @click="onClose"
+          @click="() => {
+            dialogChin.open({
+              icon: AlertSquareIcon,
+              text: 'You have unsaved changes',
+              variant: 'error',
+              primaryAction: {
+                type: 'button',
+                action: () => {
+                  console.log('save')
+                  dialogChin.close()
+                },
+                label: 'Save',
+                variant: 'default',
+              },
+              secondaryAction: {
+                type: 'button',
+                action: () => {
+                  dialogChin.close()
+                },
+                label: 'discard',
+                variant: 'destructive',
+              },
+
+            })
+          }"
         />
       </template>
     </DialogFooter>

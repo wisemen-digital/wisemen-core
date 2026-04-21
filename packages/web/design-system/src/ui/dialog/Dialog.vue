@@ -10,10 +10,12 @@ import { useProvideDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogProps } from '@/ui/dialog/dialog.props'
 import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
+import DialogChin from '@/ui/dialog/DialogChin.vue'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
+  chin: null,
   preventClickOutside: false,
   preventEsc: false,
   showCloseButton: true,
@@ -21,6 +23,7 @@ const props = withDefaults(defineProps<DialogProps>(), {
 })
 
 const emit = defineEmits<{
+  'afterLeave': []
   'close': []
   'update:isOpen': [value: boolean]
 }>()
@@ -75,17 +78,20 @@ function onOpenChange(value: boolean): void {
       :class="style.overlay()"
       data-animation="dialog"
     />
-
     <RekaDialogContent
       :class="style.contentWrapper()"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
       @pointer-down-outside="onPointerDownOutside"
+      @after-leave="emit('afterLeave')"
     >
       <div :class="style.content()">
         <slot />
         <DialogCloseButton v-if="props.showCloseButton" />
       </div>
+      <DialogChin
+        :chin="props.chin"
+      />
     </RekaDialogContent>
   </RekaDialogRoot>
 </template>

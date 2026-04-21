@@ -5,12 +5,16 @@ import { tv } from '@/styles/tailwindVariants.lib'
 export const createDialogStyle = tv({
   slots: {
     body: 'flex-1 overflow-y-auto px-xl py-xs',
+    chin: `
+      absolute bottom-0 -z-10 w-full rounded-t-[calc(1rem+5px)] rounded-b-none
+      shadow-xl transition-transform duration-200
+      sm:top-0 sm:rounded-[calc(1rem+5px)]
+    `,
     content: `
       group/dialog flex max-h-[90vh] w-full flex-col overflow-hidden
-      rounded-t-[calc(1rem+5px)] rounded-b-none border-5 border-b-0
-      border-white/10 bg-primary bg-clip-padding shadow-xl
-      sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-b-5
-      dark:border-black/10
+      rounded-t-[calc(1rem+5px)] rounded-b-none border-t-[5px] border-r-[5px]
+      border-l-[5px] border-transparent bg-primary bg-clip-padding
+      sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
     `,
     contentWrapper: `
       z-modal fixed inset-x-0 bottom-0 flex w-full flex-col
@@ -28,8 +32,11 @@ export const createDialogStyle = tv({
   variants: {
     size: {
       'full-screen': {
-        content: 'h-full max-h-full rounded-none',
-        contentWrapper: 'max-w-full',
+        content: `
+          h-[90vh]
+          sm:max-h-[90vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
+        `,
+        contentWrapper: `sm:max-w-[90vw]`,
       },
       'lg': {
         contentWrapper: `sm:max-w-160`,
