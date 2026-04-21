@@ -17,12 +17,12 @@ import {
 } from '@/ui/button'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { useInjectDialogContext } from '@/ui/dialog/dialog.context'
-import type { chinConfig } from '@/ui/dialog/dialogChin.composable'
+import type { ChinConfig } from '@/ui/dialog/dialogChin.composable'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import { UIText } from '@/ui/text'
 
 const props = defineProps<{
-  chin: chinConfig | null
+  chin: ChinConfig | null
 }>()
 
 const isOpen = computed<boolean>(() => props.chin !== null)
@@ -30,7 +30,7 @@ const isOpen = computed<boolean>(() => props.chin !== null)
 const chinContentRef = useTemplateRef('chinContent')
 const chinHeight = ref<number>(38)
 
-watch(chinContentRef, (el) => {
+watch(chinContentRef, (el, _oldEl, onCleanup) => {
   if (el == null) {
     return
   }
@@ -44,16 +44,20 @@ watch(chinContentRef, (el) => {
   })
 
   observer.observe(el)
+
+  onCleanup(() => {
+    observer.disconnect()
+  })
 }, {
   immediate: true,
 })
 
-const variantFromColor: Record<NonNullable<chinConfig['variant']>, string> = {
+const variantFromColor: Record<NonNullable<ChinConfig['variant']>, string> = {
   default: 'from-white/60 dark:from-black/10',
   error: 'from-error-secondary',
 }
 
-const overlayFromColor = computed<string>(() => props.chin?.variant != null ? variantFromColor[props.chin.variant] : 'from-white/60')
+const overlayFromColor = computed<string>(() => props.chin?.variant != null ? variantFromColor[props.chin.variant] : 'from-white/60 dark:from-black/10')
 
 const buttonVariantMap = {
   brand: 'minimal-color',
@@ -95,7 +99,11 @@ const {
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"
         :exit="{ opacity: 0 }"
-        :transition="{ duration: 0.3 }"
+        :transition="{
+          duration: 0.3,
+          type: 'spring',
+          bounce: 0,
+        }"
         :class="overlayFromColor"
         class="
           h-full rounded-t-[calc(1rem+5px)] rounded-b-none bg-linear-to-b
@@ -123,10 +131,10 @@ const {
                   :is="props.chin?.icon"
                   v-if="chin?.icon"
                   :class="iconColor"
-                  class="size-4 shrink-0 text-error-500"
+                  class="size-4 shrink-0"
                 />
                 <UIText
-                  :text="chin?.text ?? ''"
+                  :text="props.chin?.text ?? ''"
                   :truncate="2"
                   class="text-xs font-medium"
                 />

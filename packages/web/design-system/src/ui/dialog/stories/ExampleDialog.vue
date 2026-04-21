@@ -41,7 +41,7 @@ const dialogChin = useDialogChin()
 
 <template>
   <Dialog
-    :chin="dialogChin.chin"
+    :chin="dialogChin.chin.value"
     :is-open="isOpen"
     :prevent-click-outside="preventClickOutside"
     :prevent-esc="preventEsc"

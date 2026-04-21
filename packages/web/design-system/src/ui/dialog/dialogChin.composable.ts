@@ -1,8 +1,5 @@
 import type { Component } from 'vue'
-import {
-  reactive,
-  shallowRef,
-} from 'vue'
+import { shallowRef } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
 export interface ChinButtonAction {
@@ -40,7 +37,7 @@ export interface ChinIconButtonAction {
 
 export type ChinAction = ChinButtonAction | ChinIconButtonAction | ChinLinkAction
 
-export interface chinConfig {
+export interface ChinConfig {
   icon?: Component
   primaryAction?: ChinAction
   secondaryAction?: ChinAction
@@ -49,9 +46,9 @@ export interface chinConfig {
 }
 
 export function useDialogChin() {
-  const chin = shallowRef<chinConfig | null>(null)
+  const chin = shallowRef<ChinConfig | null>(null)
 
-  function open(config: chinConfig): void {
+  function open(config: ChinConfig): void {
     chin.value = config
   }
 
@@ -59,9 +56,9 @@ export function useDialogChin() {
     chin.value = null
   }
 
-  return reactive({
+  return {
     chin,
     close,
     open,
-  })
+  }
 }

@@ -1,4 +1,4 @@
-import type { chinConfig } from '@/ui/dialog/dialogChin.composable'
+import type { ChinConfig } from '@/ui/dialog/dialogChin.composable'
 
 export type DialogSize = 'full-screen' | 'lg' | 'md' | 'sm' | 'xl' | 'xs' | 'xxs'
 
@@ -7,7 +7,7 @@ export interface DialogProps {
    * The chin configuration to display below the dialog.
    * @default null
    */
-  chin?: chinConfig | null
+  chin?: ChinConfig | null
   /**
    * Whether to prevent closing the dialog by clicking outside.
    * @default false
