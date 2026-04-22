@@ -219,19 +219,6 @@ export class ApiClient {
     this.setTokens(tokens)
   }
 
-  public setMockTokens(): void {
-    const mockTokens = {
-      expires_at: 0,
-      access_token: '',
-      id_token: '',
-      refresh_token: '',
-      scope: '',
-      token_type: '',
-    }
-
-    this.getTokensStrategy().setTokens(mockTokens)
-  }
-
   public setTokens(tokens: OAuth2Tokens): void {
     const expirationSinceUnixEpoch = decodeToken(tokens.access_token).exp
 

@@ -182,6 +182,52 @@ describe('createAuth', () => {
     expect(auth.currentProviderKey.value).toBe('default')
   })
 
+  it('preserves the session when current-user hydration fails during callback because of a network error', async () => {
+    let isLoggedIn = false
+
+    const provider = {
+      client: {
+        isLoggedIn: vi.fn(() => Promise.resolve(isLoggedIn)),
+        getAccessToken: vi.fn(() => Promise.resolve('access-token')),
+        getLoginUrl: vi.fn((_redirectUrl?: string, options?: {
+          state?: string
+        }) => Promise.resolve(`https://auth.example.com/login?state=${options?.state ?? ''}`)),
+        getLogoutUrl: vi.fn(() => 'https://auth.example.com/logout'),
+        loginWithCode: vi.fn(() => {
+          isLoggedIn = true
+
+          return Promise.resolve()
+        }),
+        logout: vi.fn(() => {
+          isLoggedIn = false
+        }),
+        sanitizeRedirectUrl: vi.fn((redirectUrl: string | null, fallbackUrl: string = '/') => redirectUrl ?? fallbackUrl),
+      },
+      key: 'default',
+      route: {
+        name: 'auth-login',
+        path: 'login',
+      },
+    }
+    const auth = createAuth({
+      defaultProviderKey: 'default',
+      fetchCurrentUser: vi.fn(() => Promise.reject(new TypeError('Failed to fetch'))),
+      providers: [
+        provider,
+      ],
+      storagePrefix: 'auth-callback-network-error-test',
+    })
+
+    const loginUrl = await auth.getLoginUrl('default', '/dashboard')
+    const state = new URL(loginUrl).searchParams.get('state')
+
+    const redirectUrl = await auth.handleCallback('auth-code', state)
+
+    expect(redirectUrl).toBe('/dashboard')
+    expect(auth.currentProviderKey.value).toBe('default')
+    expect(provider.client.logout).not.toHaveBeenCalled()
+  })
+
   it('uses the default provider oidc prefix for controller storage when no storagePrefix is set', async () => {
     const auth = createAuth({
       defaultProviderKey: 'default',

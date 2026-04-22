@@ -159,10 +159,6 @@ export class OidcClient {
   * If it fails, it will log the user out
   */
   public async isLoggedIn(): Promise<boolean> {
-    if (this.options.offline === true) {
-      return true
-    }
-
     if (this.client === null) {
       return false
     }
@@ -186,27 +182,10 @@ export class OidcClient {
   }
 
   /*
-  * Login the user offline by setting mock tokens
-  */
-  public loginOffline(): void {
-    if (this.client === null) {
-      throw new Error('Client is not initialized')
-    }
-
-    this.client.setMockTokens()
-  }
-
-  /*
   * Login the user with the code from the identity provider
   * It will get the access token and add it to the fetch instance headers
   */
   public async loginWithCode(code: string): Promise<void> {
-    if (this.options.offline === true) {
-      this.loginOffline()
-
-      return
-    }
-
     try {
       await this.getClient().loginWithCode(code)
     }

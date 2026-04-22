@@ -72,7 +72,7 @@ export interface AuthViewOverrides {
 }
 
 export interface AuthNavigationRouter {
-  replace: (to: unknown) => unknown
+  replace: (to: RouteLocationRaw) => unknown
 }
 
 export interface AuthInstallOptions {

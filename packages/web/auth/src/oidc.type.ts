@@ -36,10 +36,6 @@ export interface OAuth2VueClientOptions {
   */
   loginRedirectUri: string
   /*
-   * If offline is true, the client wil bypass everything and work without a real login
-   */
-  offline?: boolean
-  /*
   * The URL to redirect to after logout
   */
   postLogoutRedirectUri: string

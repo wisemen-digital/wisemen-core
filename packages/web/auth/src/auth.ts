@@ -547,12 +547,18 @@ export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthContro
     try {
       await provider.client.loginWithCode(code)
       persistCurrentProviderKey(provider.key)
-      await getAuthUser(true)
+      try {
+        await getAuthUser(true)
+      }
+      catch (error) {
+        const authError = toError(error)
 
-      return provider.client.sanitizeRedirectUrl(
-        transaction.redirectUrl,
-        options.defaultRedirectPath ?? '/',
-      )
+        if (!isNetworkError(authError) && options.shouldIgnoreCurrentUserError?.(authError) !== true) {
+          throw error
+        }
+      }
+
+      return provider.client.sanitizeRedirectUrl(transaction.redirectUrl, options.defaultRedirectPath ?? '/')
     }
     catch (error) {
       await clearSession({
