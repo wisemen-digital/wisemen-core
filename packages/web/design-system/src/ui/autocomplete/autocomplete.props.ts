@@ -32,17 +32,12 @@ export interface AutocompleteProps<TValue extends AutocompleteValue>
    */
   items: AutocompleteItem<TValue>[]
   /**
-   * Whether to open the dropdown when the input is clicked.
-   * @default true
-   */
-  openOnClick?: boolean
-  /**
    * The search mode of the autocomplete.
    * - `local`: filtering is done on the client side
    * - `remote`: filtering is done on the server side. Handle the `update:search` event to fetch results.
    * @default 'local'
    */
-  search?: 'local' | 'remote'
+  searchMode?: 'local' | 'remote'
   /**
    * The size of the autocomplete.
    * @default 'md'
@@ -55,5 +50,5 @@ export type AutocompleteContentProps<TValue extends AutocompleteValue> = Pick<
   | 'displayFn'
   | 'isLoading'
   | 'items'
-  | 'search'
+  | 'searchMode'
 >

@@ -22,7 +22,7 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<AutocompleteContentProps<TValue>>(), {
   isLoading: false,
-  search: 'local',
+  searchMode: 'local',
 })
 
 const emit = defineEmits<{
@@ -42,17 +42,17 @@ const {
   computed(() => props.items),
   filterSearch,
   props.displayFn,
-  props.search ?? 'local',
+  props.searchMode ?? 'local',
 )
 
 watch(debouncedSearch, (value) => {
-  if (props.search === 'remote') {
+  if (props.searchMode === 'remote') {
     emit('update:search', value)
   }
 })
 
 onBeforeUnmount(() => {
-  if (props.search === 'remote') {
+  if (props.searchMode === 'remote') {
     emit('update:search', '')
   }
 })

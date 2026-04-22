@@ -38,14 +38,13 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   disableSideFlip: true,
   getItemConfig: null,
   iconRight: ChevronDownIcon,
-  openOnClick: true,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
   prioritizePosition: true,
-  search: 'local',
+  searchMode: 'local',
   size: 'md',
 })
 
@@ -121,7 +120,7 @@ useProvideAutocompleteContext({
       v-model="(modelValue as any)"
       :display-value="displayValueFn"
       :ignore-filter="true"
-      :open-on-click="props.openOnClick"
+      :open-on-click="props.items.length > 1"
       :disabled="props.isDisabled"
       class="block w-full"
       @update:open="onOpenChange"
@@ -147,6 +146,7 @@ useProvideAutocompleteContext({
           <RekaComboboxInput
             v-bind="attrs"
             :id="id"
+            :display-value="displayValueFn"
             :name="props.name ?? undefined"
             :autocomplete="props.autocomplete ?? undefined"
             :placeholder="props.placeholder ?? undefined"
@@ -166,7 +166,9 @@ useProvideAutocompleteContext({
         :display-fn="props.displayFn"
         :is-loading="props.isLoading"
         :items="props.items"
-        :search="props.search"
+        :search-mode="props.searchMode"
+        @next-page="emit('nextPage')"
+        @update:search="emit('update:search', $event)"
       />
     </RekaComboboxRoot>
   </InputWrapper>

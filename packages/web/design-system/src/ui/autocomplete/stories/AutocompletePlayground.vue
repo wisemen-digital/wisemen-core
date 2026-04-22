@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<{
   hint?: string
   label?: string
   placeholder?: string
-  search?: 'local' | 'remote'
+  searchMode?: 'local' | 'remote'
   size?: 'md' | 'sm'
 }>(), {
   isDisabled: false,
@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<{
   hint: undefined,
   label: 'Label',
   placeholder: 'Search...',
-  search: 'local',
+  searchMode: 'local',
   size: 'md',
 })
 
@@ -61,8 +61,8 @@ function displayFn(value: string): string {
       :items="items"
       :label="props.label"
       :placeholder="props.placeholder"
-      :search="props.search"
       :size="props.size"
+      :search-mode="props.searchMode"
       class="w-72"
     />
   </div>

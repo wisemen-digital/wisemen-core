@@ -44,7 +44,7 @@ const meta = {
       control: 'text',
       description: 'The placeholder text of the autocomplete',
     },
-    search: {
+    searchMode: {
       control: 'select',
       description: 'The search mode of the autocomplete',
       options: [
@@ -81,7 +81,7 @@ export const WithRemoteSearch: Story = {
   args: {
     label: 'Fruit',
     placeholder: 'Search a fruit...',
-    search: 'remote',
+    searchMode: 'remote',
   },
 }
 
