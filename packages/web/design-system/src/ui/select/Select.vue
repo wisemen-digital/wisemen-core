@@ -41,7 +41,6 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_FIELD_DEFAULTS,
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
-  iconRight: ChevronDownIcon,
   keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
@@ -139,7 +138,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
 
     <FieldWrapper
       :icon-left="props.iconLeft"
-      :icon-right="props.iconRight"
+      :icon-right="ChevronDownIcon"
       :is-loading="props.isLoading"
       :is-error="isError"
       :is-disabled="props.isDisabled"
@@ -216,7 +215,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
       </UIRowLayout>
 
       <SelectDropdown
-        v-model="modelValue!"
+        v-model="modelValue"
         v-bind="props"
         @blur="emit('blur')"
         @next-page="emit('nextPage')"

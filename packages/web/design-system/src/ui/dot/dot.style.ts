@@ -12,7 +12,6 @@ export const dotVariants = tv({
       purple: 'bg-purple-500',
       success: 'bg-success-500',
       warning: 'bg-warning-500',
-      white: 'bg-white',
     },
     size: {
       lg: 'size-2',
