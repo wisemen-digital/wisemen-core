@@ -89,8 +89,8 @@ onBeforeUnmount(() => {
             @next="emit('nextPage')"
           >
             <template
-              v-for="item of filteredItems"
-              :key="JSON.stringify(item)"
+              v-for="(item, index) of filteredItems"
+              :key="item.type === 'option' ? `option-${displayFn(item.value as NonNullable<TValue>)}` : `sep-${index}`"
             >
               <AutocompleteOption
                 v-if="item.type === 'option'"

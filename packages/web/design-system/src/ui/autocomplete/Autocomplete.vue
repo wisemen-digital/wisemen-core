@@ -90,7 +90,6 @@ function onOpenChange(isOpen: boolean): void {
 useProvideAutocompleteContext({
   getItemConfig: props.getItemConfig ?? null,
   size: computed(() => props.size),
-  onSelectOption: () => {},
 })
 </script>
 

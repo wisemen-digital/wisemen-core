@@ -5,7 +5,6 @@ import {
   ComboboxItem as RekaComboboxItem,
   ComboboxItemIndicator as RekaComboboxItemIndicator,
 } from 'reka-ui'
-import { computed } from 'vue'
 
 import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
 import { useInjectAutocompleteContext } from '@/ui/autocomplete/autocomplete.context'
@@ -19,14 +18,8 @@ const props = withDefaults(defineProps<{
 })
 
 const {
-  getItemConfig,
-  size,
-  onSelectOption,
-} = useInjectAutocompleteContext({
-  getItemConfig: null,
-  size: computed<'md'>(() => 'md'),
-  onSelectOption: () => {},
-})
+  getItemConfig, size,
+} = useInjectAutocompleteContext()
 
 const isUsingKeyboard = useIsUsingKeyboard()
 </script>
@@ -42,7 +35,6 @@ const isUsingKeyboard = useIsUsingKeyboard()
       group/combobox-item flex w-full cursor-default items-center rounded-sm
       outline-none
     "
-    @select="onSelectOption"
   >
     <UIMenuItem
       :config="getItemConfig?.(props.value) ?? null"

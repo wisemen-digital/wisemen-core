@@ -5,7 +5,6 @@ import {
   ListboxItem as RekaListboxItem,
   ListboxItemIndicator as RekaListboxItemIndicator,
 } from 'reka-ui'
-import { computed } from 'vue'
 
 import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
 import { UIMenuItem } from '@/ui/menu-item'
@@ -22,11 +21,7 @@ const {
   getItemConfig,
   size,
   onSelectOption,
-} = useInjectSelectContext({
-  getItemConfig: null,
-  size: computed<'md'>(() => 'md'),
-  onSelectOption: () => {},
-})
+} = useInjectSelectContext()
 
 const isUsingKeyboard = useIsUsingKeyboard()
 </script>
