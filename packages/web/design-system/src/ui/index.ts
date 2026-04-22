@@ -1,5 +1,6 @@
 export * from './action-tooltip'
 export * from './adaptive-content'
+export * from './autocomplete'
 export * from './avatar'
 export * from './badge'
 export * from './breadcrumbs'
