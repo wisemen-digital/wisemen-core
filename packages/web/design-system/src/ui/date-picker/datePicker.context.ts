@@ -1,6 +1,8 @@
+import type { CalendarDate } from '@internationalized/date'
 import type {
   ComputedRef,
   InjectionKey,
+  Ref,
 } from 'vue'
 import {
   inject,
@@ -11,6 +13,8 @@ import type { DatePickerStyle } from '@/ui/date-picker/datePicker.style'
 
 interface DatePickerContext {
   datePickerStyle: ComputedRef<DatePickerStyle>
+  placeholder: Ref<CalendarDate>
+  setPlaceholder: (date: CalendarDate) => void
   onClose: () => void
 }
 

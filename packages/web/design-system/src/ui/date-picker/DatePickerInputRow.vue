@@ -17,8 +17,7 @@ const {
 } = useI18n()
 
 const {
-  datePickerStyle,
-  onClose,
+  datePickerStyle, onClose,
 } = useInjectDatePickerContext()
 </script>
 

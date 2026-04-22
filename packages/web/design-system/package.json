@@ -84,7 +84,7 @@
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "playwright": "catalog:test",
-    "reka-ui": "catalog:peer",
+    "reka-ui": "catalog:conflicts_vue_h2_9_6",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",

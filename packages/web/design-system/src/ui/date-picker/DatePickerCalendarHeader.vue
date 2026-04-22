@@ -5,7 +5,6 @@ import {
 } from '@wisemen/vue-core-icons'
 import {
   DatePickerHeader as RekaDatePickerHeader,
-  DatePickerHeading as RekaDatePickerHeading,
   DatePickerNext as RekaDatePickerNext,
   DatePickerPrev as RekaDatePickerPrev,
 } from 'reka-ui'
@@ -13,6 +12,8 @@ import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
 import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
+import DatePickerMonthPopover from '@/ui/date-picker/DatePickerMonthPopover.vue'
+import DatePickerYearPopover from '@/ui/date-picker/DatePickerYearPopover.vue'
 
 const i18n = useI18n()
 
@@ -32,7 +33,10 @@ const {
       />
     </RekaDatePickerPrev>
 
-    <RekaDatePickerHeading :class="datePickerStyle.heading()" />
+    <div class="flex items-center gap-xs">
+      <DatePickerMonthPopover />
+      <DatePickerYearPopover />
+    </div>
 
     <RekaDatePickerNext :as-child="true">
       <IconButton
