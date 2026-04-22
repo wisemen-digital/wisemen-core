@@ -59,7 +59,8 @@
     "reka-ui": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer"
+    "vue-router": "catalog:peer",
+    "formango": "catalog:peer"
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",

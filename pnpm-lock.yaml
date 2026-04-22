@@ -417,6 +417,9 @@ catalogs:
     '@typescript-eslint/parser':
       specifier: ^8.46.1
       version: 8.58.1
+    formango:
+      specifier: ^3.2.1
+      version: 3.2.2
     motion-v:
       specifier: '>=1.7.3'
       version: 1.9.0
@@ -2141,6 +2144,9 @@ importers:
       '@wisemen/vue-core-icons':
         specifier: workspace:*
         version: link:../icons
+      formango:
+        specifier: catalog:peer
+        version: 3.2.2(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
       tailwind-merge:
         specifier: catalog:style
         version: 3.4.0
@@ -9203,6 +9209,12 @@ packages:
   form-data@4.0.5:
     resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
+
+  formango@3.2.2:
+    resolution: {integrity: sha512-iXlWGOwPb+HBYv6vsKR0NhOBaeUVLqN3+Su7ZIs0ugazP8cscmUgmDumZ+5RfRQBrbMgHBIV+eP1t53fsy2SyA==}
+    peerDependencies:
+      vue: '>=3.5.22'
+      zod: '>=4.3.5'
 
   format@0.2.2:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
@@ -20487,6 +20499,13 @@ snapshots:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
+
+  formango@3.2.2(vue@3.5.27(typescript@5.9.3))(zod@4.3.5):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      clone-deep: 4.0.1
+      vue: 3.5.27(typescript@5.9.3)
+      zod: 4.3.5
 
   format@0.2.2: {}
 
