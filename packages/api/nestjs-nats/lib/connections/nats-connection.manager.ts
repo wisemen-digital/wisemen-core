@@ -7,20 +7,11 @@ export type NamedConnectionOptions = ConnectionOptions & { name: string }
 export class NatsConnectionManager {
   private connections: Map<string, NatsConnection> = new Map()
 
-  constructor (private defaultConnectionOptions?: NamedConnectionOptions) {}
-
   /**
    * @param options name must be unique —
    * using the same connection name will reuse the same connection even when options differ
-   * @default default connection options
    */
-  async connect (options?: NamedConnectionOptions): Promise<NatsConnection> {
-    options ??= this.defaultConnectionOptions
-
-    if (options === undefined) {
-      throw new Error('No connection nor default connection options provided')
-    }
-
+  async connect (options: NamedConnectionOptions): Promise<NatsConnection> {
     const existingConnection = this.connections.get(options.name)
 
     if (existingConnection !== undefined) {
