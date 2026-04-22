@@ -2,12 +2,14 @@ import assert from 'assert'
 import { DynamicModule, Module } from '@nestjs/common'
 import { JobModule } from '../jobs/job.module.js'
 import { PgBossClientModule } from '../client/pgboss-client.module.js'
-import { PgBossWorker } from './pgboss-worker.js'
+import { ProvidersExplorerModule } from '../providers/providers-explorer.module.js'
 import { ConfigurableModuleClass, PgbossWorkerModuleAsyncOptions, PgbossWorkerModuleOptions } from './pgboss-worker.module-definition.js'
+import { PgbossBouncerRegistry } from './pgboss-bouncer.registry.js'
+import { PgbossWorkerApp } from './pgboss-worker-app.js'
 
 @Module({
-  imports: [JobModule],
-  providers: [PgBossWorker]
+  imports: [JobModule, ProvidersExplorerModule],
+  providers: [PgbossBouncerRegistry, PgbossWorkerApp]
 })
 export class PgBossWorkerModule extends ConfigurableModuleClass {
   static override forRoot (options: PgbossWorkerModuleOptions): DynamicModule {
@@ -20,10 +22,6 @@ export class PgBossWorkerModule extends ConfigurableModuleClass {
     })
 
     imports.push(clientModule)
-
-    if (options.bouncerModule) {
-      imports.push(options.bouncerModule)
-    }
 
     return { ...module, imports }
   }
@@ -47,10 +45,6 @@ export class PgBossWorkerModule extends ConfigurableModuleClass {
     })
 
     imports.push(clientModule)
-
-    if (options.bouncerModule) {
-      imports.push(options.bouncerModule)
-    }
 
     return { ...module, imports }
   }
