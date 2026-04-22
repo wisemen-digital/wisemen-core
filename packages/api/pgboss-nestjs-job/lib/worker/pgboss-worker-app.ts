@@ -15,16 +15,22 @@ export class PgbossWorkerApp implements OnModuleInit, OnModuleDestroy {
     private bouncerRegistry: PgbossBouncerRegistry,
     private jobRegistry: JobRegistry,
     @Inject(MODULE_OPTIONS_TOKEN) private options: PgbossWorkerModuleOptions
-  ) {}
+  ) { }
 
   async onModuleInit (): Promise<void> {
-    for (const queueOptions of this.options.queues) {
-      const bouncer = await this.bouncerRegistry.getBouncer(queueOptions.queueName)
-      const worker = new PgBossWorker(queueOptions, bouncer, this.client, this.jobRegistry)
+    try {
+      for (const queueOptions of this.options.queues) {
+        const bouncer = await this.bouncerRegistry.getBouncer(queueOptions.queueName)
+        const worker = new PgBossWorker(queueOptions, bouncer, this.client, this.jobRegistry)
 
-      await this.client.createQueue(queueOptions.queueName, { policy: 'stately' })
-      worker.start()
-      this.logger.log(`${queueOptions.queueName} worker started`)
+        await this.client.createQueue(queueOptions.queueName, { policy: 'stately' })
+        worker.start()
+        this.workers.push(worker)
+        this.logger.log(`${queueOptions.queueName} worker started`)
+      }
+    } catch (e) {
+      await Promise.allSettled(this.workers.map(w => w.stop()))
+      throw e
     }
   }
 
