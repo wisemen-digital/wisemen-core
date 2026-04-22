@@ -12,6 +12,7 @@ import { Temporal } from 'temporal-polyfill'
 import {
   computed,
   ref,
+  shallowRef,
   useAttrs,
   useId,
 } from 'vue'
@@ -69,7 +70,15 @@ const datePickerStyle = computed(() => createDatePickerStyle({
   size: props.size,
 }))
 
+const todayDate = Temporal.Now.plainDateISO()
+const calendarPlaceholder = shallowRef<CalendarDate>(
+  new CalendarDate(todayDate.year, todayDate.month, todayDate.day),
+)
+
 useProvideDatePickerContext({
+  datePickerStyle,
+  placeholder: calendarPlaceholder,
+  setPlaceholder: (date) => { calendarPlaceholder.value = date },
   onClose: () => { isOpen.value = false },
 })
 
@@ -163,6 +172,7 @@ const displayValue = computed<string>(() => {
       :id="id"
       v-model="calendarValue"
       v-model:open="isOpen"
+      v-model:placeholder="calendarPlaceholder"
       :week-starts-on="getWeekStartsOn(locale)"
       :disabled="props.isDisabled"
       :max-value="maxDateValue"
