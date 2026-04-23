@@ -1,5 +1,5 @@
-import { CalendarDate } from '@internationalized/date'
 import type { DateValue } from '@internationalized/date'
+import { CalendarDate } from '@internationalized/date'
 import { useBreakpoints } from '@vueuse/core'
 import type { DateRange } from 'reka-ui'
 import { Temporal } from 'temporal-polyfill'
@@ -22,10 +22,16 @@ interface UseDateRangePickerOptions {
   modelValue: Ref<DateRangeValue | null>
 }
 
-export function useDateRangePicker({ modelValue, minDate, maxDate }: UseDateRangePickerOptions) {
+export function useDateRangePicker({
+  maxDate,
+  minDate,
+  modelValue,
+}: UseDateRangePickerOptions) {
   const locale = navigator.language
 
-  const screen = useBreakpoints({ md: 768 })
+  const screen = useBreakpoints({
+    md: 768,
+  })
   const isSingleMonth = screen.smaller('md')
 
   const todayDate = Temporal.Now.plainDateISO()
@@ -64,9 +70,12 @@ export function useDateRangePicker({ modelValue, minDate, maxDate }: UseDateRang
     else if (value.start == null && value.end == null) {
       modelValue.value = null
     }
-  }, { deep: true })
+  }, {
+    deep: true,
+  })
 
-  function setPreset(range: { end: Temporal.PlainDate; start: Temporal.PlainDate } | null): void {
+  function setPreset(range: { end: Temporal.PlainDate
+    start: Temporal.PlainDate } | null): void {
     if (range === null) {
       draftValue.value = {
         end: undefined,
@@ -105,9 +114,9 @@ export function useDateRangePicker({ modelValue, minDate, maxDate }: UseDateRang
   })
 
   return {
+    isSingleMonth,
     calendarPlaceholder,
     draftValue,
-    isSingleMonth,
     locale,
     maxDateValue,
     minDateValue,

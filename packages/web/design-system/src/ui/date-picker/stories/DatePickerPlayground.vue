@@ -23,8 +23,5 @@ const modelValue = ref<Temporal.PlainDate | null>(null)
       :max-date="props.maxDate ?? null"
       class="overflow-hidden rounded-2xl border border-secondary shadow-lg"
     />
-    <p class="text-sm text-secondary">
-      Selected: {{ modelValue?.toString() ?? 'None' }}
-    </p>
   </div>
 </template>

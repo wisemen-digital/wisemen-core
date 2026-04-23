@@ -8,7 +8,7 @@ import {
   DateRangePickerRoot as RekaDateRangePickerRoot,
   DateRangePickerTrigger as RekaDateRangePickerTrigger,
 } from 'reka-ui'
-import { Temporal } from 'temporal-polyfill'
+import type { Temporal } from 'temporal-polyfill'
 import {
   computed,
   ref,

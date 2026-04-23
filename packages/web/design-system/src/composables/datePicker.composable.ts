@@ -13,7 +13,11 @@ interface UseDatePickerOptions {
   modelValue: Ref<Temporal.PlainDate | null>
 }
 
-export function useDatePicker({ modelValue, minDate, maxDate }: UseDatePickerOptions) {
+export function useDatePicker({
+  maxDate,
+  minDate,
+  modelValue,
+}: UseDatePickerOptions) {
   const locale = navigator.language
 
   const todayDate = Temporal.Now.plainDateISO()
@@ -72,12 +76,12 @@ export function useDatePicker({ modelValue, minDate, maxDate }: UseDatePickerOpt
   })
 
   return {
+    plainDateToCalendarDate,
     calendarPlaceholder,
     calendarValue,
     locale,
     maxDateValue,
     minDateValue,
-    plainDateToCalendarDate,
     setPlaceholder,
   }
 }

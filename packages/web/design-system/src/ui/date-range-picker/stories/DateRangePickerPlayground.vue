@@ -30,9 +30,5 @@ const modelValue = ref<DateRangePickerRange | null>(null)
         :show-presets="props.showPresets"
       />
     </div>
-    <p class="text-sm text-secondary">
-      Start: {{ modelValue?.start?.toString() ?? 'None' }} —
-      End: {{ modelValue?.end?.toString() ?? 'None' }}
-    </p>
   </div>
 </template>

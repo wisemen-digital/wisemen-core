@@ -18,16 +18,16 @@ export interface DateRangeFieldProps extends Input, InputWrapper, FieldWrapper {
    */
   minDate?: Temporal.PlainDate | null
   /**
+   * Whether to hide the calendar picker trigger.
+   * @default false
+   */
+  isPickerHidden?: boolean
+  /**
    * The placeholder text shown when no date range is selected.
    *
    * @default null
    */
   placeholder?: string | null
-  /**
-   * Whether to hide the calendar picker trigger.
-   * @default false
-   */
-  isPickerHidden?: boolean
   /**
    * The size of the date range picker trigger.
    * @default 'md'
