@@ -116,7 +116,7 @@ export const createIconButtonStyle = tv({
       'input': {
         icon: `
           text-fg-quaternary
-          group-disabled/button:text-disabled
+          group-disabled/button:text-disabled/50
         `,
         loader: `
           text-fg-quaternary

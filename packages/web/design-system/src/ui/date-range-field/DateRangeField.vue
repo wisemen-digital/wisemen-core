@@ -297,7 +297,7 @@ useProvideDateRangeFieldContext({
         >
           <RekaDateRangePickerTrigger :as-child="true">
             <UIIconButton
-              :disabled="props.isDisabled || props.isReadonly"
+              :is-disabled="props.isDisabled || props.isReadonly"
               :icon="CalendarIcon"
               :label="t('component.date_range_picker.open')"
               size="xs"
