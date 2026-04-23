@@ -95,6 +95,7 @@
     "vitest": "catalog:test",
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
+    "formango": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }
