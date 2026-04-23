@@ -1,66 +1,78 @@
 <script setup lang="ts">
+import type { CalendarDate } from '@internationalized/date'
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from '@wisemen/vue-core-icons'
-import type { DateValue } from 'reka-ui'
 import {
   DateRangePickerNext as RekaDateRangePickerNext,
   DateRangePickerPrev as RekaDateRangePickerPrev,
 } from 'reka-ui'
-import { Temporal } from 'temporal-polyfill'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
-
-const props = defineProps<{
-  grid: any[]
-}>()
+import DatePickerMonthPopover from '@/ui/date-picker/DatePickerMonthPopover.vue'
+import DatePickerYearPopover from '@/ui/date-picker/DatePickerYearPopover.vue'
+import { useInjectDateRangePickerContext } from '@/ui/date-range-picker/dateRangePicker.context'
 
 const i18n = useI18n()
 
-const locale = navigator.language
+const {
+  placeholder, setPlaceholder,
+} = useInjectDateRangePickerContext()
 
-function formatMonthYear(date: DateValue): string {
-  return Temporal.PlainDate.from({
-    day: 1,
-    month: date.month,
-    year: date.year,
-  }).toLocaleString(locale, {
-    month: 'long',
-    year: 'numeric',
-  })
+const rightPlaceholder = computed<CalendarDate>(
+  () => placeholder.value.add({
+    months: 1,
+  }) as CalendarDate,
+)
+
+function setRightPlaceholder(date: CalendarDate): void {
+  setPlaceholder(date.subtract({
+    months: 1,
+  }) as CalendarDate)
 }
 </script>
 
 <template>
   <div class="flex items-center justify-between p-xl pb-0">
-    <RekaDateRangePickerPrev :as-child="true">
-      <IconButton
-        :icon="ChevronLeftIcon"
-        :label="i18n.t('component.date_range_picker.previous_month')"
-        size="md"
-        variant="tertiary"
+    <div class="flex items-center gap-xs">
+      <RekaDateRangePickerPrev :as-child="true">
+        <IconButton
+          :icon="ChevronLeftIcon"
+          :label="i18n.t('component.date_range_picker.previous_month')"
+          size="md"
+          variant="tertiary"
+        />
+      </RekaDateRangePickerPrev>
+      <DatePickerMonthPopover
+        :placeholder="placeholder"
+        @update:placeholder="setPlaceholder"
       />
-    </RekaDateRangePickerPrev>
-
-    <div class="flex flex-1 justify-around">
-      <span
-        v-for="month in props.grid"
-        :key="month.value.toString()"
-        class="text-sm font-semibold text-primary"
-      >
-        {{ formatMonthYear(month.value) }}
-      </span>
+      <DatePickerYearPopover
+        :placeholder="placeholder"
+        @update:placeholder="setPlaceholder"
+      />
     </div>
 
-    <RekaDateRangePickerNext :as-child="true">
-      <IconButton
-        :icon="ChevronRightIcon"
-        :label="i18n.t('component.date_range_picker.next_month')"
-        size="md"
-        variant="tertiary"
+    <div class="flex items-center gap-xs">
+      <DatePickerMonthPopover
+        :placeholder="rightPlaceholder"
+        @update:placeholder="setRightPlaceholder"
       />
-    </RekaDateRangePickerNext>
+      <DatePickerYearPopover
+        :placeholder="rightPlaceholder"
+        @update:placeholder="setRightPlaceholder"
+      />
+      <RekaDateRangePickerNext :as-child="true">
+        <IconButton
+          :icon="ChevronRightIcon"
+          :label="i18n.t('component.date_range_picker.next_month')"
+          size="md"
+          variant="tertiary"
+        />
+      </RekaDateRangePickerNext>
+    </div>
   </div>
 </template>

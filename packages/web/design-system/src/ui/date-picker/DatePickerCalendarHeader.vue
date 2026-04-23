@@ -11,10 +11,15 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
+import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
 import DatePickerMonthPopover from '@/ui/date-picker/DatePickerMonthPopover.vue'
 import DatePickerYearPopover from '@/ui/date-picker/DatePickerYearPopover.vue'
 
 const i18n = useI18n()
+
+const {
+  placeholder, setPlaceholder,
+} = useInjectDatePickerContext()
 </script>
 
 <template>
@@ -29,8 +34,14 @@ const i18n = useI18n()
     </RekaDatePickerPrev>
 
     <div class="flex items-center gap-xs">
-      <DatePickerMonthPopover />
-      <DatePickerYearPopover />
+      <DatePickerMonthPopover
+        :placeholder="placeholder"
+        @update:placeholder="setPlaceholder"
+      />
+      <DatePickerYearPopover
+        :placeholder="placeholder"
+        @update:placeholder="setPlaceholder"
+      />
     </div>
 
     <RekaDatePickerNext :as-child="true">

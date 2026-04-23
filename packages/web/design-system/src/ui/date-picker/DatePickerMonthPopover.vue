@@ -18,14 +18,16 @@ import {
   ref,
 } from 'vue'
 
-import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
+import { datePickerMonthPopoverStyle } from '@/ui/date-picker/datePickerMonthPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
-const {
-  datePickerStyle,
-  placeholder,
-  setPlaceholder,
-} = useInjectDatePickerContext()
+const props = defineProps<{
+  placeholder: CalendarDate
+}>()
+
+const emit = defineEmits<{
+  'update:placeholder': [value: CalendarDate]
+}>()
 
 const locale = navigator.language
 
@@ -35,14 +37,14 @@ const monthLabel = computed<string>(() =>
   new Intl.DateTimeFormat(locale, {
     month: 'long',
   })
-    .format(new Date(placeholder.value.year, placeholder.value.month - 1, 1)))
+    .format(new Date(props.placeholder.year, props.placeholder.month - 1, 1)))
 
 function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
   if (value == null || Array.isArray(value)) {
     return
   }
 
-  setPlaceholder(new CalendarDate(value.year, value.month, 1))
+  emit('update:placeholder', new CalendarDate(value.year, value.month, 1))
   monthOpen.value = false
 }
 </script>
@@ -51,7 +53,7 @@ function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
   <PopoverRoot v-model:open="monthOpen">
     <PopoverTrigger :as-child="true">
       <button
-        :class="datePickerStyle.headingTrigger()"
+        :class="datePickerMonthPopoverStyle.headingTrigger()"
         type="button"
       >
         {{ monthLabel }}
@@ -60,33 +62,33 @@ function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
     <PopoverPortal>
       <ThemeProvider :as-child="true">
         <PopoverContent
-          :class="datePickerStyle.pickerPopover()"
+          :class="datePickerMonthPopoverStyle.pickerPopover()"
           :side-offset="8"
           align="center"
         >
           <MonthPickerRoot
             v-slot="{ grid }"
             :locale="locale"
-            :model-value="placeholder"
+            :model-value="props.placeholder"
             @update:model-value="onMonthSelect"
           >
-            <MonthPickerGrid :class="datePickerStyle.pickerGrid()">
-              <MonthPickerGridBody :class="datePickerStyle.pickerGridBody()">
+            <MonthPickerGrid :class="datePickerMonthPopoverStyle.pickerGrid()">
+              <MonthPickerGridBody :class="datePickerMonthPopoverStyle.pickerGridBody()">
                 <MonthPickerGridRow
                   v-for="(row, rowIndex) in grid.rows"
                   :key="rowIndex"
-                  :class="datePickerStyle.pickerGridRow()"
+                  :class="datePickerMonthPopoverStyle.pickerGridRow()"
                 >
                   <MonthPickerCell
                     v-for="month in row"
                     :key="month.toString()"
-                    :class="datePickerStyle.pickerCell()"
+                    :class="datePickerMonthPopoverStyle.pickerCell()"
                     :date="month"
                   >
                     <MonthPickerCellTrigger
                       v-slot="{ monthValue }"
                       :month="month"
-                      :class="datePickerStyle.pickerCellTrigger()"
+                      :class="datePickerMonthPopoverStyle.pickerCellTrigger()"
                     >
                       {{ monthValue }}
                     </MonthPickerCellTrigger>

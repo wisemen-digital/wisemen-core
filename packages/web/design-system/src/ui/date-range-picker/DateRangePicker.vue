@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { DateValue } from '@internationalized/date'
 import { CalendarDate } from '@internationalized/date'
-import { CalendarIcon } from '@wisemen/vue-core-icons'
+import {
+  CalendarIcon,
+  ChevronLeftIcon,
+} from '@wisemen/vue-core-icons'
 import type { DateRange } from 'reka-ui'
 import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerContent as RekaDateRangePickerContent,
+  DateRangePickerPrev as RekaDateRangePickerPrev,
   DateRangePickerRoot as RekaDateRangePickerRoot,
   DateRangePickerTrigger as RekaDateRangePickerTrigger,
 } from 'reka-ui'
@@ -14,10 +18,12 @@ import type { Ref } from 'vue'
 import {
   computed,
   ref,
+  shallowRef,
   useAttrs,
   useId,
   watch,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useInput } from '@/composables/input.composable'
 import {
@@ -25,6 +31,7 @@ import {
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
+import IconButton from '@/ui/button/icon/IconButton.vue'
 import { useProvideDateRangePickerContext } from '@/ui/date-range-picker/dateRangePicker.context'
 import type { DateRangePickerProps } from '@/ui/date-range-picker/dateRangePicker.props'
 import { createDateRangePickerStyle } from '@/ui/date-range-picker/dateRangePicker.style'
@@ -66,6 +73,8 @@ const id = props.id ?? useId()
 
 const attrs = useAttrs()
 
+const i18n = useI18n()
+
 const {
   isError,
   ariaDescribedBy,
@@ -94,6 +103,11 @@ const draftValue = ref<DateRange>({
   end: undefined,
   start: undefined,
 }) as Ref<DateRange>
+
+const todayDate = Temporal.Now.plainDateISO()
+const calendarPlaceholder = shallowRef<CalendarDate>(
+  new CalendarDate(todayDate.year, todayDate.month, 1),
+)
 
 watch(isOpen, (open) => {
   if (open) {
@@ -180,6 +194,8 @@ const displayValue = computed<string>(() => {
 
 useProvideDateRangePickerContext({
   draftValue,
+  placeholder: calendarPlaceholder,
+  setPlaceholder: (date) => { calendarPlaceholder.value = date },
   setPreset,
   onApply,
   onCancel,
@@ -212,6 +228,7 @@ useProvideDateRangePickerContext({
       :id="id"
       v-model="draftValue"
       v-model:open="isOpen"
+      v-model:placeholder="calendarPlaceholder"
       :week-starts-on="getWeekStartsOn(locale)"
       :disabled="props.isDisabled"
       :max-value="maxDateValue"
@@ -276,15 +293,33 @@ useProvideDateRangePickerContext({
               <DateRangePickerPresets />
 
               <div class="flex min-w-0 flex-1 flex-col gap-lg">
-                <DateRangePickerCalendarHeader :grid="grid" />
+                <DateRangePickerCalendarHeader />
 
                 <div class="flex gap-xl p-xl">
-                  <DateRangePickerCalendarGrid
-                    v-for="month in grid"
+                  <template
+                    v-for="(month, index) in grid"
                     :key="month.value.toString()"
-                    :month="month"
-                    :week-days="weekDays"
-                  />
+                  >
+                    <div class="flex flex-col">
+                      <div class="w-full border p-xl">
+                        <RekaDateRangePickerPrev
+                          v-if="index === 0"
+                          :as-child="true"
+                        >
+                          <IconButton
+                            :icon="ChevronLeftIcon"
+                            :label="i18n.t('component.date_range_picker.previous_month')"
+                            size="md"
+                            variant="tertiary"
+                          />
+                        </RekaDateRangePickerPrev>
+                      </div>
+                      <DateRangePickerCalendarGrid
+                        :month="month"
+                        :week-days="weekDays"
+                      />
+                    </div>
+                  </template>
                 </div>
 
                 <DateRangePickerInputRow />
