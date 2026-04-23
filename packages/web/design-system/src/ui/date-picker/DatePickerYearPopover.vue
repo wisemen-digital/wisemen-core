@@ -72,6 +72,7 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
         <PopoverContent
           :class="datePickerYearPopoverStyle.pickerPopover()"
           :side-offset="8"
+          :collision-padding="10"
           align="center"
         >
           <YearPickerRoot

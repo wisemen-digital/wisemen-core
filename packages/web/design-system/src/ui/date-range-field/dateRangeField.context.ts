@@ -10,7 +10,7 @@ import {
   provide,
 } from 'vue'
 
-interface DateRangePickerContext {
+interface DateRangeFieldContext {
   draftValue: Ref<DateRange>
   placeholder: Ref<CalendarDate>
   setPlaceholder: (date: CalendarDate) => void
@@ -20,17 +20,17 @@ interface DateRangePickerContext {
   onCancel: () => void
 }
 
-export const dateRangePickerContextKey: InjectionKey<DateRangePickerContext> = Symbol('DateRangePickerContextKey')
+export const dateRangeFieldContextKey: InjectionKey<DateRangeFieldContext> = Symbol('DateRangeFieldContextKey')
 
-export function useProvideDateRangePickerContext(context: DateRangePickerContext): void {
-  provide(dateRangePickerContextKey, context)
+export function useProvideDateRangeFieldContext(context: DateRangeFieldContext): void {
+  provide(dateRangeFieldContextKey, context)
 }
 
-export function useInjectDateRangePickerContext(): DateRangePickerContext {
-  const context = inject(dateRangePickerContextKey, null)
+export function useInjectDateRangeFieldContext(): DateRangeFieldContext {
+  const context = inject(dateRangeFieldContextKey, null)
 
   if (context === null) {
-    throw new Error('DateRangePickerContext not provided')
+    throw new Error('DateRangeFieldContext not provided')
   }
 
   return context

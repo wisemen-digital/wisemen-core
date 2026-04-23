@@ -55,5 +55,5 @@ export interface IconButtonProps extends DisabledWithReason {
    * Visual style variant of the button.
    * @default 'primary'
    */
-  variant?: 'destructive-primary' | 'destructive-tertiary' | 'primary' | 'secondary' | 'tertiary'
+  variant?: 'destructive-primary' | 'destructive-tertiary' | 'input' | 'primary' | 'secondary' | 'tertiary'
 }

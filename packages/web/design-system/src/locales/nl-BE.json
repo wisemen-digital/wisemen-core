@@ -14,6 +14,7 @@
   "component.date_range_picker.apply": "Toepassen",
   "component.date_range_picker.cancel": "Annuleren",
   "component.date_range_picker.next_month": "Volgende maand",
+  "component.date_range_picker.open": "Datumkiezer openen",
   "component.date_range_picker.preset.all_time": "Altijd",
   "component.date_range_picker.preset.last_month": "Vorige maand",
   "component.date_range_picker.preset.last_week": "Vorige week",

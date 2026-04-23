@@ -14,6 +14,7 @@
   "component.date_range_picker.apply": "Apply",
   "component.date_range_picker.cancel": "Cancel",
   "component.date_range_picker.next_month": "Next month",
+  "component.date_range_picker.open": "Open date picker",
   "component.date_range_picker.preset.all_time": "All time",
   "component.date_range_picker.preset.last_month": "Last month",
   "component.date_range_picker.preset.last_week": "Last week",

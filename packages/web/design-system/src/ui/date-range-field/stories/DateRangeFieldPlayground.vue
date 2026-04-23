@@ -2,9 +2,9 @@
 import type { Temporal } from 'temporal-polyfill'
 import { ref } from 'vue'
 
-import type { DateRangePickerProps } from '@/ui/date-range-picker/dateRangePicker.props'
-import type { DateRangePickerRange } from '@/ui/date-range-picker/DateRangePicker.vue'
-import DateRangePicker from '@/ui/date-range-picker/DateRangePicker.vue'
+import type { DateRangeFieldProps } from '@/ui/date-range-field/dateRangeField.props'
+import type { DateRangeFieldRange } from '@/ui/date-range-field/DateRangeField.vue'
+import DateRangeField from '@/ui/date-range-field/DateRangeField.vue'
 
 const props = withDefaults(defineProps<{
   maxDate?: Temporal.PlainDate | null
@@ -14,12 +14,12 @@ const props = withDefaults(defineProps<{
   isReadonly?: boolean
   isRequired?: boolean
   disabledReason?: string
-  errorMessage?: DateRangePickerProps['errorMessage']
+  errorMessage?: DateRangeFieldProps['errorMessage']
   hideErrorMessage?: boolean
-  hint?: DateRangePickerProps['hint']
+  hint?: DateRangeFieldProps['hint']
   label?: string
   placeholder?: string
-  size?: DateRangePickerProps['size']
+  size?: DateRangeFieldProps['size']
 }>(), {
   isDisabled: false,
   isLoading: false,
@@ -33,12 +33,12 @@ const props = withDefaults(defineProps<{
   size: 'md',
 })
 
-const modelValue = ref<DateRangePickerRange | null>(null)
+const modelValue = ref<DateRangeFieldRange | null>(null)
 </script>
 
 <template>
   <div class="flex items-center gap-md">
-    <DateRangePicker
+    <DateRangeField
       v-model="modelValue"
       :error-message="props.errorMessage"
       :hide-error-message="props.hideErrorMessage"

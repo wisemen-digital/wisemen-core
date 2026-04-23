@@ -3,7 +3,7 @@ import { Temporal } from 'temporal-polyfill'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useInjectDateRangePickerContext } from '@/ui/date-range-picker/dateRangePicker.context'
+import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
 
 interface Preset {
   key: string
@@ -16,7 +16,7 @@ const i18n = useI18n()
 
 const {
   draftValue, setPreset,
-} = useInjectDateRangePickerContext()
+} = useInjectDateRangeFieldContext()
 
 const presets = computed<Preset[]>(() => {
   const today = Temporal.Now.plainDateISO()
@@ -169,14 +169,14 @@ function isActivePreset(preset: Preset): boolean {
 
 <template>
   <div
-    class="flex w-32 shrink-0 flex-col gap-xxs border-r border-secondary p-xl"
+    class="flex w-32 shrink-0 flex-col gap-xs border-r border-secondary p-lg"
   >
     <button
       v-for="preset in presets"
       :key="preset.key"
       :data-active="isActivePreset(preset)"
       class="
-        flex w-full cursor-pointer items-center rounded-lg px-sm py-xs text-left
+        flex w-full cursor-pointer items-center rounded-sm px-lg py-xs text-left
         text-xs font-medium text-secondary transition-colors duration-100
         outline-none
         hover:bg-primary-hover

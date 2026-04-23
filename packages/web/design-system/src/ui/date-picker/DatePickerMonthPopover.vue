@@ -50,7 +50,9 @@ function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
 </script>
 
 <template>
-  <PopoverRoot v-model:open="monthOpen">
+  <PopoverRoot
+    v-model:open="monthOpen"
+  >
     <PopoverTrigger :as-child="true">
       <button
         :class="datePickerMonthPopoverStyle.headingTrigger()"
@@ -64,6 +66,7 @@ function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
         <PopoverContent
           :class="datePickerMonthPopoverStyle.pickerPopover()"
           :side-offset="8"
+          :collision-padding="10"
           align="center"
         >
           <MonthPickerRoot

@@ -4,10 +4,10 @@ import type {
 } from '@storybook/vue3-vite'
 import { Temporal } from 'temporal-polyfill'
 
-import DateRangePickerPlayground from './DateRangePickerPlayground.vue'
+import DateRangeFieldPlayground from './DateRangeFieldPlayground.vue'
 
 const meta = {
-  title: 'Components/DateRangePicker',
+  title: 'Components/DateRangeField',
   argTypes: {
     maxDate: {
       control: 'text',
@@ -65,8 +65,8 @@ const meta = {
   tags: [
     'autodocs',
   ],
-  component: DateRangePickerPlayground,
-} satisfies Meta<typeof DateRangePickerPlayground>
+  component: DateRangeFieldPlayground,
+} satisfies Meta<typeof DateRangeFieldPlayground>
 
 export default meta
 type Story = StoryObj<typeof meta>

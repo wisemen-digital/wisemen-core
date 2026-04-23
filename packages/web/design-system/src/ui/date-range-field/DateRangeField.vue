@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import type { DateValue } from '@internationalized/date'
 import { CalendarDate } from '@internationalized/date'
-import {
-  CalendarIcon,
-  ChevronLeftIcon,
-} from '@wisemen/vue-core-icons'
+import { useBreakpoints } from '@vueuse/core'
+import { CalendarIcon } from '@wisemen/vue-core-icons'
 import type { DateRange } from 'reka-ui'
 import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerContent as RekaDateRangePickerContent,
-  DateRangePickerPrev as RekaDateRangePickerPrev,
+  DateRangePickerField as RekaDateRangePickerField,
+  DateRangePickerInput as RekaDateRangePickerInput,
   DateRangePickerRoot as RekaDateRangePickerRoot,
   DateRangePickerTrigger as RekaDateRangePickerTrigger,
 } from 'reka-ui'
@@ -31,14 +30,14 @@ import {
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
-import IconButton from '@/ui/button/icon/IconButton.vue'
-import { useProvideDateRangePickerContext } from '@/ui/date-range-picker/dateRangePicker.context'
-import type { DateRangePickerProps } from '@/ui/date-range-picker/dateRangePicker.props'
-import { createDateRangePickerStyle } from '@/ui/date-range-picker/dateRangePicker.style'
-import DateRangePickerCalendarGrid from '@/ui/date-range-picker/DateRangePickerCalendarGrid.vue'
-import DateRangePickerCalendarHeader from '@/ui/date-range-picker/DateRangePickerCalendarHeader.vue'
-import DateRangePickerInputRow from '@/ui/date-range-picker/DateRangePickerInputRow.vue'
-import DateRangePickerPresets from '@/ui/date-range-picker/DateRangePickerPresets.vue'
+import { UIIconButton } from '@/ui/button'
+import { useProvideDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
+import type { DateRangeFieldProps } from '@/ui/date-range-field/dateRangeField.props'
+import { createDateRangeFieldStyle } from '@/ui/date-range-field/dateRangeField.style'
+import DateRangeFieldCalendarGrid from '@/ui/date-range-field/DateRangeFieldCalendarGrid.vue'
+import DateRangeFieldCalendarHeader from '@/ui/date-range-field/DateRangeFieldCalendarHeader.vue'
+import DateRangeFieldInputRow from '@/ui/date-range-field/DateRangeFieldInputRow.vue'
+import DateRangeFieldPresets from '@/ui/date-range-field/DateRangeFieldPresets.vue'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
@@ -48,24 +47,28 @@ defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<DateRangePickerProps>(), {
+const props = withDefaults(defineProps<DateRangeFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
   ...INPUT_FIELD_DEFAULTS,
   maxDate: null,
   minDate: null,
-  placeholder: 'Select date range',
+  placeholder: null,
   size: 'md',
 })
 
-export interface DateRangePickerRange {
+export interface DateRangeFieldRange {
   end: Temporal.PlainDate | null
   start: Temporal.PlainDate | null
 }
 
-const modelValue = defineModel<DateRangePickerRange | null>({
+const modelValue = defineModel<DateRangeFieldRange | null>({
   required: true,
 })
+
+const {
+  t,
+} = useI18n()
 
 const locale = navigator.language
 
@@ -73,17 +76,23 @@ const id = props.id ?? useId()
 
 const attrs = useAttrs()
 
-const i18n = useI18n()
-
 const {
   isError,
   ariaDescribedBy,
   ariaInvalid,
 } = useInput(id, props)
 
+const screen = useBreakpoints({
+  md: 768,
+})
+
+const isSingleMonth = screen.smaller('md')
+
 const isOpen = ref(false)
 
-const dateRangePickerStyle = computed(() => createDateRangePickerStyle({
+const rangeSeparator = '–'
+
+const dateRangeFieldStyle = computed(() => createDateRangeFieldStyle({
   size: props.size,
 }))
 
@@ -116,6 +125,20 @@ watch(isOpen, (open) => {
       start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
     }
   }
+})
+
+watch(draftValue, (value) => {
+  if (value.start != null && value.end != null) {
+    modelValue.value = {
+      end: calendarDateToPlainDate(value.end),
+      start: calendarDateToPlainDate(value.start),
+    }
+  }
+  else if (value.start == null && value.end == null) {
+    modelValue.value = null
+  }
+}, {
+  deep: true,
 })
 
 function onApply(): void {
@@ -173,26 +196,7 @@ const maxDateValue = computed<DateValue | undefined>(() => {
   return plainDateToCalendarDate(props.maxDate) as DateValue
 })
 
-function formatDate(date: Temporal.PlainDate): string {
-  return date.toLocaleString(locale, {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  })
-}
-
-const displayValue = computed<string>(() => {
-  if (modelValue.value?.start == null && modelValue.value?.end == null) {
-    return ''
-  }
-
-  const start = modelValue.value?.start != null ? formatDate(modelValue.value.start) : '…'
-  const end = modelValue.value?.end != null ? formatDate(modelValue.value.end) : '…'
-
-  return `${start} – ${end}`
-})
-
-useProvideDateRangePickerContext({
+useProvideDateRangeFieldContext({
   draftValue,
   placeholder: calendarPlaceholder,
   setPlaceholder: (date) => { calendarPlaceholder.value = date },
@@ -236,39 +240,89 @@ useProvideDateRangePickerContext({
       :readonly="props.isReadonly"
       :required="props.isRequired"
       :locale="locale"
-      :number-of-months="2"
+      :number-of-months="isSingleMonth ? 1 : 2"
       :close-on-select="false"
     >
-      <RekaDateRangePickerTrigger :as-child="true">
-        <FieldWrapper
-          :is-disabled="props.isDisabled"
-          :is-error="isError"
-          :is-loading="props.isLoading"
-          :is-readonly="props.isReadonly"
-          :size="props.size"
+      <FieldWrapper
+        :is-disabled="props.isDisabled"
+        :is-error="isError"
+        :is-loading="props.isLoading"
+        :is-readonly="props.isReadonly"
+        :size="props.size"
+      >
+        <RekaDateRangePickerField
+          :id="id"
+          v-slot="{ segments }"
+          v-bind="attrs"
+          :aria-describedby="ariaDescribedBy"
+          :aria-invalid="ariaInvalid"
+          :aria-required="props.isRequired || undefined"
+          :class="dateRangeFieldStyle.field()"
         >
-          <button
-            v-bind="attrs"
-            :id="id"
-            :aria-describedby="ariaDescribedBy"
-            :aria-invalid="ariaInvalid"
-            :aria-required="props.isRequired || undefined"
-            :data-placeholder="displayValue === '' || undefined"
-            :disabled="props.isDisabled || props.isReadonly"
-            :class="dateRangePickerStyle.trigger()"
-            type="button"
-            data-field-wrapper
+          <template
+            v-for="{ part, value } in segments.start"
+            :key="`start-${part}`"
           >
-            <CalendarIcon
-              class="
-                size-3.5 shrink-0 text-fg-quaternary
-                group-data-disabled/field-wrapper:text-fg-disabled-subtle
-              "
+            <RekaDateRangePickerInput
+              v-if="part !== 'literal'"
+              :part="part"
+              :class="dateRangeFieldStyle.segment()"
+              type="start"
+              data-field-wrapper
+            >
+              {{ value }}
+            </RekaDateRangePickerInput>
+            <RekaDateRangePickerInput
+              v-else
+              :part="part"
+              :class="dateRangeFieldStyle.literal()"
+              type="start"
+            >
+              {{ value }}
+            </RekaDateRangePickerInput>
+          </template>
+
+          <span :class="dateRangeFieldStyle.separator()">{{ rangeSeparator }}</span>
+
+          <template
+            v-for="{ part, value } in segments.end"
+            :key="`end-${part}`"
+          >
+            <RekaDateRangePickerInput
+              v-if="part !== 'literal'"
+              :part="part"
+              :class="dateRangeFieldStyle.segment()"
+              type="end"
+              data-field-wrapper
+            >
+              {{ value }}
+            </RekaDateRangePickerInput>
+            <RekaDateRangePickerInput
+              v-else
+              :part="part"
+              :class="dateRangeFieldStyle.literal()"
+              type="end"
+            >
+              {{ value }}
+            </RekaDateRangePickerInput>
+          </template>
+        </RekaDateRangePickerField>
+
+        <template #left>
+          <RekaDateRangePickerTrigger :as-child="true">
+            <UIIconButton
+              :disabled="props.isDisabled || props.isReadonly"
+              :icon="CalendarIcon"
+              :label="t('component.date_range_picker.open')"
+              size="xs"
+              type="button"
+              variant="input"
+              class="ml-xs"
+              data-field-wrapper
             />
-            <span class="truncate text-xs">{{ displayValue || props.placeholder }}</span>
-          </button>
-        </FieldWrapper>
-      </RekaDateRangePickerTrigger>
+          </RekaDateRangePickerTrigger>
+        </template>
+      </FieldWrapper>
 
       <ThemeProvider :as-child="true">
         <RekaDateRangePickerContent
@@ -290,39 +344,39 @@ useProvideDateRangePickerContext({
             weekday-format="short"
           >
             <div class="flex h-full">
-              <DateRangePickerPresets />
+              <DateRangeFieldPresets />
 
-              <div class="flex min-w-0 flex-1 flex-col gap-lg">
-                <DateRangePickerCalendarHeader />
-
-                <div class="flex gap-xl p-xl">
-                  <template
-                    v-for="(month, index) in grid"
-                    :key="month.value.toString()"
-                  >
-                    <div class="flex flex-col">
-                      <div class="w-full border p-xl">
-                        <RekaDateRangePickerPrev
-                          v-if="index === 0"
-                          :as-child="true"
-                        >
-                          <IconButton
-                            :icon="ChevronLeftIcon"
-                            :label="i18n.t('component.date_range_picker.previous_month')"
-                            size="md"
-                            variant="tertiary"
-                          />
-                        </RekaDateRangePickerPrev>
-                      </div>
-                      <DateRangePickerCalendarGrid
-                        :month="month"
+              <div class="flex min-w-0 flex-1 flex-col">
+                <div class="flex">
+                  <div class="flex flex-1 flex-col">
+                    <DateRangeFieldCalendarHeader
+                      :show-next="isSingleMonth"
+                      side="left"
+                    />
+                    <div class="p-xl pt-0">
+                      <DateRangeFieldCalendarGrid
+                        :month="grid[0]"
                         :week-days="weekDays"
                       />
+                    </div>
+                  </div>
+
+                  <template v-if="!isSingleMonth">
+                    <div class="border-l border-secondary" />
+
+                    <div class="flex flex-1 flex-col">
+                      <DateRangeFieldCalendarHeader side="right" />
+                      <div class="p-xl pt-0">
+                        <DateRangeFieldCalendarGrid
+                          :month="grid[1]"
+                          :week-days="weekDays"
+                        />
+                      </div>
                     </div>
                   </template>
                 </div>
 
-                <DateRangePickerInputRow />
+                <DateRangeFieldInputRow />
               </div>
             </div>
           </RekaDateRangePickerCalendar>

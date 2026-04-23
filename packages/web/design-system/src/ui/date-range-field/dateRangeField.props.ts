@@ -6,7 +6,7 @@ import type {
   InputWrapper,
 } from '@/types/input.type'
 
-export interface DateRangePickerProps extends Input, InputWrapper, FieldWrapper {
+export interface DateRangeFieldProps extends Input, InputWrapper, FieldWrapper {
   /**
    * The maximum selectable date.
    * @default null
