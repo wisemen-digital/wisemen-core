@@ -4,10 +4,10 @@ import type {
 } from '@storybook/vue3-vite'
 import { Temporal } from 'temporal-polyfill'
 
-import DatePickerPlayground from './DatePickerPlayground.vue'
+import DateRangeFieldPlayground from './DateRangeFieldPlayground.vue'
 
 const meta = {
-  title: 'Components/DatePicker',
+  title: 'Components/DateRangeField',
   argTypes: {
     maxDate: {
       control: 'text',
@@ -19,19 +19,19 @@ const meta = {
     },
     isDisabled: {
       control: 'boolean',
-      description: 'Whether the date picker is disabled',
+      description: 'Whether the date range picker is disabled',
     },
     isLoading: {
       control: 'boolean',
-      description: 'Whether the date picker is in a loading state',
+      description: 'Whether the date range picker is in a loading state',
     },
     isReadonly: {
       control: 'boolean',
-      description: 'Whether the date picker is read-only',
+      description: 'Whether the date range picker is read-only',
     },
     isRequired: {
       control: 'boolean',
-      description: 'Whether the date picker is required',
+      description: 'Whether the date range picker is required',
     },
     errorMessage: {
       control: 'text',
@@ -47,15 +47,15 @@ const meta = {
     },
     label: {
       control: 'text',
-      description: 'The label of the date picker',
+      description: 'The label of the date range picker',
     },
     placeholder: {
       control: 'text',
-      description: 'The placeholder text shown when no date is selected',
+      description: 'The placeholder text shown when no date range is selected',
     },
     size: {
       control: 'select',
-      description: 'The size of the date picker trigger',
+      description: 'The size of the date range picker trigger',
       options: [
         'sm',
         'md',
@@ -65,40 +65,40 @@ const meta = {
   tags: [
     'autodocs',
   ],
-  component: DatePickerPlayground,
-} satisfies Meta<typeof DatePickerPlayground>
+  component: DateRangeFieldPlayground,
+} satisfies Meta<typeof DateRangeFieldPlayground>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    label: 'Date',
-    placeholder: 'Select a date',
+    label: 'Date range',
+    placeholder: 'Select a date range',
   },
 }
 
 export const WithHint: Story = {
   args: {
-    hint: 'Please select a date within the allowed range.',
-    label: 'Date',
-    placeholder: 'Select a date',
+    hint: 'Please select a date range.',
+    label: 'Date range',
+    placeholder: 'Select a date range',
   },
 }
 
 export const WithError: Story = {
   args: {
-    errorMessage: 'Please select a valid date.',
-    label: 'Date',
-    placeholder: 'Select a date',
+    errorMessage: 'Please select a valid date range.',
+    label: 'Date range',
+    placeholder: 'Select a date range',
   },
 }
 
 export const Disabled: Story = {
   args: {
     isDisabled: true,
-    label: 'Date',
-    placeholder: 'Select a date...',
+    label: 'Date range',
+    placeholder: 'Select a date range...',
   },
 }
 
@@ -109,15 +109,15 @@ export const WithDateConstraints: Story = {
       month: 4,
       year: 2026,
     }),
-    label: 'Date',
-    placeholder: 'Select a date...',
+    label: 'Date range',
+    placeholder: 'Select a date range...',
   },
 }
 
 export const SmallSize: Story = {
   args: {
-    label: 'Date',
-    placeholder: 'Select a date...',
+    label: 'Date range',
+    placeholder: 'Select a date range...',
     size: 'sm',
   },
 }

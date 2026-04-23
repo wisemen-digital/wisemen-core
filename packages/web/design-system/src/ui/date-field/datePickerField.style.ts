@@ -1,6 +1,6 @@
 import { tv } from '@/styles/tailwindVariants.lib'
 
-export const createDatePickerStyle = tv({
+export const createDatePickerFieldStyle = tv({
   slots: {
     cell: `relative flex-1 p-0 text-center text-xs`,
     cellTrigger: `
@@ -27,8 +27,6 @@ export const createDatePickerStyle = tv({
     grid: `w-full border-collapse select-none`,
     gridRow: `flex`,
     headCell: `flex-1 py-xs text-center text-xs font-medium text-tertiary`,
-    header: `flex items-center justify-between`,
-    heading: `text-sm font-semibold text-primary`,
     inputField: `
       flex h-7 flex-1 items-center gap-xxs rounded-sm border border-secondary
       bg-primary px-sm text-xs text-primary
@@ -45,7 +43,7 @@ export const createDatePickerStyle = tv({
       data-placeholder:focus:text-primary-on-brand
     `,
     todayIndicator: `
-      absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full
+      absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-lg
       bg-brand-solid
       group-data-selected/cell:bg-white
     `,
@@ -68,4 +66,4 @@ export const createDatePickerStyle = tv({
   },
 })
 
-export type DatePickerStyle = ReturnType<typeof createDatePickerStyle>
+export type DatePickerFieldStyle = ReturnType<typeof createDatePickerFieldStyle>

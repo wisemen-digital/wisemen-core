@@ -113,6 +113,21 @@ export const createIconButtonStyle = tv({
           dark:data-interactive:hover:bg-error-700/20
         `,
       },
+      'input': {
+        icon: `
+          text-fg-quaternary
+          group-disabled/button:text-disabled/50
+        `,
+        loader: `
+          text-fg-quaternary
+          group-disabled/button:text-disabled
+        `,
+        root: `
+          border-transparent
+          focus-visible:outline-fg-brand-primary
+          data-interactive:hover:bg-primary-hover
+        `,
+      },
       'primary': {
         container: `dark:glassy-inner-content`,
         icon: `

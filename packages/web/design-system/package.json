@@ -59,6 +59,7 @@
     "vue-router": "catalog:peer"
   },
   "dependencies": {
+    "@internationalized/date": "catalog:date",
     "@tailwindcss/vite": "catalog:vite",
     "@wisemen/vue-core-icons": "workspace:*",
     "tailwind-merge": "catalog:style",
@@ -84,7 +85,7 @@
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "playwright": "catalog:test",
-    "reka-ui": "catalog:peer",
+    "reka-ui": "catalog:vue",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",

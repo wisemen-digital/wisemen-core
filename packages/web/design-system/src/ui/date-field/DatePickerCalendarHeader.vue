@@ -5,24 +5,25 @@ import {
 } from '@wisemen/vue-core-icons'
 import {
   DatePickerHeader as RekaDatePickerHeader,
-  DatePickerHeading as RekaDatePickerHeading,
   DatePickerNext as RekaDatePickerNext,
   DatePickerPrev as RekaDatePickerPrev,
 } from 'reka-ui'
 import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
-import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
+import { useInjectDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
+import DatePickerMonthPopover from '@/ui/date-field/DatePickerMonthPopover.vue'
+import DatePickerYearPopover from '@/ui/date-field/DatePickerYearPopover.vue'
 
 const i18n = useI18n()
 
 const {
-  datePickerStyle,
-} = useInjectDatePickerContext()
+  placeholder, setPlaceholder,
+} = useInjectDatePickerFieldContext()
 </script>
 
 <template>
-  <RekaDatePickerHeader :class="datePickerStyle.header()">
+  <RekaDatePickerHeader class="flex items-center justify-between">
     <RekaDatePickerPrev :as-child="true">
       <IconButton
         :icon="ChevronLeftIcon"
@@ -32,7 +33,16 @@ const {
       />
     </RekaDatePickerPrev>
 
-    <RekaDatePickerHeading :class="datePickerStyle.heading()" />
+    <div class="flex items-center gap-xs">
+      <DatePickerMonthPopover
+        :placeholder="placeholder"
+        @update:placeholder="setPlaceholder"
+      />
+      <DatePickerYearPopover
+        :placeholder="placeholder"
+        @update:placeholder="setPlaceholder"
+      />
+    </div>
 
     <RekaDatePickerNext :as-child="true">
       <IconButton
