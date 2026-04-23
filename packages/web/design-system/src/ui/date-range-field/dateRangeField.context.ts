@@ -16,7 +16,6 @@ interface DateRangeFieldContext {
   setPlaceholder: (date: CalendarDate) => void
   setPreset: (range: { end: Temporal.PlainDate
     start: Temporal.PlainDate } | null) => void
-  onApply: () => void
   onCancel: () => void
 }
 

@@ -10,12 +10,10 @@ import { UIButton } from '@/ui/button'
 import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
 import { UIRowLayout } from '@/ui/row-layout'
 
-const {
-  t,
-} = useI18n()
+const i18n = useI18n()
 
 const {
-  onApply, onCancel,
+  onCancel,
 } = useInjectDateRangeFieldContext()
 </script>
 
@@ -112,7 +110,7 @@ const {
 
     <UIRowLayout class="self-end">
       <UIButton
-        :label="t('component.date_range_picker.close')"
+        :label="i18n.t('component.date_range_picker.close')"
         size="md"
         variant="secondary"
         @click="onCancel"

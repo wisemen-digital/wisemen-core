@@ -143,24 +143,6 @@ watch(draftValue, (value) => {
   deep: true,
 })
 
-function onApply(): void {
-  const {
-    end, start,
-  } = draftValue.value
-
-  if (start != null && end != null) {
-    modelValue.value = {
-      end: calendarDateToPlainDate(end),
-      start: calendarDateToPlainDate(start),
-    }
-  }
-  else {
-    modelValue.value = null
-  }
-
-  isOpen.value = false
-}
-
 function onCancel(): void {
   isOpen.value = false
 }
@@ -203,7 +185,6 @@ useProvideDateRangeFieldContext({
   placeholder: calendarPlaceholder,
   setPlaceholder: (date) => { calendarPlaceholder.value = date },
   setPreset,
-  onApply,
   onCancel,
 })
 </script>
