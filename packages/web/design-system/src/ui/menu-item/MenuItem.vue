@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed, useSlots } from 'vue'
+import {
+  computed,
+  useSlots,
+} from 'vue'
 
 import { UIAvatar } from '@/ui/avatar'
 import { UIColumnLayout } from '@/ui/column-layout'
@@ -22,12 +25,10 @@ const slots = useSlots()
 const resolvedLabel = computed<string | null>(() => props.config?.label ?? props.label ?? null)
 
 const hasLeftContent = computed<boolean>(() =>
-  props.config?.avatar != null || props.config?.icon != null || props.config?.dot != null,
-)
+  props.config?.avatar != null || props.config?.icon != null || props.config?.dot != null)
 
 const hasRightContent = computed<boolean>(() =>
-  props.config?.right != null || slots.right != null,
-)
+  props.config?.right != null || slots.right != null)
 
 const style = computed<MenuItemStyle>(() => createMenuItemStyle({
   hasLeftContent: hasLeftContent.value,
