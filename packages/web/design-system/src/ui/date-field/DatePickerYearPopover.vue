@@ -28,7 +28,7 @@ import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
-import { datePickerYearPopoverStyle } from '@/ui/date-picker/datePickerYearPopover.style'
+import { datePickerYearPopoverStyle } from '@/ui/date-field/datePickerYearPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = defineProps<{

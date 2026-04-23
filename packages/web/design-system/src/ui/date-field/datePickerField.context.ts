@@ -9,26 +9,26 @@ import {
   provide,
 } from 'vue'
 
-import type { DatePickerStyle } from '@/ui/date-picker/datePicker.style'
+import type { DatePickerFieldStyle } from '@/ui/date-field/datePickerField.style'
 
-interface DatePickerContext {
-  datePickerStyle: ComputedRef<DatePickerStyle>
+interface DatePickerFieldContext {
+  datePickerStyle: ComputedRef<DatePickerFieldStyle>
   placeholder: Ref<CalendarDate>
   setPlaceholder: (date: CalendarDate) => void
   onClose: () => void
 }
 
-export const datePickerContextKey: InjectionKey<DatePickerContext> = Symbol('DatePickerContextKey')
+export const datePickerFieldContextKey: InjectionKey<DatePickerFieldContext> = Symbol('DatePickerFieldContextKey')
 
-export function useProvideDatePickerContext(context: DatePickerContext): void {
-  provide(datePickerContextKey, context)
+export function useProvideDatePickerFieldContext(context: DatePickerFieldContext): void {
+  provide(datePickerFieldContextKey, context)
 }
 
-export function useInjectDatePickerContext(): DatePickerContext {
-  const context = inject(datePickerContextKey, null)
+export function useInjectDatePickerFieldContext(): DatePickerFieldContext {
+  const context = inject(datePickerFieldContextKey, null)
 
   if (context === null) {
-    throw new Error('DatePickerContext not provided')
+    throw new Error('DatePickerFieldContext not provided')
   }
 
   return context

@@ -1,6 +1,6 @@
 import { tv } from '@/styles/tailwindVariants.lib'
 
-export const createDatePickerStyle = tv({
+export const createDatePickerFieldStyle = tv({
   slots: {
     cell: `relative flex-1 p-0 text-center text-xs`,
     cellTrigger: `
@@ -66,4 +66,4 @@ export const createDatePickerStyle = tv({
   },
 })
 
-export type DatePickerStyle = ReturnType<typeof createDatePickerStyle>
+export type DatePickerFieldStyle = ReturnType<typeof createDatePickerFieldStyle>

@@ -20,13 +20,18 @@ const {
 </script>
 
 <template>
-  <div class="flex flex-col gap-md border-t border-secondary p-xl md:flex-row md:items-center md:justify-between">
+  <div
+    class="
+      flex flex-col gap-md border-t border-secondary p-xl
+      md:flex-row md:items-center md:justify-between
+    "
+  >
     <UIRowLayout class="min-w-0">
       <RekaDateRangePickerField
         v-slot="{ segments }"
         class="
-          flex h-7 min-w-0 flex-1 items-center gap-xxs rounded-sm
-          border border-secondary bg-primary px-sm text-xs text-primary
+          flex h-7 min-w-0 flex-1 items-center gap-xxs rounded-sm border
+          border-secondary bg-primary px-sm text-xs text-primary
           md:max-w-30 md:min-w-30 md:flex-none
           [&:has(:focus)]:border-fg-brand-primary [&:has(:focus)]:outline
           [&:has(:focus)]:outline-fg-brand-primary
@@ -67,8 +72,8 @@ const {
       <RekaDateRangePickerField
         v-slot="{ segments }"
         class="
-          flex h-7 min-w-0 flex-1 items-center gap-xxs rounded-sm
-          border border-secondary bg-primary px-sm text-xs text-primary
+          flex h-7 min-w-0 flex-1 items-center gap-xxs rounded-sm border
+          border-secondary bg-primary px-sm text-xs text-primary
           md:max-w-30 md:min-w-30 md:flex-none
           [&:has(:focus)]:border-fg-brand-primary [&:has(:focus)]:outline
           [&:has(:focus)]:outline-fg-brand-primary
@@ -107,17 +112,10 @@ const {
 
     <UIRowLayout class="self-end">
       <UIButton
-        :label="t('component.date_range_picker.cancel')"
+        :label="t('component.date_range_picker.close')"
         size="md"
         variant="secondary"
         @click="onCancel"
-      />
-
-      <UIButton
-        :label="t('component.date_range_picker.apply')"
-        size="md"
-        variant="primary"
-        @click="onApply"
       />
     </UIRowLayout>
   </div>

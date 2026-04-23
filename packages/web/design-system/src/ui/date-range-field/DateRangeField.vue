@@ -53,6 +53,7 @@ const props = withDefaults(defineProps<DateRangeFieldProps>(), {
   ...INPUT_FIELD_DEFAULTS,
   maxDate: null,
   minDate: null,
+  isPickerHidden: false,
   placeholder: null,
   size: 'md',
 })
@@ -93,6 +94,7 @@ const isOpen = ref(false)
 const rangeSeparator = '–'
 
 const dateRangeFieldStyle = computed(() => createDateRangeFieldStyle({
+  isPickerHidden: props.isPickerHidden,
   size: props.size,
 }))
 
@@ -308,7 +310,10 @@ useProvideDateRangeFieldContext({
           </template>
         </RekaDateRangePickerField>
 
-        <template #left>
+        <template
+          v-if="!props.isPickerHidden"
+          #left
+        >
           <RekaDateRangePickerTrigger :as-child="true">
             <UIIconButton
               :disabled="props.isDisabled || props.isReadonly"

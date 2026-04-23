@@ -12,8 +12,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
-import DatePickerMonthPopover from '@/ui/date-picker/DatePickerMonthPopover.vue'
-import DatePickerYearPopover from '@/ui/date-picker/DatePickerYearPopover.vue'
+import DatePickerMonthPopover from '@/ui/date-field/DatePickerMonthPopover.vue'
+import DatePickerYearPopover from '@/ui/date-field/DatePickerYearPopover.vue'
 import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
 
 const props = defineProps<{

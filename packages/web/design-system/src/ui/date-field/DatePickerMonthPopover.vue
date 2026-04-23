@@ -18,7 +18,7 @@ import {
   ref,
 } from 'vue'
 
-import { datePickerMonthPopoverStyle } from '@/ui/date-picker/datePickerMonthPopover.style'
+import { datePickerMonthPopoverStyle } from '@/ui/date-field/datePickerMonthPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = defineProps<{
