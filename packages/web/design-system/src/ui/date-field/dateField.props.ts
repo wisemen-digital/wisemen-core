@@ -6,7 +6,7 @@ import type {
   InputWrapper,
 } from '@/types/input.type'
 
-export interface DatePickerProps extends Input, InputWrapper, FieldWrapper {
+export interface DateFieldProps extends Input, InputWrapper, FieldWrapper {
   /**
    * The maximum selectable date.
    * @default null
@@ -18,13 +18,12 @@ export interface DatePickerProps extends Input, InputWrapper, FieldWrapper {
    */
   minDate?: Temporal.PlainDate | null
   /**
-   * The placeholder text shown when no date is selected.
-   *
-   * @default null
+   * Whether to hide the calendar picker trigger.
+   * @default false
    */
-  placeholder?: string | null
+  isPickerHidden?: boolean
   /**
-   * The size of the date picker trigger.
+   * The size of the date field.
    * @default 'md'
    */
   size?: 'md' | 'sm'

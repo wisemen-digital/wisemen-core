@@ -6,26 +6,29 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import { UIButton } from '@/ui/button'
-import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
+import { useInjectDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
 
 const emit = defineEmits<{
   today: []
 }>()
 
-const {
-  t,
-} = useI18n()
+const i18n = useI18n()
 
 const {
-  datePickerStyle, onClose,
-} = useInjectDatePickerContext()
+  onClose,
+} = useInjectDatePickerFieldContext()
 </script>
 
 <template>
-  <div :class="datePickerStyle.inputRow()">
+  <div class="flex items-center gap-xs">
     <RekaDatePickerField
       v-slot="{ segments }"
-      :class="datePickerStyle.inputField()"
+      class="
+        flex h-7 flex-1 items-center gap-xxs rounded-sm border border-secondary
+        bg-primary px-sm text-xs text-primary
+        [&:has(:focus)]:border-fg-brand-primary [&:has(:focus)]:outline
+        [&:has(:focus)]:outline-fg-brand-primary
+      "
       @keydown.enter="onClose"
     >
       <template
@@ -35,7 +38,13 @@ const {
         <RekaDatePickerInput
           v-if="part !== 'literal'"
           :part="part"
-          :class="datePickerStyle.inputSegment()"
+          class="
+            rounded-sm px-xxs text-xs text-primary tabular-nums
+            caret-transparent outline-none
+            focus:bg-brand-solid focus:text-primary-on-brand
+            data-placeholder:text-placeholder
+            data-placeholder:focus:text-primary-on-brand
+          "
         >
           {{ value }}
         </RekaDatePickerInput>
@@ -43,7 +52,7 @@ const {
         <RekaDatePickerInput
           v-else
           :part="part"
-          :class="datePickerStyle.inputLiteral()"
+          class="text-placeholder select-none"
         >
           {{ value }}
         </RekaDatePickerInput>
@@ -51,7 +60,7 @@ const {
     </RekaDatePickerField>
 
     <UIButton
-      :label="t('component.date_picker.today')"
+      :label="i18n.t('component.date_picker.today')"
       size="md"
       variant="secondary"
       @click="emit('today')"

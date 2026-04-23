@@ -276,5 +276,4 @@ catalogs:
     "reflect-metadata": ">=0.2.2"
     "rxjs": ">=7.8.2"
     "typeorm": ">=0.3.28"
-  conflicts_vue_h2_9_6:
-    reka-ui: ^2.9.6
+  

@@ -28,29 +28,31 @@ import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
-import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
+import { datePickerYearPopoverStyle } from '@/ui/date-field/datePickerYearPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
-const i18n = useI18n()
+const props = defineProps<{
+  placeholder: CalendarDate
+}>()
 
-const {
-  datePickerStyle,
-  placeholder,
-  setPlaceholder,
-} = useInjectDatePickerContext()
+const emit = defineEmits<{
+  'update:placeholder': [value: CalendarDate]
+}>()
+
+const i18n = useI18n()
 
 const locale = navigator.language
 
 const yearOpen = ref(false)
 
-const yearLabel = computed(() => String(placeholder.value.year))
+const yearLabel = computed(() => String(props.placeholder.year))
 
 function onYearSelect(value: DateValue | DateValue[] | undefined): void {
   if (value == null || Array.isArray(value)) {
     return
   }
 
-  setPlaceholder(new CalendarDate(value.year, placeholder.value.month, 1))
+  emit('update:placeholder', new CalendarDate(value.year, props.placeholder.month, 1))
   yearOpen.value = false
 }
 </script>
@@ -59,7 +61,7 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
   <PopoverRoot v-model:open="yearOpen">
     <PopoverTrigger :as-child="true">
       <button
-        :class="datePickerStyle.headingTrigger()"
+        :class="datePickerYearPopoverStyle.headingTrigger()"
         type="button"
       >
         {{ yearLabel }}
@@ -68,18 +70,19 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
     <PopoverPortal>
       <ThemeProvider :as-child="true">
         <PopoverContent
-          :class="datePickerStyle.pickerPopover()"
+          :class="datePickerYearPopoverStyle.pickerPopover()"
           :side-offset="8"
+          :collision-padding="10"
           align="center"
         >
           <YearPickerRoot
             v-slot="{ grid }"
             :locale="locale"
-            :model-value="placeholder"
+            :model-value="props.placeholder"
             @update:model-value="onYearSelect"
           >
             <ColumnLayout>
-              <div :class="datePickerStyle.header()">
+              <div :class="datePickerYearPopoverStyle.header()">
                 <YearPickerPrev :as-child="true">
                   <IconButton
                     :icon="ChevronLeftIcon"
@@ -89,7 +92,7 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
                   />
                 </YearPickerPrev>
 
-                <YearPickerHeading :class="datePickerStyle.heading()" />
+                <YearPickerHeading :class="datePickerYearPopoverStyle.heading()" />
 
                 <YearPickerNext :as-child="true">
                   <IconButton
@@ -101,23 +104,23 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
                 </YearPickerNext>
               </div>
 
-              <YearPickerGrid :class="datePickerStyle.pickerGrid()">
-                <YearPickerGridBody :class="datePickerStyle.pickerGridBody()">
+              <YearPickerGrid :class="datePickerYearPopoverStyle.pickerGrid()">
+                <YearPickerGridBody :class="datePickerYearPopoverStyle.pickerGridBody()">
                   <YearPickerGridRow
                     v-for="(row, rowIndex) in grid.rows"
                     :key="rowIndex"
-                    :class="datePickerStyle.pickerGridRow()"
+                    :class="datePickerYearPopoverStyle.pickerGridRow()"
                   >
                     <YearPickerCell
                       v-for="year in row"
                       :key="year.toString()"
-                      :class="datePickerStyle.pickerCell()"
+                      :class="datePickerYearPopoverStyle.pickerCell()"
                       :date="year"
                     >
                       <YearPickerCellTrigger
                         v-slot="{ yearValue }"
                         :year="year"
-                        :class="datePickerStyle.pickerCellTrigger()"
+                        :class="datePickerYearPopoverStyle.pickerCellTrigger()"
                       >
                         {{ yearValue }}
                       </YearPickerCellTrigger>
