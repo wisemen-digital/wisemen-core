@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type { DateValue } from '@internationalized/date'
-import { CalendarDate } from '@internationalized/date'
-import { useBreakpoints } from '@vueuse/core'
 import { CalendarIcon } from '@wisemen/vue-core-icons'
-import type { DateRange } from 'reka-ui'
 import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerContent as RekaDateRangePickerContent,
@@ -13,17 +9,17 @@ import {
   DateRangePickerTrigger as RekaDateRangePickerTrigger,
 } from 'reka-ui'
 import { Temporal } from 'temporal-polyfill'
-import type { Ref } from 'vue'
 import {
   computed,
   ref,
-  shallowRef,
+  toRef,
   useAttrs,
   useId,
   watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useDateRangePicker } from '@/composables/dateRangePicker.composable'
 import { useInput } from '@/composables/input.composable'
 import {
   INPUT_DEFAULTS,
@@ -71,8 +67,6 @@ const {
   t,
 } = useI18n()
 
-const locale = navigator.language
-
 const id = props.id ?? useId()
 
 const attrs = useAttrs()
@@ -83,12 +77,6 @@ const {
   ariaInvalid,
 } = useInput(id, props)
 
-const screen = useBreakpoints({
-  md: 768,
-})
-
-const isSingleMonth = screen.smaller('md')
-
 const isOpen = ref(false)
 
 const rangeSeparator = '–'
@@ -98,92 +86,36 @@ const dateRangeFieldStyle = computed(() => createDateRangeFieldStyle({
   size: props.size,
 }))
 
-function plainDateToCalendarDate(date: Temporal.PlainDate): CalendarDate {
-  return new CalendarDate(date.year, date.month, date.day)
-}
-
-function calendarDateToPlainDate(date: DateValue): Temporal.PlainDate {
-  return Temporal.PlainDate.from({
-    day: date.day,
-    month: date.month,
-    year: date.year,
-  })
-}
-
-const draftValue = ref<DateRange>({
-  end: undefined,
-  start: undefined,
-}) as Ref<DateRange>
-
-const todayDate = Temporal.Now.plainDateISO()
-const calendarPlaceholder = shallowRef<CalendarDate>(
-  new CalendarDate(todayDate.year, todayDate.month, 1),
-)
+const {
+  isSingleMonth,
+  calendarPlaceholder,
+  draftValue,
+  locale,
+  maxDateValue,
+  minDateValue,
+  setPlaceholder,
+  setPreset,
+  syncDraftFromModel,
+} = useDateRangePicker({
+  maxDate: toRef(props, 'maxDate'),
+  minDate: toRef(props, 'minDate'),
+  modelValue,
+})
 
 watch(isOpen, (open) => {
   if (open) {
-    draftValue.value = {
-      end: modelValue.value?.end != null ? plainDateToCalendarDate(modelValue.value.end) : undefined,
-      start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
-    }
+    syncDraftFromModel()
   }
-})
-
-watch(draftValue, (value) => {
-  if (value.start != null && value.end != null) {
-    modelValue.value = {
-      end: calendarDateToPlainDate(value.end),
-      start: calendarDateToPlainDate(value.start),
-    }
-  }
-  else if (value.start == null && value.end == null) {
-    modelValue.value = null
-  }
-}, {
-  deep: true,
 })
 
 function onCancel(): void {
   isOpen.value = false
 }
 
-function setPreset(range:
-  { end: Temporal.PlainDate
-    start: Temporal.PlainDate } | null): void {
-  if (range === null) {
-    draftValue.value = {
-      end: undefined,
-      start: undefined,
-    }
-  }
-  else {
-    draftValue.value = {
-      end: plainDateToCalendarDate(range.end),
-      start: plainDateToCalendarDate(range.start),
-    }
-  }
-}
-
-const minDateValue = computed<DateValue | undefined>(() => {
-  if (props.minDate == null) {
-    return
-  }
-
-  return plainDateToCalendarDate(props.minDate) as DateValue
-})
-
-const maxDateValue = computed<DateValue | undefined>(() => {
-  if (props.maxDate == null) {
-    return
-  }
-
-  return plainDateToCalendarDate(props.maxDate) as DateValue
-})
-
 useProvideDateRangeFieldContext({
   draftValue,
   placeholder: calendarPlaceholder,
-  setPlaceholder: (date) => { calendarPlaceholder.value = date },
+  setPlaceholder,
   setPreset,
   onCancel,
 })

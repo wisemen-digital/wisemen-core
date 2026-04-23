@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { CalendarDate } from '@internationalized/date'
 import { CalendarIcon } from '@wisemen/vue-core-icons'
-import type { DateValue } from 'reka-ui'
 import {
   DatePickerCalendar as RekaDatePickerCalendar,
   DatePickerContent as RekaDatePickerContent,
@@ -14,12 +12,13 @@ import { Temporal } from 'temporal-polyfill'
 import {
   computed,
   ref,
-  shallowRef,
+  toRef,
   useAttrs,
   useId,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useDatePicker } from '@/composables/datePicker.composable'
 import { useInput } from '@/composables/input.composable'
 import {
   INPUT_DEFAULTS,
@@ -61,8 +60,6 @@ const {
   t,
 } = useI18n()
 
-const locale = navigator.language
-
 const id = props.id ?? useId()
 
 const attrs = useAttrs()
@@ -75,6 +72,19 @@ const {
 
 const isOpen = ref(false)
 
+const {
+  calendarPlaceholder,
+  calendarValue,
+  locale,
+  maxDateValue,
+  minDateValue,
+  setPlaceholder,
+} = useDatePicker({
+  maxDate: toRef(props, 'maxDate'),
+  minDate: toRef(props, 'minDate'),
+  modelValue,
+})
+
 const dateFieldStyle = computed(() => createDateFieldStyle({
   isPickerHidden: props.isPickerHidden,
   size: props.size,
@@ -84,62 +94,11 @@ const datePickerStyle = computed(() => createDatePickerFieldStyle({
   size: props.size,
 }))
 
-const todayDate = Temporal.Now.plainDateISO()
-const calendarPlaceholder = shallowRef<CalendarDate>(
-  new CalendarDate(todayDate.year, todayDate.month, todayDate.day),
-)
-
 useProvideDatePickerFieldContext({
   datePickerStyle,
   placeholder: calendarPlaceholder,
-  setPlaceholder: (date) => { calendarPlaceholder.value = date },
+  setPlaceholder,
   onClose: () => { isOpen.value = false },
-})
-
-function plainDateToCalendarDate(date: Temporal.PlainDate): CalendarDate {
-  return new CalendarDate(date.year, date.month, date.day)
-}
-
-function calendarDateToPlainDate(date: DateValue): Temporal.PlainDate {
-  return Temporal.PlainDate.from({
-    day: date.day,
-    month: date.month,
-    year: date.year,
-  })
-}
-
-const calendarValue = computed<DateValue | undefined>({
-  get: () => {
-    if (modelValue.value === null) {
-      return
-    }
-
-    return plainDateToCalendarDate(modelValue.value) as DateValue
-  },
-  set: (value) => {
-    if (value === null || value === undefined) {
-      modelValue.value = null
-    }
-    else {
-      modelValue.value = calendarDateToPlainDate(value)
-    }
-  },
-})
-
-const minDateValue = computed<DateValue | undefined>(() => {
-  if (props.minDate == null) {
-    return
-  }
-
-  return plainDateToCalendarDate(props.minDate) as DateValue
-})
-
-const maxDateValue = computed<DateValue | undefined>(() => {
-  if (props.maxDate == null) {
-    return
-  }
-
-  return plainDateToCalendarDate(props.maxDate) as DateValue
 })
 
 function setToday(): void {
