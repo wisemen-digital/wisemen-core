@@ -55,6 +55,8 @@ const emit = defineEmits<{
 
 const NUMBER_SEPARATOR_REGEX = /[\s.,`]/g
 const DECIMAL_SEPARATOR_REGEX = /[\s.,`](?=\d+$)/
+const SEPARATOR_REGEX = /[.,]/g
+const NON_DIGIT_REGEX = /\D/g
 
 const modelValue = defineModel<number | null>({
   required: true,
@@ -69,6 +71,7 @@ const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle
 const copiedModelValue = ref<number | null>(modelValue.value)
 const isEditing = ref<boolean>(false)
 
+// this is necessary because otherwise the input will not update when the modelValue is changed programmatically
 watch(
   () => modelValue.value,
   (value) => {
@@ -130,7 +133,7 @@ function onInput(event: InputEvent): void {
     return
   }
 
-  const valueAsNumber = parseIntlNumber(value, deviceLocale)
+  const valueAsNumber = formatNumbeDecimalSeperators(value)
 
   if (Number.isNaN(valueAsNumber)) {
     return
@@ -140,10 +143,61 @@ function onInput(event: InputEvent): void {
 }
 
 function onEnterKeyDown(): void {
+  copiedModelValue.value = modelValue.value
   isEditing.value = false
 }
 
+function formatNumbeDecimalSeperators(value: string): number {
+  SEPARATOR_REGEX.lastIndex = 0
+
+  const allSeparators = [
+    ...value.matchAll(SEPARATOR_REGEX),
+  ]
+
+  if (allSeparators.length === 0) {
+    return Number(value)
+  }
+
+  const separatorChars = allSeparators.map((m) => m[0])
+  const uniqueSeps = [
+    ...new Set(separatorChars),
+  ]
+
+  if (uniqueSeps.length === 2) {
+    // Both . and , appear: the last one is the decimal separator
+    const decimalSep = separatorChars.at(-1)!
+    const thousandsSep = uniqueSeps.find((s) => s !== decimalSep)!
+
+    return Number(value.replaceAll(thousandsSep, '').replace(decimalSep, '.'))
+  }
+
+  const sep = uniqueSeps[0]!
+
+  if (allSeparators.length > 1) {
+    // Same separator appears multiple times → must be thousands
+    return Number(value.replaceAll(sep, ''))
+  }
+
+  // Single separator: check digits after it
+  const digitsAfter = value.slice(value.lastIndexOf(sep) + 1).replace(NON_DIGIT_REGEX, '')
+
+  if (digitsAfter.length <= 2) {
+    // 1–2 digits after → decimal
+    return Number(value.replace(sep, '.'))
+  }
+
+  if (digitsAfter.length >= 4) {
+    // 4+ digits after → thousands separator
+    return Number(value.replaceAll(sep, ''))
+  }
+
+  // Exactly 3 digits after → ambiguous, fall back to locale
+  return parseIntlNumber(value, deviceLocale)
+}
+
 function onBlur(event: FocusEvent): void {
+  copiedModelValue.value = modelValue.value
+
   isEditing.value = false
   emit('blur', event)
 }
