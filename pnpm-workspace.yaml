@@ -2,7 +2,7 @@ packages:
   - docs
   - "packages/**/*"
 catalog:
-  '@tanstack/vue-hotkeys': ^0.10.0
+  "@tanstack/vue-hotkeys": ^0.10.0
 
 catalogs:
   vue:
