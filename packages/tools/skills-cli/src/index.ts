@@ -39,7 +39,7 @@ function run(): void {
     .option('--dry-run', 'Print changes without writing files.', false)
     .option('--silent', 'Suppress informational output.', false)
     .option('--verbose', 'Print every file that would change.', false)
-    .option('--cwd <path>', 'Project root (defaults to current working directory).')
+    .option('--cwd <path>', 'Project root. Default: auto-detected workspace root, or current directory.')
     .action(async (opts: {
       cwd?: string
       dryRun: boolean
@@ -64,7 +64,7 @@ function run(): void {
     .option('--target <names>', 'Comma-separated list of adapter targets (claude,agents-md,llms-txt).')
     .option('--silent', 'Suppress informational output.', false)
     .option('--verbose', 'Print every drifted file.', false)
-    .option('--cwd <path>', 'Project root (defaults to current working directory).')
+    .option('--cwd <path>', 'Project root. Default: auto-detected workspace root, or current directory.')
     .action(async (opts: {
       cwd?: string
       silent: boolean
@@ -85,7 +85,7 @@ function run(): void {
     .command('list')
     .description('Print the discovered skills per package.')
     .option('--silent', 'Suppress informational output.', false)
-    .option('--cwd <path>', 'Project root (defaults to current working directory).')
+    .option('--cwd <path>', 'Project root. Default: auto-detected workspace root, or current directory.')
     .action(async (opts: { cwd?: string
       silent: boolean }) => {
       const code = await list({

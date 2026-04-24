@@ -31,8 +31,4 @@ export function resolveAdapters(targets: TargetName[]): Adapter[] {
   return out
 }
 
-export function allTargets(): TargetName[] {
-  return Object.keys(REGISTRY) as TargetName[]
-}
-
 export { agentsMdMergeHelpers } from './agents-md.js'
