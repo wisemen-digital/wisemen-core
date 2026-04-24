@@ -11,7 +11,7 @@ function skillPath(outDir: string, skill: DiscoveredSkill): string {
   return path.posix.join(outDir, skill.packageShortName, skill.skillName, 'SKILL.md')
 }
 
-function renderIndex(outDir: string, ctx: AdapterContext): string {
+function renderIndex(ctx: AdapterContext): string {
   const lines: string[] = []
 
   lines.push('# Wisemen-distributed Skills')
@@ -37,9 +37,6 @@ function renderIndex(outDir: string, ctx: AdapterContext): string {
     lines.push('')
   }
 
-  // outDir is currently unused in the body, but kept in signature for symmetry with other adapters.
-  void outDir
-
   return `${lines.join('\n').trimEnd()}\n`
 }
 
@@ -59,7 +56,7 @@ export const claudeAdapter: Adapter = {
     }
 
     out.push({
-      content: renderIndex(outDir, ctx),
+      content: renderIndex(ctx),
       path: path.posix.join(outDir, 'INDEX.md'),
     })
 

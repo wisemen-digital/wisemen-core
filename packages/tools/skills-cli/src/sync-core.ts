@@ -87,15 +87,12 @@ function skillsOutputRoot(projectRoot: string, config: ResolvedConfig): string {
   return path.isAbsolute(outDir) ? outDir : path.join(projectRoot, outDir)
 }
 
-function collectExpectedPaths(writes: PlannedWrite[], managedRoots: string[]): Set<string> {
+function collectExpectedPaths(writes: PlannedWrite[]): Set<string> {
   const paths = new Set<string>()
 
   for (const write of writes) {
     paths.add(write.path)
   }
-
-  // Always keep INDEX.md if it was produced; managedRoots listing is for cleanup outside writes.
-  void managedRoots
 
   return paths
 }
@@ -199,7 +196,7 @@ export async function runSync(
     }
   }
 
-  const keep = collectExpectedPaths(writes, [])
+  const keep = collectExpectedPaths(writes)
 
   cleanupStaleSkills(projectRoot, config, keep, changes, options)
   reconcileLockfile(projectRoot, packages, changes, options)
