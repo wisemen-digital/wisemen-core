@@ -1,5 +1,6 @@
 export type { SelectProps as UISelectProps } from './select.props.ts'
 export * from './select.type.ts'
+export { createSelectOptions } from './select.type.ts'
 export { default as UISelect } from './Select.vue'
 export { default as UISelectContent } from './SelectContent.vue'
 export { default as UISelectDropdown } from './SelectDropdown.vue'
