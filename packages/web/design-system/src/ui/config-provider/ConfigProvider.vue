@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 import type { HourCycle } from '@/types/hourCycle.type'
+import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
 import TooltipProvider from '@/ui/tooltip/TooltipProvider.vue'
 
@@ -26,6 +27,18 @@ const props = defineProps<{
    * The locale to use for localization.
    */
   locale: string
+  /**
+   * Controls the thousands and decimal separator style used in NumberField components.
+   * When not set (or `'system'`), the browser/OS locale determines the separators.
+   *
+   * - `'period-comma'` → 1.234.567,89
+   * - `'comma-period'` → 1,234,567.89
+   * - `'space-period'`  → 1 234 567.89
+   * - `'space-comma'`   → 1 234 567,89
+   *
+   * @default 'system'
+   */
+  numberSeparatorStyle?: NumberSeparatorStyle
   /**
    * Define the default pagination limit used in the usePagination composable.
    */
@@ -65,6 +78,7 @@ useProvideConfigContext({
   googleMapsApiKey: props.googleMapsApiKey ?? null,
   hourCycle: computed<HourCycle | null>(() => props.hourCycle ?? null),
   locale: computed<string>(() => props.locale),
+  numberSeparatorStyle: computed<NumberSeparatorStyle>(() => props.numberSeparatorStyle ?? 'system'),
   pagination: {
     limit: props.pagination?.limit,
   },

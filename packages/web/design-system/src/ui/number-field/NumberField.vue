@@ -25,7 +25,9 @@ import {
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
+import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
 import IconButton from '@/ui/button/icon/IconButton.vue'
+import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import type { NumberFieldProps } from '@/ui/number-field/numberField.props'
@@ -94,7 +96,24 @@ const {
   ariaInvalid,
 } = useInput(id, props)
 
-const deviceLocale = navigator.language
+const SEPARATOR_STYLE_LOCALE: Record<Exclude<NumberSeparatorStyle, 'system'>, string> = {
+  'comma-period': 'en-US',
+  'period-comma': 'de-DE',
+  'space-comma': 'fr-FR',
+  'space-period': 'fr-CH',
+}
+
+const configContext = useInjectConfigContext(null)
+
+const effectiveLocale = computed<string>(() => {
+  const style = configContext?.numberSeparatorStyle.value ?? 'system'
+
+  if (style === 'system') {
+    return navigator.language
+  }
+
+  return SEPARATOR_STYLE_LOCALE[style]
+})
 
 /**
  * Parses a localized number string into a number.
@@ -192,7 +211,7 @@ function formatNumbeDecimalSeperators(value: string): number {
   }
 
   // Exactly 3 digits after → ambiguous, fall back to locale
-  return parseIntlNumber(value, deviceLocale)
+  return parseIntlNumber(value, effectiveLocale.value)
 }
 
 function onBlur(event: FocusEvent): void {
@@ -241,7 +260,7 @@ watch(copiedModelValue, () => {
       :step="props.step"
       :step-snapping="true"
       :as-child="false"
-      :locale="deviceLocale"
+      :locale="effectiveLocale"
       :name="props.name ?? undefined"
       :max="props.max ?? undefined"
       :min="props.min ?? undefined"
