@@ -28,6 +28,9 @@
     "dist",
     "skills"
   ],
+  "wisemen": {
+    "skills": "./skills"
+  },
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
