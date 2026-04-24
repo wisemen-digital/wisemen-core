@@ -13,11 +13,10 @@ export interface SyncOptions {
 }
 
 export async function sync(options: SyncOptions): Promise<number> {
-  const config = await loadConfig(options.cwd)
-
-  if (options.targets !== undefined && options.targets.length > 0) {
-    config.targets = options.targets
-  }
+  const loaded = await loadConfig(options.cwd)
+  const config = options.targets !== undefined && options.targets.length > 0
+    ? { ...loaded, targets: options.targets }
+    : loaded
   const log = (msg: string): void => {
     if (!options.silent) { console.log(msg) }
   }
