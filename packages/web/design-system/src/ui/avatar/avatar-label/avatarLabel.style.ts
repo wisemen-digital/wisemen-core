@@ -39,6 +39,11 @@ export const createAvatarLabelStyle = tv({
         root: 'gap-md',
         supportingText: 'text-xs',
       },
+      'xxs': {
+        name: 'text-xs',
+        root: 'gap-md',
+        supportingText: 'text-xs',
+      },
     },
   },
 })

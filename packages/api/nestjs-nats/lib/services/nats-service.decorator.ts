@@ -3,14 +3,13 @@ import type { ServiceConfig } from '@nats-io/services'
 import { applyDecorators, Injectable } from '@nestjs/common'
 import type { ConfigService } from '@nestjs/config'
 import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
-import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 import type { CreateServiceConfig } from '#src/nats-application.js'
 
 const NATS_SERVICE_KEY = Symbol('wisemen.nats-service')
 
 export interface NatsServiceConfig extends ServiceConfig {
   /** The NATS connection class decorated with `@NatsConnection` */
-  connection?: ClassConstructor<unknown>
+  connection: ClassConstructor<unknown>
 }
 
 export type NatsServiceConfigFunction = (config: ConfigService) => NatsServiceConfig
@@ -41,11 +40,7 @@ export function getNatsServiceConfig (
   }
 
   const serviceConfig = configFn(config)
-  let connectionOptions: NamedConnectionOptions | undefined
-
-  if (serviceConfig.connection !== undefined) {
-    connectionOptions = getNatsConnectionOptions(serviceConfig.connection, config)
-  }
+  const connectionOptions = getNatsConnectionOptions(serviceConfig.connection, config)
 
   return { ...serviceConfig, connectionOptions }
 }

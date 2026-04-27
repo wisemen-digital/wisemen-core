@@ -12,6 +12,7 @@ const props = withDefaults(defineProps<RowLayoutProps>(), {
 
 const alignClass = computed<string>(() => {
   switch (props.align) {
+    case 'baseline': return 'items-baseline'
     case 'center': return 'items-center'
     case 'end': return 'items-end'
     case 'start': return 'items-start'

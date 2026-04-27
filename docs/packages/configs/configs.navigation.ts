@@ -1,8 +1,8 @@
 import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
 
 export const CONFIGS_NAVIGATION: PackageDocNavigation = {
-  link: 'index',
-  title: 'Vue Core Configs',
+  link: '/pages/getting-started/installation',
+  title: 'Configurations',
   path: 'configs',
   sidebar: [
     {

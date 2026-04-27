@@ -33,18 +33,6 @@ export const FORMAT_NAVIGATION: PackageDocNavigation = {
           text: 'Name formatting',
           link: '/pages/usage/name-formatting',
         },
-        {
-          text: 'Email formatting',
-          link: '/pages/usage/email-formatting',
-        },
-        {
-          text: 'Phone formatting',
-          link: '/pages/usage/phone-formatting',
-        },
-        {
-          text: 'IBAN formatting',
-          link: '/pages/usage/iban-formatting',
-        },
       ],
     },
   ],

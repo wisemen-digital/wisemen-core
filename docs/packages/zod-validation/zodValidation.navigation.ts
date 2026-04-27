@@ -1,7 +1,7 @@
 import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
 
 export const ZOD_VALIDATION_NAVIGATION: PackageDocNavigation = {
-  link: 'index',
+  link: '/pages/getting-started/installation',
   title: 'Zod Validation',
   path: 'zod-validation',
   sidebar: [

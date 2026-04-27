@@ -104,3 +104,12 @@ Please get in touch at **sales@wisemen.digital** (or your preferred contact) if 
 For more details about what you can and cannot do with this software, please refer to the [LICENSE](./LICENSE.md) file.
 
 *Thank you for respecting the license and supporting years of development on wisemen-core!*
+
+
+### Repository Stats
+
+Use the stats script to inspect activity over the last 30 days:
+
+```bash
+pnpm repo:stats
+```

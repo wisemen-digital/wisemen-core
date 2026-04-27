@@ -25,6 +25,9 @@ features:
   - title: 🔤 Format
     details: Locale-aware string and number formatting utilities, plus masking helpers for common sensitive values.
     link: /packages/format/pages/getting-started/installation
+  - title: 🛠️ Utils
+    details: Utility helpers for arrays, strings, numbers, UUID handling, assertions, and logging.
+    link: /packages/utils/pages/getting-started/installation
   - title: 🌍 I18n Factory
     details: Multi-language support with flexible and extensible internationalization setup.
     link: /packages/i18n-factory/pages/getting-started/installation

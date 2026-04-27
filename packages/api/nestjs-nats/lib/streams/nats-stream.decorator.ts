@@ -2,20 +2,19 @@ import type { ClassConstructor } from 'class-transformer'
 import type { ConfigService } from '@nestjs/config'
 import type { RetentionPolicy } from '@nats-io/jetstream'
 import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
-import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 import type { CreateStreamConfig } from '#src/nats-application.js'
 
 const NATS_STREAM_KEY = Symbol('wisemen.nats-stream')
 
 type LimitsStreamConfig = Omit<CreateStreamConfig, 'connectionOptions'> & {
-  connection?: ClassConstructor<unknown>
+  connection: ClassConstructor<unknown>
   retention: typeof RetentionPolicy.Limits
 } & Required<Pick<CreateStreamConfig, 'retention' | 'max_age' | 'max_bytes' | 'max_msgs'>>
 
 export type NatsLimitsStreamConfigFunction = (configService: ConfigService) => LimitsStreamConfig
 
 type StreamConfig = Omit<CreateStreamConfig, 'connectionOptions'> & {
-  connection?: ClassConstructor<unknown>
+  connection: ClassConstructor<unknown>
   retention: Exclude<RetentionPolicy, typeof RetentionPolicy.Limits>
 } & Required<Pick<CreateStreamConfig, 'retention'>>
 
@@ -46,11 +45,7 @@ export function getNatsStreamConfig (
   }
 
   const streamConfig = configFn(config)
-  let connectionOptions: NamedConnectionOptions | undefined = undefined
-
-  if (streamConfig.connection) {
-    connectionOptions = getNatsConnectionOptions(streamConfig.connection, config)
-  }
+  const connectionOptions = getNatsConnectionOptions(streamConfig.connection, config)
 
   return { ...streamConfig, connectionOptions }
 }

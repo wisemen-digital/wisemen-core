@@ -1,24 +1,43 @@
 import type { Component } from 'vue'
 
-export type BadgeColor = 'blue' | 'brand' | 'error' | 'gray' | 'pink' | 'pink' | 'purple' | 'success' | 'warning'
+export type BadgeColor = 'blue' | 'brand' | 'error' | 'gray' | 'pink' | 'purple' | 'success' | 'warning'
+
+export interface BadgeAvatarConfig {
+  /**
+   * The name used to generate fallback initials.
+   */
+  name: string
+  /**
+   * The image source URL.
+   */
+  src?: string | null
+}
+
+export interface BadgeDotConfig {
+  /**
+   * The color of the dot. When not provided, the dot inherits the badge color.
+   */
+  color?: BadgeColor
+}
 
 export interface BadgeProps {
-  /**
-   * Whether to display a dot indicator on the badge.
-   */
-  hasDot?: boolean
   /**
    * Accessible label for screen readers. Use when the badge content alone is not descriptive enough.
    */
   ariaLabel?: string | null
   /**
+   * An avatar configuration object. When provided, renders an avatar (xxs size) inside the badge.
+   */
+  avatar?: BadgeAvatarConfig | null
+  /**
    * The background color of the badge.
    */
   color?: BadgeColor
   /**
-   * The color of the dot indicator. When `null`, the dot inherits the badge color.
+   * A dot configuration object. When provided, a dot indicator is shown inside the badge.
+   * Pass an empty object `{}` to show a dot that inherits the badge color.
    */
-  dotColor?: BadgeColor | null
+  dot?: BadgeDotConfig | null
   /**
    * An icon component to display inside the badge.
    */

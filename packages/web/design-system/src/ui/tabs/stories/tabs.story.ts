@@ -28,6 +28,16 @@ const meta = {
         'vertical',
       ],
     },
+    underlineTabsHorizontalListPadding: {
+      control: 'select',
+      options: [
+        'none',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+      ],
+    },
     variant: {
       control: 'select',
       options: [

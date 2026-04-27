@@ -9,18 +9,55 @@ import { I18N_FACTORY_NAVIGATION } from './i18n-factory/i18nFactory.navigation'
 import type { PackageDocNavigation } from './navigation.utils'
 import { TELEMETRY_NAVIGATION } from './telemetry/telemetry.navigation'
 import { TYPE_UTILS_NAVIGATION } from './type-utils/typeUtils.navigation'
+import { UTILS_NAVIGATION } from './utils/utils.navigation'
 import { ZOD_VALIDATION_NAVIGATION } from './zod-validation/zodValidation.navigation'
 
-export const PACKAGE_DOC_NAVIGATION: PackageDocNavigation[] = [
-  DESIGN_SYSTEM_NAVIGATION,
-  COMPONENTS_DOC_NAVIGATION,
-  CONFIGS_NAVIGATION,
-  API_UTILS_NAVIGATION,
-  ESLINT_NAVIGATION,
-  FORMAT_NAVIGATION,
-  FORMANGO_NAVIGATION,
-  I18N_FACTORY_NAVIGATION,
-  TELEMETRY_NAVIGATION,
-  ZOD_VALIDATION_NAVIGATION,
-  TYPE_UTILS_NAVIGATION,
+export interface PackageDocNavigationGroup {
+  items: PackageDocNavigation[]
+  text: string
+}
+
+export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
+  {
+    text: 'UI and Design',
+    items: [
+      DESIGN_SYSTEM_NAVIGATION,
+      COMPONENTS_DOC_NAVIGATION,
+    ],
+  },
+  {
+    text: 'Data and API',
+    items: [
+      API_UTILS_NAVIGATION,
+    ],
+  },
+  {
+    text: 'Forms and Validation',
+    items: [
+      FORMANGO_NAVIGATION,
+      ZOD_VALIDATION_NAVIGATION,
+    ],
+  },
+  {
+    text: 'Observability',
+    items: [
+      TELEMETRY_NAVIGATION,
+    ],
+  },
+  {
+    text: 'TypeScript Utilities',
+    items: [
+      TYPE_UTILS_NAVIGATION,
+      UTILS_NAVIGATION,
+      FORMAT_NAVIGATION,
+    ],
+  },
+  {
+    text: 'Tooling',
+    items: [
+      ESLINT_NAVIGATION,
+      I18N_FACTORY_NAVIGATION,
+      CONFIGS_NAVIGATION,
+    ],
+  },
 ]

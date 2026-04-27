@@ -5,13 +5,12 @@ import type { ConfigService } from '@nestjs/config'
 import type { NatsSubscriberConfig } from './nats-subscriber.manager.js'
 import { NatsSubscriberHandler } from './nats-subscriber-handler.decorator.js'
 import { getNatsConnectionOptions } from '#src/connections/nats-connection.decorator.js'
-import { NamedConnectionOptions } from '#src/connections/nats-connection.manager.js'
 
 const NATS_SUBSCRIBER_KEY = Symbol('wisemen.nats-subscriber')
 
 export interface NatsSubscriptionOptions extends Omit<SubscriptionOptions, 'callback'> {
   /** The NATS connection class decorated with `@NatsConnection` */
-  connection?: ClassConstructor<unknown>
+  connection: ClassConstructor<unknown>
   subject: string
   name?: string
 }
@@ -52,11 +51,7 @@ export function getNatsSubscriberConfig (
   }
 
   const subscriberConfig = configFn(config)
-  let connectionOptions: NamedConnectionOptions | undefined = undefined
-
-  if (subscriberConfig.connection !== undefined) {
-    connectionOptions = getNatsConnectionOptions(subscriberConfig.connection, config)
-  }
+  const connectionOptions = getNatsConnectionOptions(subscriberConfig.connection, config)
   const name = subscriberConfig.name ?? target.name
 
   return { ...subscriberConfig, connectionOptions, name }
