@@ -4,6 +4,7 @@ export function formatUnitValue(
   intlUnit?: string,
 ): string {
   if (intlUnit !== undefined) {
+    // TODO: make maximumFractionDigits configurable
     return new Intl.NumberFormat(undefined, {
       maximumFractionDigits: 1,
       style: 'unit',
