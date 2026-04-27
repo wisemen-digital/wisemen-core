@@ -18,7 +18,6 @@ const INTL_UNITS: Partial<Record<MassUnit, string>> = {
   [MassUnit.NANOGRAM]: 'nanogram',
   [MassUnit.OUNCE]: 'ounce',
   [MassUnit.POUND]: 'pound',
-  [MassUnit.TONNE]: 'ton',
 }
 
 export class Mass extends BaseMass {

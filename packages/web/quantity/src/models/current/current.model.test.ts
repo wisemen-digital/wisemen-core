@@ -60,14 +60,20 @@ describe('current', () => {
   describe('toString', () => {
     it('formats ampere', () => {
       const current = new Current(5.67, CurrentUnit.AMPERE)
+      const expected = `${new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 1,
+      }).format(5.7)} A`
 
-      expect(current.toString(CurrentUnit.AMPERE)).toBe('5.7 A')
+      expect(current.toString(CurrentUnit.AMPERE)).toBe(expected)
     })
 
     it('formats milliampere', () => {
       const current = new Current(1, CurrentUnit.AMPERE)
+      const expected = `${new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 1,
+      }).format(1000)} mA`
 
-      expect(current.toString(CurrentUnit.MILLIAMPERE)).toBe('1,000 mA')
+      expect(current.toString(CurrentUnit.MILLIAMPERE)).toBe(expected)
     })
 
     it('uses the stored unit when no unit is provided', () => {
