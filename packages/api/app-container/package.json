@@ -41,7 +41,7 @@
     "@types/express": "catalog:backend",
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "fastify": ">=5.8.4",
     "typescript": "catalog:peer"
   },

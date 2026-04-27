@@ -27,7 +27,7 @@
     "@types/markdown-it": "catalog:types",
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "markdown-it": "catalog:docs",
     "motion-v": "catalog:vue",
     "oxc-minify": "catalog:docs",

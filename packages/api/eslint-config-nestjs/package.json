@@ -15,7 +15,8 @@
   "scripts": {
     "lint:oxlint": "oxlint --type-aware",
     "lint:eslint": "eslint",
-    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint"
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "test": "node --test ./custom-rules/tests/**/*.test.js"
   },
   "keywords": [],
   "author": "",
@@ -24,21 +25,23 @@
     "oxlint": "1.56.0"
   },
   "license": "SEE LICENSE IN LICENSE.md",
+  "devDependencies": {
+    "expect": "catalog:test"
+  },
   "dependencies": {
-    "@eslint/eslintrc": "catalog:lint",
-    "@eslint/js": "catalog:lint",
-    "@stylistic/eslint-plugin": "catalog:lint",
+    "@eslint/eslintrc": "catalog:lint-api",
+    "@eslint/js": "catalog:lint-api",
+    "@stylistic/eslint-plugin": "catalog:lint-api",
     "@types/node": "catalog:backend",
-    "eslint": "catalog:lint",
-    "eslint-plugin-import-typescript": "catalog:lint",
-    "eslint-plugin-import-x": "catalog:lint",
-    "eslint-plugin-unicorn": "catalog:lint",
-    "eslint-plugin-unused-imports": "catalog:lint",
-    "globals": "catalog:lint",
+    "eslint": "catalog:lint-api",
+    "eslint-plugin-import-x": "catalog:lint-api",
+    "eslint-plugin-unicorn": "catalog:lint-api",
+    "eslint-plugin-unused-imports": "catalog:lint-api",
+    "globals": "catalog:lint-api",
     "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint",
-    "oxlint": "catalog:lint",
-    "@oxlint/plugins": "catalog:lint",
-    "@typescript-eslint/eslint-plugin": "catalog:lint"
+    "typescript-eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "@oxlint/plugins": "catalog:lint-api",
+    "@typescript-eslint/eslint-plugin": "catalog:lint-api"
   }
 }

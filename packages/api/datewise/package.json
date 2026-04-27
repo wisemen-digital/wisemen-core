@@ -33,7 +33,7 @@
     "@nestjs/common": "catalog:backend",
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

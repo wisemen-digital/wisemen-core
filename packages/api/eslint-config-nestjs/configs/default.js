@@ -1,6 +1,5 @@
 import tseslint from 'typescript-eslint'
 import globals from 'globals'
-import eslintImportTypescript from 'eslint-plugin-import-typescript'
 
 /**
  * @type {import('eslint').Linter.Config[]}
@@ -51,16 +50,6 @@ const config = [
       'node_modules',
       'src/modules/localization/generated/i18n.generated.ts'
     ]
-  },
-  {
-    plugins: {
-      'import-typescript': eslintImportTypescript
-    },
-    rules: {
-      'import-typescript/no-relative-parent-imports': [
-        'error', { onlyPathsImport: true }
-      ]
-    }
   }
 ]
 
