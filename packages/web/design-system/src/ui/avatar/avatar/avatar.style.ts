@@ -58,6 +58,12 @@ export const createAvatarStyle = tv({
         logo: 'size-2',
         statusDot: 'size-2',
       },
+      'xxs': {
+        base: 'h-4 w-4 text-xxs',
+        fallBack: 'size-4 text-[8px]',
+        logo: 'size-1.5',
+        statusDot: 'size-1.5',
+      },
     },
     status: {
       away: {
