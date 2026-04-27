@@ -4,6 +4,8 @@ import {
   CurrentDto,
 } from '@wisemen/quantity'
 
+import { formatUnitValue } from '@/models/utils/formatUnit.util'
+
 export class Current extends BaseCurrent {
   getValueIn(unit: CurrentUnit): number {
     return this.asNumber(unit)
@@ -14,8 +16,6 @@ export class Current extends BaseCurrent {
   }
 
   override toString(unit: CurrentUnit = this.unit): string {
-    return `${new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-    }).format(this.getValueIn(unit))} ${unit}`
+    return formatUnitValue(this.getValueIn(unit), unit)
   }
 }

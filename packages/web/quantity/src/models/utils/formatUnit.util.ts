@@ -4,13 +4,18 @@ export function formatUnitValue(
   intlUnit?: string,
 ): string {
   if (intlUnit !== undefined) {
-    // TODO: make maximumFractionDigits configurable
-    return new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-      style: 'unit',
-      unit: intlUnit,
-      unitDisplay: 'short',
-    }).format(value)
+    try {
+      // TODO: make maximumFractionDigits configurable
+      return new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 1,
+        style: 'unit',
+        unit: intlUnit,
+        unitDisplay: 'short',
+      }).format(value)
+    }
+    catch {
+      // Fall through to plain formatting when the unit identifier is unsupported
+    }
   }
 
   return `${new Intl.NumberFormat(undefined, {

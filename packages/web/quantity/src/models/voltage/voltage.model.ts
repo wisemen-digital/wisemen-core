@@ -4,6 +4,8 @@ import {
   VoltageDto,
 } from '@wisemen/quantity'
 
+import { formatUnitValue } from '@/models/utils/formatUnit.util'
+
 export class Voltage extends BaseVoltage {
   getValueIn(unit: VoltageUnit): number {
     return this.asNumber(unit)
@@ -14,8 +16,6 @@ export class Voltage extends BaseVoltage {
   }
 
   override toString(unit: VoltageUnit = this.unit): string {
-    return `${new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-    }).format(this.getValueIn(unit))} ${unit}`
+    return formatUnitValue(this.getValueIn(unit), unit)
   }
 }
