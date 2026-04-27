@@ -75,5 +75,35 @@ describe('duration', () => {
 
       expect(duration.toString()).toBe('5 min')
     })
+
+    it('formats milliseconds', () => {
+      const duration = new Duration(1, DurationUnit.MILLISECONDS)
+
+      expect(duration.toString(DurationUnit.MILLISECONDS)).toBe('1 ms')
+    })
+
+    it('formats microseconds', () => {
+      const duration = new Duration(1, DurationUnit.MICROSECONDS)
+
+      expect(duration.toString(DurationUnit.MICROSECONDS)).toBe('1 μs')
+    })
+
+    it('formats nanoseconds', () => {
+      const duration = new Duration(1, DurationUnit.NANOSECONDS)
+
+      expect(duration.toString(DurationUnit.NANOSECONDS)).toBe('1 ns')
+    })
+
+    it('formats minutes', () => {
+      const duration = new Duration(1, DurationUnit.MINUTES)
+
+      expect(duration.toString(DurationUnit.MINUTES)).toBe('1 min')
+    })
+
+    it('formats days', () => {
+      const duration = new Duration(1, DurationUnit.DAYS)
+
+      expect(duration.toString(DurationUnit.DAYS)).toBe('1 day')
+    })
   })
 })

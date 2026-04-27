@@ -4,26 +4,19 @@ import {
   DurationUnit,
 } from '@wisemen/quantity'
 
-export class Duration extends BaseDuration {
-  private getIntlUnit(unit: DurationUnit): string {
-    switch (unit) {
-      case DurationUnit.SECONDS:
-        return 'second'
-      case DurationUnit.MILLISECONDS:
-        return 'millisecond'
-      case DurationUnit.MICROSECONDS:
-        return 'microsecond'
-      case DurationUnit.NANOSECONDS:
-        return 'nanosecond'
-      case DurationUnit.MINUTES:
-        return 'minute'
-      case DurationUnit.HOURS:
-        return 'hour'
-      case DurationUnit.DAYS:
-        return 'day'
-    }
-  }
+import { formatUnitValue } from '@/models/utils/formatUnit.util'
 
+const INTL_UNITS: Partial<Record<DurationUnit, string>> = {
+  [DurationUnit.DAYS]: 'day',
+  [DurationUnit.HOURS]: 'hour',
+  [DurationUnit.MICROSECONDS]: 'microsecond',
+  [DurationUnit.MILLISECONDS]: 'millisecond',
+  [DurationUnit.MINUTES]: 'minute',
+  [DurationUnit.NANOSECONDS]: 'nanosecond',
+  [DurationUnit.SECONDS]: 'second',
+}
+
+export class Duration extends BaseDuration {
   getValueIn(unit: DurationUnit): number {
     return this.asNumber(unit)
   }
@@ -33,11 +26,6 @@ export class Duration extends BaseDuration {
   }
 
   override toString(unit: DurationUnit = this.unit): string {
-    return new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-      style: 'unit',
-      unit: this.getIntlUnit(unit),
-      unitDisplay: 'short',
-    }).format(this.getValueIn(unit))
+    return formatUnitValue(this.getValueIn(unit), unit, INTL_UNITS[unit])
   }
 }

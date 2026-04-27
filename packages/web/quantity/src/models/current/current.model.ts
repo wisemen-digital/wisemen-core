@@ -1,7 +1,7 @@
+import type { CurrentUnit } from '@wisemen/quantity'
 import {
   Current as BaseCurrent,
   CurrentDto,
-  CurrentUnit,
 } from '@wisemen/quantity'
 
 export class Current extends BaseCurrent {

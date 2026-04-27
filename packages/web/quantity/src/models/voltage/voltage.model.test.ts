@@ -56,4 +56,24 @@ describe('voltage', () => {
       expect(dto.unit).toBe(VoltageUnit.VOLT)
     })
   })
+
+  describe('toString', () => {
+    it('formats volts', () => {
+      const voltage = new Voltage(1, VoltageUnit.VOLT)
+
+      expect(voltage.toString(VoltageUnit.VOLT)).toBe('1 V')
+    })
+
+    it('formats millivolts', () => {
+      const voltage = new Voltage(1, VoltageUnit.MILLIVOLT)
+
+      expect(voltage.toString(VoltageUnit.MILLIVOLT)).toBe('1 mV')
+    })
+
+    it('formats kilovolts', () => {
+      const voltage = new Voltage(1, VoltageUnit.KILOVOLT)
+
+      expect(voltage.toString(VoltageUnit.KILOVOLT)).toBe('1 kV')
+    })
+  })
 })

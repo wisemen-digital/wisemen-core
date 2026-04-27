@@ -81,5 +81,17 @@ describe('temperature', () => {
 
       expect(temp.toString()).toBe('25°C')
     })
+
+    it('falls back for unsupported Intl temperature units', () => {
+      const temp = new Temperature(25, TemperatureUnit.CELSIUS)
+
+      expect(temp.toString(TemperatureUnit.MILLI_DEGREE_CELSIUS)).toBe('25,000 mC')
+    })
+
+    it('formats kelvin', () => {
+      const temp = new Temperature(1, TemperatureUnit.KELVIN)
+
+      expect(temp.toString(TemperatureUnit.KELVIN)).toBe('1 K')
+    })
   })
 })

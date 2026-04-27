@@ -4,20 +4,15 @@ import {
   TemperatureUnit,
 } from '@wisemen/quantity'
 
-export class Temperature extends BaseTemperature {
-  private getIntlUnit(unit: TemperatureUnit): string {
-    switch (unit) {
-      case TemperatureUnit.CELSIUS:
-        return 'celsius'
-      case TemperatureUnit.FAHRENHEIT:
-        return 'fahrenheit'
-      case TemperatureUnit.KELVIN:
-        return 'kelvin'
-      case TemperatureUnit.MILLI_DEGREE_CELSIUS:
-        return 'milliCelsius'
-    }
-  }
+import { formatUnitValue } from '../utils/formatUnit.util'
 
+const INTL_UNITS: Partial<Record<TemperatureUnit, string>> = {
+  [TemperatureUnit.CELSIUS]: 'celsius',
+  [TemperatureUnit.FAHRENHEIT]: 'fahrenheit',
+  [TemperatureUnit.KELVIN]: 'kelvin',
+}
+
+export class Temperature extends BaseTemperature {
   getValueIn(unit: TemperatureUnit): number {
     return this.asNumber(unit)
   }
@@ -27,11 +22,6 @@ export class Temperature extends BaseTemperature {
   }
 
   override toString(unit: TemperatureUnit = this.unit): string {
-    return new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-      style: 'unit',
-      unit: this.getIntlUnit(unit),
-      unitDisplay: 'short',
-    }).format(this.getValueIn(unit))
+    return formatUnitValue(this.getValueIn(unit), unit, INTL_UNITS[unit])
   }
 }

@@ -4,32 +4,16 @@ import {
   SpeedUnit,
 } from '@wisemen/quantity'
 
-export class Speed extends BaseSpeed {
-  private getIntlUnit(unit: SpeedUnit): string {
-    switch (unit) {
-      case SpeedUnit.METER_PER_SECOND:
-        return 'meter-per-second'
-      case SpeedUnit.KILOMETER_PER_HOUR:
-        return 'kilometer-per-hour'
-      case SpeedUnit.MILES_PER_HOUR:
-        return 'mile-per-hour'
-      case SpeedUnit.KNOT:
-        return 'knot'
-      case SpeedUnit.FOOT_PER_SECOND:
-        return 'footPerSecond'
-      case SpeedUnit.INCH_PER_SECOND:
-        return 'inchPerSecond'
-      case SpeedUnit.YARD_PER_SECOND:
-        return 'yardPerSecond'
-      case SpeedUnit.CENTIMETER_PER_SECOND:
-        return 'centimeterPerSecond'
-      case SpeedUnit.MILLIMETER_PER_SECOND:
-        return 'millimeterPerSecond'
-      case SpeedUnit.MICROMETER_PER_SECOND:
-        return 'micrometerPerSecond'
-    }
-  }
+import { formatUnitValue } from '../utils/formatUnit.util'
 
+const INTL_UNITS: Partial<Record<SpeedUnit, string>> = {
+  [SpeedUnit.METER_PER_SECOND]: 'meter-per-second',
+  [SpeedUnit.KILOMETER_PER_HOUR]: 'kilometer-per-hour',
+  [SpeedUnit.MILES_PER_HOUR]: 'mile-per-hour',
+  [SpeedUnit.KNOT]: 'knot',
+}
+
+export class Speed extends BaseSpeed {
   getValueIn(unit: SpeedUnit): number {
     return this.asNumber(unit)
   }
@@ -39,11 +23,6 @@ export class Speed extends BaseSpeed {
   }
 
   override toString(unit: SpeedUnit = this.unit): string {
-    return new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-      style: 'unit',
-      unit: this.getIntlUnit(unit),
-      unitDisplay: 'short',
-    }).format(this.getValueIn(unit))
+    return formatUnitValue(this.getValueIn(unit), unit, INTL_UNITS[unit])
   }
 }

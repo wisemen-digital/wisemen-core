@@ -75,5 +75,53 @@ describe('speed', () => {
 
       expect(speed.toString()).toBe('100 km/h')
     })
+
+    it('falls back for unsupported Intl speed units', () => {
+      const speed = new Speed(1, SpeedUnit.METER_PER_SECOND)
+
+      expect(speed.toString(SpeedUnit.FOOT_PER_SECOND)).toBe('3.3 ft/s')
+    })
+
+    it('formats mph', () => {
+      const speed = new Speed(1, SpeedUnit.MILES_PER_HOUR)
+
+      expect(speed.toString(SpeedUnit.MILES_PER_HOUR)).toBe('1 mph')
+    })
+
+    it('formats knots', () => {
+      const speed = new Speed(1, SpeedUnit.KNOT)
+
+      expect(speed.toString(SpeedUnit.KNOT)).toBe('1 kn')
+    })
+
+    it('formats inches per second', () => {
+      const speed = new Speed(1, SpeedUnit.INCH_PER_SECOND)
+
+      expect(speed.toString(SpeedUnit.INCH_PER_SECOND)).toBe('1 in/s')
+    })
+
+    it('formats yards per second', () => {
+      const speed = new Speed(1, SpeedUnit.YARD_PER_SECOND)
+
+      expect(speed.toString(SpeedUnit.YARD_PER_SECOND)).toBe('1 yd/s')
+    })
+
+    it('formats centimeters per second', () => {
+      const speed = new Speed(1, SpeedUnit.CENTIMETER_PER_SECOND)
+
+      expect(speed.toString(SpeedUnit.CENTIMETER_PER_SECOND)).toBe('1 cm/s')
+    })
+
+    it('formats millimeters per second', () => {
+      const speed = new Speed(1, SpeedUnit.MILLIMETER_PER_SECOND)
+
+      expect(speed.toString(SpeedUnit.MILLIMETER_PER_SECOND)).toBe('1 mm/s')
+    })
+
+    it('formats micrometers per second', () => {
+      const speed = new Speed(1, SpeedUnit.MICROMETER_PER_SECOND)
+
+      expect(speed.toString(SpeedUnit.MICROMETER_PER_SECOND)).toBe('1 μm/s')
+    })
   })
 })

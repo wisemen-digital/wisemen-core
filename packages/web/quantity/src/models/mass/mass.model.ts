@@ -4,36 +4,24 @@ import {
   MassUnit,
 } from '@wisemen/quantity'
 
-export class Mass extends BaseMass {
-  private getIntlUnit(unit: MassUnit): string {
-    switch (unit) {
-      case MassUnit.KILOGRAM:
-        return 'kilogram'
-      case MassUnit.GRAM:
-        return 'gram'
-      case MassUnit.MILLIGRAM:
-        return 'milligram'
-      case MassUnit.POUND:
-        return 'pound'
-      case MassUnit.OUNCE:
-        return 'ounce'
-      case MassUnit.TONNE:
-        return 'ton'
-      case MassUnit.DECIGRAM:
-        return 'decigram'
-      case MassUnit.CENTIGRAM:
-        return 'centigram'
-      case MassUnit.MICROGRAM:
-        return 'microgram'
-      case MassUnit.NANOGRAM:
-        return 'nanogram'
-      case MassUnit.DECAGRAM:
-        return 'decagram'
-      case MassUnit.HECTOGRAM:
-        return 'hectogram'
-    }
-  }
+import { formatUnitValue } from '../utils/formatUnit.util'
 
+const INTL_UNITS: Partial<Record<MassUnit, string>> = {
+  [MassUnit.CENTIGRAM]: 'centigram',
+  [MassUnit.DECAGRAM]: 'decagram',
+  [MassUnit.DECIGRAM]: 'decigram',
+  [MassUnit.GRAM]: 'gram',
+  [MassUnit.HECTOGRAM]: 'hectogram',
+  [MassUnit.KILOGRAM]: 'kilogram',
+  [MassUnit.MICROGRAM]: 'microgram',
+  [MassUnit.MILLIGRAM]: 'milligram',
+  [MassUnit.NANOGRAM]: 'nanogram',
+  [MassUnit.OUNCE]: 'ounce',
+  [MassUnit.POUND]: 'pound',
+  [MassUnit.TONNE]: 'ton',
+}
+
+export class Mass extends BaseMass {
   getValueIn(unit: MassUnit): number {
     return this.asNumber(unit)
   }
@@ -43,11 +31,6 @@ export class Mass extends BaseMass {
   }
 
   override toString(unit: MassUnit = this.unit): string {
-    return new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-      style: 'unit',
-      unit: this.getIntlUnit(unit),
-      unitDisplay: 'short',
-    }).format(this.getValueIn(unit))
+    return formatUnitValue(this.getValueIn(unit), unit, INTL_UNITS[unit])
   }
 }

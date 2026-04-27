@@ -4,6 +4,8 @@ import {
   PowerUnit,
 } from '@wisemen/quantity'
 
+import { formatUnitValue } from '../utils/formatUnit.util'
+
 const INTL_UNITS: Partial<Record<PowerUnit, string>> = {
   [PowerUnit.KILOWATT]: 'kilowatt',
   [PowerUnit.WATT]: 'watt',
@@ -19,20 +21,8 @@ export class Power extends BasePower {
   }
 
   override toString(unit: PowerUnit = this.unit): string {
-    const intlUnit = INTL_UNITS[unit]
     const value = this.getValueIn(unit)
 
-    if (intlUnit !== undefined) {
-      return new Intl.NumberFormat(undefined, {
-        maximumFractionDigits: 1,
-        style: 'unit',
-        unit: intlUnit,
-        unitDisplay: 'short',
-      }).format(value)
-    }
-
-    return `${new Intl.NumberFormat(undefined, {
-      maximumFractionDigits: 1,
-    }).format(value)} ${unit}`
+    return formatUnitValue(value, unit, INTL_UNITS[unit])
   }
 }
