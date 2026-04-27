@@ -28,7 +28,7 @@ describe('distance', () => {
     })
 
     it('converts meter to kilometer', () => {
-      const distance = new Distance(1_500, DistanceUnit.METER)
+      const distance = new Distance(1500, DistanceUnit.METER)
 
       expect(distance.getValueIn(DistanceUnit.KILOMETER)).toBe(1.5)
     })
@@ -65,7 +65,7 @@ describe('distance', () => {
     })
 
     it('formats kilometers', () => {
-      const distance = new Distance(2_500, DistanceUnit.METER)
+      const distance = new Distance(2500, DistanceUnit.METER)
 
       expect(distance.toString(DistanceUnit.KILOMETER)).toBe('2.5 km')
     })

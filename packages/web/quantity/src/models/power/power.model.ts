@@ -4,7 +4,7 @@ import {
   PowerUnit,
 } from '@wisemen/quantity'
 
-import { formatUnitValue } from '../utils/formatUnit.util'
+import { formatUnitValue } from '@/models/utils/formatUnit.util'
 
 const INTL_UNITS: Partial<Record<PowerUnit, string>> = {
   [PowerUnit.KILOWATT]: 'kilowatt',

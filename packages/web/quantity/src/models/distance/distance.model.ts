@@ -4,7 +4,7 @@ import {
   DistanceUnit,
 } from '@wisemen/quantity'
 
-import { formatUnitValue } from '../utils/formatUnit.util'
+import { formatUnitValue } from '@/models/utils/formatUnit.util'
 
 const INTL_UNITS: Partial<Record<DistanceUnit, string>> = {
   [DistanceUnit.CENTIMETER]: 'centimeter',

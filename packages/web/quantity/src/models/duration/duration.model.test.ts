@@ -36,7 +36,7 @@ describe('duration', () => {
     it('converts hours to seconds', () => {
       const duration = new Duration(1, DurationUnit.HOURS)
 
-      expect(duration.getValueIn(DurationUnit.SECONDS)).toBe(3_600)
+      expect(duration.getValueIn(DurationUnit.SECONDS)).toBe(3600)
     })
 
     it('converts days to hours', () => {
@@ -65,7 +65,7 @@ describe('duration', () => {
     })
 
     it('formats hours', () => {
-      const duration = new Duration(3_600, DurationUnit.SECONDS)
+      const duration = new Duration(3600, DurationUnit.SECONDS)
 
       expect(duration.toString(DurationUnit.HOURS)).toBe('1 hr')
     })

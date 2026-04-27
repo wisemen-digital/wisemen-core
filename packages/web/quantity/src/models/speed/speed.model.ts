@@ -4,13 +4,13 @@ import {
   SpeedUnit,
 } from '@wisemen/quantity'
 
-import { formatUnitValue } from '../utils/formatUnit.util'
+import { formatUnitValue } from '@/models/utils/formatUnit.util'
 
 const INTL_UNITS: Partial<Record<SpeedUnit, string>> = {
-  [SpeedUnit.METER_PER_SECOND]: 'meter-per-second',
   [SpeedUnit.KILOMETER_PER_HOUR]: 'kilometer-per-hour',
-  [SpeedUnit.MILES_PER_HOUR]: 'mile-per-hour',
   [SpeedUnit.KNOT]: 'knot',
+  [SpeedUnit.METER_PER_SECOND]: 'meter-per-second',
+  [SpeedUnit.MILES_PER_HOUR]: 'mile-per-hour',
 }
 
 export class Speed extends BaseSpeed {

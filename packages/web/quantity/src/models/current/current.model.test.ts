@@ -30,7 +30,7 @@ describe('current', () => {
     it('converts ampere to milliampere', () => {
       const current = new Current(1, CurrentUnit.AMPERE)
 
-      expect(current.getValueIn(CurrentUnit.MILLIAMPERE)).toBe(1_000)
+      expect(current.getValueIn(CurrentUnit.MILLIAMPERE)).toBe(1000)
     })
 
     it('converts milliampere to ampere', () => {
@@ -40,7 +40,7 @@ describe('current', () => {
     })
 
     it('converts ampere to kiloampere', () => {
-      const current = new Current(5_000, CurrentUnit.AMPERE)
+      const current = new Current(5000, CurrentUnit.AMPERE)
 
       expect(current.getValueIn(CurrentUnit.KILOAMPERE)).toBe(5)
     })
