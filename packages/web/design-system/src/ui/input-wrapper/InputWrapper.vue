@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useAttrs } from 'vue'
+
 import { INPUT_META_DEFAULTS } from '@/types/input.type'
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import type { InputWrapperProps } from '@/ui/input-wrapper/inputWrapper.props'
@@ -7,9 +9,15 @@ import InputWrapperHint from '@/ui/input-wrapper/InputWrapperHint.vue'
 import InputWrapperLabel from '@/ui/input-wrapper/InputWrapperLabel.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = withDefaults(defineProps<InputWrapperProps>(), {
   ...INPUT_META_DEFAULTS,
 })
+
+const attrs = useAttrs()
 </script>
 
 <template>
@@ -17,7 +25,10 @@ const props = withDefaults(defineProps<InputWrapperProps>(), {
     :is-disabled="!props.isDisabled || props.disabledReason == null"
     :label="props.disabledReason"
   >
-    <div v-if="props.isHorizontal">
+    <div
+      v-if="props.isHorizontal"
+      v-bind="attrs"
+    >
       <RowLayout
         align="start"
       >
@@ -55,7 +66,10 @@ const props = withDefaults(defineProps<InputWrapperProps>(), {
         </div>
       </RowLayout>
     </div>
-    <div v-else>
+    <div
+      v-else
+      v-bind="attrs"
+    >
       <InputWrapperLabel
         :label="props.label"
         :for="props.for"

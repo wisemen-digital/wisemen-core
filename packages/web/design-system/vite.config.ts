@@ -14,6 +14,7 @@ export default defineConfig({
       cssFileName: 'index',
       entry: [
         resolve(__dirname, 'src/index.ts'),
+        resolve(__dirname, 'src/locales.ts'),
       ],
       fileName: (format, name) => {
         if (format === 'es') {
@@ -32,6 +33,7 @@ export default defineConfig({
         'vue-i18n',
         'vue-router',
         'reka-ui',
+        'formango',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
@@ -39,6 +41,7 @@ export default defineConfig({
         globals: {
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
+          'formango': 'Formango',
           'reka-ui': 'RekaUI',
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',

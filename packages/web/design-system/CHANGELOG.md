@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.5.0
+
+### Minor Changes
+
+- [#833](https://github.com/wisemen-digital/wisemen-core/pull/833) [`560b87a`](https://github.com/wisemen-digital/wisemen-core/commit/560b87a22386f657d01cc7e4a2943b401d5aa93d) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add chin functionality to the dialog component
+
+- [#881](https://github.com/wisemen-digital/wisemen-core/pull/881) [`d3136a1`](https://github.com/wisemen-digital/wisemen-core/commit/d3136a17efc508794fde948db149e60e14dc1c6f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add options for horizontal padding in underline tabs
+
+- [#832](https://github.com/wisemen-digital/wisemen-core/pull/832) [`078cff5`](https://github.com/wisemen-digital/wisemen-core/commit/078cff57e1ae0ff1a81000f25f19a4d7f0fb9c23) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dialog components and composable
+
+## 0.4.0
+
+### Minor Changes
+
+- [#871](https://github.com/wisemen-digital/wisemen-core/pull/871) [`016ce3a`](https://github.com/wisemen-digital/wisemen-core/commit/016ce3aa01c2908ae200d2f767a33e28c29d29d6) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add correct way of exporting translations from the design system
+
 ## 0.3.0
 
 ### Minor Changes

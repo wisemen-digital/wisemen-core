@@ -1,13 +1,12 @@
 import { Logger } from '@nestjs/common'
 import type { ConsumerConfig, ConsumerInfo, JetStreamManager } from '@nats-io/jetstream'
 import { jetstream, jetstreamManager } from '@nats-io/jetstream'
-import type { NatsConnection } from '@nats-io/transport-node'
 import { NatsConsumption } from './nats-consumption.js'
 import { NamedConnectionOptions, NatsConnectionManager } from '#src/connections/nats-connection.manager.js'
 
 export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
   name: string
-  connectionOptions?: NamedConnectionOptions
+  connectionOptions: NamedConnectionOptions
   streamName: string
 }
 
@@ -23,22 +22,10 @@ export class NatsConsumerManager {
       return existingConsumer
     }
 
-    let connection: NatsConnection
-
-    try {
-      connection = await this.connectionManager.connect(config.connectionOptions)
-    } catch (e) {
-      throw new Error(
-        'No client specified'
-        + '\nDid you forget to add a default client to the nats application?'
-        + '\nDid you forget to set a specific client on the consumer options?'
-        + `\nError: ${JSON.stringify(e)}`
-      )
-    }
-
+    const connection = await this.connectionManager.connect(config.connectionOptions)
     const subject = config.filter_subject?.replaceAll(/:[\w]+/g, '*')
     const parsedConfig = { ...config, filter_subject: subject }
-    const { streamName, name: _, ...consumerConfig } = parsedConfig
+    const { streamName, name: _name, connectionOptions: _opts, ...consumerConfig } = parsedConfig
     const manager = await jetstreamManager(connection)
     const consumerInfo = await this.registerConsumer(streamName, consumerConfig, manager)
     const consumer = await jetstream(connection).consumers.get(config.streamName, consumerInfo.name)

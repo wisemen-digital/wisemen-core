@@ -1,5 +1,17 @@
 # @wisemen/vue-core-query
 
+## 1.2.0
+
+### Minor Changes
+
+- [#859](https://github.com/wisemen-digital/wisemen-core/pull/859) [`83965db`](https://github.com/wisemen-digital/wisemen-core/commit/83965db555268861f8a79dbc55b9809aec175e72) Thanks [@Robbe95](https://github.com/Robbe95)! - Cleaned up exposed functions of package
+
+### Patch Changes
+
+- [#861](https://github.com/wisemen-digital/wisemen-core/pull/861) [`80d8209`](https://github.com/wisemen-digital/wisemen-core/commit/80d820990bd9974589883d6b0622901d40c3bc05) Thanks [@Robbe95](https://github.com/Robbe95)! - Exposed SortDirection as enum, not only type
+
+- [#861](https://github.com/wisemen-digital/wisemen-core/pull/861) [`80d8209`](https://github.com/wisemen-digital/wisemen-core/commit/80d820990bd9974589883d6b0622901d40c3bc05) Thanks [@Robbe95](https://github.com/Robbe95)! - Added TErrorCodes to mutation
+
 ## 1.1.0
 
 ### Minor Changes

@@ -1,4 +1,5 @@
-/* eslint-disable node/prefer-global/process */
+import { isDevelopment } from '@/is-development/isDevelopment.util'
+
 type LogLevel = 'debug' | 'error' | 'info' | 'warn'
 
 interface LoggerOptions {
@@ -7,32 +8,6 @@ interface LoggerOptions {
    * @default ''
    */
   prefix?: string
-}
-
-/**
- * Determines whether the current environment is development.
- * Reads `import.meta.env.DEV` (Vite) or falls back to `process.env.NODE_ENV`.
- */
-function isDevelopment(): boolean {
-  try {
-    // Vite / bundler environments
-    if (typeof import.meta !== 'undefined' && 'env' in import.meta) {
-      return (import.meta as { env?: { DEV?: boolean } }).env?.DEV === true
-    }
-  }
-  catch {
-    // ignore – not available in all environments
-  }
-
-  try {
-    return (
-      typeof process !== 'undefined'
-      && process.env.NODE_ENV !== 'production'
-    )
-  }
-  catch {
-    return true
-  }
 }
 
 /**
@@ -62,30 +37,53 @@ export class Logger {
     this.prefix = options.prefix ?? ''
   }
 
-  private log(level: LogLevel, message: string, ...args: unknown[]): void {
-    const prefix = this.prefix.length > 0 ? `${this.prefix} ` : ''
-    const fullMessage = `${prefix}${message}`
+  private buildArgs(message: any, args: unknown[]): unknown[] {
+    if (typeof message === 'string') {
+      const prefix = this.prefix.length > 0 ? `${this.prefix} ` : ''
+
+      return [
+        `${prefix}${message}`,
+        ...args,
+      ]
+    }
+
+    if (this.prefix.length > 0) {
+      return [
+        this.prefix,
+        message,
+        ...args,
+      ]
+    }
+
+    return [
+      message,
+      ...args,
+    ]
+  }
+
+  private log(level: LogLevel, message: any, ...args: unknown[]): void {
+    const consoleArgs = this.buildArgs(message, args)
 
     switch (level) {
       case 'debug': {
         // eslint-disable-next-line no-console
-        console.debug(fullMessage, ...args)
+        console.debug(...consoleArgs)
 
         break
       }
       case 'info': {
         // eslint-disable-next-line no-console
-        console.info(fullMessage, ...args)
+        console.info(...consoleArgs)
 
         break
       }
       case 'warn': {
-        console.warn(fullMessage, ...args)
+        console.warn(...consoleArgs)
 
         break
       }
       case 'error': {
-        console.error(fullMessage, ...args)
+        console.error(...consoleArgs)
 
         break
       }
@@ -95,7 +93,7 @@ export class Logger {
   /**
    * Logs a debug message. Suppressed in production.
    */
-  debug(message: string, ...args: unknown[]): void {
+  debug(message: any, ...args: unknown[]): void {
     if (!isDevelopment()) {
       return
     }
@@ -106,14 +104,14 @@ export class Logger {
   /**
    * Logs an error. Printed in both development and production.
    */
-  error(message: string, ...args: unknown[]): void {
+  error(message: any, ...args: unknown[]): void {
     this.log('error', message, ...args)
   }
 
   /**
    * Logs an informational message. Suppressed in production.
    */
-  info(message: string, ...args: unknown[]): void {
+  info(message: any, ...args: unknown[]): void {
     if (!isDevelopment()) {
       return
     }
@@ -124,7 +122,7 @@ export class Logger {
   /**
    * Logs a warning. Printed in both development and production.
    */
-  warn(message: string, ...args: unknown[]): void {
+  warn(message: any, ...args: unknown[]): void {
     this.log('warn', message, ...args)
   }
 }

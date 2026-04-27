@@ -25,7 +25,7 @@ export interface AvatarProps {
    * The size of the avatar.
    * @default 'md'
    */
-  size?: '2xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs'
+  size?: '2xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs' | 'xxs'
   /**
    * The image source URL for the avatar.
    * Falls back to initials when not provided.

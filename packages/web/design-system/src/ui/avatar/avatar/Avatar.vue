@@ -18,10 +18,9 @@ const props = withDefaults(defineProps<AvatarProps>(), {
 function getInitials(name: string): string {
   const nameParts = name.split(' ')
   const initials = nameParts.map((part) => part.charAt(0).toUpperCase())
+  const count = props.size === 'xxs' ? 1 : 2
 
-  const firstTwoInitials = initials.slice(0, 2).join('')
-
-  return firstTwoInitials
+  return initials.slice(0, count).join('')
 }
 
 const avatarStyle = computed<AvatarStyle>(
@@ -35,6 +34,7 @@ const avatarStyle = computed<AvatarStyle>(
 <template>
   <div :class="avatarStyle.root()">
     <AvatarRoot
+      :key="props.src ?? 'fallback'"
       :as-child="true"
     >
       <AvatarImage

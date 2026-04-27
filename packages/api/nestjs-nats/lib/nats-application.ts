@@ -14,11 +14,11 @@ import { NatsStreamManager } from './streams/nats-stream.manager.js'
 import type { NatsParameter, NatsParameterContext } from './parameters/nats-parameter.js'
 
 export type CreateStreamConfig = Parameters<StreamAPI['add']>['0'] & {
-  connectionOptions?: NamedConnectionOptions
+  connectionOptions: NamedConnectionOptions
 }
 
 export interface CreateServiceConfig extends ServiceConfig {
-  connectionOptions?: NamedConnectionOptions
+  connectionOptions: NamedConnectionOptions
 }
 
 export interface CreateServiceEndpointConfig extends EndpointOptions {
@@ -50,8 +50,8 @@ export class NatsApplication {
   private consumerManager: NatsConsumerManager
   private streamManager: NatsStreamManager
 
-  constructor (defaultConnection?: NamedConnectionOptions) {
-    this.connectionManager = new NatsConnectionManager(defaultConnection)
+  constructor () {
+    this.connectionManager = new NatsConnectionManager()
     this.serviceManager = new NatsServiceManager(this.connectionManager)
     this.subscriberManager = new NatsSubscriberManager(this.connectionManager)
     this.consumerManager = new NatsConsumerManager(this.connectionManager)

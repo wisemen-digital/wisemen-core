@@ -417,6 +417,9 @@ catalogs:
     '@typescript-eslint/parser':
       specifier: ^8.46.1
       version: 8.58.1
+    formango:
+      specifier: ^3.2.1
+      version: 3.2.2
     motion-v:
       specifier: '>=1.7.3'
       version: 1.9.0
@@ -2199,6 +2202,9 @@ importers:
       eslint-plugin-storybook:
         specifier: catalog:storybook
         version: 10.2.13(eslint@9.39.4(jiti@2.6.1))(storybook@10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@5.9.3)
+      formango:
+        specifier: catalog:peer
+        version: 3.2.2(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
       jsdom:
         specifier: catalog:test
         version: 27.4.0
@@ -9229,6 +9235,12 @@ packages:
     resolution: {integrity: sha512-8RipRLol37bNs2bhoV67fiTEvdTrbMUYcFTiy3+wuuOnUog2QBHCZWXDRijWQfAkhBj2Uf5UnVaiWwA5vdd82w==}
     engines: {node: '>= 6'}
 
+  formango@3.2.2:
+    resolution: {integrity: sha512-iXlWGOwPb+HBYv6vsKR0NhOBaeUVLqN3+Su7ZIs0ugazP8cscmUgmDumZ+5RfRQBrbMgHBIV+eP1t53fsy2SyA==}
+    peerDependencies:
+      vue: '>=3.5.22'
+      zod: '>=4.3.5'
+
   format@0.2.2:
     resolution: {integrity: sha512-wzsgA6WOq+09wrU1tsJ09udeR/YZRaeArL9e1wPbFg3GG2yDnC2ldKpxs4xunpFF9DgqCqOIra3bc1HWrJ37Ww==}
     engines: {node: '>=0.4.x'}
@@ -12312,8 +12324,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.2.6:
-    resolution: {integrity: sha512-O02tnvIfOQVmnvoWwuSydwRoHjZVt8UEBR+2p4rT35p8GAy5VTlWP8o5qXfJR/GWCN0nVZoYWsVUvx2jwgdBmQ==}
+  vue-component-type-helpers@3.2.7:
+    resolution: {integrity: sha512-+gPp5YGmhfsj1IN+xUo7y0fb4clfnOiiUA39y07yW1VzCRjzVgwLbtmdWlghh7mXrPsEaYc7rrIir/HT6C8vYQ==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -17360,7 +17372,7 @@ snapshots:
       storybook: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       type-fest: 2.19.0
       vue: 3.5.27(typescript@5.9.3)
-      vue-component-type-helpers: 3.2.6
+      vue-component-type-helpers: 3.2.7
 
   '@stylistic/eslint-plugin@5.10.0(eslint@9.39.4(jiti@2.6.1))':
     dependencies:
@@ -20512,6 +20524,13 @@ snapshots:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
+
+  formango@3.2.2(vue@3.5.27(typescript@5.9.3))(zod@4.3.5):
+    dependencies:
+      '@vue/devtools-api': 6.6.4
+      clone-deep: 4.0.1
+      vue: 3.5.27(typescript@5.9.3)
+      zod: 4.3.5
 
   format@0.2.2: {}
 
@@ -24197,7 +24216,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.2.6: {}
+  vue-component-type-helpers@3.2.7: {}
 
   vue-demi@0.14.10(vue@3.5.27(typescript@5.9.3)):
     dependencies:
