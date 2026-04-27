@@ -112,10 +112,7 @@
     "@typescript-eslint/triple-slash-reference": "error",
     "@typescript-eslint/unbound-method": "error",
     "no-console": "warn",
-    "curly": [
-      "error",
-      "multi-line"
-    ],
+    "curly": ["error", "multi-line"],
     "@typescript-eslint/strict-boolean-expressions": "error",
     "@typescript-eslint/no-import-type-side-effects": "error"
   }
