@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+- [#868](https://github.com/wisemen-digital/wisemen-core/pull/868) [`b1b5a00`](https://github.com/wisemen-digital/wisemen-core/commit/b1b5a00f44f9c493372bcd4f1640af9916545c30) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add select components + menu item
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/vue-core-icons@0.0.2
+
 ## 0.5.0
 
 ### Minor Changes
