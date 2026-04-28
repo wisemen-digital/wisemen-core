@@ -12,7 +12,7 @@ export const createDatePickerFieldStyle = tv({
       data-disabled:opacity-50
       data-outside-view:pointer-events-none data-outside-view:text-disabled
       data-selected:bg-brand-solid data-selected:text-primary-on-brand
-      data-selected:hover:bg-brand-solid-hover
+      data-selected:hover:bg-brand-solid-hover data-selected:focus-visible:ring-0
       data-unavailable:pointer-events-none data-unavailable:text-disabled
       data-unavailable:line-through
     `,
@@ -38,9 +38,9 @@ export const createDatePickerFieldStyle = tv({
     inputSegment: `
       rounded-sm px-xxs text-xs text-primary tabular-nums caret-transparent
       outline-none
-      focus:bg-brand-solid focus:text-primary-on-brand
+      hover:bg-primary-hover focus:bg-primary-hover focus:text-primary
       data-placeholder:text-placeholder
-      data-placeholder:focus:text-primary-on-brand
+      data-placeholder:focus:text-primary
     `,
     todayIndicator: `
       absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-lg

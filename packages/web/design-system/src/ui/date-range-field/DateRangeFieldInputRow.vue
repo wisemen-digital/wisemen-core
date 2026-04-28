@@ -45,9 +45,10 @@ const {
             class="
               rounded-sm px-xxs text-xs text-primary tabular-nums
               caret-transparent outline-none
-              focus:bg-brand-solid focus:text-primary-on-brand
+              hover:bg-primary-hover
+              focus:bg-primary-hover focus:text-primary
               data-placeholder:text-placeholder
-              data-placeholder:focus:text-primary-on-brand
+              data-placeholder:focus:text-primary
             "
             type="start"
           >
@@ -87,9 +88,10 @@ const {
             class="
               rounded-sm px-xxs text-xs text-primary tabular-nums
               caret-transparent outline-none
-              focus:bg-brand-solid focus:text-primary-on-brand
+              hover:bg-primary-hover
+              focus:bg-primary-hover focus:text-primary
               data-placeholder:text-placeholder
-              data-placeholder:focus:text-primary-on-brand
+              data-placeholder:focus:text-primary
             "
             type="end"
           >

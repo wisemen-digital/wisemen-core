@@ -293,17 +293,18 @@ useProvideDateRangeFieldContext({
 
         <template
           v-if="!props.isPickerHidden"
-          #left
+          #right
         >
           <RekaDateRangePickerTrigger :as-child="true">
             <UIIconButton
               :is-disabled="props.isDisabled || props.isReadonly"
+              :is-tooltip-disabled="true"
               :icon="CalendarIcon"
               :label="t('component.date_range_picker.open')"
               size="xs"
               type="button"
-              variant="input"
-              class="ml-xs"
+              variant="tertiary"
+              class="mr-xs"
               data-field-wrapper
             />
           </RekaDateRangePickerTrigger>
@@ -318,7 +319,7 @@ useProvideDateRangeFieldContext({
             z-40 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]
           "
-          align="start"
+          align="end"
         >
           <RekaDateRangePickerCalendar
             v-slot="{ weekDays, grid }"
