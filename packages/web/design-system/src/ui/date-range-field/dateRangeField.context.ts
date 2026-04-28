@@ -11,6 +11,7 @@ import {
 } from 'vue'
 
 interface DateRangeFieldContext {
+  isInvalidRange: Ref<boolean>
   draftValue: Ref<DateRange>
   placeholder: Ref<CalendarDate>
   setPlaceholder: (date: CalendarDate) => void

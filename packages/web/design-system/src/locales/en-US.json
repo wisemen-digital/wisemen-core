@@ -14,6 +14,7 @@
   "component.date_picker.today": "Today",
   "component.date_range_picker.apply": "Apply",
   "component.date_range_picker.close": "Close",
+  "component.date_range_picker.invalid_range": "Invalid range",
   "component.date_range_picker.next_month": "Next month",
   "component.date_range_picker.open": "Open date picker",
   "component.date_range_picker.preset.all_time": "All time",

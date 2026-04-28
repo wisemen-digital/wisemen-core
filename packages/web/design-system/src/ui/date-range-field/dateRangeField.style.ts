@@ -13,7 +13,7 @@ export const createDateRangeFieldStyle = tv({
       data-placeholder:focus:text-primary
     `,
     separator: `
-      shrink-0 text-fg-quaternary select-none
+      mt-xxs size-3 shrink-0 text-fg-quaternary select-none
       group-data-disabled/field-wrapper:text-fg-disabled-subtle
     `,
     trigger: `

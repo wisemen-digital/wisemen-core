@@ -8,12 +8,13 @@ import { useI18n } from 'vue-i18n'
 
 import { UIButton } from '@/ui/button'
 import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
+import DateRangeFieldInvalidIndicator from '@/ui/date-range-field/DateRangeFieldInvalidIndicator.vue'
 import { UIRowLayout } from '@/ui/row-layout'
 
 const i18n = useI18n()
 
 const {
-  onCancel,
+  isInvalidRange, onCancel,
 } = useInjectDateRangeFieldContext()
 </script>
 
@@ -24,7 +25,7 @@ const {
       md:flex-row md:items-center md:justify-between
     "
   >
-    <UIRowLayout class="min-w-0">
+    <UIRowLayout class="min-w-0 items-center">
       <RekaDateRangePickerField
         v-slot="{ segments }"
         class="
@@ -108,6 +109,8 @@ const {
           </RekaDateRangePickerInput>
         </template>
       </RekaDateRangePickerField>
+
+      <DateRangeFieldInvalidIndicator :is-visible="isInvalidRange" />
     </UIRowLayout>
 
     <UIRowLayout class="self-end">

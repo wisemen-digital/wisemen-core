@@ -14,6 +14,7 @@
   "component.date_picker.today": "Vandaag",
   "component.date_range_picker.apply": "Toepassen",
   "component.date_range_picker.close": "Sluiten",
+  "component.date_range_picker.invalid_range": "Ongeldig bereik",
   "component.date_range_picker.next_month": "Volgende maand",
   "component.date_range_picker.open": "Datumkiezer openen",
   "component.date_range_picker.preset.all_time": "Altijd",

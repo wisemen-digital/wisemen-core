@@ -2,7 +2,10 @@
 import type { DateValue } from '@internationalized/date'
 import { CalendarDate } from '@internationalized/date'
 import { useBreakpoints } from '@vueuse/core'
-import { CalendarIcon } from '@wisemen/vue-core-icons'
+import {
+  ArrowNarrowRightIcon,
+  CalendarIcon,
+} from '@wisemen/vue-core-icons'
 import type { DateRange } from 'reka-ui'
 import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
@@ -90,9 +93,6 @@ const screen = useBreakpoints({
 const isSingleMonth = screen.smaller('md')
 
 const isOpen = ref(false)
-
-const rangeSeparator = '–'
-
 const dateRangeFieldStyle = computed(() => createDateRangeFieldStyle({
   isPickerHidden: props.isPickerHidden,
   size: props.size,
@@ -114,6 +114,8 @@ const draftValue = ref<DateRange>({
   end: undefined,
   start: undefined,
 }) as Ref<DateRange>
+
+const isInvalidRange = ref<boolean>(false)
 
 const todayDate = Temporal.Now.plainDateISO()
 const calendarPlaceholder = shallowRef<CalendarDate>(
@@ -142,6 +144,17 @@ watch(draftValue, (value) => {
 }, {
   deep: true,
 })
+
+function onDraftValueUpdate(value: DateRange): void {
+  if (value.start != null && value.end != null && value.start.compare(value.end) > 0) {
+    isInvalidRange.value = true
+
+    return
+  }
+
+  isInvalidRange.value = false
+  draftValue.value = value
+}
 
 function onCancel(): void {
   isOpen.value = false
@@ -181,6 +194,7 @@ const maxDateValue = computed<DateValue | undefined>(() => {
 })
 
 useProvideDateRangeFieldContext({
+  isInvalidRange,
   draftValue,
   placeholder: calendarPlaceholder,
   setPlaceholder: (date) => { calendarPlaceholder.value = date },
@@ -213,9 +227,9 @@ useProvideDateRangeFieldContext({
 
     <RekaDateRangePickerRoot
       :id="id"
-      v-model="draftValue"
       v-model:open="isOpen"
       v-model:placeholder="calendarPlaceholder"
+      :model-value="draftValue"
       :week-starts-on="getWeekStartsOn(locale)"
       :disabled="props.isDisabled"
       :max-value="maxDateValue"
@@ -225,6 +239,7 @@ useProvideDateRangeFieldContext({
       :locale="locale"
       :number-of-months="isSingleMonth ? 1 : 2"
       :close-on-select="false"
+      @update:model-value="onDraftValueUpdate"
     >
       <FieldWrapper
         :is-disabled="props.isDisabled"
@@ -265,7 +280,7 @@ useProvideDateRangeFieldContext({
             </RekaDateRangePickerInput>
           </template>
 
-          <span :class="dateRangeFieldStyle.separator()">{{ rangeSeparator }}</span>
+          <ArrowNarrowRightIcon :class="dateRangeFieldStyle.separator()" />
 
           <template
             v-for="{ part, value } in segments.end"
