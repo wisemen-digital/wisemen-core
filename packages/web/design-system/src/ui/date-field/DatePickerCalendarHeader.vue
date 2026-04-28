@@ -33,7 +33,7 @@ const {
       />
     </RekaDatePickerPrev>
 
-    <div class="flex items-center gap-xs">
+    <div class="flex items-center gap-none">
       <DatePickerMonthPopover
         :placeholder="placeholder"
         @update:placeholder="setPlaceholder"

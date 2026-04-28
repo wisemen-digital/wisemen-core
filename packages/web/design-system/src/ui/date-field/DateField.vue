@@ -234,7 +234,6 @@ function setToday(): void {
               type="button"
               variant="input"
               class="ml-xs"
-              data-field-wrapper
             />
           </RekaDatePickerTrigger>
         </template>
