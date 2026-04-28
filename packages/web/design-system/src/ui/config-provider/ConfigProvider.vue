@@ -1,70 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-import type { HourCycle } from '@/types/hourCycle.type'
-import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
+import { toComputedRefs } from '@/composables/context.composable'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
+import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
 import TooltipProvider from '@/ui/tooltip/TooltipProvider.vue'
 
-const props = defineProps<{
-  /**
-   * Whether the keyboard shortcut hints should be hidden.
-   * @default false
-   */
-  areKeyboardShortcutHintsHidden?: boolean
-  /**
-   * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
-   * @default null
-   */
-  googleMapsApiKey?: string
-  /**
-   * The hour cycle to use for time-related components.
-   * Can be either 'h12' or 'h24'. If not provided, the system locale's default will be used.
-   * @default null
-   */
-  hourCycle?: HourCycle
-  /**
-   * The locale to use for localization.
-   */
-  locale: string
-  /**
-   * Controls the thousands and decimal separator style used in NumberField components.
-   * When not set (or `'system'`), the browser/OS locale determines the separators.
-   *
-   * - `'period-comma'` → 1.234.567,89
-   * - `'comma-period'` → 1,234,567.89
-   * - `'space-period'`  → 1 234 567.89
-   * - `'space-comma'`   → 1 234 567,89
-   *
-   * @default 'system'
-   */
-  numberSeparatorStyle?: NumberSeparatorStyle
-  /**
-   * Define the default pagination limit used in the usePagination composable.
-   */
-  pagination?: {
-    limit?: number
-  }
-  /**
-   * The selector for the teleport target.
-   * @default 'body'
-   */
-  teleportTargetSelector?: string
-
-  // TODO: add toast config
-  /**
-   * Configuration for automatically closing toast notifications.
-   * Accepts an object with properties `error`, `info`, and `success`, each of which can
-   * be a boolean (to enable/disable auto-close) or a number (timeout in milliseconds).
-   * For example: `{ error: true, info: 5000, success: false }`
-   */
-  // autoCloseToast?: AutoCloseToastConfig
-  /**
-   * The position of the toast notifications.
-   * @default 'bottom-right'
-   */
-  // toastPosition?: ToastPosition
-}>()
+const props = defineProps<ConfigProviderProps>()
 
 defineSlots<{
   /**
@@ -73,17 +13,7 @@ defineSlots<{
   default: () => void
 }>()
 
-useProvideConfigContext({
-  areKeyboardShortcutHintsHidden: computed<boolean>(() => props.areKeyboardShortcutHintsHidden ?? false),
-  googleMapsApiKey: props.googleMapsApiKey ?? null,
-  hourCycle: computed<HourCycle | null>(() => props.hourCycle ?? null),
-  locale: computed<string>(() => props.locale),
-  numberSeparatorStyle: computed<NumberSeparatorStyle>(() => props.numberSeparatorStyle ?? 'system'),
-  pagination: {
-    limit: props.pagination?.limit,
-  },
-  teleportTargetSelector: props.teleportTargetSelector ?? 'body',
-})
+useProvideConfigContext(toComputedRefs(props))
 </script>
 
 <template>
