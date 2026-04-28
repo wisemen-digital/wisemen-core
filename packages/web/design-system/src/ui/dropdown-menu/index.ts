@@ -2,7 +2,9 @@ export type { DropdownMenuProps as UIDropdownMenuProps } from './dropdownMenu.pr
 export { default as UIDropdownMenu } from './DropdownMenu.vue'
 export { default as UIDropdownMenuGroup } from './DropdownMenuGroup.vue'
 export { default as UIDropdownMenuHeader } from './DropdownMenuHeader.vue'
-export type { DropdownMenuItem } from './dropdownMenuItem.type.ts'
+export type {
+  DropdownMenuActionItem, DropdownMenuItem, DropdownMenuSeparatorItem,
+} from './dropdownMenuItem.type.ts'
 export { default as UIDropdownMenuItem } from './DropdownMenuItem.vue'
 export { default as UIDropdownMenuRadioGroup } from './DropdownMenuRadioGroup.vue'
 export { default as UIDropdownMenuRadioItem } from './DropdownMenuRadioGroupItem.vue'
