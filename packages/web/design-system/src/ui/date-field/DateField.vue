@@ -57,9 +57,7 @@ const modelValue = defineModel<Temporal.PlainDate | null>({
   required: true,
 })
 
-const {
-  t,
-} = useI18n()
+const i18n = useI18n()
 
 const locale = navigator.language
 
@@ -229,7 +227,7 @@ function setToday(): void {
             <UIIconButton
               :disabled="props.isDisabled || props.isReadonly"
               :icon="CalendarIcon"
-              :label="t('component.date_picker.open')"
+              :label="i18n.t('component.date_picker.open')"
               size="xs"
               type="button"
               variant="input"

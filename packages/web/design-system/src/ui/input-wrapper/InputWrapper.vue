@@ -27,7 +27,6 @@ const attrs = useAttrs()
   >
     <div
       v-if="props.isHorizontal"
-      v-bind="attrs"
     >
       <RowLayout
         align="start"
@@ -37,6 +36,7 @@ const attrs = useAttrs()
         </RowLayout>
         <div>
           <InputWrapperLabel
+            v-bind="attrs"
             :label="props.label"
             :for="props.for"
             :is-required="props.isRequired"
@@ -68,9 +68,9 @@ const attrs = useAttrs()
     </div>
     <div
       v-else
-      v-bind="attrs"
     >
       <InputWrapperLabel
+        v-bind="attrs"
         :label="props.label"
         :for="props.for"
         :is-required="props.isRequired"
