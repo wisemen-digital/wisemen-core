@@ -1,5 +1,11 @@
 # @wisemen/vue-core-format
 
+## 1.0.0
+
+### Major Changes
+
+- [#858](https://github.com/wisemen-digital/wisemen-core/pull/858) [`25d83c5`](https://github.com/wisemen-digital/wisemen-core/commit/25d83c5b2098fea3cdeb7a11db6b72cc32cceadf) Thanks [@NickBanken](https://github.com/NickBanken)! - Removal of the iban & email masking
+
 ## 0.0.2
 
 ### Patch Changes

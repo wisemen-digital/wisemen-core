@@ -22,9 +22,7 @@ import { unicornConfig } from '#rules/unicorn.ts'
 import { vitestConfig } from '#rules/vitest.ts'
 import { wisemenConfig } from '#rules/wisemen.ts'
 
-import type { DefaultConfigOptions } from './default.config'
-
-export interface PackageConfigOptions extends DefaultConfigOptions {}
+import type { PackageConfigOptions } from './default.config'
 
 export async function packageConfig(config?: PackageConfigOptions): Promise<FlatConfigComposer> {
   return await antfu(
@@ -40,10 +38,12 @@ export async function packageConfig(config?: PackageConfigOptions): Promise<Flat
     pathConfig,
     wisemenConfig,
     ...jsonConfig,
-    tailwindConfig({
-      tailwindConfigPath: config?.tailwindConfigPath ?? DEFAULT_TAILWIND_CONFIG_PATH,
-      tailwindRootFontSize: config?.tailwindRootFontSize,
-    }),
+    config?.tailwindDisabled
+      ? []
+      : tailwindConfig({
+          tailwindConfigPath: config?.tailwindConfigPath ?? DEFAULT_TAILWIND_CONFIG_PATH,
+          tailwindRootFontSize: config?.tailwindRootFontSize,
+        }),
     {
       name: 'import/settings-and-parser',
       settings: {
