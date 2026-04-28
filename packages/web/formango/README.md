@@ -68,3 +68,7 @@ const email = form.register('email')
 ```
 
 Refer to the [form](https://wisemen-digital.github.io/vue-formango/api/useForm), [field](https://wisemen-digital.github.io/vue-formango/api/field) and [array field](https://wisemen-digital.github.io/vue-formango/api/field-array) API for more details.
+
+## AI Agent Support
+
+If you use an AI agent, run `npx @tanstack/intent@latest install` to load formango skills into your project.

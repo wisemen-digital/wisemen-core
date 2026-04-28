@@ -20,7 +20,7 @@ export function Trace (): MethodDecorator {
 
       return trace.startActiveSpan(className + '.' + propertyKey.toString(), async (span: Span) => {
         try {
-          return await originalMethod.apply(this, args) as unknown
+          return await originalMethod.apply(this, args)
         } catch (err) {
           span.recordException(err as Exception)
           span.setStatus({ code: SpanStatusCode.ERROR })

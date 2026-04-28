@@ -1,7 +1,6 @@
 /* eslint-disable ts/no-empty-object-type */
 import type { MaybeRef } from 'vue'
 
-import type { UseMutationReturnType } from '@/composables/mutation/mutation.composable'
 import type { ApiResult } from '@/types/apiError.type'
 import type {
   KeysetPaginationParams,
@@ -183,10 +182,4 @@ export interface ApiUseMutationOptions<
   queryKeysToInvalidate?: {
     [TKey in keyof TQueryKeys]?: QueryKeyInvalidationConfig<TQueryKeys, TKey, TParams, TResData>
   }
-}
-
-export interface CreateApiMutationUtilsReturnType<TQueryKeys extends object, TErrorCode extends string = string> {
-  useMutation: <TReqData = void, TResData = void, TParams = void>(
-    options: ApiUseMutationOptions<TQueryKeys, TReqData, TResData, TParams, TErrorCode>,
-  ) => UseMutationReturnType<TReqData, TResData, TParams>
 }

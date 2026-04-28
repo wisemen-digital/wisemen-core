@@ -1,5 +1,21 @@
 # @wisemen/eslint-config-nestjs
 
+## 1.1.0
+
+### Minor Changes
+
+- [#856](https://github.com/wisemen-digital/wisemen-core/pull/856) [`a91470f`](https://github.com/wisemen-digital/wisemen-core/commit/a91470f06ee1249add4d769c980e2eeed6c10e94) Thanks [@senne-vanreusel](https://github.com/senne-vanreusel)! - Modify Custom rules to be oxc compatible
+
+## 1.0.0
+
+### Major Changes
+
+- Most linting rules have been moved from ESLint to [Oxlint](https://oxc.rs/docs/guide/usage/linter.html), a significantly faster Rust-based linter. ESLint is still used for rules that Oxlint does not yet support (e.g. certain TypeScript-ESLint, stylistic, and custom rules).
+
+  A new `.oxlintrc.json` config file is now shipped alongside the ESLint config.
+
+  `oxlint` has been added as a **peer dependency**.
+
 ## 0.2.13
 
 ### Patch Changes

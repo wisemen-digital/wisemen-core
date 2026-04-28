@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/max-len */
 /**
  * ESLint rule to verify that TypeScript property types match @ApiProperty decorator options
  *
@@ -32,7 +31,7 @@ export default {
     schema: []
   },
 
-  create (context) {
+  createOnce (context) {
     /**
      * Check if a class name matches the patterns we care about
      */

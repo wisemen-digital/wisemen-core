@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.6.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -17,6 +17,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "style": "./dist/index.css"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
     },
     "./style": "./dist/index.css",
     "./source.css": "./dist/source.css"
@@ -56,7 +60,8 @@
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer"
+    "vue-router": "catalog:peer",
+    "formango": "catalog:peer"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",
@@ -92,6 +97,7 @@
     "vitest": "catalog:test",
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
+    "formango": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }

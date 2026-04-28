@@ -16,6 +16,8 @@ export {
   type QueryConfig, setQueryConfig,
 } from './config/config'
 export type {
+  ApiUseKeysetInfiniteQueryReturnType,
+  ApiUseOffsetInfiniteQueryReturnType,
   CreateApiInfiniteQueryUtilsReturnType,
   CreateApiMutationUtilsReturnType,
   CreateApiPrefetchInfiniteQueryUtilsReturnType,
@@ -23,37 +25,39 @@ export type {
   CreateApiQueryClientUtilsReturnType,
   CreateApiQueryUtilsReturnType,
 } from './factory/createApiUtils'
-export {
-  createApiInfiniteQueryUtils,
-  createApiMutationUtils,
-  createApiPrefetchInfiniteQueryUtils,
-  createApiPrefetchQueryUtils,
-  createApiQueryClientUtils,
-  createApiQueryUtils,
-  createApiUtils,
-} from './factory/createApiUtils'
-export * from './factory/createApiUtils.types'
+export { createApiUtils } from './factory/createApiUtils'
+export type {
+  ApiUseKeysetInfinitePrefetchQueryOptions,
+  ApiUseKeysetInfiniteQueryOptions,
+  ApiUseMutationOptions,
+  ApiUseOffsetInfinitePrefetchQueryOptions,
+  ApiUseOffsetInfiniteQueryOptions,
+  ApiUsePrefetchQueryOptions,
+  ApiUseQueryOptions,
+  QueryKeyArrayItemFromConfig,
+  QueryKeysWithArrayEntityFromConfig,
+} from './factory/createApiUtils.types'
 export { apiUtilsPlugin } from './plugin/apiUtilsPlugin'
-export {
-  ApiError,
-  ApiErrorObject,
-  ApiExpectedError,
-  ApiKnownErrorObject,
-  ApiResult,
+export type {
   ApiUnexpectedError,
   ApiUnknownErrorObject,
-  AsyncApiResult,
+  ApiError as '~ApiError',
+  ApiErrorObject as '~ApiErrorObject',
+  ApiExpectedError as '~ApiExpectedError',
+  ApiKnownErrorObject as '~ApiKnownErrorObject',
+  ApiResult as '~ApiResult',
+  AsyncApiResult as '~AsyncApiResult',
 } from './types/apiError.type'
-export {
+export type {
   KeysetPagination,
   KeysetPaginationParams,
   KeysetPaginationResponse,
-  KeysetPaginationResult,
   OffsetPagination,
   OffsetPaginationParams,
   OffsetPaginationResponse,
-  OffsetPaginationResult,
   PaginatedDataDto,
+  KeysetPaginationResult as '~KeysetPaginationResult',
+  OffsetPaginationResult as '~OffsetPaginationResult',
 } from './types/pagination.type'
 export type {
   InfiniteQueryOptions,
@@ -63,13 +67,14 @@ export type {
   WithSortQuery,
   WithStaticFilterQuery,
 } from './types/queryOptions'
-export {
-  Sort,
-  SortDirection,
-} from './types/sort.type'
+export type { Sort } from './types/sort.type'
+export { SortDirection } from './types/sort.type'
 export {
   QueryClient,
-  QueryClientUpdateOptions,
+  type QueryClientUpdateOptions,
+  type QueryClientUpdateResult,
 } from './utils/query-client/queryClient'
 export { SortUtil } from './utils/sort/sort.utils'
+export type { UseKeysetInfiniteQueryReturnType } from '@/composables/query/keysetInfiniteQuery.composable'
+export type { UseOffsetInfiniteQueryReturnType } from '@/composables/query/offsetInfiniteQuery.composable'
 export type { QueryClient as TanstackQueryClient } from '@tanstack/vue-query'

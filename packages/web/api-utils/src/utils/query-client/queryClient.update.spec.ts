@@ -537,4 +537,244 @@ describe('queryClient - update', () => {
       expect(queryClient.get(queryKey)).toEqual([])
     })
   })
+
+  describe('rollback', () => {
+    it('should return a rollback function', () => {
+      const user = new UserBuilder().withId('123').withUuid('abc-123').build()
+      const queryKey = [
+        'userDetail',
+        {
+          userUuid: 'abc-123',
+        },
+      ] as const
+
+      queryClient.set(queryKey, user)
+
+      const {
+        rollback,
+      } = queryClient.update(queryKey, {
+        by: (u) => u.id === '123',
+        value: (u) => ({
+          ...u,
+          name: 'Jane Doe',
+        }),
+      })
+
+      expect(typeof rollback).toBe('function')
+    })
+
+    it('should restore single entity to original state on rollback', () => {
+      const user = new UserBuilder().withId('123').withUuid('abc-123').build()
+      const queryKey = [
+        'userDetail',
+        {
+          userUuid: 'abc-123',
+        },
+      ] as const
+
+      queryClient.set(queryKey, user)
+
+      const {
+        rollback,
+      } = queryClient.update(queryKey, {
+        by: (u) => u.id === '123',
+        value: (u) => ({
+          ...u,
+          name: 'Jane Doe',
+        }),
+      })
+
+      expect(queryClient.get(queryKey)).toEqual({
+        ...user,
+        name: 'Jane Doe',
+      })
+
+      rollback()
+
+      expect(queryClient.get(queryKey)).toEqual(user)
+    })
+
+    it('should restore array entity to original state on rollback', () => {
+      const john = new UserBuilder().withId('1').withUuid('uuid-1').build()
+      const jane = new UserBuilder()
+        .withId('2')
+        .withUuid('uuid-2')
+        .withName('Jane Doe')
+        .withEmail('jane@example.com')
+        .build()
+      const queryKey = [
+        'userList',
+        {
+          search: '',
+        },
+      ] as const
+
+      queryClient.set(queryKey, [
+        john,
+        jane,
+      ])
+
+      const {
+        rollback,
+      } = queryClient.update('userList', {
+        by: (u) => u.id === '2',
+        value: (u) => ({
+          ...u,
+          name: 'Jane Smith',
+        }),
+      })
+
+      expect(queryClient.get(queryKey)).toEqual([
+        john,
+        {
+          ...jane,
+          name: 'Jane Smith',
+        },
+      ])
+
+      rollback()
+
+      expect(queryClient.get(queryKey)).toEqual([
+        john,
+        jane,
+      ])
+    })
+
+    it('should restore multiple queries on rollback', () => {
+      const user1 = new UserBuilder().withId('123').withUuid('abc-123').build()
+      const user2 = new UserBuilder()
+        .withId('123')
+        .withUuid('abc-123')
+        .withEmail('jane@example.com')
+        .build()
+      const queryKey1 = [
+        'userDetail',
+        {
+          userUuid: 'abc-123',
+        },
+      ] as const
+      const queryKey2 = [
+        'userDetail',
+        {
+          userUuid: 'def-456',
+        },
+      ] as const
+
+      queryClient.set(queryKey1, user1)
+      queryClient.set(queryKey2, user2)
+
+      const {
+        rollback,
+      } = queryClient.update('userDetail', {
+        by: (u) => u.id === '123',
+        value: (u) => ({
+          ...u,
+          name: 'Updated Name',
+        }),
+      })
+
+      expect(queryClient.get(queryKey1)?.name).toBe('Updated Name')
+      expect(queryClient.get(queryKey2)?.name).toBe('Updated Name')
+
+      rollback()
+
+      expect(queryClient.get(queryKey1)).toEqual(user1)
+      expect(queryClient.get(queryKey2)).toEqual(user2)
+    })
+
+    it('should be idempotent - calling rollback multiple times has no effect', () => {
+      const user = new UserBuilder().withId('123').withUuid('abc-123').build()
+      const queryKey = [
+        'userDetail',
+        {
+          userUuid: 'abc-123',
+        },
+      ] as const
+
+      queryClient.set(queryKey, user)
+
+      const {
+        rollback,
+      } = queryClient.update(queryKey, {
+        by: (u) => u.id === '123',
+        value: (u) => ({
+          ...u,
+          name: 'Jane Doe',
+        }),
+      })
+
+      rollback()
+      expect(queryClient.get(queryKey)).toEqual(user)
+
+      // Second update after rollback
+      queryClient.update(queryKey, {
+        by: (u) => u.id === '123',
+        value: (u) => ({
+          ...u,
+          name: 'Bob',
+        }),
+      })
+
+      // Calling rollback again should not revert the second update
+      rollback()
+      expect(queryClient.get(queryKey)).toEqual({
+        ...user,
+        name: 'Bob',
+      })
+    })
+
+    it('should not affect unrelated queries on rollback', () => {
+      const user = new UserBuilder().withId('123').withUuid('abc-123').build()
+      const product = new ProductBuilder().withId('1').withSku('PROD-001').build()
+
+      const userKey = [
+        'userDetail',
+        {
+          userUuid: 'abc-123',
+        },
+      ] as const
+      const productKey = [
+        'productList',
+        {
+          category: 'electronics',
+        },
+      ] as const
+
+      queryClient.set(userKey, user)
+      queryClient.set(productKey, [
+        product,
+      ])
+
+      const {
+        rollback,
+      } = queryClient.update('userDetail', {
+        by: (u) => u.id === '123',
+        value: (u) => ({
+          ...u,
+          name: 'Jane Doe',
+        }),
+      })
+
+      // Update product separately
+      queryClient.update('productList', {
+        by: (p) => p.id === '1',
+        value: (p) => ({
+          ...p,
+          price: 999,
+        }),
+      })
+
+      rollback()
+
+      // User should be restored
+      expect(queryClient.get(userKey)).toEqual(user)
+      // Product should keep its separate update
+      expect(queryClient.get(productKey)).toEqual([
+        {
+          ...product,
+          price: 999,
+        },
+      ])
+    })
+  })
 })

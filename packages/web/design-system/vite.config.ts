@@ -14,6 +14,7 @@ export default defineConfig({
       cssFileName: 'index',
       entry: [
         resolve(__dirname, 'src/index.ts'),
+        resolve(__dirname, 'src/locales.ts'),
       ],
       fileName: (format, name) => {
         if (format === 'es') {
@@ -32,6 +33,7 @@ export default defineConfig({
         'vue-i18n',
         'vue-router',
         'reka-ui',
+        'formango',
         'temporal-polyfill',
       ],
       output: {
@@ -40,6 +42,7 @@ export default defineConfig({
         globals: {
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
+          'formango': 'Formango',
           'reka-ui': 'RekaUI',
           'temporal-polyfill': 'Temporal',
           'vue': 'Vue',

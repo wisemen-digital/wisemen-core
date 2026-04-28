@@ -1,5 +1,35 @@
 # @wisemen/pgboss-nestjs-job
 
+## 4.0.0
+
+### Major Changes
+
+- [#877](https://github.com/wisemen-digital/wisemen-core/pull/877) [`7ed8fad`](https://github.com/wisemen-digital/wisemen-core/commit/7ed8fad99f5a8833e3a2ace94584aaf2947baaf4) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat!: support multiple queues per worker instance
+
+  Breaking change: `PgBossWorkerModuleOptions` no longer accepts a single
+  `queueName` and now expects the new multiple-queue configuration. The
+  `bouncerModule` option was also removed/replaced.
+
+  Migration: update worker configuration to use the new queues option shape
+  and replace any usage of `bouncerModule` with the new configuration API.
+
+  Bouncers are configured through the `@Bouncer("queue-name")` decorator.
+
+## 3.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`c448ae1`](https://github.com/wisemen-digital/wisemen-core/commit/c448ae1693045423b7959d7b2967b7e0a039f275)]:
+  - @wisemen/opentelemetry@0.1.4
+  - @wisemen/nestjs-typeorm@0.2.1
+
+## 3.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`4af27de`](https://github.com/wisemen-digital/wisemen-core/commit/4af27de58a8a6b47053bd65e682dccbb100ff290)]:
+  - @wisemen/opentelemetry@0.1.3
+
 ## 3.3.4
 
 ### Patch Changes

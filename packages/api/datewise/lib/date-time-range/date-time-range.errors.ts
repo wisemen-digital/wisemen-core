@@ -4,8 +4,8 @@ export class InvalidDateTimeRangeBounds extends Error {
   constructor (
     private dateRange: DateTimeRange
   ) {
-    const startDate = dateRange.from.toISOString()
-    const endDate = dateRange.until.toISOString()
+    const startDate = dateRange.inclLower.toISOString()
+    const endDate = dateRange.inclUpper.toISOString()
 
     super(`[DateTimeRange] start date ${startDate} must lie before end date ${endDate}`)
   }

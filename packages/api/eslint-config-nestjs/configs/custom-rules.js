@@ -1,18 +1,10 @@
 /* eslint-disable import-typescript/no-relative-parent-imports */
-import checkColumnTypes from '../custom-rules/check-column-types.js'
-import checkMissingTranslations from '../custom-rules/check-missing-translations.js'
-import checkApiPropertyTypes from '../custom-rules/check-api-property-types.js'
+import plugin from '../custom-rules/plugin.js'
 
 export default [
   {
     plugins: {
-      'custom-rules': {
-        rules: {
-          'check-missing-translations': checkMissingTranslations,
-          'check-api-property-types': checkApiPropertyTypes,
-          'check-column-types': checkColumnTypes
-        }
-      }
+      'custom-rules': plugin
     },
     rules: {
       'custom-rules/check-missing-translations': 'error',

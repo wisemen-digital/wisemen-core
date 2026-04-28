@@ -23,7 +23,7 @@ export default {
     schema: []
   },
 
-  create (context) {
+  createOnce (context) {
     /**
      * Parse TypeScript type annotation to check for null and undefined
      */
