@@ -106,6 +106,7 @@ const SEPARATOR_STYLE_LOCALE: Record<Exclude<NumberSeparatorStyle, 'system'>, st
 const configContext = useInjectConfigContext(null)
 
 const effectiveLocale = computed<string>(() => {
+  // eslint-disable-next-line better-tailwindcss/no-unknown-classes
   const style = configContext?.numberSeparatorStyle.value ?? 'system'
 
   if (style === 'system') {
