@@ -42,7 +42,7 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint",
-    "fastify": ">=5.8.4",
+    "fastify": ">=5.8.5",
     "typescript": "catalog:peer"
   },
   "peerDependencies": {

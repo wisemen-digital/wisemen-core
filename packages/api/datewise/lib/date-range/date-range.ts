@@ -203,6 +203,16 @@ export class DateRange {
     return new DateRange(startDate, this.endDate)
   }
 
+  /** Returns true if this range ends before the other range starts */
+  isStrictlyBefore (other: DateRange): boolean {
+    return this.endDate.isBefore(other.startDate)
+  }
+
+  /** Returns true if this range starts after the other range ends */
+  isStrictlyAfter (other: DateRange): boolean {
+    return this.startDate.isAfter(other.endDate)
+  }
+
   precedes (other: DateRange): boolean {
     return (!this.endDate.isFutureInfinity())
       && (this.endDate.add(1, 'day').isSame(other.startDate))
