@@ -3,9 +3,10 @@ export { default as UIDropdownMenu } from './DropdownMenu.vue'
 export { default as UIDropdownMenuGroup } from './DropdownMenuGroup.vue'
 export { default as UIDropdownMenuHeader } from './DropdownMenuHeader.vue'
 export type {
-  DropdownMenuActionItem, DropdownMenuItem, DropdownMenuSeparatorItem,
+  DropdownMenuActionItem, DropdownMenuGroupItem, DropdownMenuItem, DropdownMenuSeparatorItem, DropdownMenuSubMenuItem,
 } from './dropdownMenuItem.type.ts'
 export { default as UIDropdownMenuItem } from './DropdownMenuItem.vue'
 export { default as UIDropdownMenuRadioGroup } from './DropdownMenuRadioGroup.vue'
 export { default as UIDropdownMenuRadioItem } from './DropdownMenuRadioGroupItem.vue'
 export { default as UIDropdownMenuSeparator } from './DropdownMenuSeparator.vue'
+export { default as UIDropdownMenuSubMenuItem } from './DropdownMenuSubMenuItem.vue'

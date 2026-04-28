@@ -8,7 +8,12 @@ export interface DropdownMenuProps extends PopperProps {
    */
   disableUpdateOnLayoutShift?: boolean
   /**
-   * Programmatic list of items to render. Supports action items and separators.
+   * When true, renders a filter input at the top of the menu that filters items by label.
+   * @default false
+   */
+  filter?: boolean
+  /**
+   * Programmatic list of items to render. Supports action items, separators, and submenus.
    * Can be used alongside the content slot.
    */
   items?: DropdownMenuItem[] | null

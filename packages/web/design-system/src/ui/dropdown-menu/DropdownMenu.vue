@@ -9,8 +9,7 @@ import {
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import DropdownMenuArrow from '@/ui/dropdown-menu/DropdownMenuArrow.vue'
-import DropdownMenuItemVue from '@/ui/dropdown-menu/DropdownMenuItem.vue'
-import DropdownMenuSeparator from '@/ui/dropdown-menu/DropdownMenuSeparator.vue'
+import DropdownMenuContentVue from '@/ui/dropdown-menu/DropdownMenuContent.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<DropdownMenuProps>(), {
@@ -55,23 +54,11 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
               border-secondary bg-primary shadow-lg
             "
           >
-            <div
+            <DropdownMenuContentVue
               v-if="props.items !== null"
-            >
-              <template
-                v-for="(item, index) in props.items"
-                :key="index"
-              >
-                <DropdownMenuItemVue
-                  v-if="item.type === 'item'"
-                  :label="item.label"
-                  :config="item"
-                  :disabled-reason="item.disabledReason ?? null"
-                  @select="item.onSelect"
-                />
-                <DropdownMenuSeparator v-else-if="item.type === 'separator'" />
-              </template>
-            </div>
+              :items="props.items"
+              :filter="props.filter"
+            />
 
             <slot name="content" />
           </div>

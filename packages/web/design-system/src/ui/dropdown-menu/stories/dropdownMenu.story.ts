@@ -9,8 +9,10 @@ import {
   within,
 } from 'storybook/test'
 
+import DropdownMenuFilterPlayground from './DropdownMenuFilterPlayground.vue'
 import DropdownMenuPlayground from './DropdownMenuPlayground.vue'
 import DropdownMenuSlotPlayground from './DropdownMenuSlotPlayground.vue'
+import DropdownMenuSubmenuPlayground from './DropdownMenuSubmenuPlayground.vue'
 
 const meta = {
   title: 'Components/DropdownMenu',
@@ -41,6 +43,28 @@ export const Default: Story = {
 
     await expect(items.length).toBeGreaterThan(0)
   },
+}
+
+export const WithSubmenuAndFilter: Story = {
+  render: (args) => ({
+    components: { DropdownMenuSubmenuPlayground },
+    setup() {
+      return { args }
+    },
+    template: '<DropdownMenuSubmenuPlayground v-bind="args" />',
+  }),
+}
+
+export const WithRadioAndCheckbox: Story = {
+  render: (args) => ({
+    components: {
+      DropdownMenuFilterPlayground,
+    },
+    setup() {
+      return { args }
+    },
+    template: '<DropdownMenuFilterPlayground v-bind="args" />',
+  }),
 }
 
 export const WithSlots: Story = {
