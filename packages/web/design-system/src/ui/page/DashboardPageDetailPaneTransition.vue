@@ -4,6 +4,7 @@ import {
   useReducedMotion,
 } from 'motion-v'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
 import type { DetailPaneStyle } from '@/ui/page/detailPane.style'
@@ -27,6 +28,10 @@ const duration = computed<number>(() => {
 
   return isReduceMotionEnabledOnDevice.value ? 0 : 0.3
 })
+
+const {
+  t,
+} = useI18n()
 
 const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
   variant,
@@ -58,19 +63,16 @@ const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
     <div
       v-if="isResizable"
       :class="detailPaneStyle.resizeHandle()"
+      :aria-label="t('component.dashboard_page_detail_pane_transition.resize')"
       role="separator"
       aria-orientation="vertical"
-      aria-label="Resize detail pane"
       tabindex="0"
-      class="
-        transition-colors duration-150
-        hover:bg-(--border-primary)
-        focus-visible:bg-(--border-primary) focus-visible:outline-none
-        active:bg-(--border-primary)
-      "
+      class="focus-visible:outline-none"
       @pointerdown="onResizeStart"
       @keydown="onResizeKeyDown"
-    />
+    >
+      <div :class="detailPaneStyle.resizeHandleBar()" />
+    </div>
     <!-- eslint-enable vuejs-accessibility/no-static-element-interactions -->
 
     <slot />

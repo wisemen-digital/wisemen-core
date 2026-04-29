@@ -48,7 +48,7 @@ const {
   isOpen,
   isResizable: props.detailPane?.isResizable ?? true,
   storage: props.detailPane?.storage ?? null,
-  variant: props.detailPane?.variant ?? 'bordered-inline',
+  variant: props.detailPane?.variant ?? 'full-height-inline',
 })
 
 if (hasDetailPane.value) {

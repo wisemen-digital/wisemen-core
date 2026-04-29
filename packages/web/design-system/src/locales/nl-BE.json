@@ -2,6 +2,7 @@
   "component.avatar_group.overflow": "+{count}",
   "component.dashboard_page_detail_pane_toggle.collapse": "Detailpaneel inklappen",
   "component.dashboard_page_detail_pane_toggle.expand": "Detailpaneel uitklappen",
+  "component.dashboard_page_detail_pane_transition.resize": "Detailpaneel formaat aanpassen",
   "component.dashboard_page_header.options": "Opties",
   "component.dashboard_page_header_sidebar_toggle.collapse": "Zijbalk inklappen",
   "component.dashboard_page_header_sidebar_toggle.expand": "Zijbalk uitklappen",
