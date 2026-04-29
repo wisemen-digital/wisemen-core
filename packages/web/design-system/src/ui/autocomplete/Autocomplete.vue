@@ -116,7 +116,7 @@ useProvideAutocompleteContext({
     </template>
 
     <RekaComboboxRoot
-      v-model="(modelValue as any)"
+      v-model="modelValue"
       :display-value="displayValueFn"
       :ignore-filter="true"
       :open-on-click="props.items.length > 1"
@@ -165,6 +165,11 @@ useProvideAutocompleteContext({
         :display-fn="props.displayFn"
         :is-loading="props.isLoading"
         :items="props.items"
+        :popover-align="props.popoverAlign"
+        :popover-align-offset="props.popoverAlignOffset"
+        :popover-collision-padding="props.popoverCollisionPadding"
+        :popover-side="props.popoverSide"
+        :popover-side-offset="props.popoverSideOffset"
         :search-mode="props.searchMode"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"

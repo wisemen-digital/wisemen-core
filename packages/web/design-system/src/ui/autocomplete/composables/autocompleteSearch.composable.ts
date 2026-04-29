@@ -27,7 +27,7 @@ export function useAutocompleteSearch<TValue extends AutocompleteValue>(
     sensitivity: 'base',
   })
 
-  const debouncedSearch = ref<string>('')
+  const debouncedSearch = ref<string>(searchTerm.value)
 
   watchDebounced(
     searchTerm,
