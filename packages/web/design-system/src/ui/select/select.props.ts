@@ -18,7 +18,7 @@ export type DisplayFn<
 > = (item: NonNullable<GetValue<TValue>>) => string
 
 export interface SelectProps<TValue extends SelectValue | SelectValue[]>
-  extends Input, AutocompleteInput, InputWrapper, FieldWrapper, PopoverProps {
+  extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
    * Function to display the item label.
    */

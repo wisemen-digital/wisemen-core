@@ -1004,4 +1004,50 @@ describe('DateRange unit tests', () => {
       expect(isAfterOrOn).toBe(false)
     })
   })
+
+  describe('isStrictlyBefore', () => {
+    it('returns false when this range ends on the same date the other starts', () => {
+      const first = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-03'))
+      const second = new DateRange(plainDate('2024-01-03'), plainDate('2024-01-05'))
+
+      expect(first.isStrictlyBefore(second)).toBe(false)
+    })
+
+    it('returns true when this range ends before the other starts', () => {
+      const first = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-02'))
+      const second = new DateRange(plainDate('2024-01-03'), plainDate('2024-01-05'))
+
+      expect(first.isStrictlyBefore(second)).toBe(true)
+    })
+
+    it('returns false when ranges overlap', () => {
+      const first = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-04'))
+      const second = new DateRange(plainDate('2024-01-03'), plainDate('2024-01-05'))
+
+      expect(first.isStrictlyBefore(second)).toBe(false)
+    })
+  })
+
+  describe('isStrictlyAfter', () => {
+    it('returns false when this range starts on the same date the other ends', () => {
+      const first = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-03'))
+      const second = new DateRange(plainDate('2024-01-03'), plainDate('2024-01-05'))
+
+      expect(second.isStrictlyAfter(first)).toBe(false)
+    })
+
+    it('returns true when this range starts after the other ends', () => {
+      const first = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-02'))
+      const second = new DateRange(plainDate('2024-01-03'), plainDate('2024-01-05'))
+
+      expect(second.isStrictlyAfter(first)).toBe(true)
+    })
+
+    it('returns false when ranges overlap', () => {
+      const first = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-04'))
+      const second = new DateRange(plainDate('2024-01-03'), plainDate('2024-01-05'))
+
+      expect(second.isStrictlyAfter(first)).toBe(false)
+    })
+  })
 })

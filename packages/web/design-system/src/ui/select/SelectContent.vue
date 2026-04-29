@@ -57,10 +57,11 @@ const {
 )
 
 const {
-  isSearchEmpty,
-  debouncedSearch,
-  search,
+  debouncedSearch, search,
 } = useSelectRemoteSearch()
+
+const isSearchEmpty = computed<boolean>(() =>
+  props.search === 'local' ? localSearch.value === '' : search.value === '')
 
 const {
   createDisplayItemList, displayItems,
