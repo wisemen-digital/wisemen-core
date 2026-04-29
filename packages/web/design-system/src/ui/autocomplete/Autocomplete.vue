@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
   prioritizePosition: true,
-  searchMode: 'local',
+  searchMode: 'remote',
   size: 'md',
 })
 
