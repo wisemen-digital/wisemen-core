@@ -26,8 +26,12 @@
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "files": [
-    "./dist"
+    "./dist",
+    "skills"
   ],
+  "wisemen": {
+    "skills": "./skills"
+  },
   "scripts": {
     "prerelease": "pnpm version prerelease --preid=alpha",
     "build": "vite build",
