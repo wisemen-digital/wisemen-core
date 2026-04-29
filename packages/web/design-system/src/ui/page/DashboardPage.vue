@@ -41,12 +41,14 @@ const {
   isResizing,
   sidebarWidth,
   toggleIsOpen,
+  variant,
   onResizeKeyDown,
   onResizeStart,
 } = useDetailPane({
   isOpen,
   isResizable: props.detailPane?.isResizable ?? true,
   storage: props.detailPane?.storage ?? null,
+  variant: props.detailPane?.variant ?? 'full-height-inline',
 })
 
 if (hasDetailPane.value) {
@@ -57,6 +59,7 @@ if (hasDetailPane.value) {
     isResizing,
     sidebarWidth,
     toggleIsOpen,
+    variant,
     onResizeKeyDown,
     onResizeStart,
   })
