@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.0
+
+### Minor Changes
+
+- [#890](https://github.com/wisemen-digital/wisemen-core/pull/890) [`d2387b1`](https://github.com/wisemen-digital/wisemen-core/commit/d2387b1dfde8dd81fade83e336f914d3e84e0557) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add config provider with `numberSeparatorStyle` prop for controlling thousands/decimal separator formatting in NumberField components
+
+- [#884](https://github.com/wisemen-digital/wisemen-core/pull/884) [`bd0cf2d`](https://github.com/wisemen-digital/wisemen-core/commit/bd0cf2dc9eba210773d91c737136d4c8c1f9206f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add detail pane variants
+
+### Patch Changes
+
+- [#902](https://github.com/wisemen-digital/wisemen-core/pull/902) [`bb34a61`](https://github.com/wisemen-digital/wisemen-core/commit/bb34a612ff18a5964e63db85405a861846cafd76) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix index exports
+
 ## 0.6.0
 
 ### Minor Changes
