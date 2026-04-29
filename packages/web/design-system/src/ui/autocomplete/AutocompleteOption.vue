@@ -2,13 +2,13 @@
 import { CheckIcon } from '@wisemen/vue-core-icons'
 import type { AcceptableValue } from 'reka-ui'
 import {
-  ListboxItem as RekaListboxItem,
-  ListboxItemIndicator as RekaListboxItemIndicator,
+  ComboboxItem as RekaComboboxItem,
+  ComboboxItemIndicator as RekaComboboxItemIndicator,
 } from 'reka-ui'
 
 import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
+import { useInjectAutocompleteContext } from '@/ui/autocomplete/autocomplete.context'
 import { UIMenuItem } from '@/ui/menu-item'
-import { useInjectSelectContext } from '@/ui/select/select.context'
 
 const props = withDefaults(defineProps<{
   label?: string | null
@@ -18,27 +18,23 @@ const props = withDefaults(defineProps<{
 })
 
 const {
-  getItemConfig,
-  size,
-  onSelectOption,
-} = useInjectSelectContext()
+  getItemConfig, size,
+} = useInjectAutocompleteContext()
 
 const isUsingKeyboard = useIsUsingKeyboard()
 </script>
 
 <template>
-  <RekaListboxItem
+  <RekaComboboxItem
     :value="props.value"
-
     :class="{
       'data-highlighted:bg-secondary-hover': isUsingKeyboard,
       'hover:bg-secondary-hover': !isUsingKeyboard,
     }"
     class="
-      group/listbox-item flex w-full cursor-default items-center rounded-sm
+      group/combobox-item flex w-full cursor-default items-center rounded-sm
       outline-none
     "
-    @select="onSelectOption"
   >
     <UIMenuItem
       :config="getItemConfig?.(props.value) ?? null"
@@ -46,13 +42,12 @@ const isUsingKeyboard = useIsUsingKeyboard()
       :size="size"
     >
       <template #right>
-        <RekaListboxItemIndicator>
-          <Component
-            :is="CheckIcon"
+        <RekaComboboxItemIndicator>
+          <CheckIcon
             class="size-3.5 text-tertiary"
           />
-        </RekaListboxItemIndicator>
+        </RekaComboboxItemIndicator>
       </template>
     </UIMenuItem>
-  </RekaListboxItem>
+  </RekaComboboxItem>
 </template>
