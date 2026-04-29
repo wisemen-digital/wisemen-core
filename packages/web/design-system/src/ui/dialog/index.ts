@@ -13,3 +13,5 @@ export { default as UIDialogFooterSubmit } from '@/ui/dialog/DialogFooterSubmit.
 export type { DialogHeaderProps as UIDialogHeaderProps } from '@/ui/dialog/dialogHeader.props'
 export { default as UIDialogHeader } from '@/ui/dialog/DialogHeader.vue'
 export { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
+export type { DialogTriggerProps as UIDialogTriggerProps } from '@/ui/dialog/dialogTriggerProps.composable'
+export { useDialogTriggerProps } from '@/ui/dialog/dialogTriggerProps.composable'
