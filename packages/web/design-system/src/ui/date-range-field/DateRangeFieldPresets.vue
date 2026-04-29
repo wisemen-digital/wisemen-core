@@ -179,7 +179,7 @@ function isActivePreset(preset: Preset): boolean {
         flex w-full cursor-pointer items-center rounded-sm px-lg py-xs text-left
         text-xs font-medium text-secondary transition-colors duration-100
         outline-none
-        hover:bg-primary-hover
+        hover:bg-secondary-hover
         focus-visible:ring-2 focus-visible:ring-fg-brand-primary
         data-[active=true]:bg-brand-secondary
         data-[active=true]:text-brand-secondary

@@ -6,13 +6,14 @@ export const createDatePickerFieldStyle = tv({
     cellTrigger: `
       inline-flex h-9 w-full items-center justify-center rounded-full text-xs
       font-normal text-secondary transition-colors duration-100 outline-none
-      not-data-disabled:hover:bg-primary-hover
+      not-data-disabled:hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
       data-disabled:pointer-events-none data-disabled:text-disabled
       data-disabled:opacity-50
       data-outside-view:pointer-events-none data-outside-view:text-disabled
       data-selected:bg-brand-solid data-selected:text-primary-on-brand
-      data-selected:hover:bg-brand-solid-hover data-selected:focus-visible:ring-0
+      data-selected:hover:bg-brand-solid-hover
+      data-selected:focus-visible:ring-0
       data-unavailable:pointer-events-none data-unavailable:text-disabled
       data-unavailable:line-through
     `,
@@ -38,7 +39,8 @@ export const createDatePickerFieldStyle = tv({
     inputSegment: `
       rounded-sm px-xxs text-xs text-primary tabular-nums caret-transparent
       outline-none
-      hover:bg-primary-hover focus:bg-primary-hover focus:text-primary
+      hover:bg-secondary-hover
+      focus:bg-secondary-hover focus:text-primary
       data-placeholder:text-placeholder
       data-placeholder:focus:text-primary
     `,

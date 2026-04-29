@@ -55,7 +55,7 @@ const {
               group/cell inline-flex size-9 shrink-0 items-center justify-center
               rounded-full text-xs font-normal text-secondary transition-colors
               outline-none
-              not-data-disabled:hover:bg-primary-hover
+              not-data-disabled:hover:bg-secondary-hover
               focus-visible:ring-2 focus-visible:ring-fg-brand-primary
               data-disabled:pointer-events-none data-disabled:text-disabled
               data-disabled:opacity-50

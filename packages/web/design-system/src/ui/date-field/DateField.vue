@@ -251,7 +251,6 @@ function setToday(): void {
         >
           <RekaDatePickerCalendar
             v-slot="{ weekDays, grid }"
-            :fixed-weeks="true"
             class="
               flex flex-col gap-lg overflow-hidden rounded-2xl border
               border-secondary bg-primary p-2xl px-3xl shadow-lg

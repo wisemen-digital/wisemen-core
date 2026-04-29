@@ -103,7 +103,7 @@ function isLastDayOfMonth(date: any): boolean {
                 group-data-selection-start/celtrig:group-focus-visible/celtrig:ring-0
                 group-data-unavailable/celtrig:text-disabled
                 group-data-unavailable/celtrig:line-through
-                group-not-data-disabled/celtrig:group-not-data-highlighted/celtrig:group-not-data-selected/celtrig:hover:bg-primary-hover
+                group-not-data-disabled/celtrig:group-not-data-highlighted/celtrig:group-not-data-selected/celtrig:hover:bg-secondary-hover
               "
             >
               {{ date.day }}

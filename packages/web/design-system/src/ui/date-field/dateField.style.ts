@@ -7,8 +7,8 @@ export const createDateFieldStyle = tv({
     segment: `
       rounded-sm text-primary tabular-nums caret-transparent outline-none
       group-data-disabled/field-wrapper:pointer-events-none
-      hover:bg-primary-hover hover:text-primary
-      focus:bg-primary-hover focus:text-primary
+      hover:bg-secondary-hover hover:text-primary
+      focus:bg-secondary-hover focus:text-primary
       data-placeholder:text-placeholder
       data-placeholder:focus:text-primary
     `,

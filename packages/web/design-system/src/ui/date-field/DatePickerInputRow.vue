@@ -41,8 +41,8 @@ const {
           class="
             rounded-sm px-xxs text-xs text-primary tabular-nums
             caret-transparent outline-none
-            hover:bg-primary-hover
-            focus:bg-primary-hover focus:text-primary
+            hover:bg-secondary-hover
+            focus:bg-secondary-hover focus:text-primary
             data-placeholder:text-placeholder
             data-placeholder:focus:text-primary
           "
