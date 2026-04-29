@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.12
+
+### Patch Changes
+
+- [#897](https://github.com/wisemen-digital/wisemen-core/pull/897) [`14da59c`](https://github.com/wisemen-digital/wisemen-core/commit/14da59c9ef1dc462a3a54a5d20224f8a7d17ce75) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add isStrictlyBefore and isStrictlyAfter to DateTimeRange and DateRange to support range order comparissions
+
 ## 0.1.11
 
 ### Patch Changes

@@ -1,4 +1,7 @@
 {
+  "component.autocomplete.more_results_available": "More results available, keep searching to narrow down",
+  "component.autocomplete.no_results_found": "No results found",
+  "component.autocomplete.search_placeholder": "Search...",
   "component.avatar_group.overflow": "+{count}",
   "component.dashboard_page_detail_pane_toggle.collapse": "Collapse detail pane",
   "component.dashboard_page_detail_pane_toggle.expand": "Expand detail pane",
@@ -7,15 +10,19 @@
   "component.dashboard_page_header_sidebar_toggle.collapse": "Collapse sidebar",
   "component.dashboard_page_header_sidebar_toggle.expand": "Expand sidebar",
   "component.dashboard_page_loading_state.loading": "Loading",
+  "component.dialog.close": "Close dialog",
   "component.keyboard_shortcut.sequence_label": "then",
   "component.number_field.decrement": "Decrement",
   "component.number_field.increment": "Increment",
   "component.tabs.adaptive_dropdown.trigger.label": "More",
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
+  "component.unsaved_changes_dialog.cancel": "Keep editing",
+  "component.unsaved_changes_dialog.confirm": "Discard changes",
+  "component.unsaved_changes_dialog.description": "You have unsaved changes. Are you sure you want to leave?",
+  "component.unsaved_changes_dialog.title": "Unsaved changes",
   "components.sidebar.description": "The sidebar contains navigation links and other important actions.",
   "components.sidebar.global_search.label": "Search",
   "components.sidebar.sign_out": "Sign out",
   "components.sidebar.title": "Sidebar"
-
 }

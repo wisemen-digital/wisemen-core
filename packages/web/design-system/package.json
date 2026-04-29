@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.4.0",
+  "version": "0.6.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -59,7 +59,8 @@
     "reka-ui": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer"
+    "vue-router": "catalog:peer",
+    "formango": "catalog:peer"
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",
@@ -94,6 +95,7 @@
     "vitest": "catalog:test",
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
+    "formango": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }
