@@ -10,37 +10,57 @@ export class RedirectValidator {
     this.blockedPaths = config.blockedPaths || []
   }
 
-  private isBlockedPath(path: string): boolean {
-    // Extract just the pathname part (remove query string for checking)
-    const pathname = path.split('?')[0]
+  private normalizeRedirectUrl(redirectUrl: string): {
+    pathname: string
+    redirectPath: string
+  } | null {
+    if (!redirectUrl.startsWith('/') || redirectUrl.startsWith('//')) {
+      return null
+    }
 
-    return this.blockedPaths.some((blockedPath) => {
-      if (blockedPath.endsWith('/*')) {
-        const prefix = blockedPath.slice(0, -1) // Remove *
+    try {
+      const parsedRedirectUrl = new URL(redirectUrl, 'https://wisemen-auth.local')
 
-        return pathname.startsWith(prefix)
+      if (parsedRedirectUrl.origin !== 'https://wisemen-auth.local') {
+        return null
       }
 
-      return pathname === blockedPath || pathname.startsWith(`${blockedPath}/`)
-    })
+      return {
+        pathname: parsedRedirectUrl.pathname,
+        redirectPath: `${parsedRedirectUrl.pathname}${parsedRedirectUrl.search}${parsedRedirectUrl.hash}`,
+      }
+    }
+    catch {
+      return null
+    }
   }
 
-  private isValidPath(path: string): boolean {
+  private matchesPath(path: string, candidate: string): boolean {
+    if (candidate.endsWith('/*')) {
+      const prefix = candidate.slice(0, -1)
+
+      return path.startsWith(prefix)
+    }
+
+    return path === candidate || path.startsWith(`${candidate}/`)
+  }
+
+  private isBlockedPath(pathname: string): boolean {
+    return this.blockedPaths.some((blockedPath) => this.matchesPath(pathname, blockedPath))
+  }
+
+  private isValidPath(pathname: string, redirectPath: string): boolean {
     if (this.allowedPaths.length === 0) {
       return true
     }
 
     return this.allowedPaths.some((allowedPath) => {
-      // Exact match
-      if (path === allowedPath) {
+      if (this.matchesPath(pathname, allowedPath)) {
         return true
       }
 
-      // Prefix match (if allowed path ends with /*)
-      if (allowedPath.endsWith('/*')) {
-        const prefix = allowedPath.slice(0, -1) // Remove *
-
-        return path.startsWith(prefix)
+      if (allowedPath.includes('?') || allowedPath.includes('#')) {
+        return redirectPath === allowedPath
       }
 
       return false
@@ -53,29 +73,20 @@ export class RedirectValidator {
    * @returns boolean indicating if the URL is safe
    */
   public isValidRedirectUrl(redirectUrl: string): boolean {
-    try {
-      // Only allow relative URLs that start with /
-      if (!redirectUrl.startsWith('/')) {
-        return false
-      }
+    const normalizedRedirectUrl = this.normalizeRedirectUrl(redirectUrl)
 
-      // Block dangerous paths first
-      if (this.isBlockedPath(redirectUrl)) {
-        return false
-      }
-
-      // If allowedPaths is specified, check against whitelist
-      if (this.allowedPaths.length > 0) {
-        return this.isValidPath(redirectUrl)
-      }
-
-      // If no specific allowed paths, allow all except blocked ones
-      return true
-    }
-    catch {
-      // Invalid URL format
+    if (normalizedRedirectUrl === null) {
       return false
     }
+
+    if (this.isBlockedPath(normalizedRedirectUrl.pathname)) {
+      return false
+    }
+
+    return this.isValidPath(
+      normalizedRedirectUrl.pathname,
+      normalizedRedirectUrl.redirectPath,
+    )
   }
 
   /**
@@ -86,8 +97,10 @@ export class RedirectValidator {
     redirectUrl: string | null,
     fallbackUrl: string = '/',
   ): string {
+    const safeFallbackUrl = this.isValidRedirectUrl(fallbackUrl) ? fallbackUrl : '/'
+
     if (!redirectUrl || !this.isValidRedirectUrl(redirectUrl)) {
-      return fallbackUrl
+      return safeFallbackUrl
     }
 
     return redirectUrl

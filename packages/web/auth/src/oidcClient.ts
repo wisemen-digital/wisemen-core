@@ -3,6 +3,7 @@ import pkceChallenge from 'pkce-challenge'
 import { ApiClient } from './apiClient'
 import type {
   OAuth2VueClientOptions,
+  OidcAuthorizationUrlOptions,
   OidcUser,
 } from './oidc.type'
 import { RedirectValidator } from './redirectValidator'
@@ -11,13 +12,10 @@ import type { TokensStrategy } from './tokens-strategy/tokensStrategy.type'
 
 export class OidcClient {
   private client: ApiClient | null = null
-  private readonly offline: boolean
   private redirectValidator: RedirectValidator
   private tokensStrategy: TokensStrategy
 
   constructor(private options: OAuth2VueClientOptions) {
-    this.offline = options.offline ?? false
-
     this.tokensStrategy = this.options.tokensStrategy ?? new LocalStorageTokensStrategy(this.options.prefix)
 
     this.redirectValidator = new RedirectValidator(
@@ -27,12 +25,16 @@ export class OidcClient {
       },
     )
 
-    this.client = new ApiClient(
+    this.client = this.createApiClient(this.options)
+  }
+
+  private createApiClient(options: OAuth2VueClientOptions): ApiClient {
+    return new ApiClient(
       {
-        clientId: this.options.clientId,
-        baseUrl: this.options.baseUrl,
-        redirectUri: this.options.loginRedirectUri,
-        scopes: this.options.scopes,
+        clientId: options.clientId,
+        baseUrl: options.baseUrl,
+        redirectUri: options.loginRedirectUri,
+        scopes: options.scopes,
         tokensStrategy: this.tokensStrategy,
       },
     )
@@ -73,7 +75,9 @@ export class OidcClient {
 
     const codes = await pkceChallenge()
 
-    const scopes = this.options.scopes
+    const scopes = [
+      ...this.options.scopes,
+    ]
 
     scopes.push(`urn:zitadel:iam:org:idp:id:${idpId}`)
 
@@ -89,12 +93,14 @@ export class OidcClient {
     return `${this.options.baseUrl}/oauth/v2/authorize?${searchParams.toString()}`
   }
 
-  public async getLoginUrl(redirectUrl?: string): Promise<string> {
+  public async getLoginUrl(redirectUrl?: string, authorizationOptions?: OidcAuthorizationUrlOptions): Promise<string> {
     const searchParams = new URLSearchParams()
 
     const codes = await pkceChallenge()
 
-    const scopes = this.options.scopes
+    const scopes = [
+      ...this.options.scopes,
+    ]
 
     this.getTokensStrategy().setCodeVerifier(codes.code_verifier)
 
@@ -103,7 +109,10 @@ export class OidcClient {
     searchParams.append('response_type', 'code')
     searchParams.append('prompt', 'login')
 
-    if (redirectUrl !== undefined) {
+    if (authorizationOptions?.state !== undefined) {
+      searchParams.append('state', authorizationOptions.state)
+    }
+    else if (redirectUrl !== undefined) {
       const safeRedirectUrl = this.sanitizeRedirectUrl(redirectUrl)
 
       searchParams.append('state', safeRedirectUrl)
@@ -150,10 +159,6 @@ export class OidcClient {
   * If it fails, it will log the user out
   */
   public async isLoggedIn(): Promise<boolean> {
-    if (this.options.offline === true) {
-      return true
-    }
-
     if (this.client === null) {
       return false
     }
@@ -177,27 +182,10 @@ export class OidcClient {
   }
 
   /*
-  * Login the user offline by setting mock tokens
-  */
-  public loginOffline(): void {
-    if (this.client === null) {
-      throw new Error('Client is not initialized')
-    }
-
-    this.client.setMockTokens()
-  }
-
-  /*
   * Login the user with the code from the identity provider
   * It will get the access token and add it to the fetch instance headers
   */
   public async loginWithCode(code: string): Promise<void> {
-    if (this.options.offline === true) {
-      this.loginOffline()
-
-      return
-    }
-
     try {
       await this.getClient().loginWithCode(code)
     }
@@ -213,7 +201,7 @@ export class OidcClient {
   */
   public logout(): void {
     this.client?.clearTokens()
-    this.client = null
+    this.client = this.createApiClient(this.options)
   }
 
   public sanitizeRedirectUrl(redirectUrl: string, fallbackUrl?: string): string {
@@ -237,15 +225,7 @@ export class OidcClient {
       this.tokensStrategy = new LocalStorageTokensStrategy(nextOptions.prefix)
     }
 
-    this.client = new ApiClient(
-      {
-        clientId: nextOptions.clientId,
-        baseUrl: nextOptions.baseUrl,
-        redirectUri: nextOptions.loginRedirectUri,
-        scopes: nextOptions.scopes,
-        tokensStrategy: this.tokensStrategy,
-      },
-    )
+    this.client = this.createApiClient(nextOptions)
     this.options = nextOptions
   }
 }

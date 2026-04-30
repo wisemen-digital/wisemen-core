@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     mockReset: false,
     setupFiles: [
-      'vitest-localstorage-mock',
+      './vitest.setup.ts',
     ],
   },
 })

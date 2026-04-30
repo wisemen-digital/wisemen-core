@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom", "dom.iterable"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
@@ -12,6 +12,8 @@
     "target": "es2018"
   },
   "include": [
-    "eslint.config.ts"
+    "eslint.config.ts",
+    "src/**/*.ts",
+    "vitest.config.ts"
   ]
 }
