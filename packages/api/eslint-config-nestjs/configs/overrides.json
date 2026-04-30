@@ -1,12 +1,7 @@
 {
   "overrides": [
     {
-      "files": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.mts",
-        "**/*.cts"
-      ],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "rules": {
         "constructor-super": "off",
         "getter-return": "off",
@@ -31,9 +26,7 @@
       }
     },
     {
-      "files": [
-        "**/*.js"
-      ],
+      "files": ["**/*.js"],
       "rules": {
         "@typescript-eslint/await-thenable": "off",
         "@typescript-eslint/consistent-return": "off",
@@ -96,9 +89,7 @@
       }
     },
     {
-      "files": [
-        "**/*.test.ts"
-      ],
+      "files": ["**/*.test.ts"],
       "rules": {
         "@typescript-eslint/unbound-method": "off",
         "@typescript-eslint/no-floating-promises": "off",
@@ -106,16 +97,10 @@
       }
     },
     {
-      "files": [
-        "src/**/*.test.ts"
-      ],
+      "files": ["src/**/*.test.ts"],
       "rules": {
-        "@typescript-eslint/no-floating-promises": [
-          "off"
-        ],
-        "@typescript-eslint/no-unsafe-member-access": [
-          "off"
-        ]
+        "@typescript-eslint/no-floating-promises": ["off"],
+        "@typescript-eslint/no-unsafe-member-access": ["off"]
       }
     }
   ]

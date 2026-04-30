@@ -29,6 +29,7 @@ catalogs:
   lint:
     "@oxlint/plugins": "1.60.0"
     "oxlint": "1.59.0"
+    "oxfmt": "0.47.0"
     "oxlint-tsgolint": "0.20.0"
     "@wisemen/eslint-config-nestjs": "0.2.13"
     "eslint": "9.39.4"
