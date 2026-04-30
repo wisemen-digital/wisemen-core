@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/app-container",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -42,7 +42,7 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
-    "fastify": ">=5.8.4",
+    "fastify": ">=5.8.5",
     "typescript": "catalog:peer"
   },
   "peerDependencies": {

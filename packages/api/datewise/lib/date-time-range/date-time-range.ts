@@ -321,6 +321,16 @@ export class DateTimeRange {
     return new DateTimeRange(from, this.upper)
   }
 
+  /** Returns true if this range ends before the other range starts */
+  isStrictlyBefore (other: DateTimeRange): boolean {
+    return this.until.isSameOrBefore(other.from)
+  }
+
+  /** Returns true if this range starts after the other range ends */
+  isStrictlyAfter (other: DateTimeRange): boolean {
+    return this.from.isSameOrAfter(other.until)
+  }
+
   /** Returns true if this range ends immediately before the other range starts. */
   precedes (other: DateTimeRange): boolean {
     return (!this.upper.isFutureInfinity())

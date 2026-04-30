@@ -1,47 +1,48 @@
 {
   "name": "@wisemen/eslint-config-nestjs",
   "version": "1.1.0",
-  "publishConfig": {
-    "access": "public"
-  },
   "description": "",
-  "main": "eslint.config.js",
-  "type": "module",
+  "keywords": [],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/eslint-config-nestjs"
   },
+  "type": "module",
+  "main": "eslint.config.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint:oxlint": "oxlint --type-aware",
     "lint:eslint": "eslint",
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
-    "test": "node --test ./custom-rules/tests/**/*.test.js"
-  },
-  "keywords": [],
-  "author": "",
-  "peerDependencies": {
-    "eslint": "9.39.4",
-    "oxlint": "1.56.0"
-  },
-  "license": "SEE LICENSE IN LICENSE.md",
-  "devDependencies": {
-    "expect": "catalog:test"
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
-    "@eslint/eslintrc": "catalog:lint-api",
-    "@eslint/js": "catalog:lint-api",
-    "@stylistic/eslint-plugin": "catalog:lint-api",
+    "@eslint/eslintrc": "catalog:lint",
+    "@eslint/js": "catalog:lint",
+    "@oxlint/plugins": "catalog:lint",
+    "@stylistic/eslint-plugin": "catalog:lint",
     "@types/node": "catalog:backend",
-    "eslint": "catalog:lint-api",
-    "eslint-plugin-import-x": "catalog:lint-api",
-    "eslint-plugin-unicorn": "catalog:lint-api",
-    "eslint-plugin-unused-imports": "catalog:lint-api",
-    "globals": "catalog:lint-api",
+    "@typescript-eslint/eslint-plugin": "catalog:lint",
+    "eslint": "catalog:lint",
+    "eslint-plugin-import-typescript": "catalog:lint",
+    "eslint-plugin-import-x": "catalog:lint",
+    "eslint-plugin-unicorn": "catalog:lint",
+    "eslint-plugin-unused-imports": "catalog:lint",
+    "globals": "catalog:lint",
+    "oxfmt": "catalog:lint",
+    "oxlint": "catalog:lint",
     "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint-api",
-    "oxlint": "catalog:lint-api",
-    "@oxlint/plugins": "catalog:lint-api",
-    "@typescript-eslint/eslint-plugin": "catalog:lint-api"
+    "typescript-eslint": "catalog:lint"
+  },
+  "peerDependencies": {
+    "eslint": "9.39.4",
+    "oxfmt": "0.47.0",
+    "oxlint": "1.56.0"
   }
 }

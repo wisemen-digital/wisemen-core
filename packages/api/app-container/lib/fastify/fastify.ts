@@ -1,19 +1,24 @@
-/* eslint-disable no-console */
+ 
 import type { INestApplicationContext } from '@nestjs/common'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
-import type { FastifyInstance, FastifyReply, FastifyRequest, FastifyServerOptions } from 'fastify'
+import type {
+  FastifyInstance,
+  FastifyReply,
+  FastifyRequest,
+  RawServerDefault
+} from 'fastify'
 
 const port = Number(process.env.PORT) || 3000
 
 type State = 'starting' | 'ready' | 'shutdown' | 'unknown'
 
 export abstract class FastifyContainer {
-  private adapter?: FastifyAdapter
+  private adapter?: FastifyAdapter<RawServerDefault>
   private state: State
   private server: FastifyInstance
 
   protected nest?: INestApplicationContext
-  protected getFastifyOptions (): FastifyServerOptions {
+  protected getFastifyOptions (): ConstructorParameters<typeof FastifyAdapter<RawServerDefault>>[0] {
     return {}
   }
 
@@ -40,13 +45,14 @@ export abstract class FastifyContainer {
   }
 
   protected async init (): Promise<void> {
-    this.adapter = new FastifyAdapter(this.getFastifyOptions())
+    const adapter = new FastifyAdapter<RawServerDefault>(this.getFastifyOptions())
+    this.adapter = adapter
 
-    this.server = this.adapter.getInstance()
+    this.server = adapter.getInstance()
 
     this.enableProbes()
 
-    this.nest = await this.bootstrap(this.adapter)
+    this.nest = await this.bootstrap(adapter)
 
     await this.nest.init()
 
