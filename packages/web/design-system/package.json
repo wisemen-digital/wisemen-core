@@ -22,7 +22,7 @@
       "types": "./dist/locales.d.ts",
       "import": "./dist/locales.js"
     },
-    "./style": "./dist/index.css",
+    "./style.css": "./dist/index.css",
     "./source.css": "./dist/source.css"
   },
   "style": "./dist/index.css",
