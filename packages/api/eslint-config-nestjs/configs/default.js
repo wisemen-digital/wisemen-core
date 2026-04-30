@@ -52,14 +52,6 @@ const config = [
   },
   {
     ignores: ['dist', 'node_modules', 'src/modules/localization/generated/i18n.generated.ts']
-  },
-  {
-    plugins: {
-      'import-typescript': eslintImportTypescript
-    },
-    rules: {
-      'import-typescript/no-relative-parent-imports': ['error', { onlyPathsImport: true }]
-    }
   }
 ]
 
