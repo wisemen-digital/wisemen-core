@@ -26,11 +26,11 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { UIButton } from '@/ui/button'
 import IconButton from '@/ui/button/icon/IconButton.vue'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { datePickerYearPopoverStyle } from '@/ui/date-field/datePickerYearPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
-import { UIButton } from '@/ui/button'
 
 const props = defineProps<{
   placeholder: CalendarDate
@@ -66,8 +66,7 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
         size="xs"
         variant="tertiary"
         class="font-semibold"
-      >
-      </UIButton>
+      />
     </PopoverTrigger>
     <PopoverPortal>
       <ThemeProvider :as-child="true">
