@@ -1,5 +1,13 @@
 # @wisemen/eslint-config-nestjs
 
+## 1.1.1
+
+### Patch Changes
+
+- [#894](https://github.com/wisemen-digital/wisemen-core/pull/894) [`9ffca34`](https://github.com/wisemen-digital/wisemen-core/commit/9ffca349452a17d0aacda5681322d0557db28a61) Thanks [@senne-vanreusel](https://github.com/senne-vanreusel)! - Added formatter
+
+- [#895](https://github.com/wisemen-digital/wisemen-core/pull/895) [`3843fc0`](https://github.com/wisemen-digital/wisemen-core/commit/3843fc04d8330996ede69f6d670519cba2462bf6) Thanks [@senne-vanreusel](https://github.com/senne-vanreusel)! - Get rid of no relative import package and used my own
+
 ## 1.1.0
 
 ### Minor Changes

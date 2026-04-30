@@ -1,44 +1,48 @@
 {
   "name": "@wisemen/eslint-config-nestjs",
-  "version": "1.1.0",
-  "publishConfig": {
-    "access": "public"
-  },
+  "version": "1.1.1",
   "description": "",
-  "main": "eslint.config.js",
-  "type": "module",
+  "keywords": [],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/eslint-config-nestjs"
   },
+  "type": "module",
+  "main": "eslint.config.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "lint:oxlint": "oxlint --type-aware",
     "lint:eslint": "eslint",
-    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint"
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
-  "keywords": [],
-  "author": "",
+  "dependencies": {
+    "@eslint/eslintrc": "catalog:lint-api",
+    "@eslint/js": "catalog:lint-api",
+    "@oxlint/plugins": "catalog:lint-api",
+    "@stylistic/eslint-plugin": "catalog:lint-api",
+    "@types/node": "catalog:backend",
+    "@typescript-eslint/eslint-plugin": "catalog:lint-api",
+    "eslint": "catalog:lint-api",
+    "eslint-plugin-import-typescript": "catalog:lint-api",
+    "eslint-plugin-import-x": "catalog:lint-api",
+    "eslint-plugin-unicorn": "catalog:lint-api",
+    "eslint-plugin-unused-imports": "catalog:lint-api",
+    "globals": "catalog:lint-api",
+    "oxfmt": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "typescript": "catalog:peer",
+    "typescript-eslint": "catalog:lint-api"
+  },
   "peerDependencies": {
     "eslint": "9.39.4",
+    "oxfmt": "0.47.0",
     "oxlint": "1.56.0"
-  },
-  "license": "SEE LICENSE IN LICENSE.md",
-  "dependencies": {
-    "@eslint/eslintrc": "catalog:lint",
-    "@eslint/js": "catalog:lint",
-    "@stylistic/eslint-plugin": "catalog:lint",
-    "@types/node": "catalog:backend",
-    "eslint": "catalog:lint",
-    "eslint-plugin-import-typescript": "catalog:lint",
-    "eslint-plugin-import-x": "catalog:lint",
-    "eslint-plugin-unicorn": "catalog:lint",
-    "eslint-plugin-unused-imports": "catalog:lint",
-    "globals": "catalog:lint",
-    "typescript": "catalog:peer",
-    "typescript-eslint": "catalog:lint",
-    "oxlint": "catalog:lint",
-    "@oxlint/plugins": "catalog:lint",
-    "@typescript-eslint/eslint-plugin": "catalog:lint"
   }
 }
