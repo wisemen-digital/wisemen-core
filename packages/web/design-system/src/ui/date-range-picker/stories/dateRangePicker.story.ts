@@ -46,7 +46,7 @@ export const WithoutPresets: Story = {
 export const WithDateConstraints: Story = {
   args: {
     minDate: Temporal.PlainDate.from({
-      day: 1,
+      day: 6,
       month: 4,
       year: 2026,
     }),
