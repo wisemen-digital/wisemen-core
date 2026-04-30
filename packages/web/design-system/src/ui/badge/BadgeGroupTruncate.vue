@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
 import { computed } from 'vue'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
@@ -7,9 +8,17 @@ import AdaptiveContentBlock from '@/ui/adaptive-content/AdaptiveContentBlock.vue
 import type { BadgeProps } from '@/ui/badge/badge.props'
 import Badge from '@/ui/badge/Badge.vue'
 import BadgeGroup from '@/ui/badge/BadgeGroup.vue'
-import BadgeLabel from '@/ui/badge/BadgeLabel.vue'
+import type { DotColor } from '@/ui/dot/dot.props'
 
-interface BadgeData {
+export interface BadgeData {
+  avatar?: {
+    name: string
+    src?: string | null
+  } | null
+  dot?: {
+    color: DotColor
+  } | null
+  icon?: Component | null
   label: string
 }
 
@@ -66,11 +75,13 @@ function getHiddenBadgesLabels(hiddenCount: number): string {
       >
         <Badge
           :color="props.color"
+          :dot="badge.dot"
+          :avatar="badge.avatar"
+          :icon="badge.icon"
+          :label="badge.label"
           :variant="props.variant"
           :size="props.size"
-        >
-          <BadgeLabel :label="badge.label" />
-        </Badge>
+        />
       </AdaptiveContentBlock>
 
       <ActionTooltip
@@ -79,11 +90,10 @@ function getHiddenBadgesLabels(hiddenCount: number): string {
       >
         <Badge
           :color="props.color"
+          :label="getOverflowBadgeLabel(hiddenBlockCount + hiddenBadgeCount)"
           :variant="props.variant"
           :size="props.size"
-        >
-          <BadgeLabel :label="getOverflowBadgeLabel(hiddenBlockCount + hiddenBadgeCount)" />
-        </Badge>
+        />
       </ActionTooltip>
     </BadgeGroup>
   </AdaptiveContent>

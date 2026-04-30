@@ -9,16 +9,17 @@ import type {
 } from '@/ui/badge/badge.props'
 import type { BadgeVariants } from '@/ui/badge/badge.style'
 import { badgeVariants } from '@/ui/badge/badge.style'
+import BadgeAvatar from '@/ui/badge/BadgeAvatar.vue'
 import BadgeDot from '@/ui/badge/BadgeDot.vue'
 import BadgeIcon from '@/ui/badge/BadgeIcon.vue'
 import BadgeLabel from '@/ui/badge/BadgeLabel.vue'
 import { UIRowLayout } from '@/ui/row-layout/index'
 
 const props = withDefaults(defineProps<BadgeProps>(), {
-  hasDot: false,
   ariaLabel: null,
+  avatar: null,
   color: 'gray',
-  dotColor: null,
+  dot: null,
   icon: null,
   label: null,
   rounded: 'default',
@@ -26,7 +27,7 @@ const props = withDefaults(defineProps<BadgeProps>(), {
   variant: 'translucent',
 })
 
-const effectiveDotColor = computed<BadgeColor>(() => props.dotColor ?? props.color)
+const effectiveDotColor = computed<BadgeColor>(() => props.dot?.color ?? props.color)
 
 const variants = computed<BadgeVariants>(() =>
   badgeVariants({
@@ -50,9 +51,14 @@ useProvideBadgeContext({
     gap="xs"
     role="status"
   >
-    <BadgeDot v-if="props.hasDot" />
+    <BadgeDot v-if="props.dot != null" />
 
     <slot>
+      <BadgeAvatar
+        v-if="props.avatar != null"
+        :name="props.avatar.name"
+        :src="props.avatar.src"
+      />
       <BadgeIcon
         v-if="props.icon"
         :icon="props.icon"

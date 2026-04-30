@@ -54,7 +54,7 @@
   "devDependencies": {
     "@wisemen/eslint-config-vue": "workspace:*",
     "bumpp": "catalog:build",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build"

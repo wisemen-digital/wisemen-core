@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "3.2.3",
+  "version": "3.2.4",
   "private": false,
   "description": "",
   "license": "MIT",
@@ -25,7 +25,8 @@
   "types": "./dist/index.d.mts",
   "typings": "./dist/index.d.mts",
   "files": [
-    "dist"
+    "dist",
+    "skills"
   ],
   "scripts": {
     "build": "tsdown",
@@ -49,10 +50,11 @@
   },
   "devDependencies": {
     "@standard-schema/spec": "catalog:general",
+    "@tanstack/intent": "catalog:tooling",
     "@types/clone-deep": "catalog:types",
     "@vitest/coverage-v8": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "tailwindcss": "catalog:style",
     "vite": "catalog:vite",
     "vitest": "catalog:test",
@@ -63,5 +65,8 @@
   },
   "lint-staged": {
     "*": "eslint --fix"
-  }
+  },
+  "keywords": [
+    "tanstack-intent"
+  ]
 }

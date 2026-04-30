@@ -4,28 +4,28 @@ export const createButtonStyle = tv({
   compoundVariants: [
     {
       class: {
-        container: 'dark:rounded-[0.35rem] dark:px-md',
+        container: 'dark:rounded-[0.31rem] dark:px-md',
       },
       size: 'md',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.3rem] dark:px-lg',
+        container: 'dark:rounded-[0.44rem] dark:px-lg',
       },
       size: 'lg',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.2rem] dark:px-sm',
+        container: 'dark:rounded-[0.19rem] dark:px-sm',
       },
       size: 'sm',
       variant: 'primary',
     },
     {
       class: {
-        container: `dark:rounded-[0.15rem] dark:px-xs`,
+        container: `dark:rounded-[0.06rem] dark:px-xs`,
       },
       size: 'xs',
       variant: 'primary',
@@ -34,7 +34,7 @@ export const createButtonStyle = tv({
   slots: {
     container: `grid size-full items-center [grid-template-areas:'stack']`,
     icon: `shrink-0`,
-    label: ``,
+    label: `font-medium`,
     loader: `mx-auto items-center duration-100 [grid-area:stack]`,
     root: `
       group/button shrink-0 cursor-pointer items-center justify-center border
@@ -117,7 +117,7 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-error-primary
-          data-interactive:hover:bg-error-50
+          data-interactive:hover:bg-error-500/12
           dark:data-interactive:hover:bg-error-700/20
         `,
       },
@@ -137,7 +137,7 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-brand-50
+          data-interactive:hover:bg-brand-500/10
           dark:data-interactive:hover:bg-brand-700/20
         `,
       },
@@ -201,7 +201,7 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-primary-hover
+          data-interactive:hover:bg-secondary-hover
         `,
       },
     },
@@ -210,19 +210,19 @@ export const createButtonStyle = tv({
         icon: `size-4`,
         label: `text-sm`,
         loader: `size-4`,
-        root: 'h-8 min-w-8 rounded-sm px-lg',
+        root: 'h-8 min-w-8 rounded-lg px-lg',
       },
       md: {
         icon: `size-3.5`,
         label: `text-xs`,
         loader: `size-3.5`,
-        root: 'h-7 min-w-7 rounded-sm px-md',
+        root: 'h-7 min-w-7 rounded-md px-md',
       },
       sm: {
         icon: `size-3.5`,
         label: `text-xs`,
         loader: `size-3.5`,
-        root: 'h-6 min-w-6 rounded-xs px-sm',
+        root: 'h-6 min-w-6 rounded-sm px-sm',
       },
       xs: {
         icon: `size-3.5`,

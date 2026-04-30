@@ -18,6 +18,7 @@ import {
   ref,
 } from 'vue'
 
+import { UIButton } from '@/ui/button'
 import { datePickerMonthPopoverStyle } from '@/ui/date-field/datePickerMonthPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
@@ -54,12 +55,12 @@ function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
     v-model:open="monthOpen"
   >
     <PopoverTrigger :as-child="true">
-      <button
-        :class="datePickerMonthPopoverStyle.headingTrigger()"
-        type="button"
-      >
-        {{ monthLabel }}
-      </button>
+      <UIButton
+        :label="monthLabel"
+        size="xs"
+        variant="tertiary"
+        class="font-semibold"
+      />
     </PopoverTrigger>
     <PopoverPortal>
       <ThemeProvider :as-child="true">

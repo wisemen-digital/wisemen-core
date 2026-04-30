@@ -35,6 +35,7 @@ const modelValue = defineModel<DateRangePickerRange | null>({
 })
 
 const {
+  isInvalidRange,
   isSingleMonth,
   calendarPlaceholder,
   draftValue,
@@ -43,6 +44,7 @@ const {
   minDateValue,
   setPlaceholder,
   setPreset,
+  onDraftValueUpdate,
 } = useDateRangePicker({
   maxDate: toRef(props, 'maxDate'),
   minDate: toRef(props, 'minDate'),
@@ -50,6 +52,7 @@ const {
 })
 
 useProvideDateRangeFieldContext({
+  isInvalidRange,
   draftValue,
   placeholder: calendarPlaceholder,
   setPlaceholder,
@@ -69,6 +72,7 @@ useProvideDateRangeFieldContext({
       :locale="locale"
       :number-of-months="isSingleMonth ? 1 : 2"
       :close-on-select="false"
+      @update:model-value="onDraftValueUpdate"
     >
       <RekaDateRangePickerCalendar
         v-slot="{ weekDays, grid }"

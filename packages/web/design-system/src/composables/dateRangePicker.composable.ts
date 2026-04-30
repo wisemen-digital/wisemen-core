@@ -29,6 +29,8 @@ export function useDateRangePicker({
 }: UseDateRangePickerOptions) {
   const locale = navigator.language
 
+  const isInvalidRange = ref<boolean>(false)
+
   const screen = useBreakpoints({
     md: 768,
   })
@@ -37,7 +39,23 @@ export function useDateRangePicker({
   const todayDate = Temporal.Now.plainDateISO()
   const calendarPlaceholder = shallowRef<CalendarDate>(
     new CalendarDate(todayDate.year, todayDate.month, 1),
+
   )
+  const draftValue = ref<DateRange>({
+    end: modelValue.value?.end != null ? plainDateToCalendarDate(modelValue.value.end) : undefined,
+    start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
+  }) as Ref<DateRange>
+
+  function onDraftValueUpdate(value: DateRange): void {
+    if (value.start != null && value.end != null && value.start.compare(value.end) > 0) {
+      isInvalidRange.value = true
+
+      return
+    }
+
+    isInvalidRange.value = false
+    draftValue.value = value
+  }
 
   function setPlaceholder(date: CalendarDate): void {
     calendarPlaceholder.value = date
@@ -54,11 +72,6 @@ export function useDateRangePicker({
       year: date.year,
     })
   }
-
-  const draftValue = ref<DateRange>({
-    end: modelValue.value?.end != null ? plainDateToCalendarDate(modelValue.value.end) : undefined,
-    start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
-  }) as Ref<DateRange>
 
   watch(draftValue, (value) => {
     if (value.start != null && value.end != null) {
@@ -114,6 +127,7 @@ export function useDateRangePicker({
   })
 
   return {
+    isInvalidRange,
     isSingleMonth,
     calendarPlaceholder,
     draftValue,
@@ -123,5 +137,6 @@ export function useDateRangePicker({
     setPlaceholder,
     setPreset,
     syncDraftFromModel,
+    onDraftValueUpdate,
   }
 }

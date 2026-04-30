@@ -56,9 +56,7 @@ const modelValue = defineModel<Temporal.PlainDate | null>({
   required: true,
 })
 
-const {
-  t,
-} = useI18n()
+const i18n = useI18n()
 
 const id = props.id ?? useId()
 
@@ -182,18 +180,20 @@ function setToday(): void {
 
         <template
           v-if="!props.isPickerHidden"
-          #left
+          #right
         >
-          <RekaDatePickerTrigger :as-child="true">
+          <RekaDatePickerTrigger
+            :as-child="true"
+          >
             <UIIconButton
-              :disabled="props.isDisabled || props.isReadonly"
+              :is-disabled="props.isDisabled || props.isReadonly"
+              :is-tooltip-disabled="true"
               :icon="CalendarIcon"
-              :label="t('component.date_picker.open')"
+              :label="i18n.t('component.date_picker.open')"
               size="xs"
               type="button"
-              variant="input"
-              class="ml-xs"
-              data-field-wrapper
+              variant="tertiary"
+              class="mr-xs"
             />
           </RekaDatePickerTrigger>
         </template>
@@ -206,11 +206,10 @@ function setToday(): void {
             z-40 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]
           "
-          align="start"
+          align="end"
         >
           <RekaDatePickerCalendar
             v-slot="{ weekDays, grid }"
-            :fixed-weeks="true"
             class="
               flex flex-col gap-lg overflow-hidden rounded-2xl border
               border-secondary bg-primary p-2xl px-3xl shadow-lg

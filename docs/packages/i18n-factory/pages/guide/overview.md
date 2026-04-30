@@ -38,17 +38,17 @@ const overridden = i18nFactory.getTranslations({
 
 ### Extended Locales
 
-Add new locales by providing **all required keys**. TypeScript will enforce that every key from the default locales is defined:
+Add new locales by providing **all required keys**. Use `defineExtendedLocales` for better autocomplete and strict key validation in editor tooling:
 
 ```typescript
 const extended = i18nFactory.getTranslations({
-  extendedLocales: {
+  extendedLocales: i18nFactory.defineExtendedLocales({
     'es-ES': {
       key1: 'Valor 1',
       key2: 'Valor 2',
       // TypeScript error if any key is missing
     },
-  },
+  }),
 })
 ```
 
@@ -79,12 +79,12 @@ const combined = i18nFactory.getTranslations({
       key1: 'Custom Value',
     },
   },
-  extendedLocales: {
+  extendedLocales: i18nFactory.defineExtendedLocales({
     'es-ES': {
       key1: 'Valor Personalizado',
       key2: 'Valor 2',
     },
-  },
+  }),
 })
 
 console.log(combined['en-US'].key1) // 'Custom Value'

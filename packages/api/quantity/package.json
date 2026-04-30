@@ -15,7 +15,9 @@
     "build": "tsc",
     "pretest": "pnpm run build",
     "test": "node --test './dist/**/*.test.js'",
-    "lint": "eslint --cache",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -28,7 +30,7 @@
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

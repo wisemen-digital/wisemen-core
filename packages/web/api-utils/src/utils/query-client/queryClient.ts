@@ -34,6 +34,17 @@ export interface QueryClientUpdateOptions<
   value: (item: EntityItem<TEntity>) => EntityItem<TEntity>
 }
 
+/**
+ * Result of an update operation, providing a rollback function
+ */
+export interface QueryClientUpdateResult {
+  /**
+   * Reverts the cache entries affected by this update to their state before the update was applied.
+   * Safe to call multiple times (subsequent calls are no-ops).
+   */
+  rollback: () => void
+}
+
 type QueryKeyOrTupleFromConfig<
   TQueryKeys extends object,
   TKey extends QueryKeysWithEntityFromConfig<TQueryKeys>,
@@ -345,10 +356,13 @@ export class QueryClient<TQueryKeys extends object> {
    * @example
    * ```typescript
    * // Update a specific user by id
-   * queryClient.update('userDetail', {
+   * const { rollback } = queryClient.update('userDetail', {
    *   by: (user) => user.id === '123',
    *   value: (user) => ({ ...user, name: 'John Doe' })
    * })
+   *
+   * // Revert if the mutation fails
+   * rollback()
    *
    * // Update all electronics products to out of stock
    * queryClient.update('productList', {
@@ -363,21 +377,21 @@ export class QueryClient<TQueryKeys extends object> {
   >(
     key: TKey,
     options: QueryClientUpdateOptions<TEntity>,
-  ): void
+  ): QueryClientUpdateResult
   update<
     TKey extends QueryKeysWithEntityFromConfig<TQueryKeys>,
     TEntity extends QueryKeyEntityFromConfig<TQueryKeys, TKey> = QueryKeyEntityFromConfig<TQueryKeys, TKey>,
   >(
     keyTuple: readonly [TKey, Partial<QueryKeyRawParamsFromConfig<TQueryKeys, TKey>>],
     options: QueryClientUpdateOptions<TEntity>,
-  ): void
+  ): QueryClientUpdateResult
   update<
     TKey extends QueryKeysWithEntityFromConfig<TQueryKeys>,
     TEntity extends QueryKeyEntityFromConfig<TQueryKeys, TKey> = QueryKeyEntityFromConfig<TQueryKeys, TKey>,
   >(
     keyOrTuple: QueryKeyOrTupleFromConfig<TQueryKeys, TKey>,
     options: QueryClientUpdateOptions<TEntity>,
-  ): void {
+  ): QueryClientUpdateResult {
     const by = options.by
     const value = options.value
 
@@ -410,12 +424,17 @@ export class QueryClient<TQueryKeys extends object> {
       },
     })
 
+    // Snapshot affected queries for rollback
+    const snapshots = new Map<readonly unknown[], unknown>()
+
     // Update each matching query
     for (const query of queries) {
       const currentData = query.state.data
 
       // Support infinite queries: cached data is typically { pages, pageParams }
       if (this.isInfiniteDataLike(currentData)) {
+        snapshots.set(query.queryKey, currentData)
+
         const updatedInfiniteData = {
           ...currentData,
           pages: currentData.pages.map((page) => {
@@ -444,6 +463,8 @@ export class QueryClient<TQueryKeys extends object> {
         continue
       }
 
+      snapshots.set(query.queryKey, currentData)
+
       // Update the raw entity
       const updatedEntity = this.updateEntity(by, rawEntity, value)
 
@@ -451,6 +472,25 @@ export class QueryClient<TQueryKeys extends object> {
       const wrappedData = this.wrapEntityInAsyncResult(updatedEntity)
 
       this.queryClient.setQueryData(query.queryKey, wrappedData)
+    }
+
+    let rolledBack = false
+
+    return {
+      rollback: (): void => {
+        if (rolledBack) {
+          return
+        }
+
+        rolledBack = true
+
+        for (const [
+          queryKey,
+          data,
+        ] of snapshots) {
+          this.queryClient.setQueryData(queryKey, data)
+        }
+      },
     }
   }
 }

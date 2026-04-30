@@ -23,16 +23,16 @@ export default {
     schema: []
   },
 
-  create (context) {
+  createOnce(context) {
     /**
      * Parse TypeScript type annotation to check for null and undefined
      */
-    function parseTypeAnnotation (typeAnnotation) {
+    function parseTypeAnnotation(typeAnnotation) {
       if (!typeAnnotation) return { hasNull: false }
 
       const result = { hasNull: false }
 
-      function traverse (node) {
+      function traverse(node) {
         if (!node) return
 
         // Handle union types (e.g., string | null | undefined)
@@ -53,7 +53,7 @@ export default {
     /**
      * Extract @Column decorator options
      */
-    function getColumnOptions (decorators) {
+    function getColumnOptions(decorators) {
       if (!decorators) {
         return null
       }
@@ -63,10 +63,11 @@ export default {
           const callee = decorator.expression.callee
 
           // Check if it's @Column or any decorator ending with Column
-          const isColumn = callee.type === 'Identifier'
-            && (callee.name === 'Column' || callee.name.endsWith('Column'))
-            && callee.name !== 'JoinColumn'
-            && callee.name !== 'DeleteDateColumn'
+          const isColumn =
+            callee.type === 'Identifier' &&
+            (callee.name === 'Column' || callee.name.endsWith('Column')) &&
+            callee.name !== 'JoinColumn' &&
+            callee.name !== 'DeleteDateColumn'
 
           if (isColumn && decorator.expression.arguments.length > 0) {
             const options = decorator.expression.arguments[0]
@@ -94,7 +95,7 @@ export default {
     /**
      * Check a class property for type/decorator consistency
      */
-    function checkPropertyDefinition (node) {
+    function checkPropertyDefinition(node) {
       // Only check properties with @Column decorator
       const columnOptions = getColumnOptions(node.decorators)
 
@@ -121,7 +122,7 @@ export default {
     }
 
     return {
-      ClassDeclaration (node) {
+      ClassDeclaration(node) {
         const className = node.id?.name
 
         for (const member of node.body.body) {

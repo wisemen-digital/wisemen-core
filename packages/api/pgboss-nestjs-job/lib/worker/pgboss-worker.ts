@@ -1,15 +1,12 @@
-import { Inject, Injectable, OnModuleDestroy, OnModuleInit, Optional } from '@nestjs/common'
 import { captureError } from 'rxjs/internal/util/errorContext'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
 import { PgBossWorkerThread } from './pgboss-worker.thread.js'
-import { AllowBouncer, QueueBouncer } from './queue-bouncer.js'
-import { MODULE_OPTIONS_TOKEN } from './pgboss-worker.module-definition.js'
-import { PgBossWorkerModuleOptions } from './pgboss-worker.module-options.js'
+import { PgbossBouncer } from './pgboss-bouncer.js'
+import { PgbossWorkerQueueOptions } from './pgboss-worker.module-options.js'
 import { RawPgBossJob, RawPgBossJobData } from './pgboss-worker.constants.js'
 
-@Injectable()
-export class PgBossWorker implements OnModuleInit, OnModuleDestroy {
+export class PgBossWorker {
   private queueName: string
   private jobs: RawPgBossJob[] = []
   private threads: Array<Promise<void>> = []
@@ -19,11 +16,10 @@ export class PgBossWorker implements OnModuleInit, OnModuleDestroy {
   private pollInterval: number
   private batchSize: number
   private fetchRefreshThreshold: number
-  private bouncer: QueueBouncer
 
   constructor (
-    @Inject(MODULE_OPTIONS_TOKEN) config: PgBossWorkerModuleOptions,
-    @Optional() @Inject(QueueBouncer) bouncer: QueueBouncer | undefined,
+    config: PgbossWorkerQueueOptions,
+    private bouncer: PgbossBouncer,
     private client: PgBossClient,
     private jobRegistry: JobRegistry
   ) {
@@ -32,10 +28,9 @@ export class PgBossWorker implements OnModuleInit, OnModuleDestroy {
     this.pollInterval = config?.pollInterval ?? 2000
     this.batchSize = config?.batchSize ?? this.concurrency
     this.fetchRefreshThreshold = config?.fetchRefreshThreshold ?? 0
-    this.bouncer = bouncer ?? new AllowBouncer()
   }
 
-  onModuleInit (): void {
+  start (): void {
     if (this.working) {
       return
     }
@@ -47,8 +42,10 @@ export class PgBossWorker implements OnModuleInit, OnModuleDestroy {
     this.startWorkerThreads(jobGenerator)
   }
 
-  async onModuleDestroy (): Promise<void> {
-    await this.stop()
+  async stop (): Promise<void> {
+    this.working = false
+
+    await Promise.allSettled(this.threads)
   }
 
   private startWorkerThreads (jobGenerator: AsyncGenerator<RawPgBossJob, void, unknown>) {
@@ -116,11 +113,5 @@ export class PgBossWorker implements OnModuleInit, OnModuleDestroy {
     await this.jobFetchingPromise
 
     this.jobFetchingPromise = null
-  }
-
-  public async stop (): Promise<void> {
-    this.working = false
-
-    await Promise.allSettled(this.threads)
   }
 }

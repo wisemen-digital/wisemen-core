@@ -49,7 +49,7 @@ const variants: Array<'outline' | 'solid' | 'translucent'> = [
       <div>
         <Badge
           :color="props.color"
-          :has-dot="props.hasDot"
+          :dot="props.hasDot ? {} : null"
           :label="props.label"
           :rounded="props.rounded"
           :size="props.size"
@@ -112,7 +112,9 @@ const variants: Array<'outline' | 'solid' | 'translucent'> = [
         <Badge
           :color="props.color"
           :variant="props.variant"
-          :has-dot="true"
+          :dot="{
+            color: 'pink',
+          }"
           label="With dot"
         />
       </div>
@@ -128,6 +130,29 @@ const variants: Array<'outline' | 'solid' | 'translucent'> = [
           :variant="props.variant"
           :icon="Settings01Icon"
           label="With icon"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-medium text-secondary">
+        With avatar
+      </p>
+      <div class="flex items-center gap-3">
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :avatar="{ name: 'John Doe' }"
+          label="With avatar"
+        />
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :avatar="{
+            name: 'John Doe',
+            src: 'https://i.pravatar.cc/150?img=3',
+          }"
+          label="With avatar image"
         />
       </div>
     </div>

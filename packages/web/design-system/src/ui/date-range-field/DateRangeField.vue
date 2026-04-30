@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { CalendarIcon } from '@wisemen/vue-core-icons'
+import {
+  ArrowNarrowRightIcon,
+  CalendarIcon,
+} from '@wisemen/vue-core-icons'
 import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerContent as RekaDateRangePickerContent,
@@ -78,15 +81,13 @@ const {
 } = useInput(id, props)
 
 const isOpen = ref(false)
-
-const rangeSeparator = '–'
-
 const dateRangeFieldStyle = computed(() => createDateRangeFieldStyle({
   isPickerHidden: props.isPickerHidden,
   size: props.size,
 }))
 
 const {
+  isInvalidRange,
   isSingleMonth,
   calendarPlaceholder,
   draftValue,
@@ -96,6 +97,7 @@ const {
   setPlaceholder,
   setPreset,
   syncDraftFromModel,
+  onDraftValueUpdate,
 } = useDateRangePicker({
   maxDate: toRef(props, 'maxDate'),
   minDate: toRef(props, 'minDate'),
@@ -113,6 +115,7 @@ function onCancel(): void {
 }
 
 useProvideDateRangeFieldContext({
+  isInvalidRange,
   draftValue,
   placeholder: calendarPlaceholder,
   setPlaceholder,
@@ -145,9 +148,9 @@ useProvideDateRangeFieldContext({
 
     <RekaDateRangePickerRoot
       :id="id"
-      v-model="draftValue"
       v-model:open="isOpen"
       v-model:placeholder="calendarPlaceholder"
+      :model-value="draftValue"
       :week-starts-on="getWeekStartsOn(locale)"
       :disabled="props.isDisabled"
       :max-value="maxDateValue"
@@ -157,6 +160,7 @@ useProvideDateRangeFieldContext({
       :locale="locale"
       :number-of-months="isSingleMonth ? 1 : 2"
       :close-on-select="false"
+      @update:model-value="onDraftValueUpdate"
     >
       <FieldWrapper
         :is-disabled="props.isDisabled"
@@ -197,7 +201,7 @@ useProvideDateRangeFieldContext({
             </RekaDateRangePickerInput>
           </template>
 
-          <span :class="dateRangeFieldStyle.separator()">{{ rangeSeparator }}</span>
+          <ArrowNarrowRightIcon :class="dateRangeFieldStyle.separator()" />
 
           <template
             v-for="{ part, value } in segments.end"
@@ -225,17 +229,18 @@ useProvideDateRangeFieldContext({
 
         <template
           v-if="!props.isPickerHidden"
-          #left
+          #right
         >
           <RekaDateRangePickerTrigger :as-child="true">
             <UIIconButton
               :is-disabled="props.isDisabled || props.isReadonly"
+              :is-tooltip-disabled="true"
               :icon="CalendarIcon"
               :label="t('component.date_range_picker.open')"
               size="xs"
               type="button"
-              variant="input"
-              class="ml-xs"
+              variant="tertiary"
+              class="mr-xs"
               data-field-wrapper
             />
           </RekaDateRangePickerTrigger>
@@ -250,7 +255,7 @@ useProvideDateRangeFieldContext({
             z-40 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]
           "
-          align="start"
+          align="end"
         >
           <RekaDateRangePickerCalendar
             v-slot="{ weekDays, grid }"

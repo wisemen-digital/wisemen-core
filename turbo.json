@@ -23,6 +23,14 @@
       "dependsOn": ["^build"],
       "outputs": []
     },
+    "lint:oxlint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint:eslint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
     "lint:fix": {
       "dependsOn": ["^build"],
       "outputs": [],

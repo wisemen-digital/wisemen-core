@@ -1,4 +1,9 @@
-export type { BadgeProps as UIBadgeProps } from './badge.props'
+export type {
+  BadgeAvatarConfig as UIBadgeAvatarConfig,
+  BadgeColor as UIBadgeColor,
+  BadgeDotConfig as UIBadgeDotConfig,
+  BadgeProps as UIBadgeProps,
+} from './badge.props'
 export { default as UIBadge } from './Badge.vue'
 export { default as UIBadgeDot } from './BadgeDot.vue'
 export { default as UIBadgeGroup } from './BadgeGroup.vue'

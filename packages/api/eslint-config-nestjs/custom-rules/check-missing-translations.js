@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { readFileSync, existsSync, statSync } from 'fs'
 import { join } from 'path'
 
@@ -15,7 +14,7 @@ const cachedEventVersionsByLocale = new Map()
 const cachedPermissionsByLocale = new Map()
 const fileModificationTimes = new Map()
 
-function safeReadFile (filePath) {
+function safeReadFile(filePath) {
   try {
     return readFileSync(filePath, 'utf8')
   } catch {
@@ -23,7 +22,7 @@ function safeReadFile (filePath) {
   }
 }
 
-function getFileModificationTime (filePath) {
+function getFileModificationTime(filePath) {
   try {
     return statSync(filePath).mtime.getTime()
   } catch {
@@ -31,7 +30,7 @@ function getFileModificationTime (filePath) {
   }
 }
 
-function isFileModified (filePath) {
+function isFileModified(filePath) {
   const currentMtime = getFileModificationTime(filePath)
   const cachedMtime = fileModificationTimes.get(filePath) || 0
 
@@ -44,7 +43,7 @@ function isFileModified (filePath) {
   return false
 }
 
-function parseEnumValues (fileContent, enumName) {
+function parseEnumValues(fileContent, enumName) {
   if (!fileContent) return []
   const regex = new RegExp(`export\\s+enum\\s+${enumName}\\s*{([^}]+)}`, 's')
   const match = fileContent.match(regex)
@@ -62,7 +61,7 @@ function parseEnumValues (fileContent, enumName) {
   return values
 }
 
-function getAvailableLocales (localeEnumFile = DEFAULT_LOCALE_ENUM_FILE) {
+function getAvailableLocales(localeEnumFile = DEFAULT_LOCALE_ENUM_FILE) {
   const localeFilePath = join(process.cwd(), localeEnumFile)
 
   if (cachedLocales && !isFileModified(localeFilePath)) {
@@ -76,7 +75,7 @@ function getAvailableLocales (localeEnumFile = DEFAULT_LOCALE_ENUM_FILE) {
   return cachedLocales
 }
 
-function getPermissionTypes (permissionFile = DEFAULT_PERMISSION_FILE) {
+function getPermissionTypes(permissionFile = DEFAULT_PERMISSION_FILE) {
   const permissionsFilePath = join(process.cwd(), permissionFile)
 
   if (cachedPermissionTypes && !isFileModified(permissionsFilePath)) {
@@ -90,7 +89,7 @@ function getPermissionTypes (permissionFile = DEFAULT_PERMISSION_FILE) {
   return cachedPermissionTypes
 }
 
-function getDomainEventTypes (domainEventFile = DEFAULT_DOMAIN_EVENT_FILE) {
+function getDomainEventTypes(domainEventFile = DEFAULT_DOMAIN_EVENT_FILE) {
   const eventTypesFilePath = join(process.cwd(), domainEventFile)
 
   if (cachedEventTypes && !isFileModified(eventTypesFilePath)) {
@@ -104,7 +103,7 @@ function getDomainEventTypes (domainEventFile = DEFAULT_DOMAIN_EVENT_FILE) {
   return cachedEventTypes
 }
 
-function extractEventVersionsFromTranslations (locale, translationPath = DEFAULT_TRANSLATION_PATH) {
+function extractEventVersionsFromTranslations(locale, translationPath = DEFAULT_TRANSLATION_PATH) {
   const translationFile = join(process.cwd(), translationPath, locale, 'event-log.json')
 
   if (!existsSync(translationFile)) {
@@ -122,7 +121,7 @@ function extractEventVersionsFromTranslations (locale, translationPath = DEFAULT
     const content = JSON.parse(readFileSync(translationFile, 'utf8'))
     const eventVersions = {}
 
-    function recurse (obj, prefix = '') {
+    function recurse(obj, prefix = '') {
       for (const [key, value] of Object.entries(obj)) {
         const currentPath = prefix ? `${prefix}.${key}` : key
 
@@ -146,16 +145,16 @@ function extractEventVersionsFromTranslations (locale, translationPath = DEFAULT
     cachedEventVersionsByLocale.set(locale, eventVersions)
 
     return eventVersions
-  } catch (err) {
+  } catch {
     // Return empty but log once for visibility
-    console.warn(`[eslint-translation-rule] Failed to parse ${translationFile}: ${err.message}`)
+
     cachedEventVersionsByLocale.set(locale, {})
 
     return {}
   }
 }
 
-function extractPermissionsFromTranslations (locale, translationPath = DEFAULT_TRANSLATION_PATH) {
+function extractPermissionsFromTranslations(locale, translationPath = DEFAULT_TRANSLATION_PATH) {
   const translationFile = join(process.cwd(), translationPath, locale, 'permissions.json')
 
   if (!existsSync(translationFile)) {
@@ -173,7 +172,7 @@ function extractPermissionsFromTranslations (locale, translationPath = DEFAULT_T
     const content = JSON.parse(readFileSync(translationFile, 'utf8'))
     const permissions = new Set()
 
-    function recurse (obj, prefix = '') {
+    function recurse(obj, prefix = '') {
       for (const [key, value] of Object.entries(obj)) {
         const currentPath = prefix ? `${prefix}.${key}` : key
 
@@ -196,15 +195,14 @@ function extractPermissionsFromTranslations (locale, translationPath = DEFAULT_T
     cachedPermissionsByLocale.set(locale, permissions)
 
     return permissions
-  } catch (err) {
-    console.warn(`[eslint-translation-rule] Failed to parse ${translationFile}: ${err.message}`)
+  } catch {
     cachedPermissionsByLocale.set(locale, new Set())
 
     return new Set()
   }
 }
 
-function findMissingTranslations (options = {}) {
+function findMissingTranslations(options = {}) {
   const {
     localeEnumFile = DEFAULT_LOCALE_ENUM_FILE,
     domainEventFile = DEFAULT_DOMAIN_EVENT_FILE,
@@ -296,21 +294,24 @@ const rule = {
     ]
   },
 
-  create (context) {
-    const filename = context.getFilename()
-    const options = context.options[0] || {}
+  createOnce(context) {
+    const options = context.options?.[0] ?? {}
     const ignored = new Set(options.ignoreLocales || [])
-
-    const isDomainEventFile = filename.includes('domain-event-type.ts')
-    const isPermissionFile = filename.includes('permission.enum.ts')
-
-    // Only run on domain-event-type.ts or permission.enum.ts
-    if (!isDomainEventFile && !isPermissionFile) {
-      return {}
-    }
+    let isDomainEventFile = false
+    let isPermissionFile = false
 
     return {
-      Program (node) {
+      before() {
+        const filename = context.filename || ''
+        isDomainEventFile = filename.includes('domain-event-type.ts')
+        isPermissionFile = filename.includes('permission.enum.ts')
+      },
+      Program(node) {
+        // Only run on domain-event-type.ts or permission.enum.ts
+        if (!isDomainEventFile && !isPermissionFile) {
+          return
+        }
+
         // Recalculate missing translations on each run to detect file changes
         const missingTranslations = findMissingTranslations(options)
 

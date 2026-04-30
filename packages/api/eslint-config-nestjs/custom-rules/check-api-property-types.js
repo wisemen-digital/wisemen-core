@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/max-len */
 /**
  * ESLint rule to verify that TypeScript property types match @ApiProperty decorator options
  *
@@ -21,39 +20,46 @@ export default {
     },
     messages: {
       missingNullable: 'Property type includes null but @ApiProperty is missing `nullable: true`',
-      missingRequired: 'Property type includes undefined but @ApiProperty is missing `required: false`',
-      unnecessaryNullable: '@ApiProperty has `nullable: true` but property type does not include null',
-      unnecessaryRequired: '@ApiProperty has `required: false` but property type does not include undefined',
-      missingBothNullableRequired: 'Property type includes null and undefined but @ApiProperty is missing both `nullable: true` and `required: false`',
-      unnecessaryBothNullableRequired: '@ApiProperty has both `nullable: true` and `required: false` but property type does not include both null and undefined',
+      missingRequired:
+        'Property type includes undefined but @ApiProperty is missing `required: false`',
+      unnecessaryNullable:
+        '@ApiProperty has `nullable: true` but property type does not include null',
+      unnecessaryRequired:
+        '@ApiProperty has `required: false` but property type does not include undefined',
+      missingBothNullableRequired:
+        'Property type includes null and undefined but @ApiProperty is missing both `nullable: true` and `required: false`',
+      unnecessaryBothNullableRequired:
+        '@ApiProperty has both `nullable: true` and `required: false` but property type does not include both null and undefined',
       missingIsArray: 'Property type is an array but @ApiProperty is missing `isArray: true`',
       unnecessaryIsArray: '@ApiProperty has `isArray: true` but property type is not an array'
     },
     schema: []
   },
 
-  create (context) {
+  createOnce(context) {
     /**
      * Check if a class name matches the patterns we care about
      */
-    function isTargetClass (className) {
+    function isTargetClass(className) {
       if (!className) return false
 
-      return className.endsWith('Response')
-        || className.endsWith('Command')
-        || className.endsWith('Query')
-        || className.endsWith('Event')
+      return (
+        className.endsWith('Response') ||
+        className.endsWith('Command') ||
+        className.endsWith('Query') ||
+        className.endsWith('Event')
+      )
     }
 
     /**
      * Parse TypeScript type annotation to check for null and undefined
      */
-    function parseTypeAnnotation (typeAnnotation) {
+    function parseTypeAnnotation(typeAnnotation) {
       if (!typeAnnotation) return { hasNull: false, hasUndefined: false, hasArray: false }
 
       const result = { hasNull: false, hasUndefined: false, hasArray: false }
 
-      function traverse (node) {
+      function traverse(node) {
         if (!node) return
 
         // Handle union types (e.g., string | null | undefined)
@@ -92,7 +98,7 @@ export default {
     /**
      * Extract @ApiProperty decorator options
      */
-    function getApiPropertyOptions (decorators) {
+    function getApiPropertyOptions(decorators) {
       if (!decorators) {
         return null
       }
@@ -102,8 +108,9 @@ export default {
           const callee = decorator.expression.callee
 
           // Check if it's @ApiProperty or any decorator ending with ApiProperty
-          const isApiProperty = callee.type === 'Identifier'
-            && (callee.name === 'ApiProperty' || callee.name.endsWith('ApiProperty'))
+          const isApiProperty =
+            callee.type === 'Identifier' &&
+            (callee.name === 'ApiProperty' || callee.name.endsWith('ApiProperty'))
 
           if (isApiProperty && decorator.expression.arguments.length > 0) {
             const options = decorator.expression.arguments[0]
@@ -137,7 +144,7 @@ export default {
     /**
      * Check a class property for type/decorator consistency
      */
-    function checkPropertyDefinition (node) {
+    function checkPropertyDefinition(node) {
       // Only check properties with @ApiProperty decorator
       const apiPropertyOptions = getApiPropertyOptions(node.decorators)
 
@@ -200,7 +207,7 @@ export default {
     }
 
     return {
-      ClassDeclaration (node) {
+      ClassDeclaration(node) {
         const className = node.id?.name
 
         if (!isTargetClass(className)) {

@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "jsPlugins": ["./custom-rules/plugin.js"],
+  "plugins": ["typescript", "unicorn", "import"],
+  "categories": {
+    "correctness": "off"
+  },
+  "env": {
+    "builtin": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "src/modules/localization/generated/i18n.generated.ts"
+  ],
+  "rules": {
+    "custom-rules/check-missing-translations": "error",
+    "custom-rules/check-api-property-types": "error",
+    "custom-rules/check-column-types": "error",
+    "custom-rules/no-relative-import": "error",
+    "custom-rules/no-relative-parent-imports": "error"
+  },
+  "extends": ["./configs/default.json", "./configs/imports.json", "./configs/overrides.json"]
+}

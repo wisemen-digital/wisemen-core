@@ -1,5 +1,23 @@
 # @wisemen/app-container
 
+## 4.0.3
+
+### Patch Changes
+
+- [#898](https://github.com/wisemen-digital/wisemen-core/pull/898) [`fc1f7d5`](https://github.com/wisemen-digital/wisemen-core/commit/fc1f7d5a93cc36ce6f6d31538528557344cde90a) Thanks [@dependabot](https://github.com/apps/dependabot)! - bump fastify
+
+## 4.0.2
+
+### Patch Changes
+
+- [#876](https://github.com/wisemen-digital/wisemen-core/pull/876) [`1afed7c`](https://github.com/wisemen-digital/wisemen-core/commit/1afed7cb6d7833b9f813991b295934244abcb123) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: imports
+
+## 4.0.1
+
+### Patch Changes
+
+- [#875](https://github.com/wisemen-digital/wisemen-core/pull/875) [`584b841`](https://github.com/wisemen-digital/wisemen-core/commit/584b84101356023ae9d12156adda1e5ecfd6c83d) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: close fastify server
+
 ## 4.0.0
 
 ### Major Changes

@@ -5,7 +5,7 @@ import { MultiDateTimeRange } from '../multi-date-time-range/multi-date-time-ran
 import { InvalidDateTimeRangeBounds, NoDateTimeRangeOverlap } from './date-time-range.errors.js'
 
 /**
- * DateTimeRange only works with inclusive ranges internally, except for infinities
+ * DateTimeRange only works with [) ranges internally, except for infinities
  * When an exclusive date is given, this date is mapped to the next or previous inclusive date
  * for the upper and lower bound respectively
  *
@@ -13,8 +13,8 @@ import { InvalidDateTimeRangeBounds, NoDateTimeRangeOverlap } from './date-time-
  * DateTimeRange uses a maximum precision of milliseconds.
  */
 export class DateTimeRange {
-  readonly from: Timestamp
-  readonly until: Timestamp
+  private lower: Timestamp
+  private upper: Timestamp
 
   /**
    * @param from inclusive start of the range
@@ -72,8 +72,8 @@ export class DateTimeRange {
       until = until.add(1, 'ms')
     }
 
-    this.from = from
-    this.until = until
+    this.lower = from
+    this.upper = until
 
     if (until.isSameOrBefore(from) && from.isSameOrAfter(until)) {
       throw new InvalidDateTimeRangeBounds(this)
@@ -86,44 +86,94 @@ export class DateTimeRange {
     }
   }
 
+  /**
+   * An alias for `inclLower`
+   * This returns the inclusive lower bound
+   */
+  get from (): Timestamp {
+    return this.inclLower
+  }
+
+  /**
+   * An alias for `exclUpper`
+   * This returns the exclusive upper bound
+   */
+  get until (): Timestamp {
+    return this.exclUpper
+  }
+
+  /**
+   * Get the inclusive lower bound of this range
+   * This is what you intend to use most of the time
+  */
+  get inclLower (): Timestamp {
+    return this.lower
+  }
+
+  /**
+   * Get the exclusive lower bound of this range
+   * Most use cases should use `inclLower`
+   * The exclusive lower bound is 1ms before the inclusive lower bound
+   */
+  get exclLower (): Timestamp {
+    return this.lower.subtract(1, 'ms')
+  }
+
+  /**
+   * Get the inclusive upper bound of this range
+   * Most use cases should use `exclUpper`
+   */
+  get inclUpper (): Timestamp {
+    return this.upper.subtract(1, 'ms')
+  }
+
+  /**
+   * Get the exclusive upper bound of this range
+   * This is what you intend to use most of the time
+   * The exclusive upper bound is 1ms after inclusive upper bound
+   */
+  get exclUpper (): Timestamp {
+    return this.upper
+  }
+
   /** Returns the number of whole years in the range. */
   get years (): number {
-    return this.until.diff(this.from, 'years')
+    return this.upper.diff(this.lower, 'years')
   }
 
   /** Returns the number of whole months in the range. */
   get months (): number {
-    return this.until.diff(this.from, 'months')
+    return this.upper.diff(this.lower, 'months')
   }
 
   /** Returns the number of whole weeks in the range. */
   get weeks (): number {
-    return this.until.diff(this.from, 'weeks')
+    return this.upper.diff(this.lower, 'weeks')
   }
 
   /** Returns the number of whole days in the range. */
   get days (): number {
-    return this.until.diff(this.from, 'days')
+    return this.upper.diff(this.lower, 'days')
   }
 
   /** Returns the number of whole hours in the range. */
   get hours (): number {
-    return this.until.diff(this.from, 'hours')
+    return this.upper.diff(this.lower, 'hours')
   }
 
   /** Returns the number of whole minutes in the range. */
   get minutes (): number {
-    return this.until.diff(this.from, 'minutes')
+    return this.upper.diff(this.lower, 'minutes')
   }
 
   /** Returns the number of whole seconds in the range. */
   get seconds (): number {
-    return this.until.diff(this.from, 'seconds')
+    return this.upper.diff(this.lower, 'seconds')
   }
 
   /** Returns the number of whole milliseconds in the range. */
   get milliseconds (): number {
-    return this.until.diff(this.from, 'milliseconds')
+    return this.upper.diff(this.lower, 'milliseconds')
   }
 
   /** Checks if the given date falls within the range. */
@@ -131,73 +181,73 @@ export class DateTimeRange {
     date = timestamp(date)
 
     return !date.isPastInfinity() && !date.isFutureInfinity()
-      && date.isSameOrAfter(this.from) && this.until.isAfter(date)
+      && date.isSameOrAfter(this.lower) && this.upper.isAfter(date)
   }
 
   /** Checks if the given range is entirely contained within this range */
   containsRange (range: DateTimeRange): boolean {
-    return this.from.isSameOrBefore(range.from) && this.until.isSameOrAfter(range.until)
+    return this.lower.isSameOrBefore(range.lower) && this.upper.isSameOrAfter(range.upper)
   }
 
   /** Returns true if the range starts after the given date. */
   startsAfter (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isBefore(this.from)
+    return date.isBefore(this.lower)
   }
 
   /** Returns true if the range starts after or at the given date. */
   startsAfterOrAt (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isSameOrBefore(this.from)
+    return date.isSameOrBefore(this.lower)
   }
 
   /** Returns true if the range starts before the given date. */
   startsBefore (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isAfter(this.from)
+    return date.isAfter(this.lower)
   }
 
   /** Returns true if the range starts before or at the given date. */
   startsBeforeOrAt (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isSameOrAfter(this.from)
+    return date.isSameOrAfter(this.lower)
   }
 
   /** Returns true if the range ends before the given date. */
   endsBefore (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isAfter(this.until)
+    return date.isAfter(this.upper)
   }
 
   /** Returns true if the range ends before or at the given date. */
   endsBeforeOrAt (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isSameOrAfter(this.until)
+    return date.isSameOrAfter(this.upper)
   }
 
   /** Returns true if the range ends after the given date. */
   endsAfter (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isBefore(this.until)
+    return date.isBefore(this.upper)
   }
 
   /** Returns true if the range ends after or at the given date. */
   endsAfterOrAt (date: TimestampInput): boolean {
     date = timestamp(date)
 
-    return date.isSameOrBefore(this.until)
+    return date.isSameOrBefore(this.upper)
   }
 
   /** Returns true if the range overlaps with another DateTimeRange. */
   overlaps (withRange: DateTimeRange): boolean {
-    return this.from.isBefore(withRange.until) && this.until.isAfter(withRange.from)
+    return this.lower.isBefore(withRange.upper) && this.upper.isAfter(withRange.lower)
   }
 
   /** Returns the overlapping range with another DateTimeRange, or throws if none. */
@@ -206,8 +256,8 @@ export class DateTimeRange {
       throw new NoDateTimeRangeOverlap(this, withRange)
     }
 
-    const { from: startA, until: endA } = this
-    const { from: startB, until: endB } = withRange
+    const { lower: startA, upper: endA } = this
+    const { lower: startB, upper: endB } = withRange
 
     return new DateTimeRange(timestamp.max(startA, startB), timestamp.min(endA, endB))
   }
@@ -221,12 +271,12 @@ export class DateTimeRange {
     const overlap = this.overlap(withRange)
     const difference: DateTimeRange[] = []
 
-    if (overlap.from.isAfter(this.from)) {
-      difference.push(new DateTimeRange(this.from, overlap.from))
+    if (overlap.lower.isAfter(this.lower)) {
+      difference.push(new DateTimeRange(this.lower, overlap.lower))
     }
 
-    if (overlap.until.isBefore(this.until)) {
-      difference.push(new DateTimeRange(overlap.until, this.until))
+    if (overlap.upper.isBefore(this.upper)) {
+      difference.push(new DateTimeRange(overlap.upper, this.upper))
     }
 
     return new MultiDateTimeRange(difference)
@@ -234,13 +284,13 @@ export class DateTimeRange {
 
   /** Checks if both ranges have the same boundaries. */
   isSame (otherRange: DateTimeRange): boolean {
-    return this.from.isSame(otherRange.from)
-      && this.until.isSame(otherRange.until)
+    return this.lower.isSame(otherRange.lower)
+      && this.upper.isSame(otherRange.upper)
   }
 
   /** returns true if both boundaries are finite */
   isFinite (): boolean {
-    return (!this.from.isInfinity()) && (!this.until.isInfinity())
+    return (!this.lower.isInfinity()) && (!this.upper.isInfinity())
   }
 
   /**
@@ -248,9 +298,9 @@ export class DateTimeRange {
    * @example "(-infinity, 2025-10-17T14:22:14.768+00)"
    */
   toString (): string {
-    const startInclusivity = this.from.isInfinity() ? `(` : '['
+    const startInclusivity = this.lower.isInfinity() ? `(` : '['
 
-    return startInclusivity + this.from.toISOString() + ',' + this.until.toISOString() + ')'
+    return startInclusivity + this.lower.toISOString() + ',' + this.upper.toISOString() + ')'
   }
 
   toJSON (): string {
@@ -261,20 +311,30 @@ export class DateTimeRange {
   setUntil (until: TimestampInput): DateTimeRange {
     until = timestamp(until)
 
-    return new DateTimeRange(this.from, until)
+    return new DateTimeRange(this.lower, until)
   }
 
   /** Returns a new DateTimeRange with updated start boundary. */
   setFrom (from: TimestampInput): DateTimeRange {
     from = timestamp(from)
 
-    return new DateTimeRange(from, this.until)
+    return new DateTimeRange(from, this.upper)
+  }
+
+  /** Returns true if this range ends before the other range starts */
+  isStrictlyBefore (other: DateTimeRange): boolean {
+    return this.until.isSameOrBefore(other.from)
+  }
+
+  /** Returns true if this range starts after the other range ends */
+  isStrictlyAfter (other: DateTimeRange): boolean {
+    return this.from.isSameOrAfter(other.until)
   }
 
   /** Returns true if this range ends immediately before the other range starts. */
   precedes (other: DateTimeRange): boolean {
-    return (!this.until.isFutureInfinity())
-      && (this.until.isSame(other.from))
+    return (!this.upper.isFutureInfinity())
+      && (this.upper.isSame(other.lower))
   }
 
   /** Returns true if this range is immediately preceded by the other range. */
@@ -284,8 +344,8 @@ export class DateTimeRange {
 
   /** Returns true if this range starts immediately  after the other range ends. */
   succeeds (other: DateTimeRange): boolean {
-    return (!this.from.isPastInfinity())
-      && (this.from.isSame(other.until))
+    return (!this.lower.isPastInfinity())
+      && (this.lower.isSame(other.upper))
   }
 
   /** Returns true if this range is immediately  succeeded by the other range. */
@@ -313,17 +373,17 @@ export class DateTimeRange {
     }
 
     return new DateTimeRange(
-      timestamp.min(this.from, withOther.from),
-      timestamp.max(this.until, withOther.until)
+      timestamp.min(this.lower, withOther.lower),
+      timestamp.max(this.upper, withOther.upper)
     )
   }
 
   /** Merges two adjacent ranges into one; throws if not adjacent. */
   mergeAdjacent (withOther: DateTimeRange): DateTimeRange {
     if (this.isPrecededBy(withOther)) {
-      return this.setFrom(withOther.from)
+      return this.setFrom(withOther.lower)
     } else if (this.isSucceededBy(withOther)) {
-      return this.setUntil(withOther.until)
+      return this.setUntil(withOther.upper)
     } else {
       throw new Error('cannot merge non adjacent date time ranges')
     }

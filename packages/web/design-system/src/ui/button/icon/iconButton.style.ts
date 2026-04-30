@@ -4,28 +4,28 @@ export const createIconButtonStyle = tv({
   compoundVariants: [
     {
       class: {
-        container: 'dark:rounded-[0.35rem]',
+        container: 'dark:rounded-[0.31rem]',
       },
       size: 'md',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.3rem]',
+        container: 'dark:rounded-[0.44rem]',
       },
       size: 'lg',
       variant: 'primary',
     },
     {
       class: {
-        container: 'dark:rounded-[0.2rem]',
+        container: 'dark:rounded-[0.19rem]',
       },
       size: 'sm',
       variant: 'primary',
     },
     {
       class: {
-        container: `dark:rounded-[0.15rem]`,
+        container: `dark:rounded-[0.06rem]`,
       },
       size: 'xs',
       variant: 'primary',
@@ -62,12 +62,12 @@ export const createIconButtonStyle = tv({
       lg: {
         icon: `size-4`,
         loader: `size-4`,
-        root: 'size-8 rounded-md',
+        root: 'size-8 rounded-lg',
       },
       md: {
         icon: `size-3.5`,
         loader: `size-3.5`,
-        root: 'size-7 rounded-sm',
+        root: 'size-7 rounded-md',
       },
       sm: {
         icon: `size-3.5`,
@@ -111,21 +111,6 @@ export const createIconButtonStyle = tv({
           focus-visible:outline-fg-error-primary
           data-interactive:hover:bg-error-50
           dark:data-interactive:hover:bg-error-700/20
-        `,
-      },
-      'input': {
-        icon: `
-          text-fg-quaternary
-          group-disabled/button:text-disabled/50
-        `,
-        loader: `
-          text-fg-quaternary
-          group-disabled/button:text-disabled
-        `,
-        root: `
-          border-transparent
-          focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-primary-hover
         `,
       },
       'primary': {
@@ -176,7 +161,7 @@ export const createIconButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-primary-hover
+          data-interactive:hover:bg-secondary-hover
         `,
       },
     },

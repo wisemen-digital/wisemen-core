@@ -1,5 +1,11 @@
 # Formango
 
+## 3.2.4
+
+### Patch Changes
+
+- [#849](https://github.com/wisemen-digital/wisemen-core/pull/849) [`e21a3cc`](https://github.com/wisemen-digital/wisemen-core/commit/e21a3cc10a0d6a100fc17f663dea06d44b23b41f) Thanks [@Robbe95](https://github.com/Robbe95)! - Added formango skills
+
 ## 3.2.3
 
 ### Patch Changes

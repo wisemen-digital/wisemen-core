@@ -1,13 +1,12 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": ".",
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "allowJs": true,
     "strict": true,
     "noImplicitThis": true,
@@ -20,14 +19,8 @@
     "incremental": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictNullChecks": true,
+    "strictNullChecks": true
   },
-  "include": [
-    "eslint.config.js",
-    "./**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-  ]
+  "include": ["eslint.config.js", "./**/*"],
+  "exclude": ["node_modules", "dist"]
 }

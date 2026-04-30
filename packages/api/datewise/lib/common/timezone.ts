@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { ApiPropertyOptions, ApiProperty } from '@nestjs/swagger'
 import { Column, ColumnOptions } from 'typeorm'
 

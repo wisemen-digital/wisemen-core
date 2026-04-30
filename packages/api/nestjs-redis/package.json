@@ -1,0 +1,42 @@
+{
+  "name": "@wisemen/nestjs-redis",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "author": "Sebastiaan Vanspauwen",
+  "license": "GPL",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/nestjs-redis"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@nestjs/core": "catalog:backend",
+    "@wisemen/api-error": "workspace:*",
+    "redis": "catalog:backend"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@wisemen/api-error": "workspace:*",
+    "eslint": "catalog:lint-api",
+    "typescript": "catalog:peer"
+  }
+}

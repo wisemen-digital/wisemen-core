@@ -4,6 +4,7 @@ import type {
 } from 'vue'
 
 import { useContext } from '@/composables/context.composable'
+import type { DetailPaneVariant } from '@/ui/page/detailPane.type'
 
 export interface DetailPaneContext {
   isFloatingDetailPane: ComputedRef<boolean>
@@ -12,6 +13,7 @@ export interface DetailPaneContext {
   isResizing: Ref<boolean>
   sidebarWidth: Ref<string>
   toggleIsOpen: () => void
+  variant: DetailPaneVariant
   onResizeKeyDown: (event: KeyboardEvent) => void
   onResizeStart: (event: PointerEvent) => void
 }

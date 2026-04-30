@@ -55,6 +55,7 @@ After this setup, all future releases will be automatic through the changeset wo
 - **[ESLint Plugin](./packages/eslint-plugin)** – Custom ESLint rules
 - **[Express DTO Router](./packages/express-dto-router)** – DTO validation for Express routers
 - **[Formango](./packages/formango)** – Form management utilities
+- **[Format](./packages/web/format)** – Locale-aware string and number formatting utilities.
 - **[Generator](./packages/generator)** – Code generation tools
 - **[Icons](./packages/icons)** – Icon library and utilities
 - **[Int Range](./packages/int-range)** – Integer range utilities
@@ -103,3 +104,12 @@ Please get in touch at **sales@wisemen.digital** (or your preferred contact) if 
 For more details about what you can and cannot do with this software, please refer to the [LICENSE](./LICENSE.md) file.
 
 *Thank you for respecting the license and supporting years of development on wisemen-core!*
+
+
+### Repository Stats
+
+Use the stats script to inspect activity over the last 30 days:
+
+```bash
+pnpm repo:stats
+```

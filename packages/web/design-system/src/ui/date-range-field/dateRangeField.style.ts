@@ -2,17 +2,18 @@ import { tv } from '@/styles/tailwindVariants.lib'
 
 export const createDateRangeFieldStyle = tv({
   slots: {
-    field: `flex h-full min-w-0 flex-1 items-center`,
+    field: `ml-sm flex h-full min-w-0 flex-1 items-center`,
     literal: `text-placeholder select-none`,
     segment: `
-      rounded-sm px-xxs text-primary tabular-nums caret-transparent outline-none
+      rounded-sm text-primary tabular-nums caret-transparent outline-none
       group-data-disabled/field-wrapper:pointer-events-none
-      focus:bg-brand-solid focus:text-primary-on-brand
+      hover:bg-secondary-hover hover:text-primary
+      focus:bg-secondary-hover focus:text-primary
       data-placeholder:text-placeholder
-      data-placeholder:focus:text-primary-on-brand
+      data-placeholder:focus:text-primary
     `,
     separator: `
-      shrink-0 text-fg-quaternary select-none
+      mt-xxs size-3 shrink-0 text-fg-quaternary select-none
       group-data-disabled/field-wrapper:text-fg-disabled-subtle
     `,
     trigger: `

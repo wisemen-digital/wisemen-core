@@ -1,0 +1,62 @@
+{
+  "name": "@wisemen/vue-core-zod-validation",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.2",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/zod-validation"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./i18n": {
+      "types": "./dist/i18n.d.mts",
+      "import": "./dist/i18n.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --run",
+    "typecheck": "pnpm tsc"
+  },
+  "peerDependencies": {
+    "zod": "catalog:peer",
+    "vue-i18n": "catalog:peer"
+  },
+  "dependencies": {
+    "@wisemen/vue-core-i18n-factory": "workspace:*",
+    "libphonenumber-js": "catalog:general"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:types",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "vue-i18n": "catalog:vue",
+    "tsdown": "catalog:build",
+    "zod": "catalog:general",
+    "typescript": "catalog:build",
+    "vitest": "catalog:test"
+  }
+}
