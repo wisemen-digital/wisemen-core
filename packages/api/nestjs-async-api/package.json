@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",
