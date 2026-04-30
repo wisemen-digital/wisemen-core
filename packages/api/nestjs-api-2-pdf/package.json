@@ -32,7 +32,7 @@
     "@nestjs/common": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "@wisemen/opentelemetry": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
   "author": "Wisemen",

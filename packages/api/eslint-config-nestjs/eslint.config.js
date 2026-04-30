@@ -1,3 +1,4 @@
+/* oxlint-disable custom-rules/no-relative-import */
 import importX from './configs/imports.js'
 import defaultConfig from './configs/default.js'
 
