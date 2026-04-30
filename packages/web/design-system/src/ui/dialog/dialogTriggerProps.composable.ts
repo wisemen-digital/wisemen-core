@@ -1,12 +1,7 @@
 import { computed } from 'vue'
 
+import type { DialogTriggerProps } from '@/ui/dialog/dialog.type'
 import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
-
-export interface DialogTriggerProps {
-  'aria-expanded': boolean
-  'aria-haspopup': 'dialog'
-  'data-state': 'closed' | 'open'
-}
 
 export function useDialogTriggerProps(id: symbol) {
   const overlay = useOverlay()

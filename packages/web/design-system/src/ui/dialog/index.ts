@@ -1,6 +1,7 @@
 export type { ConfirmDialogProps as UIConfirmDialogProps } from '@/ui/dialog/confirmDialog.props'
 export { default as UIConfirmDialog } from '@/ui/dialog/ConfirmDialog.vue'
 export type { DialogProps as UIDialogProps } from '@/ui/dialog/dialog.props'
+export type { DialogTriggerProps as UIDialogTriggerProps } from '@/ui/dialog/dialog.type'
 export { default as UIDialog } from '@/ui/dialog/Dialog.vue'
 export { default as UIDialogBody } from '@/ui/dialog/DialogBody.vue'
 export { default as UIDialogContainer } from '@/ui/dialog/DialogContainer.vue'
@@ -13,5 +14,4 @@ export { default as UIDialogFooterSubmit } from '@/ui/dialog/DialogFooterSubmit.
 export type { DialogHeaderProps as UIDialogHeaderProps } from '@/ui/dialog/dialogHeader.props'
 export { default as UIDialogHeader } from '@/ui/dialog/DialogHeader.vue'
 export { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
-export type { DialogTriggerProps as UIDialogTriggerProps } from '@/ui/dialog/dialogTriggerProps.composable'
 export { useDialogTriggerProps } from '@/ui/dialog/dialogTriggerProps.composable'
