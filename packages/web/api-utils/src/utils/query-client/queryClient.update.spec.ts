@@ -501,7 +501,7 @@ describe('queryClient - update', () => {
             name: 'John Doe',
           }),
         })
-      }).not.toThrow()
+      }).not.toThrowError()
     })
 
     it('should handle undefined data gracefully', () => {
@@ -513,7 +513,7 @@ describe('queryClient - update', () => {
             name: 'John Doe',
           }),
         })
-      }).not.toThrow()
+      }).not.toThrowError()
     })
 
     it('should handle empty arrays', () => {

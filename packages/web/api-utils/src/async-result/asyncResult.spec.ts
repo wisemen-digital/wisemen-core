@@ -40,7 +40,7 @@ describe('asyncResult type narrowing with useQuery', () => {
     if (result.isOk()) {
       expect(() => {
         result.getValue()
-      }).not.toThrow()
+      }).not.toThrowError()
     }
   })
 

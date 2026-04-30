@@ -49,7 +49,7 @@ describe('reset form', () => {
 
     })
 
-    expect(() => form.reset()).toThrow('In order to reset the form, you need to provide an initial state')
+    expect(() => form.reset()).toThrowError('In order to reset the form, you need to provide an initial state')
   })
 
   it('should reset the isTouched state of all fields', async () => {

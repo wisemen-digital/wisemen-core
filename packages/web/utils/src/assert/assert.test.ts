@@ -12,41 +12,41 @@ import {
 
 describe('assert', () => {
   it('does not throw when the condition is truthy', () => {
-    expect(() => assert(true, 'should not throw')).not.toThrow()
-    expect(() => assert(1, 'should not throw')).not.toThrow()
-    expect(() => assert('hello', 'should not throw')).not.toThrow()
+    expect(() => assert(true, 'should not throw')).not.toThrowError()
+    expect(() => assert(1, 'should not throw')).not.toThrowError()
+    expect(() => assert('hello', 'should not throw')).not.toThrowError()
   })
 
   it('throws an Error when the condition is falsy', () => {
-    expect(() => assert(false, 'value was false')).toThrow('Assertion failed: value was false')
+    expect(() => assert(false, 'value was false')).toThrowError('Assertion failed: value was false')
   })
 
   it('throws for 0, empty string, null, and undefined', () => {
-    expect(() => assert(0, 'zero')).toThrow('Assertion failed: zero')
-    expect(() => assert('', 'empty string')).toThrow('Assertion failed: empty string')
-    expect(() => assert(null, 'null')).toThrow('Assertion failed: null')
-    expect(() => assert(undefined, 'undefined')).toThrow('Assertion failed: undefined')
+    expect(() => assert(0, 'zero')).toThrowError('Assertion failed: zero')
+    expect(() => assert('', 'empty string')).toThrowError('Assertion failed: empty string')
+    expect(() => assert(null, 'null')).toThrowError('Assertion failed: null')
+    expect(() => assert(undefined, 'undefined')).toThrowError('Assertion failed: undefined')
   })
 })
 
 describe('assertDefined', () => {
   it('does not throw for a defined value', () => {
-    expect(() => assertDefined('hello', 'must be defined')).not.toThrow()
-    expect(() => assertDefined(0, 'must be defined')).not.toThrow()
-    expect(() => assertDefined(false, 'must be defined')).not.toThrow()
+    expect(() => assertDefined('hello', 'must be defined')).not.toThrowError()
+    expect(() => assertDefined(0, 'must be defined')).not.toThrowError()
+    expect(() => assertDefined(false, 'must be defined')).not.toThrowError()
   })
 
   it('throws for null', () => {
-    expect(() => assertDefined(null, 'value is null')).toThrow('Assertion failed: value is null')
+    expect(() => assertDefined(null, 'value is null')).toThrowError('Assertion failed: value is null')
   })
 
   it('throws for undefined', () => {
-    expect(() => assertDefined(undefined, 'value is undefined')).toThrow('Assertion failed: value is undefined')
+    expect(() => assertDefined(undefined, 'value is undefined')).toThrowError('Assertion failed: value is undefined')
   })
 })
 
 describe('assertNever', () => {
   it('throws with the unexpected value in the message', () => {
-    expect(() => assertNever('unexpected' as never)).toThrow('Unexpected value reached assertNever')
+    expect(() => assertNever('unexpected' as never)).toThrowError('Unexpected value reached assertNever')
   })
 })
