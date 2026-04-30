@@ -136,6 +136,7 @@ catalogs:
     "highlight-words": "2.0.0"
     "@standard-schema/spec": "1.1.0"
     "clone-deep": 4.0.1
+    "country-flag-icons": "1.5.13"
     "@wisemen/vue-core": 1.0.0-alpha.42
 
   stories:
