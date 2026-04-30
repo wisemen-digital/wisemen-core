@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+- [#903](https://github.com/wisemen-digital/wisemen-core/pull/903) [`3dd0ce5`](https://github.com/wisemen-digital/wisemen-core/commit/3dd0ce543acb75c3dbfbbab17b3666fbb093e0da) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a composable to get the trigger props of the dialog for a11y
+
+### Patch Changes
+
+- [#905](https://github.com/wisemen-digital/wisemen-core/pull/905) [`731dc19`](https://github.com/wisemen-digital/wisemen-core/commit/731dc19ab86af4c6292a6fb1f58a5a036971bb2f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export index.css style file
+
 ## 0.8.0
 
 ### Minor Changes
