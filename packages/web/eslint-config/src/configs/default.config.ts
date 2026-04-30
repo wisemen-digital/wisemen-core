@@ -16,3 +16,12 @@ export interface DefaultConfigOptions {
   tailwindRootFontSize?: number
 
 }
+
+export interface PackageConfigOptions extends DefaultConfigOptions {
+  /**
+   * If true, disables all Tailwind CSS related linting rules.
+   * Useful for projects that do not use Tailwind or want to opt out of its linting.
+   * @default false
+   */
+  tailwindDisabled?: boolean
+}

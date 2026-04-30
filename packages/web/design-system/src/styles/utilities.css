@@ -16,6 +16,12 @@
     linear-gradient(225deg, transparent 0%, transparent 85%, rgba(0, 0, 0, 0.8) 100%), rgba(255, 255, 255, 0.4);
 }
 
+@utility shadow-floating {
+  box-shadow:
+    0px 3px 3px -1.5px #3641520a,
+    0px 8px 8px -4px #36415208;
+}
+
 @utility glassy-inner-content {
   @apply bg-linear-to-br from-secondary to-quaternary group-hover:from-primary;
 }
