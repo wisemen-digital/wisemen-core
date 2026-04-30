@@ -2,6 +2,7 @@
   "rules": {
     "custom-rules/check-missing-translations": "error",
     "custom-rules/check-api-property-types": "error",
-    "custom-rules/check-column-types": "error"
+    "custom-rules/check-column-types": "error",
+    "custom-rules/no-relative-import": "error"
   }
 }

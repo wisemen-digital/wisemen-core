@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "vue-i18n": "catalog:vue",
     "tsdown": "catalog:build",
     "zod": "catalog:general",
