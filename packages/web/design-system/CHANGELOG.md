@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- [#885](https://github.com/wisemen-digital/wisemen-core/pull/885) [`12bf126`](https://github.com/wisemen-digital/wisemen-core/commit/12bf1266125a6df184589d871d028402f0d4dd20) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add autocomplete component
+
 ## 0.7.0
 
 ### Minor Changes
