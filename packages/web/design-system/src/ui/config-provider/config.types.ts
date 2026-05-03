@@ -12,7 +12,7 @@ export interface ConfigProviderProps {
    * Can be either 'h12' or 'h24'. If not provided, the system locale's default will be used.
    * @default null
    */
-  hourCycle?: HourCycle
+  hourCycle?: HourCycle | null
   /**
    * The locale to use for localization.
    */
