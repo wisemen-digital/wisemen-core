@@ -240,6 +240,10 @@ catalogs:
     '@internationalized/date':
       specifier: 3.10.1
       version: 3.10.1
+  default:
+    '@tanstack/vue-hotkeys':
+      specifier: ^0.10.0
+      version: 0.10.0
   docs:
     markdown-it:
       specifier: 14.1.1
@@ -2159,7 +2163,7 @@ importers:
         version: 4.1.18(vite@7.3.1(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))
       '@vueuse/core':
         specifier: catalog:vue
-        version: 14.1.0(vue@3.5.33(typescript@5.9.3))
+        version: 14.2.1(vue@3.5.33(typescript@5.9.3))
       '@vueuse/router':
         specifier: catalog:vue
         version: 14.1.0(vue-router@5.0.6(@vue/compiler-sfc@3.5.33)(vue@3.5.33(typescript@5.9.3)))(vue@3.5.33(typescript@5.9.3))
@@ -2200,6 +2204,9 @@ importers:
       '@storybook/vue3-vite':
         specifier: catalog:storybook
         version: 10.3.0(esbuild@0.28.0)(rollup@4.60.2)(storybook@10.3.0(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(vite@7.3.1(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))(vue@3.5.33(typescript@5.9.3))
+      '@tanstack/vue-hotkeys':
+        specifier: 'catalog:'
+        version: 0.10.0(vue@3.5.33(typescript@5.9.3))
       '@types/node':
         specifier: catalog:types
         version: 24.8.1
@@ -2232,7 +2239,7 @@ importers:
         version: 27.4.0
       motion-v:
         specifier: catalog:peer
-        version: 2.2.1(@vueuse/core@14.1.0(vue@3.5.33(typescript@5.9.3)))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vue@3.5.33(typescript@5.9.3))
+        version: 2.2.1(@vueuse/core@14.2.1(vue@3.5.33(typescript@5.9.3)))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vue@3.5.33(typescript@5.9.3))
       playwright:
         specifier: catalog:test
         version: 1.57.0
@@ -7172,6 +7179,10 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7
 
+  '@tanstack/hotkeys@0.8.0':
+    resolution: {integrity: sha512-vqH7X9nb0MTJ/O08++dB5bP9jgj4+BIPOUu/U+6myG86lDsirZSVSobpq5UQpE7nBuk62i8eIYeOhd+OMl/UrA==}
+    engines: {node: '>=18'}
+
   '@tanstack/intent@0.0.29':
     resolution: {integrity: sha512-tJcWapEkXGRLHE7mQYvQS0xIWrzKm2n7fQ/lOy4LCdR1hX0Yxb9QnwRwd0oqmmr54ObP9/5sfiD8vELxL/r30g==}
     hasBin: true
@@ -7186,8 +7197,17 @@ packages:
   '@tanstack/query-core@5.90.19':
     resolution: {integrity: sha512-GLW5sjPVIvH491VV1ufddnfldyVB+teCnpPIvweEfkpRx7CfUmUGhoh9cdcUKBh/KwVxk22aNEDxeTsvmyB/WA==}
 
+  '@tanstack/store@0.11.0':
+    resolution: {integrity: sha512-WlzzCt3xi0G6pCAJu1U+2jiECwabETDpQDi3hfkFZvJii9AuZqEKbOiVarX1/bWhTNjU486yQtJCCasi/0q+Cw==}
+
   '@tanstack/virtual-core@3.14.0':
     resolution: {integrity: sha512-JLANqGy/D6k4Ujmh8Tr25lGimuOXNiaVyXaCAZS0W+1390sADdGnyUdSWNIfd49gebtIxGMij4IktRVzrdr12Q==}
+
+  '@tanstack/vue-hotkeys@0.10.0':
+    resolution: {integrity: sha512-ZhhiOORPtHdjW1/ZgwKCiXdSNuTSwAxyPhDHDy7VCb5jV6eMICoCZvIdhJZb07gzy3D93R1J6OMr8Mx0V5rBPw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      vue: '>=3.0.0'
 
   '@tanstack/vue-query@5.100.6':
     resolution: {integrity: sha512-aUvBla5roKKI311C4KHg+n0dHe+s9MKXwhUcro6Ajvu0L6IERoZ+/CjRqUCUgd5Y51ytuZAJl85uahgp7ViVlg==}
@@ -7203,6 +7223,15 @@ packages:
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: ^2.6.0 || ^3.3.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+
+  '@tanstack/vue-store@0.11.0':
+    resolution: {integrity: sha512-w1lE4D7oo6nIUhTQvL/RoTgcvoYJw+KvttWPNJd/Xu+MvNxMnjxFF/LgFp9vwmbNbiGhGCg3ZoPJptwjrfwNYw==}
+    peerDependencies:
+      '@vue/composition-api': ^1.2.1
+      vue: ^2.5.0 || ^3.0.0
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
@@ -18184,6 +18213,10 @@ snapshots:
       tailwindcss: 4.1.18
       vite: 7.3.1(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3)
 
+  '@tanstack/hotkeys@0.8.0':
+    dependencies:
+      '@tanstack/store': 0.11.0
+
   '@tanstack/intent@0.0.29':
     dependencies:
       cac: 6.7.14
@@ -18197,7 +18230,17 @@ snapshots:
 
   '@tanstack/query-core@5.90.19': {}
 
+  '@tanstack/store@0.11.0': {}
+
   '@tanstack/virtual-core@3.14.0': {}
+
+  '@tanstack/vue-hotkeys@0.10.0(vue@3.5.33(typescript@5.9.3))':
+    dependencies:
+      '@tanstack/hotkeys': 0.8.0
+      '@tanstack/vue-store': 0.11.0(vue@3.5.33(typescript@5.9.3))
+      vue: 3.5.33(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
 
   '@tanstack/vue-query@5.100.6(vue@3.5.27(typescript@5.9.3))':
     dependencies:
@@ -18212,6 +18255,12 @@ snapshots:
       '@tanstack/match-sorter-utils': 8.19.4
       '@tanstack/query-core': 5.90.19
       '@vue/devtools-api': 6.6.4
+      vue: 3.5.33(typescript@5.9.3)
+      vue-demi: 0.14.10(vue@3.5.33(typescript@5.9.3))
+
+  '@tanstack/vue-store@0.11.0(vue@3.5.33(typescript@5.9.3))':
+    dependencies:
+      '@tanstack/store': 0.11.0
       vue: 3.5.33(typescript@5.9.3)
       vue-demi: 0.14.10(vue@3.5.33(typescript@5.9.3))
 
@@ -19551,6 +19600,13 @@ snapshots:
       '@vueuse/metadata': 14.2.1
       '@vueuse/shared': 14.2.1(vue@3.5.27(typescript@5.9.3))
       vue: 3.5.27(typescript@5.9.3)
+
+  '@vueuse/core@14.2.1(vue@3.5.33(typescript@5.9.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 14.2.1
+      '@vueuse/shared': 14.2.1(vue@3.5.33(typescript@5.9.3))
+      vue: 3.5.33(typescript@5.9.3)
 
   '@vueuse/integrations@14.2.1(axios@1.15.2)(change-case@5.4.4)(focus-trap@7.8.0)(fuse.js@7.3.0)(vue@3.5.27(typescript@5.9.3))':
     dependencies:
@@ -23113,19 +23169,6 @@ snapshots:
       - react
       - react-dom
 
-  motion-v@2.2.1(@vueuse/core@14.1.0(vue@3.5.33(typescript@5.9.3)))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vue@3.5.33(typescript@5.9.3)):
-    dependencies:
-      '@vueuse/core': 14.1.0(vue@3.5.33(typescript@5.9.3))
-      framer-motion: 12.38.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      hey-listen: 1.0.8
-      motion-dom: 12.38.0
-      motion-utils: 12.36.0
-      vue: 3.5.33(typescript@5.9.3)
-    transitivePeerDependencies:
-      - '@emotion/is-prop-valid'
-      - react
-      - react-dom
-
   motion-v@2.2.1(@vueuse/core@14.2.1(vue@3.5.27(typescript@5.9.3)))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       '@vueuse/core': 14.2.1(vue@3.5.27(typescript@5.9.3))
@@ -23134,6 +23177,19 @@ snapshots:
       motion-dom: 12.38.0
       motion-utils: 12.36.0
       vue: 3.5.27(typescript@5.9.3)
+    transitivePeerDependencies:
+      - '@emotion/is-prop-valid'
+      - react
+      - react-dom
+
+  motion-v@2.2.1(@vueuse/core@14.2.1(vue@3.5.33(typescript@5.9.3)))(react-dom@19.2.5(react@19.2.5))(react@19.2.5)(vue@3.5.33(typescript@5.9.3)):
+    dependencies:
+      '@vueuse/core': 14.2.1(vue@3.5.33(typescript@5.9.3))
+      framer-motion: 12.38.0(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      hey-listen: 1.0.8
+      motion-dom: 12.38.0
+      motion-utils: 12.36.0
+      vue: 3.5.33(typescript@5.9.3)
     transitivePeerDependencies:
       - '@emotion/is-prop-valid'
       - react

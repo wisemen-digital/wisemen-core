@@ -12,6 +12,7 @@
   "component.dashboard_page_loading_state.loading": "Laden",
   "component.dialog.close": "Dialoog sluiten",
   "component.keyboard_shortcut.sequence_label": "dan",
+  "component.keyboard_shortcut.then": "dan",
   "component.number_field.decrement": "Aftrekken",
   "component.number_field.increment": "Optellen",
   "component.tabs.adaptive_dropdown.trigger.label": "Meer",

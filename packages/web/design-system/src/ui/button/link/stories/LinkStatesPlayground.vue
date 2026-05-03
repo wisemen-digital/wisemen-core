@@ -25,7 +25,10 @@ import Link from '@/ui/button/link/Link.vue'
       <div>
         <Link
           :link="{ href: '#' }"
-          keyboard-shortcut="⌘D"
+          :keyboard-shortcut="{
+            key: 'D',
+            meta: true,
+          }"
           label="Dashboard"
         />
       </div>

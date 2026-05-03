@@ -54,7 +54,10 @@ import Button from '@/ui/button/button/Button.vue'
       </p>
       <div>
         <Button
-          keyboard-shortcut="⌘S"
+          :keyboard-shortcut="{
+            key: 'S',
+            meta: true,
+          }"
           label="Save"
         />
       </div>

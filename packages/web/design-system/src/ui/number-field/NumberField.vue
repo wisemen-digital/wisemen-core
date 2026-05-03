@@ -25,7 +25,7 @@ import {
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
-import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
+import { getLocaleFromNumberFormat } from '@/types/numberFormat.type'
 import IconButton from '@/ui/button/icon/IconButton.vue'
 import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
@@ -96,25 +96,9 @@ const {
   ariaInvalid,
 } = useInput(id, props)
 
-const SEPARATOR_STYLE_LOCALE: Record<Exclude<NumberSeparatorStyle, 'system'>, string> = {
-  'comma-period': 'en-US',
-  'period-comma': 'de-DE',
-  'space-comma': 'fr-FR',
-  'space-period': 'fr-CH',
-}
+const configContext = useInjectConfigContext()
 
-const configContext = useInjectConfigContext(null)
-
-const effectiveLocale = computed<string>(() => {
-  // eslint-disable-next-line better-tailwindcss/no-unknown-classes
-  const style = configContext?.numberSeparatorStyle.value ?? 'system'
-
-  if (style === 'system') {
-    return navigator.language
-  }
-
-  return SEPARATOR_STYLE_LOCALE[style]
-})
+const effectiveLocale = computed<string>(() => getLocaleFromNumberFormat(configContext.numberFormat.value))
 
 /**
  * Parses a localized number string into a number.
@@ -153,7 +137,7 @@ function onInput(event: InputEvent): void {
     return
   }
 
-  const valueAsNumber = formatNumbeDecimalSeperators(value)
+  const valueAsNumber = formatNumberDecimalSeparators(value)
 
   if (Number.isNaN(valueAsNumber)) {
     return
@@ -167,7 +151,7 @@ function onEnterKeyDown(): void {
   isEditing.value = false
 }
 
-function formatNumbeDecimalSeperators(value: string): number {
+function formatNumberDecimalSeparators(value: string): number {
   SEPARATOR_REGEX.lastIndex = 0
 
   const allSeparators = [

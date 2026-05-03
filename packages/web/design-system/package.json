@@ -55,12 +55,12 @@
   "peerDependencies": {
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
+    "formango": "catalog:peer",
     "motion-v": "catalog:peer",
     "reka-ui": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer",
-    "formango": "catalog:peer"
+    "vue-router": "catalog:peer"
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",
@@ -77,6 +77,7 @@
     "@storybook/addon-vitest": "catalog:storybook",
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
+    "@tanstack/vue-hotkeys": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
     "@vitest/browser-playwright": "catalog:test",
@@ -85,6 +86,7 @@
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
+    "formango": "catalog:peer",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "playwright": "catalog:test",
@@ -95,7 +97,6 @@
     "vitest": "catalog:test",
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
-    "formango": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }

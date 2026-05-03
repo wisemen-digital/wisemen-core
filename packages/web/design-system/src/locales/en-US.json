@@ -12,6 +12,7 @@
   "component.dashboard_page_loading_state.loading": "Loading",
   "component.dialog.close": "Close dialog",
   "component.keyboard_shortcut.sequence_label": "then",
+  "component.keyboard_shortcut.then": "then",
   "component.number_field.decrement": "Decrement",
   "component.number_field.increment": "Increment",
   "component.tabs.adaptive_dropdown.trigger.label": "More",

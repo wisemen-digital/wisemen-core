@@ -1,5 +1,5 @@
 import type { HourCycle } from '@/types/hourCycle.type'
-import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
+import type { NumberFormat } from '@/types/numberFormat.type'
 
 export interface ConfigProviderProps {
   /**
@@ -28,10 +28,9 @@ export interface ConfigProviderProps {
    *
    * @default 'system'
    */
-  numberSeparatorStyle?: NumberSeparatorStyle
+  numberFormat?: NumberFormat
   /**
-   * The selector for the teleport target.
-   * @default 'body'
+   * The name of the project, used for example in the document title template.
    */
-  teleportTargetSelector?: string
+  projectName: string
 }
