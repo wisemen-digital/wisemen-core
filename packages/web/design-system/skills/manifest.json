@@ -1,0 +1,410 @@
+{
+  "version": 1,
+  "generatedBy": "@wisemen/skills-cli",
+  "skills": [
+    {
+      "name": "action-tooltip",
+      "description": "A pre-built tooltip that displays a text label and an optional keyboard shortcut badge. Wraps UITooltip with UITooltipText and UIKeyboardShortcut in a row layout. Load this skill when you need a standardized tooltip for buttons or actions with shortcut hints.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/action-tooltip/SKILL.md"
+    },
+    {
+      "name": "adaptive-content",
+      "description": "A container that conditionally renders child blocks based on available horizontal space and an explicit priority order. Lower-priority blocks are progressively hidden when the container overflows, exposing a hidden-block count for building overflow indicators.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/adaptive-content/SKILL.md"
+    },
+    {
+      "name": "architecture",
+      "description": "Core architecture patterns for @wisemen/vue-core-design-system: the parts pattern (Root/Content/Icon sub-components), context system (useContext + provide/inject), PropsToComputed utility, toComputedRefs, file naming conventions, and export conventions (UI prefix). Load before building or extending any component.\n",
+      "type": "foundation",
+      "library_version": "0.8.0",
+      "path": "foundations/architecture/SKILL.md"
+    },
+    {
+      "name": "autocomplete",
+      "description": "Typeahead input that filters a dropdown list as the user types. Supports local client-side filtering and remote server-side search with debouncing. Uses the input-system foundation for labels, errors, and field wrappers.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/autocomplete/SKILL.md"
+    },
+    {
+      "name": "avatar",
+      "description": "Avatar system with four components: UIAvatar (image or initials), UIAvatarGroup (stacked row with overflow), UIAvatarGroupAddButton (dashed add action), and UIAvatarLabel (avatar with name and supporting text). Load this skill when displaying user profile pictures, grouped users, or labeled identity elements.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/avatar/SKILL.md"
+    },
+    {
+      "name": "badge",
+      "description": "Versatile badge component with support for labels, icons, dots, avatars, and separators. Includes BadgeGroup for wrapping collections and BadgeGroupTruncate for overflow handling. Load this skill when displaying status indicators, tags, or categorization labels.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/badge/SKILL.md"
+    },
+    {
+      "name": "breadcrumbs",
+      "description": "UIBreadcrumbs is a composite navigation component built from UIBreadcrumbRoot, UIBreadcrumbItems, UIBreadcrumbItem, and UIBreadcrumbSeparator parts. It renders a horizontal breadcrumb trail with optional icons, router links, and accessible label-hiding for icon-only items.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/breadcrumbs/SKILL.md"
+    },
+    {
+      "name": "button",
+      "description": "UIButton, UIIconButton, and UILink -- the three action trigger variants. UIButton renders a labeled button, UIIconButton renders an icon-only button with an accessible label, and UILink renders a navigation element styled like a button using either Vue Router or a plain anchor.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/button/SKILL.md"
+    },
+    {
+      "name": "card",
+      "description": "Simple bordered container with rounded corners for grouping related content. Has no props -- content goes in the default slot. Load this skill when you need a visual card or panel wrapper.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/card/SKILL.md"
+    },
+    {
+      "name": "checkbox",
+      "description": "A single boolean checkbox with label, hint, error message, and animated check indicator. Built on Reka UI CheckboxRoot with InputWrapper in horizontal layout. Integrates with formango for form validation and with UICheckboxGroup for multi-select scenarios.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/checkbox/SKILL.md"
+    },
+    {
+      "name": "checkbox-group",
+      "description": "A group of checkboxes for multi-value selection with an optional indeterminate \"select all\" checkbox. Built on Reka UI CheckboxGroupRoot with a context-based registration system. Supports vertical and horizontal orientations and disabled state with reason tooltip.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/checkbox-group/SKILL.md"
+    },
+    {
+      "name": "clickable-element",
+      "description": "Low-level wrapper that applies consistent focus-visible outline and cursor styles to any interactive element. Uses Reka UI Primitive with as-child for zero extra DOM nodes. Load this skill when building custom clickable primitives or understanding the focus ring system.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/clickable-element/SKILL.md"
+    },
+    {
+      "name": "column-layout",
+      "description": "Vertical flex container with configurable gap, alignment, and justification using design-token spacing. Renders as a customizable HTML element and provides a default slot for child content. Use for any vertical stacking of elements.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "layout-system"
+      ],
+      "path": "components/column-layout/SKILL.md"
+    },
+    {
+      "name": "config-provider",
+      "description": "Application-level configuration provider that supplies locale, number formatting, hour cycle, teleport target, and Google Maps API key to all design system components via Vue's provide/inject. Must wrap the entire application.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/config-provider/SKILL.md"
+    },
+    {
+      "name": "confirm-dialog",
+      "description": "A pre-built confirmation dialog with title, description, icon, cancel button, and confirm button. Supports destructive styling and async confirm callbacks with automatic loading state. Uses the dialog sub-components internally. Load this skill for yes/no or delete confirmation prompts.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "overlay-system"
+      ],
+      "path": "components/confirm-dialog/SKILL.md"
+    },
+    {
+      "name": "design-system-index",
+      "description": "Master index for @wisemen/vue-core-design-system. Read this first to find the right skill for any component or pattern. Lists all skills organized by category with a decision tree for component selection.\n",
+      "type": "index",
+      "library_version": "0.8.0",
+      "path": "_index/SKILL.md"
+    },
+    {
+      "name": "dialog",
+      "description": "Modal dialog system with header, body, footer, and close button sub-components. Built on Reka UI DialogRoot with animated overlay, scroll-aware separators, and a chin feature for contextual actions. Supports both template-driven (v-model) and imperative (useOverlay) patterns. Also exports useOverlay composable and useDialogTriggerProps helper. Load this skill for any modal dialog implementation.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "overlay-system"
+      ],
+      "path": "components/dialog/SKILL.md"
+    },
+    {
+      "name": "dot",
+      "description": "Small colored circle used as a status indicator. Supports 8 color variants and 3 sizes. Load this skill when you need a visual status dot, online/offline indicator, or colored bullet point.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/dot/SKILL.md"
+    },
+    {
+      "name": "dropdown-menu",
+      "description": "UIDropdownMenu is a popover-based menu triggered by a button or custom element. Built on Reka UI's DropdownMenu primitives, it supports items with icons and keyboard shortcuts, groups, headers, separators, and radio groups for single-select options. Content is portalled to the body with configurable positioning.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/dropdown-menu/SKILL.md"
+    },
+    {
+      "name": "form",
+      "description": "Form wrapper that integrates with formango's Form object to provide submit handling, unsaved changes detection with route-leave guards, and a context for child components like FormSubmitButton. Always pair with a formango useForm() call.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/form/SKILL.md"
+    },
+    {
+      "name": "form-dialog",
+      "description": "A dialog with integrated formango form handling. Wraps UIDialog with form context, automatic form ID generation, and optional unsaved-changes prompt. Uses FormDialogForm internally to connect to formango's Form type. Load this skill when building dialogs that contain validated forms.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "overlay-system"
+      ],
+      "path": "components/form-dialog/SKILL.md"
+    },
+    {
+      "name": "input-system",
+      "description": "The InputWrapper > FieldWrapper > native element architecture shared by all input components (TextField, TextareaField, NumberField, Select, Autocomplete, Checkbox, etc.). Covers the Input, InputWrapper, FieldWrapper, AutocompleteInput interfaces, their default constants, the useInput composable for ARIA generation, and the DisabledWithReason pattern. Load before implementing or modifying any input or form control component.\n",
+      "type": "foundation",
+      "library_version": "0.8.0",
+      "path": "foundations/input-system/SKILL.md"
+    },
+    {
+      "name": "interactable",
+      "description": "Low-level renderless wrapper that applies focus-visible outline and cursor styles to interactive elements. Similar to UIClickableElement but with a different outline approach. Load this skill when building custom interactive primitives.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/interactable/SKILL.md"
+    },
+    {
+      "name": "keyboard-shortcut",
+      "description": "Renders a keyboard shortcut as styled key badges. Parses a shortcut string (e.g., \"meta_k\", \"g-d\") into individual keys with platform-aware symbols (macOS vs Windows). Load this skill when displaying keyboard shortcuts in tooltips, menus, or help panels.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/keyboard-shortcut/SKILL.md"
+    },
+    {
+      "name": "layout",
+      "description": "Top-level application shell components that provide the outermost page structure. UIMainLayoutContainer is the full-screen flex wrapper, and UIMainContent is the sidebar-aware content area with animated padding. Use these as the root of every page in a dashboard application.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "layout-system"
+      ],
+      "path": "components/layout/SKILL.md"
+    },
+    {
+      "name": "layout-system",
+      "description": "Layout primitives and page composition for @wisemen/vue-core-design-system. Covers UIRowLayout and UIColumnLayout (flex containers with gap/align/justify), the DashboardPage system (header, actions, detail pane, loading state), and UIMainSidebar (navigation groups, links, global search). Load before building page layouts or navigation.\n",
+      "type": "foundation",
+      "library_version": "0.8.0",
+      "path": "foundations/layout-system/SKILL.md"
+    },
+    {
+      "name": "loader",
+      "description": "Animated SVG loading spinner that inherits size and color from its parent. Has no props -- sized via CSS classes and colored via currentColor. Load this skill when you need a spinning loading indicator.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/loader/SKILL.md"
+    },
+    {
+      "name": "logo",
+      "description": "Displays a brand or app logo image with optional text label. UILogo renders a sized image with fallback placeholder on error. UILogoWithText combines the logo with a name label. Load this skill for brand identity elements in headers or sidebars.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/logo/SKILL.md"
+    },
+    {
+      "name": "menu-item",
+      "description": "UIMenuItem is a flexible content layout component for items in dropdown menus, lists, and selectable options. It supports icons, avatars, dots, descriptions, right-side content (text, icons, keyboard shortcuts), and a right slot. Used as the content layer inside UIDropdownMenuItem and select/autocomplete items.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/menu-item/SKILL.md"
+    },
+    {
+      "name": "number-badge",
+      "description": "Small pill-shaped badge that displays a numeric value with color and variant options. Useful for counts, notification indicators, and numeric status labels. Load this skill when you need to show a number inside a colored badge.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/number-badge/SKILL.md"
+    },
+    {
+      "name": "number-field",
+      "description": "Numeric input with locale-aware formatting, optional increment/decrement controls, min/max bounds, and step snapping. Built on Reka UI NumberField with InputWrapper > FieldWrapper composition. Integrates with formango for form validation.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/number-field/SKILL.md"
+    },
+    {
+      "name": "overlay-system",
+      "description": "Imperative overlay management for @wisemen/vue-core-design-system. Covers the useOverlay composable (create, open, close, patch, closeAll), DialogContainer for rendering overlays, promise-based dialog results, and the useDialogTriggerProps helper. Load before working with Dialog, ConfirmDialog, FormDialog, or any imperative overlay pattern.\n",
+      "type": "foundation",
+      "library_version": "0.8.0",
+      "path": "foundations/overlay-system/SKILL.md"
+    },
+    {
+      "name": "page",
+      "description": "Full dashboard page system with header, breadcrumbs, action bars, content area, loading state, and a resizable detail pane. UIDashboardPage is the root orchestrator that composes 8+ sub-components. Use for any page inside the dashboard layout shell.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "layout-system"
+      ],
+      "path": "components/page/SKILL.md"
+    },
+    {
+      "name": "popover",
+      "description": "A floating content panel anchored to a trigger element. Built on Reka UI PopoverRoot with configurable alignment, side, collision handling, and animated open/close transitions. Load this skill when you need interactive floating panels that appear on click.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "overlay-system"
+      ],
+      "path": "components/popover/SKILL.md"
+    },
+    {
+      "name": "radio-group",
+      "description": "A radio group for single-value selection from multiple options. Built on Reka UI RadioGroupRoot with context-based item registration. Supports standard radio items and card-style items with descriptions. Includes vertical/horizontal orientation and disabled state with reason tooltip.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/radio-group/SKILL.md"
+    },
+    {
+      "name": "row-layout",
+      "description": "Horizontal flex container with configurable gap, alignment, and justification using design-token spacing. Renders as a customizable HTML element and provides a default slot for child content. Use for any horizontal arrangement of elements.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "layout-system"
+      ],
+      "path": "components/row-layout/SKILL.md"
+    },
+    {
+      "name": "scrollable",
+      "description": "Scrollable container that shows gradient fade indicators at the top/bottom when content overflows. Supports infinite scroll via an onNext callback. Load this skill when building scrollable lists, panels, or any container that needs visual scroll cues.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/scrollable/SKILL.md"
+    },
+    {
+      "name": "select",
+      "description": "Dropdown select component supporting single and multi-select modes with optional search (local or remote), pagination, and rich option rendering via getItemConfig. Determines single vs multi mode from the v-model type (value vs array).\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/select/SKILL.md"
+    },
+    {
+      "name": "separator",
+      "description": "A horizontal or vertical divider line built on Reka UI's Separator primitive. Supports horizontal and vertical orientations. Load this skill when you need a visual divider between sections or inline elements.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/separator/SKILL.md"
+    },
+    {
+      "name": "sidebar",
+      "description": "Main navigation sidebar with collapsible behavior, navigation groups, links with badges and status dots, global search trigger, header logo, footer account card, and featured card. Includes the useMainSidebar composable for programmatic control. On small screens, the sidebar becomes a dialog overlay. Use for primary app navigation in dashboard layouts.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "layout-system"
+      ],
+      "path": "components/sidebar/SKILL.md"
+    },
+    {
+      "name": "skeleton-item",
+      "description": "A loading placeholder element with optional shimmer animation. Renders as a rounded rectangle that mimics content layout while data loads. Load this skill when building skeleton loading screens or placeholder UIs.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/skeleton-item/SKILL.md"
+    },
+    {
+      "name": "styling",
+      "description": "Design token system and component styling for @wisemen/vue-core-design-system. Covers the custom tv() instance (Tailwind Variants with twMerge), design tokens (spacing, colors, typography, shadows, radii, z-index), semantic color system (fg/text/bg/border), light/dark theming, and data-attribute-driven styling. Load when customizing component styles or understanding the token system.\n",
+      "type": "foundation",
+      "library_version": "0.8.0",
+      "path": "foundations/styling/SKILL.md"
+    },
+    {
+      "name": "switch",
+      "description": "A toggle switch for boolean on/off state with optional thumb icons, size variants, and animated transitions. Built on Reka UI SwitchRoot with label, hint, and error message support. Ideal for settings that take effect immediately.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/switch/SKILL.md"
+    },
+    {
+      "name": "tabs",
+      "description": "UITabs provides value-based tabbed navigation, while UITabsRouterLink provides route-based tabbed navigation integrated with Vue Router. Both support three visual variants (underline, button-border, button-brand), horizontal and vertical orientations, full-width mode, adaptive overflow (hiding low-priority tabs into a dropdown), and scroll-based overflow for touch devices.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/tabs/SKILL.md"
+    },
+    {
+      "name": "text",
+      "description": "Typography component with automatic truncation detection and tooltip. Renders text that truncates with an ellipsis and shows a tooltip on hover when content overflows. Load this skill when displaying text that may overflow its container.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/text/SKILL.md"
+    },
+    {
+      "name": "text-field",
+      "description": "Single-line text input with label, hint, error message, and icon support. Wraps a native <input> inside InputWrapper > FieldWrapper. Supports size variants, multiple input types (text, email, password, etc.), and integrates with formango for form validation.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/text-field/SKILL.md"
+    },
+    {
+      "name": "textarea-field",
+      "description": "Multi-line text input with auto-resize, character count, and configurable resize behavior. Wraps a native <textarea> inside InputWrapper with its own bordered container. Integrates with formango for form validation.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "requires": [
+        "input-system"
+      ],
+      "path": "components/textarea-field/SKILL.md"
+    },
+    {
+      "name": "theme-provider",
+      "description": "Provides appearance (light, dark, system) and theme (named theme class) to all descendant components. Applies the theme and appearance as CSS classes on a wrapper element. Supports nesting for scoped theme overrides.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/theme-provider/SKILL.md"
+    },
+    {
+      "name": "timeline",
+      "description": "Vertical timeline component with indicator dots, connector lines, and content slots. UITimeline wraps UITimelineItem children with shared size/variant context. Load this skill when displaying chronological event sequences or activity feeds.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/timeline/SKILL.md"
+    },
+    {
+      "name": "tooltip",
+      "description": "A hover/focus-triggered floating label built on Reka UI TooltipRoot. Supports configurable delay, side positioning, arrow visibility, and custom content via slots. Also exports UITooltipProvider, UITooltipContent, and UITooltipText helpers. Load this skill for informational hover hints on buttons, icons, or interactive elements.\n",
+      "type": "component",
+      "library_version": "0.8.0",
+      "path": "components/tooltip/SKILL.md"
+    }
+  ]
+}
