@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 
 import type { DotColor } from '@/ui/dot/dot.props'
+import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 
 export type MenuItemRightConfig
   = | {
@@ -13,7 +14,7 @@ export type MenuItemRightConfig
     type: 'icon'
   }
   | {
-    keys: string
+    keyboardShortcut: KeyboardShortcut
     type: 'shortcut'
   }
   | {
