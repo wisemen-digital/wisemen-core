@@ -28,7 +28,6 @@ const props = withDefaults(defineProps<{
   hideErrorMessage: false,
   hint: undefined,
   label: 'Phone number',
-  placeholder: '000 00 00 00',
   preferredCountryCodes: () => [],
   size: 'md',
 })
@@ -49,7 +48,6 @@ const modelValue = ref<string | null>(null)
       :is-readonly="props.isReadonly"
       :is-required="props.isRequired"
       :label="props.label"
-      :placeholder="props.placeholder"
       :preferred-country-codes="props.preferredCountryCodes"
       :size="props.size"
       class="w-72"

@@ -6,9 +6,11 @@ import {
   formatIncompletePhoneNumber,
   getCountries,
   getCountryCallingCode,
+  getExampleNumber,
   parsePhoneNumberFromString,
   validatePhoneNumberLength,
 } from 'libphonenumber-js'
+import examples from 'libphonenumber-js/examples.mobile.json'
 import {
   computed,
   nextTick,
@@ -49,10 +51,11 @@ const props = withDefaults(defineProps<PhoneNumberFieldProps>(), {
   ...INPUT_FIELD_DEFAULTS,
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   defaultCountryCode: 'BE',
-  placeholder: '000 00 00 00',
   preferredCountryCodes: () => [],
   size: 'md',
 })
+
+const DIGIT_REGEX = /\d/g
 
 const modelValue = defineModel<string | null>({
   required: true,
@@ -93,16 +96,34 @@ const selectedCountryName = computed<string>(
 
 const asYouType = computed<AsYouType>(() => new AsYouType(countryCode.value))
 
+function formatNationalInput(value: string): string {
+  const dialCode = getCountryCallingCode(countryCode.value).toString()
+  const formatted = formatIncompletePhoneNumber(value, countryCode.value)
+
+  return formatted.replace(`+${dialCode}`, '').trim()
+}
+
+const placeholder = computed<string>(() => {
+  if (props.placeholder != null) {
+    return props.placeholder
+  }
+
+  const example = getExampleNumber(countryCode.value, examples)
+
+  if (example === undefined) {
+    return '000 00 00 00'
+  }
+
+  return formatNationalInput(example.number).replace(DIGIT_REGEX, '0')
+})
+
 const inputValue = computed<string | null>({
   get: () => {
     if (modelValue.value === null) {
       return null
     }
 
-    const dialCode = getCountryCallingCode(countryCode.value).toString()
-    const formatted = formatIncompletePhoneNumber(modelValue.value, countryCode.value)
-
-    return formatted.replace(`+${dialCode}`, '').trim()
+    return formatNationalInput(modelValue.value)
   },
   set: (value) => {
     if (value === null || value === '') {
@@ -324,7 +345,7 @@ defineExpose({
         :aria-busy="ariaBusy"
         :aria-invalid="ariaInvalid"
         :aria-required="ariaRequired"
-        :placeholder="props.placeholder ?? undefined"
+        :placeholder="placeholder"
         :name="props.name ?? undefined"
         :class="style.input({ size: props.size })"
         type="tel"

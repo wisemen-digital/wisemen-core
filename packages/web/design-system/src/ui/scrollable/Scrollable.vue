@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useInfiniteScroll } from '@vueuse/core'
+import {
+  useInfiniteScroll,
+  useResizeObserver,
+} from '@vueuse/core'
 import { Primitive } from 'reka-ui'
 import type { Component } from 'vue'
 import {
@@ -18,6 +21,7 @@ const props = withDefaults(defineProps<{
 })
 
 const scrollableRef = useTemplateRef('scrollable')
+const contentRef = useTemplateRef<HTMLDivElement>('content')
 
 const hasScrolledFromTop = ref<boolean>(false)
 const hasScrolledFromBottom = ref<boolean>(false)
@@ -31,6 +35,8 @@ useInfiniteScroll(
     distance: props.distance,
   },
 )
+
+useResizeObserver(contentRef, updateScrollStates)
 
 function updateScrollStates(): void {
   const el = scrollableRef.value?.$el ?? null
@@ -75,7 +81,9 @@ function onScroll(): void {
       class="overflow-auto"
       @scroll="onScroll"
     >
-      <slot />
+      <div ref="content">
+        <slot />
+      </div>
     </Primitive>
   </div>
 </template>
