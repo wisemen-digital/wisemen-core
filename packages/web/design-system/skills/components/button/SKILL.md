@@ -7,7 +7,6 @@ description: >
   like a button using either Vue Router or a plain anchor.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: button
 requires: []
 exports:

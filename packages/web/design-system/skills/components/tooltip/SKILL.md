@@ -7,7 +7,6 @@ description: >
   Load this skill for informational hover hints on buttons, icons, or interactive elements.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: overlay
 requires: []
 exports:

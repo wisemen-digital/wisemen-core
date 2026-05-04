@@ -6,7 +6,6 @@ description: >
   Load this skill when building custom clickable primitives or understanding the focus ring system.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: infrastructure
 requires: []
 exports:

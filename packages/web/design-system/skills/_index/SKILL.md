@@ -6,7 +6,6 @@ description: >
   with a decision tree for component selection.
 type: index
 library: vue-core-design-system
-library_version: "0.8.0"
 ---
 
 # @wisemen/vue-core-design-system — Skill Index

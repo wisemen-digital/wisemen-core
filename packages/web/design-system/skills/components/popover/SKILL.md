@@ -6,7 +6,6 @@ description: >
   Load this skill when you need interactive floating panels that appear on click.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: overlay
 requires:
   - overlay-system

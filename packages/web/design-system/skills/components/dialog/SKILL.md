@@ -8,7 +8,6 @@ description: >
   helper. Load this skill for any modal dialog implementation.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: overlay
 requires:
   - overlay-system

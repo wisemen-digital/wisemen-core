@@ -7,7 +7,6 @@ description: >
 type: component
 category: display
 library: vue-core-design-system
-library_version: "0.8.0"
 requires: []
 exports:
   - UIAdaptiveContent

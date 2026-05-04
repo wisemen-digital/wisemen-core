@@ -8,7 +8,6 @@ description: >
 type: foundation
 category: architecture
 library: vue-core-design-system
-library_version: "0.8.0"
 sources:
   - "packages/web/design-system/src/composables/context.composable.ts"
   - "packages/web/design-system/src/ui/badge/badge.context.ts"

@@ -6,7 +6,6 @@ description: >
   skill when you need a standardized tooltip for buttons or actions with shortcut hints.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: overlay
 requires: []
 exports:

@@ -9,7 +9,6 @@ description: >
 type: foundation
 category: styling
 library: vue-core-design-system
-library_version: "0.8.0"
 sources:
   - "packages/web/design-system/src/styles/tailwindVariants.lib.ts"
   - "packages/web/design-system/src/styles/core/tokens.css"

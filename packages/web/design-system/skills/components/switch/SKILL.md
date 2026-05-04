@@ -7,7 +7,6 @@ description: >
   immediately.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: form-control
 requires:
   - input-system

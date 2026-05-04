@@ -10,7 +10,6 @@ description: >
 type: foundation
 category: input-architecture
 library: vue-core-design-system
-library_version: "0.8.0"
 sources:
   - "packages/web/design-system/src/types/input.type.ts"
   - "packages/web/design-system/src/types/disabledWithReason.type.ts"

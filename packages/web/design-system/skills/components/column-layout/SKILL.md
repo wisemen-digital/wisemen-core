@@ -6,7 +6,6 @@ description: >
   slot for child content. Use for any vertical stacking of elements.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: layout
 requires:
   - layout-system

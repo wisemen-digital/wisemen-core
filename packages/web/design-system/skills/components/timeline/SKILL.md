@@ -6,7 +6,6 @@ description: >
   skill when displaying chronological event sequences or activity feeds.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: display
 requires: []
 exports:

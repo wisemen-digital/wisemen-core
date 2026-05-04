@@ -7,7 +7,6 @@ description: >
   options. Content is portalled to the body with configurable positioning.
 type: component
 library: vue-core-design-system
-library_version: "0.8.0"
 category: navigation
 requires: []
 exports:

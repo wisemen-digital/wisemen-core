@@ -9,7 +9,6 @@ description: >
 type: foundation
 category: layout-architecture
 library: vue-core-design-system
-library_version: "0.8.0"
 sources:
   - "packages/web/design-system/src/ui/row-layout/RowLayout.vue"
   - "packages/web/design-system/src/ui/column-layout/ColumnLayout.vue"
