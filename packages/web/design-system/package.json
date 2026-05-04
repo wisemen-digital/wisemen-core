@@ -60,7 +60,8 @@
     "reka-ui": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer"
+    "vue-router": "catalog:peer",
+    "vue-sonner": "catalog:vue"
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",
@@ -97,6 +98,7 @@
     "vitest": "catalog:test",
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
+    "vue-sonner": "catalog:vue",
     "vue-tsc": "catalog:vue"
   }
 }
