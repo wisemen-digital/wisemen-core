@@ -304,6 +304,7 @@ defineExpose({
           :get-item-config="getCountryItemConfig"
           :is-disabled="props.isDisabled"
           :popover-anchor-reference-element="fieldWrapperEl"
+          :has-virtual-scroll="true"
           search="remote"
           popover-align="start"
           popover-width="anchor-width"

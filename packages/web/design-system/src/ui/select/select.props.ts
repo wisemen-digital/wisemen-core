@@ -20,6 +20,11 @@ export type DisplayFn<
 export interface SelectProps<TValue extends SelectValue | SelectValue[]>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
+   * Enable virtual scrolling for large lists. Item heights are derived from the select size.
+   * @default false
+   */
+  hasVirtualScroll?: boolean | null
+  /**
    * Function to display the item label.
    */
   displayFn: DisplayFn<TValue>
@@ -31,6 +36,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default null
    */
   getItemConfig?: ((value: NonNullable<GetValue<TValue>>) => MenuItemConfig | null) | null
+
   /**
    * The items to display in the select.
    */
@@ -63,6 +69,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
 export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pick<
   SelectProps<TValue>,
   | 'displayFn'
+  | 'hasVirtualScroll'
   | 'isLoading'
   | 'items'
   | 'limit'

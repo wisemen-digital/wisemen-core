@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {
   useInfiniteScroll,
-  useResizeObserver,
+  useMutationObserver,
 } from '@vueuse/core'
 import { Primitive } from 'reka-ui'
 import type { Component } from 'vue'
@@ -9,6 +9,7 @@ import {
   computed,
   ref,
   useTemplateRef,
+  watch,
 } from 'vue'
 
 const props = withDefaults(defineProps<{
@@ -21,7 +22,6 @@ const props = withDefaults(defineProps<{
 })
 
 const scrollableRef = useTemplateRef('scrollable')
-const contentRef = useTemplateRef<HTMLDivElement>('content')
 
 const hasScrolledFromTop = ref<boolean>(false)
 const hasScrolledFromBottom = ref<boolean>(false)
@@ -36,7 +36,14 @@ useInfiniteScroll(
   },
 )
 
-useResizeObserver(contentRef, updateScrollStates)
+useMutationObserver(
+  computed<HTMLElement | null>(() => scrollableRef.value?.$el ?? null),
+  updateScrollStates,
+  {
+    childList: true,
+    subtree: true,
+  },
+)
 
 function updateScrollStates(): void {
   const el = scrollableRef.value?.$el ?? null
@@ -51,6 +58,18 @@ function updateScrollStates(): void {
   hasScrolledFromTop.value = el.scrollTop > 0
   hasScrolledFromBottom.value = el.scrollHeight - el.clientHeight - el.scrollTop > 0
 }
+
+watch(
+  () => scrollableRef.value?.$el ?? null,
+  (el) => {
+    if (el !== null) {
+      requestAnimationFrame(updateScrollStates)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 
 function onScroll(): void {
   updateScrollStates()
@@ -81,9 +100,7 @@ function onScroll(): void {
       class="overflow-auto"
       @scroll="onScroll"
     >
-      <div ref="content">
-        <slot />
-      </div>
+      <slot />
     </Primitive>
   </div>
 </template>

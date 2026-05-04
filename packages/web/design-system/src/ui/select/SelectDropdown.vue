@@ -124,6 +124,7 @@ useProvideSelectContext({
         :display-fn="props.displayFn"
         :items="props.items"
         :limit="props.limit"
+        :has-virtual-scroll="props.hasVirtualScroll"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"
       />
