@@ -234,7 +234,10 @@ function setToday(): void {
               size="xs"
               type="button"
               variant="tertiary"
-              class="mr-xs"
+              :class="{
+                'mr-xs': props.size === 'md',
+                'mr-xxs': props.size === 'sm',
+              }"
             />
           </RekaDatePickerTrigger>
         </template>
@@ -255,7 +258,7 @@ function setToday(): void {
             v-slot="{ weekDays, grid }"
             class="
               flex flex-col gap-lg overflow-hidden rounded-2xl border
-              border-secondary bg-primary p-2xl px-3xl shadow-lg
+              border-secondary bg-primary px-xl py-lg shadow-lg
             "
             weekday-format="short"
           >
