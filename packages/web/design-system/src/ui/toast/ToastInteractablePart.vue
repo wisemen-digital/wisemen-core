@@ -23,30 +23,28 @@ function handleClick(): void {
 
 <template>
   <Component
-    :is="props.to === null ? 'div' : RouterLink"
+    :is="props.to === null ? 'span' : RouterLink"
     :to="props.to"
     :class="{
-      'hover:bg-tertiary': props.to !== null,
+      'hover:underline': props.to !== null,
     }"
-    class="
-      -mx-xs inline-block items-center gap-xs rounded-sm px-xs duration-100
-    "
+
     @click="handleClick"
   >
     <img
       v-if="props.imageSrc !== null"
       :src="props.imageSrc"
       :alt="props.label"
-      class="-mt-xxs mr-xs -ml-xxs inline size-4 rounded-xs"
+      class="inline size-4 rounded-xs mr-xs align-sub"
     >
 
     <Component
       :is="props.icon"
       v-else-if="props.icon !== null"
-      class="-mt-xxs mr-xs inline size-3.5 text-secondary"
+      class="inline size-3.5 align-sub -translate-y-px text-secondary mr-xs"
     />
 
-    <span class="text-sm font-medium text-primary">
+    <span class="font-medium text-primary">
       {{ props.label }}
     </span>
   </Component>

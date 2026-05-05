@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable @intlify/vue-i18n/no-raw-text */
-import { User01Icon } from '@wisemen/vue-core-icons'
+import { CheckCircleIcon, CornerDownRightIcon, User01Icon } from '@wisemen/vue-core-icons'
 
 import { UIButton } from '@/ui/button/index'
 import ToastContainer from '@/ui/toast/ToastContainer.vue'
@@ -14,10 +14,11 @@ function show(): void {
       user: {
         label: 'Alice Johnson',
         to: '/',
+        icon: CornerDownRightIcon,
         imageSrc: 'https://i.pravatar.cc/100'
       },
     },
-    message: '{user} has been assigned to this project.',
+    message: 'Project assigned to {user}.',
     variant: 'info',
   })
 }
