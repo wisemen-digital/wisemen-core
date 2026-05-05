@@ -1,6 +1,34 @@
-import { And, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsSelectByString, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository } from 'typeorm'
+import { type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsSelectByString, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
+
+/**
+ * TypeORM's And() operator has a bug in transformValue(): when the column has a
+ * value transformer, it maps over child FindOperators and calls transformer.to()
+ * on them directly (instead of recursively delegating transformValue to each child).
+ * This corrupts the children into "[object Object]" strings.
+ *
+ * This subclass overrides transformValue to properly delegate to each child operator.
+ */
+class SafeAndOperator extends FindOperator<unknown> {
+  constructor (children: FindOperator<unknown>[]) {
+    super('and' as any, children as any, true, true)
+  }
+
+  transformValue (transformer: any): void {
+    const children = (this as any)._value as FindOperator<unknown>[]
+
+    for (const child of children) {
+      if (child instanceof FindOperator) {
+        child.transformValue(transformer)
+      }
+    }
+  }
+}
+
+function SafeAnd (...operators: FindOperator<unknown>[]): FindOperator<unknown> {
+  return new SafeAndOperator(operators)
+}
 
 export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
   constructor (entity: EntityTarget<T>, manager: EntityManager) {
@@ -163,9 +191,9 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     if (existingCondition === undefined) {
       return batchCondition
     } else if (existingCondition instanceof FindOperator) {
-      return And(batchCondition, existingCondition)
+      return SafeAnd(batchCondition, existingCondition)
     } else {
-      return And(batchCondition, Equal(existingCondition))
+      return SafeAnd(batchCondition, Equal(existingCondition))
     }
   }
 }
