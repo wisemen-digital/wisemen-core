@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 </script>
 
