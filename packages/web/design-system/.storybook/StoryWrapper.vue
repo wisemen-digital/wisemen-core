@@ -11,6 +11,7 @@ defineProps<{
   <!-- eslint-disable better-tailwindcss/no-unknown-classes -->
   <ConfigProvider
     locale="en-US"
+    hour-cycle="24-hour"
   >
     <ThemeProvider
       :appearance="theme ?? 'light'"
