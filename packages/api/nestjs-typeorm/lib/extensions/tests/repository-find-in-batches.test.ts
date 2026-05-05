@@ -1,6 +1,6 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'expect'
-import { LessThan, MoreThanOrEqual } from 'typeorm'
+import { Between, LessThan, LessThanOrEqual, MoreThanOrEqual } from 'typeorm'
 import { dataSource } from './sql/datasource.js'
 import { UserEntity } from './sql/entities/user.entity.js'
 import { MessageEntity } from './sql/entities/message.entity.js'
@@ -194,6 +194,168 @@ describe('Repository find in batches test', () => {
       expect(batches[1][0].id).toBe(1)
       expect(batches[1][1].id).toBe(5)
       expect(batches[2][0].id).toBe(2)
+    })
+  })
+
+  describe('Batching with FindOperator filters on ordered columns', () => {
+    let repository: TypeOrmRepository<MessageEntity>
+
+    const now = new Date('2024-01-15T12:00:00Z')
+    const past1 = new Date('2024-01-10T12:00:00Z')
+    const past2 = new Date('2024-01-11T12:00:00Z')
+    const future1 = new Date('2024-01-20T12:00:00Z')
+    const future2 = new Date('2024-01-25T12:00:00Z')
+
+    before(async () => {
+      repository = new TypeOrmRepository(MessageEntity, dataSource.manager)
+      await repository.deleteAll()
+
+      await repository.insert([
+        { id: 10, createdAt: past1, message: 'Old message 1' },
+        { id: 11, createdAt: past2, message: 'Old message 2' },
+        { id: 12, createdAt: now, message: 'Current message' },
+        { id: 13, createdAt: future1, message: 'Future message 1' },
+        { id: 14, createdAt: future2, message: 'Future message 2' }
+      ])
+    })
+
+    it('finds in batches with Between filter on ordered column (ASC)', async () => {
+      const rangeFrom = new Date('2024-01-10T00:00:00Z')
+      const rangeUntil = new Date('2024-01-20T23:59:59Z')
+
+      const result = repository.findInBatches({
+        where: { createdAt: Between(rangeFrom, rangeUntil) },
+        order: { createdAt: 'ASC' }
+      }, 2)
+
+      const batches: MessageEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].id).toBe(10)
+      expect(batches[0][1].id).toBe(11)
+      expect(batches[1][0].id).toBe(12)
+      expect(batches[1][1].id).toBe(13)
+    })
+
+    it('finds in batches with Between filter on ordered column (DESC)', async () => {
+      const rangeFrom = new Date('2024-01-10T00:00:00Z')
+      const rangeUntil = new Date('2024-01-20T23:59:59Z')
+
+      const result = repository.findInBatches({
+        where: { createdAt: Between(rangeFrom, rangeUntil) },
+        order: { createdAt: 'DESC' }
+      }, 2)
+
+      const batches: MessageEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].id).toBe(13)
+      expect(batches[0][1].id).toBe(12)
+      expect(batches[1][0].id).toBe(11)
+      expect(batches[1][1].id).toBe(10)
+    })
+
+    it('finds in batches with MoreThanOrEqual filter on ordered column', async () => {
+      const result = repository.findInBatches({
+        where: { createdAt: MoreThanOrEqual(now) },
+        order: { createdAt: 'ASC' }
+      }, 2)
+
+      const batches: MessageEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(1)
+      expect(batches[0][0].id).toBe(12)
+      expect(batches[0][1].id).toBe(13)
+      expect(batches[1][0].id).toBe(14)
+    })
+
+    it('finds in batches with LessThanOrEqual filter on ordered column', async () => {
+      const result = repository.findInBatches({
+        where: { createdAt: LessThanOrEqual(now) },
+        order: { createdAt: 'ASC' }
+      }, 2)
+
+      const batches: MessageEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(1)
+      expect(batches[0][0].id).toBe(10)
+      expect(batches[0][1].id).toBe(11)
+      expect(batches[1][0].id).toBe(12)
+    })
+
+    it('finds in batches with Between filter on first column of multi-column order', async () => {
+      const rangeFrom = new Date('2024-01-10T00:00:00Z')
+      const rangeUntil = new Date('2024-01-20T23:59:59Z')
+
+      const result = repository.findInBatches({
+        where: { createdAt: Between(rangeFrom, rangeUntil) },
+        order: { createdAt: 'ASC', id: 'ASC' }
+      }, 2)
+
+      const batches: MessageEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].id).toBe(10)
+      expect(batches[0][1].id).toBe(11)
+      expect(batches[1][0].id).toBe(12)
+      expect(batches[1][1].id).toBe(13)
+    })
+
+    it('finds in batches with disjunction where one clause has Between filter on ordered column', async () => {
+      const rangeFrom = new Date('2024-01-10T00:00:00Z')
+      const rangeUntil = new Date('2024-01-11T23:59:59Z')
+
+      const result = repository.findInBatches({
+        where: [
+          { createdAt: Between(rangeFrom, rangeUntil) },
+          { createdAt: MoreThanOrEqual(future1) }
+        ],
+        order: { createdAt: 'ASC' }
+      }, 2)
+
+      const batches: MessageEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].id).toBe(10)
+      expect(batches[0][1].id).toBe(11)
+      expect(batches[1][0].id).toBe(13)
+      expect(batches[1][1].id).toBe(14)
     })
   })
 })
