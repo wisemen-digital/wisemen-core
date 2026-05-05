@@ -1,6 +1,6 @@
 <script setup lang="ts">
 /* eslint-disable @intlify/vue-i18n/no-raw-text */
-import { CheckCircleIcon, CornerDownRightIcon, User01Icon } from '@wisemen/vue-core-icons'
+import { CheckCircleIcon, CornerDownRightIcon, User01Icon, User02Icon } from '@wisemen/vue-core-icons'
 
 import { UIButton } from '@/ui/button/index'
 import ToastContainer from '@/ui/toast/ToastContainer.vue'
