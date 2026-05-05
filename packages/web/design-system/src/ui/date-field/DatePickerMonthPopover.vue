@@ -19,9 +19,9 @@ import {
 } from 'vue'
 
 import { UIButton } from '@/ui/button'
+import { useInjectConfigContext } from '@/ui/config-provider'
 import { datePickerMonthPopoverStyle } from '@/ui/date-field/datePickerMonthPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
-import { useInjectConfigContext } from '@/ui/config-provider'
 
 const props = defineProps<{
   placeholder: CalendarDate

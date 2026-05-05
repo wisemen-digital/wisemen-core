@@ -141,11 +141,6 @@ const maxDateValue = computed<DateValue | undefined>(() => {
 
   return plainDateToCalendarDate(props.maxDate) as DateValue
 })
-
-function setToday(): void {
-  modelValue.value = Temporal.Now.plainDateISO()
-  isOpen.value = false
-}
 </script>
 
 <template>

@@ -29,29 +29,6 @@ function onReset(): void {
     @submit.prevent="onSubmit"
     @reset.prevent="onReset"
   >
-    <div class="flex gap-4">
-      <input
-        v-model="firstName"
-        class="
-          flex-1 rounded-md border border-primary px-md text-xs text-primary
-          outline-none
-          focus:border-fg-brand-primary
-        "
-        placeholder="First name"
-        type="text"
-      >
-      <input
-        v-model="lastName"
-        class="
-          flex-1 rounded-md border border-primary px-md text-xs text-primary
-          outline-none
-          focus:border-fg-brand-primary
-        "
-        placeholder="Last name"
-        type="text"
-      >
-    </div>
-
     <PhoneNumberField
       v-model="phone"
       :is-required="true"
