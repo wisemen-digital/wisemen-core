@@ -6,6 +6,31 @@ import type {
   InputWrapper,
 } from '@/types/input.type'
 
+export function useInlineInput(id: string, options: Input & FieldWrapper & { errorMessage?: string | null }) {
+  const ariaDescribedBy = computed<string | undefined>(() =>
+    options.errorMessage ? `${id}-error-message` : undefined)
+
+  const ariaInvalid = computed<'true' | undefined>(() =>
+    options.errorMessage ? 'true' : undefined)
+
+  const ariaRequired = computed<'true' | undefined>(() =>
+    options.isRequired ? 'true' : undefined)
+
+  const ariaBusy = computed<'true' | undefined>(() =>
+    options.isLoading ? 'true' : undefined)
+
+  const isError = computed<boolean>(() =>
+    Boolean(options.errorMessage))
+
+  return {
+    isError,
+    ariaBusy,
+    ariaDescribedBy,
+    ariaInvalid,
+    ariaRequired,
+  }
+}
+
 export function useInput(id: string, options: Input & InputWrapper & FieldWrapper) {
   const ariaDescribedBy = computed<string | undefined>(() => {
     if (options.errorMessage === null && options.hint === null) {

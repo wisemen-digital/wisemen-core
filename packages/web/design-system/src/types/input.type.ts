@@ -162,6 +162,30 @@ export const AUTOCOMPLETE_INPUT_DEFAULTS = {
   autocomplete: 'off',
 } satisfies AutocompleteInput
 
+export interface InlineField {
+  /**
+   * The error associated with the input. Shown as an inline alert icon; also used for aria-describedby.
+   * @default null
+   */
+  errorMessage?: string | null
+  /**
+   * Accessible label rendered visually hidden (sr-only). Required for screen reader support.
+   * @default null
+   */
+  label?: string | null
+  /**
+   * Visual variant, used to match the field to its surface background.
+   * @default 'primary'
+   */
+  variant?: 'primary' | 'secondary' | 'tertiary'
+}
+
+export const INLINE_FIELD_DEFAULTS = {
+  errorMessage: null,
+  label: null,
+  variant: 'primary',
+} satisfies InlineField
+
 export function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
   const result = {
     ...obj,

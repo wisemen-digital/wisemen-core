@@ -20,14 +20,16 @@ import { useI18n } from 'vue-i18n'
 
 import { useInput } from '@/composables/input.composable'
 import {
+  formatNumberDecimalSeparators,
+  useNumberFieldLocale,
+} from '@/composables/numberField.composable'
+import {
   AUTOCOMPLETE_INPUT_DEFAULTS,
   INPUT_DEFAULTS,
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
-import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
 import IconButton from '@/ui/button/icon/IconButton.vue'
-import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import type { NumberFieldProps } from '@/ui/number-field/numberField.props'
@@ -54,11 +56,6 @@ const props = withDefaults(defineProps<NumberFieldProps>(), {
 const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
-
-const NUMBER_SEPARATOR_REGEX = /[\s.,`]/g
-const DECIMAL_SEPARATOR_REGEX = /[\s.,`](?=\d+$)/
-const SEPARATOR_REGEX = /[.,]/g
-const NON_DIGIT_REGEX = /\D/g
 
 const modelValue = defineModel<number | null>({
   required: true,
@@ -96,50 +93,9 @@ const {
   ariaInvalid,
 } = useInput(id, props)
 
-const SEPARATOR_STYLE_LOCALE: Record<Exclude<NumberSeparatorStyle, 'system'>, string> = {
-  'comma-period': 'en-US',
-  'period-comma': 'de-DE',
-  'space-comma': 'fr-FR',
-  'space-period': 'fr-CH',
-}
-
-const configContext = useInjectConfigContext(null)
-
-const effectiveLocale = computed<string>(() => {
-  // eslint-disable-next-line better-tailwindcss/no-unknown-classes
-  const style = configContext?.numberSeparatorStyle.value ?? 'system'
-
-  if (style === 'system') {
-    return navigator.language
-  }
-
-  return SEPARATOR_STYLE_LOCALE[style]
-})
-
-/**
- * Parses a localized number string into a number.
- * @param value the string value to parse
- * @param locale the locale to use for parsing
- * @returns the parsed number
- */
-function parseIntlNumber(value: string, locale: string): number {
-  const example = new Intl.NumberFormat(locale).format(12_345.6)
-
-  const group = example.match(NUMBER_SEPARATOR_REGEX)?.[0]
-  const decimal = example.match(DECIMAL_SEPARATOR_REGEX)?.[0]
-
-  let normalized = value
-
-  if (group) {
-    normalized = normalized.replaceAll(group, '')
-  }
-
-  if (decimal) {
-    normalized = normalized.replace(decimal, '.')
-  }
-
-  return Number(normalized)
-}
+const {
+  effectiveLocale,
+} = useNumberFieldLocale()
 
 function onInput(event: InputEvent): void {
   isEditing.value = true
@@ -153,7 +109,7 @@ function onInput(event: InputEvent): void {
     return
   }
 
-  const valueAsNumber = formatNumbeDecimalSeperators(value)
+  const valueAsNumber = formatNumberDecimalSeparators(value, effectiveLocale.value)
 
   if (Number.isNaN(valueAsNumber)) {
     return
@@ -165,54 +121,6 @@ function onInput(event: InputEvent): void {
 function onEnterKeyDown(): void {
   copiedModelValue.value = modelValue.value
   isEditing.value = false
-}
-
-function formatNumbeDecimalSeperators(value: string): number {
-  SEPARATOR_REGEX.lastIndex = 0
-
-  const allSeparators = [
-    ...value.matchAll(SEPARATOR_REGEX),
-  ]
-
-  if (allSeparators.length === 0) {
-    return Number(value)
-  }
-
-  const separatorChars = allSeparators.map((m) => m[0])
-  const uniqueSeps = [
-    ...new Set(separatorChars),
-  ]
-
-  if (uniqueSeps.length === 2) {
-    // Both . and , appear: the last one is the decimal separator
-    const decimalSep = separatorChars.at(-1)!
-    const thousandsSep = uniqueSeps.find((s) => s !== decimalSep)!
-
-    return Number(value.replaceAll(thousandsSep, '').replace(decimalSep, '.'))
-  }
-
-  const sep = uniqueSeps[0]!
-
-  if (allSeparators.length > 1) {
-    // Same separator appears multiple times → must be thousands
-    return Number(value.replaceAll(sep, ''))
-  }
-
-  // Single separator: check digits after it
-  const digitsAfter = value.slice(value.lastIndexOf(sep) + 1).replace(NON_DIGIT_REGEX, '')
-
-  if (digitsAfter.length <= 2) {
-    // 1–2 digits after → decimal
-    return Number(value.replace(sep, '.'))
-  }
-
-  if (digitsAfter.length >= 4) {
-    // 4+ digits after → thousands separator
-    return Number(value.replaceAll(sep, ''))
-  }
-
-  // Exactly 3 digits after → ambiguous, fall back to locale
-  return parseIntlNumber(value, effectiveLocale.value)
 }
 
 function onBlur(event: FocusEvent): void {
