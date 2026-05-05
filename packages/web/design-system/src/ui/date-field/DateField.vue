@@ -242,7 +242,9 @@ function setToday(): void {
 
       <ThemeProvider :as-child="true">
         <RekaDatePickerContent
-          :side-offset="4"
+          :side-offset="8"
+          :collision-padding="10"
+          data-animation="popover-default"
           class="
             z-40 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]

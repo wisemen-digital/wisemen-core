@@ -15,7 +15,7 @@ export const tv = createTV({
         ],
       },
       theme: {
-        spacing: [
+        'spacing': [
           'none',
           'xxs',
           'xs',
@@ -33,6 +33,12 @@ export const tv = createTV({
           '9xl',
           '10xl',
           '11xl',
+        ],
+        'z-index': [
+          'sticky',
+          'overlay',
+          'modal',
+          'tooltip',
         ],
       },
     },
