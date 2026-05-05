@@ -99,8 +99,8 @@
 }
 
 [data-animation='popover-default'] {
-  animation-duration: 100ms;
-  animation-timing-function: ease-in-out;
+  animation-duration: 75ms;
+  animation-timing-function: ease-out;
 }
 
 [data-animation='popover-default'][data-state='open'][data-side='top'] {
