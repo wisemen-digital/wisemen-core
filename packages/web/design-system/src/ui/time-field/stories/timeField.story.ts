@@ -38,15 +38,6 @@ const meta = {
       control: 'text',
       description: 'The hint text below the field',
     },
-    hourCycle: {
-      control: 'select',
-      description: 'The hour cycle — sourced from ConfigProvider. Use 12-hour for AM/PM display, 24-hour for 24h format.',
-      options: [
-        null,
-        '12-hour',
-        '24-hour',
-      ],
-    },
     label: {
       control: 'text',
       description: 'The label of the time field',

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Temporal } from 'temporal-polyfill'
+import type { Temporal } from 'temporal-polyfill'
 import { ref } from 'vue'
 
 import type { HourCycle } from '@/types/hourCycle.type'
-import ConfigProvider from '@/ui/config-provider/ConfigProvider.vue'
 import type { TimeFieldProps } from '@/ui/time-field/timeField.props'
 import TimeField from '@/ui/time-field/TimeField.vue'
 
@@ -37,23 +36,18 @@ const modelValue = ref<Temporal.PlainTime | null>(null)
 
 <template>
   <div class="flex items-center gap-md">
-    <ConfigProvider
-      locale="en-US"
-      :hour-cycle="props.hourCycle ?? undefined"
-    >
-      <TimeField
-        v-model="modelValue"
-        :error-message="props.errorMessage"
-        :hide-error-message="props.hideErrorMessage"
-        :hint="props.hint"
-        :is-disabled="props.isDisabled"
-        :is-loading="props.isLoading"
-        :is-readonly="props.isReadonly"
-        :is-required="props.isRequired"
-        :label="props.label"
-        :size="props.size"
-        class="w-56"
-      />
-    </ConfigProvider>
+    <TimeField
+      v-model="modelValue"
+      :error-message="props.errorMessage"
+      :hide-error-message="props.hideErrorMessage"
+      :hint="props.hint"
+      :is-disabled="props.isDisabled"
+      :is-loading="props.isLoading"
+      :is-readonly="props.isReadonly"
+      :is-required="props.isRequired"
+      :label="props.label"
+      :size="props.size"
+      class="w-56"
+    />
   </div>
 </template>
