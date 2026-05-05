@@ -18,7 +18,7 @@ catalogs:
     "vue-i18n": "11.2.8"
     "@vueuse/core": "14.1.0"
     "@vueuse/router": "14.1.0"
-    "reka-ui": "2.8.0"
+    "reka-ui": "2.9.6"
     vue-query: ^0.0.0
     "vue-tsc": "3.2.2"
     "vue-router": "4.6.4"
@@ -136,6 +136,7 @@ catalogs:
     "highlight-words": "2.0.0"
     "@standard-schema/spec": "1.1.0"
     "clone-deep": 4.0.1
+    "country-flag-icons": "1.5.13"
     "@wisemen/vue-core": 1.0.0-alpha.42
 
   stories:
@@ -177,7 +178,7 @@ catalogs:
     "@tanstack/vue-query": ">=5.90.5"
     "neverthrow": ">=8.2.0"
     "motion-v": ">=1.7.3"
-    "reka-ui": ">=2.5.1"
+    "reka-ui": ">=2.9.6"
     "temporal-polyfill": ">=0.3.0"
     "vue-i18n": ">=11.1.12"
     "eslint": ">=10.0.3"
@@ -301,3 +302,4 @@ catalogs:
     "reflect-metadata": ">=0.2.2"
     "rxjs": ">=7.8.2"
     "typeorm": ">=0.3.28"
+  

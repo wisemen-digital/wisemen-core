@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import type { UtilityColor } from '@/types/utilityColor.type'
 import NumberBadge from '@/ui/number-badge/NumberBadge.vue'
 
