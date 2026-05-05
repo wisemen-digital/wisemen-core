@@ -5,7 +5,6 @@ import {
   ListboxItem as RekaListboxItem,
   ListboxItemIndicator as RekaListboxItemIndicator,
 } from 'reka-ui'
-import { onMounted } from 'vue'
 
 import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
 import { UIMenuItem } from '@/ui/menu-item'
@@ -25,8 +24,6 @@ const {
 } = useInjectSelectContext()
 
 const isUsingKeyboard = useIsUsingKeyboard()
-
-onMounted(() => console.log('i am mounted'))
 </script>
 
 <template>
