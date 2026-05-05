@@ -33,20 +33,63 @@ const preview: Preview = {
 
     (story, context) => {
       const theme = context.globals.theme || 'light'
+      const locale = context.globals.locale || 'en-US'
+      const hourCycle = context.globals.hourCycle || '24-hour'
 
       return () => h(StoryWrapper, {
+        hourCycle,
+        locale,
         theme,
       }, () => h(story()))
     },
   ],
 
   globalTypes: {
+    hourCycle: {
+      description: 'Hour cycle for time components',
+      toolbar: {
+        title: 'Hour cycle',
+        dynamicTitle: true,
+        icon: 'time',
+        items: [
+          {
+            title: '12-hour',
+            value: '12-hour',
+          },
+          {
+            title: '24-hour',
+            value: '24-hour',
+          },
+        ],
+      },
+    },
+    locale: {
+      description: 'Locale for components',
+      toolbar: {
+        title: 'Locale',
+        dynamicTitle: true,
+        icon: 'globe',
+        items: [
+          {
+            title: 'English (US)',
+            value: 'en-US',
+          },
+          {
+            title: 'Dutch (BE)',
+            value: 'nl-BE',
+          },
+          {
+            title: 'French (BE)',
+            value: 'fr-BE',
+          },
+        ],
+      },
+    },
     theme: {
       description: 'Global theme for components',
       toolbar: {
         title: 'Theme',
         dynamicTitle: true,
-
         icon: 'circlehollow',
         items: [
           {

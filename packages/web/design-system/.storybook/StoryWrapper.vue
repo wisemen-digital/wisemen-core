@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import type { HourCycle } from '@/types/hourCycle.type'
 import ConfigProvider from '@/ui/config-provider/ConfigProvider.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 defineProps<{
+  hourCycle?: HourCycle
+  locale?: string
   theme?: string
 }>()
 </script>
@@ -10,8 +13,8 @@ defineProps<{
 <template>
   <!-- eslint-disable better-tailwindcss/no-unknown-classes -->
   <ConfigProvider
-    locale="en-US"
-    hour-cycle="24-hour"
+    :locale="locale ?? 'en-US'"
+    :hour-cycle="hourCycle ?? '24-hour'"
   >
     <ThemeProvider
       :appearance="theme ?? 'light'"
