@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
 
-import type { ToastType } from '@/ui/toast/toast.type'
+import type { ToastVariant } from '@/ui/toast/toast.type'
 
 const props = defineProps<{
   icon: Component
-  type?: ToastType
+  variant?: ToastVariant
 }>()
 </script>
 
@@ -14,9 +14,9 @@ const props = defineProps<{
     <Component
       :is="props.icon"
       :class="{
-        'text-error-primary': props.type === 'error',
-        'text-warning-primary': props.type === 'warning',
-        'text-tertiary': props.type === 'info' || props.type === 'loading' || props.type === undefined,
+        'text-error-primary': props.variant === 'error',
+        'text-warning-primary': props.variant === 'warning',
+        'text-tertiary': props.variant === 'info' || props.variant === 'loading' || props.variant === undefined,
       }"
       class="size-4"
     />

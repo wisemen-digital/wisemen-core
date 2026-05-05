@@ -12,8 +12,12 @@ const PERMANENT_TOAST_DURATION = Infinity
 const DEFAULT_TOAST_DURATION = 5000
 const ERROR_TOAST_DURATION = 7000
 
+type ToastOptions = Toast & {
+  variant: Omit<Toast['variant'], 'loading'>
+}
+
 export function useToast() {
-  function show(toast: Toast): void {
+  function show(toast: ToastOptions): void {
     const existingToast = toast.id !== undefined
       ? toastState.getToasts().find((t) => t.id === toast.id) ?? null
       : null
@@ -28,7 +32,7 @@ export function useToast() {
       id: toast.id ?? crypto.randomUUID(),
       class: 'w-full sm:w-96',
       dismissible: toast.dismissible,
-      duration: toast.duration ?? (toast.type === 'error' ? ERROR_TOAST_DURATION : DEFAULT_TOAST_DURATION),
+      duration: toast.duration ?? (toast.variant === 'error' ? ERROR_TOAST_DURATION : DEFAULT_TOAST_DURATION),
       position: toast.position ?? 'bottom-right',
       onAutoClose: toast.onAutoClose,
       onDismiss: toast.onDismiss,
@@ -49,12 +53,12 @@ export function useToast() {
       icon: toast.icon,
       interactableModels: toast.interactableModels,
       message: toast.loading,
-      type: 'loading',
+      variant: 'loading',
       onAutoClose: toast.onAutoClose,
       onDismiss: toast.onDismiss,
     })
 
-    function update(message: string, type: 'error' | 'info'): void {
+    function update(message: string, variant: 'error' | 'info'): void {
       const toastId = toastState.custom(markRaw(defineComponent({
         render: () => h(ToastComponent, {
           toast: {
@@ -62,7 +66,7 @@ export function useToast() {
             icon: toast.icon,
             interactableModels: toast.interactableModels,
             message,
-            type,
+            variant,
           },
         }),
       })), {
@@ -76,7 +80,7 @@ export function useToast() {
 
       setTimeout(() => {
         toastState.dismiss(toastId)
-      }, toast.duration ?? (type === 'error' ? ERROR_TOAST_DURATION : DEFAULT_TOAST_DURATION))
+      }, toast.duration ?? (variant === 'error' ? ERROR_TOAST_DURATION : DEFAULT_TOAST_DURATION))
     }
 
     toast.promise.then(() => update(toast.success, 'info')).catch(() => update(toast.error, 'error'))

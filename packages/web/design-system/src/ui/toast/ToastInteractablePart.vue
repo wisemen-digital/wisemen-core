@@ -26,10 +26,10 @@ function handleClick(): void {
     :is="props.to === null ? 'div' : RouterLink"
     :to="props.to"
     :class="{
-      'hover:bg-quaternary dark:hover:bg-tertiary': props.to !== null,
+      'hover:bg-tertiary': props.to !== null,
     }"
     class="
-      -mx-xs inline-block items-center gap-xs rounded-xs px-xs duration-100
+      -mx-xs inline-block items-center gap-xs rounded-sm px-xs duration-100
     "
     @click="handleClick"
   >
@@ -37,7 +37,7 @@ function handleClick(): void {
       v-if="props.imageSrc !== null"
       :src="props.imageSrc"
       :alt="props.label"
-      class="-mt-xxs mr-xs inline size-3.5 rounded-xs"
+      class="-mt-xxs mr-xs -ml-xxs inline size-4 rounded-xs"
     >
 
     <Component
