@@ -34,6 +34,7 @@ export default defineConfig({
         'vue-router',
         'reka-ui',
         'formango',
+        'temporal-polyfill',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
@@ -43,6 +44,7 @@ export default defineConfig({
           '@vueuse/router': 'VueUseRouter',
           'formango': 'Formango',
           'reka-ui': 'RekaUI',
+          'temporal-polyfill': 'Temporal',
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',
           'vue-router': 'VueRouter',

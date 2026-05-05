@@ -161,7 +161,7 @@ export const createIconButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-primary-hover
+          data-interactive:hover:bg-secondary-hover
         `,
       },
     },

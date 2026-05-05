@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import { Settings01Icon } from '@wisemen/vue-core-icons'
 
 import type { BadgeColor } from '@/ui/badge/badge.props'
