@@ -24,8 +24,12 @@ const {
 
 <template>
   <RekaDatePickerHeader class="flex items-center justify-between">
-    <RekaDatePickerPrev :as-child="true">
+    <RekaDatePickerPrev
+      v-slot="{ disabled }"
+      :as-child="true"
+    >
       <IconButton
+        :is-disabled="disabled"
         :icon="ChevronLeftIcon"
         :label="i18n.t('component.date_picker.previous_month')"
         size="md"
@@ -44,8 +48,12 @@ const {
       />
     </div>
 
-    <RekaDatePickerNext :as-child="true">
+    <RekaDatePickerNext
+      v-slot="{ disabled }"
+      :as-child="true"
+    >
       <IconButton
+        :is-disabled="disabled"
         :icon="ChevronRightIcon"
         :label="i18n.t('component.date_picker.next_month')"
         size="md"

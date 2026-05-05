@@ -27,13 +27,13 @@ import {
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
 import { UIIconButton } from '@/ui/button'
+import { useInjectConfigContext } from '@/ui/config-provider'
 import type { DateFieldProps } from '@/ui/date-field/dateField.props'
 import { createDateFieldStyle } from '@/ui/date-field/dateField.style'
 import DatePickerCalendarGrid from '@/ui/date-field/DatePickerCalendarGrid.vue'
 import DatePickerCalendarHeader from '@/ui/date-field/DatePickerCalendarHeader.vue'
 import { useProvideDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
 import { createDatePickerFieldStyle } from '@/ui/date-field/datePickerField.style'
-import DatePickerInputRow from '@/ui/date-field/DatePickerInputRow.vue'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
@@ -59,7 +59,9 @@ const modelValue = defineModel<Temporal.PlainDate | null>({
 
 const i18n = useI18n()
 
-const locale = navigator.language
+const {
+  locale,
+} = useInjectConfigContext()
 
 const id = props.id ?? useId()
 
@@ -231,13 +233,13 @@ function setToday(): void {
               :is-tooltip-disabled="true"
               :icon="CalendarIcon"
               :label="i18n.t('component.date_picker.open')"
-              size="xs"
-              type="button"
-              variant="tertiary"
               :class="{
                 'mr-xs': props.size === 'md',
                 'mr-xxs': props.size === 'sm',
               }"
+              size="xs"
+              type="button"
+              variant="tertiary"
             />
           </RekaDatePickerTrigger>
         </template>
@@ -263,8 +265,6 @@ function setToday(): void {
             weekday-format="short"
           >
             <DatePickerCalendarHeader />
-
-            <DatePickerInputRow @today="setToday" />
 
             <DatePickerCalendarGrid
               v-for="month in grid"

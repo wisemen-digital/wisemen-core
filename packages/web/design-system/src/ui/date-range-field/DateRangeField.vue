@@ -34,6 +34,7 @@ import {
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
 import { UIIconButton } from '@/ui/button'
+import { useInjectConfigContext } from '@/ui/config-provider'
 import { useProvideDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
 import type { DateRangeFieldProps } from '@/ui/date-range-field/dateRangeField.props'
 import { createDateRangeFieldStyle } from '@/ui/date-range-field/dateRangeField.style'
@@ -70,11 +71,11 @@ const modelValue = defineModel<DateRangeFieldRange | null>({
   required: true,
 })
 
-const {
-  t,
-} = useI18n()
+const i18n = useI18n()
 
-const locale = navigator.language
+const {
+  locale,
+} = useInjectConfigContext()
 
 const id = props.id ?? useId()
 
@@ -315,7 +316,7 @@ useProvideDateRangeFieldContext({
               :is-disabled="props.isDisabled || props.isReadonly"
               :is-tooltip-disabled="true"
               :icon="CalendarIcon"
-              :label="t('component.date_range_picker.open')"
+              :label="i18n.t('component.date_range_picker.open')"
               size="xs"
               type="button"
               variant="tertiary"
