@@ -1,4 +1,4 @@
-import { type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsSelectByString, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository } from 'typeorm'
+import { type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, type FindOperatorType, FindOptionsOrder, FindOptionsSelect, FindOptionsSelectByString, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository, type ValueTransformer } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
 
@@ -12,11 +12,11 @@ import { createReadonlyManagerProxy } from './readonly.js'
  */
 class SafeAndOperator extends FindOperator<unknown> {
   constructor (children: FindOperator<unknown>[]) {
-    super('and' as any, children as any, true, true)
+    super('and' satisfies FindOperatorType, children as unknown as FindOperator<unknown>, true, true)
   }
 
-  transformValue (transformer: any): void {
-    const children = (this as any)._value as FindOperator<unknown>[]
+  transformValue (transformer: ValueTransformer | ValueTransformer[]): void {
+    const children = this.value as FindOperator<unknown>[]
 
     for (const child of children) {
       if (child instanceof FindOperator) {
