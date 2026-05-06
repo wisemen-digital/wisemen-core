@@ -4,6 +4,7 @@ import {
   ComboboxAnchor as RekaComboboxAnchor,
   ComboboxInput as RekaComboboxInput,
   ComboboxRoot as RekaComboboxRoot,
+  ComboboxTrigger as RekaComboboxTrigger,
 } from 'reka-ui'
 import {
   computed,
@@ -17,6 +18,7 @@ import {
   INPUT_DEFAULTS,
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
+  omit,
 } from '@/types/input.type'
 import { useProvideAutocompleteContext } from '@/ui/autocomplete/autocomplete.context'
 import type { AutocompleteProps } from '@/ui/autocomplete/autocomplete.props'
@@ -33,7 +35,7 @@ defineOptions({
 const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
-  ...INPUT_FIELD_DEFAULTS,
+  ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
   getItemConfig: null,
@@ -127,7 +129,7 @@ useProvideAutocompleteContext({
       <RekaComboboxAnchor class="block w-full">
         <FieldWrapper
           :icon-left="props.iconLeft"
-          :icon-right="props.iconRight"
+          :icon-right="ChevronDownIcon"
           :is-loading="props.isLoading"
           :is-error="isError"
           :is-disabled="props.isDisabled"
@@ -139,7 +141,10 @@ useProvideAutocompleteContext({
           </template>
 
           <template #right>
-            <slot name="right" />
+            <RekaComboboxTrigger
+              v-if="!props.isDisabled"
+              class="absolute top-0 right-0 z-1 size-8 -translate-y-px"
+            />
           </template>
 
           <RekaComboboxInput
