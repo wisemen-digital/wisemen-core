@@ -22,6 +22,10 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<AutocompleteContentProps<TValue>>(), {
   isLoading: false,
+  popoverAlign: 'center',
+  popoverCollisionPadding: 8,
+  popoverSide: 'bottom',
+  popoverSideOffset: 4,
   searchMode: 'local',
 })
 
@@ -62,11 +66,12 @@ onBeforeUnmount(() => {
   <RekaComboboxPortal to="body">
     <ThemeProvider :as-child="true">
       <RekaComboboxContent
-        :side-offset="4"
-        :collision-padding="8"
+        :side-offset="props.popoverSideOffset"
+        :collision-padding="props.popoverCollisionPadding"
+        :side="props.popoverSide"
+        :align="props.popoverAlign"
+        :align-offset="props.popoverAlignOffset"
         position="popper"
-        side="bottom"
-        align="center"
         sticky="always"
         data-animation="popover-default"
         class="

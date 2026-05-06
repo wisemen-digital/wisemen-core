@@ -29,6 +29,7 @@ const isUsingKeyboard = useIsUsingKeyboard()
 <template>
   <RekaListboxItem
     :value="props.value"
+
     :class="{
       'data-highlighted:bg-secondary-hover': isUsingKeyboard,
       'hover:bg-secondary-hover': !isUsingKeyboard,

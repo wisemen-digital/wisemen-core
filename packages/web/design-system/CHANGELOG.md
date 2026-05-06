@@ -1,5 +1,56 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+- [#903](https://github.com/wisemen-digital/wisemen-core/pull/903) [`3dd0ce5`](https://github.com/wisemen-digital/wisemen-core/commit/3dd0ce543acb75c3dbfbbab17b3666fbb093e0da) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a composable to get the trigger props of the dialog for a11y
+
+- [#836](https://github.com/wisemen-digital/wisemen-core/pull/836) [`06ed4b0`](https://github.com/wisemen-digital/wisemen-core/commit/06ed4b0183daeb72e5d08e8b88b2bdaed048e63a) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add date range picker component with presets
+
+### Patch Changes
+
+- [#905](https://github.com/wisemen-digital/wisemen-core/pull/905) [`731dc19`](https://github.com/wisemen-digital/wisemen-core/commit/731dc19ab86af4c6292a6fb1f58a5a036971bb2f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export index.css style file
+
+## 0.8.0
+
+### Minor Changes
+
+- [#885](https://github.com/wisemen-digital/wisemen-core/pull/885) [`12bf126`](https://github.com/wisemen-digital/wisemen-core/commit/12bf1266125a6df184589d871d028402f0d4dd20) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add autocomplete component
+
+## 0.7.0
+
+### Minor Changes
+
+- [#890](https://github.com/wisemen-digital/wisemen-core/pull/890) [`d2387b1`](https://github.com/wisemen-digital/wisemen-core/commit/d2387b1dfde8dd81fade83e336f914d3e84e0557) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add config provider with `numberSeparatorStyle` prop for controlling thousands/decimal separator formatting in NumberField components
+
+- [#884](https://github.com/wisemen-digital/wisemen-core/pull/884) [`bd0cf2d`](https://github.com/wisemen-digital/wisemen-core/commit/bd0cf2dc9eba210773d91c737136d4c8c1f9206f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add detail pane variants
+
+### Patch Changes
+
+- [#902](https://github.com/wisemen-digital/wisemen-core/pull/902) [`bb34a61`](https://github.com/wisemen-digital/wisemen-core/commit/bb34a612ff18a5964e63db85405a861846cafd76) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix index exports
+
+## 0.6.0
+
+### Minor Changes
+
+- [#868](https://github.com/wisemen-digital/wisemen-core/pull/868) [`b1b5a00`](https://github.com/wisemen-digital/wisemen-core/commit/b1b5a00f44f9c493372bcd4f1640af9916545c30) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add select components + menu item
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/vue-core-icons@0.0.2
+
+## 0.5.0
+
+### Minor Changes
+
+- [#833](https://github.com/wisemen-digital/wisemen-core/pull/833) [`560b87a`](https://github.com/wisemen-digital/wisemen-core/commit/560b87a22386f657d01cc7e4a2943b401d5aa93d) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add chin functionality to the dialog component
+
+- [#881](https://github.com/wisemen-digital/wisemen-core/pull/881) [`d3136a1`](https://github.com/wisemen-digital/wisemen-core/commit/d3136a17efc508794fde948db149e60e14dc1c6f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add options for horizontal padding in underline tabs
+
+- [#832](https://github.com/wisemen-digital/wisemen-core/pull/832) [`078cff5`](https://github.com/wisemen-digital/wisemen-core/commit/078cff57e1ae0ff1a81000f25f19a4d7f0fb9c23) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dialog components and composable
+
 ## 0.4.0
 
 ### Minor Changes

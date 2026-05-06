@@ -43,8 +43,7 @@ const isUsingKeyboard = useIsUsingKeyboard()
     >
       <template #right>
         <RekaComboboxItemIndicator>
-          <Component
-            :is="CheckIcon"
+          <CheckIcon
             class="size-3.5 text-tertiary"
           />
         </RekaComboboxItemIndicator>

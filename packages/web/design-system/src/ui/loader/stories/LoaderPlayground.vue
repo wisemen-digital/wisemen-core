@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import Loader from '@/ui/loader/Loader.vue'
 </script>
 

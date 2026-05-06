@@ -1,5 +1,11 @@
 # @wisemen/app-container
 
+## 4.0.3
+
+### Patch Changes
+
+- [#898](https://github.com/wisemen-digital/wisemen-core/pull/898) [`fc1f7d5`](https://github.com/wisemen-digital/wisemen-core/commit/fc1f7d5a93cc36ce6f6d31538528557344cde90a) Thanks [@dependabot](https://github.com/apps/dependabot)! - bump fastify
+
 ## 4.0.2
 
 ### Patch Changes

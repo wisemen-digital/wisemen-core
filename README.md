@@ -55,6 +55,7 @@ After this setup, all future releases will be automatic through the changeset wo
 - **[ESLint Plugin](./packages/eslint-plugin)** – Custom ESLint rules
 - **[Express DTO Router](./packages/express-dto-router)** – DTO validation for Express routers
 - **[Formango](./packages/formango)** – Form management utilities
+- **[Format](./packages/web/format)** – Locale-aware string and number formatting utilities.
 - **[Generator](./packages/generator)** – Code generation tools
 - **[Icons](./packages/icons)** – Icon library and utilities
 - **[Int Range](./packages/int-range)** – Integer range utilities

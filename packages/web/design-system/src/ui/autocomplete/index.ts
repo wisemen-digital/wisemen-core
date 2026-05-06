@@ -1,5 +1,5 @@
-export type { AutocompleteProps as UIAutocompleteProps } from './autocomplete.props.ts'
-export * from './autocomplete.type.ts'
+export type { AutocompleteProps as UIAutocompleteProps } from './autocomplete.props'
+export * from './autocomplete.type'
 export { default as UIAutocomplete } from './Autocomplete.vue'
 export { default as UIAutocompleteContent } from './AutocompleteContent.vue'
 export { default as UIAutocompleteOption } from './AutocompleteOption.vue'

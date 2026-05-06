@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/node-doc-processor",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint"
+    "eslint": "catalog:lint-api"
   },
   "dependencies": {
     "@wisemen/pgboss-nestjs-job": "workspace:*"

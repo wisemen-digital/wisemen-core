@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer",
     "@wisemen/eslint-config-nestjs": "workspace:*"

@@ -51,4 +51,4 @@ export type AutocompleteContentProps<TValue extends AutocompleteValue> = Pick<
   | 'isLoading'
   | 'items'
   | 'searchMode'
->
+> & PopoverProps

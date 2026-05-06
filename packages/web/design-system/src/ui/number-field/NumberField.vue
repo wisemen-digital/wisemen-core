@@ -25,7 +25,9 @@ import {
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
 } from '@/types/input.type'
+import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
 import IconButton from '@/ui/button/icon/IconButton.vue'
+import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import type { NumberFieldProps } from '@/ui/number-field/numberField.props'
@@ -55,6 +57,8 @@ const emit = defineEmits<{
 
 const NUMBER_SEPARATOR_REGEX = /[\s.,`]/g
 const DECIMAL_SEPARATOR_REGEX = /[\s.,`](?=\d+$)/
+const SEPARATOR_REGEX = /[.,]/g
+const NON_DIGIT_REGEX = /\D/g
 
 const modelValue = defineModel<number | null>({
   required: true,
@@ -69,6 +73,7 @@ const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle
 const copiedModelValue = ref<number | null>(modelValue.value)
 const isEditing = ref<boolean>(false)
 
+// this is necessary because otherwise the input will not update when the modelValue is changed programmatically
 watch(
   () => modelValue.value,
   (value) => {
@@ -81,6 +86,7 @@ watch(
 )
 
 const attrs = useAttrs()
+
 const i18n = useI18n()
 
 const id = props.id ?? useId()
@@ -91,7 +97,25 @@ const {
   ariaInvalid,
 } = useInput(id, props)
 
-const deviceLocale = navigator.language
+const SEPARATOR_STYLE_LOCALE: Record<Exclude<NumberSeparatorStyle, 'system'>, string> = {
+  'comma-period': 'en-US',
+  'period-comma': 'de-DE',
+  'space-comma': 'fr-FR',
+  'space-period': 'fr-CH',
+}
+
+const configContext = useInjectConfigContext(null)
+
+const effectiveLocale = computed<string>(() => {
+  // eslint-disable-next-line better-tailwindcss/no-unknown-classes
+  const style = configContext?.numberSeparatorStyle.value ?? 'system'
+
+  if (style === 'system') {
+    return navigator.language
+  }
+
+  return SEPARATOR_STYLE_LOCALE[style]
+})
 
 /**
  * Parses a localized number string into a number.
@@ -130,7 +154,7 @@ function onInput(event: InputEvent): void {
     return
   }
 
-  const valueAsNumber = parseIntlNumber(value, deviceLocale)
+  const valueAsNumber = formatNumbeDecimalSeperators(value)
 
   if (Number.isNaN(valueAsNumber)) {
     return
@@ -140,10 +164,61 @@ function onInput(event: InputEvent): void {
 }
 
 function onEnterKeyDown(): void {
+  copiedModelValue.value = modelValue.value
   isEditing.value = false
 }
 
+function formatNumbeDecimalSeperators(value: string): number {
+  SEPARATOR_REGEX.lastIndex = 0
+
+  const allSeparators = [
+    ...value.matchAll(SEPARATOR_REGEX),
+  ]
+
+  if (allSeparators.length === 0) {
+    return Number(value)
+  }
+
+  const separatorChars = allSeparators.map((m) => m[0])
+  const uniqueSeps = [
+    ...new Set(separatorChars),
+  ]
+
+  if (uniqueSeps.length === 2) {
+    // Both . and , appear: the last one is the decimal separator
+    const decimalSep = separatorChars.at(-1)!
+    const thousandsSep = uniqueSeps.find((s) => s !== decimalSep)!
+
+    return Number(value.replaceAll(thousandsSep, '').replace(decimalSep, '.'))
+  }
+
+  const sep = uniqueSeps[0]!
+
+  if (allSeparators.length > 1) {
+    // Same separator appears multiple times → must be thousands
+    return Number(value.replaceAll(sep, ''))
+  }
+
+  // Single separator: check digits after it
+  const digitsAfter = value.slice(value.lastIndexOf(sep) + 1).replace(NON_DIGIT_REGEX, '')
+
+  if (digitsAfter.length <= 2) {
+    // 1–2 digits after → decimal
+    return Number(value.replace(sep, '.'))
+  }
+
+  if (digitsAfter.length >= 4) {
+    // 4+ digits after → thousands separator
+    return Number(value.replaceAll(sep, ''))
+  }
+
+  // Exactly 3 digits after → ambiguous, fall back to locale
+  return parseIntlNumber(value, effectiveLocale.value)
+}
+
 function onBlur(event: FocusEvent): void {
+  copiedModelValue.value = modelValue.value
+
   isEditing.value = false
   emit('blur', event)
 }
@@ -187,7 +262,7 @@ watch(copiedModelValue, () => {
       :step="props.step"
       :step-snapping="true"
       :as-child="false"
-      :locale="deviceLocale"
+      :locale="effectiveLocale"
       :name="props.name ?? undefined"
       :max="props.max ?? undefined"
       :min="props.min ?? undefined"

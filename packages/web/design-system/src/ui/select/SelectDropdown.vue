@@ -71,19 +71,12 @@ function onSelectOption(): void {
   }
 }
 
-function onOpenDropdown(): void {
-
-}
-
 function onCloseDropdown(): void {
   emit('blur')
 }
 
 function onUpdateIsOpen(isOpen: boolean): void {
-  if (isOpen) {
-    onOpenDropdown()
-  }
-  else {
+  if (!isOpen) {
     onCloseDropdown()
   }
 }

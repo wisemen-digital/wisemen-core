@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import {
+  computed,
+  useSlots,
+} from 'vue'
 
 import { UIAvatar } from '@/ui/avatar'
 import { UIColumnLayout } from '@/ui/column-layout'
@@ -17,9 +20,22 @@ const props = withDefaults(defineProps<MenuItemProps>(), {
   size: 'md',
 })
 
+const slots = useSlots()
+
 const resolvedLabel = computed<string | null>(() => props.config?.label ?? props.label ?? null)
 
+const hasLeftContent = computed<boolean>(() =>
+  props.config?.avatar != null
+  || props.config?.flag != null
+  || props.config?.icon != null
+  || props.config?.dot != null)
+
+const hasRightContent = computed<boolean>(() =>
+  props.config?.right != null || slots.right != null)
+
 const style = computed<MenuItemStyle>(() => createMenuItemStyle({
+  hasLeftContent: hasLeftContent.value,
+  hasRightContent: hasRightContent.value,
   size: props.size,
 }))
 </script>
@@ -43,6 +59,21 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         :image-alt="props.config.avatar.imageAlt"
         :size="props.config.description ? 'sm' : 'xs'"
       />
+
+      <div
+        v-else-if="props.config?.flag != null"
+        :class="style.iconWrapper()"
+      >
+        <span
+          :aria-label="props.config.flag.ariaLabel ?? undefined"
+          role="img"
+          class="
+            block h-3.5 w-5 overflow-hidden rounded-xxs
+            [&>svg]:size-full [&>svg]:object-cover
+          "
+          v-html="props.config.flag.svg"
+        />
+      </div>
 
       <div
         v-else-if="props.config?.icon != null"

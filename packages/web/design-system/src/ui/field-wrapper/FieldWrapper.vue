@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     <slot name="right" />
 
     <FieldWrapperIcon
-      v-if="props.iconRight"
+      v-if="props.iconRight && !props.isLoading"
       :icon="props.iconRight"
       :input-field-size="props.size"
       :class="{
