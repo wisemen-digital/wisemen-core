@@ -21,6 +21,7 @@ import { getWeekStartsOn } from '@/utils/weekStartsOn.util'
 const props = withDefaults(defineProps<DatePickerProps>(), {
   maxDate: null,
   minDate: null,
+  fixedWeeks: false,
 })
 
 const modelValue = defineModel<Temporal.PlainDate | null>({
@@ -61,10 +62,11 @@ useProvideDatePickerFieldContext({
       :max-value="maxDateValue"
       :min-value="minDateValue"
       :locale="locale"
+      :fixed-weeks="props.fixedWeeks"
     >
       <RekaDatePickerCalendar
         v-slot="{ weekDays, grid }"
-        :fixed-weeks="true"
+        :fixed-weeks="false"
         class="flex flex-col gap-lg overflow-hidden bg-primary p-2xl px-3xl"
         weekday-format="short"
       >

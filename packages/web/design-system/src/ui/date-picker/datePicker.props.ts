@@ -11,4 +11,10 @@ export interface DatePickerProps {
    * @default null
    */
   minDate?: Temporal.PlainDate | null
+  /**
+   * Whether or not to always display 6 weeks in the calendar.
+   * This can be useful to prevent layout shifting.
+   * @default false
+   */
+  fixedWeeks?: boolean
 }
