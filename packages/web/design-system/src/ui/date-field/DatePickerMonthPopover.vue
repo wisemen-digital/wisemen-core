@@ -19,6 +19,7 @@ import {
 } from 'vue'
 
 import { UIButton } from '@/ui/button'
+import { useInjectConfigContext } from '@/ui/config-provider'
 import { datePickerMonthPopoverStyle } from '@/ui/date-field/datePickerMonthPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
@@ -30,12 +31,12 @@ const emit = defineEmits<{
   'update:placeholder': [value: CalendarDate]
 }>()
 
-const locale = navigator.language
+const configContext = useInjectConfigContext()
 
 const monthOpen = ref(false)
 
 const monthLabel = computed<string>(() =>
-  new Intl.DateTimeFormat(locale, {
+  new Intl.DateTimeFormat(configContext.locale.value, {
     month: 'long',
   })
     .format(new Date(props.placeholder.year, props.placeholder.month - 1, 1)))
@@ -69,10 +70,11 @@ function onMonthSelect(value: DateValue | DateValue[] | undefined): void {
           :side-offset="8"
           :collision-padding="10"
           align="center"
+          data-animation="popover-default"
         >
           <MonthPickerRoot
             v-slot="{ grid }"
-            :locale="locale"
+            :locale="configContext.locale.value"
             :model-value="props.placeholder"
             @update:model-value="onMonthSelect"
           >

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -67,6 +67,8 @@
     "@internationalized/date": "catalog:date",
     "@tailwindcss/vite": "catalog:vite",
     "@wisemen/vue-core-icons": "workspace:*",
+    "country-flag-icons": "catalog:general",
+    "libphonenumber-js": "catalog:general",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",

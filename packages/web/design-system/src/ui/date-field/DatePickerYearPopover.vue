@@ -75,6 +75,7 @@ function onYearSelect(value: DateValue | DateValue[] | undefined): void {
           :side-offset="8"
           :collision-padding="10"
           align="center"
+          data-animation="popover-default"
         >
           <YearPickerRoot
             v-slot="{ grid }"

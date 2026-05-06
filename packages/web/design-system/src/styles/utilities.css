@@ -1,5 +1,21 @@
 @variant dark (&:where(.dark, .dark *));
 
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+
+@utility z-modal {
+  z-index: var(--z-modal);
+}
+
+@utility z-tooltip {
+  z-index: var(--z-tooltip);
+}
+
 @utility no-scrollbar {
   &::-webkit-scrollbar {
     display: none;
@@ -24,4 +40,97 @@
 
 @utility glassy-inner-content {
   @apply bg-linear-to-br from-secondary to-quaternary group-hover:from-primary;
+}
+
+@keyframes popoverFadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(-4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeOutToTop {
+  to {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeOutToRight {
+  to {
+    opacity: 0;
+    transform: translateX(-4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeOutToBottom {
+  to {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
+}
+
+@keyframes popoverFadeOutToLeft {
+  to {
+    opacity: 0;
+    transform: translateX(4px) scale(0.97);
+  }
+}
+
+[data-animation='popover-default'] {
+  animation-duration: 75ms;
+  animation-timing-function: ease-out;
+}
+
+[data-animation='popover-default'][data-state='open'][data-side='top'] {
+  animation-name: popoverFadeInFromTop;
+}
+
+[data-animation='popover-default'][data-state='open'][data-side='right'] {
+  animation-name: popoverFadeInFromRight;
+}
+
+[data-animation='popover-default'][data-state='open'][data-side='bottom'] {
+  animation-name: popoverFadeInFromBottom;
+}
+
+[data-animation='popover-default'][data-state='open'][data-side='left'] {
+  animation-name: popoverFadeInFromLeft;
+}
+
+[data-animation='popover-default'][data-state='closed'][data-side='top'] {
+  animation-name: popoverFadeOutToTop;
+}
+
+[data-animation='popover-default'][data-state='closed'][data-side='right'] {
+  animation-name: popoverFadeOutToRight;
+}
+
+[data-animation='popover-default'][data-state='closed'][data-side='bottom'] {
+  animation-name: popoverFadeOutToBottom;
+}
+
+[data-animation='popover-default'][data-state='closed'][data-side='left'] {
+  animation-name: popoverFadeOutToLeft;
 }

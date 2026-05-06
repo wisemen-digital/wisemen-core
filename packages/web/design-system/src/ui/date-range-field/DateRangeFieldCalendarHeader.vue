@@ -49,9 +49,11 @@ function onPlaceholderUpdate(date: CalendarDate): void {
   <div class="flex items-center p-xl pb-0">
     <RekaDateRangePickerPrev
       v-if="props.side === 'left'"
+      v-slot="{ disabled }"
       :as-child="true"
     >
       <IconButton
+        :is-disabled="disabled"
         :icon="ChevronLeftIcon"
         :label="i18n.t('component.date_range_picker.previous_month')"
         size="md"
@@ -76,9 +78,11 @@ function onPlaceholderUpdate(date: CalendarDate): void {
 
     <RekaDateRangePickerNext
       v-if="props.side === 'right' || props.showNext"
+      v-slot="{ disabled }"
       :as-child="true"
     >
       <IconButton
+        :is-disabled="disabled"
         :icon="ChevronRightIcon"
         :label="i18n.t('component.date_range_picker.next_month')"
         size="md"

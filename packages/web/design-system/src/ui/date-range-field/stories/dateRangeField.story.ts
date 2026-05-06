@@ -105,7 +105,7 @@ export const Disabled: Story = {
 export const WithDateConstraints: Story = {
   args: {
     minDate: Temporal.PlainDate.from({
-      day: 1,
+      day: 5,
       month: 4,
       year: 2026,
     }),

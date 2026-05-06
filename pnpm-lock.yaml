@@ -266,6 +266,9 @@ catalogs:
     clone-deep:
       specifier: 4.0.1
       version: 4.0.1
+    country-flag-icons:
+      specifier: 1.5.13
+      version: 1.5.13
     defu:
       specifier: 6.1.5
       version: 6.1.5
@@ -2169,6 +2172,12 @@ importers:
       '@wisemen/vue-core-icons':
         specifier: workspace:*
         version: link:../icons
+      country-flag-icons:
+        specifier: catalog:general
+        version: 1.5.13
+      libphonenumber-js:
+        specifier: catalog:general
+        version: 1.12.35
       tailwind-merge:
         specifier: catalog:style
         version: 3.4.0
@@ -8478,6 +8487,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  country-flag-icons@1.5.13:
+    resolution: {integrity: sha512-4JwHNqaKZ19doQoNcBjsoYA+I7NqCH/mC/6f5cBWvdKzcK5TMmzLpq3Z/syVHMHJuDGFwJ+rPpGizvrqJybJow==}
 
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
@@ -19560,6 +19572,8 @@ snapshots:
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.9.3
+
+  country-flag-icons@1.5.13: {}
 
   create-require@1.1.1:
     optional: true

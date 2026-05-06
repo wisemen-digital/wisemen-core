@@ -8,7 +8,7 @@ import {
   DatePickerRoot as RekaDatePickerRoot,
   DatePickerTrigger as RekaDatePickerTrigger,
 } from 'reka-ui'
-import { Temporal } from 'temporal-polyfill'
+import type { Temporal } from 'temporal-polyfill'
 import {
   computed,
   ref,
@@ -32,7 +32,6 @@ import DatePickerCalendarGrid from '@/ui/date-field/DatePickerCalendarGrid.vue'
 import DatePickerCalendarHeader from '@/ui/date-field/DatePickerCalendarHeader.vue'
 import { useProvideDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
 import { createDatePickerFieldStyle } from '@/ui/date-field/datePickerField.style'
-import DatePickerInputRow from '@/ui/date-field/DatePickerInputRow.vue'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
@@ -98,11 +97,6 @@ useProvideDatePickerFieldContext({
   setPlaceholder,
   onClose: () => { isOpen.value = false },
 })
-
-function setToday(): void {
-  modelValue.value = Temporal.Now.plainDateISO()
-  isOpen.value = false
-}
 </script>
 
 <template>
@@ -190,10 +184,13 @@ function setToday(): void {
               :is-tooltip-disabled="true"
               :icon="CalendarIcon"
               :label="i18n.t('component.date_picker.open')"
+              :class="{
+                'mr-xs': props.size === 'md',
+                'mr-xxs': props.size === 'sm',
+              }"
               size="xs"
               type="button"
               variant="tertiary"
-              class="mr-xs"
             />
           </RekaDatePickerTrigger>
         </template>
@@ -201,7 +198,9 @@ function setToday(): void {
 
       <ThemeProvider :as-child="true">
         <RekaDatePickerContent
-          :side-offset="4"
+          :side-offset="8"
+          :collision-padding="10"
+          data-animation="popover-default"
           class="
             z-40 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]
@@ -212,13 +211,11 @@ function setToday(): void {
             v-slot="{ weekDays, grid }"
             class="
               flex flex-col gap-lg overflow-hidden rounded-2xl border
-              border-secondary bg-primary p-2xl px-3xl shadow-lg
+              border-secondary bg-primary px-xl py-lg shadow-lg
             "
             weekday-format="short"
           >
             <DatePickerCalendarHeader />
-
-            <DatePickerInputRow @today="setToday" />
 
             <DatePickerCalendarGrid
               v-for="month in grid"
