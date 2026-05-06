@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { UIButton, UILink } from '@/ui/button/index'
+import {
+  UIButton,
+  UILink,
+} from '@/ui/button/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
-
 import type {
   ToastButtonAction,
   ToastLinkAction,

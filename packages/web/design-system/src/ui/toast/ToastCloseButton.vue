@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { UIIconButton } from '@/ui/button/index'
 import { XCloseIcon } from '@wisemen/vue-core-icons'
 import { useI18n } from 'vue-i18n'
+
+import { UIIconButton } from '@/ui/button/index'
 
 const emit = defineEmits<{
   close: []

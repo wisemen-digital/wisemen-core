@@ -18,6 +18,7 @@
   "component.tabs.adaptive_dropdown.trigger.label": "More",
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
+  "component.toast.close.label": "Close",
   "component.unsaved_changes_dialog.cancel": "Keep editing",
   "component.unsaved_changes_dialog.confirm": "Discard changes",
   "component.unsaved_changes_dialog.description": "You have unsaved changes. Are you sure you want to leave?",
@@ -25,6 +26,5 @@
   "components.sidebar.description": "The sidebar contains navigation links and other important actions.",
   "components.sidebar.global_search.label": "Search",
   "components.sidebar.sign_out": "Sign out",
-  "components.sidebar.title": "Sidebar",
-  "component.toast.close.label": "Close"
+  "components.sidebar.title": "Sidebar"
 }

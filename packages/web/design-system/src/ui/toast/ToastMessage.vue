@@ -31,12 +31,15 @@ const emit = defineEmits<{
   closeToast: []
 }>()
 
+const MESSAGE_INTERPOLATION_REGEX = /(\{.*?\})/g
+const INTERACTABLE_REGEX = /^\{(.*?)\}$/
+
 const chunks = computed<MessageChunk[]>(() => {
-  return props.message.split(/(\{.*?\})/g).map((part) => {
-    const interactableMatch = part.match(/^\{(.*?)\}$/)
+  return props.message.split(MESSAGE_INTERPOLATION_REGEX).map((part) => {
+    const interactableMatch = part.match(INTERACTABLE_REGEX)
 
     if (interactableMatch === null) {
-       return {
+      return {
         label: part,
         type: 'text',
       } as TextChunk

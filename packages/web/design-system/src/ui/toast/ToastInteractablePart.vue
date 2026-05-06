@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Component } from 'vue'
-import { RouterLink } from 'vue-router'
 import type { RouteLocationRaw } from 'vue-router'
+import { RouterLink } from 'vue-router'
 
 const props = defineProps<{
   icon: Component | null
@@ -35,13 +35,13 @@ function onClick(): void {
       v-if="props.imageSrc !== null"
       :src="props.imageSrc"
       :alt="props.label"
-      class="inline size-3.5 rounded-xs mr-xs align-sub"
+      class="mr-xs inline size-3.5 rounded-xs align-sub"
     >
 
     <Component
       :is="props.icon"
       v-else-if="props.icon !== null"
-      class="inline size-3.5 align-sub -translate-y-px text-secondary mr-xs"
+      class="mr-xs inline size-3.5 -translate-y-px align-sub text-secondary"
     />
 
     <span class="font-medium text-primary">

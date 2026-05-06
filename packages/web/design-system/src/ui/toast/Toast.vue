@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { tv } from '@/styles/tailwindVariants.lib'
+import { computed } from 'vue'
+
 import { UIColumnLayout } from '@/ui/column-layout/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { UIText } from '@/ui/text/index'
 import { toastVariants } from '@/ui/toast/toast.style'
 import type { Toast } from '@/ui/toast/toast.type'
-
 import ToastActions from '@/ui/toast/ToastActions.vue'
 import ToastCloseButton from '@/ui/toast/ToastCloseButton.vue'
 import ToastIcon from '@/ui/toast/ToastIcon.vue'
 import ToastLayout from '@/ui/toast/ToastLayout.vue'
 import ToastLoader from '@/ui/toast/ToastLoader.vue'
 import ToastMessage from '@/ui/toast/ToastMessage.vue'
-import { computed } from 'vue'
 
 const props = defineProps<{
   toast: Toast
@@ -22,11 +21,7 @@ const emit = defineEmits<{
   closeToast: []
 }>()
 
-const variants = computed(() => toastVariants({
-  variant: variant.value
-}))
-
-const variant = computed<'info' | 'warning' | 'error'>(() => {
+const variant = computed<'error' | 'info' | 'warning'>(() => {
   if (props.toast.variant === 'error') {
     return 'error'
   }
@@ -37,6 +32,10 @@ const variant = computed<'info' | 'warning' | 'error'>(() => {
 
   return 'info'
 })
+
+const variants = computed(() => toastVariants({
+  variant: variant.value,
+}))
 </script>
 
 <template>

@@ -1,24 +1,28 @@
-import type { ButtonProps as UIButtonProps } from '@/ui/button/button/button.props'
-import type { LinkProps as UILinkProps } from '@/ui/button/link/link.props'
 import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
+
+import type { ButtonProps as UIButtonProps } from '@/ui/button/button/button.props'
+import type { LinkProps as UILinkProps } from '@/ui/button/link/link.props'
+
+export type ToastAutoClose = 'all-except-errors' | 'always' | 'never'
 
 export type ToastVariant = 'error' | 'info' | 'loading' | 'warning'
 export type ToastPosition = 'bottom-right' | 'top-right'
 
 export interface ToastInteractableModel {
-  /** 
+  /**
    * A Vue component rendered as a leading icon for this model's item.
    */
   icon?: Component
 
-  /** 
-   * URL or path to an image rendered as a leading visual for this model's item. Takes precedence over `icon` if both are provided 
+  /**
+   * URL or path to an image rendered as a leading visual for this model's item.
+   * Takes precedence over `icon` if both are provided
    */
   imageSrc?: string
 
-  /** 
-   * The display label shown for this interactable item. 
+  /**
+   * The display label shown for this interactable item.
    */
   label: string
 
@@ -42,13 +46,13 @@ export interface Toast {
    */
   id?: string
 
-  /** 
-   * The title displayed at the top of the toast. 
+  /**
+   * The title displayed at the top of the toast.
    */
   title?: string
 
-  /** 
-   * An optional call-to-action button rendered inside the toast. 
+  /**
+   * An optional call-to-action button rendered inside the toast.
    */
   button?: ToastButtonAction
 
@@ -65,7 +69,7 @@ export interface Toast {
   duration?: number
 
   /**
-   *  A Vue component rendered as a leading icon inside the toast. 
+   *  A Vue component rendered as a leading icon inside the toast.
    */
   icon?: Component
 
@@ -76,12 +80,12 @@ export interface Toast {
   interactableModels?: Record<string, ToastInteractableModel>
 
   /**
-   * An optional link action rendered inside the toast, typically as an anchor or router-link. 
+   * An optional link action rendered inside the toast, typically as an anchor or router-link.
    */
   link?: ToastLinkAction
 
-  /** 
-   * The main text content of the toast. 
+  /**
+   * The main text content of the toast.
    */
   message: string
 
@@ -97,12 +101,12 @@ export interface Toast {
    */
   variant?: ToastVariant
 
-  /** 
-   * Called when the toast closes automatically after its `duration` has elapsed. 
+  /**
+   * Called when the toast closes automatically after its `duration` has elapsed.
    */
   onAutoClose?: () => void
 
-  /** 
+  /**
    * Called when the user manually dismisses the toast.
    */
   onDismiss?: () => void

@@ -23,42 +23,54 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   render: () => ({
-    components: { ToastDefaultPlayground },
+    components: {
+      ToastDefaultPlayground,
+    },
     template: '<ToastDefaultPlayground />',
   }),
 }
 
 export const WithTitle: Story = {
   render: () => ({
-    components: { ToastWithTitlePlayground },
+    components: {
+      ToastWithTitlePlayground,
+    },
     template: '<ToastWithTitlePlayground />',
   }),
 }
 
 export const WithVariant: Story = {
   render: () => ({
-    components: { ToastVariantsPlayground },
+    components: {
+      ToastVariantsPlayground,
+    },
     template: '<ToastVariantsPlayground />',
   }),
 }
 
 export const NotDismissible: Story = {
   render: () => ({
-    components: { ToastNotDismissiblePlayground },
+    components: {
+      ToastNotDismissiblePlayground,
+    },
     template: '<ToastNotDismissiblePlayground />',
   }),
 }
 
 export const WithCustomDuration: Story = {
   render: () => ({
-    components: { ToastCustomDurationPlayground },
+    components: {
+      ToastCustomDurationPlayground,
+    },
     template: '<ToastCustomDurationPlayground />',
   }),
 }
 
 export const WithInteractableModels: Story = {
   render: () => ({
-    components: { ToastInteractablePlayground },
+    components: {
+      ToastInteractablePlayground,
+    },
     template: '<ToastInteractablePlayground />',
   }),
 }

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
-import { CheckCircleIcon, CornerDownRightIcon, User01Icon, User02Icon } from '@wisemen/vue-core-icons'
+import { CornerDownRightIcon } from '@wisemen/vue-core-icons'
 
 import { UIButton } from '@/ui/button/index'
-import ToastContainer from '@/ui/toast/ToastContainer.vue'
 import { useToast } from '@/ui/toast/toast.composable'
+import ToastContainer from '@/ui/toast/ToastContainer.vue'
 
 const toast = useToast()
 
@@ -12,10 +11,10 @@ function show(): void {
   toast.show({
     interactableModels: {
       user: {
+        icon: CornerDownRightIcon,
+        imageSrc: 'https://i.pravatar.cc/100',
         label: 'Alice Johnson',
         to: '/',
-        icon: CornerDownRightIcon,
-        imageSrc: 'https://i.pravatar.cc/100'
       },
     },
     message: 'Project assigned to {user}.',
