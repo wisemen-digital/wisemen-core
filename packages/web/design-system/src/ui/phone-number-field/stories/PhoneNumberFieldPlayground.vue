@@ -15,7 +15,6 @@ const props = withDefaults(defineProps<{
   hideErrorMessage?: boolean
   hint?: PhoneNumberFieldProps['hint']
   label?: string
-  placeholder?: string
   preferredCountryCodes?: CountryCode[]
   size?: PhoneNumberFieldProps['size']
 }>(), {

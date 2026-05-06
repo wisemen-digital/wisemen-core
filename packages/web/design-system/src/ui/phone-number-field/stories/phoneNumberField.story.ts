@@ -50,10 +50,6 @@ const meta = {
       control: 'text',
       description: 'The label of the input',
     },
-    placeholder: {
-      control: 'text',
-      description: 'The placeholder text',
-    },
     size: {
       control: 'select',
       description: 'The size of the field',

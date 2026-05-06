@@ -26,7 +26,7 @@ const resolvedLabel = computed<string | null>(() => props.config?.label ?? props
 
 const hasLeftContent = computed<boolean>(() =>
   props.config?.avatar != null
-  || props.config?.flag != null
+  || props.config?.image != null
   || props.config?.icon != null
   || props.config?.dot != null)
 
@@ -61,18 +61,18 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
       />
 
       <div
-        v-else-if="props.config?.flag != null"
+        v-else-if="props.config?.image != null"
         :class="style.iconWrapper()"
       >
-        <span
-          :aria-label="props.config.flag.ariaLabel ?? undefined"
-          role="img"
-          class="
-            block h-3.5 w-5 overflow-hidden rounded-xxs
-            [&>svg]:size-full [&>svg]:object-cover
-          "
-          v-html="props.config.flag.svg"
-        />
+        <img
+          :alt="props.label ?? ''"
+          :src="props.config.image.src"
+          :class="{
+            'w-3.5': props.config.image.aspect === undefined || props.config.image.aspect === 'square',
+            'h-3.5 w-5': props.config.image.aspect === 'rectangle',
+          }"
+          class="rounded-xxs object-contain"
+        >
       </div>
 
       <div

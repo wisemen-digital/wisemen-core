@@ -43,7 +43,7 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const {
-  size,
+  getItemConfig, size,
 } = useInjectSelectContext()
 
 const modelValue = defineModel<TValue>('modelValue', {
@@ -81,8 +81,32 @@ const {
 
 const filterModelValue = computed<string>(() => props.search === 'local' ? localSearch.value : search.value)
 
-const virtualItemHeight = computed<number>(() => size.value === 'sm' ? 28 : 32)
-const VIRTUAL_SEPARATOR_HEIGHT = 9
+// const virtualItemHeight = computed<number>(() => size.value === 'sm' ? 28 : 32)
+const SEPARATOR_HEIGHT = 9
+
+function getEstimateSize(itemIndex: number): number {
+  const item = displayItems.value[itemIndex] ?? null
+
+  if (item === null) {
+    throw new Error('item does not exist')
+  }
+
+  if (item.type === 'separator') {
+    return SEPARATOR_HEIGHT
+  }
+
+  const itemConfig = getItemConfig?.(item.value) ?? null
+
+  if (itemConfig === null) {
+    return size.value === 'sm' ? 28 : 32
+  }
+
+  if (itemConfig.description != null && itemConfig.descriptionLayout === 'block') {
+    return 50
+  }
+
+  return 32
+}
 
 function onSearch(searchTerm: string): void {
   if (props.search === 'local') {
@@ -154,7 +178,7 @@ onBeforeUnmount(() => {
         v-slot="{ option: item }"
         :options="displayItems"
         :overscan="5"
-        :estimate-size="(index: number) => displayItems[index]?.type === 'separator' ? VIRTUAL_SEPARATOR_HEIGHT : virtualItemHeight"
+        :estimate-size="getEstimateSize"
         :text-content="(item: any) => item.type === 'option' ? props.displayFn(item.value) : ''"
       >
         <SelectOption

@@ -8,9 +8,14 @@ import type { Component } from 'vue'
 import {
   computed,
   ref,
+  useAttrs,
   useTemplateRef,
   watch,
 } from 'vue'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = withDefaults(defineProps<{
   as?: string | Component
@@ -20,6 +25,8 @@ const props = withDefaults(defineProps<{
   as: 'div',
   distance: 250,
 })
+
+const attrs = useAttrs()
 
 const scrollableRef = useTemplateRef('scrollable')
 
@@ -96,6 +103,7 @@ function onScroll(): void {
 
     <Primitive
       ref="scrollable"
+      v-bind="attrs"
       :as="props.as"
       class="overflow-auto"
       @scroll="onScroll"
