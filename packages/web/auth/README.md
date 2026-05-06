@@ -43,7 +43,6 @@ import {
   AUTH_BASE_URL,
   AUTH_CLIENT_ID,
   AUTH_ORGANIZATION_ID,
-  CURRENT_ENVIRONMENT,
 } from '@/constants/environment.constant.ts'
 
 export const oAuthClient = new ZitadelClient({
@@ -54,7 +53,6 @@ export const oAuthClient = new ZitadelClient({
   tokensStrategy: new LocalStorageTokensStrategy(), // Optional, defaults to localStorage
   baseUrl: AUTH_BASE_URL,
   loginRedirectUri: `${window.location.origin}/auth/callback`,
-  offline: CURRENT_ENVIRONMENT === 'e2e',
   postLogoutRedirectUri: `${window.location.origin}/auth/logout`,
 })
 ```

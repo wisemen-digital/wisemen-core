@@ -36,10 +36,6 @@ export interface OAuth2VueClientOptions {
   */
   loginRedirectUri: string
   /*
-   * If offline is true, the client wil bypass everything and work without a real login
-   */
-  offline?: boolean
-  /*
   * The URL to redirect to after logout
   */
   postLogoutRedirectUri: string
@@ -53,8 +49,21 @@ export interface OAuth2VueClientOptions {
   */
   scopes: string[]
   /*
+  * Additional raw state to send to the identity provider.
+  * Prefer using this only from higher-level auth orchestration.
+  */
+  state?: string
+  /*
   * The tokens strategy to use
   * Default: localStorageStrategy
   */
   tokensStrategy?: TokensStrategy
+}
+
+export interface OidcAuthorizationUrlOptions {
+  /*
+  * Raw state to attach to the authorization request.
+  * When omitted, `redirectUrl` will be sanitized and used as the state value.
+  */
+  state?: string
 }
