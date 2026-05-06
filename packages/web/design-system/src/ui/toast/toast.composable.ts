@@ -12,12 +12,8 @@ const PERMANENT_TOAST_DURATION = Infinity
 const DEFAULT_TOAST_DURATION = 5000
 const ERROR_TOAST_DURATION = 7000
 
-type ToastOptions = Toast & {
-  variant: Omit<Toast['variant'], 'loading'>
-}
-
 export function useToast() {
-  function show(toast: ToastOptions): void {
+  function show(toast: Toast): void {
     const existingToast = toast.id !== undefined
       ? toastState.getToasts().find((t) => t.id === toast.id) ?? null
       : null

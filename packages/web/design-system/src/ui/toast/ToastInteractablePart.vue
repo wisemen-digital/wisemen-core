@@ -14,7 +14,7 @@ const emit = defineEmits<{
   click: []
 }>()
 
-function handleClick(): void {
+function onClick(): void {
   if (props.to !== null) {
     emit('click')
   }
@@ -29,13 +29,13 @@ function handleClick(): void {
       'hover:underline': props.to !== null,
     }"
 
-    @click="handleClick"
+    @click="onClick"
   >
     <img
       v-if="props.imageSrc !== null"
       :src="props.imageSrc"
       :alt="props.label"
-      class="inline size-4 rounded-xs mr-xs align-sub"
+      class="inline size-3.5 rounded-xs mr-xs align-sub"
     >
 
     <Component

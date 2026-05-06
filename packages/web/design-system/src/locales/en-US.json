@@ -25,5 +25,6 @@
   "components.sidebar.description": "The sidebar contains navigation links and other important actions.",
   "components.sidebar.global_search.label": "Search",
   "components.sidebar.sign_out": "Sign out",
-  "components.sidebar.title": "Sidebar"
+  "components.sidebar.title": "Sidebar",
+  "component.toast.close.label": "Close"
 }

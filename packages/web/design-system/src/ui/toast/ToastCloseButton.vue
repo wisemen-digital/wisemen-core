@@ -20,7 +20,7 @@ const i18n = useI18n()
     <UIIconButton
       :icon="XCloseIcon"
       :is-tooltip-disabled="true"
-      :label="i18n.t('shared.close')"
+      :label="i18n.t('component.toast.close.label')"
       size="sm"
       variant="tertiary"
       @click="emit('close')"

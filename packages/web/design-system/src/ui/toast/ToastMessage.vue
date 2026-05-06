@@ -35,34 +35,34 @@ const chunks = computed<MessageChunk[]>(() => {
   return props.message.split(/(\{.*?\})/g).map((part) => {
     const interactableMatch = part.match(/^\{(.*?)\}$/)
 
-    if (interactableMatch !== null) {
-      const key = interactableMatch[1]!
+    if (interactableMatch === null) {
+       return {
+        label: part,
+        type: 'text',
+      } as TextChunk
+    }
 
-      const model = props.models[key as keyof typeof props.models] ?? null
+    const key = interactableMatch[1]!
 
-      if (model === null) {
-        console.warn(`No model found for key "${key}" in toast message "${props.message}"`)
+    const model = props.models[key as keyof typeof props.models] ?? null
 
-        return {
-          label: part,
-          type: 'text',
-        } as TextChunk
-      }
+    if (model === null) {
+      console.warn(`No model found for key "${key}" in toast message "${props.message}"`)
 
       return {
-        icon: model.icon ?? null,
-        imageSrc: model.imageSrc ?? null,
-        key,
-        label: model.label,
-        to: model.to,
-        type: 'interactable',
-      }
+        label: part,
+        type: 'text',
+      } as TextChunk
     }
 
     return {
-      label: part,
-      type: 'text',
-    } as TextChunk
+      icon: model.icon ?? null,
+      imageSrc: model.imageSrc ?? null,
+      key,
+      label: model.label,
+      to: model.to,
+      type: 'interactable',
+    }
   })
 })
 </script>

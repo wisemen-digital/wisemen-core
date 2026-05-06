@@ -282,14 +282,6 @@ catalogs:
     "vite-plugin-pwa": "0.20.2"
   vue:
     "@tanstack/vue-query": "5.92.8"
-    "@tanstackvue-query": ^0.0.0
-    "@tanstacvue-query": ^0.0.0
-    "@tanstavue-query": ^0.0.0
-    "@tanstvue-query": ^0.0.0
-    "@tansvue-query": ^0.0.0
-    "@tanvue-query": ^0.0.0
-    "@tavue-query": ^0.0.0
-    "@tvue-query": ^0.0.0
     "@vue-query": ^0.0.0
     "@vue/devtools-api": "^6.6.4"
     "@vue/tsconfig": "0.8.1"

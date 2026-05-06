@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { tv } from '@/styles/tailwindVariants.lib'
 import { UIColumnLayout } from '@/ui/column-layout/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { UIText } from '@/ui/text/index'
+import { toastVariants } from '@/ui/toast/toast.style'
 import type { Toast } from '@/ui/toast/toast.type'
 
 import ToastActions from '@/ui/toast/ToastActions.vue'
@@ -10,6 +12,7 @@ import ToastIcon from '@/ui/toast/ToastIcon.vue'
 import ToastLayout from '@/ui/toast/ToastLayout.vue'
 import ToastLoader from '@/ui/toast/ToastLoader.vue'
 import ToastMessage from '@/ui/toast/ToastMessage.vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
   toast: Toast
@@ -18,6 +21,22 @@ const props = defineProps<{
 const emit = defineEmits<{
   closeToast: []
 }>()
+
+const variants = computed(() => toastVariants({
+  variant: variant.value
+}))
+
+const variant = computed<'info' | 'warning' | 'error'>(() => {
+  if (props.toast.variant === 'error') {
+    return 'error'
+  }
+
+  if (props.toast.variant === 'warning') {
+    return 'warning'
+  }
+
+  return 'info'
+})
 </script>
 
 <template>
@@ -43,11 +62,7 @@ const emit = defineEmits<{
         <UIText
           v-if="props.toast.title !== undefined"
           :text="props.toast.title"
-          :class="{
-            'text-error-primary': props.toast.variant === 'error',
-            'text-warning-primary': props.toast.variant === 'warning',
-            'text-primary': props.toast.variant === 'info' || props.toast.variant === 'loading' || props.toast.variant === undefined,
-          }"
+          :class="variants.title()"
           class="mb-xs text-sm font-medium"
         />
 
