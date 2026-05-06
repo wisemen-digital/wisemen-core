@@ -10,18 +10,10 @@ import {
   useRouter,
 } from 'vue-router'
 
-import { useAuth } from './auth.context'
-import type { AuthRouteMeta } from './auth.type'
+import type { AuthRouteMeta } from './auth.internal'
+import { useInternalAuth } from './auth.internal'
 
-function toError(error: unknown): Error {
-  if (error instanceof Error) {
-    return error
-  }
-
-  return new Error('Unknown auth error')
-}
-
-function createCenteredCard(
+function AuthCard(
   title: string,
   description: string,
   children: Array<ReturnType<typeof h>>,
@@ -68,48 +60,45 @@ function createCenteredCard(
   ])
 }
 
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : 'Unknown auth error'
+}
+
 export const DefaultAuthLoginView = defineComponent({
   name: 'DefaultAuthLoginView',
   setup() {
-    const auth = useAuth<unknown>()
+    const auth = useInternalAuth<unknown>()
     const route = useRoute()
-
-    const routeMeta = computed<AuthRouteMeta>(() => route.meta as AuthRouteMeta)
-    const providerKey = computed<string | undefined>(() => routeMeta.value.authProviderKey)
-    const autoStart = computed<boolean>(() => routeMeta.value.authAutoStart === true)
-    const redirectUrl = computed<string | undefined>(() => {
-      const queryRedirectUrl = route.query.redirectUrl
-
-      return typeof queryRedirectUrl === 'string' ? queryRedirectUrl : undefined
-    })
-    const isStartingLogin = ref<boolean>(false)
+    const routeMeta = computed(() => route.meta as AuthRouteMeta)
+    const redirectUrl = computed(() => typeof route.query.redirectUrl === 'string' ? route.query.redirectUrl : undefined)
+    const isStartingLogin = ref(false)
     const error = ref<string | null>(null)
 
-    async function startLogin(nextProviderKey?: string): Promise<void> {
+    async function startLogin(providerKey?: string): Promise<void> {
       error.value = null
       isStartingLogin.value = true
 
       try {
-        await auth.startLogin(nextProviderKey, redirectUrl.value)
+        await auth.startLogin(providerKey, redirectUrl.value)
       }
-      catch (loginError) {
-        error.value = toError(loginError).message
+      catch (authError) {
+        error.value = getErrorMessage(authError)
         isStartingLogin.value = false
       }
     }
 
     onMounted(() => {
-      if (autoStart.value) {
-        void startLogin(providerKey.value)
+      if (routeMeta.value.authAutoStart === true) {
+        void startLogin(routeMeta.value.authProviderKey)
       }
     })
 
-    return (): ReturnType<typeof createCenteredCard> => {
-      const availableProviders = providerKey.value === undefined
+    return () => {
+      const providers = routeMeta.value.authProviderKey === undefined
         ? auth.providers
-        : auth.providers.filter((provider) => provider.key === providerKey.value)
+        : auth.providers.filter((provider) => provider.key === routeMeta.value.authProviderKey)
 
-      const buttons = availableProviders.map((provider) => h('button', {
+      const buttons = providers.map((provider) => h('button', {
         disabled: isStartingLogin.value,
         style: {
           background: '#0f172a',
@@ -128,7 +117,7 @@ export const DefaultAuthLoginView = defineComponent({
         onClick: () => {
           void startLogin(provider.key)
         },
-      }, provider.label ?? auth.messages.signInLabel))
+      }, provider.label || auth.messages.signInLabel))
 
       if (error.value !== null) {
         buttons.push(h('p', {
@@ -139,11 +128,7 @@ export const DefaultAuthLoginView = defineComponent({
         }, error.value))
       }
 
-      return createCenteredCard(
-        auth.messages.loginTitle,
-        auth.messages.loginDescription,
-        buttons,
-      )
+      return AuthCard(auth.messages.loginTitle, auth.messages.loginDescription, buttons)
     }
   },
 })
@@ -151,7 +136,7 @@ export const DefaultAuthLoginView = defineComponent({
 export const DefaultAuthCallbackView = defineComponent({
   name: 'DefaultAuthCallbackView',
   setup() {
-    const auth = useAuth<unknown>()
+    const auth = useInternalAuth<unknown>()
     const route = useRoute()
     const router = useRouter()
 
@@ -159,17 +144,16 @@ export const DefaultAuthCallbackView = defineComponent({
       const code = typeof route.query.code === 'string' ? route.query.code : null
       const state = typeof route.query.state === 'string' ? route.query.state : null
 
-      void auth.handleCallback(code, state)
+      void auth.completeLogin(code, state)
         .then((redirectUrl) => {
           window.location.replace(redirectUrl)
         })
         .catch(async () => {
-          await auth.handleUnauthorized()
           await router.replace(auth.getLoginRouteLocation())
         })
     })
 
-    return (): ReturnType<typeof createCenteredCard> => createCenteredCard(
+    return () => AuthCard(
       auth.messages.callbackTitle,
       auth.messages.callbackDescription,
       [],
@@ -180,13 +164,13 @@ export const DefaultAuthCallbackView = defineComponent({
 export const DefaultAuthLogoutView = defineComponent({
   name: 'DefaultAuthLogoutView',
   setup() {
-    const auth = useAuth<unknown>()
+    const auth = useInternalAuth<unknown>()
 
     onMounted(() => {
       void auth.logout()
     })
 
-    return (): ReturnType<typeof createCenteredCard> => createCenteredCard(
+    return () => AuthCard(
       auth.messages.logoutTitle,
       auth.messages.logoutDescription,
       [],

@@ -1,58 +1,118 @@
-# Wisemen vue-core OAuth Client
+# `@wisemen/vue-core-auth`
 
-This package provides a simple way to authenticate with an OAuth2 server.
+Browser auth utilities for Vue applications using OIDC providers.
 
 ## Installation
 
 ```bash
-pnpm add @wisemen/vue-core-oauth-client
+pnpm add @wisemen/vue-core-auth
 ```
 
-## Usage
+## `createAuth`
 
-### OAuth2VueClient
-Create a new file `auth.lib.ts` and add the following code:
+`createAuth` packages the common SPA auth flow:
 
-```typescript
-import { OAuth2VueClient } from '@wisemen/vue-core-auth'
-import axios from 'axios'
+- provider configuration
+- packaged login / callback / logout routes
+- route guards for authenticated and guest-only screens
+- current-user hydration
+- token access for downstream HTTP clients
 
-import {
-  API_AUTH_URL,
-  API_CLIENT_ID,
-  API_CLIENT_SECRET,
-} from '@/constants/environment.constant.ts'
+```ts
+import { createAuth } from '@wisemen/vue-core-auth'
 
-export const oAuthClient = new OAuth2VueClient({
-  clientId: API_CLIENT_ID,
-  axios,
-  clientSecret: API_CLIENT_SECRET,
-  tokenEndpoint: `${API_AUTH_URL}/token`,
+const auth = createAuth({
+  defaultAuthenticatedRoute: {
+    name: 'dashboard',
+  },
+  defaultProviderKey: 'default',
+  fetchCurrentUser: async ({ accessToken }) => {
+    const response = await fetch('/api/v1/users/me', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to load current user')
+    }
+
+    return await response.json()
+  },
+  providers: [
+    {
+      key: 'default',
+      label: 'Sign in',
+      oidc: {
+        baseUrl: 'https://auth.example.com',
+        blockedPaths: ['/auth/*'],
+        clientId: 'web-client',
+        loginRedirectUri: `${window.location.origin}/auth/callback`,
+        postLogoutRedirectUri: `${window.location.origin}/auth/logout`,
+        prefix: 'my-app',
+        scopes: ['openid', 'profile', 'email'],
+      },
+      route: {
+        name: 'auth-login',
+        path: 'login',
+      },
+    },
+  ],
 })
 ```
 
-### ZitadelClient
+## Vue Integration
 
-Create a new file `auth.lib.ts` and add the following code:
+```ts
+import { createApp } from 'vue'
 
-```typescript
-import { ZitadelClient, useAxiosFetchStrategy, localStorageTokensStrategy } from '@wisemen/vue-core-auth'
-import axios from 'axios'
+import App from './App.vue'
+import { auth } from './auth'
+import { router } from './router'
 
-import {
-  AUTH_BASE_URL,
-  AUTH_CLIENT_ID,
-  AUTH_ORGANIZATION_ID,
-} from '@/constants/environment.constant.ts'
+const app = createApp(App)
 
-export const oAuthClient = new ZitadelClient({
-  clientId: AUTH_CLIENT_ID,
-  organizationId: AUTH_ORGANIZATION_ID,
-  fetchStrategy: new AxiosFetchStrategy(axios),
-  prefix: 'my-app', // Optional, prefixes localStorage keys used by the default strategy
-  tokensStrategy: new LocalStorageTokensStrategy(), // Optional, defaults to localStorage
-  baseUrl: AUTH_BASE_URL,
-  loginRedirectUri: `${window.location.origin}/auth/callback`,
-  postLogoutRedirectUri: `${window.location.origin}/auth/logout`,
+app.use(auth, {
+  router,
+})
+app.use(router)
+```
+
+Use the packaged routes in your router:
+
+```ts
+const routes = [
+  {
+    path: '/',
+    meta: {
+      middleware: [auth.requireAuth],
+    },
+    children: [
+      {
+        path: '',
+        component: () => import('./DashboardLayout.vue'),
+      },
+    ],
+  },
+  ...auth.routes,
+]
+```
+
+## Custom Packaged Views
+
+The package ships with minimal default login / callback / logout screens. Override them when the app needs custom UX:
+
+```ts
+const auth = createAuth({
+  // ...
+  views: {
+    login: CustomLoginView,
+    callback: CustomCallbackView,
+    logout: CustomLogoutView,
+  },
 })
 ```
+
+## `OidcClient` / `ZitadelClient`
+
+If an app only needs low-level token and redirect helpers, you can still use `OidcClient` directly. `ZitadelClient` remains available as a compatibility alias.

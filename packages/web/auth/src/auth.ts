@@ -1,73 +1,32 @@
 import type { App } from 'vue'
 import {
-  computed,
   ref,
   shallowRef,
 } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
-
-import { AUTH_CONTROLLER_KEY } from './auth.context'
-import { createAuthRoutes } from './auth.routes'
 import type {
-  AuthController,
+  RouteLocationNormalized,
+  RouteLocationRaw,
+  RouteRecordRaw,
+  Router,
+} from 'vue-router'
+
+import {
+  getAuthRouteConfig,
+  getDefaultMessages,
+  INTERNAL_AUTH_CONTROLLER_KEY,
+  joinPaths,
+} from './auth.internal'
+import type {
+  Auth,
   AuthInstallOptions,
-  AuthMessages,
-  AuthNavigationRouter,
   CreateAuthOptions,
-  ResolvedAuthProviderConfig,
 } from './auth.type'
-import { OidcClient } from './oidcClient'
+import { AuthSessionEventStore, AuthTransactionStore } from './auth.storage'
+import { DefaultAuthCallbackView, DefaultAuthLoginView, DefaultAuthLogoutView } from './auth.views'
+import { OidcClient } from './oidc.internal'
 
-interface AuthTransaction {
-  createdAt: number
-  providerKey: string
-  redirectUrl: string
-}
-
-interface AuthStorageEvent {
-  timestamp: number
-  type: 'session-cleared'
-}
-
-const LEADING_AND_TRAILING_SLASHES = /^\/+|\/+$/g
-const DEFAULT_MESSAGES: Required<AuthMessages> = {
-  callbackDescription: 'Completing your sign in.',
-  callbackTitle: 'Signing you in',
-  loginDescription: 'Continue with your organization account.',
-  loginTitle: 'Sign in',
-  logoutDescription: 'Ending your current session.',
-  logoutTitle: 'Signing you out',
-  signInLabel: 'Sign in',
-}
-
-const AUTH_TRANSACTION_TTL_IN_MS = 15 * 60 * 1000
-
-function isBrowser(): boolean {
-  return typeof window !== 'undefined'
-}
-
-function getLocalStorage(): Storage | null {
-  if (!isBrowser()) {
-    return null
-  }
-
-  return window.localStorage
-}
-
-function getSessionStorage(): Storage | null {
-  if (!isBrowser()) {
-    return null
-  }
-
-  return window.sessionStorage
-}
-
-function toError(error: unknown): Error {
-  if (error instanceof Error) {
-    return error
-  }
-
-  return new Error('Unknown auth error')
+function getError(error: unknown): Error {
+  return error instanceof Error ? error : new Error('Unknown auth error')
 }
 
 function isNetworkError(error: Error): boolean {
@@ -75,24 +34,20 @@ function isNetworkError(error: Error): boolean {
     return false
   }
 
-  const normalizedMessage = error.message.toLowerCase()
+  const message = error.message.toLowerCase()
 
-  return normalizedMessage.includes('failed to fetch')
-    || normalizedMessage.includes('load failed')
-    || normalizedMessage.includes('networkerror')
+  return message.includes('failed to fetch')
+    || message.includes('load failed')
+    || message.includes('networkerror')
 }
 
-function createRandomState(): string {
-  if (typeof globalThis.crypto?.randomUUID === 'function') {
-    return globalThis.crypto.randomUUID()
-  }
-
-  return Math.random().toString(36).slice(2, 18)
-}
-
-function resolveRouteLocationPath(location: RouteLocationRaw): string {
+function getNavigationPath(location: RouteLocationRaw): string {
   if (typeof location === 'string') {
     return location
+  }
+
+  if ('fullPath' in location && typeof location.fullPath === 'string') {
+    return location.fullPath
   }
 
   if ('path' in location && typeof location.path === 'string') {
@@ -102,129 +57,61 @@ function resolveRouteLocationPath(location: RouteLocationRaw): string {
   return '/'
 }
 
-function resolveNavigationPath(to: RouteLocationRaw): string {
-  if (typeof to !== 'string' && 'fullPath' in to && typeof to.fullPath === 'string') {
-    return to.fullPath
-  }
+export function createAuth<TUser>(options: CreateAuthOptions<TUser>): Auth<TUser> {
+  const messages = getDefaultMessages(options.messages)
+  const routeConfig = getAuthRouteConfig(options)
+  const storagePrefix = options.oidc.prefix?.trim() || 'wisemen-auth'
+  const currentProviderStorageKey = `${storagePrefix}:provider`
+  const transactionStore = new AuthTransactionStore(`${storagePrefix}:transactions`)
+  const sessionEventStore = new AuthSessionEventStore(`${storagePrefix}:events`)
 
-  return resolveRouteLocationPath(to)
-}
-
-function normalizeRoutePath(path: string): string {
-  const trimmedPath = path.trim()
-
-  if (trimmedPath === '' || trimmedPath === '/') {
-    return '/'
-  }
-
-  return `/${trimmedPath.replace(LEADING_AND_TRAILING_SLASHES, '')}`
-}
-
-function resolveChildRoutePath(basePath: string, childPath: string): string {
-  if (childPath.startsWith('/')) {
-    return normalizeRoutePath(childPath)
-  }
-
-  const normalizedBasePath = normalizeRoutePath(basePath)
-  const normalizedChildPath = childPath.replace(LEADING_AND_TRAILING_SLASHES, '')
-
-  if (normalizedChildPath === '') {
-    return normalizedBasePath
-  }
-
-  if (normalizedBasePath === '/') {
-    return `/${normalizedChildPath}`
-  }
-
-  return `${normalizedBasePath}/${normalizedChildPath}`
-}
-
-function appendQuery(path: string, query: Record<string, string | undefined>): string {
-  const searchParams = new URLSearchParams()
-
-  for (const [
-    key,
-    value,
-  ] of Object.entries(query)) {
-    if (value !== undefined) {
-      searchParams.set(key, value)
-    }
-  }
-
-  const queryString = searchParams.toString()
-
-  return queryString === '' ? path : `${path}?${queryString}`
-}
-
-function resolveStoragePrefix(options: Pick<CreateAuthOptions<never>, 'defaultProviderKey' | 'providers' | 'storagePrefix'>): string {
-  if (options.storagePrefix !== undefined) {
-    return options.storagePrefix
-  }
-
-  const defaultProvider = options.providers.find((provider) => provider.key === options.defaultProviderKey)
-
-  if (defaultProvider !== undefined && 'oidc' in defaultProvider) {
-    const providerPrefix = defaultProvider.oidc.prefix?.trim()
-
-    if (providerPrefix !== undefined && providerPrefix.length > 0) {
-      return providerPrefix
-    }
-  }
-
-  return 'wisemen-auth'
-}
-
-function pruneTransactions(transactions: Record<string, AuthTransaction>): Record<string, AuthTransaction> {
-  const now = Date.now()
-
-  return Object.fromEntries(
-    Object.entries(transactions).filter(([
-      , transaction,
-    ]) => now - transaction.createdAt <= AUTH_TRANSACTION_TTL_IN_MS),
-  )
-}
-
-export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthController<TUser> {
-  const providers = options.providers.map((provider): ResolvedAuthProviderConfig => {
-    if ('client' in provider) {
-      return provider
-    }
-
-    return {
+  const providers = options.providers.map((provider) => ({
+    autoStart: provider.autoStart === true,
+    key: provider.key,
+    label: provider.label || messages.signInLabel,
+    loginPath: provider.path ?? (provider.key === options.defaultProviderKey ? 'login' : provider.key),
+    loginRoutePath: '',
+    client: new OidcClient(options.oidc, {
+      scopes: Array.from(new Set([
+        ...options.oidc.scopes,
+        ...(provider.scopes ?? []),
+      ])),
+    }),
+  }))
+    .map((provider) => ({
       ...provider,
-      client: new OidcClient(provider.oidc),
-    }
-  })
-  const providerMap = new Map<string, ResolvedAuthProviderConfig>(providers.map((provider) => [
+      loginRoutePath: joinPaths(routeConfig.authBasePath, provider.loginPath),
+    }))
+
+  const defaultProvider = providers.find((provider) => provider.key === options.defaultProviderKey)
+
+  if (defaultProvider === undefined) {
+    throw new Error(`Unknown default auth provider "${options.defaultProviderKey}"`)
+  }
+
+  const defaultAuthProvider = defaultProvider
+  const providerMap = new Map(providers.map((provider) => [
     provider.key,
     provider,
   ]))
 
-  if (!providerMap.has(options.defaultProviderKey)) {
-    throw new Error(`Unknown default auth provider "${options.defaultProviderKey}"`)
-  }
-
-  const storagePrefix = resolveStoragePrefix(options)
-  const activeProviderStorageKey = `${storagePrefix}:active-provider`
-  const transactionStorageKey = `${storagePrefix}:transactions`
-  const eventStorageKey = `${storagePrefix}:events`
-
-  const currentUser = shallowRef<TUser | null>(null)
-  const currentProviderKey = ref<string | null>(getLocalStorage()?.getItem(activeProviderStorageKey) ?? null)
-  const isFetchingAuthUser = ref<boolean>(false)
-  const hasAttemptedToFetchAuthUser = ref<boolean>(false)
-  const isAuthenticated = computed<boolean>(() => currentUser.value !== null)
-  const logoutCallbacks = new Set<() => void>()
-  let boundRouter: AuthNavigationRouter | null = null
-  let shouldNavigateWithBoundRouterOnLogout = true
-  const messages: Required<AuthMessages> = {
-    ...DEFAULT_MESSAGES,
-    ...options.messages,
-  }
+  const user = shallowRef<TUser | null>(null)
+  const isReady = ref(false)
 
   let currentUserPromise: Promise<TUser> | null = null
+  let installedRouter: Router | null = null
+  let isInstalled = false
+  let logoutPromise: Promise<void> | null = null
 
-  function getProvider(providerKey: string): ResolvedAuthProviderConfig {
+  function getLocalStorage(): Storage | null {
+    if (typeof window === 'undefined') {
+      return null
+    }
+
+    return window.localStorage
+  }
+
+  function getProvider(providerKey: string) {
     const provider = providerMap.get(providerKey)
 
     if (provider === undefined) {
@@ -234,18 +121,32 @@ export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthContro
     return provider
   }
 
-  function notifyUserChanged(user: TUser | null): Promise<void> {
-    return Promise.resolve(options.onUserChanged?.(user))
+  function getAuthenticatedRoute(): RouteLocationRaw {
+    if (typeof options.defaultAuthenticatedRoute === 'function') {
+      return options.defaultAuthenticatedRoute()
+    }
+
+    return options.defaultAuthenticatedRoute ?? {
+      path: routeConfig.defaultRedirectPath,
+    }
   }
 
-  async function resetUserState(user: TUser | null): Promise<void> {
-    currentUser.value = user
-    await notifyUserChanged(user)
+  function getLoginRouteLocation(redirectUrl?: string): RouteLocationRaw {
+    if (redirectUrl === undefined) {
+      return {
+        path: defaultAuthProvider.loginRoutePath,
+      }
+    }
+
+    return {
+      path: defaultAuthProvider.loginRoutePath,
+      query: {
+        redirectUrl,
+      },
+    }
   }
 
   function persistCurrentProviderKey(providerKey: string | null): void {
-    currentProviderKey.value = providerKey
-
     const storage = getLocalStorage()
 
     if (storage === null) {
@@ -253,138 +154,58 @@ export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthContro
     }
 
     if (providerKey === null) {
-      storage.removeItem(activeProviderStorageKey)
+      storage.removeItem(currentProviderStorageKey)
 
       return
     }
 
-    storage.setItem(activeProviderStorageKey, providerKey)
+    storage.setItem(currentProviderStorageKey, providerKey)
   }
 
-  function readTransactions(): Record<string, AuthTransaction> {
-    const storage = getSessionStorage()
-
-    if (storage === null) {
-      return {}
-    }
-
-    const serializedTransactions = storage.getItem(transactionStorageKey)
-
-    if (serializedTransactions === null) {
-      return {}
-    }
-
-    try {
-      return JSON.parse(serializedTransactions) as Record<string, AuthTransaction>
-    }
-    catch {
-      storage.removeItem(transactionStorageKey)
-
-      return {}
-    }
+  async function notifyUserChanged(nextUser: TUser | null): Promise<void> {
+    user.value = nextUser
+    await Promise.resolve(options.onUserChanged?.(nextUser))
   }
 
-  function writeTransactions(transactions: Record<string, AuthTransaction>): void {
-    const storage = getSessionStorage()
-
-    if (storage === null) {
-      return
-    }
-
-    if (Object.keys(transactions).length === 0) {
-      storage.removeItem(transactionStorageKey)
-
-      return
-    }
-
-    storage.setItem(transactionStorageKey, JSON.stringify(transactions))
+  function shouldIgnoreUserError(error: Error): boolean {
+    return isNetworkError(error) || options.shouldIgnoreCurrentUserError?.(error) === true
   }
 
-  function createTransaction(providerKey: string, redirectUrl: string): string {
-    const state = createRandomState()
-    const transactions = pruneTransactions(readTransactions())
-
-    transactions[state] = {
-      createdAt: Date.now(),
-      providerKey,
-      redirectUrl,
-    }
-
-    writeTransactions(transactions)
-
-    return state
-  }
-
-  function consumeTransaction(state: string): AuthTransaction | null {
-    const transactions = pruneTransactions(readTransactions())
-    const transaction = transactions[state] ?? null
-
-    delete transactions[state]
-    writeTransactions(transactions)
-
-    return transaction
-  }
-
-  function broadcastSessionCleared(): void {
-    const storage = getLocalStorage()
-
-    if (storage === null) {
-      return
-    }
-
-    const payload: AuthStorageEvent = {
-      timestamp: Date.now(),
-      type: 'session-cleared',
-    }
-
-    storage.setItem(eventStorageKey, JSON.stringify(payload))
-    storage.removeItem(eventStorageKey)
-  }
-
-  async function applySessionCleared(notifyLogout: boolean): Promise<void> {
-    currentUserPromise = null
-    isFetchingAuthUser.value = false
-    hasAttemptedToFetchAuthUser.value = false
-    persistCurrentProviderKey(null)
-    await resetUserState(null)
-
-    if (notifyLogout) {
-      for (const callback of logoutCallbacks) {
-        callback()
-      }
-
-      if (boundRouter !== null && shouldNavigateWithBoundRouterOnLogout) {
-        void boundRouter.replace(getLoginRouteLocation())
-      }
-    }
-  }
-
-  async function clearSession(options: {
+  async function clearSession(sessionOptions: {
     broadcast?: boolean
-    notifyLogout?: boolean
+    navigate?: boolean
   } = {}): Promise<void> {
     for (const provider of providers) {
-      provider.client.logout()
+      provider.client.clear()
     }
 
-    await applySessionCleared(options.notifyLogout ?? true)
+    currentUserPromise = null
+    persistCurrentProviderKey(null)
+    await notifyUserChanged(null)
+    isReady.value = true
 
-    if (options.broadcast !== false) {
-      broadcastSessionCleared()
+    if (sessionOptions.broadcast !== false) {
+      sessionEventStore.broadcastSessionCleared()
+    }
+
+    if (sessionOptions.navigate !== false && installedRouter !== null) {
+      void installedRouter.replace(getLoginRouteLocation())
     }
   }
 
-  async function resolveActiveProvider(): Promise<ResolvedAuthProviderConfig | null> {
-    if (currentProviderKey.value !== null) {
-      const currentProvider = providerMap.get(currentProviderKey.value)
+  async function resolveActiveProvider(): Promise<(typeof providers)[number] | null> {
+    const storedProviderKey = getLocalStorage()?.getItem(currentProviderStorageKey) ?? null
 
-      if (currentProvider !== undefined && await currentProvider.client.isLoggedIn()) {
-        return currentProvider
+    if (storedProviderKey !== null) {
+      const storedProvider = providerMap.get(storedProviderKey)
+
+      if (storedProvider !== undefined && await storedProvider.client.hasSession()) {
+        return storedProvider
       }
     }
 
     for (const provider of providers) {
-      if (await provider.client.isLoggedIn()) {
+      if (await provider.client.hasSession()) {
         persistCurrentProviderKey(provider.key)
 
         return provider
@@ -396,138 +217,71 @@ export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthContro
     return null
   }
 
-  async function getAuthUser(force = false): Promise<TUser> {
-    if (!force && currentUser.value !== null) {
-      return currentUser.value
+  async function ensureUserLoaded(force = false): Promise<TUser> {
+    if (!force && user.value !== null) {
+      isReady.value = true
+
+      return user.value
     }
 
     if (currentUserPromise !== null) {
       return await currentUserPromise
     }
 
-    currentUserPromise = (async (): Promise<TUser> => {
+    currentUserPromise = (async () => {
       const activeProvider = await resolveActiveProvider()
 
       if (activeProvider === null) {
         throw new Error('No authenticated session found')
       }
 
-      isFetchingAuthUser.value = true
+      isReady.value = false
 
-      try {
-        const accessToken = await activeProvider.client.getAccessToken()
-        const authUser = await options.fetchCurrentUser({
-          accessToken,
-          providerKey: activeProvider.key,
-        })
+      const accessToken = await activeProvider.client.getAccessToken()
+      const authUser = await options.fetchCurrentUser({
+        accessToken,
+        providerKey: activeProvider.key,
+      })
 
-        await resetUserState(authUser)
-        hasAttemptedToFetchAuthUser.value = true
+      persistCurrentProviderKey(activeProvider.key)
+      await notifyUserChanged(authUser)
+      isReady.value = true
 
-        return authUser
-      }
-      catch (error) {
-        hasAttemptedToFetchAuthUser.value = true
-
-        throw error
-      }
-      finally {
-        isFetchingAuthUser.value = false
-        currentUserPromise = null
-      }
+      return authUser
     })()
+      .catch((error: unknown) => {
+        const authError = getError(error)
+
+        if (user.value !== null && shouldIgnoreUserError(authError)) {
+          isReady.value = true
+
+          return user.value
+        }
+
+        throw authError
+      })
+      .finally(() => {
+        currentUserPromise = null
+      })
 
     return await currentUserPromise
   }
 
-  function getCurrentUser(): TUser | null {
-    return currentUser.value
-  }
-
-  function getCurrentUserOrThrow(): TUser {
-    if (currentUser.value === null) {
-      throw new Error('Authenticated user is not loaded')
-    }
-
-    return currentUser.value
-  }
-
-  async function getAccessToken(): Promise<string> {
-    const activeProvider = await resolveActiveProvider()
-
-    if (activeProvider === null) {
-      throw new Error('No authenticated session found')
-    }
-
-    return await activeProvider.client.getAccessToken()
-  }
-
-  function getAuthenticatedRoute(): RouteLocationRaw {
-    if (typeof options.defaultAuthenticatedRoute === 'function') {
-      return options.defaultAuthenticatedRoute()
-    }
-
-    return options.defaultAuthenticatedRoute ?? {
-      path: options.defaultRedirectPath ?? '/',
-    }
-  }
-
-  function getLoginRouteLocation(redirectUrl?: string): RouteLocationRaw {
-    const defaultProvider = getProvider(options.defaultProviderKey)
-
-    if (redirectUrl === undefined) {
-      return {
-        name: defaultProvider.route.name,
-      }
-    }
-
-    return {
-      name: defaultProvider.route.name,
-      query: {
-        redirectUrl,
-      },
-    }
-  }
-
-  function getLoginPath(redirectUrl?: string): string {
-    const defaultProvider = getProvider(options.defaultProviderKey)
-    const basePath = options.routes?.basePath ?? '/auth'
-    const loginPath = resolveChildRoutePath(basePath, defaultProvider.route.path)
-
-    return appendQuery(loginPath, {
-      redirectUrl,
-    })
-  }
-
-  function getLogoutRouteLocation(): RouteLocationRaw {
-    return {
-      name: options.routes?.logoutName ?? 'auth-logout',
-    }
-  }
-
-  async function getLoginUrl(providerKey = options.defaultProviderKey, redirectUrl?: string): Promise<string> {
-    const provider = getProvider(providerKey)
-    const fallbackRedirectPath = options.defaultRedirectPath ?? '/'
-    const sanitizedRedirectUrl = provider.client.sanitizeRedirectUrl(
-      redirectUrl ?? fallbackRedirectPath,
-      fallbackRedirectPath,
-    )
-    const state = createTransaction(provider.key, sanitizedRedirectUrl)
-
-    return await provider.client.getLoginUrl(undefined, {
-      state,
-    })
-  }
-
   async function startLogin(providerKey = options.defaultProviderKey, redirectUrl?: string): Promise<void> {
-    const loginUrl = await getLoginUrl(providerKey, redirectUrl)
+    const provider = getProvider(providerKey)
+    const nextRedirectUrl = provider.client.sanitizeRedirectUrl(
+      redirectUrl ?? routeConfig.defaultRedirectPath,
+      routeConfig.defaultRedirectPath,
+    )
+    const state = transactionStore.create(provider.key, nextRedirectUrl)
+    const loginUrl = await provider.client.getLoginUrl(state)
 
-    if (isBrowser()) {
+    if (typeof window !== 'undefined') {
       window.location.replace(loginUrl)
     }
   }
 
-  async function handleCallback(code: string | null, state: string | null): Promise<string> {
+  async function completeLogin(code: string | null, state: string | null): Promise<string> {
     if (code === null) {
       throw new Error('Missing authorization code')
     }
@@ -536,7 +290,7 @@ export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthContro
       throw new Error('Missing authentication state')
     }
 
-    const transaction = consumeTransaction(state)
+    const transaction = transactionStore.consume(state)
 
     if (transaction === null) {
       throw new Error('Invalid or expired authentication transaction')
@@ -547,159 +301,201 @@ export function createAuth<TUser>(options: CreateAuthOptions<TUser>): AuthContro
     try {
       await provider.client.loginWithCode(code)
       persistCurrentProviderKey(provider.key)
+
       try {
-        await getAuthUser(true)
+        await ensureUserLoaded(true)
       }
       catch (error) {
-        const authError = toError(error)
-
-        if (!isNetworkError(authError) && options.shouldIgnoreCurrentUserError?.(authError) !== true) {
+        if (!shouldIgnoreUserError(getError(error))) {
           throw error
         }
       }
 
-      return provider.client.sanitizeRedirectUrl(transaction.redirectUrl, options.defaultRedirectPath ?? '/')
+      return provider.client.sanitizeRedirectUrl(transaction.redirectUrl, routeConfig.defaultRedirectPath)
     }
     catch (error) {
       await clearSession({
-        notifyLogout: false,
+        broadcast: false,
+        navigate: false,
       })
 
       throw error
     }
   }
 
-  async function isLoggedIn(): Promise<boolean> {
-    return await resolveActiveProvider() !== null
-  }
-
   async function logout(): Promise<void> {
-    const activeProvider = await resolveActiveProvider()
-    const logoutUrl = activeProvider?.client.getLogoutUrl() ?? null
-
-    shouldNavigateWithBoundRouterOnLogout = false
-
-    try {
-      await clearSession()
-    }
-    finally {
-      shouldNavigateWithBoundRouterOnLogout = true
+    if (logoutPromise !== null) {
+      return await logoutPromise
     }
 
-    if (!isBrowser()) {
-      return
-    }
+    logoutPromise = (async () => {
+      const activeProvider = await resolveActiveProvider()
+      const logoutUrl = activeProvider?.client.getLogoutUrl() ?? null
 
-    if (logoutUrl !== null) {
-      window.location.replace(logoutUrl)
+      await clearSession({
+        navigate: false,
+      })
 
-      return
-    }
-
-    window.location.replace(getLoginPath())
-  }
-
-  async function handleUnauthorized(): Promise<void> {
-    await clearSession()
-  }
-
-  async function requireAuth(to: RouteLocationRaw, _from: RouteLocationRaw): Promise<RouteLocationRaw | undefined> {
-    const redirectUrl = resolveNavigationPath(to)
-
-    if (!await isLoggedIn()) {
-      return getLoginRouteLocation(redirectUrl)
-    }
-
-    try {
-      await getAuthUser()
-    }
-    catch (error) {
-      const authError = toError(error)
-
-      if (isNetworkError(authError) || options.shouldIgnoreCurrentUserError?.(authError) === true) {
+      if (typeof window === 'undefined') {
         return
       }
 
-      await handleUnauthorized()
+      window.location.replace(logoutUrl ?? defaultAuthProvider.loginRoutePath)
+    })()
+      .finally(() => {
+        logoutPromise = null
+      })
+
+    return await logoutPromise
+  }
+
+  function isPublicRoute(to: RouteLocationNormalized): boolean {
+    return to.matched.some((route) => route.meta.public === true)
+  }
+
+  async function handleGuestRoute(): Promise<RouteLocationRaw | undefined> {
+    const activeProvider = await resolveActiveProvider()
+
+    if (activeProvider === null) {
+      isReady.value = true
+
+      return
+    }
+
+    try {
+      await ensureUserLoaded()
+
+      return getAuthenticatedRoute()
+    }
+    catch (error) {
+      if (shouldIgnoreUserError(getError(error))) {
+        return
+      }
+
+      await clearSession({
+        navigate: false,
+      })
+    }
+  }
+
+  async function guard(to: RouteLocationNormalized): Promise<RouteLocationRaw | undefined> {
+    if (isPublicRoute(to)) {
+      const guestRoute = to.matched.some((route) => route.meta.authProviderKey !== undefined)
+
+      if (!guestRoute) {
+        isReady.value = true
+
+        return
+      }
+
+      return await handleGuestRoute()
+    }
+
+    const activeProvider = await resolveActiveProvider()
+
+    if (activeProvider === null) {
+      isReady.value = true
+
+      return getLoginRouteLocation(getNavigationPath(to))
+    }
+
+    try {
+      await ensureUserLoaded()
+    }
+    catch (error) {
+      const authError = getError(error)
+
+      if (shouldIgnoreUserError(authError)) {
+        return
+      }
+
+      await clearSession({
+        navigate: false,
+      })
 
       return getLoginRouteLocation()
     }
   }
 
-  async function requireGuest(_to: RouteLocationRaw, _from: RouteLocationRaw): Promise<RouteLocationRaw | undefined> {
-    if (!await isLoggedIn()) {
-      return
-    }
-
-    try {
-      await getAuthUser()
-    }
-    catch (error) {
-      const authError = toError(error)
-
-      if (isNetworkError(authError) || options.shouldIgnoreCurrentUserError?.(authError) === true) {
-        return
-      }
-
-      await handleUnauthorized()
-
-      return
-    }
-
-    return getAuthenticatedRoute()
+  function createRoutes(): RouteRecordRaw[] {
+    return [
+      {
+        path: routeConfig.authBasePath,
+        redirect: defaultAuthProvider.loginRoutePath,
+        meta: {
+          public: true,
+        },
+      },
+      ...providers.map((provider) => ({
+        path: provider.loginRoutePath,
+        component: options.views?.login ?? DefaultAuthLoginView,
+        meta: {
+          authAutoStart: provider.autoStart,
+          authProviderKey: provider.key,
+          public: true,
+        },
+      })),
+      {
+        path: routeConfig.callbackRoutePath,
+        component: options.views?.callback ?? DefaultAuthCallbackView,
+        meta: {
+          public: true,
+        },
+      },
+      {
+        path: routeConfig.logoutRoutePath,
+        component: options.views?.logout ?? DefaultAuthLogoutView,
+        meta: {
+          public: true,
+        },
+      },
+    ]
   }
 
-  function onLogout(callback: () => void): () => void {
-    logoutCallbacks.add(callback)
-
-    return () => {
-      logoutCallbacks.delete(callback)
-    }
-  }
-
-  if (isBrowser()) {
-    window.addEventListener('storage', (event) => {
-      if (event.key !== eventStorageKey || event.newValue === null) {
-        return
-      }
-
-      void applySessionCleared(true)
-    })
-  }
-
-  const auth = {
-    hasAttemptedToFetchAuthUser,
-    isAuthenticated,
-    isFetchingAuthUser,
-    isLoggedIn,
-    currentProviderKey,
-    currentUser,
-    getAccessToken,
+  const internalAuth = {
+    completeLogin,
     getAuthenticatedRoute,
-    getAuthUser: (): Promise<TUser> => getAuthUser(),
-    getCurrentUser,
-    getCurrentUserOrThrow,
     getLoginRouteLocation,
-    getLoginUrl,
-    getLogoutRouteLocation,
-    handleCallback,
-    handleUnauthorized,
-    install: (app: App, installOptions?: AuthInstallOptions): void => {
-      boundRouter = installOptions?.router ?? null
-      app.provide(AUTH_CONTROLLER_KEY, auth as AuthController<unknown>)
-    },
     logout,
     messages,
     providers,
-    requireAuth,
-    requireGuest,
-    routes: [] as ReturnType<typeof createAuthRoutes<TUser>>,
     startLogin,
-    user: currentUser,
-    onLogout,
-  } satisfies AuthController<TUser>
+  }
 
-  auth.routes = createAuthRoutes(auth, options)
+  return {
+    user,
+    isReady,
+    getAccessToken: async (): Promise<string> => {
+      const activeProvider = await resolveActiveProvider()
 
-  return auth
+      if (activeProvider === null) {
+        throw new Error('No authenticated session found')
+      }
+
+      return await activeProvider.client.getAccessToken()
+    },
+    install: (app: App, installOptions: AuthInstallOptions): void => {
+      if (!isInstalled) {
+        installedRouter = installOptions.router
+
+        for (const route of createRoutes()) {
+          installOptions.router.addRoute(route)
+        }
+
+        installOptions.router.beforeEach((to) => guard(to))
+        sessionEventStore.listen(() => {
+          void clearSession({
+            broadcast: false,
+          })
+        })
+        isInstalled = true
+      }
+      else if (installedRouter !== installOptions.router) {
+        throw new Error('Auth plugin is already installed with a different router')
+      }
+
+      app.provide(INTERNAL_AUTH_CONTROLLER_KEY, internalAuth)
+    },
+    logout,
+  } satisfies Auth<TUser>
 }

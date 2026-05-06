@@ -34,6 +34,7 @@ Object.defineProperty(globalThis, 'window', {
     addEventListener: () => {},
     localStorage,
     location: {
+      origin: 'https://app.example.com',
       replace: () => {},
     },
     sessionStorage,
