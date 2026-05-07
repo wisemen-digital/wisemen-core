@@ -110,6 +110,7 @@ catalogs:
     "@tsconfig/node18": "18.2.4"
     "@types/clone-deep": 4.0.4
   general:
+    country-flag-icons: ^0.0.0
     "zod": "4.3.5"
     defu: 6.1.4
     "neverthrow": "8.2.0"
@@ -288,3 +289,5 @@ catalogs:
     "reflect-metadata": ">=0.2.2"
     "rxjs": ">=7.8.2"
     "typeorm": ">=0.3.28"
+catalog:
+  "@tanstack/vue-hotkeys": ^0.0.0

@@ -1,8 +1,9 @@
 import type { Component } from 'vue'
 
 import type { DisabledWithReason } from '@/types/disabledWithReason.type'
+import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
 
-export interface ButtonProps extends DisabledWithReason {
+export interface ButtonProps extends DisabledWithReason, WithKeyboardShortcut {
   /**
    * Shows a loading state and disables interaction.
    * @default false
@@ -23,15 +24,6 @@ export interface ButtonProps extends DisabledWithReason {
    * @default null
    */
   iconRight?: Component | null
-  /**
-   * Visual representation of a keyboard shortcut (e.g. "⌘K", "Ctrl+S").
-   *
-   * This is purely presentational and does not implement or bind
-   * any keyboard shortcut behavior.
-   *
-   * @default null
-   */
-  keyboardShortcut?: string | null
   /**
    * Text label displayed inside the button.
    */

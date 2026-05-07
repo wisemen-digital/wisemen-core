@@ -56,7 +56,7 @@
     "@vue/test-utils": "catalog:test",
     "@vue/tsconfig": "catalog:vue",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "husky": "catalog:build",
     "tailwindcss": "catalog:style",
     "typescript": "catalog:build",

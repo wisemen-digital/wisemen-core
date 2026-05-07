@@ -1,5 +1,11 @@
 ## [1.7.2] (2025-08-04)
 
+## 2.1.3
+
+### Patch Changes
+
+- [#896](https://github.com/wisemen-digital/wisemen-core/pull/896) [`3e890c0`](https://github.com/wisemen-digital/wisemen-core/commit/3e890c027d670821eec9ed8e559c24e50d4d79e9) Thanks [@Robbe95](https://github.com/Robbe95)! - Added option to disable tailwind on package linting
+
 ## 2.1.2
 
 ### Patch Changes

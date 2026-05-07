@@ -5,9 +5,7 @@ import {
   ListboxItem as RekaListboxItem,
   ListboxItemIndicator as RekaListboxItemIndicator,
 } from 'reka-ui'
-import { computed } from 'vue'
 
-import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
 import { UIMenuItem } from '@/ui/menu-item'
 import { useInjectSelectContext } from '@/ui/select/select.context'
 
@@ -22,26 +20,17 @@ const {
   getItemConfig,
   size,
   onSelectOption,
-} = useInjectSelectContext({
-  getItemConfig: null,
-  size: computed<'md'>(() => 'md'),
-  onSelectOption: () => {},
-})
-
-const isUsingKeyboard = useIsUsingKeyboard()
+} = useInjectSelectContext()
 </script>
 
 <template>
   <RekaListboxItem
     :value="props.value"
-
-    :class="{
-      'data-highlighted:bg-secondary-hover': isUsingKeyboard,
-      'hover:bg-secondary-hover': !isUsingKeyboard,
-    }"
     class="
-      group/listbox-item flex w-full cursor-default items-center rounded-sm
-      outline-none
+      group/listbox-item relative z-2 flex w-full cursor-default items-center
+      rounded-sm outline-none
+      hover:bg-secondary-hover
+      data-highlighted:bg-secondary-hover
     "
     @select="onSelectOption"
   >

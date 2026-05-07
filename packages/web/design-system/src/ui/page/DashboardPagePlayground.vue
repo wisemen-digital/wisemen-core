@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -214,6 +213,7 @@ const tabsModelValue = ref<string>('tab1')
         <DashboardPage
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
+            variant: 'full-height-inline',
             storage: {
               key: 'dashboard-page-detail-pane-is-open',
               strategy: 'localStorage',

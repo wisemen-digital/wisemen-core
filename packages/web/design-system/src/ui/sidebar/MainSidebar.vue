@@ -77,6 +77,9 @@ setCollapsedVariant(props.collapsedVariant)
               <template #navigation>
                 <slot name="navigation" />
               </template>
+              <template #bottom-navigation>
+                <slot name="bottom-navigation" />
+              </template>
               <template #footer>
                 <slot name="footer" />
               </template>
@@ -119,6 +122,9 @@ setCollapsedVariant(props.collapsedVariant)
         <template #navigation>
           <slot name="navigation" />
         </template>
+        <template #bottom-navigation>
+          <slot name="bottom-navigation" />
+        </template>
         <template #footer>
           <slot name="footer" />
         </template>
@@ -143,6 +149,9 @@ setCollapsedVariant(props.collapsedVariant)
       </template>
       <template #navigation>
         <slot name="navigation" />
+      </template>
+      <template #bottom-navigation>
+        <slot name="bottom-navigation" />
       </template>
       <template #footer>
         <slot name="footer" />

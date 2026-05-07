@@ -1,22 +1,8 @@
-import type { ComputedRef } from 'vue'
-
+import type { PropsToComputed } from '@/composables/context.composable'
 import { useContext } from '@/composables/context.composable'
-import type { HourCycle } from '@/types/hourCycle.type'
+import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
 
-interface ConfigContext {
-  areKeyboardShortcutHintsHidden: ComputedRef<boolean>
-  googleMapsApiKey: string | null
-  hourCycle: ComputedRef<HourCycle | null>
-  locale: ComputedRef<string>
-  pagination?: {
-    limit?: number
-  }
-  teleportTargetSelector: string
-
-  // TODO: add toast config
-  // toastPosition?: ToastPosition
-  // autoCloseToast: ComputedRef<AutoCloseToastConfig | null>
-}
+export type ConfigContext = PropsToComputed<ConfigProviderProps>
 
 export const [
   useProvideConfigContext,

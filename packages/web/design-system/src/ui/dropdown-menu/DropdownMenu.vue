@@ -50,8 +50,10 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
         >
           <div
             class="
-              relative size-full overflow-hidden rounded-md border
-              border-secondary bg-primary shadow-lg
+              relative size-full
+              max-h-(--reka-dropdown-menu-content-available-height)
+              overflow-hidden rounded-md border border-secondary bg-primary
+              shadow-lg
             "
           >
             <DropdownMenuContentVue

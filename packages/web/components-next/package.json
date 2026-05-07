@@ -72,7 +72,7 @@
     "@vueuse/router": "catalog:vue",
     "@wisemen/eslint-config-vue": "workspace:*",
     "blurhash": "catalog:general",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "histoire": "catalog:stories",
     "husky": "catalog:build",
     "jsdom": "catalog:test",

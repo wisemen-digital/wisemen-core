@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.9.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
       "types": "./dist/locales.d.ts",
       "import": "./dist/locales.js"
     },
-    "./style": "./dist/index.css",
+    "./style.css": "./dist/index.css",
     "./source.css": "./dist/source.css"
   },
   "style": "./dist/index.css",
@@ -55,16 +55,21 @@
   "peerDependencies": {
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
+    "formango": "catalog:peer",
     "motion-v": "catalog:peer",
     "reka-ui": "catalog:peer",
+    "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
-    "formango": "catalog:peer"
+    "vue-sonner": "catalog:vue"
   },
   "dependencies": {
+    "@internationalized/date": "catalog:date",
     "@tailwindcss/vite": "catalog:vite",
     "@wisemen/vue-core-icons": "workspace:*",
+    "country-flag-icons": "catalog:general",
+    "libphonenumber-js": "catalog:general",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
@@ -77,25 +82,27 @@
     "@storybook/addon-vitest": "catalog:storybook",
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
+    "@tanstack/vue-hotkeys": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
     "@vitest/browser-playwright": "catalog:test",
     "@vitest/coverage-v8": "catalog:test",
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
+    "formango": "catalog:peer",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "playwright": "catalog:test",
-    "reka-ui": "catalog:peer",
+    "reka-ui": "catalog:vue",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
-    "formango": "catalog:peer",
+    "vue-sonner": "catalog:vue",
     "vue-tsc": "catalog:vue"
   }
 }

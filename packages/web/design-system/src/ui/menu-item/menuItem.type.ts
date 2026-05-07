@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 
 import type { DotColor } from '@/ui/dot/dot.props'
+import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 
 export type MenuItemRightConfig
   = | {
@@ -13,7 +14,7 @@ export type MenuItemRightConfig
     type: 'icon'
   }
   | {
-    keys: string
+    keyboardShortcut: KeyboardShortcut
     type: 'shortcut'
   }
   | {
@@ -68,6 +69,21 @@ export interface MenuItemConfig {
    * Icon displayed to the left of the label. Cannot be used together with `avatar` or `dot`.
    */
   icon?: Component | null
+  /**
+   * Image displayed to the left of the label. Cannot be used together with `icon`, `avatar`, or `dot`.
+   */
+  image?: {
+  /**
+   * Controls the aspect ratio of the image.
+   * - `'square'` — equal width and height (default)
+   * - `'rectangle'` — wider than tall, suited for landscape thumbnails
+   */
+    aspect?: 'rectangle' | 'square'
+    /**
+     * The URL or data URI of the image to display.
+     */
+    src: string
+  } | null
   /**
    * Override the label shown in the item.
    */

@@ -1071,6 +1071,58 @@ describe('DateTimeRange unit tests', () => {
     })
   })
 
+  describe('isStrictlyBefore', () => {
+    it('returns true when this range ends exactly when the other starts', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(1, 'second'), now.add(2, 'second'))
+
+      expect(first.isStrictlyBefore(second)).toBe(true)
+    })
+
+    it('returns true when this range is fully before the other range', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(3, 'second'), now.add(4, 'second'))
+
+      expect(first.isStrictlyBefore(second)).toBe(true)
+    })
+
+    it('returns false when ranges overlap', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(3, 'second'))
+      const second = new DateTimeRange(now.add(2, 'second'), now.add(4, 'second'))
+
+      expect(first.isStrictlyBefore(second)).toBe(false)
+    })
+  })
+
+  describe('isStrictlyAfter', () => {
+    it('returns true when this range starts exactly when the other ends', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(1, 'second'), now.add(2, 'second'))
+
+      expect(second.isStrictlyAfter(first)).toBe(true)
+    })
+
+    it('returns true when this range is fully after the other range', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(3, 'second'), now.add(4, 'second'))
+
+      expect(second.isStrictlyAfter(first)).toBe(true)
+    })
+
+    it('returns false when ranges overlap', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(3, 'second'))
+      const second = new DateTimeRange(now.add(2, 'second'), now.add(4, 'second'))
+
+      expect(second.isStrictlyAfter(first)).toBe(false)
+    })
+  })
+
   describe('precedes', () => {
     it('returns true if this.exclUpper is same as other.inclLower and this.exclUpper is not future infinity', () => {
       const now = timestamp()

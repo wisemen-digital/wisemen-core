@@ -17,9 +17,10 @@ const {
     </div>
     <nav
       :style="{ padding: sidebarContainerPadding }"
-      class="flex h-full flex-col gap-2xl overflow-y-auto"
+      class="flex h-full flex-col justify-between gap-2xl overflow-y-auto"
     >
       <slot name="navigation" />
+      <slot name="bottom-navigation" />
     </nav>
     <div
       :style="{ padding: sidebarContainerPadding }"
