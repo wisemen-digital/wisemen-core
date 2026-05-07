@@ -41,7 +41,7 @@ const props = defineProps<{
             />
 
             <DetailListGroupHeaderCollapseInfo
-              v-if="props.collapseOptions.isCollapsible && props.collapseOptions.badge !== undefined"
+              v-if="props.collapseOptions.isCollapsible && props.collapseOptions.badge != null"
               :badge="props.collapseOptions.badge!"
               :is-visible="!props.isOpen"
             />
