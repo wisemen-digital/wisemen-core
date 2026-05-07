@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { NumberFieldRoot as RekaNumberFieldRoot } from 'reka-ui'
+import {
+  injectConfigProviderContext,
+  NumberFieldRoot as RekaNumberFieldRoot,
+} from 'reka-ui'
 import { computed } from 'vue'
 
 import type { ResolvedClassConfig } from '@/class-variant/classVariant.type'
@@ -45,7 +48,9 @@ const modelValue = defineModel<number | null>({
   required: true,
 })
 
-const locale = navigator.language
+const {
+  locale,
+} = injectConfigProviderContext()
 
 const delegatedModel = computed<number | undefined>({
   get: () => modelValue.value ?? undefined,

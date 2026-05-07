@@ -9,7 +9,7 @@ import {
   DatePickerHeadCell as RekaDatePickerHeadCell,
 } from 'reka-ui'
 
-import { useInjectDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
+import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
 
 const props = defineProps<{
   month: any
@@ -18,7 +18,7 @@ const props = defineProps<{
 
 const {
   onClose,
-} = useInjectDatePickerFieldContext()
+} = useInjectDatePickerContext()
 </script>
 
 <template>
@@ -66,7 +66,7 @@ const {
               data-unavailable:pointer-events-none
               data-unavailable:text-disabled data-unavailable:line-through
             "
-            @click="onClose"
+            @click="onClose?.()"
           >
             {{ date.day }}
 

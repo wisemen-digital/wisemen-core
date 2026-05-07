@@ -8,10 +8,13 @@ export const createDetailPaneStyle = tv({
       justify-center
     `,
     resizeHandleBar: `
-      h-24 w-1 rounded-full bg-transparent transition-colors duration-150
-      group-hover:bg-quaternary
-      group-focus-visible:bg-quaternary
-      group-active:bg-quaternary
+      h-32 w-1 translate-x-0.5 scale-90 rounded-full bg-quaternary opacity-0
+      duration-200 ease-in-out
+      group-hover:-translate-x-1.5 group-hover:scale-100 group-hover:opacity-100
+      group-focus-visible:-translate-x-1.5 group-focus-visible:scale-100
+      group-focus-visible:opacity-100
+      group-active:h-28 group-active:-translate-x-2 group-active:scale-100
+      group-active:opacity-100 group-active:brightness-95
     `,
   },
   variants: {
