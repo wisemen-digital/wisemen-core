@@ -165,7 +165,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
 
       <KeyboardShortcut
         v-else-if="props.config?.right?.type === 'shortcut'"
-        :keyboard-shortcut="props.config.right.keys"
+        :keyboard-shortcut="props.config.right.keyboardShortcut"
       />
 
       <slot name="right" />

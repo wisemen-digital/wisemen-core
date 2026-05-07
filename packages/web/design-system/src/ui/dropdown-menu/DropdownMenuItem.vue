@@ -3,6 +3,7 @@ import { DropdownMenuItem as RekaDropdownMenuItem } from 'reka-ui'
 import type { Component } from 'vue'
 
 import { UIActionTooltip } from '@/ui/action-tooltip/index'
+import type { KeyboardShortcut as KeyboardShortcutType } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import KeyboardShortcut from '@/ui/keyboard-shortcut/KeyboardShortcut.vue'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { UIText } from '@/ui/text/index'
@@ -10,7 +11,7 @@ import { UIText } from '@/ui/text/index'
 const props = withDefaults(defineProps<{
   disabledReason?: string | null
   icon?: Component
-  keyboardShortcut?: string | null
+  keyboardShortcut?: KeyboardShortcutType | null
   label: string
 }>(), {
   disabledReason: null,

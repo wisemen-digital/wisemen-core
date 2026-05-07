@@ -13,6 +13,7 @@ import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import DropdownMenu from '@/ui/dropdown-menu/DropdownMenu.vue'
 import DropdownMenuGroup from '@/ui/dropdown-menu/DropdownMenuGroup.vue'
 import DropdownMenuItem from '@/ui/dropdown-menu/DropdownMenuItem.vue'
+import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
@@ -20,13 +21,13 @@ import { UIText } from '@/ui/text/index'
 
 export interface MenuOption {
   icon: Component
-  keyboardShortcut?: string
+  keyboardShortcut?: KeyboardShortcut
   label: string
   onSelect: () => void
 }
 
 const props = defineProps<{
-  name: string
+  name: string | null
   avatarUrl?: string
   email: string
   menuOptions: MenuOption[]
@@ -82,8 +83,9 @@ function onSignOut(): void {
               class="h-full"
             >
               <Avatar
-                :name="props.name"
+                :name="props.name ?? props.email"
                 :src="props.avatarUrl"
+                :is-static-color="true"
                 size="xs"
               />
             </UIRowLayout>
@@ -98,11 +100,13 @@ function onSignOut(): void {
               >
                 <div class="flex w-full flex-col overflow-hidden">
                   <UIText
-                    :text="props.name"
+                    :text="props.name ?? '-'"
+                    :disable-tooltip="true"
                     class="w-full text-xs font-semibold text-primary"
                   />
                   <UIText
                     :text="props.email"
+                    :disable-tooltip="true"
                     class="w-full text-xs text-tertiary"
                   />
                 </div>

@@ -14,6 +14,8 @@ const value24 = ref<Temporal.PlainTime | null>(Temporal.PlainTime.from('14:30'))
     <ConfigProvider
       locale="en-US"
       hour-cycle="12-hour"
+      number-format="system"
+      project-name=""
     >
       <TimeField
         v-model="value12"
@@ -26,6 +28,8 @@ const value24 = ref<Temporal.PlainTime | null>(Temporal.PlainTime.from('14:30'))
     <ConfigProvider
       locale="en-US"
       hour-cycle="24-hour"
+      number-format="system"
+      project-name=""
     >
       <TimeField
         v-model="value24"
