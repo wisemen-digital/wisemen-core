@@ -30,8 +30,8 @@ import type { DateFieldProps } from '@/ui/date-field/dateField.props'
 import { createDateFieldStyle } from '@/ui/date-field/dateField.style'
 import DatePickerCalendarGrid from '@/ui/date-field/DatePickerCalendarGrid.vue'
 import DatePickerCalendarHeader from '@/ui/date-field/DatePickerCalendarHeader.vue'
-import { useProvideDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
 import { createDatePickerFieldStyle } from '@/ui/date-field/datePickerField.style'
+import { useProvideDatePickerContext } from '@/ui/date-picker/datePicker.context'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
@@ -91,7 +91,7 @@ const datePickerStyle = computed(() => createDatePickerFieldStyle({
   size: props.size,
 }))
 
-useProvideDatePickerFieldContext({
+useProvideDatePickerContext({
   datePickerStyle,
   placeholder: calendarPlaceholder,
   setPlaceholder,

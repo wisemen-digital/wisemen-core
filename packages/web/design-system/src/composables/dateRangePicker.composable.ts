@@ -41,10 +41,10 @@ export function useDateRangePicker({
     new CalendarDate(todayDate.year, todayDate.month, 1),
 
   )
-  const draftValue = ref<DateRange>({
+  const draftValue = shallowRef<DateRange>({
     end: modelValue.value?.end != null ? plainDateToCalendarDate(modelValue.value.end) : undefined,
     start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
-  }) as Ref<DateRange>
+  })
 
   function onDraftValueUpdate(value: DateRange): void {
     if (value.start != null && value.end != null && value.start.compare(value.end) > 0) {
