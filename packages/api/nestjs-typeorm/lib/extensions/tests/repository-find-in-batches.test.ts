@@ -1,9 +1,10 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'expect'
-import { LessThan, MoreThanOrEqual } from 'typeorm'
+import { Between, LessThan, LessThanOrEqual, MoreThanOrEqual } from 'typeorm'
 import { dataSource } from './sql/datasource.js'
 import { UserEntity } from './sql/entities/user.entity.js'
 import { MessageEntity } from './sql/entities/message.entity.js'
+import { EventEntity } from './sql/entities/event.entity.js'
 import { TypeOrmRepository } from '#src/extensions/repository.js'
 
 describe('Repository find in batches test', () => {
@@ -194,6 +195,127 @@ describe('Repository find in batches test', () => {
       expect(batches[1][0].id).toBe(1)
       expect(batches[1][1].id).toBe(5)
       expect(batches[2][0].id).toBe(2)
+    })
+  })
+
+  describe('Batching with FindOperator filters on columns with transformers', () => {
+    let repository: TypeOrmRepository<EventEntity>
+
+    before(async () => {
+      repository = new TypeOrmRepository(EventEntity, dataSource.manager)
+
+      await repository.save([
+        { date: '2025-01-10', name: 'Event A' },
+        { date: '2025-01-15', name: 'Event B' },
+        { date: '2025-01-20', name: 'Event C' },
+        { date: '2025-01-25', name: 'Event D' },
+        { date: '2025-01-30', name: 'Event E' }
+      ])
+    })
+
+    it('finds in batches with Between filter on transformed ordered column (ASC)', async () => {
+      const result = repository.findInBatches({
+        where: { date: Between('2025-01-10', '2025-01-25') },
+        order: { date: 'ASC' }
+      }, 2)
+
+      const batches: EventEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].name).toBe('Event A')
+      expect(batches[0][1].name).toBe('Event B')
+      expect(batches[1][0].name).toBe('Event C')
+      expect(batches[1][1].name).toBe('Event D')
+    })
+
+    it('finds in batches with Between filter on transformed ordered column (DESC)', async () => {
+      const result = repository.findInBatches({
+        where: { date: Between('2025-01-10', '2025-01-25') },
+        order: { date: 'DESC' }
+      }, 2)
+
+      const batches: EventEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].name).toBe('Event D')
+      expect(batches[0][1].name).toBe('Event C')
+      expect(batches[1][0].name).toBe('Event B')
+      expect(batches[1][1].name).toBe('Event A')
+    })
+
+    it('finds in batches with MoreThanOrEqual filter on transformed ordered column', async () => {
+      const result = repository.findInBatches({
+        where: { date: MoreThanOrEqual('2025-01-15') },
+        order: { date: 'ASC' }
+      }, 2)
+
+      const batches: EventEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].name).toBe('Event B')
+      expect(batches[0][1].name).toBe('Event C')
+      expect(batches[1][0].name).toBe('Event D')
+      expect(batches[1][1].name).toBe('Event E')
+    })
+
+    it('finds in batches with LessThanOrEqual filter on transformed ordered column', async () => {
+      const result = repository.findInBatches({
+        where: { date: LessThanOrEqual('2025-01-25') },
+        order: { date: 'ASC' }
+      }, 2)
+
+      const batches: EventEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].name).toBe('Event A')
+      expect(batches[0][1].name).toBe('Event B')
+      expect(batches[1][0].name).toBe('Event C')
+      expect(batches[1][1].name).toBe('Event D')
+    })
+
+    it('finds in batches with Between filter on transformed column with multi-column order', async () => {
+      const result = repository.findInBatches({
+        where: { date: Between('2025-01-10', '2025-01-25') },
+        order: { date: 'ASC', id: 'ASC' }
+      }, 2)
+
+      const batches: EventEntity[][] = []
+
+      for await (const batch of result) {
+        batches.push(batch)
+      }
+
+      expect(batches).toHaveLength(2)
+      expect(batches[0]).toHaveLength(2)
+      expect(batches[1]).toHaveLength(2)
+      expect(batches[0][0].name).toBe('Event A')
+      expect(batches[0][1].name).toBe('Event B')
+      expect(batches[1][0].name).toBe('Event C')
+      expect(batches[1][1].name).toBe('Event D')
     })
   })
 })
