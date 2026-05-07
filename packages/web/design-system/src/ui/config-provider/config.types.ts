@@ -1,6 +1,7 @@
 import type { HourCycle } from '@/types/hourCycle.type'
 import type { NumberFormat } from '@/types/numberFormat.type'
 import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete'
+import type { ToastAutoClose } from '@/ui/toast'
 
 export interface ConfigProviderProps {
   /**
@@ -9,6 +10,16 @@ export interface ConfigProviderProps {
    * @default null
    */
   addressAutocompleteAdapter?: AddressAutocompleteAdapter | null
+  /**
+   * Controls when toasts automatically dismiss themselves.
+   *
+   * - `'always'` — all toasts close automatically after a timeout
+   * - `'never'` — toasts persist until manually dismissed
+   * - `'all-except-errors'` — only error toasts persist; all others auto-close
+   *
+   * @default 'always'
+   */
+  autoCloseToast?: ToastAutoClose
   /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null
