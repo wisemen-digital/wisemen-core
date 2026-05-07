@@ -93,6 +93,7 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     :locale="locale ?? 'en-US'"
     :hour-cycle="hourCycle ?? '24-hour'"
     :address-autocomplete-adapter="mockAddressAutocompleteAdapter"
+    project-name="story-book"
   >
     <ThemeProvider
       :appearance="theme ?? 'light'"
