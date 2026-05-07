@@ -12,7 +12,7 @@ export interface ConfigProviderProps {
    * Can be either 'h12' or 'h24'. If not provided, the system locale's default will be used.
    * @default null
    */
-  hourCycle?: HourCycle | null
+  hourCycle: HourCycle | null
   /**
    * The locale to use for localization.
    */
@@ -28,7 +28,7 @@ export interface ConfigProviderProps {
    *
    * @default 'system'
    */
-  numberFormat?: NumberFormat
+  numberFormat: NumberFormat
   /**
    * The name of the project, used for example in the document title template.
    */
