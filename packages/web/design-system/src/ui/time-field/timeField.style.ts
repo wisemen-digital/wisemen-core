@@ -5,12 +5,17 @@ export const createTimeFieldStyle = tv({
     field: 'flex h-full flex-1 items-center',
     literal: 'text-placeholder select-none',
     segment: `
-      rounded-xs px-xxs text-primary tabular-nums caret-transparent outline-none
+      rounded-xs px-xxs text-primary tabular-nums caret-transparent duration-100
+      outline-none
       group-data-disabled/field-wrapper:pointer-events-none
-      hover:bg-secondary-hover hover:text-primary
-      focus:bg-secondary-hover focus:text-primary
+      not-data-readonly:hover:bg-secondary-hover
+      not-data-readonly:hover:text-primary
+      not-data-readonly:focus:bg-secondary-hover
+      not-data-readonly:focus:text-primary
       data-placeholder:text-placeholder
-      data-placeholder:focus:text-primary
+      focus:data-placeholder:text-primary
+      disabled:data-placeholder:text-fg-disabled-subtle
+      data-readonly:cursor-default
     `,
   },
   variants: {

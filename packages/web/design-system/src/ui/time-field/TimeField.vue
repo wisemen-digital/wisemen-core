@@ -16,6 +16,7 @@ import {
   INPUT_DEFAULTS,
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
+  omit,
 } from '@/types/input.type'
 import { useInjectConfigContext } from '@/ui/config-provider'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
@@ -30,8 +31,11 @@ defineOptions({
 const props = withDefaults(defineProps<TimeFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
-  ...INPUT_FIELD_DEFAULTS,
+  ...omit(INPUT_FIELD_DEFAULTS, 'placeholder'),
+  granularity: 'minute',
   size: 'md',
+  step: null,
+  stepSnapping: false,
 })
 
 const modelValue = defineModel<Temporal.PlainTime | null>({
@@ -70,7 +74,11 @@ const timeValue = computed<TimeValue | undefined>({
       return
     }
 
-    return new TimeValue(Number(modelValue.value.hour), Number(modelValue.value.minute))
+    return new TimeValue(
+      Number(modelValue.value.hour),
+      Number(modelValue.value.minute),
+      Number(modelValue.value.second),
+    )
   },
   set: (value) => {
     if (value === undefined) {
@@ -79,9 +87,9 @@ const timeValue = computed<TimeValue | undefined>({
       return
     }
 
-    const str = `${value.hour.toString().padStart(2, '0')}:${value.minute.toString().padStart(2, '0')}`
+    const timeString = `${value.hour.toString().padStart(2, '0')}:${value.minute.toString().padStart(2, '0')}:${value.second.toString().padStart(2, '0')}`
 
-    modelValue.value = Temporal.PlainTime.from(str)
+    modelValue.value = Temporal.PlainTime.from(timeString)
   },
 })
 </script>
@@ -130,6 +138,9 @@ const timeValue = computed<TimeValue | undefined>({
         :locale="locale"
         :readonly="props.isReadonly"
         :required="props.isRequired"
+        :step-snapping="props.stepSnapping"
+        :step="props.step ?? undefined"
+        :granularity="props.granularity"
       >
         <template
           v-for="{ part, value } in segments"
@@ -139,6 +150,7 @@ const timeValue = computed<TimeValue | undefined>({
             v-if="part !== 'literal'"
             :part="part"
             :class="timeFieldStyle.segment()"
+            :data-readonly="props.isReadonly || undefined"
             data-field-wrapper
           >
             {{ value }}

@@ -3,9 +3,12 @@ import type {
   StoryObj,
 } from '@storybook/vue3-vite'
 
+import TimeFieldGranularityPlayground from './TimeFieldGranularityPlayground.vue'
 import TimeFieldHourCyclePlayground from './TimeFieldHourCyclePlayground.vue'
 import TimeFieldPlayground from './TimeFieldPlayground.vue'
 import TimeFieldStatesPlayground from './TimeFieldStatesPlayground.vue'
+import TimeFieldStepPlayground from './TimeFieldStepPlayground.vue'
+import TimeFieldStepSnappingPlayground from './TimeFieldStepSnappingPlayground.vue'
 
 const meta = {
   title: 'Components/TimeField',
@@ -119,5 +122,47 @@ export const HourCycle: Story = {
       }
     },
     template: '<TimeFieldHourCyclePlayground v-bind="args" />',
+  }),
+}
+
+export const Granularity: Story = {
+  render: (args) => ({
+    components: {
+      TimeFieldGranularityPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TimeFieldGranularityPlayground v-bind="args" />',
+  }),
+}
+
+export const Step: Story = {
+  render: (args) => ({
+    components: {
+      TimeFieldStepPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TimeFieldStepPlayground v-bind="args" />',
+  }),
+}
+
+export const StepSnapping: Story = {
+  render: (args) => ({
+    components: {
+      TimeFieldStepSnappingPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TimeFieldStepSnappingPlayground v-bind="args" />',
   }),
 }
