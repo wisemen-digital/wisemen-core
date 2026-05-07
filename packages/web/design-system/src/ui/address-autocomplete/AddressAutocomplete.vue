@@ -17,7 +17,7 @@ import {
 import { UIAutocomplete } from '@/ui/autocomplete'
 import { createAutocompleteOptions } from '@/ui/autocomplete/autocomplete.type'
 
-const props = defineProps<AddressAutocompleteProps>()
+const props = defineProps<Omit<AddressAutocompleteProps, 'displayFn' | 'getItemConfig' | 'isLoading' | 'items' | 'searchMode'>>()
 
 const emit = defineEmits<{
   blur: []
