@@ -1,3 +1,9 @@
+## 2.0.0
+
+### Major Changes
+
+- [#916](https://github.com/wisemen-digital/wisemen-core/pull/916) [`c36431e`](https://github.com/wisemen-digital/wisemen-core/commit/c36431e1a757f6001ecea6cc2cc32e0bee0e9ef8) Thanks [@maltsavkiryl](https://github.com/maltsavkiryl)! - Removed sentry. Cleanup package and add default configuration.
+
 ## 1.0.0
 
 ### Major Changes
