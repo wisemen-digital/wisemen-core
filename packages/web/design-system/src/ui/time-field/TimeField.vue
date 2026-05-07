@@ -75,9 +75,9 @@ const timeValue = computed<TimeValue | undefined>({
     }
 
     return new TimeValue(
-      Number(modelValue.value.hour),
-      Number(modelValue.value.minute),
-      Number(modelValue.value.second),
+      modelValue.value.hour,
+      modelValue.value.minute,
+      modelValue.value.second,
     )
   },
   set: (value) => {
@@ -87,9 +87,11 @@ const timeValue = computed<TimeValue | undefined>({
       return
     }
 
-    const timeString = `${value.hour.toString().padStart(2, '0')}:${value.minute.toString().padStart(2, '0')}:${value.second.toString().padStart(2, '0')}`
-
-    modelValue.value = Temporal.PlainTime.from(timeString)
+    modelValue.value = Temporal.PlainTime.from({
+      hour: value.hour,
+      minute: value.minute,
+      second: value.second,
+    })
   },
 })
 </script>
