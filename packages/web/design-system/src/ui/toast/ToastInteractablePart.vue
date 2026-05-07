@@ -28,14 +28,13 @@ function onClick(): void {
     :class="{
       'hover:underline': props.to !== null,
     }"
-
     @click="onClick"
   >
     <img
       v-if="props.imageSrc !== null"
       :src="props.imageSrc"
       :alt="props.label"
-      class="mr-xs inline size-3.5 rounded-xs align-sub"
+      class="mr-xs inline size-3.5 -translate-y-px rounded-xs align-middle"
     >
 
     <Component
