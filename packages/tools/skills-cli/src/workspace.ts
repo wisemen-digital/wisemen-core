@@ -29,7 +29,6 @@ function isWorkspaceRoot(dir: string): boolean {
 export function findWorkspaceRoot(startDir: string): string | null {
   let dir = path.resolve(startDir)
 
-  // eslint-disable-next-line ts/no-unnecessary-condition
   while (true) {
     if (isWorkspaceRoot(dir)) {
       return dir

@@ -121,25 +121,6 @@ export default {
 
 All fields are optional — config is only needed to override defaults.
 
-## Programmatic API
-
-The package exports a `build-manifest` subpath for producer packages:
-
-```ts
-import { buildManifest, writeManifest } from '@wisemen/skills-cli/build-manifest'
-
-// In-memory manifest from a skills directory
-const manifest = buildManifest({ skillsDir: './skills' })
-
-// Write manifest.json to disk
-writeManifest({ skillsDir: './skills', manifestPath: './skills/manifest.json' })
-```
-
-Or run it as a standalone script:
-
-```bash
-node node_modules/@wisemen/skills-cli/dist/build-manifest-bin.mjs --skills ./skills --out ./skills/manifest.json
-```
 
 ## Authoring skills (for `@wisemen/*` package maintainers)
 

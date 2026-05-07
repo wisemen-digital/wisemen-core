@@ -1,9 +1,6 @@
+/* eslint-disable check-file/filename-naming-convention */
 import path from 'node:path'
 
-import {
-  agentsMdMergeHelpers,
-  resolveAdapters,
-} from './adapters/index.js'
 import { discoverPackages } from './discover.js'
 import type { FileChange } from './fs-utils.js'
 import {
@@ -13,20 +10,13 @@ import {
   removeEmptyDirs,
   writeFileIfChanged,
 } from './fs-utils.js'
-import {
-  buildLockfile,
-  lockfilePath,
-  readLockfile,
-  serializeLockfile,
-  serializeLockfileStable,
-} from './lockfile.js'
 import type {
-  AdapterContext,
   DiscoveredPackage,
+  DiscoveredSkill,
   ResolvedConfig,
 } from './types.js'
 
-export interface SyncResult {
+interface SyncResult {
   changes: FileChange[]
   packages: DiscoveredPackage[]
 }
@@ -36,32 +26,28 @@ interface PlannedWrite {
   path: string
 }
 
-async function planWrites(
+function skillPath(outDir: string, skill: DiscoveredSkill): string {
+  return path.posix.join(outDir, skill.packageShortName, skill.skillName, 'SKILL.md')
+}
+
+function planWrites(
   projectRoot: string,
   config: ResolvedConfig,
   packages: DiscoveredPackage[],
-): Promise<PlannedWrite[]> {
-  const context: AdapterContext = {
-    config,
-    packages,
-    projectRoot,
-  }
-  const adapters = resolveAdapters(config.targets)
+): PlannedWrite[] {
   const writes: PlannedWrite[] = []
+  const outDir = '.agents/skills'
 
-  for (const adapter of adapters) {
-    const rendered = await adapter.render(context)
+  for (const pkg of packages) {
+    for (const skill of pkg.skills) {
+      const skillOutPath = skillPath(outDir, skill)
 
-    for (const file of rendered) {
-      const absolutePath = path.isAbsolute(file.path)
-        ? file.path
-        : path.join(projectRoot, file.path)
-      const content = adapter.name === 'agents-md'
-        ? composeAgentsMd(absolutePath, file.content)
-        : file.content
+      const absolutePath = path.isAbsolute(skillOutPath)
+        ? skillOutPath
+        : path.join(projectRoot, skillOutPath)
 
       writes.push({
-        content,
+        content: skill.raw.endsWith('\n') ? skill.raw : `${skill.raw}\n`,
         path: absolutePath,
       })
     }
@@ -70,19 +56,8 @@ async function planWrites(
   return writes
 }
 
-function composeAgentsMd(absolutePath: string, newSection: string): string {
-  const existing = readIfExists(absolutePath)
-  const marker = agentsMdMergeHelpers.START_MARKER
-  const sectionStart = newSection.indexOf(marker)
-
-  if (sectionStart === -1) { return newSection }
-  const section = newSection.slice(sectionStart)
-
-  return agentsMdMergeHelpers.composeContent(existing, section)
-}
-
-function skillsOutputRoot(projectRoot: string, config: ResolvedConfig): string {
-  const outDir = config.claude.outDir
+function skillsOutputRoot(projectRoot: string): string {
+  const outDir = '.agents/skills'
 
   return path.isAbsolute(outDir) ? outDir : path.join(projectRoot, outDir)
 }
@@ -104,15 +79,18 @@ function cleanupStaleSkills(
   changes: FileChange[],
   options: { apply: boolean },
 ): void {
-  if (!config.targets.includes('claude')) { return }
-  const root = skillsOutputRoot(projectRoot, config)
+  const root = skillsOutputRoot(projectRoot)
   const existing = listFilesRecursively(root)
 
   const deletedParents = new Set<string>()
 
   for (const file of existing) {
-    if (keep.has(file)) { continue }
-    if (!file.endsWith('.md')) { continue }
+    if (keep.has(file)) {
+      continue
+    }
+    if (!file.endsWith('.md')) {
+      continue
+    }
     if (options.apply) {
       changes.push(deleteIfExists(file))
       deletedParents.add(path.dirname(file))
@@ -131,38 +109,6 @@ function cleanupStaleSkills(
   }
 }
 
-function reconcileLockfile(
-  projectRoot: string,
-  packages: DiscoveredPackage[],
-  changes: FileChange[],
-  options: { apply: boolean },
-): void {
-  const file = lockfilePath(projectRoot)
-  const next = buildLockfile(packages)
-  const existing = readLockfile(projectRoot)
-
-  const nextStable = serializeLockfileStable(next)
-  const existingStable = existing !== null ? serializeLockfileStable(existing) : null
-
-  if (existingStable === nextStable) {
-    changes.push({
-      kind: 'unchanged',
-      path: file,
-    })
-
-    return
-  }
-  if (options.apply) {
-    changes.push(writeFileIfChanged(file, serializeLockfile(next)))
-  }
-  else {
-    changes.push({
-      kind: existing === null ? 'create' : 'update',
-      path: file,
-    })
-  }
-}
-
 export async function runSync(
   projectRoot: string,
   config: ResolvedConfig,
@@ -171,7 +117,7 @@ export async function runSync(
   },
 ): Promise<SyncResult> {
   const packages = await discoverPackages(projectRoot, config)
-  const writes = await planWrites(projectRoot, config, packages)
+  const writes = planWrites(projectRoot, config, packages)
   const changes: FileChange[] = []
 
   for (const write of writes) {
@@ -199,7 +145,6 @@ export async function runSync(
   const keep = collectExpectedPaths(writes)
 
   cleanupStaleSkills(projectRoot, config, keep, changes, options)
-  reconcileLockfile(projectRoot, packages, changes, options)
 
   return {
     changes,
