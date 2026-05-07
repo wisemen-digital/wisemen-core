@@ -27,7 +27,7 @@ export interface ToastInteractableModel {
   label: string
 
   /**
-   * The route this item navigates to when clicked`.
+   * The route this item navigates to when clicked.
    */
   to?: RouteLocationRaw
 }
