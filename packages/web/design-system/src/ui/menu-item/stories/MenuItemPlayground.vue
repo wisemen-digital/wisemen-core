@@ -95,7 +95,10 @@ import { UIMenuItem } from '@/ui/menu-item'
         <UIMenuItem
           :config="{
             right: {
-              keys: 'meta_k',
+              keyboardShortcut: {
+                key: 'K',
+                meta: true,
+              },
               type: 'shortcut',
             },
           }"

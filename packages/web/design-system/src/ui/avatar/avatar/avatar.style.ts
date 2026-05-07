@@ -2,13 +2,10 @@ import { tv } from '@/styles/tailwindVariants.lib'
 
 export const createAvatarStyle = tv({
   slots: {
-    base: `
-      aspect-square shrink-0 rounded-full border border-secondary object-cover
-    `,
+    base: `aspect-square shrink-0 rounded-full object-cover`,
     fallBack: `
       flex aspect-square size-6 shrink-0 items-center justify-center
-      rounded-full border border-secondary bg-tertiary text-xs font-semibold
-      text-quaternary
+      rounded-full bg-tertiary text-xs font-semibold text-quaternary
     `,
     logo: `
       absolute right-0 bottom-0 rounded-full object-cover ring-2 ring-white

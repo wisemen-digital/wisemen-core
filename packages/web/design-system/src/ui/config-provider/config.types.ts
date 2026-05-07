@@ -1,5 +1,5 @@
 import type { HourCycle } from '@/types/hourCycle.type'
-import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
+import type { NumberFormat } from '@/types/numberFormat.type'
 import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete'
 
 export interface ConfigProviderProps {
@@ -19,7 +19,7 @@ export interface ConfigProviderProps {
    * Can be either 'h12' or 'h24'. If not provided, the system locale's default will be used.
    * @default null
    */
-  hourCycle?: HourCycle
+  hourCycle: HourCycle | null
   /**
    * The locale to use for localization.
    */
@@ -35,10 +35,9 @@ export interface ConfigProviderProps {
    *
    * @default 'system'
    */
-  numberSeparatorStyle?: NumberSeparatorStyle
+  numberFormat: NumberFormat
   /**
-   * The selector for the teleport target.
-   * @default 'body'
+   * The name of the project, used for example in the document title template.
    */
-  teleportTargetSelector?: string
+  projectName: string
 }

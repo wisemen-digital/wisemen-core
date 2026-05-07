@@ -1,72 +1,78 @@
 <script setup lang="ts">
+import type {
+  IndividualKey,
+  RegisterableHotkey,
+} from '@tanstack/vue-hotkeys'
+import {
+  detectPlatform,
+  formatForDisplay,
+  normalizeRegisterableHotkey,
+  resolveModifier,
+} from '@tanstack/vue-hotkeys'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useKbd } from '@/composables/kbd.composable'
-import type { KeyboardShortcutProps } from '@/ui/keyboard-shortcut/keyboardShortcut.props'
-import { UIRowLayout } from '@/ui/row-layout/index'
+import type {
+  KeyboardShortcut,
+  KeyboardShortcutKeyPart,
+  KeyboardShortcutPart,
+} from '@/ui/keyboard-shortcut/keyboardShortcut.type'
+import KeyboardShortcutKey from '@/ui/keyboard-shortcut/KeyboardShortcutKey.vue'
+import { UIRowLayout } from '@/ui/row-layout'
 
-interface CombinationSeparatorPart {
-  part: 'separator'
-  type: 'combination'
-}
-
-interface SequenceSeparatorPart {
-  part: 'separator'
-  type: 'sequence'
-}
-
-interface KeyPart {
-  part: 'key'
-  value: string
-}
-
-type ShortcutPart = CombinationSeparatorPart | KeyPart | SequenceSeparatorPart
-
-const props = defineProps<KeyboardShortcutProps>()
-
-const COMBINATION_SEPARATOR = '_' // meta_k
-const SEQUENCE_SEPARATOR = '-' // g-d
+const props = withDefaults(defineProps<{
+  enableKeyHoldVisualization?: boolean
+  keyboardShortcut: KeyboardShortcut
+}>(), {
+  enableKeyHoldVisualization: false,
+})
 
 const i18n = useI18n()
-const kbd = useKbd()
 
-const shortcutParts = computed<ShortcutPart[]>(() => {
-  const parts: ShortcutPart[] = []
-  const sequenceParts = props.keyboardShortcut.split(SEQUENCE_SEPARATOR)
+// Resolve platform once — detectPlatform() reads navigator.userAgent synchronously
+const platform = detectPlatform()
 
-  for (const [
-    sequenceIndex,
-    sequencePart,
-  ] of sequenceParts.entries()) {
-    const combinationParts = sequencePart.split(COMBINATION_SEPARATOR)
+// Use a unique separator so we can split individual key labels out of the
+// formatForDisplay result without risking collision with key names.
+const PART_SEPARATOR = '\x00'
+
+function buildKeyParts(step: RegisterableHotkey): KeyboardShortcutKeyPart[] {
+  const rawKeys = normalizeRegisterableHotkey(step, platform).split('+')
+  const displayValues = formatForDisplay(step, {
+    platform,
+    separatorToken: PART_SEPARATOR,
+  }).split(PART_SEPARATOR)
+
+  return rawKeys.map((rawKey, i) => ({
+    part: 'key' as const,
+    rawKey: (rawKey === 'Mod' ? resolveModifier('Mod', platform) : rawKey) as IndividualKey,
+    value: (displayValues[i] ?? rawKey),
+  }))
+}
+
+const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
+  const sc = props.keyboardShortcut
+
+  if ('sequence' in sc) {
+    const parts: KeyboardShortcutPart[] = []
 
     for (const [
-      combinationIndex,
-      combinationPart,
-    ] of combinationParts.entries()) {
-      parts.push({
-        part: 'key',
-        value: kbd.getKbdKey(combinationPart.trim()),
-      })
+      index,
+      step,
+    ] of sc.sequence.entries()) {
+      parts.push(...buildKeyParts(step))
 
-      if (combinationIndex < combinationParts.length - 1) {
+      if (index < sc.sequence.length - 1) {
         parts.push({
           part: 'separator',
-          type: 'combination',
         })
       }
     }
 
-    if (sequenceIndex < sequenceParts.length - 1) {
-      parts.push({
-        part: 'separator',
-        type: 'sequence',
-      })
-    }
+    return parts
   }
 
-  return parts
+  return buildKeyParts(sc)
 })
 </script>
 
@@ -76,23 +82,18 @@ const shortcutParts = computed<ShortcutPart[]>(() => {
       v-for="(part, partIndex) of shortcutParts"
       :key="partIndex"
     >
-      <kbd
+      <KeyboardShortcutKey
         v-if="part.part === 'key'"
-        class="
-          flex h-4 min-w-4 items-center justify-center rounded-xs border
-          border-secondary px-xxs text-center font-sans text-[0.6187rem]
-          text-tertiary capitalize
-          dark:bg-secondary
-        "
-      >
-        {{ part.value }}
-      </kbd>
+        :keyboard-key="part.value"
+        :raw-key="part.rawKey"
+        :enable-key-hold-visualization="props.enableKeyHoldVisualization"
+      />
 
       <span
-        v-else-if="part.type === 'sequence'"
+        v-else
         class="text-xxs text-tertiary"
       >
-        {{ i18n.t('component.keyboard_shortcut.sequence_label') }}
+        {{ i18n.t('component.keyboard_shortcut.then') }}
       </span>
     </template>
   </UIRowLayout>

@@ -25,7 +25,10 @@ function toggleSidebar(): void {
 <template>
   <ActionTooltip
     :label="label"
-    keyboard-shortcut="meta_b"
+    :keyboard-shortcut="{
+      key: 'B',
+      meta: true,
+    }"
   >
     <ClickableElement @click="toggleSidebar">
       <Toggle

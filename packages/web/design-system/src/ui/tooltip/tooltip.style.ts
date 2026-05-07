@@ -6,7 +6,7 @@ export const createTooltipStyle = tv({
       relative size-full overflow-hidden rounded-sm border border-secondary
       bg-primary shadow-lg
     `,
-    contentWrapper: `z-tooltip will-change-[transform,filter,opacity]`,
+    contentWrapper: `z-50 will-change-[transform,filter,opacity]`,
   },
   variants: {
     popoverWidth: {

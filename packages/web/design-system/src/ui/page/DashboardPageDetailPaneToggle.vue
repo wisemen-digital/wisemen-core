@@ -21,7 +21,10 @@ const label = computed<string>(() => (isOpen.value
 <template>
   <ActionTooltip
     :label="label"
-    keyboard-shortcut="meta_i"
+    :keyboard-shortcut="{
+      key: 'I',
+      meta: true,
+    }"
   >
     <ClickableElement @click="toggleIsOpen">
       <Toggle

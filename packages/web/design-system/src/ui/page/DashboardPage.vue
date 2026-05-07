@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { useTitle } from '@vueuse/core'
 import {
   computed,
-  onMounted,
   useSlots,
+  watch,
 } from 'vue'
 
+import { useInjectConfigContext } from '@/ui/config-provider'
 import type { DashboardPageProps } from '@/ui/page/dashboardPage.type'
 import DashboardPageDetailPane from '@/ui/page/DashboardPageDetailPane.vue'
 import DashboardPageDetailPaneToggle from '@/ui/page/DashboardPageDetailPaneToggle.vue'
@@ -18,6 +20,7 @@ import Separator from '@/ui/separator/Separator.vue'
 const props = withDefaults(defineProps<DashboardPageProps & {
   detailPane?: DetailPaneConfig | null
 }>(), {
+  isTitleHidden: false,
   actions: () => [],
   breadcrumbs: () => [],
   detailPane: null,
@@ -28,7 +31,15 @@ const isOpen = defineModel<boolean>('isDetailPaneOpen', {
   default: true,
 })
 
+const configContext = useInjectConfigContext()
 const slots = useSlots()
+const documentTitle = useTitle()
+
+watch(() => props.title, (title) => {
+  documentTitle.value = `${title} — ${configContext.projectName.value}`
+}, {
+  immediate: true,
+})
 
 const hasDetailPane = computed<boolean>(() => {
   return props.detailPane !== null && slots['detail-pane'] !== undefined
@@ -64,18 +75,6 @@ if (hasDetailPane.value) {
     onResizeStart,
   })
 }
-
-function warnIfMissingH1(): void {
-  const h1El = document.querySelector('h1') ?? null
-
-  if (h1El === null) {
-    console.warn('[DashboardPage] No <h1> found in the default slot. For accessibility reasons, please ensure that there is exactly one <h1> element within the default slot content.')
-  }
-}
-
-onMounted(() => {
-  warnIfMissingH1()
-})
 </script>
 
 <template>
