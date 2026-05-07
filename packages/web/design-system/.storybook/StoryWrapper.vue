@@ -90,7 +90,7 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
 <template>
   <!-- eslint-disable better-tailwindcss/no-unknown-classes -->
   <ConfigProvider
-    ::locale="locale ?? 'en-US'"
+    :locale="locale ?? 'en-US'"
     :hour-cycle="hourCycle ?? '24-hour'"
     :address-autocomplete-adapter="mockAddressAutocompleteAdapter"
   >
