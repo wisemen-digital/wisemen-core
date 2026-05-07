@@ -1,9 +1,6 @@
+/* eslint-disable check-file/filename-naming-convention */
 import path from 'node:path'
 
-import {
-  agentsMdMergeHelpers,
-  resolveAdapters,
-} from './adapters/index.js'
 import { discoverPackages } from './discover.js'
 import type { FileChange } from './fs-utils.js'
 import {
@@ -13,85 +10,63 @@ import {
   removeEmptyDirs,
   writeFileIfChanged,
 } from './fs-utils.js'
-import {
-  buildLockfile,
-  lockfilePath,
-  readLockfile,
-  serializeLockfile,
-  serializeLockfileStable,
-} from './lockfile.js'
 import type {
-  AdapterContext,
   DiscoveredPackage,
+  DiscoveredSkill,
   ResolvedConfig,
 } from './types.js'
 
-export interface SyncResult {
+interface SyncResult {
   changes: FileChange[]
   packages: DiscoveredPackage[]
 }
 
-interface PlannedWrite {
-  content: string
-  path: string
+interface PlannedCopy {
+  dstPath: string
+  srcPath: string
 }
 
-async function planWrites(
-  projectRoot: string,
-  config: ResolvedConfig,
-  packages: DiscoveredPackage[],
-): Promise<PlannedWrite[]> {
-  const context: AdapterContext = {
-    config,
-    packages,
-    projectRoot,
-  }
-  const adapters = resolveAdapters(config.targets)
-  const writes: PlannedWrite[] = []
+function skillOutputDir(projectRoot: string, skill: DiscoveredSkill): string {
+  const outDir = path.join(projectRoot, '.agents/skills')
 
-  for (const adapter of adapters) {
-    const rendered = await adapter.render(context)
+  const packageName = skill.packageName.replace('@', '').replace('/', '-')
 
-    for (const file of rendered) {
-      const absolutePath = path.isAbsolute(file.path)
-        ? file.path
-        : path.join(projectRoot, file.path)
-      const content = adapter.name === 'agents-md'
-        ? composeAgentsMd(absolutePath, file.content)
-        : file.content
+  return path.join(outDir, `packages@${packageName}@${skill.skillName}`)
+}
 
-      writes.push({
-        content,
-        path: absolutePath,
-      })
+function planCopies(projectRoot: string, packages: DiscoveredPackage[]): PlannedCopy[] {
+  const copies: PlannedCopy[] = []
+
+  for (const pkg of packages) {
+    for (const skill of pkg.skills) {
+      const destSkillDir = skillOutputDir(projectRoot, skill)
+      const srcFiles = listFilesRecursively(skill.skillDir)
+
+      for (const srcFile of srcFiles) {
+        const relPath = path.relative(skill.skillDir, srcFile)
+
+        copies.push({
+          dstPath: path.join(destSkillDir, relPath),
+          srcPath: srcFile,
+        })
+      }
     }
   }
 
-  return writes
+  return copies
 }
 
-function composeAgentsMd(absolutePath: string, newSection: string): string {
-  const existing = readIfExists(absolutePath)
-  const marker = agentsMdMergeHelpers.START_MARKER
-  const sectionStart = newSection.indexOf(marker)
-
-  if (sectionStart === -1) { return newSection }
-  const section = newSection.slice(sectionStart)
-
-  return agentsMdMergeHelpers.composeContent(existing, section)
-}
-
-function skillsOutputRoot(projectRoot: string, config: ResolvedConfig): string {
-  const outDir = config.claude.outDir
+function skillsOutputRoot(projectRoot: string): string {
+  const outDir = '.agents/skills'
 
   return path.isAbsolute(outDir) ? outDir : path.join(projectRoot, outDir)
 }
 
-function collectExpectedPaths(writes: PlannedWrite[]): Set<string> {
+function collectExpectedPaths(copies: PlannedCopy[]): Set<string> {
   const paths = new Set<string>()
 
-  for (const write of writes) {
-    paths.add(write.path)
+  for (const copy of copies) {
+    paths.add(copy.dstPath)
   }
 
   return paths
@@ -99,20 +74,24 @@ function collectExpectedPaths(writes: PlannedWrite[]): Set<string> {
 
 function cleanupStaleSkills(
   projectRoot: string,
-  config: ResolvedConfig,
   keep: Set<string>,
   changes: FileChange[],
   options: { apply: boolean },
 ): void {
-  if (!config.targets.includes('claude')) { return }
-  const root = skillsOutputRoot(projectRoot, config)
+  const root = skillsOutputRoot(projectRoot)
   const existing = listFilesRecursively(root)
 
   const deletedParents = new Set<string>()
 
+  const prefix = path.join(root, 'packages@')
+
   for (const file of existing) {
-    if (keep.has(file)) { continue }
-    if (!file.endsWith('.md')) { continue }
+    if (!file.startsWith(prefix)) {
+      continue
+    }
+    if (keep.has(file)) {
+      continue
+    }
     if (options.apply) {
       changes.push(deleteIfExists(file))
       deletedParents.add(path.dirname(file))
@@ -124,42 +103,11 @@ function cleanupStaleSkills(
       })
     }
   }
+
   if (options.apply) {
     for (const dir of deletedParents) {
       removeEmptyDirs(dir, path.dirname(root))
     }
-  }
-}
-
-function reconcileLockfile(
-  projectRoot: string,
-  packages: DiscoveredPackage[],
-  changes: FileChange[],
-  options: { apply: boolean },
-): void {
-  const file = lockfilePath(projectRoot)
-  const next = buildLockfile(packages)
-  const existing = readLockfile(projectRoot)
-
-  const nextStable = serializeLockfileStable(next)
-  const existingStable = existing !== null ? serializeLockfileStable(existing) : null
-
-  if (existingStable === nextStable) {
-    changes.push({
-      kind: 'unchanged',
-      path: file,
-    })
-
-    return
-  }
-  if (options.apply) {
-    changes.push(writeFileIfChanged(file, serializeLockfile(next)))
-  }
-  else {
-    changes.push({
-      kind: existing === null ? 'create' : 'update',
-      path: file,
-    })
   }
 }
 
@@ -171,35 +119,41 @@ export async function runSync(
   },
 ): Promise<SyncResult> {
   const packages = await discoverPackages(projectRoot, config)
-  const writes = await planWrites(projectRoot, config, packages)
+  const copies = planCopies(projectRoot, packages)
   const changes: FileChange[] = []
 
-  for (const write of writes) {
+  for (const copy of copies) {
     if (options.apply) {
-      changes.push(writeFileIfChanged(write.path, write.content))
+      const content = readIfExists(copy.srcPath) ?? ''
+
+      changes.push(writeFileIfChanged(copy.dstPath, content))
     }
     else {
-      const existing = readIfExists(write.path)
+      const src = readIfExists(copy.srcPath) ?? ''
+      const existing = readIfExists(copy.dstPath)
 
-      if (existing === write.content) {
-        changes.push({
-          kind: 'unchanged',
-          path: write.path,
-        })
+      let kind: FileChange['kind']
+
+      if (existing === null) {
+        kind = 'create'
+      }
+      else if (existing === src) {
+        kind = 'unchanged'
       }
       else {
-        changes.push({
-          kind: existing === null ? 'create' : 'update',
-          path: write.path,
-        })
+        kind = 'update'
       }
+
+      changes.push({
+        kind,
+        path: copy.dstPath,
+      })
     }
   }
 
-  const keep = collectExpectedPaths(writes)
+  const keep = collectExpectedPaths(copies)
 
-  cleanupStaleSkills(projectRoot, config, keep, changes, options)
-  reconcileLockfile(projectRoot, packages, changes, options)
+  cleanupStaleSkills(projectRoot, keep, changes, options)
 
   return {
     changes,

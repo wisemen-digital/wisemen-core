@@ -4,8 +4,6 @@ export default defineConfig({
   dts: true,
   entry: [
     'src/index.ts',
-    'src/build-manifest.ts',
-    'src/build-manifest-bin.ts',
   ],
   format: [
     'esm',

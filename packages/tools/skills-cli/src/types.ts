@@ -10,12 +10,11 @@ export interface SkillFrontmatter {
 }
 
 export interface DiscoveredSkill {
-  body: string
   frontmatter: SkillFrontmatter
   packageName: string
   packageShortName: string
   packageVersion: string
-  raw: string
+  skillDir: string
   skillName: string
   skillPath: string
 }
@@ -44,8 +43,6 @@ export interface Adapter {
   render: (ctx: AdapterContext) => Promise<RenderedFile[]> | RenderedFile[]
 }
 
-export type TargetName = 'agents-md' | 'claude' | 'llms-txt'
-
 export interface Config {
   agentsMd?: { path?: string }
   claude?: { outDir?: string }
@@ -55,19 +52,14 @@ export interface Config {
     deny?: string[]
     unscoped?: string[]
   }
-  targets?: TargetName[]
 }
 
 export interface ResolvedConfig {
-  agentsMd: { path: string }
-  claude: { outDir: string }
-  llmsTxt: { path: string }
   packages: {
     allow: string[] | null
     deny: string[]
     unscoped: string[]
   }
-  targets: TargetName[]
 }
 
 export interface LockfileEntry {

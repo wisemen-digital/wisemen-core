@@ -17,7 +17,6 @@ packages/{web,api}/<your-package>/
 ├── package.json
 ├── src/
 └── skills/
-    ├── manifest.json                   ← machine-readable index
     ├── <skill-name>/SKILL.md
     └── <other-skill>/SKILL.md
 ```
@@ -57,42 +56,13 @@ requires:
 
 | Field | Notes |
 |-------|-------|
-| `type` | Free-form classification (`core`, `lifecycle`, `composition`, etc.). Surfaced in `manifest.json`; not interpreted by the CLI. |
+| `type` | Free-form classification (`core`, `lifecycle`, `composition`, etc.). |
 | `library` | The package this skill describes. Defaults to the surrounding package. |
 | `library_version` | **Informational only** — describes which version the skill was authored against. The CLI does NOT filter on it (skills always travel with the package version that bundled them). Use a SemVer range when authoring against a stable surface; an exact version is fine for early/breaking work. |
 | `sources` | List of source files this skill is based on (use `<repo>:<path>` so the references survive moves). |
-| `requires` | Other skill names (in this same package) that should be read first. Surfaced in `manifest.json`; the CLI doesn't enforce ordering. |
+| `requires` | Other skill names (in this same package) that should be read first. |
 
 Any additional keys you put in frontmatter are preserved in the rendered output — useful for editor-specific annotations.
-
-## manifest.json
-
-A machine-readable index of all skills in your package. Generate it with:
-
-```bash
-node ../../tools/skills-cli/dist/build-manifest.mjs
-```
-
-(or hook it into your `build` script). Output:
-
-```json
-{
-  "version": 1,
-  "generatedBy": "@wisemen/skills-cli",
-  "skills": [
-    {
-      "name": "writing-mutations",
-      "description": "...",
-      "type": "core",
-      "library_version": ">=1.0.0 <2.0.0",
-      "path": "writing-mutations/SKILL.md",
-      "requires": ["foundations"]
-    }
-  ]
-}
-```
-
-Commit it. The CLI works without it (falls back to scanning every `SKILL.md`), but having it lets indexes show summaries cheaply and provides a stable URL for tooling.
 
 ## Shipping skills with your package
 
@@ -103,14 +73,11 @@ In your `package.json`:
   "files": [
     "dist",
     "skills"        // <-- include skills in the npm tarball
-  ],
-  "wisemen": {
-    "skills": "./skills"   // <-- explicit pointer (optional; defaults to ./skills)
-  }
+  ]
 }
 ```
 
-Verify with `pnpm pack --dry-run`: the output should include `skills/manifest.json` and every `skills/<name>/SKILL.md`.
+Verify with `pnpm pack --dry-run`: the output should include every `skills/<name>/SKILL.md`.
 
 ## Naming conventions
 
@@ -135,7 +102,7 @@ If a skill becomes wrong on a new version, edit it in the same PR that changes t
 
 Once your skills ship, a consumer who has `@wisemen/skills-cli` set up runs `pnpm skills:sync` (or relies on their `postinstall` hook). They get:
 
-- `.claude/skills/wisemen/<your-package-short-name>/<skill>/SKILL.md` — for Claude Code.
+- `.agents/skills/<your-package-short-name>/<skill>/SKILL.md` — for Claude Code.
 - A regenerated `## Skills from @wisemen packages` section in `AGENTS.md` — for Codex/Aider/Zed.
 - An `llms.txt` index entry — for the emerging cross-LLM standard.
 
