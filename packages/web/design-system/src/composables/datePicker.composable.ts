@@ -1,5 +1,6 @@
 import { CalendarDate } from '@internationalized/date'
 import type { DateValue } from 'reka-ui'
+import { injectConfigProviderContext } from 'reka-ui'
 import { Temporal } from 'temporal-polyfill'
 import type { Ref } from 'vue'
 import {
@@ -18,7 +19,11 @@ export function useDatePicker({
   minDate,
   modelValue,
 }: UseDatePickerOptions) {
-  const locale = navigator.language
+  const {
+    locale: configLocale,
+  } = injectConfigProviderContext()
+
+  const locale = computed<string>(() => configLocale?.value ?? navigator.language)
 
   const todayDate = Temporal.Now.plainDateISO()
   const calendarPlaceholder = shallowRef<CalendarDate>(

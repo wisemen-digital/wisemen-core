@@ -2,7 +2,7 @@
 import type { Temporal } from 'temporal-polyfill'
 import { ref } from 'vue'
 
-import type { DateRangePickerRange } from '@/ui/date-range-picker/DateRangePicker.vue'
+import type { DateRangePickerRange } from '@/ui/date-range-picker/dateRangePicker.props'
 import DateRangePicker from '@/ui/date-range-picker/DateRangePicker.vue'
 
 const props = withDefaults(defineProps<{

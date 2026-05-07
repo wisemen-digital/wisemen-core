@@ -17,3 +17,8 @@ export interface DateRangePickerProps {
    */
   showPresets?: boolean
 }
+
+export interface DateRangePickerRange {
+  end: Temporal.PlainDate | null
+  start: Temporal.PlainDate | null
+}

@@ -3,7 +3,6 @@ import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerRoot as RekaDateRangePickerRoot,
 } from 'reka-ui'
-import type { Temporal } from 'temporal-polyfill'
 import { toRef } from 'vue'
 
 import { useDateRangePicker } from '@/composables/dateRangePicker.composable'
@@ -11,7 +10,10 @@ import { useProvideDateRangeFieldContext } from '@/ui/date-range-field/dateRange
 import DateRangeFieldCalendarGrid from '@/ui/date-range-field/DateRangeFieldCalendarGrid.vue'
 import DateRangeFieldCalendarHeader from '@/ui/date-range-field/DateRangeFieldCalendarHeader.vue'
 import DateRangeFieldPresets from '@/ui/date-range-field/DateRangeFieldPresets.vue'
-import type { DateRangePickerProps } from '@/ui/date-range-picker/dateRangePicker.props'
+import type {
+  DateRangePickerProps,
+  DateRangePickerRange,
+} from '@/ui/date-range-picker/dateRangePicker.props'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 import { getWeekStartsOn } from '@/utils/weekStartsOn.util'
 
@@ -24,11 +26,6 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
   minDate: null,
   showPresets: true,
 })
-
-export interface DateRangePickerRange {
-  end: Temporal.PlainDate | null
-  start: Temporal.PlainDate | null
-}
 
 const modelValue = defineModel<DateRangePickerRange | null>({
   required: true,
