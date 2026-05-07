@@ -31,8 +31,12 @@
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "files": [
-    "./dist"
+    "./dist",
+    "skills"
   ],
+  "wisemen": {
+    "skills": "./skills"
+  },
   "scripts": {
     "build": "vite build && pnpm build:source",
     "build:source": "cat src/styles/source.css src/styles/utilities.css > dist/source.css",
