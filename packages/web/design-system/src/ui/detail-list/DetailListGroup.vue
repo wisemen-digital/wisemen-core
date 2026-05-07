@@ -42,7 +42,7 @@ const delegatedIsOpen = computed<boolean>({
       return true
     }
 
-    return isOpen.value as boolean
+    return isOpen.value
   },
   set: (value: boolean) => {
     if (!collapseOptions.value.isCollapsible) {
@@ -94,7 +94,7 @@ const delegatedIsOpen = computed<boolean>({
   </CollapsibleRoot>
 </template>
 
-<style>
+<style scoped>
 @keyframes collapsible-up {
   from {
     height: var(--reka-collapsible-content-height);

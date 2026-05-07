@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { UIColumnLayout } from '@wisemen/vue-core-design-system'
+import { UIColumnLayout } from '@/ui/column-layout'
 </script>
 
 <template>
