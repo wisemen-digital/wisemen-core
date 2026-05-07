@@ -38,6 +38,7 @@
   "component.tabs.adaptive_dropdown.trigger.label": "More",
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
+  "component.toast.close.label": "Close",
   "component.unsaved_changes_dialog.cancel": "Keep editing",
   "component.unsaved_changes_dialog.confirm": "Discard changes",
   "component.unsaved_changes_dialog.description": "You have unsaved changes. Are you sure you want to leave?",
