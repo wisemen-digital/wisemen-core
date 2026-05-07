@@ -1,3 +1,15 @@
+## 1.0.0
+
+### Major Changes
+
+- Breaking change: migrate `@wisemen/vue-core-telemetry` to OpenTelemetry-only and remove all Sentry integration.
+- Replace the public API with OTEL-native configuration and helpers:
+  `TelemetryOptions` is now a single OTEL config,
+  `recordException()` replaces `captureException()`,
+  `log()` replaces `captureMessage()`,
+  and `setAttribute()` / `setAttributes()` replace the Sentry tag/extra helpers.
+- Add OTEL metrics support via `metricsEndpoint`, OTEL logging support via `logEndpoint`, OTEL-based Vue/browser runtime error capture, and package tests for the new behavior.
+
 ## 0.0.6
 
 ### Patch Changes
