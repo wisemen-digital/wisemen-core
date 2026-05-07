@@ -12,6 +12,7 @@ import {
   INPUT_DEFAULTS,
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
+  omit,
 } from '@/types/input.type'
 import { UIAvatar } from '@/ui/avatar'
 import type { BadgeData } from '@/ui/badge/BadgeGroupTruncate.vue'
@@ -38,7 +39,7 @@ defineOptions({
 const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
-  ...INPUT_FIELD_DEFAULTS,
+  ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
   keepDropdownOpenOnSelect: null,

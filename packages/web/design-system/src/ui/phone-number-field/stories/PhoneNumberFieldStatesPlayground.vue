@@ -18,7 +18,6 @@ const preferredValue = ref<string | null>(null)
       v-model="emptyValue"
       class="w-72"
       label="Default"
-      placeholder="+32 ..."
     />
 
     <PhoneNumberField
@@ -47,7 +46,6 @@ const preferredValue = ref<string | null>(null)
       :is-loading="true"
       class="w-72"
       label="Loading"
-      placeholder="+32 ..."
     />
 
     <PhoneNumberField
@@ -63,7 +61,6 @@ const preferredValue = ref<string | null>(null)
       class="w-72"
       label="With preferred countries"
       hint="BE, NL, FR, DE pinned at top"
-      placeholder="+32 ..."
     />
   </div>
 </template>
