@@ -116,7 +116,7 @@ export const createLinkStyle = tv({
         label: `text-secondary`,
         root: `
           border-transparent
-          hover:bg-primary-hover
+          hover:bg-secondary-hover
           focus-visible:outline-fg-brand-primary
         `,
       },

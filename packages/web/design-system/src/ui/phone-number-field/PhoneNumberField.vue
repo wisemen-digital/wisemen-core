@@ -66,7 +66,7 @@ const modelValue = defineModel<string | null>({
   required: true,
 })
 
-const configContext = useInjectConfigContext(null)
+const configContext = useInjectConfigContext()
 const attrs = useAttrs()
 const id = props.id ?? useId()
 const inputRef = useTemplateRef('input')

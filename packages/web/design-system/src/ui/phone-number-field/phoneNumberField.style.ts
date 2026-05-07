@@ -6,6 +6,10 @@ export const createPhoneNumberFieldStyle = tv({
       block h-3.5 w-5 shrink-0 overflow-hidden rounded-xxs
       [&>svg]:size-full [&>svg]:object-cover
     `,
+    countryFlag: `
+      block h-3.5 w-5 shrink-0 overflow-hidden rounded-xxs
+      [&>svg]:size-full [&>svg]:object-cover
+    `,
     countryTrigger: `
       ml-xxs flex h-6.5 shrink-0 items-center gap-xs rounded-sm pr-xs pl-sm
       outline-none
@@ -13,6 +17,7 @@ export const createPhoneNumberFieldStyle = tv({
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
       disabled:cursor-not-allowed
     `,
+    dialCode: 'shrink-0 text-xs text-disabled select-none',
     dialCode: 'shrink-0 text-xs text-disabled select-none',
     input: `
       size-full truncate bg-transparent text-xs text-primary outline-none

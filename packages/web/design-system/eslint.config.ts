@@ -32,4 +32,12 @@ export default [
       'eslint-plugin-wisemen/explicit-function-return-type-with-regex': 'off',
     },
   },
+  {
+    files: [
+      '**/*Playground.vue',
+    ],
+    rules: {
+      '@intlify/vue-i18n/no-raw-text': 'off',
+    },
+  },
 ]

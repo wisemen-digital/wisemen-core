@@ -25,6 +25,10 @@ export const TELEMETRY_NAVIGATION: PackageDocNavigation = {
           text: 'Instrumentation',
           link: '/pages/usage/instrumentation',
         },
+        {
+          text: 'Rationale',
+          link: '/pages/usage/rationale',
+        },
       ],
     },
   ],
