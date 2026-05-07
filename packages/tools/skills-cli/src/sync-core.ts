@@ -1,4 +1,3 @@
-/* eslint-disable check-file/filename-naming-convention */
 import path from 'node:path'
 
 import { discoverPackages } from './discover.js'

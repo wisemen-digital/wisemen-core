@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface SkillFrontmatter {
   name: string
   [key: string]: unknown

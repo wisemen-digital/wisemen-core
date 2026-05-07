@@ -1,6 +1,5 @@
 import chalk from 'chalk'
 
-/* eslint-disable no-console */
 export class Logger {
   constructor(
     private readonly options: {

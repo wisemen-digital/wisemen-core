@@ -42,7 +42,7 @@ export async function check(options: CheckOptions): Promise<number> {
       }
       const change = drift[i]
 
-      // eslint-disable-next-line no-nested-ternary
+       
       const symbol = change.kind === 'create' ? '+' : (change.kind === 'update' ? '~' : '-')
 
       logger.log(`  ${symbol} ${change.path}`)

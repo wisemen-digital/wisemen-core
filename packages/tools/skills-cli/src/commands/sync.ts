@@ -1,4 +1,4 @@
-/* eslint-disable no-nested-ternary */
+ 
 import chalk from 'chalk'
 
 import { Logger } from '@/logger.js'

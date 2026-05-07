@@ -23,7 +23,7 @@ function run(): void {
   program
     .name('wisemen-skills')
     .description('Sync AI coding skills from installed @wisemen/* packages into the current project.')
-    .version('0.1.0')
+    .version('0.0.1')
 
   program
     .command('sync')

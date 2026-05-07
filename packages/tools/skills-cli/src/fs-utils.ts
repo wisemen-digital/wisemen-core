@@ -1,4 +1,3 @@
-/* eslint-disable check-file/filename-naming-convention */
 import {
   existsSync,
   mkdirSync,
@@ -74,7 +73,7 @@ export function listFilesRecursively(dir: string): string[] {
     return []
   }
   const out: string[] = []
-  // eslint-disable-next-line func-style
+
   const walk = (current: string): void => {
     for (const entry of readdirSync(current, {
       withFileTypes: true,

@@ -1,10 +1,12 @@
-import { packageConfig } from '@wisemen/eslint-config-vue'
+import eslintNestJSConfig from '@wisemen/eslint-config-nestjs'
 
 export default [
-  ...(await packageConfig()),
+  ...eslintNestJSConfig,
   {
-    ignores: [
-      'dist/**',
-    ],
-  },
+    files: ['**/*.test.ts'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-floating-promises': 'off'
+    }
+  }
 ]
