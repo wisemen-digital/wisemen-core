@@ -1,11 +1,17 @@
 packages:
   - docs
   - "packages/**/*"
-catalog:
-  '@tanstack/vue-hotkeys': ^0.10.0
 
 catalogs:
   vue:
+    "@tanstackvue-query": ^0.0.0
+    "@tanstacvue-query": ^0.0.0
+    "@tanstavue-query": ^0.0.0
+    "@tanstvue-query": ^0.0.0
+    "@tansvue-query": ^0.0.0
+    "@tanvue-query": ^0.0.0
+    "@tavue-query": ^0.0.0
+    "@tvue-query": ^0.0.0
     "@vue-query": ^0.0.0
     "vue": "3.5.27"
     "motion-v": "2.2.1"
@@ -202,16 +208,16 @@ catalogs:
     "eslint-plugin-storybook": "10.2.13"
     "vue-component-meta": 3.2.6
   backend:
-    "@aws-sdk/client-s3": "3.1013.0"
-    "@aws-sdk/lib-storage": "3.1013.0"
-    "@aws-sdk/s3-request-presigner": "3.1013.0"
-    "@azure/storage-blob": "12.31.0"
     "@nats-io/jetstream": "^3.3.1"
     "@nats-io/jwt": "^0.0.10-5"
     "@nats-io/kv": "^3.3.1"
     "@nats-io/nkeys": "^2.0.3"
     "@nats-io/services": "^3.3.1"
     "@nats-io/transport-node": "^3.3.1"
+    "@aws-sdk/client-s3": "3.1013.0"
+    "@aws-sdk/lib-storage": "3.1013.0"
+    "@aws-sdk/s3-request-presigner": "3.1013.0"
+    "@azure/storage-blob": "12.31.0"
     "@nestjs/common": "11.1.19"
     "@nestjs/config": "4.0.3"
     "@nestjs/core": "11.1.19"
@@ -224,8 +230,8 @@ catalogs:
     "@opentelemetry/exporter-trace-otlp-http": "0.214.0"
     "@opentelemetry/instrumentation": "0.214.0"
     "@opentelemetry/instrumentation-aws-sdk": "0.69.0"
-    "@opentelemetry/instrumentation-express": "0.62.0"
     "@opentelemetry/instrumentation-http": "0.214.0"
+    "@opentelemetry/instrumentation-express": "0.62.0"
     "@opentelemetry/instrumentation-nestjs-core": "0.60.0"
     "@opentelemetry/instrumentation-pg": "0.66.0"
     "@opentelemetry/instrumentation-redis": "0.62.0"
@@ -275,10 +281,10 @@ catalogs:
     "@aws-sdk/s3-request-presigner": ">=3.1023.0"
     "@azure/storage-blob": ">=12.31.0"
     "@nestjs/common": ">=11.1.17"
-    "@nestjs/config": ">=4.0.3"
-    "@nestjs/core": ">=11.1.17"
     "@nestjs/platform-express": ">=11.1.17"
     "@nestjs/platform-fastify": ">=11.1.17"
+    "@nestjs/config": ">=4.0.3"
+    "@nestjs/core": ">=11.1.17"
     "@nestjs/swagger": ">=11.2.6"
     "@nestjs/typeorm": ">=11.0.0"
     "@opentelemetry/api": ">=1.9.1"
@@ -300,4 +306,5 @@ catalogs:
     "reflect-metadata": ">=0.2.2"
     "rxjs": ">=7.8.2"
     "typeorm": ">=0.3.28"
-  
+catalog:
+  "@tanstack/vue-hotkeys": ^0.0.0
