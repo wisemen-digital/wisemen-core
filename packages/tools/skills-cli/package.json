@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/skills-cli",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Sync AI coding skills from installed @wisemen/* packages into a consumer project, rendered per LLM target (Claude Code, AGENTS.md, llms.txt).",
   "publishConfig": {
     "access": "public"
