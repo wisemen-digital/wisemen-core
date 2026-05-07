@@ -28,7 +28,7 @@ export function addressToFormattedAddress(address: Address): FormattedAddress {
   }
 
   return {
-    placeId: '',
+    placeId: address.placeId ?? '',
     mainText: mainTextParts.join(' '),
     secondaryText: secondaryTextParts.join(' '),
   }

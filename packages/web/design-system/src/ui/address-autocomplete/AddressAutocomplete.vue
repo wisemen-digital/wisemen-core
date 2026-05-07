@@ -103,9 +103,5 @@ async function onUpdateModelValue(value: FormattedAddress | null): Promise<void>
     <template #left>
       <slot name="left" />
     </template>
-
-    <template #right>
-      <slot name="right" />
-    </template>
   </UIAutocomplete>
 </template>
