@@ -14,7 +14,7 @@ catalogs:
     "@tvue-query": ^0.0.0
     "@vue-query": ^0.0.0
     "vue": "3.5.27"
-    "motion-v": "1.9.0"
+    "motion-v": "2.2.1"
     "vue-i18n": "11.2.8"
     "@vueuse/core": "14.1.0"
     "@vueuse/router": "14.1.0"
@@ -89,7 +89,7 @@ catalogs:
     "chalk": "5.6.2"
     "commander": "14.0.2"
   vite:
-    "vite": "8.0.5"
+    "vite": "8.0.6"
     "vite-plugin-dts": "4.5.4"
     "@vitejs/plugin-vue": "6.0.3"
     "@tailwindcss/vite": "4.1.18"
@@ -157,17 +157,21 @@ catalogs:
     "@changesets/cli": "2.30.0"
     "@tanstack/intent": ^0.0.29
   telemetry:
+    "@opentelemetry/api": "1.9.0"
+    "@opentelemetry/api-logs": "0.214.0"
     "@opentelemetry/context-zone": "2.5.0"
     "@opentelemetry/core": "2.5.0"
+    "@opentelemetry/exporter-logs-otlp-http": "0.214.0"
+    "@opentelemetry/exporter-metrics-otlp-proto": "0.214.0"
     "@opentelemetry/exporter-trace-otlp-http": "0.211.0"
     "@opentelemetry/instrumentation": "0.211.0"
     "@opentelemetry/instrumentation-fetch": "0.211.0"
     "@opentelemetry/instrumentation-user-interaction": "0.55.0"
-    "@opentelemetry/otlp-exporter-base": "0.211.0"
     "@opentelemetry/resources": "2.5.0"
+    "@opentelemetry/sdk-logs": "0.214.0"
+    "@opentelemetry/sdk-metrics": "2.5.0"
     "@opentelemetry/sdk-trace-base": "2.5.0"
     "@opentelemetry/sdk-trace-web": "2.5.0"
-    "@sentry/vue": "10.36.0"
   generator:
     "change-case": 5.4.4
     "ejs": 4.0.1
@@ -253,7 +257,7 @@ catalogs:
     "@wisemen/time": "0.0.31"
     "@wisemen/validators": "0.0.22"
     "@wisemen/wise-date": "^0.0.18"
-    "axios": "1.15.0"
+    "axios": "1.15.2"
     "change-case": "5.4.4"
     "class-transformer": "0.5.1"
     "class-validator": "0.15.1"

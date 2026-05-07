@@ -5,7 +5,7 @@ export const createDatePickerFieldStyle = tv({
     cell: `relative flex-1 p-0 text-center text-xs`,
     cellTrigger: `
       inline-flex h-9 w-full items-center justify-center rounded-full text-xs
-      font-normal text-secondary transition-colors duration-100 outline-none
+      font-normal text-secondary outline-none
       not-data-disabled:hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
       data-disabled:pointer-events-none data-disabled:text-disabled

@@ -9,6 +9,7 @@ import {
   INPUT_DEFAULTS,
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
+  omit,
 } from '@/types/input.type'
 import Popover from '@/ui/popover/Popover.vue'
 import { useSelectDropdown } from '@/ui/select/composables/selectDropdown.composable'
@@ -22,7 +23,7 @@ import { useProvideSelectContext } from './select.context'
 const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
-  ...INPUT_FIELD_DEFAULTS,
+  ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
   keepDropdownOpenOnSelect: null,
@@ -124,6 +125,7 @@ useProvideSelectContext({
         :display-fn="props.displayFn"
         :items="props.items"
         :limit="props.limit"
+        :has-virtual-scroll="props.hasVirtualScroll"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"
       />

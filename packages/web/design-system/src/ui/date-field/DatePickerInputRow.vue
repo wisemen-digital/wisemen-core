@@ -6,7 +6,7 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import { UIButton } from '@/ui/button'
-import { useInjectDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
+import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
 
 const emit = defineEmits<{
   today: []
@@ -16,7 +16,7 @@ const i18n = useI18n()
 
 const {
   onClose,
-} = useInjectDatePickerFieldContext()
+} = useInjectDatePickerContext()
 </script>
 
 <template>

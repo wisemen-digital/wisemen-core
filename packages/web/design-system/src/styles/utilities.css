@@ -1,19 +1,19 @@
 @variant dark (&:where(.dark, .dark *));
 
 @utility z-sticky {
-  z-index: var(--z-sticky);
+  z-index: 10;
 }
 
 @utility z-overlay {
-  z-index: var(--z-overlay);
+  z-index: 30;
 }
 
 @utility z-modal {
-  z-index: var(--z-modal);
+  z-index: 40;
 }
 
 @utility z-tooltip {
-  z-index: var(--z-tooltip);
+  z-index: 50;
 }
 
 @utility no-scrollbar {

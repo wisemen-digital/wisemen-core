@@ -1,7 +1,14 @@
 import type { HourCycle } from '@/types/hourCycle.type'
 import type { NumberSeparatorStyle } from '@/types/numberSeparatorStyle.type'
+import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete'
 
 export interface ConfigProviderProps {
+  /**
+   * The adapter to use for the AddressAutocomplete component.
+   * Provide a getAddressByPlaceId() and a searchAddresses() function.
+   * @default null
+   */
+  addressAutocompleteAdapter?: AddressAutocompleteAdapter | null
   /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null
