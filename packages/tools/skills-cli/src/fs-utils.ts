@@ -1,3 +1,4 @@
+/* eslint-disable check-file/filename-naming-convention */
 import {
   existsSync,
   mkdirSync,
@@ -15,8 +16,12 @@ export interface FileChange {
 }
 
 export function readIfExists(filePath: string): string | null {
-  if (!existsSync(filePath)) { return null }
-  if (!statSync(filePath).isFile()) { return null }
+  if (!existsSync(filePath)) {
+    return null
+  }
+  if (!statSync(filePath).isFile()) {
+    return null
+  }
 
   return readFileSync(filePath, 'utf8')
 }
@@ -65,8 +70,11 @@ export function deleteIfExists(filePath: string): FileChange {
 }
 
 export function listFilesRecursively(dir: string): string[] {
-  if (!existsSync(dir)) { return [] }
+  if (!existsSync(dir)) {
+    return []
+  }
   const out: string[] = []
+  // eslint-disable-next-line func-style
   const walk = (current: string): void => {
     for (const entry of readdirSync(current, {
       withFileTypes: true,
@@ -98,7 +106,9 @@ export function removeEmptyDirs(dir: string, stopAt: string): void {
     }
     const entries = readdirSync(current)
 
-    if (entries.length > 0) { return }
+    if (entries.length > 0) {
+      return
+    }
 
     rmSync(current, {
       recursive: true,

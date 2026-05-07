@@ -5,14 +5,7 @@ import { Command } from 'commander'
 import { check } from './commands/check.js'
 import { list } from './commands/list.js'
 import { sync } from './commands/sync.js'
-import type { TargetName } from './types.js'
 import { findWorkspaceRoot } from './workspace.js'
-
-function parseTargets(value: string | undefined): TargetName[] | undefined {
-  if (value === undefined || value.length === 0) { return undefined }
-
-  return value.split(',').map((t) => t.trim()) as TargetName[]
-}
 
 function resolveProjectRoot(raw: string | undefined): string {
   if (raw !== undefined) {
@@ -35,7 +28,6 @@ function run(): void {
   program
     .command('sync')
     .description('Scan installed @wisemen/* packages and render skills to the configured adapters.')
-    .option('--target <names>', 'Comma-separated list of adapter targets (claude,agents-md,llms-txt).')
     .option('--dry-run', 'Print changes without writing files.', false)
     .option('--silent', 'Suppress informational output.', false)
     .option('--verbose', 'Print every file that would change.', false)
@@ -51,7 +43,6 @@ function run(): void {
         cwd: resolveProjectRoot(opts.cwd),
         dryRun: opts.dryRun,
         silent: opts.silent,
-        targets: parseTargets(opts.target),
         verbose: opts.verbose,
       })
 
@@ -61,7 +52,6 @@ function run(): void {
   program
     .command('check')
     .description('Exit non-zero if the synced files would change. Use in CI.')
-    .option('--target <names>', 'Comma-separated list of adapter targets (claude,agents-md,llms-txt).')
     .option('--silent', 'Suppress informational output.', false)
     .option('--verbose', 'Print every drifted file.', false)
     .option('--cwd <path>', 'Project root. Default: auto-detected workspace root, or current directory.')
@@ -74,7 +64,6 @@ function run(): void {
       const code = await check({
         cwd: resolveProjectRoot(opts.cwd),
         silent: opts.silent,
-        targets: parseTargets(opts.target),
         verbose: opts.verbose,
       })
 
@@ -104,6 +93,4 @@ function run(): void {
 
 run()
 
-export type {
-  Config, TargetName,
-} from './types.js'
+export type { Config } from './types.js'

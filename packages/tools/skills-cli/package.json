@@ -27,10 +27,6 @@
     ".": {
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs"
-    },
-    "./build-manifest": {
-      "types": "./dist/build-manifest.d.mts",
-      "import": "./dist/build-manifest.mjs"
     }
   },
   "files": [
