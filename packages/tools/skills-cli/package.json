@@ -1,0 +1,60 @@
+{
+  "name": "@wisemen/skills-cli",
+  "version": "0.1.0",
+  "description": "Sync AI coding skills from installed @wisemen/* packages into a consumer project, rendered per LLM target (Claude Code, AGENTS.md, llms.txt).",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/tools/skills-cli"
+  },
+  "keywords": [
+    "ai",
+    "skills",
+    "claude",
+    "agents",
+    "llm",
+    "codegen"
+  ],
+  "bin": {
+    "wisemen-skills": "./dist/index.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --run",
+    "typecheck": "pnpm tsc --noEmit"
+  },
+  "dependencies": {
+    "chalk": "catalog:build",
+    "commander": "catalog:build",
+    "fast-glob": "3.3.2",
+    "js-yaml": "4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "4.0.9",
+    "@types/node": "catalog:types",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-api",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build",
+    "vitest": "catalog:test"
+  }
+}
