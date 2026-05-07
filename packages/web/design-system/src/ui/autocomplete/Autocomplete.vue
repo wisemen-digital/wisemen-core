@@ -39,7 +39,6 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
   getItemConfig: null,
-  iconRight: ChevronDownIcon,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
   popoverSide: 'bottom',

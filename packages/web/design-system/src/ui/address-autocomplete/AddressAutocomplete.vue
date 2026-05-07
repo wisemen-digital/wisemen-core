@@ -28,7 +28,16 @@ const modelValue = defineModel<Address | null>({
   required: true,
 })
 
-const adapter = useInjectAddressAutocompleteAdapter()
+const maybeAdapter = useInjectAddressAutocompleteAdapter(null)
+
+if (maybeAdapter === null) {
+  throw new Error(
+    '[AddressAutocomplete] No adapter provided. Add an adapter to the ConfigProvider.\n'
+    + 'Example: <ConfigProvider :address-autocomplete-adapter="myAdapter"><AddressAutocomplete ... /></ConfigProvider>',
+  )
+}
+
+const adapter = maybeAdapter
 
 const isLoading = ref<boolean>(false)
 const addressResults = ref<FormattedAddress[]>([])
