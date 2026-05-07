@@ -6,14 +6,6 @@ catalog:
 
 catalogs:
   vue:
-    "@tanstackvue-query": ^0.0.0
-    "@tanstacvue-query": ^0.0.0
-    "@tanstavue-query": ^0.0.0
-    "@tanstvue-query": ^0.0.0
-    "@tansvue-query": ^0.0.0
-    "@tanvue-query": ^0.0.0
-    "@tavue-query": ^0.0.0
-    "@tvue-query": ^0.0.0
     "@vue-query": ^0.0.0
     "vue": "3.5.27"
     "motion-v": "2.2.1"

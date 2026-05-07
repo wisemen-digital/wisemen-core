@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {
-  AvatarFallback,
-  AvatarImage,
-  AvatarRoot,
+  AvatarFallback as RekaAvatarFallback,
+  AvatarImage as RekaAvatarImage,
+  AvatarRoot as RekaAvatarRoot,
 } from 'reka-ui'
 import { computed } from 'vue'
 
@@ -49,15 +49,15 @@ function getAvatarIndex(name: string, length: number): number {
 </script>
 
 <template>
-  <AvatarRoot :class="avatarStyle.root()">
-    <AvatarImage
+  <RekaAvatarRoot :class="avatarStyle.root()">
+    <RekaAvatarImage
       v-if="props.src"
       :src="props.src"
       :class="avatarStyle.base()"
       :alt="props.name"
     />
 
-    <AvatarFallback
+    <RekaAvatarFallback
       :class="avatarStyle.fallBack({
         class: props.isStaticColor
           ? undefined
@@ -65,7 +65,7 @@ function getAvatarIndex(name: string, length: number): number {
       })"
     >
       {{ getInitials(props.name) }}
-    </AvatarFallback>
+    </RekaAvatarFallback>
 
     <span
       v-if="props.status !== null"
@@ -78,5 +78,5 @@ function getAvatarIndex(name: string, length: number): number {
       :alt="props.logoAlt ?? 'Avatar Logo'"
       :class="avatarStyle.logo()"
     >
-  </AvatarRoot>
+  </RekaAvatarRoot>
 </template>
