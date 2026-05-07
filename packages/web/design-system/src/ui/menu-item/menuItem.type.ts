@@ -70,6 +70,21 @@ export interface MenuItemConfig {
    */
   icon?: Component | null
   /**
+   * Image displayed to the left of the label. Cannot be used together with `icon`, `avatar`, or `dot`.
+   */
+  image?: {
+  /**
+   * Controls the aspect ratio of the image.
+   * - `'square'` — equal width and height (default)
+   * - `'rectangle'` — wider than tall, suited for landscape thumbnails
+   */
+    aspect?: 'rectangle' | 'square'
+    /**
+     * The URL or data URI of the image to display.
+     */
+    src: string
+  } | null
+  /**
    * Override the label shown in the item.
    */
   label?: string | null

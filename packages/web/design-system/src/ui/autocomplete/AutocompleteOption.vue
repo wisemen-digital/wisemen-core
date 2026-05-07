@@ -6,7 +6,6 @@ import {
   ComboboxItemIndicator as RekaComboboxItemIndicator,
 } from 'reka-ui'
 
-import { useIsUsingKeyboard } from '@/composables/isUsingKeyboard.composable'
 import { useInjectAutocompleteContext } from '@/ui/autocomplete/autocomplete.context'
 import { UIMenuItem } from '@/ui/menu-item'
 
@@ -20,20 +19,16 @@ const props = withDefaults(defineProps<{
 const {
   getItemConfig, size,
 } = useInjectAutocompleteContext()
-
-const isUsingKeyboard = useIsUsingKeyboard()
 </script>
 
 <template>
   <RekaComboboxItem
     :value="props.value"
-    :class="{
-      'data-highlighted:bg-secondary-hover': isUsingKeyboard,
-      'hover:bg-secondary-hover': !isUsingKeyboard,
-    }"
     class="
-      group/combobox-item flex w-full cursor-default items-center rounded-sm
-      outline-none
+      group/combobox-item relative z-2 flex w-full cursor-default items-center
+      rounded-sm outline-none
+      hover:bg-secondary-hover
+      data-highlighted:bg-secondary-hover
     "
   >
     <UIMenuItem

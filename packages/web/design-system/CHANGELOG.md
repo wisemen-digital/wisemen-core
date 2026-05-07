@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.9.1
+
+### Patch Changes
+
+- [#915](https://github.com/wisemen-digital/wisemen-core/pull/915) [`10e9dd6`](https://github.com/wisemen-digital/wisemen-core/commit/10e9dd60b3bbf617d285969c01a40279a372d071) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export form and logo
+
+## 0.9.0
+
+### Minor Changes
+
+- [#903](https://github.com/wisemen-digital/wisemen-core/pull/903) [`3dd0ce5`](https://github.com/wisemen-digital/wisemen-core/commit/3dd0ce543acb75c3dbfbbab17b3666fbb093e0da) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a composable to get the trigger props of the dialog for a11y
+
+- [#836](https://github.com/wisemen-digital/wisemen-core/pull/836) [`06ed4b0`](https://github.com/wisemen-digital/wisemen-core/commit/06ed4b0183daeb72e5d08e8b88b2bdaed048e63a) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add date range picker component with presets
+
+### Patch Changes
+
+- [#905](https://github.com/wisemen-digital/wisemen-core/pull/905) [`731dc19`](https://github.com/wisemen-digital/wisemen-core/commit/731dc19ab86af4c6292a6fb1f58a5a036971bb2f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export index.css style file
+
 ## 0.8.0
 
 ### Minor Changes

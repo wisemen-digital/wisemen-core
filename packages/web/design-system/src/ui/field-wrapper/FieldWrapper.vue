@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import {
+  AnimatePresence,
+  Motion,
+  MotionConfig,
+} from 'motion-v'
+
 import { INPUT_FIELD_DEFAULTS } from '@/types/input.type'
 import type { FieldWrapperProps } from '@/ui/field-wrapper/fieldWrapper.props'
 import FieldWrapperIcon from '@/ui/field-wrapper/FieldWrapperIcon.vue'
@@ -55,16 +61,61 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
 
     <slot name="right" />
 
-    <FieldWrapperIcon
-      v-if="props.iconRight && !props.isLoading"
-      :icon="props.iconRight"
-      :input-field-size="props.size"
-      :class="{
-        'mr-md': props.size === 'md',
-        'mr-sm': props.size === 'sm',
+    <MotionConfig
+      :transition="{
+        duration: 0.2,
       }"
-    />
+    >
+      <AnimatePresence mode="popLayout">
+        <Motion
+          v-if="props.isLoading"
+          :initial="{
+            opacity: 0,
+            scale: 0.9,
+            filter: 'blur(2px)',
+          }"
+          :animate="{
+            opacity: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+          }"
+          :exit="{
+            opacity: 0,
+            scale: 0.9,
+            filter: 'blur(2px)',
+          }"
+        >
+          <FieldWrapperLoader />
+        </Motion>
 
-    <FieldWrapperLoader v-if="props.isLoading" />
+        <Motion
+          v-else-if="props.iconRight"
+          :initial="{
+            opacity: 0,
+            scale: 0.9,
+            filter: 'blur(2px)',
+          }"
+          :animate="{
+            opacity: 1,
+            scale: 1,
+            filter: 'blur(0px)',
+          }"
+          :exit="{
+            opacity: 0,
+            scale: 0.9,
+            filter: 'blur(2px)',
+          }"
+        >
+          <FieldWrapperIcon
+            :icon="props.iconRight"
+            :input-field-size="props.size"
+            :class="{
+              'mr-md': props.size === 'md',
+              'mr-sm': props.size === 'sm',
+            }"
+          />
+        </Motion>
+      </AnimatePresence>
+    </MotionConfig>
   </UIRowLayout>
 </template>

@@ -3,6 +3,7 @@ import {
   ListboxContent as RekaListboxContent,
   ListboxFilter as RekaListboxFilter,
   ListboxRoot as RekaListboxRoot,
+  ListboxVirtualizer as RekaListboxVirtualizer,
 } from 'reka-ui'
 import {
   computed,
@@ -15,6 +16,7 @@ import Scrollable from '@/ui/scrollable/Scrollable.vue'
 import { useSelectDisplayItems } from '@/ui/select/composables/selectDisplayItems.composable'
 import { useSelectRemoteSearch } from '@/ui/select/composables/selectRemoteSearch.composable'
 import { useSelectValue } from '@/ui/select/composables/selectValue.composable'
+import { useInjectSelectContext } from '@/ui/select/select.context'
 import type { SelectContentProps } from '@/ui/select/select.props'
 import type {
   SelectItem,
@@ -27,6 +29,7 @@ import { UISeparator } from '@/ui/separator'
 import { UIText } from '@/ui/text'
 
 const props = withDefaults(defineProps<SelectContentProps<TValue>>(), {
+  hasVirtualScroll: false,
   isLoading: false,
   limit: null,
   search: null,
@@ -38,6 +41,10 @@ const emit = defineEmits<{
 }>()
 
 const i18n = useI18n()
+
+const {
+  getItemConfig, size,
+} = useInjectSelectContext()
 
 const modelValue = defineModel<TValue>('modelValue', {
   required: true,
@@ -73,6 +80,33 @@ const {
 )
 
 const filterModelValue = computed<string>(() => props.search === 'local' ? localSearch.value : search.value)
+
+// const virtualItemHeight = computed<number>(() => size.value === 'sm' ? 28 : 32)
+const SEPARATOR_HEIGHT = 9
+
+function getEstimateSize(itemIndex: number): number {
+  const item = displayItems.value[itemIndex] ?? null
+
+  if (item === null) {
+    throw new Error('item does not exist')
+  }
+
+  if (item.type === 'separator') {
+    return SEPARATOR_HEIGHT
+  }
+
+  const itemConfig = getItemConfig?.(item.value) ?? null
+
+  if (itemConfig === null) {
+    return size.value === 'sm' ? 28 : 32
+  }
+
+  if (itemConfig.description != null && itemConfig.descriptionLayout === 'block') {
+    return 50
+  }
+
+  return 32
+}
 
 function onSearch(searchTerm: string): void {
   if (props.search === 'local') {
@@ -135,12 +169,17 @@ onBeforeUnmount(() => {
 
     <Scrollable
       :as="RekaListboxContent"
+      :style="props.hasVirtualScroll ? 'max-height: min(var(--reka-popover-content-available-height, 32rem), 32rem)' : undefined"
       class="p-xs"
       @next="emit('nextPage')"
     >
-      <template
-        v-for="item of displayItems"
-        :key="item.key"
+      <RekaListboxVirtualizer
+        v-if="props.hasVirtualScroll"
+        v-slot="{ option: item }"
+        :options="displayItems"
+        :overscan="5"
+        :estimate-size="getEstimateSize"
+        :text-content="(item: any) => item.type === 'option' ? props.displayFn(item.value) : ''"
       >
         <SelectOption
           v-if="item.type === 'option'"
@@ -152,21 +191,39 @@ onBeforeUnmount(() => {
           v-else-if="item.type === 'separator'"
           class="my-xs"
         />
+      </RekaListboxVirtualizer>
+
+      <template v-else>
+        <template
+          v-for="item of displayItems"
+          :key="item.key"
+        >
+          <SelectOption
+            v-if="item.type === 'option'"
+            :label="props.displayFn(item.value as any)"
+            :value="item.value"
+          />
+
+          <UISeparator
+            v-else-if="item.type === 'separator'"
+            class="my-xs"
+          />
+        </template>
+
+        <SelectLoading v-if="props.isLoading && displayItems.length === 0" />
+
+        <UIText
+          v-if="props.items.length === props.limit"
+          :text="i18n.t('component.autocomplete.more_results_available')"
+          :truncate="false"
+          class="block px-md pt-xs pb-sm text-xxs text-disabled"
+        />
       </template>
 
       <UIText
         v-if="displayItems.length === 0"
         :text="i18n.t('component.autocomplete.no_results_found')"
         class="block px-md pt-xs pb-sm text-xs text-disabled"
-      />
-
-      <SelectLoading v-if="props.isLoading && displayItems.length === 0" />
-
-      <UIText
-        v-if="props.items.length === props.limit"
-        :text="i18n.t('component.autocomplete.more_results_available')"
-        :truncate="false"
-        class="block px-md pt-xs pb-sm text-xxs text-disabled"
       />
     </Scrollable>
   </RekaListboxRoot>

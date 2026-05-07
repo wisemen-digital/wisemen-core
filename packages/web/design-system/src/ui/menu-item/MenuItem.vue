@@ -25,7 +25,10 @@ const slots = useSlots()
 const resolvedLabel = computed<string | null>(() => props.config?.label ?? props.label ?? null)
 
 const hasLeftContent = computed<boolean>(() =>
-  props.config?.avatar != null || props.config?.icon != null || props.config?.dot != null)
+  props.config?.avatar != null
+  || props.config?.image != null
+  || props.config?.icon != null
+  || props.config?.dot != null)
 
 const hasRightContent = computed<boolean>(() =>
   props.config?.right != null || slots.right != null)
@@ -56,6 +59,21 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         :image-alt="props.config.avatar.imageAlt"
         :size="props.config.description ? 'sm' : 'xs'"
       />
+
+      <div
+        v-else-if="props.config?.image != null"
+        :class="style.iconWrapper()"
+      >
+        <img
+          :alt="props.label ?? ''"
+          :src="props.config.image.src"
+          :class="{
+            'w-3.5': props.config.image.aspect === undefined || props.config.image.aspect === 'square',
+            'h-3.5 w-5': props.config.image.aspect === 'rectangle',
+          }"
+          class="rounded-xxs object-contain"
+        >
+      </div>
 
       <div
         v-else-if="props.config?.icon != null"

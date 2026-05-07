@@ -43,6 +43,13 @@
     "@changesets/cli": "catalog:tooling"
   },
   "pnpm": {
+    "packageExtensions": {
+      "eslint-plugin-vuejs-accessibility": {
+        "dependencies": {
+          "globals": "*"
+        }
+      }
+    },
     "overrides": {
       "axios@>=1.0.0 <1.12.0": ">=1.12.0",
       "lodash@>=4.0.0 <=4.17.22": ">=4.17.23",
