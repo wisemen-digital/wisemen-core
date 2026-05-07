@@ -1,8 +1,16 @@
+import type { NumberFormat } from 'libphonenumber-js'
+
 import type { HourCycle } from '@/types/hourCycle.type'
-import type { NumberFormat } from '@/types/numberFormat.type'
-import type { ToastAutoClose } from '@/ui/toast/toast.type'
+import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete'
+import type { ToastAutoClose } from '@/ui/toast'
 
 export interface ConfigProviderProps {
+  /**
+   * The adapter to use for the AddressAutocomplete component.
+   * Provide a getAddressByPlaceId() and a searchAddresses() function.
+   * @default null
+   */
+  addressAutocompleteAdapter?: AddressAutocompleteAdapter | null
   /**
    * Controls when toasts automatically dismiss themselves.
    *

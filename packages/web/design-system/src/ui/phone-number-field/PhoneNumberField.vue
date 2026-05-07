@@ -6,9 +6,12 @@ import {
   formatIncompletePhoneNumber,
   getCountries,
   getCountryCallingCode,
+  getExampleNumber,
   parsePhoneNumberFromString,
   validatePhoneNumberLength,
 } from 'libphonenumber-js'
+import examples from 'libphonenumber-js/examples.mobile.json'
+import { useFilter } from 'reka-ui'
 import {
   computed,
   nextTick,
@@ -24,20 +27,24 @@ import {
   INPUT_DEFAULTS,
   INPUT_FIELD_DEFAULTS,
   INPUT_META_DEFAULTS,
+  omit,
 } from '@/types/input.type'
 import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 import {
-  getCountryFlagSvg,
+  getCountryFlagSvgUrl,
   getCountryName,
 } from '@/ui/phone-number-field/phoneNumber.util'
 import type { PhoneNumberFieldProps } from '@/ui/phone-number-field/phoneNumberField.props'
 import type { PhoneNumberFieldStyle } from '@/ui/phone-number-field/phoneNumberField.style'
 import { createPhoneNumberFieldStyle } from '@/ui/phone-number-field/phoneNumberField.style'
 import { UISelectDropdown } from '@/ui/select'
-import type { SelectItem } from '@/ui/select/select.type'
+import type {
+  SelectItem,
+  SelectOptionItem,
+} from '@/ui/select/select.type'
 
 defineOptions({
   inheritAttrs: false,
@@ -46,23 +53,24 @@ defineOptions({
 const props = withDefaults(defineProps<PhoneNumberFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
-  ...INPUT_FIELD_DEFAULTS,
+  ...omit(INPUT_FIELD_DEFAULTS, 'placeholder'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   defaultCountryCode: 'BE',
-  placeholder: '000 00 00 00',
   preferredCountryCodes: () => [],
   size: 'md',
 })
+
+const DIGIT_REGEX = /\d/g
 
 const modelValue = defineModel<string | null>({
   required: true,
 })
 
-const configContext = useInjectConfigContext(null)
+const configContext = useInjectConfigContext()
 const attrs = useAttrs()
 const id = props.id ?? useId()
 const inputRef = useTemplateRef('input')
-const fieldWrapperRef = useTemplateRef<{ $el: HTMLElement } | null>('fieldWrapper')
+const fieldWrapperRef = useTemplateRef('fieldWrapper')
 
 const fieldWrapperEl = computed<HTMLElement | null>(() => fieldWrapperRef.value?.$el ?? null)
 
@@ -74,6 +82,10 @@ const {
   ariaRequired,
 } = useInput(id, props)
 
+const {
+  contains,
+} = useFilter()
+
 const style = computed<PhoneNumberFieldStyle>(() => createPhoneNumberFieldStyle({
   size: props.size,
 }))
@@ -83,7 +95,7 @@ const locale = computed<string>(() => configContext?.locale.value ?? navigator.l
 const countryCode = ref<CountryCode>(getDefaultCountryCode())
 const countrySearch = ref<string>('')
 
-const flagSvg = computed<string | null>(() => getCountryFlagSvg(countryCode.value))
+const flagSvgUrl = computed<string | null>(() => getCountryFlagSvgUrl(countryCode.value))
 
 const dialCodeDisplayValue = computed<string>(() => `+${getCountryCallingCode(countryCode.value)}`)
 
@@ -93,16 +105,30 @@ const selectedCountryName = computed<string>(
 
 const asYouType = computed<AsYouType>(() => new AsYouType(countryCode.value))
 
+function formatNationalInput(value: string): string {
+  const dialCode = getCountryCallingCode(countryCode.value).toString()
+  const formatted = formatIncompletePhoneNumber(value, countryCode.value)
+
+  return formatted.replace(`+${dialCode}`, '').trim()
+}
+
+const placeholder = computed<string>(() => {
+  const example = getExampleNumber(countryCode.value, examples)
+
+  if (example === undefined) {
+    return '000 00 00 00'
+  }
+
+  return formatNationalInput(example.number).replace(DIGIT_REGEX, '0')
+})
+
 const inputValue = computed<string | null>({
   get: () => {
     if (modelValue.value === null) {
       return null
     }
 
-    const dialCode = getCountryCallingCode(countryCode.value).toString()
-    const formatted = formatIncompletePhoneNumber(modelValue.value, countryCode.value)
-
-    return formatted.replace(`+${dialCode}`, '').trim()
+    return formatNationalInput(modelValue.value)
   },
   set: (value) => {
     if (value === null || value === '') {
@@ -140,41 +166,42 @@ const inputValue = computed<string | null>({
   },
 })
 
+function countryCodeToOption(cc: CountryCode): SelectOptionItem<CountryCode> {
+  return {
+    type: 'option' as const,
+    value: cc,
+  }
+}
+
 const countryItems = computed<SelectItem<CountryCode>[]>(() => {
   const preferred = props.preferredCountryCodes ?? []
-  const all = getCountries()
   const search = countrySearch.value.trim()
+  const all = getCountries()
 
-  const filtered = search === ''
-    ? all
-    : all.filter((cc) => matchesCountrySearch(cc, search))
+  const filtered = search
+    ? all.filter((cc) => matchesCountrySearch(cc, search))
+    : all
 
-  if (preferred.length === 0 || search !== '') {
-    return filtered.map((cc) => ({
-      type: 'option',
-      value: cc,
-    }))
+  const separator = {
+    type: 'separator' as const,
   }
 
-  const preferredFiltered = preferred.filter((cc) => filtered.includes(cc))
-  const restFiltered = filtered.filter((cc) => !(preferred as string[]).includes(cc))
+  if (preferred.length === 0 || search) {
+    return filtered.map(countryCodeToOption)
+  }
+
+  const preferredItems = preferred.filter((cc) => filtered.includes(cc))
+  const restItems = filtered.filter((cc) => !preferred.includes(cc as CountryCode))
+  const hasBothGroups = preferredItems.length > 0 && restItems.length > 0
 
   return [
-    ...preferredFiltered.map((cc) => ({
-      type: 'option' as const,
-      value: cc,
-    })),
-    ...(preferredFiltered.length > 0 && restFiltered.length > 0
+    ...preferredItems.map(countryCodeToOption),
+    ...(hasBothGroups
       ? [
-          {
-            type: 'separator' as const,
-          },
+          separator,
         ]
       : []),
-    ...restFiltered.map((cc) => ({
-      type: 'option' as const,
-      value: cc,
-    })),
+    ...restItems.map(countryCodeToOption),
   ]
 })
 
@@ -195,22 +222,26 @@ function getDefaultCountryCode(): CountryCode {
 function matchesCountrySearch(cc: CountryCode, search: string): boolean {
   const name = getCountryName(cc, locale.value) ?? ''
   const term = search.toLowerCase()
+  const countryCallingCode = getCountryCallingCode(cc)
 
-  return cc.toLowerCase().includes(term) || name.toLowerCase().includes(term)
+  return contains(countryCallingCode.toLowerCase(), term.toLowerCase())
+    || contains(cc.toLowerCase(), term.toLowerCase())
+    || contains(name.toLowerCase(), term.toLowerCase())
 }
 
 function getCountryItemConfig(cc: CountryCode): MenuItemConfig {
+  const flagUrl = getCountryFlagSvgUrl(cc)
+
   return {
+    description: `+${getCountryCallingCode(cc)}`,
     descriptionLayout: 'inline',
-    flag: {
-      ariaLabel: getCountryName(cc, locale.value) ?? cc,
-      svg: getCountryFlagSvg(cc) ?? '',
-    },
+    image: flagUrl === null
+      ? null
+      : {
+          aspect: 'rectangle',
+          src: flagUrl,
+        },
     label: getCountryName(cc, locale.value),
-    right: {
-      text: `+${getCountryCallingCode(cc)}`,
-      type: 'text',
-    },
   }
 }
 
@@ -283,6 +314,7 @@ defineExpose({
           :get-item-config="getCountryItemConfig"
           :is-disabled="props.isDisabled"
           :popover-anchor-reference-element="fieldWrapperEl"
+          :has-virtual-scroll="true"
           search="remote"
           popover-align="start"
           popover-width="anchor-width"
@@ -297,13 +329,12 @@ defineExpose({
               :aria-label="selectedCountryName"
               type="button"
             >
-              <span
-                v-if="flagSvg !== null"
+              <img
+                v-if="flagSvgUrl !== null"
+                :src="flagSvgUrl"
                 :class="style.countryFlag()"
-                role="img"
-                aria-hidden="true"
-                v-html="flagSvg"
-              />
+                alt=""
+              >
 
               <ChevronDownIcon class="size-3 shrink-0 text-tertiary" />
             </button>
@@ -324,7 +355,7 @@ defineExpose({
         :aria-busy="ariaBusy"
         :aria-invalid="ariaInvalid"
         :aria-required="ariaRequired"
-        :placeholder="props.placeholder ?? undefined"
+        :placeholder="placeholder"
         :name="props.name ?? undefined"
         :class="style.input({ size: props.size })"
         type="tel"

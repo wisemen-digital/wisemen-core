@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+### Patch Changes
+
+- [#915](https://github.com/wisemen-digital/wisemen-core/pull/915) [`10e9dd6`](https://github.com/wisemen-digital/wisemen-core/commit/10e9dd60b3bbf617d285969c01a40279a372d071) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export form and logo
+
 ## 0.9.0
 
 ### Minor Changes
