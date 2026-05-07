@@ -29,6 +29,7 @@ import { useI18n } from 'vue-i18n'
 import { UIButton } from '@/ui/button'
 import IconButton from '@/ui/button/icon/IconButton.vue'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
+import { useInjectConfigContext } from '@/ui/config-provider'
 import { datePickerYearPopoverStyle } from '@/ui/date-field/datePickerYearPopover.style'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
@@ -42,7 +43,9 @@ const emit = defineEmits<{
 
 const i18n = useI18n()
 
-const locale = navigator.language
+const {
+  locale,
+} = useInjectConfigContext()
 
 const yearOpen = ref(false)
 
