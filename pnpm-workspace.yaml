@@ -55,7 +55,7 @@ catalogs:
     "@wisemen/time": "0.0.31"
     "@wisemen/validators": "0.0.22"
     "@wisemen/wise-date": "^0.0.18"
-    "axios": "1.15.0"
+    "axios": "1.15.2"
     "change-case": "5.4.4"
     "class-transformer": "0.5.1"
     "class-validator": "0.15.1"
@@ -121,6 +121,7 @@ catalogs:
     "vitepress": "2.0.0-alpha.16"
     "vue-component-meta": "3.2.2"
   general:
+    country-flag-icons: "1.6.17"
     "@googlemaps/js-api-loader": "1.16.8"
     "@standard-schema/spec": "1.1.0"
     "@wisemen/vue-core": 1.0.0-alpha.42
@@ -238,7 +239,13 @@ catalogs:
     "tailwind-variants": "3.2.2"
     "tailwindcss": "4.1.18"
   telemetry:
-    "@opentelemetry/context-zone": "2.5.0"
+    "@opentelemetry/api": "1.9.1"
+    "@opentelemetry/api-logs": "0.217.0"
+    "@opentelemetry/exporter-logs-otlp-http": "0.217.0"
+    "@opentelemetry/context-zone": "2.7.1"
+    "@opentelemetry/exporter-metrics-otlp-proto": "0.217.0"
+    "@opentelemetry/sdk-logs": "0.217.0"
+    "@opentelemetry/sdk-metrics": "2.7.1"
     "@opentelemetry/core": "2.5.0"
     "@opentelemetry/exporter-trace-otlp-http": "0.211.0"
     "@opentelemetry/instrumentation": "0.211.0"

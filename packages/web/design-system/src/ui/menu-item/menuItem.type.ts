@@ -66,6 +66,15 @@ export interface MenuItemConfig {
    */
   dot?: MenuItemDotConfig | null
   /**
+   * Inline SVG flag rendered as the left icon. Used by UIPhoneNumberField.
+   * Takes precedence over `icon`.
+   */
+  flag?: {
+    ariaLabel?: string | null
+
+    svg: string
+  } | null
+  /**
    * Icon displayed to the left of the label. Cannot be used together with `avatar` or `dot`.
    */
   icon?: Component | null

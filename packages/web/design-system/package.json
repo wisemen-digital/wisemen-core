@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -58,14 +58,18 @@
     "formango": "catalog:peer",
     "motion-v": "catalog:peer",
     "reka-ui": "catalog:peer",
+    "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue"
   },
   "dependencies": {
+    "@internationalized/date": "catalog:date",
     "@tailwindcss/vite": "catalog:vite",
     "@wisemen/vue-core-icons": "workspace:*",
+    "country-flag-icons": "catalog:general",
+    "libphonenumber-js": "catalog:general",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
@@ -91,7 +95,7 @@
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "playwright": "catalog:test",
-    "reka-ui": "catalog:peer",
+    "reka-ui": "catalog:vue",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
