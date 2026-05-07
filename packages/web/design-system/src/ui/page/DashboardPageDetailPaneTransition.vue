@@ -41,13 +41,13 @@ const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
 <template>
   <Motion
     :initial="{
-      translateX: '100%',
+      translateX: '105%',
     }"
     :animate="{
       translateX: '0%',
     }"
     :exit="{
-      translateX: '100%',
+      translateX: '105%',
     }"
     :transition="{
       duration,
