@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
   >
     <div
       v-if="props.icon !== null || props.avatar !== null"
-      class="h-text-xs flex aspect-square items-center"
+      class="flex aspect-square h-text-xs items-center"
     >
       <UIAvatar
         v-if="props.avatar !== null"
