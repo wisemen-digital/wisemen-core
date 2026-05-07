@@ -46,11 +46,12 @@ const contentPaddingLeft = computed<string>(() => {
       type: 'spring',
       bounce: 0,
     }"
-    class="size-full overflow-hidden bg-primary p-md"
+    class="size-full overflow-hidden bg-secondary p-md"
   >
     <div
       class="
-        size-full overflow-hidden rounded-xl border border-secondary shadow-sm/5
+        custom-content-shadow size-full overflow-hidden rounded-xl border
+        border-secondary
         dark:shadow-none
       "
     >
@@ -58,3 +59,11 @@ const contentPaddingLeft = computed<string>(() => {
     </div>
   </Motion>
 </template>
+
+<style scoped>
+.custom-content-shadow {
+  box-shadow:
+    lch(0 0 0 / 0.02) 0px 3px 6px -2px,
+    lch(0 0 0 / 0.04) 0px 1px 1px;
+}
+</style>
