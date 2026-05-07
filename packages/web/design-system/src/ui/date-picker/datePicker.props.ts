@@ -17,4 +17,9 @@ export interface DatePickerProps {
    * @default false
    */
   fixedWeeks?: boolean
+  /**
+   * The size of the date picker.
+   * @default 'md'
+   */
+  size?: 'md' | 'sm'
 }

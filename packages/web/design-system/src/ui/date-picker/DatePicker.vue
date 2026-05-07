@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   maxDate: null,
   minDate: null,
   fixedWeeks: false,
+  size: 'md',
 })
 
 const attrs = useAttrs()
@@ -49,7 +50,7 @@ const {
 })
 
 const datePickerStyle = computed(() => createDatePickerFieldStyle({
-  size: 'md',
+  size: props.size,
 }))
 
 useProvideDatePickerContext({
