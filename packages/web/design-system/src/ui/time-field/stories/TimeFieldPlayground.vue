@@ -2,7 +2,6 @@
 import type { Temporal } from 'temporal-polyfill'
 import { ref } from 'vue'
 
-import type { HourCycle } from '@/types/hourCycle.type'
 import type { TimeFieldProps } from '@/ui/time-field/timeField.props'
 import TimeField from '@/ui/time-field/TimeField.vue'
 
@@ -15,7 +14,6 @@ const props = withDefaults(defineProps<{
   errorMessage?: TimeFieldProps['errorMessage']
   hideErrorMessage?: boolean
   hint?: TimeFieldProps['hint']
-  hourCycle?: HourCycle | null
   label?: string
   size?: TimeFieldProps['size']
 }>(), {
@@ -26,7 +24,6 @@ const props = withDefaults(defineProps<{
   errorMessage: undefined,
   hideErrorMessage: false,
   hint: undefined,
-  hourCycle: null,
   label: 'Time',
   size: 'md',
 })
@@ -42,6 +39,7 @@ const modelValue = ref<Temporal.PlainTime | null>(null)
       :hide-error-message="props.hideErrorMessage"
       :hint="props.hint"
       :is-disabled="props.isDisabled"
+      :disabled-reason="props.disabledReason"
       :is-loading="props.isLoading"
       :is-readonly="props.isReadonly"
       :is-required="props.isRequired"
