@@ -11,15 +11,15 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import IconButton from '@/ui/button/icon/IconButton.vue'
-import { useInjectDatePickerFieldContext } from '@/ui/date-field/datePickerField.context'
 import DatePickerMonthPopover from '@/ui/date-field/DatePickerMonthPopover.vue'
 import DatePickerYearPopover from '@/ui/date-field/DatePickerYearPopover.vue'
+import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
 
 const i18n = useI18n()
 
 const {
   placeholder, setPlaceholder,
-} = useInjectDatePickerFieldContext()
+} = useInjectDatePickerContext()
 </script>
 
 <template>

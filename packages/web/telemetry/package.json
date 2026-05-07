@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/vue-core-telemetry",
   "type": "module",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -32,6 +32,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "release": "bumpp && npm publish",
+    "test": "vitest --run",
     "type-check": "tsc --noEmit",
     "pub:beta": "pnpm publish --no-git-checks --access public --tag beta"
   },
@@ -39,17 +40,21 @@
     "vue": "catalog:peer"
   },
   "dependencies": {
+    "@opentelemetry/api": "catalog:telemetry",
+    "@opentelemetry/api-logs": "catalog:telemetry",
     "@opentelemetry/context-zone": "catalog:telemetry",
     "@opentelemetry/core": "catalog:telemetry",
+    "@opentelemetry/exporter-logs-otlp-http": "catalog:telemetry",
+    "@opentelemetry/exporter-metrics-otlp-proto": "catalog:telemetry",
     "@opentelemetry/exporter-trace-otlp-http": "catalog:telemetry",
     "@opentelemetry/instrumentation": "catalog:telemetry",
     "@opentelemetry/instrumentation-fetch": "catalog:telemetry",
     "@opentelemetry/instrumentation-user-interaction": "catalog:telemetry",
-    "@opentelemetry/otlp-exporter-base": "catalog:telemetry",
     "@opentelemetry/resources": "catalog:telemetry",
+    "@opentelemetry/sdk-logs": "catalog:telemetry",
+    "@opentelemetry/sdk-metrics": "catalog:telemetry",
     "@opentelemetry/sdk-trace-base": "catalog:telemetry",
-    "@opentelemetry/sdk-trace-web": "catalog:telemetry",
-    "@sentry/vue": "catalog:telemetry"
+    "@opentelemetry/sdk-trace-web": "catalog:telemetry"
   },
   "devDependencies": {
     "@wisemen/eslint-config-vue": "workspace:*",
@@ -57,6 +62,7 @@
     "eslint": "catalog:lint-web",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
-    "typescript": "catalog:build"
+    "typescript": "catalog:build",
+    "vitest": "catalog:test"
   }
 }
