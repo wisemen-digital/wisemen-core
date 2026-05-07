@@ -8,7 +8,6 @@ description: >
 type: component
 library: vue-core-design-system
 category: button
-requires: []
 exports:
   - UIButton
   - UIIconButton
