@@ -44,51 +44,10 @@ import { UIKeyboardShortcut } from '@wisemen/vue-core-design-system'
 
 ## Source Files
 
+For full API details, read the props file.
+
 - Props: `src/ui/keyboard-shortcut/keyboardShortcut.props.ts`
 - Component: `src/ui/keyboard-shortcut/KeyboardShortcut.vue`
-
-## Examples
-
-### Multi-key combination
-
-```vue
-<script setup lang="ts">
-import { UIKeyboardShortcut } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <!-- Renders: [Cmd] [Shift] [P] on macOS, [Ctrl] [Shift] [P] on Windows -->
-  <UIKeyboardShortcut keyboard-shortcut="meta_shift_p" />
-</template>
-```
-
-### Sequence shortcut
-
-```vue
-<script setup lang="ts">
-import { UIKeyboardShortcut } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <!-- Renders: [G] then [D] -->
-  <UIKeyboardShortcut keyboard-shortcut="g-d" />
-</template>
-```
-
-### Shortcut in a menu item context
-
-```vue
-<script setup lang="ts">
-import { UIKeyboardShortcut } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <div class="flex items-center justify-between gap-xl">
-    <span class="text-sm text-primary">Search</span>
-    <UIKeyboardShortcut keyboard-shortcut="meta_k" />
-  </div>
-</template>
-```
 
 ## See Also
 
