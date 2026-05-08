@@ -12,7 +12,7 @@ export const createMenuItemStyle = tv({
     {
       hasLeftContent: true,
       class: {
-        base: 'pl-lg',
+        base: 'pl-md',
       },
       size: 'md',
     },
@@ -26,7 +26,7 @@ export const createMenuItemStyle = tv({
     {
       hasRightContent: true,
       class: {
-        base: 'pr-lg',
+        base: 'pr-md',
       },
       size: 'md',
     },

@@ -38,7 +38,7 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
           }"
           :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
           :prioritize-position="props.prioritizePosition"
-          :data-animation="props.popoverAnimationName ?? 'dropdown-default'"
+          :data-animation="props.popoverAnimationName ?? 'popover-default'"
           position-strategy="absolute"
           sticky="always"
           class="
@@ -63,98 +63,3 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
     </RekaDropdownMenuPortal>
   </RekaDropdownMenuRoot>
 </template>
-
-<style>
-@keyframes dropdownFadeInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToTop {
-  to {
-    opacity: 0;
-    transform: translateY(4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToRight {
-  to {
-    opacity: 0;
-    transform: translateX(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToBottom {
-  to {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToLeft {
-  to {
-    opacity: 0;
-    transform: translateX(4px) scale(0.9);
-  }
-}
-
-[data-animation='dropdown-default'] {
-  animation-duration: 100ms;
-  animation-timing-function: ease-in-out;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='top'] {
-  animation-name: dropdownFadeInFromTop;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='right'] {
-  animation-name: dropdownFadeInFromRight;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='bottom'] {
-  animation-name: dropdownFadeInFromBottom;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='left'] {
-  animation-name: dropdownFadeInFromLeft;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='top'] {
-  animation-name: dropdownFadeOutToTop;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='right'] {
-  animation-name: dropdownFadeOutToRight;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='bottom'] {
-  animation-name: dropdownFadeOutToBottom;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='left'] {
-  animation-name: dropdownFadeOutToLeft;
-}
-</style>

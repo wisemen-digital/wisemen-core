@@ -50,7 +50,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         ? 'min-w-0 overflow-hidden'
         : 'shrink-0'"
       align="center"
-      gap="lg"
+      gap="sm"
     >
       <UIAvatar
         v-if="props.config?.avatar != null"
@@ -105,7 +105,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
             'text-xs': props.size === 'sm',
             'text-sm': props.size === 'md',
           }"
-          class="shrink-0 font-medium text-secondary select-none"
+          class="shrink-0 text-secondary select-none"
         />
         <UIText
           :text="props.config.description"
@@ -124,7 +124,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
             'text-xs': props.size === 'sm',
             'text-sm': props.size === 'md',
           }"
-          class="font-medium text-secondary select-none"
+          class="text-secondary select-none"
         />
 
         <UIText

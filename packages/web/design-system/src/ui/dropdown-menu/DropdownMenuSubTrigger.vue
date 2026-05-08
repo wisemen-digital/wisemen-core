@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
   <RekaDropdownMenuSubTrigger
     :disabled="props.disabledReason !== null"
     class="
-      cursor-default rounded-sm duration-100 outline-none
+      cursor-default rounded-sm outline-none
       data-disabled:cursor-not-allowed
       not-data-disabled:data-highlighted:bg-secondary-hover
       data-[state=open]:bg-secondary-hover

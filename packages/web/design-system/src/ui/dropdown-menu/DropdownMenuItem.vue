@@ -31,8 +31,7 @@ const emit = defineEmits<{
     <RekaDropdownMenuItem
       :disabled="props.disabledReason !== null"
       class="
-        group/dropdown-menu-item cursor-default rounded-sm duration-100
-        outline-none
+        group/dropdown-menu-item cursor-default rounded-sm outline-none
         data-disabled:cursor-not-allowed
         not-data-disabled:data-highlighted:bg-secondary-hover
       "
