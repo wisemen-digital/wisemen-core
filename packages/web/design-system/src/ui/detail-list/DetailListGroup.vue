@@ -94,7 +94,7 @@ const delegatedIsOpen = computed<boolean>({
   </CollapsibleRoot>
 </template>
 
-<style scoped>
+<style>
 @keyframes collapsible-up {
   from {
     height: var(--reka-collapsible-content-height);
@@ -103,7 +103,6 @@ const delegatedIsOpen = computed<boolean>({
     height: 0;
     opacity: 0;
     transform: scale(0.99) translateY(-0.25rem);
-    filter: blur(4px);
   }
 }
 @keyframes collapsible-down {
@@ -111,7 +110,6 @@ const delegatedIsOpen = computed<boolean>({
     height: 0;
     opacity: 0;
     transform: scale(0.99) translateY(-0.25rem);
-    filter: blur(4px);
   }
   to {
     height: var(--reka-collapsible-content-height);
