@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-  select: []
+  select: [event: Event]
 }>()
 </script>
 
@@ -35,7 +35,7 @@ const emit = defineEmits<{
         data-disabled:cursor-not-allowed
         not-data-disabled:data-highlighted:bg-secondary-hover
       "
-      @select="emit('select')"
+      @select="(e) => emit('select', e)"
     >
       <UIMenuItem
         :config="props.config"
