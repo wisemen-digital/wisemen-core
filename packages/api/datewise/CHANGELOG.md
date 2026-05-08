@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.15
+
+### Patch Changes
+
+- [#989](https://github.com/wisemen-digital/wisemen-core/pull/989) [`f9cb344`](https://github.com/wisemen-digital/wisemen-core/commit/f9cb34483a1f3d8613851079ecc859b5a68b5cc3) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: allow Date columns in ContainedIn
+
 ## 0.1.14
 
 ### Patch Changes
