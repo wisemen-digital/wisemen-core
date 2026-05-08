@@ -51,81 +51,11 @@ import { Settings01Icon } from '@wisemen/vue-core-icons'
 
 ## Source Files
 
+For full API details, read the props files. For usage examples, read the playground files.
+
 - Props: `src/ui/button/button/button.props.ts`, `src/ui/button/icon/iconButton.props.ts`, `src/ui/button/link/link.props.ts`
-- Styles: `src/ui/button/button/button.style.ts`, `src/ui/button/icon/iconButton.style.ts`, `src/ui/button/link/link.style.ts`
 - Components: `src/ui/button/button/Button.vue`, `src/ui/button/icon/IconButton.vue`, `src/ui/button/link/Link.vue`
-
-## Examples
-
-### Button with icons
-
-```vue
-<script setup lang="ts">
-import { UIButton } from '@wisemen/vue-core-design-system'
-import { PlusIcon, ArrowRightIcon } from '@wisemen/vue-core-icons'
-</script>
-
-<template>
-  <UIButton
-    :icon-left="PlusIcon"
-    label="Add Item"
-    variant="primary"
-  />
-
-  <UIButton
-    :icon-right="ArrowRightIcon"
-    label="Next Step"
-    variant="secondary"
-  />
-</template>
-```
-
-### Loading and disabled states
-
-```vue
-<script setup lang="ts">
-import { UIButton } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <UIButton
-    :is-loading="true"
-    label="Saving..."
-    variant="primary"
-  />
-
-  <UIButton
-    :is-disabled="true"
-    disabled-reason="You do not have permission."
-    label="Delete"
-    variant="destructive-primary"
-  />
-</template>
-```
-
-### Link with Vue Router
-
-```vue
-<script setup lang="ts">
-import { UILink } from '@wisemen/vue-core-design-system'
-import { ExternalLinkIcon } from '@wisemen/vue-core-icons'
-</script>
-
-<template>
-  <UILink
-    label="Go to Dashboard"
-    :to="{ name: 'dashboard' }"
-    variant="primary"
-  />
-
-  <UILink
-    label="Documentation"
-    :icon-right="ExternalLinkIcon"
-    :link="{ href: 'https://docs.example.com', target: '_blank', rel: 'noopener' }"
-    variant="tertiary"
-  />
-</template>
-```
+- Playgrounds: `src/ui/button/button/stories/`, `src/ui/button/icon/stories/`, `src/ui/button/link/stories/`
 
 ## See Also
 
