@@ -98,6 +98,16 @@ export class FutureInfinityDate implements PlainDate {
     return Infinity
   }
 
+  compare (withOther: PlainDateInput): number {
+    const parsedOther = factory(withOther)
+
+    if (parsedOther.isFutureInfinity()) {
+      return 0
+    } else {
+      return Infinity
+    }
+  }
+
   format (_template: string): string {
     return 'future infinity'
   }

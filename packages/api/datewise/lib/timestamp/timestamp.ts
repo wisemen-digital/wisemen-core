@@ -67,6 +67,18 @@ export interface Timestamp {
   endOf(unit: OpUnitType): Timestamp
   format(template?: string): string
   diff(withOther: TimestampInput, unit: OpUnitType, precise?: boolean): number
+  /** 
+   * Compares the order (in time) of the given timestamp with this timestamp. \
+   * returns < 0 if this timestamp is before the given timestamp \
+   * returns 0 if this timestamp is the same as the given timestamp \
+   * returns > 0 if this timestamp is after the given timestamp \
+   * \
+   * Comparing a timestamp with infinities results in `-Infinity` or `Infinity` (Number) \
+   * Comparing infinities will result in 0 when they represent the same infinity.
+   * \
+   * The returned value is the result of a `diff` milliseconds between the compared values.
+  */
+  compare(withOther: TimestampInput): number
   /** returns the number of milliseconds since the Unix Epoch */
   getTime(): number
   /** returns the number of milliseconds since the Unix Epoch */

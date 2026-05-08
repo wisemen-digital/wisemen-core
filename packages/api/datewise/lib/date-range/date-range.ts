@@ -244,4 +244,23 @@ export class DateRange {
       throw new Error('cannot merge non adjacent date ranges')
     }
   }
+
+  /** 
+   * Compares the order of the given date range with this date range. \
+   * Ranges are compared first by their start date, then by their end date. \
+   * returns < 0 if this range starts before the other (or starts at the same time but ends before) \
+   * returns 0 if both ranges have the same start and end dates \
+   * returns > 0 if this range starts after the other (or starts at the same time but ends after) \
+   * \
+   * This method is useful for sorting arrays of date ranges.
+  */
+  compare (withOther: DateRange): number {
+    const startComparison = this.startDate.compare(withOther.startDate)
+
+    if (startComparison !== 0) {
+      return startComparison
+    }
+
+    return this.endDate.compare(withOther.endDate)
+  }
 }

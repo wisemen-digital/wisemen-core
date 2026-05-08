@@ -183,6 +183,18 @@ export class DayjsPlainDate implements PlainDate {
     }
   }
 
+  compare (withOther: PlainDateInput): number {
+    const parsed = factory(withOther)
+
+    if (parsed.isFutureInfinity()) {
+      return -Infinity
+    } else if (parsed.isPastInfinity()) {
+      return Infinity
+    } else {
+      return this.diff(parsed, 'days')
+    }
+  }
+
   format (template: string): string {
     return this.date.format(template)
   }

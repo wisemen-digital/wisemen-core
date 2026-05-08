@@ -99,6 +99,16 @@ export class PastInfinityDate implements PlainDate {
     return Infinity
   }
 
+  compare (withOther: PlainDateInput): number {
+    const parsedOther = factory(withOther)
+
+    if (parsedOther.isPastInfinity()) {
+      return 0
+    } else {
+      return -Infinity
+    }
+  }
+
   format (_template: string): string {
     return '-infinity'
   }
