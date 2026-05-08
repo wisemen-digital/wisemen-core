@@ -37,26 +37,6 @@ import { UIDot } from '@wisemen/vue-core-design-system'
 </script>
 
 <template>
-  <UIDot color="success" size="md" />
-</template>
-```
-
-## Source Files
-
-- Props: `src/ui/dot/dot.props.ts`
-- Styles: `src/ui/dot/dot.style.ts`
-- Component: `src/ui/dot/Dot.vue`
-
-## Examples
-
-### Status indicator next to a label
-
-```vue
-<script setup lang="ts">
-import { UIDot } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
   <div class="flex items-center gap-xs">
     <UIDot color="success" size="md" />
     <span class="text-sm text-primary">Online</span>
@@ -64,30 +44,12 @@ import { UIDot } from '@wisemen/vue-core-design-system'
 </template>
 ```
 
-### Multiple status dots
+## Source Files
 
-```vue
-<script setup lang="ts">
-import { UIDot } from '@wisemen/vue-core-design-system'
-</script>
+For full API details, read the props file.
 
-<template>
-  <div class="flex flex-col gap-sm">
-    <div class="flex items-center gap-xs">
-      <UIDot color="success" />
-      <span class="text-sm text-primary">Active</span>
-    </div>
-    <div class="flex items-center gap-xs">
-      <UIDot color="warning" />
-      <span class="text-sm text-primary">Pending</span>
-    </div>
-    <div class="flex items-center gap-xs">
-      <UIDot color="error" />
-      <span class="text-sm text-primary">Failed</span>
-    </div>
-  </div>
-</template>
-```
+- Props: `src/ui/dot/dot.props.ts`
+- Component: `src/ui/dot/Dot.vue`
 
 ## See Also
 
