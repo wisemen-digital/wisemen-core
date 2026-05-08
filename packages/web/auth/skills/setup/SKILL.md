@@ -1,33 +1,37 @@
 ---
 name: auth-setup
 description: >
-  Initialize OidcClient with OAuth2/OIDC configuration, implement the login flow
-  with PKCE, handle the callback, access tokens, get user info, and logout.
-  Covers offline mode for testing and custom token storage strategies.
+  Minimal setup for @wisemen/vue-core-auth: create an OIDC client, redirect to
+  login, handle the callback, attach access tokens, and logout.
 type: core
 library: vue-core-auth
 ---
 
-# @wisemen/vue-core-auth — Setup & Login Flow
+# @wisemen/vue-core-auth - Setup
 
 ## Import
 
 ```ts
-import { OidcClient, LocalStorageTokensStrategy } from '@wisemen/vue-core-auth'
-import type { OAuth2VueClientOptions, OidcUser, OAuth2Tokens } from '@wisemen/vue-core-auth'
+import { OidcClient } from '@wisemen/vue-core-auth'
 ```
 
-## Quick Start
+Older projects may still use `ZitadelClient`; new setup should use
+`OidcClient`.
 
-### 1. Create the client
+## Create The Client
 
 ```ts
-// auth.ts
+// src/libs/oAuth.lib.ts
 import { OidcClient } from '@wisemen/vue-core-auth'
 
+import {
+  AUTH_BASE_URL,
+  AUTH_CLIENT_ID,
+} from '@/constants/environment.constant.ts'
+
 export const oAuthClient = new OidcClient({
-  clientId: import.meta.env.VITE_AUTH_CLIENT_ID,
-  baseUrl: import.meta.env.VITE_AUTH_BASE_URL,
+  clientId: AUTH_CLIENT_ID,
+  baseUrl: AUTH_BASE_URL,
   loginRedirectUri: `${window.location.origin}/auth/callback`,
   postLogoutRedirectUri: `${window.location.origin}/auth/logout`,
   scopes: ['openid', 'profile', 'email'],
@@ -35,115 +39,84 @@ export const oAuthClient = new OidcClient({
 })
 ```
 
-### 2. Redirect to login
+Use `prefix` to avoid localStorage token collisions between apps.
+
+## Login
 
 ```ts
-async function login() {
-  const loginUrl = await oAuthClient.getLoginUrl('/dashboard')
-  window.location.href = loginUrl
-}
+const loginUrl = await oAuthClient.getLoginUrl('/dashboard')
+
+window.location.replace(loginUrl)
 ```
 
-### 3. Handle the callback
+The optional argument is stored as `state` and should be used as the post-login
+redirect path.
+
+## Callback
 
 ```ts
-// AuthCallbackPage.vue or router guard
 const searchParams = new URLSearchParams(window.location.search)
 const code = searchParams.get('code')
 const state = searchParams.get('state')
 
+if (code === null) {
+  throw new Error('Missing authorization code')
+}
+
 await oAuthClient.loginWithCode(code)
-const redirectPath = oAuthClient.sanitizeRedirectUrl(state)
-router.push(redirectPath)
+
+const redirectUrl = state === null
+  ? '/'
+  : oAuthClient.sanitizeRedirectUrl(state, '/')
+
+window.location.replace(redirectUrl)
 ```
 
-### 4. Use in API calls
+## Access Tokens
 
 ```ts
 const token = await oAuthClient.getAccessToken()
-// Token is auto-refreshed if expired
 ```
 
-### 5. Get user info
+`getAccessToken()` refreshes the token when needed.
+
+For API clients, attach the bearer token only when logged in:
 
 ```ts
-const user = await oAuthClient.getUserInfo()
-// user: { sub, name, email, email_verified, given_name, family_name, preferred_username, locale }
+client.interceptors.request.use(async (request) => {
+  if (!await oAuthClient.isLoggedIn()) {
+    return request
+  }
+
+  const token = await oAuthClient.getAccessToken()
+
+  request.headers.set('Authorization', `Bearer ${token}`)
+
+  return request
+})
 ```
 
-### 6. Logout
+## Route Protection
+
+```ts
+const isLoggedIn = await oAuthClient.isLoggedIn()
+
+if (!isLoggedIn) {
+  const loginUrl = await oAuthClient.getLoginUrl(window.location.pathname)
+
+  window.location.replace(loginUrl)
+}
+```
+
+## Logout
 
 ```ts
 oAuthClient.logout()
-window.location.href = oAuthClient.getLogoutUrl()
-```
 
-## Examples
-
-### Router guard for protected routes
-
-```ts
-router.beforeEach(async (to) => {
-  if (to.meta.requiresAuth) {
-    const isAuthenticated = await oAuthClient.isLoggedIn()
-    if (!isAuthenticated) {
-      const loginUrl = await oAuthClient.getLoginUrl(to.fullPath)
-      window.location.href = loginUrl
-      return false
-    }
-  }
-})
-```
-
-### Identity provider login (e.g. Google via Zitadel)
-
-```ts
-async function loginWithGoogle() {
-  const idpLoginUrl = await oAuthClient.getIdentityProviderLoginUrl('google-idp-id')
-  window.location.href = idpLoginUrl
-}
-```
-
-### Offline mode for testing
-
-```ts
-const oAuthClient = new OidcClient({
-  clientId: 'test',
-  baseUrl: 'http://localhost',
-  loginRedirectUri: 'http://localhost/callback',
-  postLogoutRedirectUri: 'http://localhost/logout',
-  scopes: ['openid'],
-  offline: true,
-})
-
-oAuthClient.loginOffline()
-await oAuthClient.isLoggedIn() // true
-```
-
-### Custom token storage strategy
-
-```ts
-import type { TokensStrategy } from '@wisemen/vue-core-auth'
-
-class SessionStorageTokensStrategy implements TokensStrategy {
-  getTokens() { return JSON.parse(sessionStorage.getItem('tokens') ?? 'null') }
-  setTokens(tokens) { sessionStorage.setItem('tokens', JSON.stringify(tokens)) }
-  removeTokens() { sessionStorage.removeItem('tokens') }
-  getCodeVerifier() { return sessionStorage.getItem('code_verifier') }
-  setCodeVerifier(v) { sessionStorage.setItem('code_verifier', v) }
-  removeCodeVerifier() { sessionStorage.removeItem('code_verifier') }
-}
-
-const oAuthClient = new OidcClient({
-  // ...options
-  tokensStrategy: new SessionStorageTokensStrategy(),
-})
+window.location.replace(oAuthClient.getLogoutUrl())
 ```
 
 ## Source Files
 
-For full API details, read the source files.
-
 - Client: `src/oidcClient.ts`
 - Types: `src/oidc.type.ts`
-- Token Storage: `src/tokens-strategy/tokensStrategy.type.ts`, `src/tokens-strategy/localStorage.tokensStrategy.ts`
