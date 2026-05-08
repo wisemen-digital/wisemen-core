@@ -34,13 +34,23 @@ import {
           <UIContextMenuHeader title="Account" />
 
           <UIContextMenuItem
-            :config="{ icon: User01Icon }"
+            :config="{
+              left: {
+                icon: User01Icon,
+                type: 'icon',
+              },
+            }"
             label="View Profile"
             @select="() => console.log('Profile')"
           />
 
           <UIContextMenuItem
-            :config="{ icon: Settings01Icon }"
+            :config="{
+              left: {
+                icon: Settings01Icon,
+                type: 'icon',
+              },
+            }"
             label="Settings"
             @select="() => console.log('Settings')"
           />
@@ -50,7 +60,12 @@ import {
 
         <UIContextMenuGroup>
           <UIContextMenuItem
-            :config="{ icon: File05Icon }"
+            :config="{
+              left: {
+                icon: File05Icon,
+                type: 'icon',
+              },
+            }"
             label="Export"
             @select="() => console.log('Export')"
           />
@@ -60,7 +75,12 @@ import {
 
         <UIContextMenuGroup>
           <UIContextMenuItem
-            :config="{ icon: Trash01Icon }"
+            :config="{
+              left: {
+                icon: Trash01Icon,
+                type: 'icon',
+              },
+            }"
             label="Delete"
             disabled-reason="You don't have permission to delete"
             @select="() => console.log('Delete')"

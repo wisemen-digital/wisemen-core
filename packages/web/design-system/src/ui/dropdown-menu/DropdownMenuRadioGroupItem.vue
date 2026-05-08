@@ -9,7 +9,7 @@ import { UIMenuItem } from '@/ui/menu-item'
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = withDefaults(defineProps<{
-  config?: Omit<MenuItemConfig, 'label'> | null
+  config?: MenuItemConfig | null
   label: string
   value: string
 }>(), {

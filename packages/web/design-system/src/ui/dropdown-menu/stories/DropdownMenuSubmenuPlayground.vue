@@ -28,7 +28,8 @@ import {
       <template #content>
         <UIDropdownMenuGroup>
           <UIDropdownMenuItem
-            :config="{ icon: User01Icon }"
+            :config="{ left: { icon: User01Icon,
+                               type: 'icon' } }"
             label="View Profile"
             @select="() => console.log('View Profile')"
           />
@@ -39,7 +40,8 @@ import {
         <UIDropdownMenuGroup>
           <UIDropdownMenuSub>
             <UIDropdownMenuSubTrigger
-              :config="{ icon: Settings01Icon }"
+              :config="{ left: { icon: Settings01Icon,
+                                 type: 'icon' } }"
               label="Settings"
             />
             <UIDropdownMenuSubContent>
@@ -70,7 +72,12 @@ import {
 
           <UIDropdownMenuSub>
             <UIDropdownMenuSubTrigger
-              :config="{ icon: File05Icon }"
+              :config="{
+                left: {
+                  icon: File05Icon,
+                  type: 'icon',
+                },
+              }"
               label="Export"
             />
             <UIDropdownMenuSubContent>
@@ -96,7 +103,12 @@ import {
 
         <UIDropdownMenuGroup>
           <UIDropdownMenuItem
-            :config="{ icon: Trash01Icon }"
+            :config="{
+              left: {
+                type: 'icon',
+                icon: Trash01Icon,
+              },
+            }"
             label="Delete"
             @select="() => console.log('Delete')"
           />

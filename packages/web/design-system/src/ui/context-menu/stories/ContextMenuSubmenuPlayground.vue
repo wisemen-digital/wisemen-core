@@ -21,7 +21,12 @@ import {
   <div class="flex items-center justify-center p-xl">
     <UIContextMenu>
       <template #trigger>
-        <div class="flex h-32 w-64 items-center justify-center rounded-md border border-dashed border-secondary text-sm text-secondary">
+        <div
+          class="
+            flex h-32 w-64 items-center justify-center rounded-md border
+            border-dashed border-secondary text-sm text-secondary
+          "
+        >
           Right-click here
         </div>
       </template>
@@ -29,7 +34,8 @@ import {
       <template #content>
         <UIContextMenuGroup>
           <UIContextMenuItem
-            :config="{ icon: User01Icon }"
+            :config="{ left: { icon: User01Icon,
+                               type: 'icon' } }"
             label="View Profile"
             @select="() => console.log('View Profile')"
           />
@@ -40,7 +46,8 @@ import {
         <UIContextMenuGroup>
           <UIContextMenuSub>
             <UIContextMenuSubTrigger
-              :config="{ icon: Settings01Icon }"
+              :config="{ left: { icon: Settings01Icon,
+                                 type: 'icon' } }"
               label="Settings"
             />
             <UIContextMenuSubContent>
@@ -63,7 +70,8 @@ import {
 
           <UIContextMenuSub>
             <UIContextMenuSubTrigger
-              :config="{ icon: File05Icon }"
+              :config="{ left: { icon: File05Icon,
+                                 type: 'icon' } }"
               label="Export"
             />
             <UIContextMenuSubContent>
@@ -89,7 +97,8 @@ import {
 
         <UIContextMenuGroup>
           <UIContextMenuItem
-            :config="{ icon: Trash01Icon }"
+            :config="{ left: { icon: Trash01Icon,
+                               type: 'icon' } }"
             label="Delete"
             @select="() => console.log('Delete')"
           />

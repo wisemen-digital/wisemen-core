@@ -47,12 +47,12 @@ export const createMenuItemStyle = tv({
     },
     size: {
       md: {
-        base: 'min-h-8 py-sm',
+        base: 'min-h-8',
         dotWrapper: 'h-5',
         iconWrapper: 'h-5',
       },
       sm: {
-        base: 'min-h-7 px-sm py-xs',
+        base: 'min-h-7 px-sm',
         dotWrapper: 'h-4',
         iconWrapper: 'h-4',
       },
