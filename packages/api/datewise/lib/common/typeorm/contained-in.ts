@@ -6,11 +6,11 @@ import { PlainDate } from '../../plain-date/index.js'
 import { Timestamp } from '../../timestamp/timestamp.js'
 
 /**
- * Checks wether a plain date lies in the given date range with the `<@` operator.
+ * Checks whether a plain date lies in the given date range with the `<@` operator.
  */
 export function ContainedIn (period: DateRange): FindOperator<PlainDate>
 /**
- * Checks wether a timestamp lies in the given date time range with the `<@` operator.
+ * Checks whether a timestamp lies in the given date time range with the `<@` operator.
  */
 export function ContainedIn (period: DateTimeRange): FindOperator<Timestamp>
 export function ContainedIn (
@@ -19,7 +19,7 @@ export function ContainedIn (
   const paramName = randomUUID().replaceAll('-', '')
 
   let type: string
-  if(period instanceof DateRange) {
+  if (period instanceof DateRange) {
     type = 'daterange'
   } else {
     type = 'tstzrange3'
