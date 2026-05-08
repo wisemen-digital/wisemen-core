@@ -4,11 +4,6 @@ description: >
   Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, define typed query keys interface, create API composables with error codes.
 type: lifecycle
 library: vue-core-api-utils
-library_version: "1.0.1"
-sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/getting-started/installation.md"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/plugin/apiUtilsPlugin.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"
 ---
 
 # @wisemen/vue-core-api-utils — Getting Started
@@ -182,60 +177,6 @@ const { result, refetch } = useContactDetail(props.contactUuid)
 ```
 
 All queries and mutations return `AsyncResult` with three states: loading, ok, and err.
-
-## Common Mistakes
-
-### CRITICAL: Forget to initialize apiUtilsPlugin with QueryClient config
-
-```typescript
-// ❌ Wrong: plugin not initialized
-const app = createApp(App)
-app.mount('#app')
-// Throws: "[api-utils] QueryClient not available..."
-```
-
-```typescript
-// ✅ Correct: plugin initialized with config
-const app = createApp(App)
-app.use(apiUtilsPlugin({
-  defaultOptions: {
-    queries: { staleTime: 1000 * 60 * 5 },
-  },
-}))
-app.mount('#app')
-```
-
-If you skip the plugin, `createApiUtils()` has no QueryClient and throws immediately.
-
-Source: `src/config/config.ts` — `getQueryClient()` assertion
-
-### HIGH: Define query keys interface without strict entity/params structure
-
-```typescript
-// ❌ Wrong: inconsistent structure
-export interface ProjectQueryKeys {
-  contactDetail: { entity: Contact } // Missing params!
-  contactList: Contact[] // Should wrap in { entity, params }
-}
-```
-
-```typescript
-// ✅ Correct: every key has entity and params
-export interface ProjectQueryKeys {
-  contactDetail: {
-    entity: Contact
-    params: { contactUuid: string }
-  }
-  contactList: {
-    entity: Contact[]
-    params: { page: number; limit: number }
-  }
-}
-```
-
-Query keys without proper structure prevent the factory from typing composables correctly and cause runtime errors during query key resolution.
-
-Source: `docs/packages/api-utils/pages/getting-started/installation.md` Section 3
 
 ## You're all set!
 
