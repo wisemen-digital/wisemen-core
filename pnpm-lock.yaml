@@ -450,8 +450,8 @@ catalogs:
       specifier: '>=8.2.0'
       version: 8.2.0
     reka-ui:
-      specifier: '>=2.9.6'
-      version: 2.9.6
+      specifier: '>=2.9.7'
+      version: 2.9.7
     temporal-polyfill:
       specifier: '>=0.3.0'
       version: 0.3.0
@@ -663,8 +663,8 @@ catalogs:
       specifier: 2.2.1
       version: 2.2.1
     reka-ui:
-      specifier: 2.9.6
-      version: 2.9.6
+      specifier: 2.9.7
+      version: 2.9.7
     vue:
       specifier: 3.5.27
       version: 3.5.27
@@ -2016,7 +2016,7 @@ importers:
         version: 2.2.1(@vueuse/core@14.1.0(vue@3.5.27(typescript@5.9.3)))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vue@3.5.27(typescript@5.9.3))
       reka-ui:
         specifier: catalog:peer
-        version: 2.9.6(vue@3.5.27(typescript@5.9.3))
+        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
       tailwind-variants:
         specifier: catalog:style
         version: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
@@ -2274,7 +2274,7 @@ importers:
         version: 1.57.0
       reka-ui:
         specifier: catalog:vue
-        version: 2.9.6(vue@3.5.27(typescript@5.9.3))
+        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
       storybook:
         specifier: catalog:storybook
         version: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2648,7 +2648,7 @@ importers:
         version: 9.1.7
       reka-ui:
         specifier: catalog:vue
-        version: 2.9.6(vue@3.5.27(typescript@5.9.3))
+        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
@@ -2788,7 +2788,7 @@ importers:
         version: 2.2.1(@vueuse/core@14.2.1(vue@3.5.27(typescript@5.9.3)))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vue@3.5.27(typescript@5.9.3))
       reka-ui:
         specifier: catalog:peer
-        version: 2.9.6(vue@3.5.27(typescript@5.9.3))
+        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
       temporal-polyfill:
         specifier: catalog:peer
         version: 0.3.0
@@ -11267,8 +11267,8 @@ packages:
     resolution: {integrity: sha512-dLsljMd9sqwRkby8zhO1gSg3PnJIBFid8f4CQj/sXx+7cKx+E7u0PKhZ+U4wmhx7EfmtvnA318oVaIkAB1lRJw==}
     hasBin: true
 
-  reka-ui@2.9.6:
-    resolution: {integrity: sha512-K6bL457owpvWONc7hsjFxo3HDC9s6IzhRqShW0w9JSKelPGfRbkHD558UQTn/NH1cvrXVHygKyC7fExFmRketg==}
+  reka-ui@2.9.7:
+    resolution: {integrity: sha512-aX7foYYR20v4+majO58OJJdBNfLMm0eJb448l9N4JVy8JB7GXOr4H/S4a+J1pkcoxZH8Cb7YHpJ855+miAm7sA==}
     peerDependencies:
       vue: '>= 3.4.0'
 
@@ -23000,7 +23000,7 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  reka-ui@2.9.6(vue@3.5.27(typescript@5.9.3)):
+  reka-ui@2.9.7(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       '@floating-ui/dom': 1.7.2
       '@floating-ui/vue': 1.1.7(vue@3.5.27(typescript@5.9.3))
