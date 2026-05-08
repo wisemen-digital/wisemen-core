@@ -5,49 +5,35 @@ import {
   DropdownMenuRadioItem,
 } from 'reka-ui'
 
-import RowLayout from '@/ui/row-layout/RowLayout.vue'
-import { UIText } from '@/ui/text/index'
+import { UIMenuItem } from '@/ui/menu-item'
+import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 
-const props = defineProps<{
-  hint?: string | null
+const props = withDefaults(defineProps<{
+  config?: Omit<MenuItemConfig, 'label'> | null
   label: string
   value: string
-}>()
+}>(), {
+  config: null,
+})
 </script>
 
 <template>
   <DropdownMenuRadioItem
     :value="props.value"
     class="
-      flex min-h-8 w-full cursor-default items-center rounded-sm px-md py-sm
-      text-primary duration-100 outline-none
-      data-highlighted:bg-tertiary
+      cursor-default rounded-sm duration-100 outline-none
+      data-highlighted:bg-secondary-hover
     "
   >
-    <RowLayout
-      justify="between"
-      class="w-full"
+    <UIMenuItem
+      :config="props.config"
+      :label="props.label"
     >
-      <RowLayout gap="sm">
-        <slot name="left" />
-
-        <UIText
-          :text="props.label"
-          class="text-sm"
-        />
-
-        <UIText
-          v-if="props.hint"
-          :text="props.hint"
-          class="text-sm text-tertiary"
-        />
-      </RowLayout>
-
-      <DropdownMenuItemIndicator>
-        <CheckIcon
-          class="size-3.5 text-tertiary"
-        />
-      </DropdownMenuItemIndicator>
-    </RowLayout>
+      <template #right>
+        <DropdownMenuItemIndicator>
+          <CheckIcon class="size-3.5 text-tertiary" />
+        </DropdownMenuItemIndicator>
+      </template>
+    </UIMenuItem>
   </DropdownMenuRadioItem>
 </template>

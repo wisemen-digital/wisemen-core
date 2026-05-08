@@ -11,7 +11,6 @@ import {
 
 import DropdownMenuFilterPlayground from './DropdownMenuFilterPlayground.vue'
 import DropdownMenuPlayground from './DropdownMenuPlayground.vue'
-import DropdownMenuSlotPlayground from './DropdownMenuSlotPlayground.vue'
 import DropdownMenuSubmenuPlayground from './DropdownMenuSubmenuPlayground.vue'
 
 const meta = {
@@ -31,7 +30,9 @@ export const Default: Story = {
   }) => {
     const canvas = within(canvasElement)
 
-    const trigger = canvas.getByRole('button', { name: 'Open menu' })
+    const trigger = canvas.getByRole('button', {
+      name: 'Open menu',
+    })
 
     await userEvent.click(trigger)
 
@@ -45,11 +46,15 @@ export const Default: Story = {
   },
 }
 
-export const WithSubmenuAndFilter: Story = {
+export const WithSubmenus: Story = {
   render: (args) => ({
-    components: { DropdownMenuSubmenuPlayground },
+    components: {
+      DropdownMenuSubmenuPlayground,
+    },
     setup() {
-      return { args }
+      return {
+        args,
+      }
     },
     template: '<DropdownMenuSubmenuPlayground v-bind="args" />',
   }),
@@ -58,35 +63,14 @@ export const WithSubmenuAndFilter: Story = {
 export const WithRadioAndCheckbox: Story = {
   render: (args) => ({
     components: {
+
       DropdownMenuFilterPlayground,
     },
     setup() {
-      return { args }
+      return {
+        args,
+      }
     },
     template: '<DropdownMenuFilterPlayground v-bind="args" />',
   }),
-}
-
-export const WithSlots: Story = {
-  render: (args) => ({
-    components: { DropdownMenuSlotPlayground },
-    setup() {
-      return { args }
-    },
-    template: '<DropdownMenuSlotPlayground v-bind="args" />',
-  }),
-  play: async ({
-    canvasElement,
-  }) => {
-    const canvas = within(canvasElement)
-
-    const trigger = canvas.getByRole('button', { name: 'Open menu' })
-
-    await userEvent.click(trigger)
-
-    const menu = await screen.findByRole('menu')
-
-    await expect(menu).toBeVisible()
-    await expect(within(menu).getByText('Actions')).toBeVisible()
-  },
 }

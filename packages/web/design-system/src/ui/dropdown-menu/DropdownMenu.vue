@@ -9,12 +9,10 @@ import {
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import DropdownMenuArrow from '@/ui/dropdown-menu/DropdownMenuArrow.vue'
-import DropdownMenuContentVue from '@/ui/dropdown-menu/DropdownMenuContent.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<DropdownMenuProps>(), {
   ...POPPER_PROPS_DEFAULTS,
-  items: null,
   popoverSideOffset: 4,
 })
 </script>
@@ -56,12 +54,6 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
               shadow-lg
             "
           >
-            <DropdownMenuContentVue
-              v-if="props.items !== null"
-              :items="props.items"
-              :filter="props.filter"
-            />
-
             <slot name="content" />
           </div>
 

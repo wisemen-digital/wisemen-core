@@ -1,15 +1,12 @@
 export type { DropdownMenuProps as UIDropdownMenuProps } from './dropdownMenu.props'
 export { default as UIDropdownMenu } from './DropdownMenu.vue'
+export { default as UIDropdownMenuCheckboxItem } from './DropdownMenuCheckboxItem.vue'
 export { default as UIDropdownMenuGroup } from './DropdownMenuGroup.vue'
 export { default as UIDropdownMenuHeader } from './DropdownMenuHeader.vue'
-export type {
-  DropdownMenuActionItem, DropdownMenuGroupItem, DropdownMenuItem, DropdownMenuSeparatorItem, DropdownMenuSubMenuItem,
-} from './dropdownMenuItem.type'
 export { default as UIDropdownMenuItem } from './DropdownMenuItem.vue'
 export { default as UIDropdownMenuRadioGroup } from './DropdownMenuRadioGroup.vue'
 export { default as UIDropdownMenuRadioItem } from './DropdownMenuRadioGroupItem.vue'
 export { default as UIDropdownMenuSeparator } from './DropdownMenuSeparator.vue'
 export { default as UIDropdownMenuSub } from './DropdownMenuSub.vue'
 export { default as UIDropdownMenuSubContent } from './DropdownMenuSubContent.vue'
-export { default as UIDropdownMenuSubMenuItem } from './DropdownMenuSubMenuItem.vue'
 export { default as UIDropdownMenuSubTrigger } from './DropdownMenuSubTrigger.vue'

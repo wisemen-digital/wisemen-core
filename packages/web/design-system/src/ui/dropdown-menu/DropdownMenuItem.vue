@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DropdownMenuItem as RekaDropdownMenuItem } from 'reka-ui'
+import type { Component } from 'vue'
 
 import { UIActionTooltip } from '@/ui/action-tooltip/index'
 import type { KeyboardShortcut as KeyboardShortcutType } from '@/ui/keyboard-shortcut/keyboardShortcut.type'

@@ -57,7 +57,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         :name="props.config.avatar.name"
         :src="props.config.avatar.src"
         :image-alt="props.config.avatar.imageAlt"
-        :size="props.config.description ? 'sm' : 'xs'"
+        :size="props.config.description !== null && props.config.descriptionLayout !== 'inline' ? 'sm' : 'xs'"
       />
 
       <div
