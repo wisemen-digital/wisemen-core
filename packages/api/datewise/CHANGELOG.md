@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.14
+
+### Patch Changes
+
+- [#982](https://github.com/wisemen-digital/wisemen-core/pull/982) [`7543996`](https://github.com/wisemen-digital/wisemen-core/commit/754399631d3a1df3182b104b94db25ac7931225f) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add ContainedIn typeorm operator
+
 ## 0.1.13
 
 ### Patch Changes
