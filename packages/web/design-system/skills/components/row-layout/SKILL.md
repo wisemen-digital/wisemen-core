@@ -47,56 +47,11 @@ import { UIRowLayout, UIButton } from '@wisemen/vue-core-design-system'
 
 ## Source Files
 
+For full API details, read the props file. For usage examples, read the playground file.
+
 - Props: `src/ui/row-layout/rowLayout.props.ts`
 - Component: `src/ui/row-layout/RowLayout.vue`
-
-## Examples
-
-### Space between with large gap
-
-```vue
-<script setup lang="ts">
-import { UIRowLayout, UIButton } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <UIRowLayout gap="lg" justify="between" class="w-full">
-    <UIButton label="Hello" />
-    <UIButton label="Hi there" variant="secondary" />
-    <UIButton label="Morning" variant="tertiary" />
-  </UIRowLayout>
-</template>
-```
-
-### Center justified
-
-```vue
-<script setup lang="ts">
-import { UIRowLayout, UIButton } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <UIRowLayout gap="md" justify="center" class="w-full">
-    <UIButton label="Ping" />
-    <UIButton label="Pong" variant="secondary" />
-  </UIRowLayout>
-</template>
-```
-
-### Rendered as a semantic element
-
-```vue
-<script setup lang="ts">
-import { UIRowLayout } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <UIRowLayout as="nav" gap="xl" align="start">
-    <div>Link A</div>
-    <div>Link B</div>
-  </UIRowLayout>
-</template>
-```
+- Playground: `src/ui/row-layout/stories/`
 
 ## See Also
 
