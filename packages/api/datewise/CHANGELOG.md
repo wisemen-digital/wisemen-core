@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.16
+
+### Patch Changes
+
+- [#992](https://github.com/wisemen-digital/wisemen-core/pull/992) [`02c8997`](https://github.com/wisemen-digital/wisemen-core/commit/02c89977034deb52b8ed4e7012dbbda3897668e1) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: add overload for Date in ContainedIn
+
 ## 0.1.15
 
 ### Patch Changes
