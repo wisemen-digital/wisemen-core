@@ -42,45 +42,10 @@ import { UISkeletonItem } from '@wisemen/vue-core-design-system'
 
 ## Source Files
 
+For full API details, read the props file.
+
 - Props: `src/ui/skeleton-item/skeletonItem.props.ts`
 - Component: `src/ui/skeleton-item/SkeletonItem.vue`
-
-## Examples
-
-### Skeleton card layout
-
-```vue
-<script setup lang="ts">
-import { UISkeletonItem } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <div class="flex flex-col gap-md">
-    <UISkeletonItem class="h-6 w-40" :animate="true" />
-    <UISkeletonItem class="h-4 w-64" :animate="true" :animation-delay-in-ms="100" />
-    <UISkeletonItem class="h-4 w-56" :animate="true" :animation-delay-in-ms="200" />
-    <UISkeletonItem class="h-4 w-32" :animate="true" :animation-delay-in-ms="300" />
-  </div>
-</template>
-```
-
-### Skeleton with avatar and text
-
-```vue
-<script setup lang="ts">
-import { UISkeletonItem } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <div class="flex items-center gap-md">
-    <UISkeletonItem class="size-10 shrink-0 rounded-full" :animate="true" />
-    <div class="flex flex-col gap-xs">
-      <UISkeletonItem class="h-4 w-32" :animate="true" :animation-delay-in-ms="50" />
-      <UISkeletonItem class="h-3 w-48" :animate="true" :animation-delay-in-ms="100" />
-    </div>
-  </div>
-</template>
-```
 
 ## See Also
 
