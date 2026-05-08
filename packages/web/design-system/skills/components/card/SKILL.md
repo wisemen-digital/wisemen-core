@@ -46,52 +46,9 @@ import { UICard } from '@wisemen/vue-core-design-system'
 
 ## Source Files
 
+For full API details, read the component file.
+
 - Component: `src/ui/card/Card.vue`
-
-## Examples
-
-### Card with title and content
-
-```vue
-<script setup lang="ts">
-import { UICard } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <UICard>
-    <div class="p-xl">
-      <h3 class="text-lg font-semibold text-primary">Card Title</h3>
-      <p class="mt-sm text-sm text-secondary">
-        This is some descriptive content inside a card.
-      </p>
-    </div>
-  </UICard>
-</template>
-```
-
-### Card with sections separated by dividers
-
-```vue
-<script setup lang="ts">
-import { UICard, UISeparator } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <UICard>
-    <div class="p-xl">
-      <h3 class="text-lg font-semibold text-primary">Header</h3>
-    </div>
-    <UISeparator />
-    <div class="p-xl">
-      <p class="text-sm text-secondary">Body content</p>
-    </div>
-    <UISeparator />
-    <div class="flex justify-end p-xl">
-      <span class="text-sm text-tertiary">Footer</span>
-    </div>
-  </UICard>
-</template>
-```
 
 ## See Also
 
