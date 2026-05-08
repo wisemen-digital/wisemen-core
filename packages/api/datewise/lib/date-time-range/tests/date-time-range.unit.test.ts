@@ -6,6 +6,7 @@ import { initDayjs } from '../../common/init-dayjs.js'
 import { Inclusivity } from '../../common/inclusivity.js'
 import { FutureInfinity } from '../../timestamp/future-infinity.js'
 import { timestamp } from '../../timestamp/index.js'
+import type { Timestamp } from '../../timestamp/timestamp.js'
 import { PastInfinity } from '../../timestamp/past-infinity.js'
 
 describe('DateTimeRange unit tests', () => {
@@ -1529,6 +1530,188 @@ describe('DateTimeRange unit tests', () => {
       expect(sorted[0]).toBe(range3) // Ends at 30 minutes
       expect(sorted[1]).toBe(range1) // Ends at 1 hour
       expect(sorted[2]).toBe(range2) // Ends at 2 hours
+    })
+  })
+
+  describe('iterate', () => {
+    it('iterates over a single millisecond range', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(1, 'ms'))
+      const timestamps = Array.from(range.iterate())
+
+      expect(timestamps).toHaveLength(1)
+      expect(timestamps[0].isSame(start)).toBe(true)
+    })
+
+    it('iterates over all milliseconds in a range', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'ms'))
+      const timestamps = Array.from(range.iterate(1, 'ms'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'ms'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'ms'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'ms'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'ms'))).toBe(true)
+    })
+
+    it('iterates with second intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'seconds'))
+      const timestamps = Array.from(range.iterate(1, 'second'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'second'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'seconds'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'seconds'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'seconds'))).toBe(true)
+    })
+
+    it('iterates with minute intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'minutes'))
+      const timestamps = Array.from(range.iterate(1, 'minute'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'minute'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'minutes'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'minutes'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'minutes'))).toBe(true)
+    })
+
+    it('iterates with hour intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'hours'))
+      const timestamps = Array.from(range.iterate(1, 'hour'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'hour'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'hours'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'hours'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'hours'))).toBe(true)
+    })
+
+    it('iterates with day intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'days'))
+      const timestamps = Array.from(range.iterate(1, 'day'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'day'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'days'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'days'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'days'))).toBe(true)
+    })
+
+    it('iterates with week intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(4, 'weeks'))
+      const timestamps = Array.from(range.iterate(1, 'week'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'week'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'weeks'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'weeks'))).toBe(true)
+    })
+
+    it('iterates with month intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(4, 'months'))
+      const timestamps = Array.from(range.iterate(1, 'month'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'month'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'months'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'months'))).toBe(true)
+    })
+
+    it('iterates with year intervals', () => {
+      const start = timestamp('2020-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'years'))
+      const timestamps = Array.from(range.iterate(1, 'year'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'year'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'years'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'years'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'years'))).toBe(true)
+    })
+
+    it('always includes start timestamp even when interval exceeds range', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'seconds'))
+      const timestamps = Array.from(range.iterate(10, 'seconds'))
+
+      expect(timestamps).toHaveLength(1)
+      expect(timestamps[0].isSame(start)).toBe(true)
+    })
+
+    it('stops before end timestamp when interval does not divide range evenly', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(10, 'seconds'))
+      const timestamps = Array.from(range.iterate(3, 'seconds'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(3, 'seconds'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(6, 'seconds'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(9, 'seconds'))).toBe(true)
+    })
+
+    it('excludes end timestamp (exclusive upper bound)', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(8, 'seconds'))
+      const timestamps = Array.from(range.iterate(3, 'seconds'))
+
+      // 0, 3, 6, 9 (9 exceeds range end of 8)
+      expect(timestamps).toHaveLength(3)
+      expect(timestamps[timestamps.length - 1].isSame(start.add(6, 'seconds'))).toBe(true)
+    })
+
+    it('iterates with combined amount and interval (2 hours)', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(8, 'hours'))
+      const timestamps = Array.from(range.iterate(2, 'hours'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(2, 'hours'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(4, 'hours'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(6, 'hours'))).toBe(true)
+    })
+
+    it('can be used in a for...of loop', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(3, 'seconds'))
+      const timestamps: Timestamp[] = []
+
+      for (const ts of range.iterate(1, 'second')) {
+        timestamps.push(ts)
+      }
+
+      expect(timestamps).toHaveLength(3)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'second'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'seconds'))).toBe(true)
+    })
+
+    it('handles large intervals with millisecond precision', () => {
+      const start = timestamp('2024-01-01T00:00:00.123Z')
+      const range = new DateTimeRange(start, start.add(3, 'days'))
+      const timestamps = Array.from(range.iterate(1, 'day'))
+
+      expect(timestamps).toHaveLength(3)
+      expect(timestamps[0].toISOString()).toBe('2024-01-01T00:00:00.123Z')
+      expect(timestamps[1].toISOString()).toBe('2024-01-02T00:00:00.123Z')
+      expect(timestamps[2].toISOString()).toBe('2024-01-03T00:00:00.123Z')
     })
   })
 })

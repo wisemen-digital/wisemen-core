@@ -1,6 +1,6 @@
 import { Inclusivity, InclusivityString, mapToInclusivity, isInclusive } from '../common/inclusivity.js'
 import { PlainDate, PlainDateInput } from '../plain-date/plain-date.js'
-import { plainDate } from '../plain-date/index.js'
+import { plainDate, PlainDateUnit } from '../plain-date/index.js'
 import { DatePeriod } from '../common/date-period.enum.js'
 import { InvalidDateRangeBounds, NoDateRangeOverlap } from './date-range-errors.js'
 
@@ -262,5 +262,23 @@ export class DateRange {
     }
 
     return this.endDate.compare(withOther.endDate)
+  }
+
+  /**
+   * Creates an iterable for every date in this range starting from the start date
+   * until the end date (inclusive). 
+   * 
+   * By default every date is generated (amount = 1, interval = 'day'). \
+   * Increasing the interval between generated dates will always return the start date of this range
+   * even if the next value lies beyond this range.
+   */
+  *iterate(amount: number = 1, interval: PlainDateUnit = 'day'): Iterable<PlainDate>  {
+    let date = this.startDate
+
+    while(date.isSameOrBefore(this.endDate)) {
+      yield date
+
+      date = date.add(amount, interval)
+    }
   }
 }

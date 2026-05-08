@@ -1,3 +1,4 @@
+import type { ManipulateType } from 'dayjs'
 import { Inclusivity, InclusivityString, mapToInclusivity, isInclusive } from '../common/inclusivity.js'
 import { timestamp } from '../timestamp/index.js'
 import { Timestamp, TimestampInput } from '../timestamp/timestamp.js'
@@ -407,6 +408,24 @@ export class DateTimeRange {
       return this.setUntil(withOther.upper)
     } else {
       throw new Error('cannot merge non adjacent date time ranges')
+    }
+  }
+
+  /**
+   * Creates an iterable for every timestamp in this range starting from the start timestamp
+   * until the end timestamp (exclusive). 
+   * 
+   * By default every day is generated (amount = 1, interval = 'day'). \
+   * Increasing the interval between generated timestamps will always return the start timestamp of this range
+   * even if the next value lies beyond this range.
+   */
+  *iterate(amount: number = 1, interval: ManipulateType = 'day'): Iterable<Timestamp>  {
+    let current = this.lower
+
+    while(current.isBefore(this.upper)) {
+      yield current
+
+      current = current.add(amount, interval)
     }
   }
 }

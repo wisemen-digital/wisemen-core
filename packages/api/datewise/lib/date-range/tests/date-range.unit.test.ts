@@ -1209,4 +1209,123 @@ describe('DateRange unit tests', () => {
       expect(result).toBe(0)
     })
   })
+
+  describe('iterate', () => {
+    it('iterates over a single day range', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-01'))
+      const dates = Array.from(range.iterate())
+
+      expect(dates).toHaveLength(1)
+      expect(dates[0].toString()).toBe('2024-01-01')
+    })
+
+    it('iterates over all dates in a range with default parameters', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-05'))
+      const dates = Array.from(range.iterate())
+
+      expect(dates).toHaveLength(5)
+      expect(dates[0].toString()).toBe('2024-01-01')
+      expect(dates[1].toString()).toBe('2024-01-02')
+      expect(dates[2].toString()).toBe('2024-01-03')
+      expect(dates[3].toString()).toBe('2024-01-04')
+      expect(dates[4].toString()).toBe('2024-01-05')
+    })
+
+    it('iterates with 2-day intervals', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-10'))
+      const dates = Array.from(range.iterate(2))
+
+      expect(dates).toHaveLength(5)
+      expect(dates[0].toString()).toBe('2024-01-01')
+      expect(dates[1].toString()).toBe('2024-01-03')
+      expect(dates[2].toString()).toBe('2024-01-05')
+      expect(dates[3].toString()).toBe('2024-01-07')
+      expect(dates[4].toString()).toBe('2024-01-09')
+    })
+
+    it('iterates with week intervals', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-29'))
+      const dates = Array.from(range.iterate(1, 'week'))
+
+      expect(dates).toHaveLength(5)
+      expect(dates[0].toString()).toBe('2024-01-01')
+      expect(dates[1].toString()).toBe('2024-01-08')
+      expect(dates[2].toString()).toBe('2024-01-15')
+      expect(dates[3].toString()).toBe('2024-01-22')
+      expect(dates[4].toString()).toBe('2024-01-29')
+    })
+
+    it('iterates with month intervals', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-04-01'))
+      const dates = Array.from(range.iterate(1, 'month'))
+
+      expect(dates).toHaveLength(4)
+      expect(dates[0].toString()).toBe('2024-01-01')
+      expect(dates[1].toString()).toBe('2024-02-01')
+      expect(dates[2].toString()).toBe('2024-03-01')
+      expect(dates[3].toString()).toBe('2024-04-01')
+    })
+
+    it('iterates with year intervals', () => {
+      const range = new DateRange(plainDate('2020-01-01'), plainDate('2024-01-01'))
+      const dates = Array.from(range.iterate(1, 'year'))
+
+      expect(dates).toHaveLength(5)
+      expect(dates[0].toString()).toBe('2020-01-01')
+      expect(dates[1].toString()).toBe('2021-01-01')
+      expect(dates[2].toString()).toBe('2022-01-01')
+      expect(dates[3].toString()).toBe('2023-01-01')
+      expect(dates[4].toString()).toBe('2024-01-01')
+    })
+
+    it('always includes start date even when interval exceeds range', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-05'))
+      const dates = Array.from(range.iterate(10))
+
+      expect(dates).toHaveLength(1)
+      expect(dates[0].toString()).toBe('2024-01-01')
+    })
+
+    it('stops at end date when interval does not divide range evenly', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-10'))
+      const dates = Array.from(range.iterate(3))
+
+      expect(dates).toHaveLength(4)
+      expect(dates[0].toString()).toBe('2024-01-01')
+      expect(dates[1].toString()).toBe('2024-01-04')
+      expect(dates[2].toString()).toBe('2024-01-07')
+      expect(dates[3].toString()).toBe('2024-01-10')
+    })
+
+    it('includes end date only if it falls on an iteration point', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-08'))
+      const dates = Array.from(range.iterate(3))
+
+      // 01, 04, 07, (10 would be past end date)
+      expect(dates).toHaveLength(3)
+      expect(dates[dates.length - 1].toString()).toBe('2024-01-07')
+    })
+
+    it('iterates with combined amount and interval (2 weeks)', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-02-12'))
+      const dates = Array.from(range.iterate(2, 'week'))
+
+      expect(dates).toHaveLength(4)
+      expect(dates[0].toString()).toBe('2024-01-01')
+      expect(dates[1].toString()).toBe('2024-01-15')
+      expect(dates[2].toString()).toBe('2024-01-29')
+      expect(dates[3].toString()).toBe('2024-02-12')
+    })
+
+    it('can be used in a for...of loop', () => {
+      const range = new DateRange(plainDate('2024-01-01'), plainDate('2024-01-03'))
+      const dates: string[] = []
+
+      for (const date of range.iterate()) {
+        dates.push(date.toString())
+      }
+
+      expect(dates).toEqual(['2024-01-01', '2024-01-02', '2024-01-03'])
+    })
+  })
 })
