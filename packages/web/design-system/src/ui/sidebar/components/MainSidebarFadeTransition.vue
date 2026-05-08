@@ -10,7 +10,6 @@
     appear-active-class="transition-opacity duration-150 ease-in"
     appear-from-class="opacity-0"
     appear-to-class="opacity-100"
-    appear
   >
     <slot />
   </Transition>

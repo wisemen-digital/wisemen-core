@@ -3,6 +3,7 @@ export { default as UIMainSidebarFooterFeaturedCard } from './components/MainSid
 export { default as UIMainSidebarGlobalSearch } from './components/MainSidebarGlobalSearch.vue'
 export { default as UIMainSidebarHeaderLogoWithText } from './components/MainSidebarHeaderLogoWithText.vue'
 export { default as UIMainSidebarNavigationGroup } from './components/MainSidebarNavigationGroup.vue'
+export { default as UIMainSidebarNavigationGroups } from './components/MainSidebarNavigationGroups.vue'
 export { default as UIMainSidebarNavigationLink } from './components/MainSidebarNavigationLink.vue'
 export { default as UIMainSidebarNavigationLinkBadge } from './components/MainSidebarNavigationLinkBadge.vue'
 export { default as UIMainSidebarNavigationLinkStatusDot } from './components/MainSidebarNavigationLinkStatusDot.vue'

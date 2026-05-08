@@ -3,7 +3,8 @@ import type { Component } from 'vue'
 import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
 
 export interface DashboardPageProps {
-  title: string | null
+  title: string
+  isTitleHidden?: boolean
   actions?: any[]
   breadcrumbs?: PageBreadcrumb[]
   tabs?: PageTab[]

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import Link from '@/ui/button/link/Link.vue'
 </script>
 
@@ -25,7 +24,10 @@ import Link from '@/ui/button/link/Link.vue'
       <div>
         <Link
           :link="{ href: '#' }"
-          keyboard-shortcut="⌘D"
+          :keyboard-shortcut="{
+            key: 'D',
+            meta: true,
+          }"
           label="Dashboard"
         />
       </div>

@@ -12,6 +12,7 @@ import {
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
+import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
 import MainSidebarNavigationLinkProvider from '@/ui/sidebar/components/MainSidebarNavigationLinkProvider.vue'
@@ -20,7 +21,7 @@ import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 export interface Props {
   isActive?: (route: RouteLocationNormalized) => boolean
   icon: Component
-  keyboardShortcut?: string | null
+  keyboardShortcut?: KeyboardShortcut | null
   label: string
   to: RouteLocationRaw
 }

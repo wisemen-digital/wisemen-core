@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import {
   Building02Icon,
   CheckIcon,
@@ -96,7 +95,10 @@ import { UIMenuItem } from '@/ui/menu-item'
         <UIMenuItem
           :config="{
             right: {
-              keys: 'meta_k',
+              keyboardShortcut: {
+                key: 'K',
+                meta: true,
+              },
               type: 'shortcut',
             },
           }"

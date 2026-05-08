@@ -36,35 +36,27 @@ export default [
         { blankLine: 'always', next: 'function', prev: '*' },
         { blankLine: 'always', next: '*', prev: 'function' },
         {
-          blankLine: 'always', next: '*', prev: [
-            'const',
-            'let',
-            'var'
-          ]
+          blankLine: 'always',
+          next: '*',
+          prev: ['const', 'let', 'var']
         },
         {
-          blankLine: 'any', next: [
-            'const',
-            'let',
-            'var'
-          ], prev: [
-            'const',
-            'let',
-            'var'
-          ]
+          blankLine: 'any',
+          next: ['const', 'let', 'var'],
+          prev: ['const', 'let', 'var']
         }
       ]
-    // '@stylistic/indent': [
-    //   'error',
-    //   2,
-    //   {
-    //     ignoredNodes: [
-    //       'FunctionExpression > .params[decorators.length > 0]',
-    //       'FunctionExpression > .params > :matches(Decorator, :not(:first-child))',
-    //       'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key'
-    //     ]
-    //   }
-    // ]
+      // '@stylistic/indent': [
+      //   'error',
+      //   2,
+      //   {
+      //     ignoredNodes: [
+      //       'FunctionExpression > .params[decorators.length > 0]',
+      //       'FunctionExpression > .params > :matches(Decorator, :not(:first-child))',
+      //       'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key'
+      //     ]
+      //   }
+      // ]
     }
   }
 ]

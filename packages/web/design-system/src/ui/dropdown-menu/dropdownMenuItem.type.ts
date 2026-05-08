@@ -1,8 +1,9 @@
 import type { Component } from 'vue'
 
-export interface DropdownMenuItem {
+import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
+
+export interface DropdownMenuItem extends WithKeyboardShortcut {
   icon: Component
-  keyboardShortcut?: string
   label: string
   onSelect: () => void
 }

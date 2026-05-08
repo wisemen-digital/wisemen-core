@@ -4,9 +4,11 @@ import type {
   RouteLocationRaw,
 } from 'vue-router'
 
+import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
+
 export type MainSidebarCollapsedVariant = 'hidden' | 'minified'
 
-export interface DashboardSidebarNavLink {
+export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
   /**
    * Optional function to determine if the link is active based on the current route
    * @param route
@@ -17,12 +19,6 @@ export interface DashboardSidebarNavLink {
    * Icon component to display alongside the label
    */
   icon: Component
-  /**
-   * Optional keyboard shortcut hint to display next to the label
-   * @default null
-   */
-  keyboardShortcut?: string | null
-
   /**
    * Text label for the navigation link
    */

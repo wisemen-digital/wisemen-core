@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import {
   PlusIcon,
   Settings01Icon,
@@ -83,7 +82,10 @@ import IconButton from '@/ui/button/icon/IconButton.vue'
       <div>
         <IconButton
           :icon="Settings01Icon"
-          keyboard-shortcut="⌘,"
+          :keyboard-shortcut="{
+            key: ',',
+            meta: true,
+          }"
           label="Open Settings"
           tooltip-label="Settings"
         />
