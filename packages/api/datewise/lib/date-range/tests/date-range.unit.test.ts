@@ -1050,4 +1050,163 @@ describe('DateRange unit tests', () => {
       expect(second.isStrictlyAfter(first)).toBe(false)
     })
   })
+
+  describe('compare', () => {
+    it('returns 0 when comparing a range to itself', () => {
+      const range = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = range.compare(range)
+
+      expect(result).toBe(0)
+    })
+
+    it('returns 0 when comparing identical ranges', () => {
+      const range1 = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const range2 = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = range1.compare(range2)
+
+      expect(result).toBe(0)
+    })
+
+    it('returns negative value when this range starts before the other', () => {
+      const earlier = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const later = new DateRange(plainDate('2025-02-01'), plainDate('2025-02-28'))
+      const result = earlier.compare(later)
+
+      expect(result).toBeLessThan(0)
+    })
+
+    it('returns positive value when this range starts after the other', () => {
+      const later = new DateRange(plainDate('2025-02-01'), plainDate('2025-02-28'))
+      const earlier = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = later.compare(earlier)
+
+      expect(result).toBeGreaterThan(0)
+    })
+
+    it('when start dates are equal, compares by end date', () => {
+      const shorter = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-15'))
+      const longer = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = shorter.compare(longer)
+
+      expect(result).toBeLessThan(0)
+    })
+
+    it('when start dates are equal, longer range is greater', () => {
+      const longer = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const shorter = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-15'))
+      const result = longer.compare(shorter)
+
+      expect(result).toBeGreaterThan(0)
+    })
+
+    it('can be used to sort ranges in ascending order', () => {
+      const ranges = [
+        new DateRange(plainDate('2025-03-01'), plainDate('2025-03-31')),
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31')),
+        new DateRange(plainDate('2025-02-01'), plainDate('2025-02-28'))
+      ]
+
+      ranges.sort((a, b) => a.compare(b))
+
+      expect(ranges[0].startDate.toString()).toBe('2025-01-01')
+      expect(ranges[1].startDate.toString()).toBe('2025-02-01')
+      expect(ranges[2].startDate.toString()).toBe('2025-03-01')
+    })
+
+    it('can be used to sort ranges in descending order', () => {
+      const ranges = [
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31')),
+        new DateRange(plainDate('2025-03-01'), plainDate('2025-03-31')),
+        new DateRange(plainDate('2025-02-01'), plainDate('2025-02-28'))
+      ]
+
+      ranges.sort((a, b) => b.compare(a))
+
+      expect(ranges[0].startDate.toString()).toBe('2025-03-01')
+      expect(ranges[1].startDate.toString()).toBe('2025-02-01')
+      expect(ranges[2].startDate.toString()).toBe('2025-01-01')
+    })
+
+    it('sorts ranges with same start date by end date', () => {
+      const ranges = [
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31')),
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-15')),
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-20'))
+      ]
+
+      ranges.sort((a, b) => a.compare(b))
+
+      expect(ranges[0].endDate.toString()).toBe('2025-01-15')
+      expect(ranges[1].endDate.toString()).toBe('2025-01-20')
+      expect(ranges[2].endDate.toString()).toBe('2025-01-31')
+    })
+
+    it('handles ranges with past infinity start date', () => {
+      const infiniteStart = new DateRange(new PastInfinityDate(), plainDate('2025-01-31'))
+      const regularRange = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = infiniteStart.compare(regularRange)
+
+      expect(result).toBe(-Infinity)
+    })
+
+    it('handles ranges with future infinity end date', () => {
+      const infiniteEnd = new DateRange(plainDate('2025-01-01'), new FutureInfinityDate())
+      const regularEnd = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = infiniteEnd.compare(regularEnd)
+
+      expect(result).toBe(Infinity)
+    })
+
+    it('handles ranges with both infinities', () => {
+      const fullInfinite = new DateRange(new PastInfinityDate(), new FutureInfinityDate())
+      const regularRange = new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      const result = fullInfinite.compare(regularRange)
+
+      expect(result).toBe(-Infinity)
+    })
+
+    it('sorts ranges with infinities correctly', () => {
+      const ranges = [
+        new DateRange(plainDate('2025-02-01'), plainDate('2025-02-28')),
+        new DateRange(new PastInfinityDate(), plainDate('2025-01-31')),
+        new DateRange(plainDate('2025-01-01'), new FutureInfinityDate()),
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31'))
+      ]
+
+      ranges.sort((a, b) => a.compare(b))
+
+      expect(ranges[0].startDate.isPastInfinity()).toBe(true)
+      expect(ranges[1].startDate.toString()).toBe('2025-01-01')
+      expect(ranges[1].endDate.toString()).toBe('2025-01-31')
+      expect(ranges[2].startDate.toString()).toBe('2025-01-01')
+      expect(ranges[2].endDate.isFutureInfinity()).toBe(true)
+      expect(ranges[3].startDate.toString()).toBe('2025-02-01')
+    })
+
+    it('handles complex sorting with overlapping ranges', () => {
+      const ranges = [
+        new DateRange(plainDate('2025-01-15'), plainDate('2025-02-15')),
+        new DateRange(plainDate('2025-01-01'), plainDate('2025-01-31')),
+        new DateRange(plainDate('2025-01-15'), plainDate('2025-01-20')),
+        new DateRange(plainDate('2025-02-01'), plainDate('2025-02-28'))
+      ]
+
+      ranges.sort((a, b) => a.compare(b))
+
+      expect(ranges[0].startDate.toString()).toBe('2025-01-01')
+      expect(ranges[1].startDate.toString()).toBe('2025-01-15')
+      expect(ranges[1].endDate.toString()).toBe('2025-01-20')
+      expect(ranges[2].startDate.toString()).toBe('2025-01-15')
+      expect(ranges[2].endDate.toString()).toBe('2025-02-15')
+      expect(ranges[3].startDate.toString()).toBe('2025-02-01')
+    })
+
+    it('infinite range compares equal to itself', () => {
+      const range1 = new DateRange(new PastInfinityDate(), new FutureInfinityDate())
+      const range2 = new DateRange(new PastInfinityDate(), new FutureInfinityDate())
+      const result = range1.compare(range2)
+
+      expect(result).toBe(0)
+    })
+  })
 })

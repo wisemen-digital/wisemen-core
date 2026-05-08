@@ -102,6 +102,16 @@ export class PastInfinity implements Timestamp {
     return -Infinity
   }
 
+  compare (withOther: TimestampInput): number {
+    const parsedOther = factory(withOther)
+
+    if(parsedOther.isPastInfinity()) {
+      return 0
+    } else {
+      return -Infinity
+    }
+  }
+
   getTime (): number {
     return -Infinity
   }
