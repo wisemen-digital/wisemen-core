@@ -19,7 +19,12 @@ import {
   <div class="flex items-center justify-center p-xl">
     <UIContextMenu>
       <template #trigger>
-        <div class="flex h-32 w-64 items-center justify-center rounded-md border border-dashed border-secondary text-sm text-secondary">
+        <div
+          class="
+            flex h-32 w-64 items-center justify-center rounded-md border
+            border-dashed border-secondary text-sm text-secondary
+          "
+        >
           Right-click here
         </div>
       </template>
