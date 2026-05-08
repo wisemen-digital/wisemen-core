@@ -42,57 +42,10 @@ import { UILoader } from '@wisemen/vue-core-design-system'
 
 ## Source Files
 
+For usage examples, read the playground file.
+
 - Component: `src/ui/loader/Loader.vue`
-
-## Examples
-
-### Different sizes
-
-```vue
-<script setup lang="ts">
-import { UILoader } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <div class="flex items-center gap-8">
-    <UILoader class="size-4 text-primary" />
-    <UILoader class="size-6 text-primary" />
-    <UILoader class="size-8 text-primary" />
-  </div>
-</template>
-```
-
-### Centered full-page loader
-
-```vue
-<script setup lang="ts">
-import { UILoader } from '@wisemen/vue-core-design-system'
-</script>
-
-<template>
-  <div class="flex h-full items-center justify-center">
-    <UILoader class="size-8 text-brand-500" />
-  </div>
-</template>
-```
-
-### Inline loading state
-
-```vue
-<script setup lang="ts">
-import { ref } from 'vue'
-import { UILoader } from '@wisemen/vue-core-design-system'
-
-const isLoading = ref(true)
-</script>
-
-<template>
-  <div class="flex items-center gap-sm">
-    <UILoader v-if="isLoading" class="size-4 text-secondary" />
-    <span class="text-sm text-secondary">Loading results...</span>
-  </div>
-</template>
-```
+- Playground: `src/ui/loader/stories/`
 
 ## See Also
 
