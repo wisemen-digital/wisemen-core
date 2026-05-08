@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.13
+
+### Patch Changes
+
+- [#958](https://github.com/wisemen-digital/wisemen-core/pull/958) [`cb28106`](https://github.com/wisemen-digital/wisemen-core/commit/cb28106428925abacac5e7934405b61a580d7033) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add new `compare` method to PlainTime, PlainDate, Timestamp, DateRange and DateTimeRange to assist in `sort` calls
+
 ## 0.1.12
 
 ### Patch Changes
