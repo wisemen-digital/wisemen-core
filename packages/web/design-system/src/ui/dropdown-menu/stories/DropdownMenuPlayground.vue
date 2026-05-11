@@ -88,6 +88,7 @@ import {
           <UIDropdownMenuItem
             :config="{ left: { type: 'icon',
                                icon: Trash01Icon } }"
+            :is-disabled="true"
             label="Delete"
             disabled-reason="You don't have permission to delete"
             @select="() => console.log('Delete')"

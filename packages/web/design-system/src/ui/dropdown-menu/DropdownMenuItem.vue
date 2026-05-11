@@ -8,6 +8,7 @@ import { UIMenuItem } from '@/ui/menu-item'
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = withDefaults(defineProps<{
+  isDisabled?: boolean
   config?: MenuItemConfig | null
   disabledReason?: string | null
   icon?: Component
@@ -38,6 +39,7 @@ const emit = defineEmits<{
       @select="emit('select')"
     >
       <UIMenuItem
+        :is-disabled="props.isDisabled"
         :config="props.config"
         :label="props.label"
       />

@@ -2,6 +2,11 @@ import type { MenuItemConfig } from './menuItem.type'
 
 export interface MenuItemProps {
   /**
+   * Disable this menu item.
+   * @default false
+   */
+  isDisabled?: boolean
+  /**
    * Configuration object for content layout (left, description, right).
    */
   config?: MenuItemConfig | null

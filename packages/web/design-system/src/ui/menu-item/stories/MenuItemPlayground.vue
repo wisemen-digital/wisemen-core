@@ -2,6 +2,7 @@
 import {
   Building02Icon,
   CheckIcon,
+  User01Icon,
   User02Icon,
 } from '@wisemen/vue-core-icons'
 
@@ -162,7 +163,7 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{ left: { type: 'icon',
-                             icon: User02Icon } }"
+                             icon: User01Icon } }"
           label="Apple"
           size="sm"
         />
@@ -205,12 +206,19 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            description: { layout: 'block',
-                           value: 'alice@example.com' },
-            left: { type: 'icon',
-                    icon: User02Icon },
-            right: { type: 'text',
-                     text: 'Admin' },
+            description: {
+              layout: 'block',
+              value: 'alice@example.com',
+            },
+            left: {
+              name: 'Alice Johnson',
+              src: 'https://i.pravatar.cc/150?u=alice',
+              type: 'avatar',
+            },
+            right: {
+              type: 'text',
+              text: 'Admin',
+            },
           }"
           label="Alice Johnson"
         >
