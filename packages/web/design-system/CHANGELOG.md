@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.0
+
+### Minor Changes
+
+- [#928](https://github.com/wisemen-digital/wisemen-core/pull/928) [`fa12b98`](https://github.com/wisemen-digital/wisemen-core/commit/fa12b98e2e2354bfc1db70dacb2b78baf460e460) Thanks [@wouterlms](https://github.com/wouterlms)! - Add detail list components
+
+- [#888](https://github.com/wisemen-digital/wisemen-core/pull/888) [`5919f87`](https://github.com/wisemen-digital/wisemen-core/commit/5919f87ec47de2122fbc09281c46556ba1364c92) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add inline date and date range pickers
+
+- [#910](https://github.com/wisemen-digital/wisemen-core/pull/910) [`6dcd97e`](https://github.com/wisemen-digital/wisemen-core/commit/6dcd97ef2271a5e8fa4e3590723a5253a50acf2f) Thanks [@wouterlms](https://github.com/wouterlms)! - Toast: add toast component
+
+- [#893](https://github.com/wisemen-digital/wisemen-core/pull/893) [`fe6b0f2`](https://github.com/wisemen-digital/wisemen-core/commit/fe6b0f231af773d81ece3c003b5e61807037ccad) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add address autocomplete with adaptors
+
+- [#914](https://github.com/wisemen-digital/wisemen-core/pull/914) [`796e16e`](https://github.com/wisemen-digital/wisemen-core/commit/796e16eb9009ed6fefe527e80d14a8a5a520d103) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add time field component
+
+- [#907](https://github.com/wisemen-digital/wisemen-core/pull/907) [`24fc0b7`](https://github.com/wisemen-digital/wisemen-core/commit/24fc0b7855128da2ed33551a4cb63a11649ca038) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add phonenumber input field
+
 ## 0.9.1
 
 ### Patch Changes

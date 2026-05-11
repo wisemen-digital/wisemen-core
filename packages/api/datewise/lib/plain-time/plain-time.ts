@@ -269,6 +269,20 @@ export class PlainTimeImpl {
     return new PlainTimeImpl(this.toPlainObject())
   }
 
+  /** 
+   * Compares the order of the given time with this time. \
+   * returns < 0 if this time is before the given time \
+   * returns 0 if this time is the same as the given time \
+   * returns > 0 if this time is after the given time \
+   * \
+   * The returned value is the difference in milliseconds between the compared times.
+  */
+  compare (withOther: PlainTimeInput): number {
+    const other = plainTime(withOther)
+
+    return this.absoluteMilliseconds - other.absoluteMilliseconds
+  }
+
   toTimestamp (withDate: DayjsPlainDate, timeZone: TimezoneInput): Timestamp {
     return withDate.toTimestamp(this, timeZone)
   }
