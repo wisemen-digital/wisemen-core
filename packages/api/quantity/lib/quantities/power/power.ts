@@ -41,4 +41,6 @@ export class Power extends Quantity<PowerUnit, Power> {
   protected convertBaseUnitValueTo (value: number, unit: PowerUnit): number {
     return value / POWER_MULTIPLIERS[unit]
   }
+
+  static ZERO = new Power(0, PowerUnit.WATT)
 }

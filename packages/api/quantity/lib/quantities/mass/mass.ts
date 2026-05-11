@@ -38,4 +38,6 @@ export class Mass extends Quantity<MassUnit, Mass> {
   get grams (): number {
     return this.asNumber(MassUnit.GRAM)
   }
+
+  static ZERO = new Mass(0, MassUnit.KILOGRAM)
 }

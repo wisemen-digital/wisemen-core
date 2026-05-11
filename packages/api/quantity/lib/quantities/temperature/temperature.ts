@@ -29,4 +29,7 @@ export class Temperature extends Quantity<TemperatureUnit, Temperature> {
         return (value - 273.15) * 1000
     }
   }
+
+  /** Absolute zero = 0 Kelvin. NOTE: this does NOT represent 0° Celsius or Fahrenheit */
+  static ZERO = new Temperature(0, TemperatureUnit.KELVIN)
 }

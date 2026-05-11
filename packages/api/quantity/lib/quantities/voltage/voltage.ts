@@ -21,4 +21,6 @@ export class Voltage extends Quantity<VoltageUnit, Voltage> {
   get volts (): number {
     return this.asNumber(VoltageUnit.VOLT)
   }
+
+  static ZERO = new Voltage(0, VoltageUnit.VOLT)
 }

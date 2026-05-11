@@ -25,4 +25,6 @@ export class Speed extends Quantity<SpeedUnit, Speed> {
   protected convertBaseUnitValueTo (value: number, toUnit: SpeedUnit): number {
     return value / SPEED_MULTIPLIERS[toUnit]
   }
+
+  static ZERO = new Speed(0, SpeedUnit.METER_PER_SECOND)
 }

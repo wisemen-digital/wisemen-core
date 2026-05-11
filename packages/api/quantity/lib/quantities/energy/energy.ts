@@ -53,4 +53,6 @@ export class Energy extends Quantity<EnergyUnit, Energy> {
   protected convertBaseUnitValueTo (value: number, unit: EnergyUnit): number {
     return value / ENERGY_MULTIPLIERS[unit]
   }
+
+  static ZERO = new Energy(0, EnergyUnit.JOULE)
 }

@@ -26,7 +26,6 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   }
 
   private construct (quantityOrValue: Q | number, unit?: U): Q {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const Constructor = Object.getPrototypeOf(this).constructor as QuantityConstructor<U, Q>
 
     if (quantityOrValue instanceof Quantity) {

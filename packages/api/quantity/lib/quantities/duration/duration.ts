@@ -46,4 +46,6 @@ export class Duration extends Quantity<DurationUnit, Duration> {
   get days (): number {
     return this.asNumber(DurationUnit.DAYS)
   }
+
+  static ZERO = new Duration(0, DurationUnit.SECONDS)
 }

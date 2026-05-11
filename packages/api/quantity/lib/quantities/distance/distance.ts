@@ -38,4 +38,6 @@ export class Distance extends Quantity<DistanceUnit, Distance> {
   get kilometers (): number {
     return this.asNumber(DistanceUnit.KILOMETER)
   }
+
+  static ZERO = new Distance(0, DistanceUnit.METER)
 }
