@@ -231,7 +231,7 @@ export const createButtonStyle = tv({
         icon: `size-3.5`,
         label: `text-xs`,
         loader: `size-3.5`,
-        root: 'h-5.5 min-w-5.5 rounded-xs px-xs',
+        root: 'h-5.5 min-w-5.5 rounded-sm px-xs',
         rowLayout: 'gap-xs',
       },
     },
