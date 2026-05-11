@@ -30,7 +30,7 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
 <template>
   <RowLayout
     :style="{ height: sidebarLogoHeight }"
-    class="mt-px"
+    class="mt-px w-fit"
   >
     <ActionTooltip
       :keyboard-shortcut="{
@@ -48,7 +48,7 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
           }"
           class="
             grid w-full rounded-md duration-100
-            hover:bg-primary-hover
+            hover:bg-secondary-hover
           "
         >
           <RowLayout
