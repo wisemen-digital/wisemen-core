@@ -5,7 +5,7 @@ export type QuantityConstructor<U extends string, Q extends Quantity<U, Q>> = {
 }
 
 export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
-  protected abstract baseUnit: U
+  protected abstract getBaseUnit(): U
   protected abstract convertValueToBaseUnit (value: number, fromUnit: U): number
   protected abstract convertBaseUnitValueTo (value: number, toUnit: U): number
 
@@ -14,10 +14,14 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
 
   constructor (quantity: Q)
   constructor (value: number, unit: U)
+  constructor (value: 0)
   constructor (quantityOrValue: Q | number, unit?: U) {
     if (quantityOrValue instanceof Quantity) {
       this.value = quantityOrValue.value
       this.unit = quantityOrValue.unit
+    } else if (quantityOrValue === 0) {
+      this.value = 0
+      this.unit = this.getBaseUnit()
     } else {
       assert(unit !== undefined, 'Unit must be provided when constructing from a numeric value')
       this.value = quantityOrValue
@@ -100,7 +104,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   add (quantityOrValue: Q | number, unit?: U): Q {
     const other = this.construct(quantityOrValue, unit)
 
-    return this.construct(this.valueOf() + other.valueOf(), this.baseUnit).to(this.unit)
+    return this.construct(this.valueOf() + other.valueOf(), this.getBaseUnit()).to(this.unit)
   }
 
   /** Creates a new quantity by subtracting another quantity from the current quantity */
@@ -109,12 +113,12 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   subtract (quantityOrValue: Q | number, unit?: U): Q {
     const other = this.construct(quantityOrValue, unit)
 
-    return this.construct(this.valueOf() - other.valueOf(), this.baseUnit).to(this.unit)
+    return this.construct(this.valueOf() - other.valueOf(), this.getBaseUnit()).to(this.unit)
   }
 
   /** Creates a new quantity by multiplying the current quantity with the specified factor */
   multiply (factor: number): Q {
-    return this.construct(this.valueOf() * factor, this.baseUnit).to(this.unit)
+    return this.construct(this.valueOf() * factor, this.getBaseUnit()).to(this.unit)
   }
 
   /** Creates a new quantity by dividing the current quantity by the specified divisor */
@@ -127,7 +131,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
 
       return this.valueOf() / other.valueOf()
     } else {
-      return this.construct(this.valueOf() / divisor, this.baseUnit).to(this.unit)
+      return this.construct(this.valueOf() / divisor, this.getBaseUnit()).to(this.unit)
     }
   }
 
@@ -138,7 +142,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   modulo (quantityOrValue: Q | number, unit?: U): Q {
     const other = this.construct(quantityOrValue, unit)
 
-    return this.construct(this.valueOf() % other.valueOf(), this.baseUnit).to(this.unit)
+    return this.construct(this.valueOf() % other.valueOf(), this.getBaseUnit()).to(this.unit)
   }
 
   /** Ceils the value to the nearest integer for the current unit */

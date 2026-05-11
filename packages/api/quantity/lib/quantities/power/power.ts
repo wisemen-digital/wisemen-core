@@ -32,7 +32,9 @@ const POWER_MULTIPLIERS: Record<PowerUnit, number> = {
 }
 
 export class Power extends Quantity<PowerUnit, Power> {
-  protected baseUnit = PowerUnit.WATT
+  protected getBaseUnit () {
+    return PowerUnit.WATT
+  }
 
   protected convertValueToBaseUnit (value: number, unit: PowerUnit): number {
     return value * POWER_MULTIPLIERS[unit]

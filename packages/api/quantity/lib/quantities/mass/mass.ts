@@ -21,7 +21,9 @@ const MASS_MULTIPLIERS: Record<MassUnit, number> = {
 }
 
 export class Mass extends Quantity<MassUnit, Mass> {
-  protected baseUnit = MassUnit.KILOGRAM
+  protected getBaseUnit () {
+    return MassUnit.KILOGRAM
+  }
 
   protected convertValueToBaseUnit (value: number, fromUnit: MassUnit): number {
     return value * MASS_MULTIPLIERS[fromUnit]

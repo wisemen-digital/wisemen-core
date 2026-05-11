@@ -8,7 +8,9 @@ const VOLTAGE_MULTIPLIERS: Record<VoltageUnit, number> = {
 }
 
 export class Voltage extends Quantity<VoltageUnit, Voltage> {
-  protected baseUnit = VoltageUnit.VOLT
+  protected getBaseUnit () {
+    return VoltageUnit.VOLT
+  }
 
   protected convertValueToBaseUnit (value: number, fromUnit: VoltageUnit): number {
     return value * VOLTAGE_MULTIPLIERS[fromUnit]
