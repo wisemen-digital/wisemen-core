@@ -6,6 +6,7 @@ import type {
   FormattedAddress,
 } from '@/ui/address-autocomplete/addressAutocomplete.type'
 import ConfigProvider from '@/ui/config-provider/ConfigProvider.vue'
+import ContextProvider from '@/ui/context-provider/ContextProvider.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 defineProps<{
@@ -98,6 +99,7 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     <ThemeProvider
       :appearance="theme ?? 'light'"
     >
+      <ContextProvider />
       <div
         class="
           default flex items-center justify-center bg-primary p-4 text-primary
