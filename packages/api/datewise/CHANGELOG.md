@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.17
+
+### Patch Changes
+
+- [#996](https://github.com/wisemen-digital/wisemen-core/pull/996) [`b0a5b64`](https://github.com/wisemen-digital/wisemen-core/commit/b0a5b6420787d3865713d0753c71bb3d7434be1c) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: make type of ContainedIn a generic for Date or Timestamp
+
 ## 0.1.16
 
 ### Patch Changes
