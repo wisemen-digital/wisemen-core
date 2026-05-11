@@ -18,7 +18,9 @@ const props = withDefaults(defineProps<{
   disabledReason: null,
 })
 
-const checked = defineModel<boolean>({ required: true })
+const checked = defineModel<boolean>({
+  required: true,
+})
 </script>
 
 <template>
@@ -30,8 +32,7 @@ const checked = defineModel<boolean>({ required: true })
       v-model="checked"
       :disabled="props.disabledReason !== null"
       class="
-        group/dropdown-menu-item cursor-default rounded-sm duration-100
-        outline-none
+        group/dropdown-menu-item cursor-default rounded-sm outline-none
         data-disabled:cursor-not-allowed
         not-data-disabled:data-highlighted:bg-secondary-hover
       "

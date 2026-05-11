@@ -22,6 +22,11 @@ export type MenuItemRightConfig
     type: 'text'
   }
 
+export interface MenuItemBreadcrumb {
+  icon?: Component
+  label: string
+}
+
 export type MenuItemLeftConfig
   = {
     /**
@@ -66,6 +71,14 @@ export type MenuItemLeftConfig
     src?: string | null
     type: 'avatar'
   }
+  | {
+    /**
+     * Breadcrumb path showing the item's context.
+     * Each entry is rendered with an optional icon and label, separated by chevrons.
+     */
+    breadcrumbs: MenuItemBreadcrumb[]
+    type: 'breadcrumbs'
+  }
 
 export interface MenuItemConfig {
   /**
@@ -79,7 +92,7 @@ export interface MenuItemConfig {
   } | null
   /**
    * Content displayed to the left of the label.
-   * Supports avatar, dot, icon, or image. Each type is mutually exclusive.
+   * Supports avatar, dot, icon, image, or breadcrumbs. Each type is mutually exclusive.
    */
   left?: MenuItemLeftConfig | null
   /**

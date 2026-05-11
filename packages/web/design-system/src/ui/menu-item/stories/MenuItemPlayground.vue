@@ -2,6 +2,7 @@
 import {
   Building02Icon,
   CheckIcon,
+  FolderIcon,
   User01Icon,
   User02Icon,
 } from '@wisemen/vue-core-icons'
@@ -197,6 +198,34 @@ import { UIMenuItem } from '@/ui/menu-item'
             },
           }"
           label="Alice Johnson"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <span class="text-xs font-medium text-disabled uppercase select-none">With breadcrumbs</span>
+      <div class="w-72 rounded-md border border-secondary bg-primary">
+        <UIMenuItem
+          :config="{
+            left: {
+              type: 'breadcrumbs',
+              breadcrumbs: [
+                {
+                  icon: Building02Icon,
+                  label: 'Workspace',
+                },
+                {
+                  icon: FolderIcon,
+                  label: 'Projects',
+                },
+                {
+                  icon: User02Icon,
+                  label: 'Alice',
+                },
+              ],
+            },
+          }"
+          label="Apple"
         />
       </div>
     </div>

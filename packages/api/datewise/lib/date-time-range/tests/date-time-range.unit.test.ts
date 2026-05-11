@@ -1404,4 +1404,131 @@ describe('DateTimeRange unit tests', () => {
       expect(outer.containsRange(inner)).toBe(false)
     })
   })
+
+  describe('compare', () => {
+    it('returns negative value when this range starts before the other range', () => {
+      const now = timestamp()
+      const earlier = new DateTimeRange(now.subtract(1, 'day'), now)
+      const later = new DateTimeRange(now.add(1, 'day'), now.add(2, 'days'))
+
+      expect(earlier.compare(later)).toBeLessThan(0)
+    })
+
+    it('returns positive value when this range starts after the other range', () => {
+      const now = timestamp()
+      const earlier = new DateTimeRange(now.subtract(1, 'day'), now)
+      const later = new DateTimeRange(now.add(1, 'day'), now.add(2, 'days'))
+
+      expect(later.compare(earlier)).toBeGreaterThan(0)
+    })
+
+    it('returns 0 when both ranges are identical', () => {
+      const now = timestamp()
+      const range1 = new DateTimeRange(now, now.add(1, 'hour'))
+      const range2 = new DateTimeRange(now, now.add(1, 'hour'))
+
+      expect(range1.compare(range2)).toBe(0)
+    })
+
+    it('returns negative value when ranges have same start but this ends before the other', () => {
+      const now = timestamp()
+      const shorter = new DateTimeRange(now, now.add(1, 'hour'))
+      const longer = new DateTimeRange(now, now.add(2, 'hours'))
+
+      expect(shorter.compare(longer)).toBeLessThan(0)
+    })
+
+    it('returns positive value when ranges have same start but this ends after the other', () => {
+      const now = timestamp()
+      const shorter = new DateTimeRange(now, now.add(1, 'hour'))
+      const longer = new DateTimeRange(now, now.add(2, 'hours'))
+
+      expect(longer.compare(shorter)).toBeGreaterThan(0)
+    })
+
+    it('handles comparison with past infinity lower bound', () => {
+      const now = timestamp()
+      const infiniteRange = new DateTimeRange(new PastInfinity(), now)
+      const finiteRange = new DateTimeRange(now.subtract(1, 'year'), now)
+
+      expect(infiniteRange.compare(finiteRange)).toBeLessThan(0)
+      expect(finiteRange.compare(infiniteRange)).toBeGreaterThan(0)
+    })
+
+    it('handles comparison with future infinity upper bound', () => {
+      const now = timestamp()
+      const infiniteRange = new DateTimeRange(now, new FutureInfinity())
+      const finiteRange = new DateTimeRange(now, now.add(1, 'year'))
+
+      expect(finiteRange.compare(infiniteRange)).toBeLessThan(0)
+      expect(infiniteRange.compare(finiteRange)).toBeGreaterThan(0)
+    })
+
+    it('handles comparison of two infinite ranges', () => {
+      const range1 = new DateTimeRange(new PastInfinity(), new FutureInfinity())
+      const range2 = new DateTimeRange(new PastInfinity(), new FutureInfinity())
+
+      expect(range1.compare(range2)).toBe(0)
+    })
+
+    it('compares ranges with millisecond precision', () => {
+      const now = timestamp()
+      const range1 = new DateTimeRange(now, now.add(100, 'ms'))
+      const range2 = new DateTimeRange(now.add(1, 'ms'), now.add(100, 'ms'))
+
+      expect(range1.compare(range2)).toBe(-1)
+      expect(range2.compare(range1)).toBe(1)
+    })
+
+    it('correctly sorts an array of date time ranges by start and end times', () => {
+      const now = timestamp()
+      
+      // Create ranges in random order
+      const range1 = new DateTimeRange(now.add(2, 'days'), now.add(3, 'days')) // Latest start
+      const range2 = new DateTimeRange(now, now.add(2, 'hours'))                // Earliest start, shorter
+      const range3 = new DateTimeRange(now, now.add(1, 'day'))                  // Same start as range2, longer
+      const range4 = new DateTimeRange(now.add(1, 'day'), now.add(2, 'days'))   // Middle start
+      const range5 = new DateTimeRange(now.subtract(1, 'day'), now)             // Before all others
+
+      const unsorted = [range1, range2, range3, range4, range5]
+      const sorted = [...unsorted].sort((a, b) => a.compare(b))
+
+      // Verify the order: range5, range2, range3, range4, range1
+      expect(sorted[0]).toBe(range5) // Starts earliest (now - 1 day)
+      expect(sorted[1]).toBe(range2) // Starts at 'now', ends sooner (2 hours)
+      expect(sorted[2]).toBe(range3) // Starts at 'now', ends later (1 day)
+      expect(sorted[3]).toBe(range4) // Starts at now + 1 day
+      expect(sorted[4]).toBe(range1) // Starts latest (now + 2 days)
+    })
+
+    it('correctly sorts an array including ranges with infinity bounds', () => {
+      const now = timestamp()
+      
+      const infinitePast = new DateTimeRange(new PastInfinity(), now)
+      const finiteMid = new DateTimeRange(now, now.add(1, 'day'))
+      const infiniteFuture = new DateTimeRange(now.add(1, 'day'), new FutureInfinity())
+      const fullInfinite = new DateTimeRange(new PastInfinity(), new FutureInfinity())
+
+      const unsorted = [infiniteFuture, finiteMid, fullInfinite, infinitePast]
+      const sorted = [...unsorted].sort((a, b) => a.compare(b))
+
+      expect(sorted[0].inclLower.isPastInfinity()).toBe(true) // fullInfinite or infinitePast first
+      expect(sorted[sorted.length - 1]).toBe(infiniteFuture)   // Starts latest
+    })
+
+    it('maintains stable sort for overlapping ranges with different boundaries', () => {
+      const now = timestamp()
+      
+      const range1 = new DateTimeRange(now, now.add(1, 'hour'))
+      const range2 = new DateTimeRange(now, now.add(2, 'hours'))
+      const range3 = new DateTimeRange(now, now.add(30, 'minutes'))
+
+      const sorted = [range1, range2, range3].sort((a, b) => a.compare(b))
+
+      // All start at the same time, so sorted by end time
+      expect(sorted[0]).toBe(range3) // Ends at 30 minutes
+      expect(sorted[1]).toBe(range1) // Ends at 1 hour
+      expect(sorted[2]).toBe(range2) // Ends at 2 hours
+    })
+  })
 })

@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<{
   <DropdownMenuRadioItem
     :value="props.value"
     class="
-      cursor-default rounded-sm duration-100 outline-none
+      w-full cursor-default rounded-sm outline-none
       data-highlighted:bg-secondary-hover
     "
   >

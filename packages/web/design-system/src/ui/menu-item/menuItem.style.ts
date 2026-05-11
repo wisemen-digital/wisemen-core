@@ -32,7 +32,7 @@ export const createMenuItemStyle = tv({
     },
   ],
   slots: {
-    base: 'w-full',
+    base: 'w-full overflow-hidden',
     dotWrapper: 'flex shrink-0 items-center',
     icon: 'text-tertiary',
     iconWrapper: 'flex shrink-0',

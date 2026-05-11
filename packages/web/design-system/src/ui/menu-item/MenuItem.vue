@@ -9,6 +9,7 @@ import type { MenuItemProps } from '@/ui/menu-item/menuItem.props'
 import type { MenuItemStyle } from '@/ui/menu-item/menuItem.style'
 import { createMenuItemStyle } from '@/ui/menu-item/menuItem.style'
 import MenuItemLeftAvatar from '@/ui/menu-item/MenuItemLeftAvatar.vue'
+import MenuItemLeftBreadcrumbs from '@/ui/menu-item/MenuItemLeftBreadcrumbs.vue'
 import MenuItemLeftDot from '@/ui/menu-item/MenuItemLeftDot.vue'
 import MenuItemLeftIcon from '@/ui/menu-item/MenuItemLeftIcon.vue'
 import MenuItemLeftImage from '@/ui/menu-item/MenuItemLeftImage.vue'
@@ -90,6 +91,10 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         :left="props.config.left"
         :size="props.size"
         :has-block-description="hasBlockDescription"
+      />
+      <MenuItemLeftBreadcrumbs
+        v-else-if="props.config.left.type === 'breadcrumbs'"
+        :left="props.config.left"
       />
     </template>
     <UIRowLayout
