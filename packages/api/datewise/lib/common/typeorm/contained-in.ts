@@ -12,11 +12,7 @@ export function ContainedIn (period: DateRange): FindOperator<PlainDate>
 /**
  * Checks whether a timestamp lies in the given date time range with the `<@` operator.
  */
-export function ContainedIn (period: DateTimeRange): FindOperator<Timestamp>
-/**
- * Checks whether a timestamp lies in the given date time range with the `<@` operator.
- */
-export function ContainedIn (period: DateTimeRange): FindOperator<Date>
+export function ContainedIn<ColumnType extends Timestamp | Date>(period: DateTimeRange): FindOperator<ColumnType>
 /**
  * Checks whether a timestamp lies in the given date time range with the `<@` operator.
  */
