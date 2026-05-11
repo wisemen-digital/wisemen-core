@@ -2,7 +2,6 @@ import { before, describe, it } from 'node:test'
 import { expect } from 'expect'
 import { DateTimeRangeDto } from '../date-time-range.dto.js'
 import { DateTimeRange } from '../date-time-range.js'
-import { timestamp } from '../../timestamp/index.js'
 import { initDayjs } from '../../common/init-dayjs.js'
 
 describe('DateTimeRangeDto unit tests', () => {

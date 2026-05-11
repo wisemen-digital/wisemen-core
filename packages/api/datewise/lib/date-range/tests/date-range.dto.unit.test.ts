@@ -2,7 +2,6 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { DateRangeDto } from '../date-range.dto.js'
 import { DateRange } from '../date-range.js'
-import { plainDate } from '../../plain-date/index.js'
 
 describe('DateRangeDto unit tests', () => {
   describe('parse method', () => {
