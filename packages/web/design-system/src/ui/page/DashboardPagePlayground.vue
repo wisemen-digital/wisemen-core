@@ -33,6 +33,7 @@ import DashboardPageActions from '@/ui/page/DashboardPageActions.vue'
 import DashboardPageContent from '@/ui/page/DashboardPageContent.vue'
 import DashboardPageHeaderMasterActionButton from '@/ui/page/DashboardPageHeaderMasterActionButton.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
+import { UIMainSidebarHeaderReturnToApp } from '@/ui/sidebar'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
 import MainSidebarGlobalSearch from '@/ui/sidebar/components/MainSidebarGlobalSearch.vue'
@@ -150,7 +151,13 @@ const tabsModelValue = ref<string>('tab1')
         collapsed-variant="minified"
       >
         <template #header>
+          <UIMainSidebarHeaderReturnToApp
+            :to="{
+              path: '/',
+            }"
+          />
           <MainSidebarHeaderLogoWithText
+            v-if="false"
             url="../../../storybook-assets/wisemen-logo.png"
             name="Wisemen"
           >
