@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 0.1.19
+
+### Patch Changes
+
+- [#1006](https://github.com/wisemen-digital/wisemen-core/pull/1006) [`c2ea224`](https://github.com/wisemen-digital/wisemen-core/commit/c2ea2242cda60150f6fb0365d0b01d0a50c31369) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: add overload for from factory method on responses
+
 ## 0.1.18
 
 ### Patch Changes
