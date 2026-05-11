@@ -1,5 +1,35 @@
 # @wisemen/datewise
 
+## 0.1.17
+
+### Patch Changes
+
+- [#996](https://github.com/wisemen-digital/wisemen-core/pull/996) [`b0a5b64`](https://github.com/wisemen-digital/wisemen-core/commit/b0a5b6420787d3865713d0753c71bb3d7434be1c) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: make type of ContainedIn a generic for Date or Timestamp
+
+## 0.1.16
+
+### Patch Changes
+
+- [#992](https://github.com/wisemen-digital/wisemen-core/pull/992) [`02c8997`](https://github.com/wisemen-digital/wisemen-core/commit/02c89977034deb52b8ed4e7012dbbda3897668e1) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: add overload for Date in ContainedIn
+
+## 0.1.15
+
+### Patch Changes
+
+- [#989](https://github.com/wisemen-digital/wisemen-core/pull/989) [`f9cb344`](https://github.com/wisemen-digital/wisemen-core/commit/f9cb34483a1f3d8613851079ecc859b5a68b5cc3) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: allow Date columns in ContainedIn
+
+## 0.1.14
+
+### Patch Changes
+
+- [#982](https://github.com/wisemen-digital/wisemen-core/pull/982) [`7543996`](https://github.com/wisemen-digital/wisemen-core/commit/754399631d3a1df3182b104b94db25ac7931225f) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add ContainedIn typeorm operator
+
+## 0.1.13
+
+### Patch Changes
+
+- [#958](https://github.com/wisemen-digital/wisemen-core/pull/958) [`cb28106`](https://github.com/wisemen-digital/wisemen-core/commit/cb28106428925abacac5e7934405b61a580d7033) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add new `compare` method to PlainTime, PlainDate, Timestamp, DateRange and DateTimeRange to assist in `sort` calls
+
 ## 0.1.12
 
 ### Patch Changes

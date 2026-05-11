@@ -3,6 +3,9 @@ import { FindOperator, Raw } from 'typeorm'
 import { DateTimeRange } from '../../date-time-range/date-time-range.js'
 import { DateRange } from '../../date-range/date-range.js'
 
+/** 
+ * Checks if a range ends before the given range with the `<<` operator. 
+ */
 export function EndsBefore (range: DateRange): FindOperator<DateRange>
 export function EndsBefore (range: DateTimeRange): FindOperator<DateTimeRange>
 export function EndsBefore (

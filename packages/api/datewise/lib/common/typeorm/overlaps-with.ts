@@ -3,6 +3,9 @@ import { FindOperator, Raw } from 'typeorm'
 import { DateRange } from '../../date-range/date-range.js'
 import { DateTimeRange } from '../../date-time-range/date-time-range.js'
 
+/**
+ * Checks that a range overlaps with the given range with the `&&` operator.
+ */
 export function OverlapsWith (period: DateTimeRange): FindOperator<DateTimeRange>
 export function OverlapsWith (period: DateRange): FindOperator<DateRange>
 export function OverlapsWith (
