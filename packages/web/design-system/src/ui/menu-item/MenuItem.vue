@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronRightIcon } from '@wisemen/vue-core-icons'
 import {
   computed,
   useSlots,
@@ -51,6 +52,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         : 'shrink-0'"
       align="center"
       gap="sm"
+      class="max-w-full"
     >
       <UIAvatar
         v-if="props.config?.avatar != null"
@@ -93,6 +95,28 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
       </div>
 
       <UIRowLayout
+        v-if="props.config?.breadcrumbs != null && props.config.breadcrumbs.length > 0"
+        gap="xs"
+        class="flex max-w-full overflow-hidden whitespace-nowrap"
+      >
+        <template
+          v-for="(breadcrumb, index) in props.config.breadcrumbs"
+          :key="index"
+        >
+          <Component
+            :is="breadcrumb.icon"
+            v-if="breadcrumb.icon !== undefined"
+            class="size-3 shrink-0 text-disabled"
+          />
+          <UIText
+            :text="breadcrumb.label"
+            class="text-sm text-disabled select-none"
+          />
+          <ChevronRightIcon class="size-3 shrink-0 text-disabled" />
+        </template>
+      </UIRowLayout>
+
+      <UIRowLayout
         v-if="props.config?.descriptionLayout === 'inline' && props.config.description != null"
         align="baseline"
         gap="xs"
@@ -109,7 +133,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         />
         <UIText
           :text="props.config.description"
-          class="min-w-0 truncate text-xs text-disabled select-none"
+          class="min-w-0 text-xs text-disabled select-none"
         />
       </UIRowLayout>
 
