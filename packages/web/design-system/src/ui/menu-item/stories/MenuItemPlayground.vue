@@ -2,7 +2,6 @@
 import {
   Building02Icon,
   CheckIcon,
-  FolderIcon,
   User01Icon,
   User02Icon,
 } from '@wisemen/vue-core-icons'
@@ -213,10 +212,6 @@ import { UIMenuItem } from '@/ui/menu-item'
                 {
                   icon: Building02Icon,
                   label: 'Workspace',
-                },
-                {
-                  icon: FolderIcon,
-                  label: 'Projects',
                 },
                 {
                   icon: User02Icon,
