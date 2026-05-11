@@ -3,7 +3,6 @@ import { toComputedRefs } from '@/composables/context.composable'
 import { useProvideAddressAutocompleteAdapter } from '@/ui/address-autocomplete/addressAutocomplete.context'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
 import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
-import TooltipProvider from '@/ui/tooltip/TooltipProvider.vue'
 
 const props = defineProps<ConfigProviderProps>()
 
@@ -22,7 +21,5 @@ if (props.addressAutocompleteAdapter != null) {
 </script>
 
 <template>
-  <TooltipProvider>
-    <slot />
-  </TooltipProvider>
+  <slot />
 </template>
