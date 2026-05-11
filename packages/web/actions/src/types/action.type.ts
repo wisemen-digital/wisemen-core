@@ -4,6 +4,32 @@ import type { Resolvable } from '#types/actionContext.type.ts'
 import type { ActionGroup } from '#types/actionGroup.type.ts'
 import type { KeyboardShortcut } from '#types/keyboardShortcut.type.ts'
 
+export interface ActionAvatar {
+  /**
+   * By default, the avatar's background color is generated based on
+   * the provided name to ensure consistency across renders.
+   * Setting this prop to `true` will disable this behavior and
+   * use a static background color instead.
+   */
+  isStaticColor?: boolean
+  /**
+   * The name used to generate fallback initials.
+   */
+  name: string
+  /**
+   * The image source URL for the avatar's logo.
+   * Falls back to initials when not provided.
+   * @default null
+   */
+  logo?: string | null
+  /**
+   * The image source URL for the avatar.
+   * Falls back to initials when not provided.
+   * @default null
+   */
+  src?: string | null
+}
+
 export interface SearchSubActionsConfig {
   /*
    * Maximum sub-action results returned during search lifting. Default: 10.
@@ -49,7 +75,7 @@ export interface Action<TContext = any> {
   /**
    *
    */
-  detail?: Resolvable<string | null, TContext>
+  avatar?: Resolvable<ActionAvatar, TContext>
   /**
    * Returns a human-readable string explaining why the action is disabled, or
    * undefined / null if it is enabled.
@@ -66,11 +92,18 @@ export interface Action<TContext = any> {
    * as the parent action when opening its sub-menu
    */
   forceAsRootMenu?: boolean
-
   /**
    * The group this action belongs to.
    */
   group?: ActionGroup<TContext>
+  /**
+   * Short secondary label shown next to the action name (e.g. in the command
+   * menu).  Use this to provide extra context that does not fit in the name —
+   * for example a file path, a record ID, or a status badge.
+   *
+   * May be a static string, `null`, or a function that reads the context.
+   */
+  hint?: Resolvable<string | null, TContext>
   /**
    * Optionally show an icon for the action
    */
@@ -123,6 +156,13 @@ export interface Action<TContext = any> {
    * @default 'all'
    */
   parentScoreInfluence?: 'all' | 'direct' | 'none'
+  /**
+   * Returns a Vue component displayed in a side panel when the user presses
+   * the right arrow key while this action is focused. Useful for showing a
+   * richer preview (e.g. details, metadata, a summary) without leaving the
+   * current menu context.
+   */
+  preview?: (ctx: TContext) => Component | null
   /**
    * The root action of this action, if it is a sub-action.  Injected automatically when drilling down or lifting.
    */

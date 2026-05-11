@@ -1,9 +1,14 @@
 import { onBeforeUnmount } from 'vue'
 
+import type { GroupPriority } from '#composables/actionGroup.composable'
 import { useActionRegistryStore } from '#stores/actionRegistry.store.ts'
 import type { Action } from '#types/action.type.ts'
 
-export function useTemporaryActions(actions: Action | Action[]) {
+export function useTemporaryActions(
+  actions: Action | Action[],
+  priority: GroupPriority,
+  controlled = false,
+) {
   const registry = useActionRegistryStore()
 
   let registeredIds: number[] = []
@@ -15,7 +20,7 @@ export function useTemporaryActions(actions: Action | Action[]) {
           actions,
         ]
 
-    registeredIds = actionsArray.map((action) => registry.registerTemporaryAction(withViewPriority(action)))
+    registeredIds = actionsArray.map((action) => registry.registerTemporaryAction(withCustomPriority(action)))
   }
 
   function unregister(): void {
@@ -26,24 +31,31 @@ export function useTemporaryActions(actions: Action | Action[]) {
     registeredIds = []
   }
 
-  function withViewPriority(action: Action): Action {
+  function withCustomPriority(action: Action): Action {
     return {
       ...action,
       group: action.group
         ? {
             ...action.group,
-            priority: -100,
+            priority,
           }
         : {
-            name: 'View',
-            priority: -100,
+            name: 'View/Hover',
+            priority,
           },
     }
   }
 
-  register()
+  if (!controlled) {
+    register()
 
-  onBeforeUnmount(() => {
-    unregister()
-  })
+    onBeforeUnmount(() => {
+      unregister()
+    })
+  }
+
+  return {
+    register,
+    unregister,
+  }
 }

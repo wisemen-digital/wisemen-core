@@ -1,4 +1,5 @@
 export * from './composables/actionDropdownMenuContent.composable'
+export * from './composables/actionPreview.composable'
 export * from './composables/actionGroup.composable'
 export * from './composables/actionShortcuts.composable'
 export * from './composables/commandMenuActions.composable'

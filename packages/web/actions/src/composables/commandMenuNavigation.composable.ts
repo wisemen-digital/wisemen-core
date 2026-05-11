@@ -2,12 +2,16 @@ import type {
   Ref,
   ShallowRef,
 } from 'vue'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+} from 'vue'
 
 import type { useActionManagerStore } from '#stores/actionManager.store.ts'
 import type { Action } from '#types/action.type.ts'
 import type { ActionContext } from '#types/actionContext.type.ts'
 import type { NavFrame } from '#types/commandMenu.type.ts'
+import { useActionPreview } from '#composables/actionPreview.composable.ts'
 import {
   resolveActionName,
   resolveActionValue,
@@ -41,9 +45,9 @@ export function useCommandMenuNavigation({
   searchInput,
   subActionsMetaMap,
 }: UseCommandMenuNavigationOptions) {
-  const currentParent = computed<Action | null>(
-    () => navStack.value.at(-1)?.parentAction ?? null,
-  )
+  const highlightedActionId = ref<string | null>(null)
+
+  const currentParent = computed<Action | null>(() => navStack.value.at(-1)?.parentAction ?? null)
 
   const breadcrumbs = computed<string[]>(() => {
     const ctx = buildContext()
@@ -77,6 +81,15 @@ export function useCommandMenuNavigation({
     }
 
     return maybePlaceholderFn
+  })
+
+  const {
+    preview,
+    onKeyDown: onPreviewKeyDown,
+  } = useActionPreview({
+    highlightedActionId,
+    resolvedActions,
+    getContext: buildContext,
   })
 
   async function activateAction(action: Action): Promise<void> {
@@ -146,13 +159,17 @@ export function useCommandMenuNavigation({
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       scrollToTopOfGroup()
     }
+
+    onPreviewKeyDown(event)
   }
 
   return {
+    highlightedActionId,
     activateAction,
     breadcrumbs,
     currentParent,
     placeholder,
+    preview,
     restoreParentFrame,
     onKeyDown,
   }

@@ -1,13 +1,16 @@
 import { useI18n } from 'vue-i18n'
-import type { ActionGroup } from '../types/actionGroup.type'
 
-enum GroupPriority {
-  MODEL = 1,
-  GENERAL = 2,
-  NAVIGATION = 3,
-  PREFERENCES = 4,
-  ACCOUNT = 9,
-  DEVELOPER = 10,
+import type { ActionGroup } from '#types/actionGroup.type'
+
+export enum GroupPriority {
+  HOVER = 1,
+  VIEW = 2,
+  MODEL = 3,
+  GENERAL = 4,
+  NAVIGATION = 5,
+  PREFERENCES = 6,
+  ACCOUNT = 7,
+  DEVELOPER = 8,
 }
 
 export function useActionGroup() {

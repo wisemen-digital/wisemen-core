@@ -1,3 +1,5 @@
+import type { Component } from 'vue'
+
 import {
   DEFAULT_MAX_SUB_ACTIONS,
   DEFAULT_MIN_APPLICABILITY_SCORE,
@@ -9,6 +11,7 @@ import {
 import { isAuthenticated } from '#createActions.ts'
 import type {
   Action,
+  ActionAvatar,
   SearchSubActionsConfig,
   SubActionsWithMeta,
 } from '#types/action.type.ts'
@@ -515,8 +518,12 @@ export function resolveActionName(action: Action, ctx: ActionContext): string {
   return typeof action.name === 'function' ? action.name(ctx) : action.name
 }
 
-export function resolveActionDetail(action: Action, ctx: ActionContext): string | null {
-  return typeof action.detail === 'function' ? action.detail(ctx) : action.detail ?? null
+export function resolveActionAvatar(action: Action, ctx: ActionContext): ActionAvatar | null {
+  return typeof action.avatar === 'function' ? action.avatar(ctx) : null
+}
+
+export function resolveActionHint(action: Action, ctx: ActionContext): string | null {
+  return typeof action.hint === 'function' ? action.hint(ctx) : action.hint ?? null
 }
 
 export function resolveActionSelected(action: Action, ctx: ActionContext): boolean | null {
@@ -527,4 +534,8 @@ export function resolveSearchSubActionsConfig(action: Action, ctx: ActionContext
   return typeof action.searchSubActionsConfig === 'function'
     ? action.searchSubActionsConfig(ctx)
     : action.searchSubActionsConfig ?? null
+}
+
+export function resolveActionPreview(action: Action, ctx: ActionContext): Component | null {
+  return typeof action.preview === 'function' ? action.preview(ctx) : null
 }

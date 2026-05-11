@@ -43,6 +43,16 @@ export type TypedActionTrigger<TActionContext, TActionModel extends ActionModel>
   }
 }
 
+/**
+ * Type for a generically-typed ActionFocus component.
+ */
+export type TypedActionFocus<TActionContext, TActionModel extends ActionModel> = new () => {
+  $props: {
+    actions: Action<TActionContext>[]
+    models?: TActionModel[]
+  }
+}
+
 function setIsAuthenticated(value: boolean): void {
   isAuthenticated.value = value
 }

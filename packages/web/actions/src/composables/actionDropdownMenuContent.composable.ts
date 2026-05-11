@@ -2,13 +2,17 @@ import {
   useDebounceFn,
   useInfiniteScroll,
 } from '@vueuse/core'
-import type { Ref } from 'vue'
+import type {
+  Component,
+  Ref,
+} from 'vue'
 import {
   computed,
   ref,
   watch,
 } from 'vue'
 
+import { useActionPreview } from '#composables/actionPreview.composable.ts'
 import { useActionManagerStore } from '#stores/actionManager.store.ts'
 import type {
   Action,
@@ -35,11 +39,16 @@ interface UseActionDropdownMenuContentOptions {
 }
 
 export interface UseActionDropdownMenuContentReturn {
+  highlightedActionId: Ref<string | null>
   isLoading: Readonly<Ref<boolean>>
   actionGroups: Readonly<Ref<Action[][]>>
   context: Readonly<Ref<ActionContext>>
   placeholder: Readonly<Ref<string>>
+  preview: Readonly<Ref<Component | null>>
   searchInput: Ref<string>
+  onHidePreview: () => void
+  onKeyDown: (event: KeyboardEvent) => void
+  onShowPreview: () => void
 }
 
 export function useActionDropdownMenuContent({
@@ -51,6 +60,7 @@ export function useActionDropdownMenuContent({
 }: UseActionDropdownMenuContentOptions): UseActionDropdownMenuContentReturn {
   const manager = useActionManagerStore()
 
+  const highlightedActionId = ref<string | null>(null)
   const searchInput = ref<string>('')
   const debouncedSearchInput = ref<string>('')
   const areActionsResolvedWithSearchQuery = ref<boolean>(false)
@@ -66,6 +76,17 @@ export function useActionDropdownMenuContent({
     models: models.value,
     searchInput: debouncedSearchInput.value,
   }))
+
+  const {
+    preview,
+    onHidePreview,
+    onKeyDown,
+    onShowPreview,
+  } = useActionPreview({
+    highlightedActionId,
+    getContext: () => context.value,
+    resolvedActions,
+  })
 
   const placeholder = computed<string>(() => {
     if (parentAction.value == null) {
@@ -241,10 +262,15 @@ export function useActionDropdownMenuContent({
   refreshActions()
 
   return {
+    highlightedActionId,
     isLoading,
     actionGroups,
     context,
     placeholder,
+    preview,
     searchInput,
+    onHidePreview,
+    onKeyDown,
+    onShowPreview,
   }
 }
