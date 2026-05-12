@@ -7,14 +7,14 @@ import {
 } from 'vue'
 
 import { useInjectConfigContext } from '@/ui/config-provider'
-import type { DashboardPageProps } from '@/ui/page/dashboardPage.type'
-import DashboardPageDetailPane from '@/ui/page/DashboardPageDetailPane.vue'
-import DashboardPageDetailPaneToggle from '@/ui/page/DashboardPageDetailPaneToggle.vue'
-import DashboardPageHeader from '@/ui/page/DashboardPageHeader.vue'
-import { useDetailPane } from '@/ui/page/detailPane.composable'
-import { useProvideDetailPaneContext } from '@/ui/page/detailPane.context'
-import type { DetailPaneConfig } from '@/ui/page/detailPane.type'
-import Page from '@/ui/page/Page.vue'
+import type { DashboardPageProps } from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPageDetailPane from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPane.vue'
+import DashboardPageDetailPaneToggle from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneToggle.vue'
+import { useDetailPane } from '@/ui/dashboard-page/detail-pane/detailPane.composable'
+import { useProvideDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
+import type { DetailPaneConfig } from '@/ui/dashboard-page/detail-pane/detailPane.type'
+import DashboardPageHeader from '@/ui/dashboard-page/header/DashboardPageHeader.vue'
+import Page from '@/ui/dashboard-page/Page.vue'
 import Separator from '@/ui/separator/Separator.vue'
 
 const props = withDefaults(defineProps<DashboardPageProps & {

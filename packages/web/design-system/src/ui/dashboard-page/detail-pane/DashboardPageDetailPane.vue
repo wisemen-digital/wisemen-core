@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { AnimatePresence } from 'motion-v'
 
-import DashboardPageDetailPaneTransition from '@/ui/page/DashboardPageDetailPaneTransition.vue'
-import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
+import DashboardPageDetailPaneTransition from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTransition.vue'
+import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 
 const {
   isOpen,

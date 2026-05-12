@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
-import type { PageBreadcrumb } from '@/ui/page/dashboardPage.type'
-import DashboardPage from '@/ui/page/DashboardPage.vue'
+import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import SkeletonItem from '@/ui/skeleton-item/SkeletonItem.vue'
 
 const props = defineProps<{

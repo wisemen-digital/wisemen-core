@@ -8,11 +8,11 @@ import {
 import type {
   PageBreadcrumb,
   PageTab,
-} from '@/ui/page/dashboardPage.type'
-import DashboardPageContainer from '@/ui/page/DashboardPageContainer.vue'
-import DashboardPageHeaderActions from '@/ui/page/DashboardPageHeaderActions.vue'
-import DashboardPageHeaderBreadcrumbs from '@/ui/page/DashboardPageHeaderBreadcrumbs.vue'
-import DashboardPageHeaderSidebarToggle from '@/ui/page/DashboardPageHeaderSidebarToggle.vue'
+} from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPageContainer from '@/ui/dashboard-page/DashboardPageContainer.vue'
+import DashboardPageHeaderActions from '@/ui/dashboard-page/header/DashboardPageHeaderActions.vue'
+import DashboardPageHeaderBreadcrumbs from '@/ui/dashboard-page/header/DashboardPageHeaderBreadcrumbs.vue'
+import DashboardPageHeaderSidebarToggle from '@/ui/dashboard-page/header/DashboardPageHeaderSidebarToggle.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import Separator from '@/ui/separator/Separator.vue'
 

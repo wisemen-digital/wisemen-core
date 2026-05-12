@@ -26,12 +26,12 @@ import {
 } from '@/ui/button/index'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
-import MainLayoutContainer from '@/ui/layout/MainLayoutContainer.vue'
-import type { PageBreadcrumb } from '@/ui/page/dashboardPage.type'
-import DashboardPage from '@/ui/page/DashboardPage.vue'
-import DashboardPageActions from '@/ui/page/DashboardPageActions.vue'
-import DashboardPageContent from '@/ui/page/DashboardPageContent.vue'
-import DashboardPageHeaderMasterActionButton from '@/ui/page/DashboardPageHeaderMasterActionButton.vue'
+import MainLayout from '@/ui/layout/MainLayout.vue'
+import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
+import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
+import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
+import DashboardPageHeaderMasterActionButton from '@/ui/dashboard-page/header/DashboardPageHeaderMasterActionButton.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
@@ -143,7 +143,7 @@ const tabsModelValue = ref<string>('tab1')
       relative flex w-full overflow-hidden rounded-lg border border-primary
     "
   >
-    <MainLayoutContainer
+    <MainLayout
       class="h-[80dvh]!"
     >
       <MainSidebar
@@ -327,6 +327,6 @@ const tabsModelValue = ref<string>('tab1')
           </template>
         </DashboardPage>
       </MainContent>
-    </MainLayoutContainer>
+    </MainLayout>
   </div>
 </template>

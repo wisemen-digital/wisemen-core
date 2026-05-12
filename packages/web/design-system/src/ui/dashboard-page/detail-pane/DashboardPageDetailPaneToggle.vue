@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
-import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
+import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 
 const {
   isOpen, toggleIsOpen,

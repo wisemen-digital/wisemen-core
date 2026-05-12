@@ -3,7 +3,7 @@ import type {
   StoryObj,
 } from '@storybook/vue3-vite'
 
-import Playground from '@/ui/sidebar/playground.vue'
+import Playground from '@/ui/sidebar/stories/playground.vue'
 
 const meta = {
   title: 'Components/Sidebar',

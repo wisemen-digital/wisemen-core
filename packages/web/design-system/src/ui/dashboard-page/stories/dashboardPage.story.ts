@@ -3,7 +3,7 @@ import type {
   StoryObj,
 } from '@storybook/vue3-vite'
 
-import Playground from '@/ui/page/DashboardPagePlayground.vue'
+import Playground from '@/ui/dashboard-page/stories/DashboardPagePlayground.vue'
 
 const meta = {
   title: 'Components/Dashboard Page',
