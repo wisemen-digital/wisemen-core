@@ -194,9 +194,12 @@ import { UIMenuItem } from '@/ui/menu-item'
         <UIMenuItem
           :config="{
             breadcrumbs: [
-              { icon: Building02Icon, label: 'Workspace' },
-              { icon: FolderIcon, label: 'Projects' },
-              { icon: User02Icon, label: 'Alice' },
+              { icon: Building02Icon,
+                label: 'Workspace' },
+              { icon: FolderIcon,
+                label: 'Projects' },
+              { icon: User02Icon,
+                label: 'Alice' },
             ],
           }"
           label="Apple"
