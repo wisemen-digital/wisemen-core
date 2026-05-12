@@ -112,7 +112,10 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
             :text="breadcrumb.label"
             class="text-sm text-disabled select-none"
           />
-          <ChevronRightIcon class="size-3 shrink-0 text-disabled" />
+          <ChevronRightIcon
+            v-if="index < props.config.breadcrumbs.length - 1"
+            class="size-3 shrink-0 text-disabled"
+          />
         </template>
       </UIRowLayout>
 
