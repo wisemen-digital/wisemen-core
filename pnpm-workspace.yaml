@@ -12,6 +12,7 @@ catalogs:
     "vue-i18n": "11.2.8"
     "@vueuse/core": "14.1.0"
     "@vueuse/router": "14.1.0"
+    "pinia": "3.0.4"
     "reka-ui": "2.9.7"
     vue-query: ^0.0.0
     "vue-tsc": "3.2.2"
@@ -269,6 +270,11 @@ catalogs:
     "typeorm": "0.3.28"
     "wkx": "0.5.0"
     "yaml": "2.8.3"
+  wisemen:
+    "@wisemen/vue-core-icons": "0.0.2"
+    "@wisemen/vue-core-design-system": "0.10.0"
+  fonts:
+    "@fontsource-variable/inter": "5.2.8"
   backend-peer:
     "@aws-sdk/client-s3": ">=3.1023.0"
     "@aws-sdk/lib-storage": ">=3.1023.0"
