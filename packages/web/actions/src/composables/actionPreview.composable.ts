@@ -48,7 +48,11 @@ export function useActionPreview({
   }
 
   function onKeyDown(event: KeyboardEvent): void {
-    const input = event.target as HTMLInputElement
+    if (!(event.target instanceof HTMLInputElement)) {
+      return
+    }
+
+    const input = event.target
     const isAtEnd = input.selectionStart === input.value.length
 
     if (isAtEnd && event.key === 'ArrowRight') {
