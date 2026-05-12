@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
 import { UIColumnLayout } from '@/ui/column-layout/index'
 import { UISkeletonItem } from '@/ui/skeleton-item/index'
+
+const i18n = useI18n()
 </script>
 
 <template>
@@ -9,7 +13,9 @@ import { UISkeletonItem } from '@/ui/skeleton-item/index'
     role="status"
     aria-live="polite"
   >
-    <span class="sr-only">Loading actions</span>
+    <span class="sr-only">
+      {{ i18n.t('component.command_menu.loading_actions') }}
+    </span>
 
     <UIColumnLayout gap="4xl">
       <div

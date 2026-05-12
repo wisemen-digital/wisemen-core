@@ -195,6 +195,7 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
             label: 'Support',
             onSelect: () => {},
           }]"
+          :actions="[]"
           :on-sign-out="() => {}"
           avatar-url="../../../storybook-assets/profile-picture.jpg"
           name="Jeroen Van Caekenberghe"

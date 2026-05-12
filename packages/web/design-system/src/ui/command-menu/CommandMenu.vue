@@ -30,6 +30,7 @@ import {
   ref,
   useTemplateRef,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { UIBadge } from '@/ui/badge/index'
 import CommandMenuActionItem from '@/ui/command-menu/CommandMenuActionItem.vue'
@@ -56,6 +57,7 @@ const registry = useActionRegistryStore()
 const actionsSnapshot = registry.allActions()
 const focusedModelsSnapshot = manager.focusedModels
 
+const i18n = useI18n()
 const listboxRootRef = useTemplateRef('listboxRoot')
 const listboxContentRef = useTemplateRef('listboxContent')
 const isShiftKeyHeld = useKeyHold('Shift')
@@ -177,10 +179,10 @@ function onUpdateIsOpen(value: boolean): void {
       @after-leave="emit('afterLeave')"
     >
       <DialogTitle class="sr-only">
-        Title
+        {{ i18n.t('component.command_menu.title') }}
       </DialogTitle>
       <DialogDescription class="sr-only">
-        Description
+        {{ i18n.t('component.command_menu.title') }}
       </DialogDescription>
 
       <ListboxRoot

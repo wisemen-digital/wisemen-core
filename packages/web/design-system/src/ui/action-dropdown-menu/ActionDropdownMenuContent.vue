@@ -10,6 +10,7 @@ import {
   toRef,
   useTemplateRef,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import ActionDropdownMenuItem from '@/ui/action-dropdown-menu/ActionDropdownMenuItem.vue'
 import { UIColumnLayout } from '@/ui/column-layout/index'
@@ -29,6 +30,8 @@ const props = withDefaults(defineProps<{
   actions: () => [],
   parentAction: null,
 })
+
+const i18n = useI18n()
 
 const scrollContainerRef = useTemplateRef<HTMLElement>('scrollContainer')
 
@@ -88,7 +91,9 @@ const isFilterVisible = computed<boolean>(
         role="status"
         aria-live="polite"
       >
-        <span class="sr-only">Loading actions</span>
+        <span class="sr-only">
+          {{ i18n.t('component.action_dropdown_menu.loading_actions') }}
+        </span>
 
         <UIColumnLayout gap="lg">
           <UISkeletonItem class="h-3 w-40" />
