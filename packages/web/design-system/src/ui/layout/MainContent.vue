@@ -3,8 +3,14 @@ import {
   Motion,
   useReducedMotion,
 } from 'motion-v'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+} from 'vue'
 
+import type { BreadcrumbItemProps } from '@/ui/breadcrumbs/breadcrumb.props'
+import { useProvideMainContentContext } from '@/ui/layout/mainContent.context'
+import MainContentHeader from '@/ui/layout/MainContentHeader.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
 const {
@@ -13,6 +19,14 @@ const {
   collapsedVariant,
   sidebarWidth,
 } = useMainSidebar()
+
+const breadcrumbs = ref<BreadcrumbItemProps[]>([])
+
+useProvideMainContentContext({
+  setBreadcrumbs: (bc) => {
+    breadcrumbs.value = bc
+  },
+})
 
 const isReduceMotionEnabledOnDevice = useReducedMotion()
 
@@ -46,8 +60,10 @@ const contentPaddingLeft = computed<string>(() => {
       type: 'spring',
       bounce: 0,
     }"
-    class="size-full overflow-hidden bg-secondary p-md"
+    class="flex size-full flex-col overflow-hidden bg-secondary p-md pt-sm"
   >
+    <MainContentHeader :breadcrumbs="breadcrumbs" />
+
     <div
       class="
         custom-content-shadow size-full overflow-hidden rounded-xl border

@@ -79,7 +79,7 @@ if (hasDetailPane.value) {
 
 <template>
   <Page
-    class="relative flex size-full h-full flex-col overflow-hidden bg-secondary"
+    class="relative flex size-full h-full flex-col overflow-hidden bg-primary"
   >
     <DashboardPageHeader
       :title="props.title"

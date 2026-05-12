@@ -3,8 +3,10 @@ import { useBreakpoints } from '@vueuse/core'
 import {
   computed,
   useSlots,
+  watch,
 } from 'vue'
 
+import { useInjectMainContentContext } from '@/ui/layout/mainContent.context'
 import type {
   PageBreadcrumb,
   PageTab,
@@ -24,6 +26,16 @@ const props = defineProps<{
 
 const slots = useSlots()
 
+const {
+  setBreadcrumbs,
+} = useInjectMainContentContext()
+
+watch(() => props.breadcrumbs, (breadcrumbs) => {
+  setBreadcrumbs(breadcrumbs)
+}, {
+  immediate: true,
+})
+
 const screen = useBreakpoints({
   lg: 1024,
 })
@@ -40,7 +52,10 @@ const hasSlotContent = computed<boolean>(() => {
     <div class="flex h-11 items-center">
       <DashboardPageContainer>
         <RowLayout justify="between">
-          <RowLayout gap="none">
+          <RowLayout
+            v-if="false"
+            gap="none"
+          >
             <DashboardPageHeaderSidebarToggle />
 
             <Separator
@@ -86,7 +101,7 @@ const hasSlotContent = computed<boolean>(() => {
           </template>
 
           <RowLayout
-
+            v-if="false"
             gap="xs"
           >
             <slot
