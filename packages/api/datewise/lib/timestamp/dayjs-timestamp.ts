@@ -150,7 +150,7 @@ export class DayjsTimestamp implements Timestamp {
   }
 
   addDuration (duration: Duration): Timestamp {
-    return new DayjsTimestamp(this.value.add(duration.milliseconds, 'ms'))
+    return new DayjsTimestamp(this.value.add(Math.floor(duration.milliseconds), 'ms'))
   }
 
   subtract (value: number, unit?: ManipulateType): DayjsTimestamp {
@@ -158,7 +158,7 @@ export class DayjsTimestamp implements Timestamp {
   }
 
   subtractDuration (duration: Duration): Timestamp {
-    return new DayjsTimestamp(this.value.subtract(duration.milliseconds, 'ms'))
+    return new DayjsTimestamp(this.value.subtract(Math.floor(duration.milliseconds), 'ms'))
   }
 
   startOf (unit: OpUnitType): DayjsTimestamp {

@@ -3,6 +3,7 @@ import { PlainDate, PlainDateInput } from '../plain-date/plain-date.js'
 import { plainDate } from '../plain-date/index.js'
 import { DatePeriod } from '../common/date-period.enum.js'
 import { InvalidDateRangeBounds, NoDateRangeOverlap } from './date-range-errors.js'
+import { Duration } from '@wisemen/quantity'
 
 /**
  * DateRange only works with inclusive ranges internally, except for infinities
@@ -195,17 +196,31 @@ export class DateRange {
     return this.toString()
   }
 
-  setEndDate (endDate: PlainDateInput): DateRange {
+  /** Returns a new date range instance with the new end date */
+  withEndDate (endDate: PlainDateInput): DateRange {
     return new DateRange(this.startDate, endDate)
   }
 
-  setStartDate (startDate: PlainDateInput): DateRange {
+  /** Returns a new date range instance with the new start date */
+  withStartDate (startDate: PlainDateInput): DateRange {
     return new DateRange(startDate, this.endDate)
   }
 
   /** Returns true if this range ends before the other range starts */
   isStrictlyBefore (other: DateRange): boolean {
     return this.endDate.isBefore(other.startDate)
+  }
+
+  /** 
+   * Returns a new date range with both boundaries expanded \
+   *    - start date = this.startDate.subtractDuration(duration)
+   *    - end date = this.endDate.addDuration(duration)
+   */
+  expanded(duration: Duration): DateRange {
+    return new DateRange(
+      this.startDate.subtractDuration(duration),
+      this.endDate.addDuration(duration)
+    )
   }
 
   /** Returns true if this range starts after the other range ends */
@@ -237,9 +252,9 @@ export class DateRange {
 
   merge (withOther: DateRange): DateRange {
     if (this.isPrecededBy(withOther)) {
-      return this.setStartDate(withOther.startDate)
+      return this.withStartDate(withOther.startDate)
     } else if (this.isSucceededBy(withOther)) {
-      return this.setEndDate(withOther.endDate)
+      return this.withEndDate(withOther.endDate)
     } else {
       throw new Error('cannot merge non adjacent date ranges')
     }

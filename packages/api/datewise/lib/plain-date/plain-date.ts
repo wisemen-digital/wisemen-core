@@ -35,7 +35,22 @@ export interface PlainDate {
   isTomorrow(): boolean
   isYesterday(): boolean
   add(amount: number, unit: PlainDateUnit): PlainDate
+
+  /**
+   * Returns a new `PlainDate` instance with the duration added. \
+   * Any duration less than a full day does not change the date, but still returns a new instance. \
+   * Similarly a duration of 1.4 days is applied as 1 day.
+   */
+  addDuration(duration: Duration): PlainDate
+
   subtract(amount: number, unit: PlainDateUnit): PlainDate
+
+  /**
+   * Returns a new `PlainDate` instance with the duration subtracted. \
+   * Any duration less than a full day does not change the date, but still returns a new instance. \
+   * Similarly a duration of 1.4 days is applied as 1 day.
+   */
+  subtractDuration(duration: Duration): PlainDate
 
   /**
    * Returns the duration until the given date.
@@ -50,7 +65,9 @@ export interface PlainDate {
    * If the date lies after this date, the duration is negative.
    */
   since(otherDate: PlainDateInput): Duration
+
   diff(withOther: PlainDateInput, unit: DiffPlainDateUnit): number
+
   /** 
    * Compares the order of the given date with this date. \
    * returns < 0 if this date is before the given date \
