@@ -16,6 +16,8 @@ const clipId = `${id}-c`
     viewBox="0 0 154 121"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+    focusable="false"
   >
     <circle
       cx="77"
