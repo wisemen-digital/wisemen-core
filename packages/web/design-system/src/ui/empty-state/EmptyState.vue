@@ -68,17 +68,13 @@ const ILLUSTRATION_MAP = {
     <UIRowLayout>
       <UIButton
         v-if="props.secondaryAction !== null"
-        :icon-left="props.secondaryAction?.iconLeft"
-        :icon-right="props.secondaryAction?.iconRight"
-        :label="props.secondaryAction.label"
+        v-bind="props.secondaryAction"
         variant="secondary"
         @click="props.secondaryAction?.onClick"
       />
       <UIButton
         v-if="props.primaryAction !== null"
-        :icon-left="props.primaryAction?.iconLeft"
-        :icon-right="props.primaryAction?.iconRight"
-        :label="props.primaryAction?.label"
+        v-bind="props.primaryAction"
         @click="props.primaryAction?.onClick"
       />
     </UIRowLayout>

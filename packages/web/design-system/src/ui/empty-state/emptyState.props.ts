@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 
 import type { ButtonProps } from '@/ui/button/button/button.props'
+import type { LinkProps } from '@/ui/button/link/link.props'
 
 export type EmptyStateIllustration = 'box' | 'cloud-search' | 'credit-card' | 'documents' | 'route-card'
 
@@ -48,3 +49,20 @@ export interface EmptyStateProps {
     })
     | null
 }
+
+type ActionButton = {
+  type: 'button'
+  onClick?: () => Promise<void> | void
+} & Omit<ButtonProps, 'size' | 'variant'>
+
+type ActionLink = {
+  type: 'link '
+  onClick?: () => Promise<void> | void
+} & Omit<LinkProps, 'size' | 'variant'>
+
+interface ActionAction {
+  action: Action
+  type: 'Action'
+}
+
+type Action = ActionAction | ActionButton | ActionLink
