@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { DropdownMenuItem as RekaDropdownMenuItem } from 'reka-ui'
-import type { Component } from 'vue'
+import { CheckIcon } from '@wisemen/vue-core-icons'
+import {
+  DropdownMenuCheckboxItem as RekaDropdownMenuCheckboxItem,
+  DropdownMenuItemIndicator,
+} from 'reka-ui'
 
 import { UIActionTooltip } from '@/ui/action-tooltip/index'
-import type { KeyboardShortcut as KeyboardShortcutType } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import { UIMenuItem } from '@/ui/menu-item'
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = withDefaults(defineProps<{
-  config?: MenuItemConfig | null
+  config?: Omit<MenuItemConfig, 'label'> | null
   disabledReason?: string | null
-  icon?: Component
-  keyboardShortcut?: KeyboardShortcutType | null
   label: string
 }>(), {
   config: null,
   disabledReason: null,
 })
 
-const emit = defineEmits<{
-  select: [event: Event]
-}>()
+const checked = defineModel<boolean>({
+  required: true,
+})
 </script>
 
 <template>
@@ -28,19 +28,25 @@ const emit = defineEmits<{
     :is-disabled="props.disabledReason === null"
     :label="props.disabledReason"
   >
-    <RekaDropdownMenuItem
+    <RekaDropdownMenuCheckboxItem
+      v-model="checked"
       :disabled="props.disabledReason !== null"
       class="
         group/dropdown-menu-item cursor-default rounded-sm outline-none
         data-disabled:cursor-not-allowed
         not-data-disabled:data-highlighted:bg-secondary-hover
       "
-      @select="(e) => emit('select', e)"
     >
       <UIMenuItem
         :config="props.config"
         :label="props.label"
-      />
-    </RekaDropdownMenuItem>
+      >
+        <template #right>
+          <DropdownMenuItemIndicator>
+            <CheckIcon class="size-3.5 text-tertiary" />
+          </DropdownMenuItemIndicator>
+        </template>
+      </UIMenuItem>
+    </RekaDropdownMenuCheckboxItem>
   </UIActionTooltip>
 </template>
