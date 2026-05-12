@@ -3,6 +3,7 @@ packages:
   - "packages/**/*"
 catalog:
   '@tanstack/vue-hotkeys': ^0.10.0
+  "@wisemen/eslint-config-nestjs": ^1.1.1
 
 catalogs:
   vue:
@@ -38,7 +39,6 @@ catalogs:
     "typescript-eslint": "8.59.0"
     "@typescript-eslint/eslint-plugin": "8.59.0"
     "eslint-plugin-import-typescript": "0.0.4"
-
   lint-web:
     "@wisemen/eslint-config-nestjs": "0.2.13"
     "eslint": "9.39.4"
@@ -73,7 +73,7 @@ catalogs:
     "@typescript-eslint/scope-manager": "8.53.1"
     "@typescript-eslint/type-utils": "8.56.0"
     "@typescript-eslint/utils": "8.53.1"
-    "eslint-plugin-storybook": 10.2.1"
+    "eslint-plugin-storybook": "10.2.1"
   build:
     "tsdown": "0.18.4"
     "husky": "^9.1.7"

@@ -257,10 +257,6 @@ catalogs:
     vue-component-meta:
       specifier: 3.2.2
       version: 3.2.2
-  fonts:
-    '@fontsource-variable/inter':
-      specifier: 5.2.8
-      version: 5.2.8
   general:
     '@googlemaps/js-api-loader':
       specifier: 1.16.8
@@ -1956,6 +1952,10 @@ importers:
         version: 5.9.3
 
   packages/web/actions:
+    dependencies:
+      vue-i18n:
+        specifier: catalog:peer
+        version: 11.2.8(vue@3.5.27(typescript@5.9.3))
     devDependencies:
       '@tanstack/vue-hotkeys':
         specifier: 'catalog:'
@@ -2754,39 +2754,6 @@ importers:
       typescript:
         specifier: catalog:build
         version: 5.9.3
-
-  packages/web/tailwind:
-    devDependencies:
-      '@fontsource-variable/inter':
-        specifier: catalog:fonts
-        version: 5.2.8
-      '@types/node':
-        specifier: catalog:types
-        version: 24.8.1
-      '@wisemen/eslint-config-vue':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@wisemen/vue-core-design-system':
-        specifier: workspace:*
-        version: link:../design-system
-      eslint:
-        specifier: catalog:lint-web
-        version: 9.39.4(jiti@2.6.1)
-      reka-ui:
-        specifier: catalog:vue
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
-      tailwindcss:
-        specifier: catalog:style
-        version: 4.1.18
-      tsdown:
-        specifier: catalog:build
-        version: 0.18.4(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
-      typescript:
-        specifier: catalog:build
-        version: 5.9.3
-      vitest:
-        specifier: catalog:test
-        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@24.8.1)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(vite@7.3.1(@types/node@24.8.1)(jiti@2.6.1)(lightningcss@1.30.2)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))
 
   packages/web/telemetry:
     dependencies:
@@ -4641,9 +4608,6 @@ packages:
 
   '@floating-ui/vue@1.1.7':
     resolution: {integrity: sha512-idmAtbAIigGXN2SI5gItiXYBYtNfDTP9yIiObxgu13dgtG7ARCHlNfnR29GxP4LI4o13oiwsJ8wVgghj1lNqcw==}
-
-  '@fontsource-variable/inter@5.2.8':
-    resolution: {integrity: sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ==}
 
   '@googlemaps/js-api-loader@1.16.8':
     resolution: {integrity: sha512-CROqqwfKotdO6EBjZO/gQGVTbeDps5V7Mt9+8+5Q+jTg5CRMi3Ii/L9PmV3USROrt2uWxtGzJHORmByxyo9pSQ==}
@@ -15121,8 +15085,6 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
-
-  '@fontsource-variable/inter@5.2.8': {}
 
   '@googlemaps/js-api-loader@1.16.8': {}
 
