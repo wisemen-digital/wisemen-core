@@ -9,7 +9,6 @@ import { UIButton } from '@/ui/button/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { useToast } from '@/ui/toast/toast.composable'
 import type { ToastVariant } from '@/ui/toast/toast.type'
-import ToastContainer from '@/ui/toast/ToastContainer.vue'
 
 const toast = useToast()
 
@@ -44,8 +43,6 @@ function show(variant: ToastVariant, icon: object): void {
 </script>
 
 <template>
-  <ToastContainer />
-
   <UIRowLayout>
     <UIButton
       v-for="{ icon, label, variant } in variants"
