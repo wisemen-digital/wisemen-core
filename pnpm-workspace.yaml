@@ -2,7 +2,7 @@ packages:
   - docs
   - "packages/**/*"
 catalog:
-  "@tanstack/vue-hotkeys": ^0.10.0
+  '@tanstack/vue-hotkeys': ^0.10.0
   '@wisemen/eslint-config-nestjs': ^1.1.1
 
 catalogs:
@@ -121,6 +121,8 @@ catalogs:
     oxc-minify: "0.117.0"
     "vitepress": "2.0.0-alpha.16"
     "vue-component-meta": "3.2.2"
+  fonts:
+    "@fontsource-variable/inter": "5.2.8"
   general:
     "@googlemaps/js-api-loader": "1.16.8"
     "@standard-schema/spec": "1.1.0"
@@ -157,7 +159,6 @@ catalogs:
     "oxlint": "1.59.0"
     "oxlint-tsgolint": "0.20.0"
     "typescript-eslint": "8.59.0"
-
   lint-web:
     "@antfu/eslint-config": "7.7.0"
     "@eslint/eslintrc": "3.3.3"
@@ -186,7 +187,7 @@ catalogs:
     "eslint-plugin-project-structure": "3.14.2"
     "eslint-plugin-require-explicit-generics": "1.0.0"
     "eslint-plugin-simple-import-sort": "12.1.1"
-    "eslint-plugin-storybook": 10.2.1"
+    "eslint-plugin-storybook": "10.2.1"
     "eslint-plugin-unicorn": "63.0.0"
     "eslint-plugin-unused-imports": "4.4.1"
     "eslint-plugin-vuejs-accessibility": "2.4.1"
@@ -204,7 +205,7 @@ catalogs:
     formango: ^3.2.1
     "motion-v": ">=1.7.3"
     "neverthrow": ">=8.2.0"
-    "reka-ui": ">=2.9.6"
+    "reka-ui": ">=2.9.7"
     "tailwind-variants": ">=3.2.2"
     "temporal-polyfill": ">=0.3.0"
     "typescript": ">=4.8.4 <=5.9.3"
@@ -215,7 +216,6 @@ catalogs:
     "vue-i18n": ">=11.1.12"
     "vue-router": ">=4.6.3"
     "zod": ">=4.3.5"
-
   stories:
     "@histoire/plugin-vue": "1.0.0-alpha.3"
     "histoire": "1.0.0-beta.1"
@@ -230,7 +230,6 @@ catalogs:
     "eslint-plugin-storybook": "10.2.13"
     "storybook": 10.3.0
     "vue-component-meta": 3.2.6
-
   style:
     "@tailwindcss/postcss": "4.1.18"
     "postcss": "8.5.10"
@@ -294,10 +293,14 @@ catalogs:
     "@vueuse/core": "14.1.0"
     "@vueuse/router": "14.1.0"
     "motion-v": "2.2.1"
-    "reka-ui": "2.9.6"
+    "pinia": "3.0.4"
+    "reka-ui": "2.9.7"
     "vue": "3.5.27"
     "vue-i18n": "11.2.8"
     vue-query: ^0.0.0
     "vue-router": "4.6.4"
     "vue-sonner": "2.0.9"
     "vue-tsc": "3.2.2"
+  wisemen:
+    "@wisemen/vue-core-icons": "0.0.2"
+    "@wisemen/vue-core-design-system": "0.10.0"
