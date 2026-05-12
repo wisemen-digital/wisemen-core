@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import type { Form } from 'formango'
 import { useId } from 'vue'
 
 import { useUnsavedChanges } from '@/composables/unsaved-changes/unsavedChanges.composable'
 import { useProvideFormContext } from '@/ui/form/form.context'
+import type { FormProps } from '@/ui/form/form.props'
 
-const props = withDefaults(defineProps<{
-  id?: string | null
-  form: Form<any>
-  promptOnUnsavedChanges: boolean
-}>(), {
+const props = withDefaults(defineProps<FormProps>(), {
   id: null,
 })
 

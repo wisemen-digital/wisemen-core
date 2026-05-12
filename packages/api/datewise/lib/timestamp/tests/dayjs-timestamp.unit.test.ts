@@ -211,4 +211,251 @@ describe('DayjsTimestamp', () => {
       expect(duration.milliseconds).toBe(Infinity)
     })
   })
+
+  describe('diff', () => {
+    it('returns 0 when comparing a timestamp to itself', () => {
+      const ts = timestamp('2025-01-01T12:00:00Z')
+      const result = ts.diff(ts, 'milliseconds')
+
+      expect(result).toBe(0)
+    })
+
+    it('returns negative infinity when diffing with future infinity', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+      const result = ts.diff('infinity', 'milliseconds')
+
+      expect(result).toBe(-Infinity)
+    })
+
+    it('returns positive infinity when diffing with past infinity', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+      const result = ts.diff('-infinity', 'milliseconds')
+
+      expect(result).toBe(Infinity)
+    })
+
+    it('returns negative infinity for all units when diffing with future infinity', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+
+      expect(ts.diff('infinity', 'seconds')).toBe(-Infinity)
+      expect(ts.diff('infinity', 'minutes')).toBe(-Infinity)
+      expect(ts.diff('infinity', 'hours')).toBe(-Infinity)
+      expect(ts.diff('infinity', 'days')).toBe(-Infinity)
+      expect(ts.diff('infinity', 'months')).toBe(-Infinity)
+      expect(ts.diff('infinity', 'years')).toBe(-Infinity)
+    })
+
+    it('returns positive infinity for all units when diffing with past infinity', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+
+      expect(ts.diff('-infinity', 'seconds')).toBe(Infinity)
+      expect(ts.diff('-infinity', 'minutes')).toBe(Infinity)
+      expect(ts.diff('-infinity', 'hours')).toBe(Infinity)
+      expect(ts.diff('-infinity', 'days')).toBe(Infinity)
+      expect(ts.diff('-infinity', 'months')).toBe(Infinity)
+      expect(ts.diff('-infinity', 'years')).toBe(Infinity)
+    })
+
+    it('correctly diffs milliseconds between regular timestamps', () => {
+      const ts1 = timestamp('2025-01-01T00:00:00.000Z')
+      const ts2 = timestamp('2025-01-01T00:00:01.500Z')
+      const result = ts1.diff(ts2, 'milliseconds')
+
+      expect(result).toBe(-1500)
+    })
+
+    it('diff with precise flag handles infinities', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+
+      expect(ts.diff('infinity', 'milliseconds', true)).toBe(-Infinity)
+      expect(ts.diff('-infinity', 'milliseconds', true)).toBe(Infinity)
+    })
+  })
+
+  describe('compare', () => {
+    it('returns 0 when comparing a timestamp to itself', () => {
+      const ts = timestamp('2025-01-01T12:00:00Z')
+      const result = ts.compare(ts)
+
+      expect(result).toBe(0)
+    })
+
+    it('returns 0 when comparing identical timestamps', () => {
+      const ts1 = timestamp('2025-01-01T12:00:00Z')
+      const ts2 = timestamp('2025-01-01T12:00:00Z')
+      const result = ts1.compare(ts2)
+
+      expect(result).toBe(0)
+    })
+
+    it('returns negative value when this timestamp is before the other', () => {
+      const earlier = timestamp('2025-01-01T12:00:00Z')
+      const later = timestamp('2025-01-01T12:00:01Z')
+      const result = earlier.compare(later)
+
+      expect(result).toBeLessThan(0)
+      expect(result).toBe(-1000)
+    })
+
+    it('returns positive value when this timestamp is after the other', () => {
+      const later = timestamp('2025-01-01T12:00:01Z')
+      const earlier = timestamp('2025-01-01T12:00:00Z')
+      const result = later.compare(earlier)
+
+      expect(result).toBeGreaterThan(0)
+      expect(result).toBe(1000)
+    })
+
+    it('returns negative infinity when compared to future infinity', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+      const result = ts.compare('infinity')
+
+      expect(result).toBe(-Infinity)
+    })
+
+    it('returns positive infinity when compared to past infinity', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+      const result = ts.compare('-infinity')
+
+      expect(result).toBe(Infinity)
+    })
+
+    it('returns exact millisecond difference', () => {
+      const ts1 = timestamp('2025-01-01T12:00:00.000Z')
+      const ts2 = timestamp('2025-01-01T12:00:00.500Z')
+      const result = ts1.compare(ts2)
+
+      expect(result).toBe(-500)
+    })
+
+    it('can be used to sort timestamps in ascending order', () => {
+      const timestamps = [
+        timestamp('2025-03-01T00:00:00Z'),
+        timestamp('2025-01-01T00:00:00Z'),
+        timestamp('2025-02-01T00:00:00Z')
+      ]
+
+      timestamps.sort((a, b) => a.compare(b))
+
+      expect(timestamps[0].toISOString()).toBe('2025-01-01T00:00:00.000Z')
+      expect(timestamps[1].toISOString()).toBe('2025-02-01T00:00:00.000Z')
+      expect(timestamps[2].toISOString()).toBe('2025-03-01T00:00:00.000Z')
+    })
+
+    it('can be used to sort timestamps in descending order', () => {
+      const timestamps = [
+        timestamp('2025-01-01T00:00:00Z'),
+        timestamp('2025-03-01T00:00:00Z'),
+        timestamp('2025-02-01T00:00:00Z')
+      ]
+
+      timestamps.sort((a, b) => b.compare(a))
+
+      expect(timestamps[0].toISOString()).toBe('2025-03-01T00:00:00.000Z')
+      expect(timestamps[1].toISOString()).toBe('2025-02-01T00:00:00.000Z')
+      expect(timestamps[2].toISOString()).toBe('2025-01-01T00:00:00.000Z')
+    })
+
+    it('can sort timestamps with past infinity at the start', () => {
+      const timestamps = [
+        timestamp('2025-03-01T00:00:00Z'),
+        timestamp('-infinity'),
+        timestamp('2025-01-01T00:00:00Z')
+      ]
+
+      timestamps.sort((a, b) => a.compare(b))
+
+      expect(timestamps[0].isPastInfinity()).toBe(true)
+      expect(timestamps[1].toISOString()).toBe('2025-01-01T00:00:00.000Z')
+      expect(timestamps[2].toISOString()).toBe('2025-03-01T00:00:00.000Z')
+    })
+
+    it('can sort timestamps with future infinity at the end', () => {
+      const timestamps = [
+        timestamp('2025-01-01T00:00:00Z'),
+        timestamp('infinity'),
+        timestamp('2025-03-01T00:00:00Z')
+      ]
+
+      timestamps.sort((a, b) => a.compare(b))
+
+      expect(timestamps[0].toISOString()).toBe('2025-01-01T00:00:00.000Z')
+      expect(timestamps[1].toISOString()).toBe('2025-03-01T00:00:00.000Z')
+      expect(timestamps[2].isFutureInfinity()).toBe(true)
+    })
+
+    it('can sort timestamps with both infinities', () => {
+      const timestamps = [
+        timestamp('2025-02-01T00:00:00Z'),
+        timestamp('infinity'),
+        timestamp('-infinity'),
+        timestamp('2025-01-01T00:00:00Z')
+      ]
+
+      timestamps.sort((a, b) => a.compare(b))
+
+      expect(timestamps[0].isPastInfinity()).toBe(true)
+      expect(timestamps[1].toISOString()).toBe('2025-01-01T00:00:00.000Z')
+      expect(timestamps[2].toISOString()).toBe('2025-02-01T00:00:00.000Z')
+      expect(timestamps[3].isFutureInfinity()).toBe(true)
+    })
+
+    it('returns consistent results with isBefore when comparing with infinities', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+      const futureInfinity = timestamp('infinity')
+      const pastInfinity = timestamp('-infinity')
+
+      // compare < 0 should match isBefore = true
+      expect(ts.compare(futureInfinity) < 0).toBe(ts.isBefore(futureInfinity))
+      expect(ts.compare(pastInfinity) < 0).toBe(ts.isBefore(pastInfinity))
+    })
+
+    it('returns consistent results with isAfter when comparing with infinities', () => {
+      const ts = timestamp('2025-01-01T00:00:00Z')
+      const futureInfinity = timestamp('infinity')
+      const pastInfinity = timestamp('-infinity')
+
+      // compare > 0 should match isAfter = true
+      expect(ts.compare(futureInfinity) > 0).toBe(ts.isAfter(futureInfinity))
+      expect(ts.compare(pastInfinity) > 0).toBe(ts.isAfter(pastInfinity))
+    })
+
+    it('handles multiple regular timestamps mixed with infinities in complex sort', () => {
+      const timestamps = [
+        timestamp('2025-06-01T00:00:00Z'),
+        timestamp('infinity'),
+        timestamp('2025-01-15T00:00:00Z'),
+        timestamp('-infinity'),
+        timestamp('2025-12-31T23:59:59Z'),
+        timestamp('2025-03-20T12:30:00Z')
+      ]
+
+      timestamps.sort((a, b) => a.compare(b))
+
+      expect(timestamps[0].isPastInfinity()).toBe(true)
+      expect(timestamps[1].toISOString()).toBe('2025-01-15T00:00:00.000Z')
+      expect(timestamps[2].toISOString()).toBe('2025-03-20T12:30:00.000Z')
+      expect(timestamps[3].toISOString()).toBe('2025-06-01T00:00:00.000Z')
+      expect(timestamps[4].toISOString()).toBe('2025-12-31T23:59:59.000Z')
+      expect(timestamps[5].isFutureInfinity()).toBe(true)
+    })
+
+    it('compare with future infinity from different timestamp formats', () => {
+      const ts1 = timestamp(new Date('2025-01-01T00:00:00Z'))
+      const ts2 = timestamp('2025-01-01T00:00:00Z')
+      const futureInfinity = timestamp('infinity')
+
+      expect(ts1.compare(futureInfinity)).toBe(-Infinity)
+      expect(ts2.compare(futureInfinity)).toBe(-Infinity)
+    })
+
+    it('compare with past infinity from different timestamp formats', () => {
+      const ts1 = timestamp(new Date('2025-01-01T00:00:00Z'))
+      const ts2 = timestamp('2025-01-01T00:00:00Z')
+      const pastInfinity = timestamp('-infinity')
+
+      expect(ts1.compare(pastInfinity)).toBe(Infinity)
+      expect(ts2.compare(pastInfinity)).toBe(Infinity)
+    })
+  })
 })

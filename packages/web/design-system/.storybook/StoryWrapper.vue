@@ -6,6 +6,7 @@ import type {
   FormattedAddress,
 } from '@/ui/address-autocomplete/addressAutocomplete.type'
 import ConfigProvider from '@/ui/config-provider/ConfigProvider.vue'
+import ContextProvider from '@/ui/context-provider/ContextProvider.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 defineProps<{
@@ -93,18 +94,21 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     :locale="locale ?? 'en-US'"
     :hour-cycle="hourCycle ?? '24-hour'"
     :address-autocomplete-adapter="mockAddressAutocompleteAdapter"
+    number-format="system"
     project-name="story-book"
   >
     <ThemeProvider
       :appearance="theme ?? 'light'"
     >
-      <div
-        class="
-          default flex items-center justify-center bg-primary p-4 text-primary
-        "
-      >
-        <slot />
-      </div>
+      <ContextProvider>
+        <div
+          class="
+            default flex items-center justify-center bg-primary p-4 text-primary
+          "
+        >
+          <slot />
+        </div>
+      </ContextProvider>
     </ThemeProvider>
   </ConfigProvider>
 </template>

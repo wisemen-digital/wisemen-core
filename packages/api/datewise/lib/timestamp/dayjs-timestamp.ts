@@ -176,11 +176,17 @@ export class DayjsTimestamp implements Timestamp {
   diff (withOther: TimestampInput, unit: OpUnitType, precise = false): number {
     withOther = factory(withOther)
 
-    if (withOther.isFutureInfinity() || withOther.isPastInfinity()) {
+    if (withOther.isFutureInfinity() ) {
+      return -Infinity
+    } else if (withOther.isPastInfinity()) {
       return Infinity
+    } else {
+      return this.value.diff((withOther as DayjsTimestamp).value, unit, precise)
     }
+  }
 
-    return this.value.diff((withOther as DayjsTimestamp).value, unit, precise)
+  compare (withOther: TimestampInput): number {
+    return this.diff(withOther, 'milliseconds', true)
   }
 
   valueOf (): number {
