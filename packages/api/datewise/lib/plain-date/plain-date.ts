@@ -38,7 +38,8 @@ export interface PlainDate {
 
   /**
    * Returns a new `PlainDate` instance with the duration added. \
-   * Any duration less than a full day does not change the date, but still returns a new instance. \
+   * Any duration less than a full day does not change the date, but still returns a 
+   * new instance (except for infinities which are singletons). \
    * Similarly a duration of 1.4 days is applied as 1 day.
    */
   addDuration(duration: Duration): PlainDate
@@ -47,7 +48,8 @@ export interface PlainDate {
 
   /**
    * Returns a new `PlainDate` instance with the duration subtracted. \
-   * Any duration less than a full day does not change the date, but still returns a new instance. \
+   * Any duration less than a full day does not change the date, but still returns a new instance
+   * (except for infinities which are singletons). \
    * Similarly a duration of 1.4 days is applied as 1 day.
    */
   subtractDuration(duration: Duration): PlainDate

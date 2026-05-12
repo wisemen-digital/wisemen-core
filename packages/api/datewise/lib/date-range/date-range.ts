@@ -216,10 +216,17 @@ export class DateRange {
    *    - start date = this.startDate.subtractDuration(duration)
    *    - end date = this.endDate.addDuration(duration)
    */
-  expanded(duration: Duration): DateRange {
+  expand(duration: Duration): DateRange
+  /** 
+   * Returns a new date range with both boundaries expanded \
+   *    - start date = this.startDate.subtractDuration(lower)
+   *    - end date = this.endDate.addDuration(upper)
+   */
+  expand(lower: Duration, upper: Duration): DateRange
+  expand(duration: Duration, upper?: Duration): DateRange {
     return new DateRange(
       this.startDate.subtractDuration(duration),
-      this.endDate.addDuration(duration)
+      this.endDate.addDuration(upper ?? duration)
     )
   }
 

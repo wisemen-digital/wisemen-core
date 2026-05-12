@@ -323,14 +323,21 @@ export class DateTimeRange {
   }
 
   /** 
-   * Returns a new date range with both boundaries expanded \
+   * Returns a new date time range with both boundaries expanded \
    *    - from = this.from.subtractDuration(duration)
    *    - until = this.until.addDuration(duration)
    */
-  expanded(duration: Duration): DateTimeRange {
+  expand(duration: Duration): DateTimeRange
+  /** 
+   * Returns a new date time range with both boundaries expanded \
+   *    - from = this.from.subtractDuration(lower)
+   *    - until = this.until.addDuration(upper)
+   */
+  expand(lower: Duration, upper: Duration): DateTimeRange
+  expand(duration: Duration, upper?: Duration): DateTimeRange {
     return new DateTimeRange(
       this.from.subtractDuration(duration),
-      this.until.addDuration(duration)
+      this.until.addDuration(upper ?? duration)
     )
   }
 
