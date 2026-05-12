@@ -5,5 +5,7 @@
   "action.group.general": "General",
   "action.group.navigation": "Navigation",
   "action.group.preferences": "Preferences",
-  "action.group.user": "User"
+  "action.group.user": "User",
+  "search": "Search...",
+  "type_a_command_or_search": "Type a command or search..."
 }

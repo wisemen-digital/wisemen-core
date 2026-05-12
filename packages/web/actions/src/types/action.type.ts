@@ -151,7 +151,7 @@ export interface Action<TContext = any> {
    * Values:
    * - 'none' → Parents actions are fully excluded in scoring
    * - 'direct' → Only the direct parent is included in the scoring
-   * - 'all' → All parent context is excluded; scoring is based only on this action
+   * - 'all' → All parent context is included
    *
    * @default 'all'
    */

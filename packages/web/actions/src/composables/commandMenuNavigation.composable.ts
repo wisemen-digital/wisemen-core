@@ -6,12 +6,13 @@ import {
   computed,
   ref,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+import { useActionPreview } from '#composables/actionPreview.composable.ts'
 import type { useActionManagerStore } from '#stores/actionManager.store.ts'
 import type { Action } from '#types/action.type.ts'
 import type { ActionContext } from '#types/actionContext.type.ts'
 import type { NavFrame } from '#types/commandMenu.type.ts'
-import { useActionPreview } from '#composables/actionPreview.composable.ts'
 import {
   resolveActionName,
   resolveActionValue,
@@ -45,6 +46,7 @@ export function useCommandMenuNavigation({
   searchInput,
   subActionsMetaMap,
 }: UseCommandMenuNavigationOptions) {
+  const i18n = useI18n()
   const highlightedActionId = ref<string | null>(null)
 
   const currentParent = computed<Action | null>(() => navStack.value.at(-1)?.parentAction ?? null)
@@ -67,13 +69,13 @@ export function useCommandMenuNavigation({
 
   const placeholder = computed<string>(() => {
     if (currentParent.value === null) {
-      return 'Type a command or search...'
+      return i18n.t('type_a_command_or_search')
     }
 
     const maybePlaceholderFn = resolveSearchSubActionsConfig(currentParent.value, buildContext())?.placeholder
 
     if (maybePlaceholderFn === undefined) {
-      return 'Search...'
+      return i18n.t('search')
     }
 
     if (typeof maybePlaceholderFn === 'function') {
@@ -84,12 +86,11 @@ export function useCommandMenuNavigation({
   })
 
   const {
-    preview,
-    onKeyDown: onPreviewKeyDown,
+    preview, onKeyDown: onPreviewKeyDown,
   } = useActionPreview({
     highlightedActionId,
-    resolvedActions,
     getContext: buildContext,
+    resolvedActions,
   })
 
   async function activateAction(action: Action): Promise<void> {

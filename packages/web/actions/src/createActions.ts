@@ -6,31 +6,23 @@ import { shallowRef } from 'vue'
 
 import type { Action } from '#types/action.type.ts'
 import type { ActionContext } from '#types/actionContext.type'
-import type { ActionModel } from '#types/actionModel.type.ts'
 import type { KeyboardShortcut } from '#types/keyboardShortcut.type.ts'
 
 export const isAuthenticated = shallowRef<boolean>(false)
 
-/**
- * Type for a generically-typed ActionDropdownMenu component.
- * Import ActionDropdownMenu from @wisemen/vue-core-design-system and cast with this type.
- */
-export type TypedActionDropdownMenu<TActionContext, TActionModel extends ActionModel> = DefineComponent<{
+type TypedActionDropdownMenu<TActionContext extends ActionContext> = DefineComponent<{
   isOpen?: boolean
   actions?: Action<TActionContext>[]
-  metadata?: Record<string, unknown>
-  models?: TActionModel[]
+  metadata?: TActionContext['metadata']
+  models?: TActionContext['models']
   parentAction?: Action<TActionContext>
 }>
 
-/**
- * Type for a generically-typed ActionTrigger component.
- * Import ActionTrigger from @wisemen/vue-core-design-system and cast with this type.
- */
-export type TypedActionTrigger<TActionContext, TActionModel extends ActionModel> = new () => {
+type TypedActionTrigger<TActionContext extends ActionContext> = new () => {
   $props: {
     action: Action<TActionContext>
-    models?: TActionModel[]
+    metadata?: TActionContext['metadata']
+    models?: TActionContext['models']
   }
   $slots: {
     default: (props: {
@@ -43,13 +35,11 @@ export type TypedActionTrigger<TActionContext, TActionModel extends ActionModel>
   }
 }
 
-/**
- * Type for a generically-typed ActionFocus component.
- */
-export type TypedActionFocus<TActionContext, TActionModel extends ActionModel> = new () => {
+type TypedActionFocus<TActionContext extends ActionContext> = new () => {
   $props: {
     actions: Action<TActionContext>[]
-    models?: TActionModel[]
+    metadata?: TActionContext['metadata']
+    models?: TActionContext['models']
   }
 }
 
@@ -61,11 +51,26 @@ export function _createUntypedAction<TAction extends Action<ActionContext>>(acti
   return action
 }
 
+export function typedActionDropdownMenu<TActionContext>(
+  component: Component,
+): TypedActionDropdownMenu<TActionContext extends ActionContext<any, any, any> ? TActionContext : never> {
+  return component as any
+}
+
+export function typedActionTrigger<TActionContext>(
+  component: Component,
+): TypedActionTrigger<TActionContext extends ActionContext<any, any, any> ? TActionContext : never> {
+  return component as any
+}
+
+export function typedActionFocus<TActionContext>(
+  component: Component,
+): TypedActionFocus<TActionContext extends ActionContext<any, any, any> ? TActionContext : never> {
+  return component as any
+}
+
 // eslint-disable-next-line eslint-plugin-wisemen/explicit-function-return-type-with-regex
-export function createActions<
-  TActionContext,
-  // TActionModel extends ActionModel,
->() {
+export function createActions<TActionContext>() {
   function createAction(action: Action<TActionContext>): Action<TActionContext> {
     return action
   }

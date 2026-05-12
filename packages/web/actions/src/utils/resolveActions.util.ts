@@ -276,7 +276,7 @@ function decorateLiftedChildren(children: Action[], parent: Action): Action[] {
   }))
 }
 
-function resolveApplicable(action: Action, ctx: ActionContext): boolean {
+export function resolveApplicable(action: Action, ctx: ActionContext): boolean {
   if (!isAuthenticated.value && action.availableWhenUnauthenticated !== true) {
     return false
   }
@@ -519,7 +519,7 @@ export function resolveActionName(action: Action, ctx: ActionContext): string {
 }
 
 export function resolveActionAvatar(action: Action, ctx: ActionContext): ActionAvatar | null {
-  return typeof action.avatar === 'function' ? action.avatar(ctx) : null
+  return typeof action.avatar === 'function' ? action.avatar(ctx) : action.avatar ?? null
 }
 
 export function resolveActionHint(action: Action, ctx: ActionContext): string | null {

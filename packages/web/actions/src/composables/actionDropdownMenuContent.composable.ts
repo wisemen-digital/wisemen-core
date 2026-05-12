@@ -2,15 +2,13 @@ import {
   useDebounceFn,
   useInfiniteScroll,
 } from '@vueuse/core'
-import type {
-  Component,
-  Ref,
-} from 'vue'
+import type { Ref } from 'vue'
 import {
   computed,
   ref,
   watch,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useActionPreview } from '#composables/actionPreview.composable.ts'
 import { useActionManagerStore } from '#stores/actionManager.store.ts'
@@ -38,26 +36,14 @@ interface UseActionDropdownMenuContentOptions {
   scrollContainerRef: Ref<HTMLElement | null>
 }
 
-export interface UseActionDropdownMenuContentReturn {
-  highlightedActionId: Ref<string | null>
-  isLoading: Readonly<Ref<boolean>>
-  actionGroups: Readonly<Ref<Action[][]>>
-  context: Readonly<Ref<ActionContext>>
-  placeholder: Readonly<Ref<string>>
-  preview: Readonly<Ref<Component | null>>
-  searchInput: Ref<string>
-  onHidePreview: () => void
-  onKeyDown: (event: KeyboardEvent) => void
-  onShowPreview: () => void
-}
-
 export function useActionDropdownMenuContent({
   actions,
   metadata,
   models,
   parentAction,
   scrollContainerRef,
-}: UseActionDropdownMenuContentOptions): UseActionDropdownMenuContentReturn {
+}: UseActionDropdownMenuContentOptions) {
+  const i18n = useI18n()
   const manager = useActionManagerStore()
 
   const highlightedActionId = ref<string | null>(null)
@@ -90,13 +76,13 @@ export function useActionDropdownMenuContent({
 
   const placeholder = computed<string>(() => {
     if (parentAction.value == null) {
-      return 'Search...'
+      return i18n.t('search')
     }
 
     const maybePlaceholderFn = resolveSearchSubActionsConfig(parentAction.value, context.value)?.placeholder
 
     if (maybePlaceholderFn === undefined) {
-      return 'Search...'
+      return i18n.t('search')
     }
 
     if (typeof maybePlaceholderFn === 'function') {

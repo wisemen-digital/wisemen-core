@@ -19,6 +19,7 @@ import type {
   SequenceShortcut,
   SingleKeyShortcut,
 } from '#types/keyboardShortcut.type.ts'
+import { resolveApplicable } from '#utils/resolveActions.util.ts'
 
 function* collectActionsForShortcuts(actions: Action[], ctx: ActionContext): Generator<Action> {
   for (const action of actions) {
@@ -97,7 +98,7 @@ export function useActionShortcuts(
       for (let i = actions.length - 1; i >= 0; i--) {
         const action = actions[i]!
 
-        if (action.isApplicable !== undefined && !action.isApplicable(ctx)) {
+        if (!resolveApplicable(action, ctx)) {
           continue
         }
 

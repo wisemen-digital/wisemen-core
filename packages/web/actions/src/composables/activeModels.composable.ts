@@ -50,6 +50,8 @@ export function useActiveModels(
     register()
   })
 
+  register()
+
   onBeforeUnmount(() => {
     unregister()
   })

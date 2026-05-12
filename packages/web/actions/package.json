@@ -48,7 +48,8 @@
   },
   "peerDependencies": {
     "vue": "catalog:peer",
-    "pinia": "catalog:vue"
+    "pinia": "catalog:vue",
+    "vue-i18n": "catalog:peer"
   },
   "devDependencies": {
     "@tanstack/vue-hotkeys": "catalog:",
