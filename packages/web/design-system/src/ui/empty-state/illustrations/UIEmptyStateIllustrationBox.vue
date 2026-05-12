@@ -60,8 +60,8 @@ const clipId = `${id}-c`
         fill="#E3E8EF"
       />
       <path
-        d="M76.0008 37.1852V91.3259L118 72.6227V19.4665L76.0008 37.1852Z"
         :fill="`url(#${paint0Id})`"
+        d="M76.0008 37.1852V91.3259L118 72.6227V19.4665L76.0008 37.1852Z"
       />
       <path
         d="M76 37.1852L118 19.4665L76.3298 1.09149L34 19.4665L76 37.1852Z"
@@ -79,8 +79,8 @@ const clipId = `${id}-c`
       height="56"
     >
       <div
-        xmlns="http://www.w3.org/1999/xhtml"
         :style="`backdrop-filter:blur(4px);clip-path:url(#${clipId});height:100%;width:100%`"
+        xmlns="http://www.w3.org/1999/xhtml"
       />
     </foreignObject>
     <g>

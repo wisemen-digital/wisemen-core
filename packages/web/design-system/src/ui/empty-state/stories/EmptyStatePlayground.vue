@@ -8,11 +8,13 @@ import { UIEmptyState } from '@/ui/empty-state'
   <div class="max-w-sm p-xl">
     <UIEmptyState
       :primary-action="{
+        type: 'button',
         label: 'New project',
         iconLeft: PlusIcon,
         onClick: () => { },
       }"
       :secondary-action="{
+        type: 'button',
         label: 'Clear search',
         onClick: () => { },
       }"

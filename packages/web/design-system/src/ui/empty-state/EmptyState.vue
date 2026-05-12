@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { UIButton } from '@/ui/button'
 import { UIColumnLayout } from '@/ui/column-layout'
+import EmptyStateAction from '@/ui/empty-state/EmptyStateAction.vue'
+import UIEmptyStateIllustrationBox from '@/ui/empty-state/illustrations/UIEmptyStateIllustrationBox.vue'
+import UIEmptyStateIllustrationCloudSearch from '@/ui/empty-state/illustrations/UIEmptyStateIllustrationCloudSearch.vue'
+import UIEmptyStateIllustrationCreditCard from '@/ui/empty-state/illustrations/UIEmptyStateIllustrationCreditCard.vue'
+import UIEmptyStateIllustrationDocuments from '@/ui/empty-state/illustrations/UIEmptyStateIllustrationDocuments.vue'
+import UIEmptyStateIllustrationRouteCard from '@/ui/empty-state/illustrations/UIEmptyStateIllustrationRouteCard.vue'
 import { UIRowLayout } from '@/ui/row-layout'
 import { UIText } from '@/ui/text'
 
 import type { EmptyStateProps } from './emptyState.props'
-import UIEmptyStateIllustrationBox from './illustrations/UIEmptyStateIllustrationBox.vue'
-import UIEmptyStateIllustrationCloudSearch from './illustrations/UIEmptyStateIllustrationCloudSearch.vue'
-import UIEmptyStateIllustrationCreditCard from './illustrations/UIEmptyStateIllustrationCreditCard.vue'
-import UIEmptyStateIllustrationDocuments from './illustrations/UIEmptyStateIllustrationDocuments.vue'
-import UIEmptyStateIllustrationRouteCard from './illustrations/UIEmptyStateIllustrationRouteCard.vue'
 
 const props = withDefaults(defineProps<EmptyStateProps>(), {
   description: null,
@@ -66,16 +66,14 @@ const ILLUSTRATION_MAP = {
       />
     </UIColumnLayout>
     <UIRowLayout>
-      <UIButton
+      <EmptyStateAction
         v-if="props.secondaryAction !== null"
-        v-bind="props.secondaryAction"
+        :action="props.secondaryAction"
         variant="secondary"
-        @click="props.secondaryAction?.onClick"
       />
-      <UIButton
+      <EmptyStateAction
         v-if="props.primaryAction !== null"
-        v-bind="props.primaryAction"
-        @click="props.primaryAction?.onClick"
+        :action="props.primaryAction"
       />
     </UIRowLayout>
   </UIColumnLayout>

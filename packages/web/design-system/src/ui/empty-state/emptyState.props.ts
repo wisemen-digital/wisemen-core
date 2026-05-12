@@ -1,3 +1,4 @@
+import type { Action } from '@wisemen/vue-core-actions'
 import type { Component } from 'vue'
 
 import type { ButtonProps } from '@/ui/button/button/button.props'
@@ -32,22 +33,12 @@ export interface EmptyStateProps {
   /**
    * The primary action of the empty state.
    */
-  primaryAction?: (
-    Omit<ButtonProps, 'size' | 'variant'>
-    & {
-      onClick?: () => Promise<void> | void
-    })
-    | null
+  primaryAction?: EmptyStateAction | null
 
   /**
    * The secondary action of the empty state.
    */
-  secondaryAction?: (
-    Omit<ButtonProps, 'size' | 'variant'>
-    & {
-      onClick?: () => Promise<void> | void
-    })
-    | null
+  secondaryAction?: EmptyStateAction | null
 }
 
 type ActionButton = {
@@ -56,7 +47,7 @@ type ActionButton = {
 } & Omit<ButtonProps, 'size' | 'variant'>
 
 type ActionLink = {
-  type: 'link '
+  type: 'link'
   onClick?: () => Promise<void> | void
 } & Omit<LinkProps, 'size' | 'variant'>
 
@@ -65,4 +56,4 @@ interface ActionAction {
   type: 'Action'
 }
 
-type Action = ActionAction | ActionButton | ActionLink
+export type EmptyStateAction = ActionAction | ActionButton | ActionLink
