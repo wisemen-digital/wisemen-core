@@ -1,4 +1,5 @@
 export * from './adjacent-to.js'
+export * from './contained-in.js'
 export * from './ends-before.js'
 export * from './is-preceded-by.js'
 export * from './is-succeeded-by.js'

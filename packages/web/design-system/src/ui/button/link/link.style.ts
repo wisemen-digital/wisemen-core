@@ -40,7 +40,7 @@ export const createLinkStyle = tv({
       border outline-2 outline-offset-1 outline-transparent duration-100
     `,
     rowLayout: `
-      duration-100 [grid-area:stack]
+      flex items-center justify-center duration-100 [grid-area:stack]
       group-active/link:scale-98
     `,
   },
@@ -50,21 +50,25 @@ export const createLinkStyle = tv({
         icon: `size-4`,
         label: `text-sm`,
         root: 'h-8 min-w-8 rounded-lg px-lg',
+        rowLayout: 'gap-sm',
       },
       md: {
         icon: `size-3.5`,
         label: `text-xs`,
         root: 'h-7 min-w-7 rounded-md px-md',
+        rowLayout: 'gap-sm',
       },
       sm: {
         icon: `size-3.5`,
         label: `text-xs`,
         root: 'h-6 min-w-6 rounded-sm px-sm',
+        rowLayout: 'gap-xs',
       },
       xs: {
         icon: `size-3.5`,
         label: `text-xs`,
-        root: 'h-5.5 min-w-5.5 rounded-xs px-xs',
+        root: 'h-5.5 min-w-5.5 rounded-sm px-xs',
+        rowLayout: 'gap-xs',
       },
     },
     variant: {

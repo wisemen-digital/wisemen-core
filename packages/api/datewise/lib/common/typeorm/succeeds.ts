@@ -3,6 +3,10 @@ import { FindOperator, Raw } from 'typeorm'
 import { DateRange } from '../../date-range/date-range.js'
 import { DateTimeRange } from '../../date-time-range/date-time-range.js'
 
+/** 
+ * Checks that a range immediately succeeds the given range by
+ * checking both adjacency `-|-` and order `>`.
+ */
 export function Succeeds (period: DateTimeRange): FindOperator<DateTimeRange>
 export function Succeeds (period: DateRange): FindOperator<DateRange>
 export function Succeeds (

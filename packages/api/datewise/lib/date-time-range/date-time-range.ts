@@ -358,6 +358,27 @@ export class DateTimeRange {
     return this.precedes(other) || this.succeeds(other)
   }
 
+  /** 
+   * Compares the order (in time) of the given range with this range. \
+   * returns < 0 if this range is before the given range \
+   * returns 0 if this range is the same as the given range \
+   * returns > 0 if this range is after the given range \
+   * \
+   * The order is determined by first comparing the `from` of both ranges.
+   * If `from` is the same for both ranges, `until` is compared. \
+   * \
+   * The returned value is the result of a `diff` milliseconds between the compared values.
+  */
+  compare(other: DateTimeRange): number {
+    const fromDiff = this.from.compare(other.from)
+
+    if(fromDiff !== 0) {
+      return fromDiff
+    }
+
+    return this.until.compare(other.until)
+  }
+
   /**
    * Merges two overlapping or adjacent ranges into a new range which consists of the
    * earliest timestamp until the latest timestamp of both ranges
