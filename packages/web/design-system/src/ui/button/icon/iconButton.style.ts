@@ -43,7 +43,7 @@ export const createIconButtonStyle = tv({
       not-data-interactive:cursor-not-allowed
     `,
     rowLayout: `
-      duration-100 [grid-area:stack]
+      duration-100 will-change-transform [grid-area:stack]
       group-not-disabled/button:group-active/button:scale-98
     `,
   },

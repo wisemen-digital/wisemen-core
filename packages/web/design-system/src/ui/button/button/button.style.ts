@@ -42,7 +42,8 @@ export const createButtonStyle = tv({
       not-data-interactive:cursor-not-allowed
     `,
     rowLayout: `
-      flex items-center justify-center duration-100 [grid-area:stack]
+      flex items-center justify-center duration-100 will-change-transform
+      [grid-area:stack]
       group-not-disabled/button:group-active/button:scale-98
     `,
   },

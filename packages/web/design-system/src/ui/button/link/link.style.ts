@@ -40,7 +40,8 @@ export const createLinkStyle = tv({
       border outline-2 outline-offset-1 outline-transparent duration-100
     `,
     rowLayout: `
-      flex items-center justify-center duration-100 [grid-area:stack]
+      flex items-center justify-center duration-100 will-change-transform
+      [grid-area:stack]
       group-active/link:scale-98
     `,
   },
