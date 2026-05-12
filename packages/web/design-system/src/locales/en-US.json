@@ -1,4 +1,8 @@
 {
+  "action.global.toggle_detail_pane.keywords": "collapse detail pane",
+  "action.global.toggle_detail_pane.name": "Toggle detail pane",
+  "action.global.toggle_main_sidebar.keywords": "collapse navigation",
+  "action.global.toggle_main_sidebar.name": "Toggle sidebar",
   "component.autocomplete.more_results_available": "More results available, keep searching to narrow down",
   "component.autocomplete.no_results_found": "No results found",
   "component.autocomplete.search_placeholder": "Search...",

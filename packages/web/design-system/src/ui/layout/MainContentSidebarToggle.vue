@@ -13,7 +13,7 @@ import { useI18n } from 'vue-i18n'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ActionTrigger from '@/ui/action-trigger/ActionTrigger.vue'
-import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import { useMainSidebar } from '@/ui/sidebar'
 
 const {
   isSidebarOpen,

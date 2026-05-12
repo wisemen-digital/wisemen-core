@@ -1,4 +1,8 @@
 {
+  "action.global.toggle_detail_pane.keywords": "dicht open detailpaneel",
+  "action.global.toggle_detail_pane.name": "Detailpaneel verbergen/tonen",
+  "action.global.toggle_main_sidebar.keywords": "dicht open menu navigatie",
+  "action.global.toggle_main_sidebar.name": "Zijbalk verbergen/tonen",
   "component.autocomplete.more_results_available": "Er zijn meer resultaten beschikbaar, verfijn je zoekopdracht",
   "component.autocomplete.no_results_found": "Geen resultaten gevonden",
   "component.autocomplete.search_placeholder": "Zoeken...",
