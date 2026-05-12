@@ -3,7 +3,14 @@ import { toComputedRefs } from '@/composables/context.composable'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
 import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
 
-const props = defineProps<ConfigProviderProps>()
+const props = withDefaults(defineProps<ConfigProviderProps>(), {
+  addressAutocompleteAdapter: null,
+  autoCloseToast: 'always',
+  googleMapsApiKey: null,
+  hourCycle: null,
+  numberFormat: 'system',
+  projectName: 'wisemen',
+})
 
 defineSlots<{
   /**
