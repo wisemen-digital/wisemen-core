@@ -1,5 +1,6 @@
 export type { DropdownMenuProps as UIDropdownMenuProps } from './dropdownMenu.props'
 export { default as UIDropdownMenu } from './DropdownMenu.vue'
+export { default as UIDropdownMenuCheckboxItem } from './DropdownMenuCheckboxItem.vue'
 export { default as UIDropdownMenuGroup } from './DropdownMenuGroup.vue'
 export { default as UIDropdownMenuHeader } from './DropdownMenuHeader.vue'
 export type { DropdownMenuItem as UIDropdownMenuItemType } from './dropdownMenuItem.type'
