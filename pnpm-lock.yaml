@@ -260,6 +260,10 @@ catalogs:
     vue-component-meta:
       specifier: 3.2.2
       version: 3.2.2
+  fonts:
+    '@fontsource-variable/inter':
+      specifier: 5.2.8
+      version: 5.2.8
   general:
     '@googlemaps/js-api-loader':
       specifier: 1.16.8
@@ -671,6 +675,9 @@ catalogs:
     reka-ui:
       specifier: 2.9.7
       version: 2.9.7
+    superjson:
+      specifier: 2.2.6
+      version: 2.2.6
     vue:
       specifier: 3.5.27
       version: 3.5.27
@@ -2350,6 +2357,9 @@ importers:
       '@vueuse/router':
         specifier: catalog:vue
         version: 14.1.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/vue-core-dates':
+        specifier: workspace:*
+        version: link:../dates
       '@wisemen/vue-core-icons':
         specifier: workspace:*
         version: link:../icons
@@ -2581,6 +2591,85 @@ importers:
       typescript:
         specifier: catalog:build
         version: 5.9.3
+
+  packages/web/filters:
+    dependencies:
+      superjson:
+        specifier: catalog:vue
+        version: 2.2.6
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: catalog:vite
+        version: 4.1.18(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))
+      '@types/node':
+        specifier: catalog:types
+        version: 24.8.1
+      '@vitejs/plugin-vue':
+        specifier: catalog:vite
+        version: 6.0.3(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
+      '@vue/test-utils':
+        specifier: catalog:test
+        version: 2.4.6
+      '@vue/tsconfig':
+        specifier: catalog:vue
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@wisemen/vue-core-actions':
+        specifier: workspace:*
+        version: link:../actions
+      '@wisemen/vue-core-dates':
+        specifier: workspace:*
+        version: link:../dates
+      '@wisemen/vue-core-design-system':
+        specifier: workspace:*
+        version: link:../design-system
+      '@wisemen/vue-core-icons':
+        specifier: workspace:*
+        version: link:../icons
+      '@wisemen/vue-core-tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind
+      '@wisemen/vue-core-utils':
+        specifier: workspace:*
+        version: link:../utils
+      eslint:
+        specifier: catalog:lint-web
+        version: 9.39.4(jiti@2.6.1)
+      formango:
+        specifier: catalog:peer
+        version: 3.2.4(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
+      husky:
+        specifier: catalog:build
+        version: 9.1.7
+      pinia:
+        specifier: catalog:vue
+        version: 3.0.4(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      tailwindcss:
+        specifier: catalog:style
+        version: 4.1.18
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vite:
+        specifier: npm:rolldown-vite@7.3.1
+        version: rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3)
+      vite-plugin-dts:
+        specifier: catalog:vite
+        version: 4.5.4(@types/node@24.8.1)(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))(rollup@4.60.3)(typescript@5.9.3)
+      vitest:
+        specifier: catalog:test
+        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@24.8.1)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
+      vue-i18n:
+        specifier: catalog:peer
+        version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      vue-tsc:
+        specifier: catalog:vue
+        version: 3.2.2(typescript@5.9.3)
 
   packages/web/formango:
     dependencies:
@@ -2852,6 +2941,16 @@ importers:
       typescript:
         specifier: catalog:build
         version: 5.9.3
+
+  packages/web/tailwind:
+    dependencies:
+      '@fontsource-variable/inter':
+        specifier: catalog:fonts
+        version: 5.2.8
+    devDependencies:
+      tailwindcss:
+        specifier: catalog:style
+        version: 4.1.18
 
   packages/web/telemetry:
     dependencies:
@@ -4706,6 +4805,9 @@ packages:
 
   '@floating-ui/vue@1.1.7':
     resolution: {integrity: sha512-idmAtbAIigGXN2SI5gItiXYBYtNfDTP9yIiObxgu13dgtG7ARCHlNfnR29GxP4LI4o13oiwsJ8wVgghj1lNqcw==}
+
+  '@fontsource-variable/inter@5.2.8':
+    resolution: {integrity: sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ==}
 
   '@googlemaps/js-api-loader@1.16.8':
     resolution: {integrity: sha512-CROqqwfKotdO6EBjZO/gQGVTbeDps5V7Mt9+8+5Q+jTg5CRMi3Ii/L9PmV3USROrt2uWxtGzJHORmByxyo9pSQ==}
@@ -15333,6 +15435,8 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@fontsource-variable/inter@5.2.8': {}
 
   '@googlemaps/js-api-loader@1.16.8': {}
 

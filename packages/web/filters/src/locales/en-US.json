@@ -1,0 +1,23 @@
+{
+  "component.filters.add_filter": "Add filter",
+  "component.filters.add_filter_placeholder": "Search filters...",
+  "component.filters.add_filters": "Add filters",
+  "component.filters.boolean_filter_already_active": "Filter already active",
+  "component.filters.clear_filters": "Clear filters",
+  "component.filters.no_value": "No value",
+  "component.filters.remove_filter": "Remove filter",
+  "component.filters.selected_count": "{count} selected",
+  "component.filters_date_range_dialog.cancel": "Cancel",
+  "component.filters_date_range_dialog.clear": "Clear",
+  "component.filters_date_range_dialog.natural_language_input_error": "Could not parse date, please try again",
+  "component.filters_date_range_dialog.natural_language_input_label": "Search for a date range",
+  "component.filters_date_range_dialog.natural_language_input_placeholder": "E.g. 'last month', 'this week'...",
+  "component.filters_date_range_dialog.set_filter": "Set filter",
+  "component.filters_dropdown_menu.add_filter": "Add filter",
+  "component.filters_dropdown_menu.filter": "Filter",
+  "component.filters_listbox.filter_placeholder": "Search...",
+  "component.filters_number_dialog.cancel": "Cancel",
+  "component.filters_number_dialog.clear": "Clear",
+  "component.filters_number_dialog.placeholder": "Enter a value...",
+  "component.filters_number_dialog.set_filter": "Set filter"
+}
