@@ -9,8 +9,7 @@
     "types": [
       "node",
     ],
-    "moduleResolution": "nodenext",
-    
+    "moduleResolution": "nodenext", 
     "paths": {
       "#src/*": ["./lib/*"]
     },

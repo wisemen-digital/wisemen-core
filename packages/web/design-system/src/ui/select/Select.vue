@@ -203,7 +203,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
                 'text-disabled': props.isDisabled,
                 'text-primary': !props.isDisabled,
               }"
-              class="text-xs"
+              class="text-xs font-medium"
             />
           </UIRowLayout>
         </slot>

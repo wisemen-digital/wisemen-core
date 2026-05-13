@@ -12,10 +12,18 @@ export function ContainedIn (period: DateRange): FindOperator<PlainDate>
 /**
  * Checks whether a timestamp lies in the given date time range with the `<@` operator.
  */
+export function ContainedIn<ColumnType extends Timestamp | Date>(period: DateTimeRange): FindOperator<ColumnType>
+/**
+ * Checks whether a timestamp lies in the given date time range with the `<@` operator.
+ */
 export function ContainedIn (period: DateTimeRange): FindOperator<Timestamp | Date>
 export function ContainedIn (
   period: DateRange | DateTimeRange
-): FindOperator<PlainDate> | FindOperator<Timestamp | Date> {
+): FindOperator<PlainDate>
+ | FindOperator<Timestamp> 
+ | FindOperator<Date> 
+ | FindOperator<Timestamp | Date>
+ {
   const paramName = randomUUID().replaceAll('-', '')
 
   let type: string
