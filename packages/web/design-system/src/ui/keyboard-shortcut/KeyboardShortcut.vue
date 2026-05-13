@@ -50,6 +50,8 @@ function buildKeyParts(step: RegisterableHotkey): KeyboardShortcutKeyPart[] {
   }))
 }
 
+const isSequence = computed<boolean>(() => 'sequence' in props.keyboardShortcut)
+
 const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
   const sc = props.keyboardShortcut
 
@@ -77,7 +79,7 @@ const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
 </script>
 
 <template>
-  <UIRowLayout gap="xs">
+  <UIRowLayout :gap="isSequence ? 'xs' : 'xxs'">
     <template
       v-for="(part, partIndex) of shortcutParts"
       :key="partIndex"

@@ -40,6 +40,7 @@ const props = withDefaults(defineProps<ActionTooltipProps>(), {
           <KeyboardShortcut
             v-if="props.keyboardShortcut !== null"
             :keyboard-shortcut="props.keyboardShortcut"
+            :enable-key-hold-visualization="true"
           />
         </RowLayout>
       </TooltipContent>

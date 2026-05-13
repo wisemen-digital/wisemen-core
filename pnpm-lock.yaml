@@ -2417,6 +2417,9 @@ importers:
       '@wisemen/eslint-config-vue':
         specifier: workspace:*
         version: link:../eslint-config
+      '@wisemen/vue-core-actions':
+        specifier: workspace:*
+        version: link:../actions
       eslint:
         specifier: catalog:lint-web
         version: 9.39.4(jiti@2.6.1)
