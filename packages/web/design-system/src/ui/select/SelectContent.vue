@@ -101,7 +101,7 @@ function getEstimateSize(itemIndex: number): number {
     return size.value === 'sm' ? 28 : 32
   }
 
-  if (itemConfig.description != null && itemConfig.descriptionLayout === 'block') {
+  if (itemConfig.description?.layout === 'block') {
     return 50
   }
 

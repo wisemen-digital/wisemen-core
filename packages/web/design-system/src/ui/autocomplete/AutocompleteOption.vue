@@ -9,12 +9,10 @@ import {
 import { useInjectAutocompleteContext } from '@/ui/autocomplete/autocomplete.context'
 import { UIMenuItem } from '@/ui/menu-item'
 
-const props = withDefaults(defineProps<{
-  label?: string | null
+const props = defineProps<{
+  label: string
   value: AcceptableValue
-}>(), {
-  label: null,
-})
+}>()
 
 const {
   getItemConfig, size,
