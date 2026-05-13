@@ -2,6 +2,8 @@ import type { Locale } from '#models/locale.model.ts'
 
 export class LocaleUtil {
   static getCurrentLocale(): Locale {
-    return Intl.DateTimeFormat(navigator.language).resolvedOptions().locale
+    const language = typeof navigator !== 'undefined' ? navigator.language : undefined
+
+    return Intl.DateTimeFormat(language).resolvedOptions().locale
   }
 }
