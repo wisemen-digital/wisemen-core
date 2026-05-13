@@ -7,7 +7,6 @@ import { EndsBefore } from '../../common/typeorm/ends-before.js'
 import { FutureInfinity } from '../../timestamp/future-infinity.js'
 import { timestamp } from '../../timestamp/index.js'
 import { PastInfinity } from '../../timestamp/past-infinity.js'
-import { DateRange } from '../../date-range/date-range.js'
 import { OverlapsWith, Succeeds, Precedes, IsPrecededBy, IsSucceededBy } from '../../common/index.js'
 import { IntegrationTestSetup } from './test-setup.js'
 import { dataSource } from './sql/datasource.js'
@@ -441,55 +440,55 @@ describe('DateTimeRangeColumn', () => {
     })
 
     it('finds a range that immediately starts after a date', async () => {
-      const date = period.range.inclLower.clone()
+      const date = period.range.exclLower.clone()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 34,
-        range: StartsAfter(new DateRange(date, date.add(1, 'ms')))
+        range: StartsAfter(date)
       })
 
       expect(test).not.toBeNull()
     })
 
-    it('does not finds a range that starts after on the date', async () => {
+    it('does not find a range that starts on the date', async () => {
       const date = period.range.inclLower.toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 34,
-        range: StartsAfter(new DateTimeRange(date, date, '[]'))
+        range: StartsAfter(date)
       })
 
       expect(test).toBeNull()
     })
 
-    it('does not finds a range that contains the date', async () => {
+    it('does not find a range that contains the date', async () => {
       const date = period.range.inclLower.add(1, 'second').toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 34,
-        range: StartsAfter(new DateTimeRange(date, date, '[]'))
+        range: StartsAfter(date)
       })
 
       expect(test).toBeNull()
     })
 
-    it('does not finds a range that ends on the date', async () => {
+    it('does not find a range that ends on the date', async () => {
       const date = period.range.exclUpper.toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 34,
-        range: StartsAfter(new DateTimeRange(date, date, '[]'))
+        range: StartsAfter(date)
       })
 
       expect(test).toBeNull()
     })
 
-    it('does not finds a range that ended before the date', async () => {
+    it('does not find a range that ended before the date', async () => {
       const date = period.range.exclUpper.add(1, 'ms').toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 34,
-        range: StartsAfter(new DateTimeRange(date, date, '[]'))
+        range: StartsAfter(date)
       })
 
       expect(test).toBeNull()
@@ -504,45 +503,45 @@ describe('DateTimeRangeColumn', () => {
       await dataSource.manager.upsert(DateTimeRangeTest, period, { conflictPaths: { id: true } })
     })
 
-    it('does not finds a range that immediately starts after a date', async () => {
+    it('does not find a range that immediately starts after a date', async () => {
       const date = period.range.exclLower.toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 35,
-        range: EndsBefore(new DateTimeRange(date, date, '[]'))
+        range: EndsBefore(date)
       })
 
       expect(test).toBeNull()
     })
 
-    it('does not finds a range that starts after on the date', async () => {
+    it('does not find a range that starts on the date', async () => {
       const date = period.range.inclLower.toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 35,
-        range: EndsBefore(new DateTimeRange(date, date, '[]'))
+        range: EndsBefore(date)
       })
 
       expect(test).toBeNull()
     })
 
-    it('does not finds a range that contains the date', async () => {
+    it('does not find a range that contains the date', async () => {
       const date = period.range.inclLower.add(1, 'second').toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 35,
-        range: EndsBefore(new DateTimeRange(date, date, '[]'))
+        range: EndsBefore(date)
       })
 
       expect(test).toBeNull()
     })
 
-    it('does not finds a range that ends on the date', async () => {
+    it('does not find a range that ends on the date', async () => {
       const date = period.range.exclUpper.subtract(1, 'ms').toDate()
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 35,
-        range: EndsBefore(new DateTimeRange(date, date, '[]'))
+        range: EndsBefore(date)
       })
 
       expect(test).toBeNull()
@@ -553,7 +552,7 @@ describe('DateTimeRangeColumn', () => {
 
       const test = await dataSource.manager.findOneBy(DateTimeRangeTest, {
         id: 35,
-        range: EndsBefore(new DateTimeRange(date, date, '[]'))
+        range: EndsBefore(date)
       })
 
       expect(test).not.toBeNull()

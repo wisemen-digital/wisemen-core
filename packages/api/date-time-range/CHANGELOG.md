@@ -1,5 +1,11 @@
 # @wisemen/date-time-range
 
+## 1.0.23
+
+### Patch Changes
+
+- [#1019](https://github.com/wisemen-digital/wisemen-core/pull/1019) [`46f65c4`](https://github.com/wisemen-digital/wisemen-core/commit/46f65c4a777e18cafd7845d16684f69ccb0022d1) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - rework: `StartsAfter` and `EndsBefore` typeorm operators to work on timestamps / plaindates instead of ranges
+
 ## 1.0.22
 
 ### Patch Changes
