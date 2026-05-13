@@ -12,18 +12,15 @@ import {
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import type { KeyboardShortcutProps } from '@/ui/keyboard-shortcut/keyboardShortcut.props'
 import type {
-  KeyboardShortcut,
   KeyboardShortcutKeyPart,
   KeyboardShortcutPart,
 } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import KeyboardShortcutKey from '@/ui/keyboard-shortcut/KeyboardShortcutKey.vue'
 import { UIRowLayout } from '@/ui/row-layout'
 
-const props = withDefaults(defineProps<{
-  enableKeyHoldVisualization?: boolean
-  keyboardShortcut: KeyboardShortcut
-}>(), {
+const props = withDefaults(defineProps<KeyboardShortcutProps>(), {
   enableKeyHoldVisualization: false,
 })
 

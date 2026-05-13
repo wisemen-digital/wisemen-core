@@ -10,6 +10,7 @@
   "component.avatar_group.overflow": "+{count}",
   "component.command_menu.description": "Type to search for commands. Use arrow keys to navigate, Enter to execute, Escape to close.",
   "component.command_menu.loading_actions": "Loading actions",
+  "component.command_menu.no_results": "No results found for '{query}'",
   "component.command_menu.title": "Command menu",
   "component.dashboard_page_detail_pane_toggle.collapse": "Collapse detail pane",
   "component.dashboard_page_detail_pane_toggle.expand": "Expand detail pane",

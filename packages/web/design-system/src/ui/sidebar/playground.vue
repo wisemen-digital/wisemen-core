@@ -186,17 +186,7 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
           />
         </MainSidebarNavigationGroup>
         <MainSidebarFooterAccountCard
-          :menu-options="[{
-            icon: Settings01Icon,
-            label: 'Account settings',
-            onSelect: () => {},
-          }, {
-            icon: LifeBuoy01Icon,
-            label: 'Support',
-            onSelect: () => {},
-          }]"
           :actions="[]"
-          :on-sign-out="() => {}"
           avatar-url="../../../storybook-assets/profile-picture.jpg"
           name="Jeroen Van Caekenberghe"
           email="jeroen.vancaekenberghe@wisemen.digital"

@@ -2438,6 +2438,9 @@ importers:
       motion-v:
         specifier: catalog:peer
         version: 2.2.1(@vueuse/core@14.1.0(vue@3.5.27(typescript@5.9.3)))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(vue@3.5.27(typescript@5.9.3))
+      pinia:
+        specifier: catalog:vue
+        version: 3.0.4(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
       playwright:
         specifier: catalog:test
         version: 1.57.0
