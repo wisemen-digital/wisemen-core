@@ -3,6 +3,7 @@ import { timestamp } from '../timestamp/index.js'
 import { Timestamp, TimestampInput } from '../timestamp/timestamp.js'
 import { MultiDateTimeRange } from '../multi-date-time-range/multi-date-time-range.js'
 import { InvalidDateTimeRangeBounds, NoDateTimeRangeOverlap } from './date-time-range.errors.js'
+import { Duration } from '@wisemen/quantity'
 
 /**
  * DateTimeRange only works with [) ranges internally, except for infinities
@@ -308,17 +309,36 @@ export class DateTimeRange {
   }
 
   /** Returns a new DateTimeRange with updated end boundary. */
-  setUntil (until: TimestampInput): DateTimeRange {
+  withUntil (until: TimestampInput): DateTimeRange {
     until = timestamp(until)
 
     return new DateTimeRange(this.lower, until)
   }
 
   /** Returns a new DateTimeRange with updated start boundary. */
-  setFrom (from: TimestampInput): DateTimeRange {
+  withFrom (from: TimestampInput): DateTimeRange {
     from = timestamp(from)
 
     return new DateTimeRange(from, this.upper)
+  }
+
+  /** 
+   * Returns a new date time range with both boundaries expanded \
+   *    - from = this.from.subtractDuration(duration)
+   *    - until = this.until.addDuration(duration)
+   */
+  expand(duration: Duration): DateTimeRange
+  /** 
+   * Returns a new date time range with both boundaries expanded \
+   *    - from = this.from.subtractDuration(lower)
+   *    - until = this.until.addDuration(upper)
+   */
+  expand(lower: Duration, upper: Duration): DateTimeRange
+  expand(duration: Duration, upper?: Duration): DateTimeRange {
+    return new DateTimeRange(
+      this.from.subtractDuration(duration),
+      this.until.addDuration(upper ?? duration)
+    )
   }
 
   /** Returns true if this range ends before the other range starts */
@@ -402,9 +422,9 @@ export class DateTimeRange {
   /** Merges two adjacent ranges into one; throws if not adjacent. */
   mergeAdjacent (withOther: DateTimeRange): DateTimeRange {
     if (this.isPrecededBy(withOther)) {
-      return this.setFrom(withOther.lower)
+      return this.withFrom(withOther.lower)
     } else if (this.isSucceededBy(withOther)) {
-      return this.setUntil(withOther.upper)
+      return this.withUntil(withOther.upper)
     } else {
       throw new Error('cannot merge non adjacent date time ranges')
     }

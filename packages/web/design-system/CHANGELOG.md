@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0
+
+### Minor Changes
+
+- [#1002](https://github.com/wisemen-digital/wisemen-core/pull/1002) [`fdc6742`](https://github.com/wisemen-digital/wisemen-core/commit/fdc6742d7d1384353171e1c471402f6dab3f1343) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dropdown menu items with menu items component
+
+- [#1011](https://github.com/wisemen-digital/wisemen-core/pull/1011) [`36f009e`](https://github.com/wisemen-digital/wisemen-core/commit/36f009e8a710eb509122fa73c8e4aa3fcdba91ce) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export context provider
+
 ## 0.10.0
 
 ### Minor Changes

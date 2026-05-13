@@ -1,5 +1,21 @@
 # @wisemen/datewise
 
+## 1.0.0
+
+### Major Changes
+
+- [#1019](https://github.com/wisemen-digital/wisemen-core/pull/1019) [`46f65c4`](https://github.com/wisemen-digital/wisemen-core/commit/46f65c4a777e18cafd7845d16684f69ccb0022d1) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - rework: `StartsAfter` and `EndsBefore` typeorm operators to work on timestamps / plaindates instead of ranges
+
+- [#1014](https://github.com/wisemen-digital/wisemen-core/pull/1014) [`ba4b6c7`](https://github.com/wisemen-digital/wisemen-core/commit/ba4b6c7473388aa828e171e9856277b02f3d0c9a) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add `expanded` on `DateRange` and `DateTimeRange` to symmetrically move both boundaries outwards by a specified duration
+  feat: add `addDuration` and `subtractDuration` on `PlainDate`
+  rework: rename `setFrom` and similar methods to `withFrom` to better indicate the immutability of the instances
+
+## 0.1.19
+
+### Patch Changes
+
+- [#1006](https://github.com/wisemen-digital/wisemen-core/pull/1006) [`c2ea224`](https://github.com/wisemen-digital/wisemen-core/commit/c2ea2242cda60150f6fb0365d0b01d0a50c31369) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: add overload for from factory method on responses
+
 ## 0.1.18
 
 ### Patch Changes

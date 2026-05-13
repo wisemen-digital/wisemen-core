@@ -4,6 +4,7 @@ import { DateTimeRange } from './date-time-range.js'
 export class DateTimeRangeResponse {
   static from (range: DateTimeRange): DateTimeRangeResponse
   static from (range: null): | null
+  static from (range: DateTimeRange | null): DateTimeRangeResponse | null 
   static from (range: DateTimeRange | null): DateTimeRangeResponse | null {
     return range !== null ? new DateTimeRangeResponse(range) : null
   }

@@ -45,11 +45,21 @@ export interface MenuItemDotConfig {
   color?: DotColor
 }
 
+export interface MenuItemBreadcrumb {
+  icon?: Component
+  label: string
+}
+
 export interface MenuItemConfig {
   /**
    * Avatar displayed to the left of the label. Cannot be used together with `icon` or `dot`.
    */
   avatar?: MenuItemAvatarConfig | null
+  /**
+   * Breadcrumb path shown in the right area of the menu item.
+   * Each entry is rendered with an icon and label, separated by a chevron.
+   */
+  breadcrumbs?: MenuItemBreadcrumb[] | null
   /**
    * Secondary line of text shown below the label.
    */
