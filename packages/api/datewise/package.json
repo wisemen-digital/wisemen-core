@@ -8,7 +8,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "imports": {
-    "#src/*.js": "./dist/*.js"
+    "#src/*": "./dist/*"
   },
   "files": [
     "dist/"

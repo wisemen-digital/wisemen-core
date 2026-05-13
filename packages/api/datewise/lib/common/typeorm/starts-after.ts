@@ -13,20 +13,20 @@ import { Timestamp } from '#src/timestamp/timestamp.js'
 export function StartsAfter (date: PlainDate): FindOperator<DateRange>
 export function StartsAfter (ts: Timestamp | Date): FindOperator<DateTimeRange>
 export function StartsAfter (
-  timestamp: PlainDate | Timestamp | Date
+  value: PlainDate | Timestamp | Date
 ): FindOperator<DateRange> | FindOperator<DateTimeRange> {
   let range: DateTimeRange | DateRange
-  if(isPlainDate(timestamp)) {
-    range = new DateRange(timestamp, timestamp)
-  } else if (isTimestamp(timestamp) || timestamp instanceof Date) {
-    range = new DateTimeRange(timestamp, timestamp, '[]')
+  if(isPlainDate(value)) {
+    range = new DateRange(value, value)
+  } else if (isTimestamp(value) || value instanceof Date) {
+    range = new DateTimeRange(value, value, '[]')
   } else {
     throw new Error('invalid argument, expected plain date, timestamp or date')
   }
 
 
   const paramName = randomUUID().replaceAll('-', '')
-  
+
   let cast: string 
   if(range instanceof DateRange) {
     cast = 'daterange'
