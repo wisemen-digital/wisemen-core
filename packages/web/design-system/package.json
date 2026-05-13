@@ -63,7 +63,8 @@
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*"
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PlainDateRange } from '@wisemen/vue-core-dates'
 import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerRoot as RekaDateRangePickerRoot,
@@ -10,10 +11,7 @@ import { useProvideDateRangeFieldContext } from '@/ui/date-range-field/dateRange
 import DateRangeFieldCalendarGrid from '@/ui/date-range-field/DateRangeFieldCalendarGrid.vue'
 import DateRangeFieldCalendarHeader from '@/ui/date-range-field/DateRangeFieldCalendarHeader.vue'
 import DateRangeFieldPresets from '@/ui/date-range-field/DateRangeFieldPresets.vue'
-import type {
-  DateRangePickerProps,
-  DateRangePickerRange,
-} from '@/ui/date-range-picker/dateRangePicker.props'
+import type { DateRangePickerProps } from '@/ui/date-range-picker/dateRangePicker.props'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 import { getWeekStartsOn } from '@/utils/weekStartsOn.util'
 
@@ -27,7 +25,7 @@ const props = withDefaults(defineProps<DateRangePickerProps>(), {
   showPresets: true,
 })
 
-const modelValue = defineModel<DateRangePickerRange | null>({
+const modelValue = defineModel<PlainDateRange>({
   required: true,
 })
 
