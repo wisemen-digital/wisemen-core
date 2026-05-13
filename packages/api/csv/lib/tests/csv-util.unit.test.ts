@@ -95,7 +95,7 @@ describe('CSV util', () => {
       let rawText = ''
 
       for await (const chunk of stream) {
-        rawText += chunk.toString()
+        rawText += String(chunk)
       }
 
       expect(rawText).toBe(`name;age\nJohn Doe;30\nJane Doe;25\n`)
@@ -111,7 +111,7 @@ describe('CSV util', () => {
       let rawText = ''
 
       for await (const chunk of stream) {
-        rawText += chunk.toString()
+        rawText += String(chunk)
       }
 
       expect(rawText).toBe(`name,age\nJohn Doe,30\nJane Doe,25\n`)
