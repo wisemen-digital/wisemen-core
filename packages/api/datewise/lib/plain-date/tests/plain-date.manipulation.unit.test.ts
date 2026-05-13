@@ -1,6 +1,7 @@
 import { before, describe, it } from 'node:test'
 import { expect } from 'expect'
 import dayjs from 'dayjs'
+import { Duration, DurationUnit } from '@wisemen/quantity'
 import { Month } from '../../common/month.js'
 import { FutureInfinityDate } from '../future-infinity-date.js'
 import { PastInfinityDate } from '../past-infinity-date.js'
@@ -25,6 +26,20 @@ describe('PlainDate manipulation', () => {
       expect(new FutureInfinityDate().subtract(1, 'year').isSame(new FutureInfinityDate())).toBe(true)
       expect(new FutureInfinityDate().subtract(1, 'month').isSame(new FutureInfinityDate())).toBe(true)
     })
+
+    it('Future infinity remains infinity when adding a duration', () => {
+      const date = new FutureInfinityDate()
+
+      expect(date.addDuration(new Duration(1, DurationUnit.DAYS)).isSame(date)).toBe(true)
+      expect(date.addDuration(new Duration(7, DurationUnit.DAYS)).isSame(date)).toBe(true)
+    })
+
+    it('Future infinity remains infinity when subtracting a duration', () => {
+      const date = new FutureInfinityDate()
+
+      expect(date.subtractDuration(new Duration(1, DurationUnit.DAYS)).isSame(date)).toBe(true)
+      expect(date.subtractDuration(new Duration(7, DurationUnit.DAYS)).isSame(date)).toBe(true)
+    })
   })
 
   describe('Past infinity', () => {
@@ -40,6 +55,20 @@ describe('PlainDate manipulation', () => {
       expect(new PastInfinityDate().subtract(1, 'week').isSame(new PastInfinityDate())).toBe(true)
       expect(new PastInfinityDate().subtract(1, 'year').isSame(new PastInfinityDate())).toBe(true)
       expect(new PastInfinityDate().subtract(1, 'month').isSame(new PastInfinityDate())).toBe(true)
+    })
+
+    it('Past infinity remains infinity when adding a duration', () => {
+      const date = new PastInfinityDate()
+
+      expect(date.addDuration(new Duration(1, DurationUnit.DAYS)).isSame(date)).toBe(true)
+      expect(date.addDuration(new Duration(7, DurationUnit.DAYS)).isSame(date)).toBe(true)
+    })
+
+    it('Past infinity remains infinity when subtracting a duration', () => {
+      const date = new PastInfinityDate()
+
+      expect(date.subtractDuration(new Duration(1, DurationUnit.DAYS)).isSame(date)).toBe(true)
+      expect(date.subtractDuration(new Duration(7, DurationUnit.DAYS)).isSame(date)).toBe(true)
     })
   })
 
@@ -106,6 +135,50 @@ describe('PlainDate manipulation', () => {
       expect(new DayjsPlainDate().add(1, 'year').isSame(new DayjsPlainDate(dayjs().add(1, 'year')))).toBe(true)
       expect(new DayjsPlainDate().add(1, 'year').year()).not.toBe(new DayjsPlainDate().year())
       expect(new DayjsPlainDate('2024-01-01').add(1, 'year').isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
+    it('addDuration adds whole days only', () => {
+      const oneDayLater = new DayjsPlainDate('2024-01-01').addDuration(new Duration(1, DurationUnit.DAYS))
+      const sevenDaysLater = new DayjsPlainDate('2024-01-01').addDuration(new Duration(7, DurationUnit.DAYS))
+      const overMonth = new DayjsPlainDate('2024-01-31').addDuration(new Duration(1, DurationUnit.DAYS))
+
+      expect(oneDayLater.isSame(new DayjsPlainDate('2024-01-02'))).toBe(true)
+      expect(sevenDaysLater.isSame(new DayjsPlainDate('2024-01-08'))).toBe(true)
+      expect(overMonth.isSame(new DayjsPlainDate('2024-02-01'))).toBe(true)
+    })
+
+    it('addDuration with sub-day duration does not change the date', () => {
+      const result = new DayjsPlainDate('2024-01-01').addDuration(new Duration(0.5, DurationUnit.DAYS))
+
+      expect(result.isSame(new DayjsPlainDate('2024-01-01'))).toBe(true)
+    })
+
+    it('addDuration with fractional days truncates to whole days', () => {
+      const result = new DayjsPlainDate('2024-01-01').addDuration(new Duration(1.4, DurationUnit.DAYS))
+
+      expect(result.isSame(new DayjsPlainDate('2024-01-02'))).toBe(true)
+    })
+
+    it('subtractDuration subtracts whole days only', () => {
+      const oneDayBefore = new DayjsPlainDate('2024-01-08').subtractDuration(new Duration(1, DurationUnit.DAYS))
+      const sevenDaysBefore = new DayjsPlainDate('2024-01-08').subtractDuration(new Duration(7, DurationUnit.DAYS))
+      const overMonth = new DayjsPlainDate('2024-02-01').subtractDuration(new Duration(1, DurationUnit.DAYS))
+
+      expect(oneDayBefore.isSame(new DayjsPlainDate('2024-01-07'))).toBe(true)
+      expect(sevenDaysBefore.isSame(new DayjsPlainDate('2024-01-01'))).toBe(true)
+      expect(overMonth.isSame(new DayjsPlainDate('2024-01-31'))).toBe(true)
+    })
+
+    it('subtractDuration with sub-day duration does not change the date', () => {
+      const result = new DayjsPlainDate('2024-01-01').subtractDuration(new Duration(0.5, DurationUnit.DAYS))
+
+      expect(result.isSame(new DayjsPlainDate('2024-01-01'))).toBe(true)
+    })
+
+    it('subtractDuration with fractional days truncates to whole days', () => {
+      const result = new DayjsPlainDate('2024-01-08').subtractDuration(new Duration(1.4, DurationUnit.DAYS))
+
+      expect(result.isSame(new DayjsPlainDate('2024-01-07'))).toBe(true)
     })
   })
 })
