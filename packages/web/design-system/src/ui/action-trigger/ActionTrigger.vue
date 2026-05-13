@@ -48,9 +48,12 @@ async function onClick(): Promise<void> {
 
   isExecuting.value = true
 
-  await manager.executeAction(props.action, context.value)
-
-  isExecuting.value = false
+  try {
+    await manager.executeAction(props.action, context.value)
+  }
+  finally {
+    isExecuting.value = false
+  }
 }
 
 const label = computed<string>(() => resolveActionName(props.action, context.value))
