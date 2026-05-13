@@ -13,7 +13,6 @@ import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import { UISeparator } from '@/ui/separator/index'
 
 const props = withDefaults(defineProps<DialogHeaderProps>(), {
-  description: null,
   icon: null,
   iconVariant: 'brand',
   showCloseButton: true,
@@ -88,7 +87,9 @@ const dialogContext = useInjectDialogContext(null)
         </RekaDialogTitle>
 
         <RekaDialogDescription
-          v-if="props.description !== null"
+          :class="{
+            'sr-only': props.hideDescription,
+          }"
           as="p"
           class="text-xs text-tertiary"
         >

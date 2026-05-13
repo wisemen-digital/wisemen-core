@@ -2,8 +2,9 @@ packages:
   - docs
   - "packages/**/*"
 catalog:
-  '@tanstack/vue-hotkeys': ^0.10.0
-  '@wisemen/eslint-config-nestjs': ^1.1.1
+  "@tanstack/vue-hotkeys": ^0.10.0
+  "@wisemen/eslint-config-nestjs": ^1.1.1
+  superjson: "2.2.6"
 
 catalogs:
   backend:
@@ -295,6 +296,7 @@ catalogs:
     "motion-v": "2.2.1"
     "pinia": "3.0.4"
     "reka-ui": "2.9.7"
+    "superjson": "2.2.6"
     "vue": "3.5.27"
     "vue-i18n": "11.2.8"
     vue-query: ^0.0.0
@@ -302,5 +304,5 @@ catalogs:
     "vue-sonner": "2.0.9"
     "vue-tsc": "3.2.2"
   wisemen:
-    "@wisemen/vue-core-icons": "0.0.2"
     "@wisemen/vue-core-design-system": "0.10.0"
+    "@wisemen/vue-core-icons": "0.0.2"

@@ -2,7 +2,10 @@ import { tv } from '@/styles/tailwindVariants.lib'
 
 export const createSeparatorStyle = tv({
   slots: {
-    separator: `bg-tertiary`,
+    separator: `
+      shrink-0 bg-quaternary
+      dark:bg-tertiary
+    `,
   },
   variants: {
     orientation: {
