@@ -201,6 +201,7 @@ const tabsModelValue = ref<string>('tab1')
               label: 'Support',
               onSelect: () => {},
             }]"
+            :actions="[]"
             avatar-url="../../../storybook-assets/profile-picture.jpg"
             name="Jane Doe"
             email="jane.doe@example.com"

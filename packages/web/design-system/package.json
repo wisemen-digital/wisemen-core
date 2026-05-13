@@ -63,7 +63,8 @@
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*"
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",
@@ -90,6 +91,8 @@
     "@vitest/coverage-v8": "catalog:test",
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",
@@ -104,7 +107,6 @@
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "vue-tsc": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*"
+    "vue-tsc": "catalog:vue"
   }
 }
