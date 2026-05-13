@@ -11,7 +11,6 @@ import type { ButtonStyle } from '@/ui/button/button/button.style'
 import { createButtonStyle } from '@/ui/button/button/button.style'
 import ButtonIcon from '@/ui/button/button/ButtonIcon.vue'
 import Loader from '@/ui/loader/Loader.vue'
-import { UIRowLayout } from '@/ui/row-layout/index'
 
 defineOptions({
   inheritAttrs: false,
@@ -110,10 +109,8 @@ useProvideButtonContext({
           :class="buttonStyle.loader()"
         />
 
-        <UIRowLayout
+        <div
           :class="buttonStyle.rowLayout()"
-          gap="sm"
-          justify="center"
         >
           <slot name="left" />
 
@@ -137,7 +134,7 @@ useProvideButtonContext({
             :size="props.size"
             :variant="props.variant"
           />
-        </UIRowLayout>
+        </div>
       </div>
     </button>
   </ActionTooltip>

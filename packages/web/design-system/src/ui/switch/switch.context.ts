@@ -1,13 +1,9 @@
 import type {
   Component,
   ComputedRef,
-  InjectionKey,
-} from 'vue'
-import {
-  inject,
-  provide,
 } from 'vue'
 
+import { useContext } from '@/composables/context.composable'
 import type { SwitchStyle } from '@/ui/switch/switch.style'
 
 interface SwitchContext {
@@ -17,18 +13,7 @@ interface SwitchContext {
   switchStyle: ComputedRef<SwitchStyle>
 }
 
-export const switchContextKey: InjectionKey<SwitchContext> = Symbol('SwitchContextKey')
-
-export function useProvideSwitchContext(context: SwitchContext): void {
-  provide(switchContextKey, context)
-}
-
-export function useInjectSwitchContext(): SwitchContext {
-  const context = inject(switchContextKey, null)
-
-  if (context === null) {
-    throw new Error('SwitchContext not provided')
-  }
-
-  return context
-}
+export const [
+  useProvideSwitchContext,
+  useInjectSwitchContext,
+] = useContext<SwitchContext>('switchContext')
