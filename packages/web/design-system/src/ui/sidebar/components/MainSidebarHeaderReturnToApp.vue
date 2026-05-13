@@ -8,6 +8,7 @@ import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
+import MainSidebarHeaderContainer from '@/ui/sidebar/components/MainSidebarHeaderContainer.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
 const props = defineProps<{
@@ -22,65 +23,65 @@ const {
   collapsedVariant,
   sidebarIconCellSize,
   sidebarIconSize,
-  sidebarLogoHeight,
 } = useMainSidebar()
 
 const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
 </script>
 
 <template>
-  <RowLayout
-    :style="{ height: sidebarLogoHeight }"
-    class="mt-px w-fit"
-  >
-    <ActionTooltip
-      :keyboard-shortcut="{
-        key: 'Backspace',
-        meta: true,
-      }"
-      :label="i18n.t('components.sidebar.return_to_app')"
+  <MainSidebarHeaderContainer>
+    <RowLayout
+      class="w-fit"
     >
-      <ClickableElement>
-        <RouterLink
-          :to="props.to"
-          :style="{
-            height: sidebarIconCellSize,
-            gridTemplateColumns,
-          }"
-          :aria-label="i18n.t('components.sidebar.return_to_app')"
-          class="
-            grid w-full rounded-md duration-100
-            hover:bg-secondary-hover
-          "
-          @click="closeIfFloatingSidebar()"
-        >
-          <RowLayout
+      <ActionTooltip
+        :keyboard-shortcut="{
+          key: 'Backspace',
+          meta: true,
+        }"
+        :label="i18n.t('components.sidebar.return_to_app')"
+      >
+        <ClickableElement>
+          <RouterLink
+            :to="props.to"
             :style="{
-              width: sidebarIconCellSize,
               height: sidebarIconCellSize,
+              gridTemplateColumns,
             }"
-            align="center"
-            justify="center"
+            :aria-label="i18n.t('components.sidebar.return_to_app')"
+            class="
+              grid w-full rounded-md duration-100
+              hover:bg-secondary-hover
+            "
+            @click="closeIfFloatingSidebar()"
           >
-            <ChevronLeftIcon
-              :style="{
-                width: sidebarIconSize,
-                height: sidebarIconSize,
-              }"
-              class="shrink-0 text-fg-quaternary"
-            />
-          </RowLayout>
-          <MainSidebarFadeTransition>
             <RowLayout
-              v-if="collapsedVariant !== 'minified' || isSidebarOpen"
+              :style="{
+                width: sidebarIconCellSize,
+                height: sidebarIconCellSize,
+              }"
               align="center"
-              class="overflow-hidden pr-md"
+              justify="center"
             >
-              <span class="truncate text-xs font-medium text-secondary">{{ i18n.t('components.sidebar.return_to_app') }}</span>
+              <ChevronLeftIcon
+                :style="{
+                  width: sidebarIconSize,
+                  height: sidebarIconSize,
+                }"
+                class="shrink-0 text-fg-quaternary"
+              />
             </RowLayout>
-          </MainSidebarFadeTransition>
-        </RouterLink>
-      </ClickableElement>
-    </ActionTooltip>
-  </RowLayout>
+            <MainSidebarFadeTransition>
+              <RowLayout
+                v-if="collapsedVariant !== 'minified' || isSidebarOpen"
+                align="center"
+                class="overflow-hidden pr-md"
+              >
+                <span class="truncate text-xs font-medium text-secondary">{{ i18n.t('components.sidebar.return_to_app') }}</span>
+              </RowLayout>
+            </MainSidebarFadeTransition>
+          </RouterLink>
+        </ClickableElement>
+      </ActionTooltip>
+    </RowLayout>
+  </MainSidebarHeaderContainer>
 </template>

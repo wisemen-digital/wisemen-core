@@ -36,6 +36,7 @@ import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFoo
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
 import MainSidebarGlobalSearch from '@/ui/sidebar/components/MainSidebarGlobalSearch.vue'
 import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHeaderLogoWithText.vue'
+import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHeaderReturnToApp.vue'
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
@@ -150,7 +151,12 @@ const tabsModelValue = ref<string>('tab1')
         collapsed-variant="minified"
       >
         <template #header>
+          <MainSidebarHeaderReturnToApp
+            v-if="false"
+            to="/"
+          />
           <MainSidebarHeaderLogoWithText
+            v-if="true"
             url="../../../storybook-assets/wisemen-logo.png"
             name="Wisemen"
           >
