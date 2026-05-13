@@ -106,7 +106,7 @@
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
-    "vue": "catalog:peer",
+    "vue": "catalog:vue",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
     "vue-tsc": "catalog:vue"
