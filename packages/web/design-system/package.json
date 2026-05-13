@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.10.0",
+  "version": "0.12.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -106,6 +106,7 @@
     "vue": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "vue-tsc": "catalog:vue"
+    "vue-tsc": "catalog:vue",
+    "@wisemen/vue-core-actions": "workspace:*"
   }
 }

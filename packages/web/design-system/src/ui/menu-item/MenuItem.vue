@@ -1,133 +1,118 @@
 <script setup lang="ts">
-import { ChevronRightIcon } from '@wisemen/vue-core-icons'
 import {
   computed,
   useSlots,
 } from 'vue'
 
-import { UIAvatar } from '@/ui/avatar'
 import { UIColumnLayout } from '@/ui/column-layout'
-import { UIDot } from '@/ui/dot'
-import KeyboardShortcut from '@/ui/keyboard-shortcut/KeyboardShortcut.vue'
 import type { MenuItemProps } from '@/ui/menu-item/menuItem.props'
 import type { MenuItemStyle } from '@/ui/menu-item/menuItem.style'
 import { createMenuItemStyle } from '@/ui/menu-item/menuItem.style'
+import MenuItemLeftAvatar from '@/ui/menu-item/MenuItemLeftAvatar.vue'
+import MenuItemLeftBreadcrumbs from '@/ui/menu-item/MenuItemLeftBreadcrumbs.vue'
+import MenuItemLeftDot from '@/ui/menu-item/MenuItemLeftDot.vue'
+import MenuItemLeftIcon from '@/ui/menu-item/MenuItemLeftIcon.vue'
+import MenuItemLeftImage from '@/ui/menu-item/MenuItemLeftImage.vue'
+import MenuItemRightIcon from '@/ui/menu-item/MenuItemRightIcon.vue'
+import MenuItemRightIconText from '@/ui/menu-item/MenuItemRightIconText.vue'
+import MenuItemRightShortcut from '@/ui/menu-item/MenuItemRightShortcut.vue'
+import MenuItemRightText from '@/ui/menu-item/MenuItemRightText.vue'
 import { UIRowLayout } from '@/ui/row-layout'
 import { UIText } from '@/ui/text'
 
 const props = withDefaults(defineProps<MenuItemProps>(), {
+  isDisabled: false,
   config: null,
-  label: null,
   size: 'md',
 })
 
 const slots = useSlots()
 
-const resolvedLabel = computed<string | null>(() => props.config?.label ?? props.label ?? null)
-
-const hasLeftContent = computed<boolean>(() =>
-  props.config?.avatar != null
-  || props.config?.image != null
-  || props.config?.icon != null
-  || props.config?.dot != null)
+const hasLeftContent = computed<boolean>(() => props.config?.left != null)
 
 const hasRightContent = computed<boolean>(() =>
   props.config?.right != null || slots.right != null)
 
+const hasBlockDescription = computed<boolean>(() =>
+  props.config?.description?.layout === 'block')
+
 const style = computed<MenuItemStyle>(() => createMenuItemStyle({
   hasLeftContent: hasLeftContent.value,
   hasRightContent: hasRightContent.value,
+  isDisabled: props.isDisabled,
   size: props.size,
 }))
 </script>
 
 <template>
   <UIRowLayout
+    v-if="props.config === null"
     :class="style.base()"
-    justify="between"
   >
+    <UIText
+      :text="props.label"
+      :class="{
+        'text-xs': props.size === 'sm',
+        'text-sm': props.size === 'md',
+      }"
+      class="shrink-0 text-secondary select-none"
+    />
+  </UIRowLayout>
+
+  <UIRowLayout
+    v-else
+    :class="[
+      style.base(),
+      hasBlockDescription && 'py-xs',
+    ]"
+    :gap="props.size === 'md' ? 'sm' : 'xs'"
+  >
+    <template v-if="props.config.left != null">
+      <MenuItemLeftAvatar
+        v-if="props.config.left.type === 'avatar'"
+        :left="props.config.left"
+        :has-block-description="hasBlockDescription"
+      />
+      <MenuItemLeftImage
+        v-else-if="props.config.left.type === 'image'"
+        :left="props.config.left"
+        :alt="props.label"
+        :size="props.size"
+        :has-block-description="hasBlockDescription"
+      />
+      <MenuItemLeftIcon
+        v-else-if="props.config.left.type === 'icon'"
+        :left="props.config.left"
+        :size="props.size"
+        :has-block-description="hasBlockDescription"
+      />
+      <MenuItemLeftDot
+        v-else-if="props.config.left.type === 'dot'"
+        :left="props.config.left"
+        :size="props.size"
+        :has-block-description="hasBlockDescription"
+      />
+      <MenuItemLeftBreadcrumbs
+        v-else-if="props.config.left.type === 'breadcrumbs'"
+        :left="props.config.left"
+      />
+    </template>
     <UIRowLayout
-      :class="props.config?.descriptionLayout === 'inline' && props.config.description != null
+      :class="props.config.description?.layout === 'inline' && props.config.description != null
         ? 'min-w-0 overflow-hidden'
         : 'shrink-0'"
       align="center"
       gap="sm"
-      class="max-w-full"
+      class="flex-1"
     >
-      <UIAvatar
-        v-if="props.config?.avatar != null"
-        :name="props.config.avatar.name"
-        :src="props.config.avatar.src"
-        :image-alt="props.config.avatar.imageAlt"
-        :size="props.config.description !== null && props.config.descriptionLayout !== 'inline' ? 'sm' : 'xs'"
-      />
-
-      <div
-        v-else-if="props.config?.image != null"
-        :class="style.iconWrapper()"
-      >
-        <img
-          :alt="props.label ?? ''"
-          :src="props.config.image.src"
-          :class="{
-            'w-3.5': props.config.image.aspect === undefined || props.config.image.aspect === 'square',
-            'h-3.5 w-5': props.config.image.aspect === 'rectangle',
-          }"
-          class="rounded-xxs object-contain"
-        >
-      </div>
-
-      <div
-        v-else-if="props.config?.icon != null"
-        :class="style.iconWrapper()"
-      >
-        <Component
-          :is="props.config.icon"
-          class="size-3.5 text-tertiary"
-        />
-      </div>
-
-      <div
-        v-else-if="props.config?.dot != null"
-        :class="style.dotWrapper()"
-      >
-        <UIDot :color="props.config.dot.color ?? 'gray'" />
-      </div>
-
       <UIRowLayout
-        v-if="props.config?.breadcrumbs != null && props.config.breadcrumbs.length > 0"
-        gap="xs"
-        class="flex max-w-full overflow-hidden whitespace-nowrap"
-      >
-        <template
-          v-for="(breadcrumb, index) in props.config.breadcrumbs"
-          :key="index"
-        >
-          <Component
-            :is="breadcrumb.icon"
-            v-if="breadcrumb.icon !== undefined"
-            class="size-3 shrink-0 text-disabled"
-          />
-          <UIText
-            :text="breadcrumb.label"
-            class="text-sm text-disabled select-none"
-          />
-          <ChevronRightIcon
-            v-if="index < props.config.breadcrumbs.length - 1"
-            class="size-3 shrink-0 text-disabled"
-          />
-        </template>
-      </UIRowLayout>
-
-      <UIRowLayout
-        v-if="props.config?.descriptionLayout === 'inline' && props.config.description != null"
+        v-if="props.config?.description?.layout === 'inline' && props.config.description != null"
         align="baseline"
         gap="xs"
         class="min-w-0 overflow-hidden"
       >
         <UIText
-          v-if="resolvedLabel !== null"
-          :text="resolvedLabel"
+          :text="props.label"
           :class="{
             'text-xs': props.size === 'sm',
             'text-sm': props.size === 'md',
@@ -135,8 +120,8 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
           class="shrink-0 text-secondary select-none"
         />
         <UIText
-          :text="props.config.description"
-          class="min-w-0 text-xs text-disabled select-none"
+          :text="props.config.description.value"
+          class="min-w-0 truncate text-xs text-disabled select-none"
         />
       </UIRowLayout>
 
@@ -145,8 +130,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         gap="none"
       >
         <UIText
-          v-if="resolvedLabel !== null"
-          :text="resolvedLabel"
+          :text="props.label"
           :class="{
             'text-xs': props.size === 'sm',
             'text-sm': props.size === 'md',
@@ -156,7 +140,8 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
 
         <UIText
           v-if="props.config?.description != null"
-          :text="props.config.description"
+          :text="props.config.description.value"
+          :truncate="2"
           class="text-xs text-disabled select-none"
         />
       </UIColumnLayout>
@@ -167,34 +152,24 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
       gap="sm"
       class="min-w-0"
     >
-      <UIText
-        v-if="props.config?.right?.type === 'text'"
-        :text="props.config.right.text"
-        class="min-w-0 text-xs text-disabled select-none"
-      />
-
-      <template v-else-if="props.config?.right?.type === 'icon-text'">
-        <Component
-          :is="props.config.right.icon"
-          class="size-3.5 shrink-0 text-disabled"
+      <template v-if="props.config.right != null">
+        <MenuItemRightText
+          v-if="props.config.right.type === 'text'"
+          :right="props.config.right"
         />
-        <UIText
-          :text="props.config.right.text"
-          class="min-w-0 text-xs text-disabled select-none"
+        <MenuItemRightIconText
+          v-else-if="props.config.right.type === 'icon-text'"
+          :right="props.config.right"
+        />
+        <MenuItemRightIcon
+          v-else-if="props.config.right.type === 'icon'"
+          :right="props.config.right"
+        />
+        <MenuItemRightShortcut
+          v-else-if="props.config.right.type === 'shortcut'"
+          :right="props.config.right"
         />
       </template>
-
-      <Component
-        :is="props.config.right.icon"
-        v-else-if="props.config?.right?.type === 'icon'"
-        class="size-3.5 text-disabled"
-      />
-
-      <KeyboardShortcut
-        v-else-if="props.config?.right?.type === 'shortcut'"
-        :keyboard-shortcut="props.config.right.keyboardShortcut"
-      />
-
       <slot name="right" />
     </UIRowLayout>
   </UIRowLayout>

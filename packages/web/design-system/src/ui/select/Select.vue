@@ -89,18 +89,18 @@ const selectedBadges = computed<BadgeData[]>(() => {
     const config = props.getItemConfig?.(v as NonNullable<GetValue<TValue>>) ?? null
 
     return {
-      avatar: config?.avatar != null
+      avatar: config?.left?.type === 'avatar'
         ? {
-            name: config.avatar.name,
-            src: config.avatar.src ?? null,
+            name: config.left.name,
+            src: config.left.src ?? null,
           }
         : null,
-      dot: config?.dot != null
+      dot: config?.left?.type === 'dot'
         ? {
-            color: config.dot.color ?? 'gray',
+            color: config.left.color ?? 'gray',
           }
         : null,
-      icon: config?.icon ?? null,
+      icon: config?.left?.type === 'icon' ? config.left.icon : null,
       label: props.displayFn(v as NonNullable<GetValue<TValue>>),
     }
   })
@@ -179,22 +179,22 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
             align="center"
           >
             <UIAvatar
-              v-if="selectedOptionConfig?.avatar != null"
-              :name="selectedOptionConfig.avatar.name"
-              :src="selectedOptionConfig.avatar.src"
-              :image-alt="selectedOptionConfig.avatar.imageAlt"
+              v-if="selectedOptionConfig?.left?.type === 'avatar'"
+              :name="selectedOptionConfig.left.name"
+              :src="selectedOptionConfig.left.src"
+              :image-alt="selectedOptionConfig.left.imageAlt"
               size="xxs"
             />
 
             <Component
-              :is="selectedOptionConfig.icon"
-              v-else-if="selectedOptionConfig?.icon != null"
+              :is="selectedOptionConfig.left.icon"
+              v-else-if="selectedOptionConfig?.left?.type === 'icon'"
               class="size-3.5 shrink-0 text-tertiary"
             />
 
             <UIDot
-              v-else-if="selectedOptionConfig?.dot != null"
-              :color="selectedOptionConfig.dot.color"
+              v-else-if="selectedOptionConfig?.left?.type === 'dot'"
+              :color="selectedOptionConfig.left.color"
             />
 
             <UIText

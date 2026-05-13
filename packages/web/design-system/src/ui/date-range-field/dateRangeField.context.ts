@@ -1,14 +1,9 @@
 import type { CalendarDate } from '@internationalized/date'
 import type { PlainDate } from '@wisemen/vue-core-dates'
 import type { DateRange } from 'reka-ui'
-import type {
-  InjectionKey,
-  Ref,
-} from 'vue'
-import {
-  inject,
-  provide,
-} from 'vue'
+import type { Ref } from 'vue'
+
+import { useContext } from '@/composables/context.composable'
 
 interface DateRangeFieldContext {
   isInvalidRange: Ref<boolean>
@@ -22,18 +17,7 @@ interface DateRangeFieldContext {
   onCancel: () => void
 }
 
-export const dateRangeFieldContextKey: InjectionKey<DateRangeFieldContext> = Symbol('DateRangeFieldContextKey')
-
-export function useProvideDateRangeFieldContext(context: DateRangeFieldContext): void {
-  provide(dateRangeFieldContextKey, context)
-}
-
-export function useInjectDateRangeFieldContext(): DateRangeFieldContext {
-  const context = inject(dateRangeFieldContextKey, null)
-
-  if (context === null) {
-    throw new Error('DateRangeFieldContext not provided')
-  }
-
-  return context
-}
+export const [
+  useProvideDateRangeFieldContext,
+  useInjectDateRangeFieldContext,
+] = useContext<DateRangeFieldContext>('dateRangeFieldContext')

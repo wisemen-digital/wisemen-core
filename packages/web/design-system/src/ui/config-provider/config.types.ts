@@ -1,7 +1,7 @@
 import type { HourCycle } from '@/types/hourCycle.type'
 import type { NumberFormat } from '@/types/numberFormat.type'
-import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete'
-import type { ToastAutoClose } from '@/ui/toast'
+import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete/addressAutocomplete.type'
+import type { ToastAutoClose } from '@/ui/toast/toast.type'
 
 export interface ConfigProviderProps {
   /**

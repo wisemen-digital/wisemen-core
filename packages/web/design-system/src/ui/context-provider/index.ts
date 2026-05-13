@@ -1,1 +1,1 @@
-export { default as ContextProvider } from './ContextProvider.vue'
+export { default as UIContextProvider } from './ContextProvider.vue'
