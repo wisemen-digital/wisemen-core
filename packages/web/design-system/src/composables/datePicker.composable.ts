@@ -1,4 +1,5 @@
 import { CalendarDate } from '@internationalized/date'
+import type { PlainDate } from '@wisemen/vue-core-dates'
 import type { DateValue } from 'reka-ui'
 import { Temporal } from 'temporal-polyfill'
 import type { Ref } from 'vue'
@@ -10,9 +11,9 @@ import {
 import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 
 interface UseDatePickerOptions {
-  maxDate: Ref<Temporal.PlainDate | null>
-  minDate: Ref<Temporal.PlainDate | null>
-  modelValue: Ref<Temporal.PlainDate | null>
+  maxDate: Ref<PlainDate | null>
+  minDate: Ref<PlainDate | null>
+  modelValue: Ref<PlainDate | null>
 }
 
 export function useDatePicker({
@@ -35,11 +36,11 @@ export function useDatePicker({
     calendarPlaceholder.value = date
   }
 
-  function plainDateToCalendarDate(date: Temporal.PlainDate): CalendarDate {
+  function plainDateToCalendarDate(date: PlainDate): CalendarDate {
     return new CalendarDate(date.year, date.month, date.day)
   }
 
-  function calendarDateToPlainDate(date: DateValue): Temporal.PlainDate {
+  function calendarDateToPlainDate(date: DateValue): PlainDate {
     return Temporal.PlainDate.from({
       day: date.day,
       month: date.month,

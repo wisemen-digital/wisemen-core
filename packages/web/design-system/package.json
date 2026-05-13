@@ -60,10 +60,12 @@
     "reka-ui": "catalog:peer",
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
+    "pinia": "catalog:vue",
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*"
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",
@@ -90,21 +92,23 @@
     "@vitest/coverage-v8": "catalog:test",
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
+    "pinia": "catalog:vue",
     "playwright": "catalog:test",
     "reka-ui": "catalog:vue",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
-    "vue": "catalog:peer",
+    "vue": "catalog:vue",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "vue-tsc": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*"
+    "vue-tsc": "catalog:vue"
   }
 }

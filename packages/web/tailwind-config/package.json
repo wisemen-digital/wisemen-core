@@ -1,0 +1,32 @@
+{
+  "name": "@wisemen/vue-core-tailwind-config",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/tailwind-config"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/styles/index.css"
+  },
+  "style": "./src/styles/index.css",
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "tailwindcss": ">=4.0.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "catalog:fonts"
+  },
+  "devDependencies": {
+    "tailwindcss": "catalog:style"
+  }
+}

@@ -1,6 +1,10 @@
 import type { DateValue } from '@internationalized/date'
 import { CalendarDate } from '@internationalized/date'
 import { useBreakpoints } from '@vueuse/core'
+import type {
+  PlainDate,
+  PlainDateRange,
+} from '@wisemen/vue-core-dates'
 import type { DateRange } from 'reka-ui'
 import { Temporal } from 'temporal-polyfill'
 import type { Ref } from 'vue'
@@ -11,15 +15,10 @@ import {
   watch,
 } from 'vue'
 
-export interface DateRangeValue {
-  end: Temporal.PlainDate | null
-  start: Temporal.PlainDate | null
-}
-
 interface UseDateRangePickerOptions {
-  maxDate: Ref<Temporal.PlainDate | null>
-  minDate: Ref<Temporal.PlainDate | null>
-  modelValue: Ref<DateRangeValue | null>
+  maxDate: Ref<PlainDate | null>
+  minDate: Ref<PlainDate | null>
+  modelValue: Ref<PlainDateRange>
 }
 
 export function useDateRangePicker({
@@ -37,13 +36,13 @@ export function useDateRangePicker({
   const isSingleMonth = screen.smaller('md')
 
   const todayDate = Temporal.Now.plainDateISO()
+  const initialDate = modelValue.value.from ?? todayDate
   const calendarPlaceholder = shallowRef<CalendarDate>(
-    new CalendarDate(todayDate.year, todayDate.month, 1),
-
+    new CalendarDate(initialDate.year, initialDate.month, 1),
   )
   const draftValue = shallowRef<DateRange>({
-    end: modelValue.value?.end != null ? plainDateToCalendarDate(modelValue.value.end) : undefined,
-    start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
+    end: modelValue.value?.until != null ? plainDateToCalendarDate(modelValue.value.until) : undefined,
+    start: modelValue.value?.from != null ? plainDateToCalendarDate(modelValue.value.from) : undefined,
   })
 
   function onDraftValueUpdate(value: DateRange): void {
@@ -61,11 +60,11 @@ export function useDateRangePicker({
     calendarPlaceholder.value = date
   }
 
-  function plainDateToCalendarDate(date: Temporal.PlainDate): CalendarDate {
+  function plainDateToCalendarDate(date: PlainDate): CalendarDate {
     return new CalendarDate(date.year, date.month, date.day)
   }
 
-  function calendarDateToPlainDate(date: DateValue): Temporal.PlainDate {
+  function calendarDateToPlainDate(date: DateValue): PlainDate {
     return Temporal.PlainDate.from({
       day: date.day,
       month: date.month,
@@ -76,19 +75,22 @@ export function useDateRangePicker({
   watch(draftValue, (value) => {
     if (value.start != null && value.end != null) {
       modelValue.value = {
-        end: calendarDateToPlainDate(value.end),
-        start: calendarDateToPlainDate(value.start),
+        from: calendarDateToPlainDate(value.start),
+        until: calendarDateToPlainDate(value.end),
       }
     }
     else if (value.start == null && value.end == null) {
-      modelValue.value = null
+      modelValue.value = {
+        from: null,
+        until: null,
+      }
     }
   }, {
     deep: true,
   })
 
-  function setPreset(range: { end: Temporal.PlainDate
-    start: Temporal.PlainDate } | null): void {
+  function setPreset(range: { from: PlainDate
+    until: PlainDate } | null): void {
     if (range === null) {
       draftValue.value = {
         end: undefined,
@@ -97,18 +99,35 @@ export function useDateRangePicker({
     }
     else {
       draftValue.value = {
-        end: plainDateToCalendarDate(range.end),
-        start: plainDateToCalendarDate(range.start),
+        end: plainDateToCalendarDate(range.until),
+        start: plainDateToCalendarDate(range.from),
       }
     }
   }
 
   function syncDraftFromModel(): void {
+    const start = modelValue.value?.from != null ? plainDateToCalendarDate(modelValue.value.from) : undefined
+    const end = modelValue.value?.until != null ? plainDateToCalendarDate(modelValue.value.until) : undefined
+
+    const startChanged = start == null
+      ? draftValue.value.start != null
+      : draftValue.value.start == null || start.compare(draftValue.value.start) !== 0
+
+    const endChanged = end == null
+      ? draftValue.value.end != null
+      : draftValue.value.end == null || end.compare(draftValue.value.end) !== 0
+
+    if (!startChanged && !endChanged) {
+      return
+    }
+
     draftValue.value = {
-      end: modelValue.value?.end != null ? plainDateToCalendarDate(modelValue.value.end) : undefined,
-      start: modelValue.value?.start != null ? plainDateToCalendarDate(modelValue.value.start) : undefined,
+      end,
+      start,
     }
   }
+
+  watch(modelValue, syncDraftFromModel)
 
   const minDateValue = computed<DateValue | undefined>(() => {
     if (minDate.value == null) {

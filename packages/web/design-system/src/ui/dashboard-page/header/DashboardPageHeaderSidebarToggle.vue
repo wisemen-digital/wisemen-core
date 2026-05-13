@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import {
+  _createUntypedAction,
+  useActionGroup,
+} from '@wisemen/vue-core-actions'
+import {
+  FlexAlignLeftIcon,
+  LayoutLeftIcon,
+} from '@wisemen/vue-core-icons'
 import { Toggle } from 'reka-ui'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
-import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
+import ActionTrigger from '@/ui/action-trigger/ActionTrigger.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
 const {
@@ -12,6 +20,24 @@ const {
 } = useMainSidebar()
 
 const i18n = useI18n()
+const actionGroup = useActionGroup()
+
+const toggleMainSidebarAction = _createUntypedAction({
+  id: 'toggle-main-sidebar',
+  name: () => i18n.t('action.global.toggle_main_sidebar.name'),
+  execute: () => {
+    toggleSidebar()
+  },
+  group: actionGroup.navigation,
+  icon: () => isSidebarOpen.value
+    ? LayoutLeftIcon
+    : FlexAlignLeftIcon,
+  keyboardShortcut: {
+    key: 'B',
+    meta: true,
+  },
+  keywords: i18n.t('action.global.toggle_main_sidebar.keywords').split(' '),
+})
 
 const label = computed<string>(() => (isSidebarOpen.value
   ? i18n.t('component.dashboard_page_header_sidebar_toggle.collapse')
@@ -30,13 +56,16 @@ function toggleSidebar(): void {
       meta: true,
     }"
   >
-    <ClickableElement @click="toggleSidebar">
+    <ActionTrigger
+      :action="toggleMainSidebarAction"
+      :current-context-only="false"
+    >
       <Toggle
         :model-value="isSidebarOpen"
         :data-state="isSidebarOpen ? 'open' : 'closed'"
         class="
           group/toggle -ml-xxs flex size-6 items-center justify-center
-          duration-150
+          rounded-sm duration-150
           hover:bg-secondary-hover
         "
       >
@@ -58,6 +87,6 @@ function toggleSidebar(): void {
           />
         </div>
       </Toggle>
-    </ClickableElement>
+    </ActionTrigger>
   </ActionTooltip>
 </template>

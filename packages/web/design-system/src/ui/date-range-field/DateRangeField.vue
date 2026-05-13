@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PlainDateRange } from '@wisemen/vue-core-dates'
 import {
   ArrowNarrowRightIcon,
   CalendarIcon,
@@ -11,7 +12,6 @@ import {
   DateRangePickerRoot as RekaDateRangePickerRoot,
   DateRangePickerTrigger as RekaDateRangePickerTrigger,
 } from 'reka-ui'
-import type { Temporal } from 'temporal-polyfill'
 import {
   computed,
   ref,
@@ -57,12 +57,7 @@ const props = withDefaults(defineProps<DateRangeFieldProps>(), {
   size: 'md',
 })
 
-export interface DateRangeFieldRange {
-  end: Temporal.PlainDate | null
-  start: Temporal.PlainDate | null
-}
-
-const modelValue = defineModel<DateRangeFieldRange | null>({
+const modelValue = defineModel<PlainDateRange>({
   required: true,
 })
 
