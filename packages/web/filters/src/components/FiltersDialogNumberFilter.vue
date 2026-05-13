@@ -54,7 +54,7 @@ const valueField = form.register('value', props.initialValue)
     <UIDialogHeader
       :title="props.filter.label"
       :hide-description="true"
-      description=""
+      :description="props.filter.label"
     />
 
     <UIDialogBody>
