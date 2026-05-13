@@ -113,7 +113,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
             class="text-sm text-disabled select-none"
           />
           <ChevronRightIcon
-            v-if="index < props.config.breadcrumbs.length - 1"
+            v-if="index < props.config.breadcrumbs.length"
             class="size-3 shrink-0 text-disabled"
           />
         </template>

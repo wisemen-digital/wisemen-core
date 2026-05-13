@@ -5,7 +5,6 @@ import type {
   ActionModel,
 } from '@wisemen/vue-core-actions'
 import {
-  GroupPriority,
   resolveActionName,
   useActionManagerStore,
   useTemporaryActions,
@@ -27,7 +26,7 @@ const props = defineProps<{
 const manager = useActionManagerStore()
 
 if (!props.currentContextOnly) {
-  useTemporaryActions(props.action, GroupPriority.VIEW)
+  useTemporaryActions(props.action)
   useViewModels(computed(() => props.models ?? []))
 }
 
