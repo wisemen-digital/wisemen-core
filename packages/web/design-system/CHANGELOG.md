@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0
+
+### Minor Changes
+
+- [#986](https://github.com/wisemen-digital/wisemen-core/pull/986) [`5acef70`](https://github.com/wisemen-digital/wisemen-core/commit/5acef7057bf7de364a3f6b11118f70f50d634331) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add context menu
+
 ## 0.11.0
 
 ### Minor Changes
