@@ -1,21 +1,9 @@
 <script setup lang="ts">
-import { SearchLgIcon } from '@wisemen/vue-core-icons'
-import { useI18n } from 'vue-i18n'
-
-import { UIClickableElement } from '@/ui/clickable-element'
 import DashboardPageHeaderBreadcrumbs from '@/ui/dashboard-page/header/DashboardPageHeaderBreadcrumbs.vue'
 import DashboardPageHeaderSidebarToggle from '@/ui/dashboard-page/header/DashboardPageHeaderSidebarToggle.vue'
-import { UIKeyboardShortcut } from '@/ui/keyboard-shortcut'
 import Separator from '@/ui/separator/Separator.vue'
+import TopBarCommandMenuSearch from '@/ui/top-bar/TopBarCommandMenuSearch.vue'
 import { useTopBarNavigation } from '@/ui/top-bar/topBarNavigation.composable'
-
-const emit = defineEmits<{
-  search: []
-}>()
-
-const {
-  t,
-} = useI18n()
 
 const {
   title, breadcrumbs,
@@ -48,35 +36,10 @@ const {
       </h1>
     </div>
 
-    <!-- Center: search button placeholder -->
     <div class="flex flex-1 items-center justify-center">
-      <UIClickableElement>
-        <button
-          type="button"
-          class="
-            flex h-7.5 w-full max-w-60 cursor-pointer items-center gap-sm
-            rounded-lg bg-tertiary px-md duration-100
-            hover:brightness-98
-            dark:hover:brightness-102
-          "
-          @click="emit('search')"
-        >
-          <SearchLgIcon class="size-3.5 shrink-0 text-quaternary" />
-          <span class="flex-1 truncate text-left text-xs text-placeholder">
-            {{ t('component.top_bar.search') }}
-          </span>
-          <UIKeyboardShortcut
-            :keyboard-shortcut="{
-              sequence: [
-                'Meta+K',
-              ],
-            }"
-          />
-        </button>
-      </UIClickableElement>
+      <TopBarCommandMenuSearch />
     </div>
 
-    <!-- Right: badge slot -->
     <div class="flex flex-1 items-center justify-end">
       <slot name="actions" />
     </div>

@@ -2,13 +2,15 @@
 import { useTitle } from '@vueuse/core'
 import {
   computed,
-  onUnmounted,
   useSlots,
-  watchEffect,
+  watch,
 } from 'vue'
 
 import { useInjectConfigContext } from '@/ui/config-provider'
-import type { DashboardPageProps } from '@/ui/dashboard-page/dashboardPage.type'
+import type {
+  DashboardPageProps,
+  PageTab,
+} from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPageDetailPane from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPane.vue'
 import DashboardPageDetailPaneToggle from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneToggle.vue'
 import { useDetailPane } from '@/ui/dashboard-page/detail-pane/detailPane.composable'
@@ -38,16 +40,20 @@ const slots = useSlots()
 const documentTitle = useTitle()
 
 const {
-  clearNavigation, setNavigation,
+  setNavigation,
 } = useTopBarNavigation()
 
-watchEffect(() => {
-  documentTitle.value = `${props.title} — ${configContext.projectName.value}`
-  setNavigation(props.title, props.breadcrumbs ?? [])
-})
-
-onUnmounted(() => {
-  clearNavigation()
+watch([
+  (): string => props.title,
+  (): PageTab[] => props.tabs,
+], ([
+  title,
+  tabs,
+]) => {
+  documentTitle.value = `${title} — ${configContext.projectName.value}`
+  setNavigation(title, tabs)
+}, {
+  immediate: true,
 })
 
 const hasDetailPane = computed<boolean>(() => {
