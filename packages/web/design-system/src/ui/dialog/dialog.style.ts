@@ -27,6 +27,7 @@ export const createDialogStyle = tv({
     overlay: `
       fixed inset-0 z-modal bg-linear-to-t from-black/50 to-black/25
       will-change-[opacity]
+      dark:from-black/80 dark:to-black/50
     `,
   },
   variants: {

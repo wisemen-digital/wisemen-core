@@ -6,7 +6,7 @@ import type { Action } from '#types/action.type.ts'
 
 export function useTemporaryActions(
   actions: Action | Action[],
-  priority: GroupPriority,
+  priority?: GroupPriority,
   controlled = false,
 ) {
   const registry = useActionRegistryStore()
@@ -20,7 +20,7 @@ export function useTemporaryActions(
           actions,
         ]
 
-    registeredIds = actionsArray.map((action) => registry.registerTemporaryAction(withCustomPriority(action)))
+    registeredIds = actionsArray.map((action) => registry.registerTemporaryAction(withPriority(action)))
   }
 
   function unregister(): void {
@@ -31,19 +31,18 @@ export function useTemporaryActions(
     registeredIds = []
   }
 
-  function withCustomPriority(action: Action): Action {
-    return {
-      ...action,
-      group: action.group
-        ? {
-            ...action.group,
-            priority,
-          }
-        : {
-            name: 'View/Hover',
-            priority,
-          },
+  function withPriority(action: Action): Action {
+    if (priority !== undefined) {
+      return {
+        ...action,
+        group: {
+          ...action.group,
+          priority,
+        },
+      }
     }
+
+    return action
   }
 
   if (!controlled) {

@@ -37,6 +37,7 @@ const dialogContext = useInjectDialogContext(null)
         align="center"
       >
         <slot name="right" />
+        <slot />
       </RowLayout>
     </RowLayout>
   </div>
