@@ -1,0 +1,72 @@
+{
+  "name": "@wisemen/vue-core-dates",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/dates"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "prerelease": "pnpm version prerelease --preid=alpha",
+    "build": "vite build",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "test:unit": "vitest --run",
+    "test": "vitest --run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/"
+  },
+  "peerDependencies": {
+    "temporal-polyfill": "catalog:peer",
+    "vue": "catalog:peer",
+    "vue-i18n": "catalog:peer",
+    "zod": "catalog:peer"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "catalog:types",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vue/test-utils": "catalog:test",
+    "@vue/tsconfig": "catalog:vue",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "husky": "catalog:build",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vite-plugin-dts": "catalog:vite",
+    "vitest": "catalog:test",
+    "vue": "catalog:vue",
+    "vue-i18n": "catalog:peer",
+    "vue-tsc": "catalog:vue",
+    "zod": "catalog:general"
+  }
+}

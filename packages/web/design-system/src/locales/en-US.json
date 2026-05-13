@@ -53,6 +53,7 @@
   "component.unsaved_changes_dialog.title": "Unsaved changes",
   "components.sidebar.description": "The sidebar contains navigation links and other important actions.",
   "components.sidebar.global_search.label": "Search",
+  "components.sidebar.return_to_app": "Return to app",
   "components.sidebar.sign_out": "Sign out",
   "components.sidebar.title": "Sidebar"
 }

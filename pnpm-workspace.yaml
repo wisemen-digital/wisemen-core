@@ -3,7 +3,7 @@ packages:
   - "packages/**/*"
 catalog:
   '@tanstack/vue-hotkeys': ^0.10.0
-  "@wisemen/eslint-config-nestjs": ^1.1.1
+  '@wisemen/eslint-config-nestjs': ^1.1.1
 
 catalogs:
   backend:

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -63,7 +63,8 @@
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*"
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",
@@ -91,6 +92,7 @@
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",

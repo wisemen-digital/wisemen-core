@@ -2284,6 +2284,58 @@ importers:
         specifier: catalog:general
         version: 4.3.5
 
+  packages/web/dates:
+    dependencies:
+      temporal-polyfill:
+        specifier: catalog:peer
+        version: 0.3.0
+    devDependencies:
+      '@types/node':
+        specifier: catalog:types
+        version: 24.8.1
+      '@vitejs/plugin-vue':
+        specifier: catalog:vite
+        version: 6.0.3(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
+      '@vue/test-utils':
+        specifier: catalog:test
+        version: 2.4.6
+      '@vue/tsconfig':
+        specifier: catalog:vue
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      eslint:
+        specifier: catalog:lint-web
+        version: 9.39.4(jiti@2.6.1)
+      husky:
+        specifier: catalog:build
+        version: 9.1.7
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vite:
+        specifier: npm:rolldown-vite@7.3.1
+        version: rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3)
+      vite-plugin-dts:
+        specifier: catalog:vite
+        version: 4.5.4(@types/node@24.8.1)(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))(rollup@4.60.3)(typescript@5.9.3)
+      vitest:
+        specifier: catalog:test
+        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@24.8.1)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(rolldown-vite@7.3.1(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.46.2)(tsx@4.20.3)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
+      vue-i18n:
+        specifier: catalog:peer
+        version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      vue-tsc:
+        specifier: catalog:vue
+        version: 3.2.2(typescript@5.9.3)
+      zod:
+        specifier: catalog:general
+        version: 4.3.5
+
   packages/web/design-system:
     dependencies:
       '@internationalized/date':
@@ -2365,6 +2417,12 @@ importers:
       '@wisemen/eslint-config-vue':
         specifier: workspace:*
         version: link:../eslint-config
+      '@wisemen/vue-core-actions':
+        specifier: workspace:*
+        version: link:../actions
+      '@wisemen/vue-core-dates':
+        specifier: workspace:*
+        version: link:../dates
       eslint:
         specifier: catalog:lint-web
         version: 9.39.4(jiti@2.6.1)
