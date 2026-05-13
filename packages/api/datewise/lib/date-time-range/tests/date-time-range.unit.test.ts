@@ -1,5 +1,6 @@
 import { before, describe, it } from 'node:test'
 import { expect } from 'expect'
+import { Duration, DurationUnit } from '@wisemen/quantity'
 import { DateTimeRange } from '../date-time-range.js'
 import { InvalidDateTimeRangeBounds } from '../date-time-range.errors.js'
 import { initDayjs } from '../../common/init-dayjs.js'
@@ -1028,7 +1029,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newUntil = now.add(2, 'minute')
 
-      const newRange = range.setUntil(newUntil)
+      const newRange = range.withUntil(newUntil)
 
       expect(newRange.inclLower.isSame(range.inclLower)).toBe(true)
       expect(newRange.exclUpper.isSame(newUntil)).toBe(true)
@@ -1040,7 +1041,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newUntil = now.add(2, 'minute').toDate()
 
-      const newRange = range.setUntil(newUntil)
+      const newRange = range.withUntil(newUntil)
 
       expect(newRange.exclUpper.isSame(timestamp(newUntil))).toBe(true)
     })
@@ -1053,7 +1054,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newFrom = now.subtract(1, 'minute')
 
-      const newRange = range.setFrom(newFrom)
+      const newRange = range.withFrom(newFrom)
 
       expect(newRange.inclLower.isSame(newFrom)).toBe(true)
       expect(newRange.exclUpper.isSame(range.exclUpper)).toBe(true)
@@ -1065,7 +1066,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newFrom = now.subtract(1, 'minute').toDate()
 
-      const newRange = range.setFrom(newFrom)
+      const newRange = range.withFrom(newFrom)
 
       expect(newRange.inclLower.isSame(timestamp(newFrom))).toBe(true)
     })
@@ -1529,6 +1530,105 @@ describe('DateTimeRange unit tests', () => {
       expect(sorted[0]).toBe(range3) // Ends at 30 minutes
       expect(sorted[1]).toBe(range1) // Ends at 1 hour
       expect(sorted[2]).toBe(range2) // Ends at 2 hours
+    })
+  })
+
+  describe('expand', () => {
+    it('expands both boundaries symmetrically by the given duration', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(30, DurationUnit.MINUTES))
+
+      expect(expanded.from.isSame(now.subtract(30, 'minute'))).toBe(true)
+      expect(expanded.until.isSame(now.add(90, 'minute'))).toBe(true)
+    })
+
+    it('expanding by zero duration returns an equal range', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(0, DurationUnit.MILLISECONDS))
+
+      expect(expanded.isSame(range)).toBe(true)
+    })
+
+    it('expanding by one hour moves each boundary by exactly one hour', () => {
+      const now = timestamp('2024-06-01T10:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(2, 'hours'))
+      const expanded = range.expand(new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isSame(now.subtract(1, 'hour'))).toBe(true)
+      expect(expanded.until.isSame(now.add(3, 'hours'))).toBe(true)
+    })
+
+    it('expanding by milliseconds works at fine-grained precision', () => {
+      const now = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'second'))
+      const expanded = range.expand(new Duration(500, DurationUnit.MILLISECONDS))
+
+      expect(expanded.from.isSame(now.subtract(500, 'ms'))).toBe(true)
+      expect(expanded.until.isSame(now.add(1500, 'ms'))).toBe(true)
+    })
+
+    it('preserves the original range unchanged', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      range.expand(new Duration(30, DurationUnit.MINUTES))
+
+      expect(range.from.isSame(now)).toBe(true)
+      expect(range.until.isSame(now.add(1, 'hour'))).toBe(true)
+    })
+
+    it('expanding a range with a past-infinity lower bound keeps lower bound as past-infinity', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(new PastInfinity(), now)
+      const expanded = range.expand(new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isPastInfinity()).toBe(true)
+      expect(expanded.until.isSame(now.add(1, 'hour'))).toBe(true)
+    })
+
+    it('expanding a range with a future-infinity upper bound keeps upper bound as future-infinity', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, new FutureInfinity())
+      const expanded = range.expand(new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isSame(now.subtract(1, 'hour'))).toBe(true)
+      expect(expanded.until.isFutureInfinity()).toBe(true)
+    })
+
+    it('expands boundaries asymmetrically when two durations are given', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(2, 'hours'))
+      const expanded = range.expand(new Duration(30, DurationUnit.MINUTES), new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isSame(now.subtract(30, 'minute'))).toBe(true)
+      expect(expanded.until.isSame(now.add(3, 'hours'))).toBe(true)
+    })
+
+    it('expanding with two durations of zero returns an equal range', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(0, DurationUnit.MILLISECONDS), new Duration(0, DurationUnit.MILLISECONDS))
+
+      expect(expanded.isSame(range)).toBe(true)
+    })
+
+    it('can expand only the start by passing zero for the upper duration', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(30, DurationUnit.MINUTES), new Duration(0, DurationUnit.MILLISECONDS))
+
+      expect(expanded.from.isSame(now.subtract(30, 'minute'))).toBe(true)
+      expect(expanded.until.isSame(now.add(1, 'hour'))).toBe(true)
+    })
+
+    it('can expand only the end by passing zero for the lower duration', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(0, DurationUnit.MILLISECONDS), new Duration(30, DurationUnit.MINUTES))
+
+      expect(expanded.from.isSame(now)).toBe(true)
+      expect(expanded.until.isSame(now.add(90, 'minute'))).toBe(true)
     })
   })
 })

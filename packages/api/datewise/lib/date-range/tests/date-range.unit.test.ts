@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
+import { Duration, DurationUnit } from '@wisemen/quantity'
 import { InvalidDateRangeBounds } from '../date-range-errors.js'
 import { DateRange } from '../date-range.js'
 import { Inclusivity } from '../../common/inclusivity.js'
@@ -1207,6 +1208,86 @@ describe('DateRange unit tests', () => {
       const result = range1.compare(range2)
 
       expect(result).toBe(0)
+    })
+  })
+
+  describe('expand', () => {
+    it('expands both boundaries symmetrically by the given duration', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(3, DurationUnit.DAYS))
+
+      expect(expanded.startDate.toString()).toBe('2024-01-07')
+      expect(expanded.endDate.toString()).toBe('2024-01-23')
+    })
+
+    it('expanding by zero days returns an equal range', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(0, DurationUnit.DAYS))
+
+      expect(expanded.isSame(range)).toBe(true)
+    })
+
+    it('expanding by one day moves each boundary by exactly one day', () => {
+      const range = new DateRange(plainDate('2024-06-01'), plainDate('2024-06-30'))
+      const expanded = range.expand(new Duration(1, DurationUnit.DAYS))
+
+      expect(expanded.startDate.toString()).toBe('2024-05-31')
+      expect(expanded.endDate.toString()).toBe('2024-07-01')
+    })
+
+    it('expanding preserves the original range unchanged', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      range.expand(new Duration(5, DurationUnit.DAYS))
+
+      expect(range.startDate.toString()).toBe('2024-01-10')
+      expect(range.endDate.toString()).toBe('2024-01-20')
+    })
+
+    it('expanding a range with a past-infinity start keeps start as past-infinity', () => {
+      const range = new DateRange(new PastInfinityDate(), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(5, DurationUnit.DAYS))
+
+      expect(expanded.startDate.isPastInfinity()).toBe(true)
+      expect(expanded.endDate.toString()).toBe('2024-01-25')
+    })
+
+    it('expanding a range with a future-infinity end keeps end as future-infinity', () => {
+      const range = new DateRange(plainDate('2024-01-10'), new FutureInfinityDate())
+      const expanded = range.expand(new Duration(5, DurationUnit.DAYS))
+
+      expect(expanded.startDate.toString()).toBe('2024-01-05')
+      expect(expanded.endDate.isFutureInfinity()).toBe(true)
+    })
+
+    it('expands boundaries asymmetrically when two durations are given', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(2, DurationUnit.DAYS), new Duration(5, DurationUnit.DAYS))
+
+      expect(expanded.startDate.toString()).toBe('2024-01-08')
+      expect(expanded.endDate.toString()).toBe('2024-01-25')
+    })
+
+    it('expanding with two durations of zero returns an equal range', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(0, DurationUnit.DAYS), new Duration(0, DurationUnit.DAYS))
+
+      expect(expanded.isSame(range)).toBe(true)
+    })
+
+    it('can expand only the start by passing zero for the upper duration', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(3, DurationUnit.DAYS), new Duration(0, DurationUnit.DAYS))
+
+      expect(expanded.startDate.toString()).toBe('2024-01-07')
+      expect(expanded.endDate.toString()).toBe('2024-01-20')
+    })
+
+    it('can expand only the end by passing zero for the lower duration', () => {
+      const range = new DateRange(plainDate('2024-01-10'), plainDate('2024-01-20'))
+      const expanded = range.expand(new Duration(0, DurationUnit.DAYS), new Duration(3, DurationUnit.DAYS))
+
+      expect(expanded.startDate.toString()).toBe('2024-01-10')
+      expect(expanded.endDate.toString()).toBe('2024-01-23')
     })
   })
 })

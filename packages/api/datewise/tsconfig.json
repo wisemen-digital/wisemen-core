@@ -10,7 +10,6 @@
       "node",
     ],
     "moduleResolution": "nodenext",
-    
     "paths": {
       "#src/*": ["./lib/*"]
     },

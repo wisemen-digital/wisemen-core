@@ -11,6 +11,6 @@ export const dataSource = new DataSource({
   migrationsRun: true,
   entities: [
     'dist/**/finite-date-range-test.entity.js',
-    'dist/**/plain-date-test.entity.js'
+    'dist/**/plain-date-test.entity.js',
   ]
 })

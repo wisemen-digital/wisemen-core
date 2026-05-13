@@ -1,5 +1,6 @@
 import { before, describe, it } from 'node:test'
 import { expect } from 'expect'
+import { Duration, DurationUnit } from '@wisemen/quantity'
 import { PastInfinityDate } from '../past-infinity-date.js'
 import { DayjsPlainDate } from '../dayjs-plain-date.js'
 import { FutureInfinityDate } from '../future-infinity-date.js'
@@ -102,6 +103,28 @@ describe('PastInfinityDate', () => {
       const duration = pastInfinity.since(futureDate)
 
       expect(duration.days).toBe(-Infinity)
+    })
+  })
+
+  describe('addDuration', () => {
+    it('remains PastInfinityDate when adding a duration', () => {
+      const date = new PastInfinityDate()
+      const resultSmall = date.addDuration(new Duration(1, DurationUnit.DAYS))
+      const resultLarge = date.addDuration(new Duration(365, DurationUnit.DAYS))
+
+      expect(resultSmall.isPastInfinity()).toBe(true)
+      expect(resultLarge.isPastInfinity()).toBe(true)
+    })
+  })
+
+  describe('subtractDuration', () => {
+    it('remains PastInfinityDate when subtracting a duration', () => {
+      const date = new PastInfinityDate()
+      const resultSmall = date.subtractDuration(new Duration(1, DurationUnit.DAYS))
+      const resultLarge = date.subtractDuration(new Duration(365, DurationUnit.DAYS))
+
+      expect(resultSmall.isPastInfinity()).toBe(true)
+      expect(resultLarge.isPastInfinity()).toBe(true)
     })
   })
 })
