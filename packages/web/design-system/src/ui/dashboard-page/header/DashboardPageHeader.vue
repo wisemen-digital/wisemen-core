@@ -5,22 +5,9 @@ import {
   useSlots,
 } from 'vue'
 
-import type {
-  PageBreadcrumb,
-  PageTab,
-} from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPageContainer from '@/ui/dashboard-page/DashboardPageContainer.vue'
 import DashboardPageHeaderActions from '@/ui/dashboard-page/header/DashboardPageHeaderActions.vue'
-import DashboardPageHeaderBreadcrumbs from '@/ui/dashboard-page/header/DashboardPageHeaderBreadcrumbs.vue'
-import DashboardPageHeaderSidebarToggle from '@/ui/dashboard-page/header/DashboardPageHeaderSidebarToggle.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
-import Separator from '@/ui/separator/Separator.vue'
-
-const props = defineProps<{
-  title: string | null
-  breadcrumbs: PageBreadcrumb[]
-  tabs: PageTab[]
-}>()
 
 const slots = useSlots()
 
@@ -30,9 +17,7 @@ const screen = useBreakpoints({
 
 const isSmallScreen = screen.smaller('lg')
 
-const hasSlotContent = computed<boolean>(() => {
-  return Boolean(slots['action-left'] || slots['action-center'] || slots['action-right'])
-})
+const hasRightSlotContent = computed<boolean>(() => Boolean(slots['action-right']))
 </script>
 
 <template>
@@ -41,54 +26,12 @@ const hasSlotContent = computed<boolean>(() => {
       <DashboardPageContainer>
         <RowLayout justify="between">
           <RowLayout gap="none">
-            <DashboardPageHeaderSidebarToggle />
-
-            <Separator
-              v-if="props.breadcrumbs.length > 0 || props.title !== null"
-              class="mr-lg ml-md h-4.5 bg-quaternary"
-              orientation="vertical"
-            />
-            <RowLayout
-              gap="xl"
-            >
-              <RowLayout
-                v-if="props.breadcrumbs.length === 0 && props.title !== null"
-                gap="none"
-              >
-                <slot name="title-left" />
-
-                <slot name="title">
-                  <h1 class="text-sm font-medium text-primary">
-                    {{ props.title }}
-                  </h1>
-                </slot>
-              </RowLayout>
-
-              <h1
-                v-if="props.breadcrumbs.length > 0 && props.title !== null"
-                class="sr-only"
-              >
-                {{ props.title }}
-              </h1>
-
-              <RowLayout gap="xs">
-                <DashboardPageHeaderBreadcrumbs :breadcrumbs="props.breadcrumbs" />
-              </RowLayout>
-
-              <template v-if="!isSmallScreen">
-                <slot name="action-left" />
-              </template>
-            </RowLayout>
+            <slot name="action-left" />
           </RowLayout>
 
-          <template v-if="!isSmallScreen">
-            <slot name="action-center" />
-          </template>
+          <slot name="action-center" />
 
-          <RowLayout
-
-            gap="xs"
-          >
+          <RowLayout gap="xs">
             <slot
               v-if="!isSmallScreen"
               name="action-right"
@@ -103,15 +46,11 @@ const hasSlotContent = computed<boolean>(() => {
     </div>
 
     <div
-      v-if="isSmallScreen && hasSlotContent"
+      v-if="isSmallScreen && hasRightSlotContent"
       class="flex h-11 items-center border-t border-secondary"
     >
       <DashboardPageContainer>
-        <RowLayout justify="between">
-          <slot name="action-left" />
-
-          <slot name="action-center" />
-
+        <RowLayout justify="end">
           <RowLayout gap="xs">
             <slot name="action-right" />
           </RowLayout>

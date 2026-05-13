@@ -2,8 +2,9 @@
 import { useTitle } from '@vueuse/core'
 import {
   computed,
+  onUnmounted,
   useSlots,
-  watch,
+  watchEffect,
 } from 'vue'
 
 import { useInjectConfigContext } from '@/ui/config-provider'
@@ -16,6 +17,7 @@ import type { DetailPaneConfig } from '@/ui/dashboard-page/detail-pane/detailPan
 import DashboardPageHeader from '@/ui/dashboard-page/header/DashboardPageHeader.vue'
 import Page from '@/ui/dashboard-page/Page.vue'
 import Separator from '@/ui/separator/Separator.vue'
+import { useTopBarNavigation } from '@/ui/top-bar/topBarNavigation.composable'
 
 const props = withDefaults(defineProps<DashboardPageProps & {
   detailPane?: DetailPaneConfig | null
@@ -35,10 +37,17 @@ const configContext = useInjectConfigContext()
 const slots = useSlots()
 const documentTitle = useTitle()
 
-watch(() => props.title, (title) => {
-  documentTitle.value = `${title} — ${configContext.projectName.value}`
-}, {
-  immediate: true,
+const {
+  clearNavigation, setNavigation,
+} = useTopBarNavigation()
+
+watchEffect(() => {
+  documentTitle.value = `${props.title} — ${configContext.projectName.value}`
+  setNavigation(props.title, props.breadcrumbs ?? [])
+})
+
+onUnmounted(() => {
+  clearNavigation()
 })
 
 const hasDetailPane = computed<boolean>(() => {
@@ -79,28 +88,9 @@ if (hasDetailPane.value) {
 
 <template>
   <Page
-    class="relative flex size-full h-full flex-col overflow-hidden bg-secondary"
+    class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary"
   >
-    <DashboardPageHeader
-      :title="props.title"
-      :tabs="props.tabs"
-      :breadcrumbs="props.breadcrumbs"
-      :actions="props.actions"
-    >
-      <template
-        v-if="slots.title"
-        #title
-      >
-        <slot name="title" />
-      </template>
-
-      <template
-        v-if="slots['title-left']"
-        #title-left
-      >
-        <slot name="title-left" />
-      </template>
-
+    <DashboardPageHeader>
       <template
         v-if="slots['header-action-left']"
         #action-left
@@ -129,9 +119,6 @@ if (hasDetailPane.value) {
           v-if="slots['header-master-actions'] || hasDetailPane"
           class="mr-md ml-lg h-4.5 bg-quaternary"
           orientation="vertical"
-        />
-        <slot
-          name="header-master-actions"
         />
         <DashboardPageDetailPaneToggle v-if="hasDetailPane" />
       </template>

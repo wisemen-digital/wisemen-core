@@ -113,7 +113,7 @@ setCollapsedVariant(props.collapsedVariant)
       :style="{
         width: sidebarWidth,
       }"
-      class="absolute h-full"
+      class="absolute h-full pt-md"
     >
       <MainSidebarContent>
         <template #header>
@@ -141,7 +141,7 @@ setCollapsedVariant(props.collapsedVariant)
       bounce: 0,
     }"
     :style="{ width: sidebarWidth }"
-    class="absolute h-full overflow-hidden"
+    class="absolute h-full overflow-hidden pt-md"
   >
     <MainSidebarContent>
       <template #header>

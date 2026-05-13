@@ -19,7 +19,8 @@ const isHeld = useKeyHold(props.rawKey)
     }"
     class="
       flex h-4 min-w-4 items-center justify-center rounded-xs border
-      border-secondary px-xxs text-center font-sans text-[0.6187rem] capitalize
+      border-secondary bg-primary px-xxs text-center font-sans text-[0.6187rem]
+      capitalize
     "
   >
     {{ props.keyboardKey }}

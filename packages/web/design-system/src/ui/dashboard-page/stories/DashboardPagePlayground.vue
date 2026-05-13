@@ -10,7 +10,6 @@ import {
   LifeBuoy01Icon,
   PlusIcon,
   Rows01Icon,
-  SearchMdIcon,
   Settings01Icon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
@@ -20,18 +19,18 @@ import {
   ref,
 } from 'vue'
 
+import { UIBadge } from '@/ui/badge'
 import {
   UIButton,
   UIIconButton,
 } from '@/ui/button/index'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
-import MainContent from '@/ui/layout/MainContent.vue'
-import MainLayout from '@/ui/layout/MainLayout.vue'
-import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
-import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
 import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
-import DashboardPageHeaderMasterActionButton from '@/ui/dashboard-page/header/DashboardPageHeaderMasterActionButton.vue'
+import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
+import MainContent from '@/ui/layout/MainContent.vue'
+import MainLayout from '@/ui/layout/MainLayout.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
@@ -44,6 +43,7 @@ import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 import { UIText } from '@/ui/text/index'
+import TopBar from '@/ui/top-bar/TopBar.vue'
 
 interface NavigationGroup {
   label: string
@@ -210,6 +210,16 @@ const tabsModelValue = ref<string>('tab1')
       </MainSidebar>
 
       <MainContent>
+        <TopBar>
+          <template #actions>
+            <UIBadge
+              :icon="Bell01Icon"
+              color="warning"
+              label="3 Alerts"
+            />
+          </template>
+        </TopBar>
+
         <DashboardPage
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
@@ -221,16 +231,6 @@ const tabsModelValue = ref<string>('tab1')
           }"
           title="Dashboard"
         >
-          <template #header-master-actions>
-            <DashboardPageHeaderMasterActionButton
-              :icon="Bell01Icon"
-              label="Notifications"
-            />
-            <DashboardPageHeaderMasterActionButton
-              :icon="SearchMdIcon"
-              label="global search"
-            />
-          </template>
           <template #header-action-left>
             <RowLayout>
               <Tabs
