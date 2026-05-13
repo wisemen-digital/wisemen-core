@@ -2,4 +2,4 @@
 "@wisemen/vue-core-design-system": minor
 ---
 
-Export context provider
+Add empty state component

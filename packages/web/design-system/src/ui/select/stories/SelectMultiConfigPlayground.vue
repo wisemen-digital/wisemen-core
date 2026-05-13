@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { Building01Icon } from '@wisemen/vue-core-icons'
+import {
+  Building01Icon,
+  User01Icon,
+} from '@wisemen/vue-core-icons'
 import { ref } from 'vue'
 
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
@@ -74,12 +77,14 @@ const items = createSelectOptions(users)
 
 function getItemConfig(user: User): MenuItemConfig {
   return {
-    description: `${user.email}, +32 487 74 19 54`,
-    descriptionLayout: 'block',
-    dot: {
-      color: 'pink',
+    description: {
+      layout: 'block' as const,
+      value: `${user.email}, +32 487 74 19 54`,
     },
-    label: user.name,
+    left: {
+      icon: User01Icon,
+      type: 'icon',
+    },
     right: {
       icon: Building01Icon,
       text: 'Wisemen',

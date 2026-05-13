@@ -29,12 +29,14 @@ import {
 
           <UIDropdownMenuItem
             :config="{
-              avatar: {
+              description: {
+                layout: 'inline',
+                value: 'jeroen.vc1@icloud.com' },
+              left: {
                 name: 'Jeroen',
                 src: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+                type: 'avatar',
               },
-              descriptionLayout: 'inline',
-              description: 'jeroen.vc1@icloud.com',
             }"
             label="Jeroen VC"
             @select="() => console.log('Profile')"
@@ -47,7 +49,8 @@ import {
           <UIDropdownMenuHeader title="Account" />
           <UIDropdownMenuItem
             :config="{
-              icon: User01Icon,
+              left: { type: 'icon',
+                      icon: User01Icon },
               right: {
                 keyboardShortcut: {
                   key: 'K',
@@ -61,7 +64,8 @@ import {
           />
 
           <UIDropdownMenuItem
-            :config="{ icon: Settings01Icon }"
+            :config="{ left: { type: 'icon',
+                               icon: Settings01Icon } }"
             label="Settings"
             @select="() => console.log('Settings')"
           />
@@ -71,7 +75,8 @@ import {
 
         <UIDropdownMenuGroup>
           <UIDropdownMenuItem
-            :config="{ icon: File05Icon }"
+            :config="{ left: { type: 'icon',
+                               icon: File05Icon } }"
             label="Export"
             @select="() => console.log('Export')"
           />
@@ -81,7 +86,9 @@ import {
 
         <UIDropdownMenuGroup>
           <UIDropdownMenuItem
-            :config="{ icon: Trash01Icon }"
+            :config="{ left: { type: 'icon',
+                               icon: Trash01Icon } }"
+            :is-disabled="true"
             label="Delete"
             disabled-reason="You don't have permission to delete"
             @select="() => console.log('Delete')"

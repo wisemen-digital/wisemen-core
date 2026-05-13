@@ -3,6 +3,10 @@ import { DateUtil } from '#utils/date.util.ts'
 
 export class TimeZoneUtil {
   static getAvailableTimeZones(): TimeZone[] {
+    if (typeof Intl.supportedValuesOf !== 'function') {
+      return []
+    }
+
     return Intl.supportedValuesOf('timeZone')
   }
 

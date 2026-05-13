@@ -26,12 +26,16 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
+        'vue-i18n',
+        'zod',
         'temporal-polyfill',
       ],
       output: {
         globals: {
-          'temporal-polyfill': 'TemporalPolyfill',
+          'temporal-polyfill': 'Temporal',
           'vue': 'Vue',
+          'vue-i18n': 'VueI18n',
+          'zod': 'Zod',
         },
       },
     },

@@ -22,6 +22,7 @@ import {
   UIDropdownMenuSubContent,
   UIDropdownMenuSubTrigger,
 } from '@/ui/dropdown-menu/index'
+import type { MenuItemLeftConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = defineProps<{
   action: Action
@@ -63,6 +64,33 @@ const isSelected = computed<boolean>(() => {
   return resolveActionSelected(props.action, context.value) === true
 })
 
+const icon = computed<Component | null>(
+  () => props.action.icon === undefined ? null : props.action.icon(context.value),
+)
+
+const itemLeft = computed<MenuItemLeftConfig | null>(() => {
+  if (parentLabel.value !== null) {
+    return {
+      breadcrumbs: [
+        {
+          icon: icon.value,
+          label: parentLabel.value,
+        },
+      ],
+      type: 'breadcrumbs',
+    } as MenuItemLeftConfig
+  }
+
+  if (icon.value !== null) {
+    return {
+      icon: icon.value,
+      type: 'icon',
+    }
+  }
+
+  return null
+})
+
 function onSelectAction(event: Event): void {
   if (!props.closeOnSelect || isShiftKeyHeld.value) {
     event.preventDefault()
@@ -77,7 +105,11 @@ function onSelectAction(event: Event): void {
     <UIDropdownMenuSubTrigger
       :label="label"
       :config="{
-        icon: props.action.icon === undefined || parentLabel !== null ? null : props.action.icon(context),
+        left: icon === null || parentLabel !== null
+          ? undefined : {
+            type: 'icon',
+            icon,
+          },
       }"
     />
     <UIDropdownMenuSubContent>
@@ -92,7 +124,7 @@ function onSelectAction(event: Event): void {
     v-if="isApplicable && props.action.execute !== undefined"
     :label="label"
     :config="{
-      icon: props.action.icon === undefined || parentLabel !== null ? null : props.action.icon(context),
+      left: itemLeft,
       right: isSelected ? {
         icon: CheckIcon,
         type: 'icon',
@@ -100,14 +132,6 @@ function onSelectAction(event: Event): void {
         type: 'shortcut',
         keyboardShortcut: props.action.keyboardShortcut,
       },
-      breadcrumbs: parentLabel === null ? undefined : [
-        {
-          label: parentLabel,
-          icon: props.action.icon === undefined
-            ? undefined
-            : props.action.icon(context) ?? undefined,
-        },
-      ],
     }"
     :disabled-reason="disabledReason"
     @select="onSelectAction"

@@ -85,6 +85,10 @@ export class DateTimeInstantRangeTransformer {
       return null
     }
 
+    if (DateTimeInstantRangeTransformer.isInfinity(dto.startDate)) {
+      throw new Error(`fromDtoWithEndInfinity: startDate cannot be infinity, got "${dto.startDate}"`)
+    }
+
     return {
       from: DateUtil.instantFrom(dto.startDate),
       until: DateTimeInstantRangeTransformer.isInfinity(dto.endDate)
@@ -95,7 +99,7 @@ export class DateTimeInstantRangeTransformer {
 
   static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeRangeInstantWithInfinity
   static fromDtoWithInfinity(dto: null): null
-  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithInfinity
+  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithInfinity | null
   static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithInfinity | null {
     if (dto === null) {
       return null
@@ -121,6 +125,10 @@ export class DateTimeInstantRangeTransformer {
       return null
     }
 
+    if (DateTimeInstantRangeTransformer.isInfinity(dto.endDate)) {
+      throw new Error(`fromDtoWithStartInfinity: endDate cannot be infinity, got "${dto.endDate}"`)
+    }
+
     return {
       from: DateTimeInstantRangeTransformer.isInfinity(dto.startDate)
         ? 'infinity'
@@ -129,8 +137,8 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static isInfinity(value: any): value is 'infinity' {
-    return value === 'infinity' || value === '-infinity' || value === 'infinity'
+  static isInfinity(value: any): value is '-infinity' | 'infinity' {
+    return value === 'infinity' || value === '-infinity'
   }
 
   static toDto(dateTimeRange: DateTimeRangeInstant): DateTimeRangeDto

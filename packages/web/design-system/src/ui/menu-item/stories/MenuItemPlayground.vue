@@ -2,7 +2,7 @@
 import {
   Building02Icon,
   CheckIcon,
-  FolderIcon,
+  User01Icon,
   User02Icon,
 } from '@wisemen/vue-core-icons'
 
@@ -23,7 +23,10 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            icon: User02Icon,
+            left: {
+              type: 'icon',
+              icon: User02Icon,
+            },
           }"
           label="Apple"
         />
@@ -35,10 +38,13 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            avatar: { name: 'Alice Johnson',
-                      src: 'https://i.pravatar.cc/150?u=alice' },
-            label: 'Alice Johnson',
+            left: {
+              type: 'avatar',
+              name: 'Alice Johnson',
+              src: 'https://i.pravatar.cc/150?u=alice',
+            },
           }"
+          label="Alice Johnson"
         />
       </div>
     </div>
@@ -48,10 +54,16 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            icon: User02Icon,
-            label: 'Alice Johnson',
-            description: 'alice@example.com',
+            description:
+              { layout: 'block',
+                value: 'alice@example.com',
+              },
+            left:
+              { type: 'icon',
+                icon: User02Icon,
+              },
           }"
+          label="Alice Johnson"
         />
       </div>
     </div>
@@ -126,7 +138,8 @@ import { UIMenuItem } from '@/ui/menu-item'
       <span class="text-xs font-medium text-disabled uppercase select-none">With dot (success)</span>
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
-          :config="{ dot: { color: 'success' } }"
+          :config="{ left: { type: 'dot',
+                             color: 'success' } }"
           label="Apple"
         />
       </div>
@@ -137,9 +150,8 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            dot: {
-              color: 'gray',
-            },
+            left: { type: 'dot',
+                    color: 'gray' },
           }"
           label="Apple"
         />
@@ -150,7 +162,8 @@ import { UIMenuItem } from '@/ui/menu-item'
       <span class="text-xs font-medium text-disabled uppercase select-none">Small size</span>
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
-          :config="{ icon: User02Icon }"
+          :config="{ left: { type: 'icon',
+                             icon: User01Icon } }"
           label="Apple"
           size="sm"
         />
@@ -162,10 +175,10 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            label: 'Alice Johnson',
-            description: 'alice@example.com',
-            descriptionLayout: 'inline',
+            description: { layout: 'inline',
+                           value: 'alice@example.com' },
           }"
+          label="Alice Johnson"
         />
       </div>
     </div>
@@ -175,15 +188,15 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            label: 'Alice Johnson',
-            description: 'this-is-a-very-long-description-that-should-truncate@example.com',
-            descriptionLayout: 'inline',
+            description: { layout: 'inline',
+                           value: 'this-is-a-very-long-description-that-should-truncate@example.com' },
             right: {
               icon: Building02Icon,
               text: 'Fruit',
               type: 'icon-text',
             },
           }"
+          label="Alice Johnson"
         />
       </div>
     </div>
@@ -193,14 +206,19 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            breadcrumbs: [
-              { icon: Building02Icon,
-                label: 'Workspace' },
-              { icon: FolderIcon,
-                label: 'Projects' },
-              { icon: User02Icon,
-                label: 'Alice' },
-            ],
+            left: {
+              type: 'breadcrumbs',
+              breadcrumbs: [
+                {
+                  icon: Building02Icon,
+                  label: 'Workspace',
+                },
+                {
+                  icon: User02Icon,
+                  label: 'Alice',
+                },
+              ],
+            },
           }"
           label="Apple"
         />
@@ -212,12 +230,21 @@ import { UIMenuItem } from '@/ui/menu-item'
       <div class="w-72 rounded-md border border-secondary bg-primary">
         <UIMenuItem
           :config="{
-            icon: User02Icon,
-            label: 'Alice Johnson',
-            description: 'alice@example.com',
-            right: { type: 'text',
-                     text: 'Admin' },
+            description: {
+              layout: 'block',
+              value: 'alice@example.com',
+            },
+            left: {
+              name: 'Alice Johnson',
+              src: 'https://i.pravatar.cc/150?u=alice',
+              type: 'avatar',
+            },
+            right: {
+              type: 'text',
+              text: 'Admin',
+            },
           }"
+          label="Alice Johnson"
         >
           <template #right>
             <Component

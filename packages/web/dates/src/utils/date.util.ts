@@ -12,6 +12,10 @@ import { TimeZoneUtil } from '#utils/timeZone.util.ts'
 
 export class DateUtil {
   static earliest(...dates: DateTimeInstant[]): DateTimeInstant {
+    if (dates.length === 0) {
+      throw new Error('earliest() requires at least one date')
+    }
+
     return dates.reduce(
       (earliest, current) =>
         current.epochMilliseconds < earliest.epochMilliseconds ? current : earliest,
@@ -59,6 +63,10 @@ export class DateUtil {
   }
 
   static latest(...dates: DateTimeInstant[]): DateTimeInstant {
+    if (dates.length === 0) {
+      throw new Error('latest() requires at least one date')
+    }
+
     return dates.reduce(
       (latest, current) =>
         current.epochMilliseconds > latest.epochMilliseconds ? current : latest,
@@ -78,7 +86,7 @@ export class DateUtil {
         timeZone: TimeZoneUtil.getCurrentTimeZone(),
       }).with({
         hour: 23,
-        millisecond: 59,
+        millisecond: 999,
         minute: 59,
         second: 59,
       }).toInstant(),

@@ -44,6 +44,7 @@ export const createButtonStyle = tv({
     rowLayout: `
       flex items-center justify-center duration-100 [grid-area:stack]
       group-not-disabled/button:group-active/button:scale-98
+      group-not-disabled/button:group-active/button:will-change-transform
     `,
   },
   variants: {

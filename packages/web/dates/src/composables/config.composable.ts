@@ -1,3 +1,4 @@
+import type { Ref } from 'vue'
 import {
   computed,
   ref,
@@ -32,28 +33,36 @@ export interface Config {
   timeZone: TimeZone
 }
 
-const DEFAULT_CONFIG = {
-  appLanguage: LocaleUtil.getCurrentLocale(),
-  hourCycle: 'locale-default',
-  locale: LocaleUtil.getCurrentLocale(),
-  timeZone: TimeZoneUtil.getCurrentTimeZone(),
-} as const satisfies Config
+let config: Ref<Config> | null = null
 
-const config = ref<Config>(DEFAULT_CONFIG)
-
-function update(updatedConfig: Partial<Config>): void {
-  config.value = {
-    ...config.value,
-    ...updatedConfig,
+function getConfig(): Ref<Config> {
+  if (config === null) {
+    config = ref<Config>({
+      appLanguage: LocaleUtil.getCurrentLocale(),
+      hourCycle: 'locale-default',
+      locale: LocaleUtil.getCurrentLocale(),
+      timeZone: TimeZoneUtil.getCurrentTimeZone(),
+    })
   }
+
+  return config
 }
 
 export function useDateTimeConfig() {
+  const cfg = getConfig()
+
+  function update(updatedConfig: Partial<Config>): void {
+    cfg.value = {
+      ...cfg.value,
+      ...updatedConfig,
+    }
+  }
+
   return {
-    appLanguage: computed<Locale>(() => config.value.appLanguage),
-    hourCycle: computed<HourCycle>(() => config.value.hourCycle),
-    locale: computed<Locale>(() => config.value.locale),
-    timeZone: computed<TimeZone>(() => config.value.timeZone),
+    appLanguage: computed<Locale>(() => cfg.value.appLanguage),
+    hourCycle: computed<HourCycle>(() => cfg.value.hourCycle),
+    locale: computed<Locale>(() => cfg.value.locale),
+    timeZone: computed<TimeZone>(() => cfg.value.timeZone),
     update,
   }
 }

@@ -272,7 +272,7 @@ function onUpdateIsOpen(value: boolean): void {
 
             <UIText
               v-else
-              :text="`No results found for '${searchInput}'`"
+              :text="i18n.t('component.command_menu.no_results', { query: searchInput })"
               class="flex p-lg text-xs text-tertiary"
             />
           </ListboxContent>
