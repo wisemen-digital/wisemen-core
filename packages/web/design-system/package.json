@@ -92,6 +92,7 @@
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",
