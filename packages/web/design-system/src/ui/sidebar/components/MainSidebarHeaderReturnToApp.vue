@@ -11,7 +11,7 @@ import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTr
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
 const props = defineProps<{
-  to?: RouteLocationRaw | null
+  to: RouteLocationRaw
 }>()
 
 const i18n = useI18n()
@@ -41,11 +41,12 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
     >
       <ClickableElement>
         <RouterLink
-          :to="props.to ?? { name: 'index' }"
+          :to="props.to"
           :style="{
             height: sidebarIconCellSize,
             gridTemplateColumns,
           }"
+          :aria-label="i18n.t('components.sidebar.return_to_app')"
           class="
             grid w-full rounded-md duration-100
             hover:bg-secondary-hover
