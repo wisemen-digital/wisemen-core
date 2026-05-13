@@ -3,6 +3,7 @@ import { PlainDate, PlainDateInput } from '../plain-date/plain-date.js'
 import { plainDate } from '../plain-date/index.js'
 import { DatePeriod } from '../common/date-period.enum.js'
 import { InvalidDateRangeBounds, NoDateRangeOverlap } from './date-range-errors.js'
+import { Duration } from '@wisemen/quantity'
 
 /**
  * DateRange only works with inclusive ranges internally, except for infinities
@@ -195,17 +196,38 @@ export class DateRange {
     return this.toString()
   }
 
-  setEndDate (endDate: PlainDateInput): DateRange {
+  /** Returns a new date range instance with the new end date */
+  withEndDate (endDate: PlainDateInput): DateRange {
     return new DateRange(this.startDate, endDate)
   }
 
-  setStartDate (startDate: PlainDateInput): DateRange {
+  /** Returns a new date range instance with the new start date */
+  withStartDate (startDate: PlainDateInput): DateRange {
     return new DateRange(startDate, this.endDate)
   }
 
   /** Returns true if this range ends before the other range starts */
   isStrictlyBefore (other: DateRange): boolean {
     return this.endDate.isBefore(other.startDate)
+  }
+
+  /** 
+   * Returns a new date range with both boundaries expanded \
+   *    - start date = this.startDate.subtractDuration(duration)
+   *    - end date = this.endDate.addDuration(duration)
+   */
+  expand(duration: Duration): DateRange
+  /** 
+   * Returns a new date range with both boundaries expanded \
+   *    - start date = this.startDate.subtractDuration(lower)
+   *    - end date = this.endDate.addDuration(upper)
+   */
+  expand(lower: Duration, upper: Duration): DateRange
+  expand(duration: Duration, upper?: Duration): DateRange {
+    return new DateRange(
+      this.startDate.subtractDuration(duration),
+      this.endDate.addDuration(upper ?? duration)
+    )
   }
 
   /** Returns true if this range starts after the other range ends */
@@ -237,11 +259,30 @@ export class DateRange {
 
   merge (withOther: DateRange): DateRange {
     if (this.isPrecededBy(withOther)) {
-      return this.setStartDate(withOther.startDate)
+      return this.withStartDate(withOther.startDate)
     } else if (this.isSucceededBy(withOther)) {
-      return this.setEndDate(withOther.endDate)
+      return this.withEndDate(withOther.endDate)
     } else {
       throw new Error('cannot merge non adjacent date ranges')
     }
+  }
+
+  /** 
+   * Compares the order of the given date range with this date range. \
+   * Ranges are compared first by their start date, then by their end date. \
+   * returns < 0 if this range starts before the other (or starts at the same time but ends before) \
+   * returns 0 if both ranges have the same start and end dates \
+   * returns > 0 if this range starts after the other (or starts at the same time but ends after) \
+   * \
+   * This method is useful for sorting arrays of date ranges.
+  */
+  compare (withOther: DateRange): number {
+    const startComparison = this.startDate.compare(withOther.startDate)
+
+    if (startComparison !== 0) {
+      return startComparison
+    }
+
+    return this.endDate.compare(withOther.endDate)
   }
 }

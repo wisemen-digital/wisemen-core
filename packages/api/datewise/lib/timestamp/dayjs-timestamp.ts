@@ -150,7 +150,7 @@ export class DayjsTimestamp implements Timestamp {
   }
 
   addDuration (duration: Duration): Timestamp {
-    return new DayjsTimestamp(this.value.add(duration.milliseconds, 'ms'))
+    return new DayjsTimestamp(this.value.add(Math.trunc(duration.milliseconds), 'ms'))
   }
 
   subtract (value: number, unit?: ManipulateType): DayjsTimestamp {
@@ -158,7 +158,7 @@ export class DayjsTimestamp implements Timestamp {
   }
 
   subtractDuration (duration: Duration): Timestamp {
-    return new DayjsTimestamp(this.value.subtract(duration.milliseconds, 'ms'))
+    return new DayjsTimestamp(this.value.subtract(Math.trunc(duration.milliseconds), 'ms'))
   }
 
   startOf (unit: OpUnitType): DayjsTimestamp {
@@ -176,11 +176,17 @@ export class DayjsTimestamp implements Timestamp {
   diff (withOther: TimestampInput, unit: OpUnitType, precise = false): number {
     withOther = factory(withOther)
 
-    if (withOther.isFutureInfinity() || withOther.isPastInfinity()) {
+    if (withOther.isFutureInfinity() ) {
+      return -Infinity
+    } else if (withOther.isPastInfinity()) {
       return Infinity
+    } else {
+      return this.value.diff((withOther as DayjsTimestamp).value, unit, precise)
     }
+  }
 
-    return this.value.diff((withOther as DayjsTimestamp).value, unit, precise)
+  compare (withOther: TimestampInput): number {
+    return this.diff(withOther, 'milliseconds', true)
   }
 
   valueOf (): number {

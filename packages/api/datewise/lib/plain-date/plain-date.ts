@@ -35,7 +35,24 @@ export interface PlainDate {
   isTomorrow(): boolean
   isYesterday(): boolean
   add(amount: number, unit: PlainDateUnit): PlainDate
+
+  /**
+   * Returns a new `PlainDate` instance with the duration added. \
+   * Any duration less than a full day does not change the date, but still returns a 
+   * new instance (except for infinities which are singletons). \
+   * Similarly a duration of 1.4 days is applied as 1 day.
+   */
+  addDuration(duration: Duration): PlainDate
+
   subtract(amount: number, unit: PlainDateUnit): PlainDate
+
+  /**
+   * Returns a new `PlainDate` instance with the duration subtracted. \
+   * Any duration less than a full day does not change the date, but still returns a new instance
+   * (except for infinities which are singletons). \
+   * Similarly a duration of 1.4 days is applied as 1 day.
+   */
+  subtractDuration(duration: Duration): PlainDate
 
   /**
    * Returns the duration until the given date.
@@ -50,7 +67,21 @@ export interface PlainDate {
    * If the date lies after this date, the duration is negative.
    */
   since(otherDate: PlainDateInput): Duration
+
   diff(withOther: PlainDateInput, unit: DiffPlainDateUnit): number
+
+  /** 
+   * Compares the order of the given date with this date. \
+   * returns < 0 if this date is before the given date \
+   * returns 0 if this date is the same as the given date \
+   * returns > 0 if this date is after the given date \
+   * \
+   * Comparing a date with infinities results in `-Infinity` or `Infinity` (Number) \
+   * Comparing infinities will result in 0 when they represent the same infinity.
+   * \
+   * The returned value is the result of a `diff` days between the compared values.
+  */
+  compare(withOther: PlainDateInput): number
   /** @see https://day.js.org/docs/en/display/format */
   format(template: string): string
   clone(): PlainDate
