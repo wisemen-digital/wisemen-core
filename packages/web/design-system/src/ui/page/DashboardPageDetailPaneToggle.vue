@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import {
+  _createUntypedAction,
+  useActionGroup,
+} from '@wisemen/vue-core-actions'
+import {
+  FlexAlignRightIcon,
+  LayoutRightIcon,
+} from '@wisemen/vue-core-icons'
 import { Toggle } from 'reka-ui'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
-import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
+import ActionTrigger from '@/ui/action-trigger/ActionTrigger.vue'
 import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
 
 const {
@@ -12,6 +20,23 @@ const {
 } = useInjectDetailPaneContext()
 
 const i18n = useI18n()
+const actionGroup = useActionGroup()
+const toggleDetailPaneAction = _createUntypedAction({
+  id: 'toggle-detail-pane',
+  name: () => i18n.t('action.global.toggle_detail_pane.name'),
+  execute: () => {
+    toggleIsOpen()
+  },
+  group: actionGroup.navigation,
+  icon: () => isOpen.value
+    ? LayoutRightIcon
+    : FlexAlignRightIcon,
+  keyboardShortcut: {
+    key: 'I',
+    meta: true,
+  },
+  keywords: i18n.t('action.global.toggle_detail_pane.keywords').split(' '),
+})
 
 const label = computed<string>(() => (isOpen.value
   ? i18n.t('component.dashboard_page_detail_pane_toggle.collapse')
@@ -21,19 +46,19 @@ const label = computed<string>(() => (isOpen.value
 <template>
   <ActionTooltip
     :label="label"
-    :keyboard-shortcut="{
-      key: 'I',
-      meta: true,
-    }"
+    :keyboard-shortcut="toggleDetailPaneAction.keyboardShortcut"
   >
-    <ClickableElement @click="toggleIsOpen">
+    <ActionTrigger
+      :current-context-only="false"
+      :action="toggleDetailPaneAction"
+    >
       <Toggle
         :model-value="isOpen"
         :data-state="isOpen ? 'open' : 'closed'"
         :aria-label="label"
         class="
           group/toggle -mr-xxs flex size-6 items-center justify-center
-          duration-150
+          rounded-sm duration-150
           hover:bg-secondary-hover
         "
       >
@@ -55,6 +80,6 @@ const label = computed<string>(() => (isOpen.value
           />
         </div>
       </Toggle>
-    </ClickableElement>
+    </ActionTrigger>
   </ActionTooltip>
 </template>

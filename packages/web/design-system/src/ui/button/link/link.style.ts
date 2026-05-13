@@ -41,7 +41,7 @@ export const createLinkStyle = tv({
     `,
     rowLayout: `
       flex items-center justify-center duration-100 [grid-area:stack]
-      group-active/link:scale-98
+      group-active/link:scale-98 group-active/link:will-change-transform
     `,
   },
   variants: {

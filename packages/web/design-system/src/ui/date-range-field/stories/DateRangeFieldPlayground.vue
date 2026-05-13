@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import type { PlainDateRange } from '@wisemen/vue-core-dates'
 import type { Temporal } from 'temporal-polyfill'
 import { ref } from 'vue'
 
 import type { DateRangeFieldProps } from '@/ui/date-range-field/dateRangeField.props'
-import type { DateRangeFieldRange } from '@/ui/date-range-field/DateRangeField.vue'
 import DateRangeField from '@/ui/date-range-field/DateRangeField.vue'
 
 const props = withDefaults(defineProps<{
@@ -33,7 +33,10 @@ const props = withDefaults(defineProps<{
   size: 'md',
 })
 
-const modelValue = ref<DateRangeFieldRange | null>(null)
+const modelValue = ref<PlainDateRange>({
+  from: null,
+  until: null,
+})
 </script>
 
 <template>

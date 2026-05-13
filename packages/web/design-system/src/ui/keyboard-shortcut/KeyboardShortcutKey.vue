@@ -14,7 +14,7 @@ const isHeld = useKeyHold(props.rawKey)
 <template>
   <kbd
     :class="{
-      'text-tertiary dark:bg-secondary': !isHeld || !enableKeyHoldVisualization,
+      'bg-primary/75 text-tertiary dark:bg-secondary': !isHeld || !enableKeyHoldVisualization,
       'bg-secondary text-primary dark:bg-tertiary': isHeld && enableKeyHoldVisualization,
     }"
     class="

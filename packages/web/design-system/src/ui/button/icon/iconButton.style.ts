@@ -45,6 +45,7 @@ export const createIconButtonStyle = tv({
     rowLayout: `
       duration-100 [grid-area:stack]
       group-not-disabled/button:group-active/button:scale-98
+      group-not-disabled/button:group-active/button:will-change-transform
     `,
   },
   variants: {
