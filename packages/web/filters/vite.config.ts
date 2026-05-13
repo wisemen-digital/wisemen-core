@@ -27,16 +27,24 @@ export default defineConfig({
 
     rollupOptions: {
       external: [
+        '@wisemen/vue-core-actions',
         '@wisemen/vue-core-dates',
         '@wisemen/vue-core-design-system',
+        '@wisemen/vue-core-icons',
+        '@wisemen/vue-core-utils',
+        'formango',
         'vue',
         'vue-i18n',
         'pinia',
       ],
       output: {
         globals: {
+          '@wisemen/vue-core-actions': 'VueCoreActions',
           '@wisemen/vue-core-dates': 'VueCoreDates',
           '@wisemen/vue-core-design-system': 'VueCoreDesignSystem',
+          '@wisemen/vue-core-icons': 'VueCoreIcons',
+          '@wisemen/vue-core-utils': 'VueCoreUtils',
+          'formango': 'Formango',
           'pinia': 'Pinia',
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',

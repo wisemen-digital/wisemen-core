@@ -32,7 +32,7 @@ const {
 } = useInjectFiltersContext()
 
 const clearFilterAction = _createUntypedAction({
-  id: 'clear-filter',
+  id: `clear-filter-${props.filter.key}`,
   name: () => i18n.t('component.filters.remove_filter'),
   execute: () => {
     clearFilter(props.filter.key, false, true)

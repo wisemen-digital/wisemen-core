@@ -43,7 +43,7 @@ const form = useForm({
   },
 })
 
-const valueField = form.register('value', props.initialValue ?? undefined)
+const valueField = form.register('value', props.initialValue)
 </script>
 
 <template>

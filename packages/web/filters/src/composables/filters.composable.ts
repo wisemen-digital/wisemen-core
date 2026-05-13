@@ -386,7 +386,15 @@ export function useFilters<TFilters extends Filter[]>(
         return false
       }
 
-      return ctx.menuType === 'commandMenu'
+      if (ctx.menuType === 'commandMenu') {
+        return true
+      }
+
+      if (ctx.metadata.filters?.hideClearAll === true) {
+        return false
+      }
+
+      return ctx.searchInput.trim().length === 0
     },
     name: () => i18n.t('component.filters.clear_filters'),
     execute: () => clearAll(),
@@ -396,6 +404,7 @@ export function useFilters<TFilters extends Filter[]>(
       key: 'F',
       shift: true,
     },
+    separatorGroup: 'clear',
   })
 
   const addFilterAction = _createUntypedAction({
@@ -411,29 +420,7 @@ export function useFilters<TFilters extends Filter[]>(
     },
     subActions: () => [
       ...filterActions.map((filterAction) => filterAction.action),
-      _createUntypedAction({
-        id: 'clear-filters',
-        isApplicable: (ctx) => {
-          if (ctx.menuType === 'commandMenu') {
-            return false
-          }
-
-          if (activeFiltersKeys.value.size === 0 || ctx.metadata.filters?.hideClearAll === true) {
-            return false
-          }
-
-          return ctx.searchInput.trim().length === 0
-        },
-        name: () => i18n.t('component.filters.clear_filters'),
-        execute: () => clearAll(),
-        group: options.actionGroup,
-        icon: () => Trash01Icon,
-        keyboardShortcut: {
-          key: 'F',
-          shift: true,
-        },
-        separatorGroup: 'clear',
-      }),
+      clearFiltersAction,
     ],
     subActionsHaveKeyboardShortcuts: true,
   })

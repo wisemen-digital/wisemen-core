@@ -48,7 +48,7 @@ function onClear(): void {
     <UIDialogHeader
       :title="props.filter.label"
       :hide-description="true"
-      description="Description"
+      description=""
     />
 
     <UIDialogBody>
