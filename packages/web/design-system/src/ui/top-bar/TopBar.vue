@@ -55,14 +55,13 @@ const {
           type="button"
           class="
             flex h-7.5 w-full max-w-60 cursor-pointer items-center gap-sm
-            rounded-lg bg-tertiary px-lg
-            hover:bg-quaternary
+            rounded-lg bg-tertiary px-md duration-100
+            hover:brightness-98
+            dark:hover:brightness-102
           "
           @click="emit('search')"
         >
-          <SearchLgIcon
-            class="size-4 shrink-0 text-quaternary"
-          />
+          <SearchLgIcon class="size-3.5 shrink-0 text-quaternary" />
           <span class="flex-1 truncate text-left text-xs text-placeholder">
             {{ t('component.top_bar.search') }}
           </span>
