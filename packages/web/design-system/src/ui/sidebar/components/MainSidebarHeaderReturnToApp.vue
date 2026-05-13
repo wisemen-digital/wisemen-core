@@ -18,6 +18,7 @@ const i18n = useI18n()
 
 const {
   isSidebarOpen,
+  closeIfFloatingSidebar,
   collapsedVariant,
   sidebarIconCellSize,
   sidebarIconSize,
@@ -51,6 +52,7 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
             grid w-full rounded-md duration-100
             hover:bg-secondary-hover
           "
+          @click="closeIfFloatingSidebar()"
         >
           <RowLayout
             :style="{
