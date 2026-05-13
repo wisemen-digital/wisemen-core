@@ -7,6 +7,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
   "files": [
     "dist/"
   ],
