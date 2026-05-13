@@ -30,6 +30,14 @@ export interface MenuItemBreadcrumb {
 export type MenuItemLeftConfig
   = {
     /**
+     * Breadcrumb path showing the item's context.
+     * Each entry is rendered with an optional icon and label, separated by chevrons.
+     */
+    breadcrumbs: MenuItemBreadcrumb[]
+    type: 'breadcrumbs'
+  }
+  | {
+    /**
      * Controls the aspect ratio of the image.
      * - `'square'` — equal width and height (default)
      * - `'rectangle'` — wider than tall, suited for landscape thumbnails
@@ -70,14 +78,6 @@ export type MenuItemLeftConfig
      */
     src?: string | null
     type: 'avatar'
-  }
-  | {
-    /**
-     * Breadcrumb path showing the item's context.
-     * Each entry is rendered with an optional icon and label, separated by chevrons.
-     */
-    breadcrumbs: MenuItemBreadcrumb[]
-    type: 'breadcrumbs'
   }
 
 export interface MenuItemConfig {
