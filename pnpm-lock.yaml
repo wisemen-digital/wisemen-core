@@ -2350,6 +2350,9 @@ importers:
       '@vueuse/router':
         specifier: catalog:vue
         version: 14.1.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/vue-core-dates':
+        specifier: workspace:*
+        version: link:../dates
       '@wisemen/vue-core-icons':
         specifier: workspace:*
         version: link:../icons
