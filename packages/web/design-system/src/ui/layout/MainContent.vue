@@ -6,6 +6,7 @@ import {
 import { computed } from 'vue'
 
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import TopBar from '@/ui/top-bar/TopBar.vue'
 
 const {
   isFloatingSidebar,
@@ -48,6 +49,7 @@ const contentPaddingLeft = computed<string>(() => {
     }"
     class="flex size-full flex-col overflow-hidden bg-secondary p-md"
   >
+    <TopBar />
     <slot />
   </Motion>
 </template>

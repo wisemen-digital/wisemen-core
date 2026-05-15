@@ -67,7 +67,7 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
                   width: sidebarIconSize,
                   height: sidebarIconSize,
                 }"
-                class="shrink-0 text-fg-quaternary"
+                class="shrink-0 text-secondary"
               />
             </RowLayout>
             <MainSidebarFadeTransition>
@@ -76,7 +76,7 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
                 align="center"
                 class="overflow-hidden pr-md"
               >
-                <span class="truncate text-xs font-medium text-secondary">{{ i18n.t('components.sidebar.return_to_app') }}</span>
+                <span class="truncate text-xs text-secondary">{{ i18n.t('components.sidebar.return_to_app') }}</span>
               </RowLayout>
             </MainSidebarFadeTransition>
           </RouterLink>

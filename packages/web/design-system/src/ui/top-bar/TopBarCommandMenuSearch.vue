@@ -21,16 +21,16 @@ const commandMenuAction = useCommandMenuAction()
       <button
         type="button"
         class="
-          flex h-6.5 w-full max-w-60 cursor-pointer items-center gap-sm
-          rounded-md bg-fg-primary/5 pr-sm pl-md duration-100
+          flex h-7 w-full max-w-60 cursor-pointer items-center gap-sm rounded-md
+          bg-fg-primary/4 pr-sm pl-md duration-100
           hover:bg-fg-primary/7 hover:brightness-98
           dark:bg-primary/90
-          dark:hover:bg-primary/90 dark:hover:brightness-105
+          dark:hover:bg-primary/90 dark:hover:brightness-110
         "
       >
         <SearchLgIcon class="size-3.5 shrink-0 text-quaternary" />
 
-        <span class="flex-1 truncate text-left text-xs text-placeholder">
+        <span class="flex-1 truncate text-left text-xxs text-placeholder">
           {{ i18n.t('component.top_bar.search') }}
         </span>
 

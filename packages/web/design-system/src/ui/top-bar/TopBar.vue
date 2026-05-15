@@ -17,7 +17,7 @@ const {
 
       <Separator
         v-if="breadcrumbs.length > 0 || title !== null"
-        class="mr-lg ml-md h-4.5 bg-quaternary"
+        class="mr-lg ml-md h-4"
         orientation="vertical"
       />
 
@@ -25,12 +25,13 @@ const {
         <h1 class="sr-only">
           {{ title }}
         </h1>
+
         <DashboardPageHeaderBreadcrumbs :breadcrumbs="breadcrumbs" />
       </template>
 
       <h1
         v-else-if="title !== null"
-        class="text-sm font-medium text-primary"
+        class="text-xs text-primary"
       >
         {{ title }}
       </h1>
