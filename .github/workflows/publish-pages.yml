@@ -3,7 +3,7 @@ name: Publish Docs & Storybook to GitHub Pages
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
   workflow_call:
 jobs:
@@ -18,8 +18,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ inputs.node-version }}
-          cache: 'pnpm'
+          node-version: 24
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build storybook
