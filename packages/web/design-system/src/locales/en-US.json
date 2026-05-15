@@ -50,7 +50,7 @@
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
   "component.toast.close.label": "Close",
-  "component.top_bar.search": "Search...",
+  "component.top_bar.search": "Type a command or search...",
   "component.unsaved_changes_dialog.cancel": "Keep editing",
   "component.unsaved_changes_dialog.confirm": "Discard changes",
   "component.unsaved_changes_dialog.description": "You have unsaved changes. Are you sure you want to leave?",

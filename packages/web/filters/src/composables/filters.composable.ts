@@ -2,7 +2,10 @@ import type {
   Action,
   ActionGroup,
 } from '@wisemen/vue-core-actions'
-import { _createUntypedAction } from '@wisemen/vue-core-actions'
+import {
+  _createUntypedAction,
+  useTemporaryActions,
+} from '@wisemen/vue-core-actions'
 import type { PlainDateRange } from '@wisemen/vue-core-dates'
 import { useOverlay } from '@wisemen/vue-core-design-system'
 import {
@@ -25,6 +28,7 @@ import { useI18n } from 'vue-i18n'
 
 import FiltersDialogDateRangeFilter from '@/components/FiltersDialogDateRangeFilter.vue'
 import FiltersDialogNumberFilter from '@/components/FiltersDialogNumberFilter.vue'
+import { useProvideFiltersContext } from '@/context/filters.context'
 
 export type SelectFilterValue = number | string | Record<string, any>
 
@@ -191,7 +195,6 @@ interface UseFiltersReturn<TFilters extends Filter[]> {
   activeFilters: ComputedRef<FilterWithAction<Filter>[]>
   clearAll: () => void
   clearFilter: (key: string, onlyIfEmpty?: boolean, onlyIfNotStatic?: boolean) => void
-  clearFiltersAction: Action
   setOpenFilter: (filterKey: string | null) => void
   values: Ref<FilterValues<TFilters>, any>
 }
@@ -381,21 +384,7 @@ export function useFilters<TFilters extends Filter[]>(
 
   const clearFiltersAction = _createUntypedAction({
     id: 'clear-filters',
-    isApplicable: (ctx) => {
-      if (activeFiltersKeys.value.size === 0) {
-        return false
-      }
-
-      if (ctx.menuType === 'commandMenu') {
-        return true
-      }
-
-      if (ctx.metadata.filters?.hideClearAll === true) {
-        return false
-      }
-
-      return ctx.searchInput.trim().length === 0
-    },
+    isApplicable: (ctx) => activeFiltersKeys.value.size > 0 && ctx.menuType !== 'contextualMenu',
     name: () => i18n.t('component.filters.clear_filters'),
     execute: () => clearAll(),
     group: options.actionGroup,
@@ -404,7 +393,6 @@ export function useFilters<TFilters extends Filter[]>(
       key: 'F',
       shift: true,
     },
-    separatorGroup: 'clear',
   })
 
   const addFilterAction = _createUntypedAction({
@@ -420,7 +408,33 @@ export function useFilters<TFilters extends Filter[]>(
     },
     subActions: () => [
       ...filterActions.map((filterAction) => filterAction.action),
-      clearFiltersAction,
+      _createUntypedAction({
+        id: 'add-filters-action-clear-filters',
+        isApplicable: (ctx) => {
+          if (activeFiltersKeys.value.size === 0) {
+            return false
+          }
+
+          if (ctx.menuType !== 'contextualMenu') {
+            return false
+          }
+
+          if (ctx.metadata.filters?.hideClearAll === true) {
+            return false
+          }
+
+          return ctx.searchInput.trim().length === 0
+        },
+        name: () => i18n.t('component.filters.clear_filters'),
+        execute: () => clearAll(),
+        group: options.actionGroup,
+        icon: () => Trash01Icon,
+        keyboardShortcut: {
+          key: 'F',
+          shift: true,
+        },
+        separatorGroup: 'clear',
+      }),
     ],
     subActionsHaveKeyboardShortcuts: true,
   })
@@ -560,16 +574,21 @@ export function useFilters<TFilters extends Filter[]>(
     }
   }
 
-  return {
+  useTemporaryActions(clearFiltersAction)
+
+  const returnObj = {
     action: addFilterAction,
     actionGroup: options.actionGroup,
     activeFilters,
     clearAll,
     clearFilter,
-    clearFiltersAction,
     setOpenFilter,
     values: values as unknown as Ref<FilterValues<TFilters>, any>,
   }
+
+  useProvideFiltersContext(returnObj)
+
+  return returnObj
 }
 
 export type Filters = ReturnType<typeof useFilters>

@@ -41,9 +41,5 @@ export function useActionGroup() {
       name: i18n.t('action.group.preferences'),
       priority: GroupPriority.PREFERENCES,
     },
-    user: {
-      name: i18n.t('action.group.user'),
-      priority: GroupPriority.MODEL,
-    },
   } satisfies Record<string, ActionGroup>
 }

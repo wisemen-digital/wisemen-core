@@ -14,6 +14,10 @@ export function useTemporaryActions(
   let registeredIds: number[] = []
 
   function register(): void {
+    if (registeredIds.length > 0) {
+      return
+    }
+
     const actionsArray = Array.isArray(actions)
       ? actions
       : [

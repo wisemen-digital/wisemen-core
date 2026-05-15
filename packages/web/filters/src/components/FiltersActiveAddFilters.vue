@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTemporaryActions } from '@wisemen/vue-core-actions'
 import {
   _UIActionDropdownMenu as UIActionDropdownMenu,
   UIIconButton,
@@ -13,10 +12,8 @@ import { useInjectFiltersContext } from '@/context/filters.context'
 const i18n = useI18n()
 
 const {
-  action, clearFiltersAction,
+  action,
 } = useInjectFiltersContext()
-
-useTemporaryActions(clearFiltersAction)
 
 const containerRef = useTemplateRef('container')
 const referenceRef = useTemplateRef('reference')
