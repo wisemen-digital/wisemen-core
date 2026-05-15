@@ -10,8 +10,8 @@ export const createBaseRadioGroupStyle = tv({
     `,
     control: `
       relative mt-px flex size-4 items-center justify-center overflow-hidden
-      rounded-full border border-solid border-secondary outline-2 outline-offset-1
-      outline-transparent duration-300
+      rounded-full border border-solid border-secondary outline-2
+      outline-offset-1 outline-transparent duration-300
       group-focus-visible/radio-group-item:outline-brand-600
       group-disabled/radio-group-item:bg-disabled-subtle
       group-data-active/radio-group-item:border-brand-600

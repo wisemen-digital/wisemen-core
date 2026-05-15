@@ -7,21 +7,17 @@ const props = withDefaults(defineProps<SkeletonItemProps>(), {
 })
 </script>
 
-<!-- eslint-disable better-tailwindcss/no-unknown-classes -->
 <template>
   <div
     :aria-busy="true"
-    class="
-      relative overflow-hidden rounded-md bg-tertiary
-      dark:bg-secondary
-    "
+    class="relative overflow-hidden rounded-md bg-tertiary"
     role="status"
     aria-live="polite"
   >
     <div
       v-if="props.animate"
       :style="{ animationDelay: `${props.animationDelayInMs}ms` }"
-      class="shimmer absolute inset-0"
+      class="custom-shimmer absolute inset-0"
     />
   </div>
 </template>
@@ -36,7 +32,7 @@ const props = withDefaults(defineProps<SkeletonItemProps>(), {
   }
 }
 
-.shimmer {
+.custom-shimmer {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   animation: shimmer 1.5s infinite;
 }
