@@ -28,7 +28,7 @@
     "docs:gen-eslint": "cd ./packages/eslint-config && npx @eslint/config-inspector build --base /wisemen-core/eslint-inspector --outDir ../../docs/public/eslint-inspector --config ./src/inspector.ts",
     "precommit": "turbo run lint type-check test",
     "ci": "turbo run build test lint type-check",
-    "build-storybook": "NODE_OPTIONS=--max-old-space-size=8192 storybook build -c ./packages/web/design-system/.storybook -o ./static/storybook"
+    "build-storybook": "turbo run story:build --filter @wisemen/vue-core-design-system"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.6.0",
