@@ -17,10 +17,22 @@ const props = defineProps<{
 }>()
 
 const {
-  register, unregister,
+  register: registerActions, unregister: unregisterActions,
 } = useTemporaryActions(props.actions, GroupPriority.HOVER, true)
 
-useFocusedModels(computed(() => props.models ?? []))
+const {
+  register: registerModels, unregister: unregisterModels,
+} = useFocusedModels(computed(() => props.models ?? []))
+
+function register(): void {
+  registerActions()
+  registerModels()
+}
+
+function unregister(): void {
+  unregisterActions()
+  unregisterModels()
+}
 </script>
 
 <template>
