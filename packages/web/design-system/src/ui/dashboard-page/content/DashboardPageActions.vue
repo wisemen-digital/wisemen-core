@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
 
-import DashboardPageContainer from '@/ui/page/DashboardPageContainer.vue'
-import { useDetailPanePadding } from '@/ui/page/detailPanePadding.composable'
+import DashboardPageContainer from '@/ui/dashboard-page/DashboardPageContainer.vue'
+import { useDetailPanePadding } from '@/ui/dashboard-page/detail-pane/detailPanePadding.composable'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 
 const {

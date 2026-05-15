@@ -1,7 +1,7 @@
 import { useReducedMotion } from 'motion-v'
 import { computed } from 'vue'
 
-import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
+import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 
 export function useDetailPanePadding() {
   const detailPaneContext = useInjectDetailPaneContext(null)

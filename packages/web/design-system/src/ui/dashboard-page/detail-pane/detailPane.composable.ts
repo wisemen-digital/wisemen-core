@@ -12,7 +12,7 @@ import {
 import type {
   DetailPaneStorage,
   DetailPaneVariant,
-} from '@/ui/page/detailPane.type'
+} from '@/ui/dashboard-page/detail-pane/detailPane.type'
 
 const DEFAULT_WIDTH = '20rem'
 const DEFAULT_MIN_WIDTH = '16rem'

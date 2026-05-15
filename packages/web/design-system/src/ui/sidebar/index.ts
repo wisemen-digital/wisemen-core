@@ -1,6 +1,7 @@
 export { default as UIMainSidebarFooterAccountCard } from './components/MainSidebarFooterAccountCard.vue'
 export { default as UIMainSidebarFooterFeaturedCard } from './components/MainSidebarFooterFeaturedCard.vue'
 export { default as UIMainSidebarGlobalSearch } from './components/MainSidebarGlobalSearch.vue'
+export { default as UIMainSidebarHeaderContainer } from './components/MainSidebarHeaderContainer.vue'
 export { default as UIMainSidebarHeaderLogoWithText } from './components/MainSidebarHeaderLogoWithText.vue'
 export { default as UIMainSidebarHeaderReturnToApp } from './components/MainSidebarHeaderReturnToApp.vue'
 export { default as UIMainSidebarNavigationGroup } from './components/MainSidebarNavigationGroup.vue'

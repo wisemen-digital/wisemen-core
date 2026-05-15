@@ -1,13 +1,14 @@
 import { CalendarDate } from '@internationalized/date'
 import type { PlainDate } from '@wisemen/vue-core-dates'
 import type { DateValue } from 'reka-ui'
-import { injectConfigProviderContext } from 'reka-ui'
 import { Temporal } from 'temporal-polyfill'
 import type { Ref } from 'vue'
 import {
   computed,
   shallowRef,
 } from 'vue'
+
+import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 
 interface UseDatePickerOptions {
   maxDate: Ref<PlainDate | null>
@@ -22,9 +23,9 @@ export function useDatePicker({
 }: UseDatePickerOptions) {
   const {
     locale: configLocale,
-  } = injectConfigProviderContext()
+  } = useInjectConfigContext()
 
-  const locale = computed<string>(() => configLocale?.value ?? navigator.language)
+  const locale = computed<string>(() => configLocale.value ?? navigator.language)
 
   const todayDate = Temporal.Now.plainDateISO()
   const calendarPlaceholder = shallowRef<CalendarDate>(

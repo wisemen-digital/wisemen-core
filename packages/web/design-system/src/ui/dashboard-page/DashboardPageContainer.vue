@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
 
 <template>
   <div
-    :class="twMerge(`mx-auto flex w-full flex-col px-2xl`, props.class)"
+    :class="twMerge(`mx-auto flex w-full flex-col px-xl`, props.class)"
   >
     <slot />
   </div>

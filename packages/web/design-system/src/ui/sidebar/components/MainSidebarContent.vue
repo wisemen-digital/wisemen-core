@@ -11,7 +11,11 @@ const {
     class="flex h-full flex-col justify-between overflow-hidden text-primary"
   >
     <div
-      :style="{ padding: sidebarContainerPadding }"
+      :style="{
+        paddingLeft: sidebarContainerPadding,
+        paddingRight: sidebarContainerPadding,
+        paddingBottom: sidebarContainerPadding,
+      }"
     >
       <slot name="header" />
     </div>

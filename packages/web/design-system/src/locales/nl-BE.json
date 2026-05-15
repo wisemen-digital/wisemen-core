@@ -1,4 +1,5 @@
 {
+  "action.global.open_command_menu.name": "Command menu openen",
   "action.global.toggle_detail_pane.keywords": "dicht open detailpaneel",
   "action.global.toggle_detail_pane.name": "Detailpaneel verbergen/tonen",
   "action.global.toggle_main_sidebar.keywords": "dicht open menu navigatie",
@@ -48,6 +49,7 @@
   "component.tabs.scroll_left": "Naar links scrollen",
   "component.tabs.scroll_right": "Naar rechts scrollen",
   "component.toast.close.label": "Sluiten",
+  "component.top_bar.search": "Zoeken...",
   "component.unsaved_changes_dialog.cancel": "Blijven bewerken",
   "component.unsaved_changes_dialog.confirm": "Weggooien",
   "component.unsaved_changes_dialog.description": "Je hebt niet-opgeslagen wijzigingen. Weet je zeker dat je wilt weggaan?",
