@@ -20,7 +20,7 @@
     "type-check": "turbo run type-check",
     "cleanup": "turbo run cleanup && rimraf .turbo dist coverage .eslintcache",
     "story:dev": "turbo watch story:dev",
-    "story:build": "turbo run story:build",
+    "story:build": "turbo run story:build --filter @wisemen/vue-core-design-system",
     "changeset:release": "pnpm build && changeset publish",
     "docs:dev": "turbo watch docs:dev",
     "docs:build": "turbo run docs:build",

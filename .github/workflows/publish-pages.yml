@@ -22,18 +22,14 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build icons
-        run: pnpm --filter @wisemen/vue-core-icons build
-      - name: Build actions
-        run: pnpm --filter @wisemen/vue-core-actions build
-      - name: Build dates
-        run: pnpm --filter @wisemen/vue-core-dates build
       - name: Build storybook
-        run: pnpm build-storybook
+        run: pnpm story:build
       - name: Build docs
         run: pnpm docs:build
       - name: Copy static files
         run: |
+          mkdir -p static/storybook
+          cp -r packages/web/design-system/storybook-static/* static/storybook/
           mkdir -p static/docs
           cp -r docs/.vitepress/dist/* static/docs/
       - name: Store archive
