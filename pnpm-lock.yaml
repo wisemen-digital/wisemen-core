@@ -1484,6 +1484,40 @@ importers:
         specifier: catalog:peer
         version: 5.9.3
 
+  packages/api/nestjs-pdf:
+    dependencies:
+      axios:
+        specifier: catalog:backend
+        version: 1.15.2
+    devDependencies:
+      '@nestjs/common':
+        specifier: catalog:backend
+        version: 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.6.1)
+      expect:
+        specifier: catalog:test
+        version: 30.2.0
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      playwright:
+        specifier: catalog:test
+        version: 1.57.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/nestjs-redis:
     dependencies:
       '@nestjs/common':
