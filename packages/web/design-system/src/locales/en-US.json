@@ -1,4 +1,5 @@
 {
+  "action.global.open_command_menu.name": "Open command menu",
   "action.global.toggle_detail_pane.keywords": "collapse detail pane",
   "action.global.toggle_detail_pane.name": "Toggle detail pane",
   "action.global.toggle_main_sidebar.keywords": "collapse navigation",
@@ -48,6 +49,7 @@
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
   "component.toast.close.label": "Close",
+  "component.top_bar.search": "Search...",
   "component.unsaved_changes_dialog.cancel": "Keep editing",
   "component.unsaved_changes_dialog.confirm": "Discard changes",
   "component.unsaved_changes_dialog.description": "You have unsaved changes. Are you sure you want to leave?",

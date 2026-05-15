@@ -6,9 +6,9 @@ import {
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useInjectDetailPaneContext } from '@/ui/page/detailPane.context'
-import type { DetailPaneStyle } from '@/ui/page/detailPane.style'
-import { createDetailPaneStyle } from '@/ui/page/detailPane.style'
+import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
+import type { DetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
+import { createDetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
 
 const {
   isResizable,

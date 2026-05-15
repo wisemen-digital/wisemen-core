@@ -10,7 +10,6 @@ import {
   LifeBuoy01Icon,
   PlusIcon,
   Rows01Icon,
-  SearchMdIcon,
   Settings01Icon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
@@ -20,23 +19,24 @@ import {
   ref,
 } from 'vue'
 
+import { UIBadge } from '@/ui/badge'
 import {
   UIButton,
   UIIconButton,
 } from '@/ui/button/index'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
+import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
+import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
+import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
-import MainLayoutContainer from '@/ui/layout/MainLayoutContainer.vue'
-import type { PageBreadcrumb } from '@/ui/page/dashboardPage.type'
-import DashboardPage from '@/ui/page/DashboardPage.vue'
-import DashboardPageActions from '@/ui/page/DashboardPageActions.vue'
-import DashboardPageContent from '@/ui/page/DashboardPageContent.vue'
-import DashboardPageHeaderMasterActionButton from '@/ui/page/DashboardPageHeaderMasterActionButton.vue'
+import MainLayout from '@/ui/layout/MainLayout.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
 import MainSidebarGlobalSearch from '@/ui/sidebar/components/MainSidebarGlobalSearch.vue'
 import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHeaderLogoWithText.vue'
+import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHeaderReturnToApp.vue'
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
@@ -44,6 +44,7 @@ import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 import { UIText } from '@/ui/text/index'
+import TopBar from '@/ui/top-bar/TopBar.vue'
 
 interface NavigationGroup {
   label: string
@@ -143,14 +144,19 @@ const tabsModelValue = ref<string>('tab1')
       relative flex w-full overflow-hidden rounded-lg border border-primary
     "
   >
-    <MainLayoutContainer
+    <MainLayout
       class="h-[80dvh]!"
     >
       <MainSidebar
         collapsed-variant="minified"
       >
         <template #header>
+          <MainSidebarHeaderReturnToApp
+            v-if="false"
+            to="/"
+          />
           <MainSidebarHeaderLogoWithText
+            v-if="true"
             url="../../../storybook-assets/wisemen-logo.png"
             name="Wisemen"
           >
@@ -211,6 +217,16 @@ const tabsModelValue = ref<string>('tab1')
       </MainSidebar>
 
       <MainContent>
+        <TopBar>
+          <template #actions>
+            <UIBadge
+              :icon="Bell01Icon"
+              color="warning"
+              label="3 Alerts"
+            />
+          </template>
+        </TopBar>
+
         <DashboardPage
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
@@ -222,16 +238,6 @@ const tabsModelValue = ref<string>('tab1')
           }"
           title="Dashboard"
         >
-          <template #header-master-actions>
-            <DashboardPageHeaderMasterActionButton
-              :icon="Bell01Icon"
-              label="Notifications"
-            />
-            <DashboardPageHeaderMasterActionButton
-              :icon="SearchMdIcon"
-              label="global search"
-            />
-          </template>
           <template #header-action-left>
             <RowLayout>
               <Tabs
@@ -328,6 +334,6 @@ const tabsModelValue = ref<string>('tab1')
           </template>
         </DashboardPage>
       </MainContent>
-    </MainLayoutContainer>
+    </MainLayout>
   </div>
 </template>

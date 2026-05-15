@@ -4,7 +4,7 @@ import type {
 } from 'vue'
 
 import { useContext } from '@/composables/context.composable'
-import type { DetailPaneVariant } from '@/ui/page/detailPane.type'
+import type { DetailPaneVariant } from '@/ui/dashboard-page/detail-pane/detailPane.type'
 
 export interface DetailPaneContext {
   isFloatingDetailPane: ComputedRef<boolean>
