@@ -11,19 +11,27 @@ import type { PdfNamedPageFormat } from '@/types/pdfPageFormat.type'
 import { PdfPageSizeUtil } from '@/utils/pdfPageSize.util'
 import type {
   Html2PdfBeforeGeneratePayload,
+  Html2PdfCanvasOptions,
   Html2PdfGenerateResult,
+  Html2PdfImageOptions,
   Html2PdfImageType,
+  Html2PdfJsPdfOptions,
+  Html2PdfOptions,
   Html2PdfPagebreakOptions,
 } from './html2Pdf.types'
 
 const props = withDefaults(defineProps<{
   filename: string
   format?: PdfNamedPageFormat
+  html2canvas?: Html2PdfCanvasOptions
   imageQuality?: number
+  image?: Html2PdfImageOptions
   imageType?: Html2PdfImageType
   isDownloadEnabled?: boolean
   isImageFixEnabled?: boolean
   isPreviewEnabled?: boolean
+  jsPdf?: Html2PdfJsPdfOptions
+  options?: Html2PdfOptions
   pagebreak?: Html2PdfPagebreakOptions
   previewTitle?: string
   quality?: number
@@ -55,6 +63,8 @@ const emit = defineEmits<{
 }>()
 
 const pdfContentRef = ref<HTMLElement | null>(null)
+const generatedBlob = ref<Blob | null>(null)
+const isGenerating = ref<boolean>(false)
 const progress = ref<number>(0)
 const previewUrl = ref<string | null>(null)
 
@@ -77,38 +87,52 @@ function setProgress(value: number): void {
   emit('progress', value)
 }
 
-function createOptions(): Record<string, unknown> {
+const generationState = computed(() => ({
+  blob: generatedBlob.value,
+  isGenerating: isGenerating.value,
+  previewUrl: previewUrl.value,
+  progress: progress.value,
+}))
+
+function createOptions(): Html2PdfOptions {
   return {
-    enableLinks: true,
-    filename: props.filename,
+    ...props.options,
+    enableLinks: props.options?.enableLinks ?? true,
+    filename: props.options?.filename ?? props.filename,
     hotfix: [
       'px_scaling',
+      ...(props.options?.hotfix ?? []),
     ],
     html2canvas: {
       letterRendering: false,
       scale: props.quality,
       useCORS: true,
+      ...props.options?.html2canvas,
+      ...props.html2canvas,
     },
     image: {
       quality: props.imageQuality,
       type: props.imageType,
+      ...props.options?.image,
+      ...props.image,
     },
     jsPDF: {
       format: [
         pdfFormatPixels.value.width,
         pdfFormatPixels.value.height,
       ],
-      orientation: '',
       precision: 1,
       unit: 'px',
+      ...props.options?.jsPDF,
+      ...props.jsPdf,
     },
-    margin: [
+    margin: props.options?.margin ?? [
       0,
       0,
       0,
       0,
     ],
-    pagebreak: props.pagebreak,
+    pagebreak: props.pagebreak ?? props.options?.pagebreak,
   }
 }
 
@@ -137,6 +161,7 @@ async function generate(): Promise<Blob> {
   }
 
   emit('startPagination')
+  isGenerating.value = true
   setProgress(0)
   setProgress(25)
   emit('paginated')
@@ -146,12 +171,12 @@ async function generate(): Promise<Blob> {
   emit('beforeGenerate', {
     element,
     options,
-  })
+  } as Html2PdfBeforeGeneratePayload)
 
   try {
     const blob = await withImageFix(async () => {
       const pdf = await html2pdf()
-        .set(options)
+        .set(options as Record<string, unknown>)
         .from(element)
         .toContainer()
         .toPdf()
@@ -162,6 +187,7 @@ async function generate(): Promise<Blob> {
 
     const objectUrl = setPreviewBlob(blob)
 
+    generatedBlob.value = blob
     previewUrl.value = objectUrl
     setProgress(100)
 
@@ -175,6 +201,8 @@ async function generate(): Promise<Blob> {
     emit('error', error)
 
     throw error
+  } finally {
+    isGenerating.value = false
   }
 }
 
@@ -217,7 +245,12 @@ defineExpose({
   closePreview,
   download,
   generate,
+  generatedBlob,
+  generationState,
+  isGenerating,
   preview,
+  previewUrl,
+  progress,
   revokePreviewUrl: revokeGeneratedObjectUrl,
 })
 </script>

@@ -104,11 +104,29 @@ Example:
 <script setup lang="ts">
 import {
   Html2PdfGenerator,
+  type Html2PdfCanvasOptions,
   type Html2PdfGeneratorExpose,
+  type Html2PdfOptions,
+  type Html2PdfPagebreakOptions,
 } from '@wisemen/vue-core-pdf/html2pdf'
 import { ref } from 'vue'
 
 const generator = ref<Html2PdfGeneratorExpose | null>(null)
+
+const pagebreak: Html2PdfPagebreakOptions = {
+  avoid: ['.keep-together', '.line-item'],
+  before: ['.new-page'],
+  mode: ['css', 'legacy'],
+}
+
+const html2canvas: Html2PdfCanvasOptions = {
+  scale: 3,
+  useCORS: true,
+}
+
+const options: Html2PdfOptions = {
+  margin: 0,
+}
 
 async function download(): Promise<void> {
   await generator.value?.download()
@@ -124,6 +142,9 @@ async function download(): Promise<void> {
     ref="generator"
     filename="order.pdf"
     format="a5"
+    :html2canvas="html2canvas"
+    :options="options"
+    :pagebreak="pagebreak"
   >
     <div class="h-[var(--html2pdf-page-height)] w-[var(--html2pdf-page-width)] bg-white">
       PDF content
@@ -139,7 +160,12 @@ interface Html2PdfGeneratorExpose {
   closePreview: () => void
   download: () => Promise<Blob>
   generate: () => Promise<Blob>
+  generatedBlob: Blob | null
+  generationState: Html2PdfGenerationState
+  isGenerating: boolean
   preview: () => Promise<string>
+  previewUrl: string | null
+  progress: number
   revokePreviewUrl: () => void
 }
 ```
@@ -151,3 +177,6 @@ Notes:
 - `html2pdf.js` rasterizes DOM through canvas. Prefer server-generated PDFs for official/legal/email documents.
 - The adapter provides `--html2pdf-page-width` and `--html2pdf-page-height` CSS variables to slotted content.
 - Pagebreak selectors default to `.custom-page-break-before`, `.custom-page-break-after`, and `.custom-page-break-avoid`.
+- Pass `pagebreak` explicitly for business-critical templates; prefer semantic classes such as `.keep-together`, `.new-page`, or `.line-item` over layout-dependent selectors.
+- `html2canvas`, `jsPdf`, `image`, and `options` props let consuming apps tune rendering while preserving package defaults.
+- Dedicated props are merged after nested `options` values, so `:html2canvas="{ scale: 3 }"` overrides `:options="{ html2canvas: { scale: 2 } }"`.

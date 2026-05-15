@@ -45,10 +45,11 @@ function createHtml2PdfWorkerMock() {
   return worker
 }
 
-function mountComponent(): ReturnType<typeof mount> {
+function mountComponent(props: Record<string, unknown> = {}): ReturnType<typeof mount> {
   return mount(Html2PdfGenerator, {
     props: {
       filename: 'invoice.pdf',
+      ...props,
     },
     slots: {
       default: '<div>PDF content</div>',
@@ -80,6 +81,16 @@ describe('Html2PdfGenerator', () => {
     expect(mocks.html2pdf).toHaveBeenCalledOnce()
     expect(mocks.set).toHaveBeenCalledOnce()
     expect(mocks.from).toHaveBeenCalledWith(expect.any(HTMLElement))
+    expect(generator.isGenerating).toBe(false)
+    expect(generator.progress).toBe(100)
+    expect(generator.generatedBlob).toBe(blob)
+    expect(generator.previewUrl).toBe('blob:pdf')
+    expect(generator.generationState).toEqual({
+      blob,
+      isGenerating: false,
+      previewUrl: 'blob:pdf',
+      progress: 100,
+    })
     expect(URL.createObjectURL).toHaveBeenCalledOnce()
     expect(wrapper.emitted('generated')).toEqual([[
       {
@@ -114,6 +125,68 @@ describe('Html2PdfGenerator', () => {
     expect(wrapper.emitted('downloaded')).toEqual([[blob]])
   })
 
+  it('merges custom pagebreak and rendering options', async () => {
+    const wrapper = mountComponent({
+      html2canvas: {
+        scale: 3,
+      },
+      image: {
+        quality: 0.8,
+        type: 'png',
+      },
+      jsPdf: {
+        precision: 4,
+      },
+      options: {
+        enableLinks: false,
+        html2canvas: {
+          logging: true,
+          scale: 1,
+        },
+        image: {
+          quality: 0.5,
+        },
+        jsPDF: {
+          compress: true,
+        },
+        margin: 8,
+      },
+      pagebreak: {
+        avoid: ['.keep-together'],
+        before: ['.page-start'],
+        mode: ['css', 'legacy'],
+      },
+    })
+
+    const generator = wrapper.vm as unknown as Html2PdfGeneratorExpose
+
+    await generator.generate()
+
+    expect(mocks.set).toHaveBeenCalledWith(expect.objectContaining({
+      enableLinks: false,
+      html2canvas: expect.objectContaining({
+        logging: true,
+        scale: 3,
+        useCORS: true,
+      }),
+      image: {
+        quality: 0.8,
+        type: 'png',
+      },
+      jsPDF: expect.objectContaining({
+        compress: true,
+        precision: 4,
+        unit: 'px',
+      }),
+      margin: 8,
+      pagebreak: {
+        avoid: ['.keep-together'],
+        before: ['.page-start'],
+        mode: ['css', 'legacy'],
+      },
+    }))
+  })
+
   it('revokes the generated object URL when closing the preview', async () => {
     const wrapper = mountComponent()
 
@@ -123,5 +196,6 @@ describe('Html2PdfGenerator', () => {
     generator.closePreview()
 
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:pdf')
+    expect(generator.previewUrl).toBeNull()
   })
 })
