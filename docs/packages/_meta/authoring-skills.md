@@ -21,8 +21,6 @@ packages/{web,api}/<your-package>/
     └── <other-skill>/SKILL.md
 ```
 
-Reference: [`packages/web/api-utils/skills/`](../../../packages/web/api-utils/skills/) and [`packages/web/formango/skills/`](../../../packages/web/formango/skills/).
-
 ## SKILL.md format
 
 Each `SKILL.md` is a YAML frontmatter block followed by Markdown.
@@ -107,8 +105,3 @@ Once your skills ship, a consumer who has `@wisemen/skills-cli` set up runs `pnp
 - An `llms.txt` index entry — for the emerging cross-LLM standard.
 
 You don't need to know which adapters they use. Author the skill once; the CLI handles the rest.
-
-## Further reading
-
-- CLI: [`packages/tools/skills-cli/`](../../../packages/tools/skills-cli/)
-- Working examples: [`packages/web/api-utils/skills/`](../../../packages/web/api-utils/skills/), [`packages/web/formango/skills/`](../../../packages/web/formango/skills/)
