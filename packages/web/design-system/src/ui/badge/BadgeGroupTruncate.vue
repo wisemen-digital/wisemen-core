@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
 import { computed } from 'vue'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
@@ -8,31 +7,15 @@ import AdaptiveContentBlock from '@/ui/adaptive-content/AdaptiveContentBlock.vue
 import type { BadgeProps } from '@/ui/badge/badge.props'
 import Badge from '@/ui/badge/Badge.vue'
 import BadgeGroup from '@/ui/badge/BadgeGroup.vue'
-import type { DotColor } from '@/ui/dot/dot.props'
-
-export interface BadgeData {
-  avatar?: {
-    name: string
-    src?: string | null
-  } | null
-  dot?: {
-    color: DotColor
-  } | null
-  icon?: Component | null
-  label: string
-}
 
 const props = withDefaults(defineProps<{
-  badges: BadgeData[]
-  color: BadgeProps['color']
+  badges: BadgeProps[]
   maxVisibleCount?: number | null
-  size: BadgeProps['size']
-  variant: BadgeProps['variant']
 }>(), {
   maxVisibleCount: null,
 })
 
-const maxVisibleBadges = computed<BadgeData[]>(() => {
+const maxVisibleBadges = computed<BadgeProps[]>(() => {
   if (props.maxVisibleCount === null) {
     return props.badges
   }
@@ -70,18 +53,10 @@ function getHiddenBadgesLabels(hiddenCount: number): string {
     <BadgeGroup :no-wrap="true">
       <AdaptiveContentBlock
         v-for="(badge, badgeIndex) of maxVisibleBadges"
-        :key="badge.label"
+        :key="badgeIndex"
         :priority="badgeIndex"
       >
-        <Badge
-          :color="props.color"
-          :dot="badge.dot"
-          :avatar="badge.avatar"
-          :icon="badge.icon"
-          :label="badge.label"
-          :variant="props.variant"
-          :size="props.size"
-        />
+        <Badge v-bind="badge" />
       </AdaptiveContentBlock>
 
       <ActionTooltip
@@ -89,10 +64,9 @@ function getHiddenBadgesLabels(hiddenCount: number): string {
         :label="getHiddenBadgesLabels(hiddenBlockCount + hiddenBadgeCount)"
       >
         <Badge
-          :color="props.color"
           :label="getOverflowBadgeLabel(hiddenBlockCount + hiddenBadgeCount)"
-          :variant="props.variant"
-          :size="props.size"
+          :size="props.badges[0]?.size"
+          class="pointer-events-auto cursor-default"
         />
       </ActionTooltip>
     </BadgeGroup>
