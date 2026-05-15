@@ -1,3 +1,4 @@
+import type { ActionContext } from '@wisemen/vue-core-actions'
 import { _createUntypedAction } from '@wisemen/vue-core-actions'
 import { useI18n } from 'vue-i18n'
 
@@ -11,7 +12,7 @@ export function useCommandMenuAction() {
 
   return _createUntypedAction({
     id: 'command-menu',
-    isApplicable: (ctx) => ctx.menuType === undefined,
+    isApplicable: (ctx: ActionContext) => ctx.menuType === undefined,
     name: () => i18n.t('action.global.open_command_menu.name'),
     execute: () => {
       const isOpen = overlay.isOpen(commandMenuDialog.id)
