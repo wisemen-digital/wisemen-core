@@ -4,7 +4,7 @@ export const createBaseCheckboxStyle = tv({
   slots: {
     control: `
       relative flex size-4 items-center justify-center overflow-hidden
-      rounded-xs border border-solid border-primary outline-2 outline-offset-1
+      rounded-xs border border-solid border-secondary outline-2 outline-offset-1
       outline-transparent duration-300
       group-focus-visible/checkbox:outline-brand-600
       group-disabled/checkbox:bg-disabled-subtle

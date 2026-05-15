@@ -147,7 +147,7 @@ export const createIconButtonStyle = tv({
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:bg-primary-hover
-          dark:border-primary
+          dark:border-secondary
         `,
       },
       'tertiary': {

@@ -42,7 +42,7 @@ const ILLUSTRATION_MAP = {
       v-else-if="props.icon !== null"
       class="
         flex size-10 shrink-0 items-center justify-center rounded-lg border
-        border-primary
+        border-secondary
       "
     >
       <Component
@@ -56,7 +56,7 @@ const ILLUSTRATION_MAP = {
     >
       <UIText
         :text="props.title"
-        class="text-sm font-semibold"
+        class="text-sm font-semibold text-secondary"
       />
       <UIText
         v-if="props.description !== null"
