@@ -12,7 +12,10 @@ const dialogContext = useInjectDialogContext(null)
 </script>
 
 <template>
-  <div :class="dialogContext?.style.value.footer()">
+  <div
+    :class="dialogContext?.style.value.footer()"
+    data-dialog-footer
+  >
     <UISeparator
       v-if="props.showSeparator"
       :class="

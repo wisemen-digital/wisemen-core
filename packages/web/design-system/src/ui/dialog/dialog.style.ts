@@ -4,7 +4,10 @@ import { tv } from '@/styles/tailwindVariants.lib'
 
 export const createDialogStyle = tv({
   slots: {
-    body: 'flex-1 overflow-y-auto px-xl py-xs',
+    body: `
+      flex-1 overflow-y-auto px-xl pt-xs pb-xl
+      group-has-data-dialog-footer/dialog:pb-xs
+    `,
     chin: `
       absolute bottom-0 -z-10 w-full rounded-t-[calc(1rem+5px)] rounded-b-none
       shadow-xl transition-transform duration-200

@@ -127,7 +127,8 @@ const isTooltipDisabled = computed<boolean>(() => {
               >
                 <span
                   class="
-                    truncate text-xs font-medium text-secondary duration-100
+                    truncate text-xs font-medium whitespace-nowrap
+                    text-secondary duration-100
                     group-hover:text-primary
                     group-data-active:text-brand-secondary
                   "
