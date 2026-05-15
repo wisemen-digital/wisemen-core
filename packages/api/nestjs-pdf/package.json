@@ -1,0 +1,55 @@
+{
+  "name": "@wisemen/nestjs-pdf",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "lint:oxlint": "oxlint --type-aware",
+    "lint:eslint": "eslint --cache",
+    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "test": "pnpm clean && pnpm build && node --enable-source-maps --experimental-test-isolation=none --test ./dist/**/*.test.js",
+    "test:integration": "RUN_PLAYWRIGHT_PDF_INTEGRATION=true pnpm test"
+  },
+  "dependencies": {
+    "axios": "catalog:backend"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "playwright": ">=1.57.0"
+  },
+  "peerDependenciesMeta": {
+    "playwright": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "playwright": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Wisemen",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-pdf"
+  }
+}
