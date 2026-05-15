@@ -5,6 +5,7 @@
   "action.global.toggle_main_sidebar.keywords": "collapse navigation",
   "action.global.toggle_main_sidebar.name": "Toggle sidebar",
   "component.action_dropdown_menu.loading_actions": "Loading actions",
+  "component.action_menu.no_matching_actions": "No matching actions",
   "component.autocomplete.more_results_available": "More results available, keep searching to narrow down",
   "component.autocomplete.no_results_found": "No results found",
   "component.autocomplete.search_placeholder": "Search...",

@@ -18,7 +18,10 @@ const props = withDefaults(defineProps<ContextMenuProps>(), {
 
 <template>
   <RekaContextMenuRoot>
-    <RekaContextMenuTrigger :as-child="true">
+    <RekaContextMenuTrigger
+      :as-child="true"
+      data-context-menu-trigger
+    >
       <slot name="trigger" />
     </RekaContextMenuTrigger>
 
@@ -49,3 +52,9 @@ const props = withDefaults(defineProps<ContextMenuProps>(), {
     </RekaContextMenuPortal>
   </RekaContextMenuRoot>
 </template>
+
+<style>
+body:has([role='menu'][data-state='open']) [data-context-menu-trigger] {
+  pointer-events: none !important;
+}
+</style>
