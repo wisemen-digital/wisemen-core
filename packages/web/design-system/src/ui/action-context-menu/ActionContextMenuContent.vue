@@ -12,12 +12,12 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import ActionDropdownMenuItem from '@/ui/action-dropdown-menu/ActionDropdownMenuItem.vue'
+import ActionContextMenuItem from '@/ui/action-context-menu/ActionContextMenuItem.vue'
 import { UIColumnLayout } from '@/ui/column-layout/index'
 import {
-  UIDropdownMenuGroup,
-  UIDropdownMenuSeparator,
-} from '@/ui/dropdown-menu/index'
+  UIContextMenuGroup,
+  UIContextMenuSeparator,
+} from '@/ui/context-menu/index'
 import { UISkeletonItem } from '@/ui/skeleton-item/index'
 import { UIText } from '@/ui/text/index'
 
@@ -108,9 +108,9 @@ const isFilterVisible = computed<boolean>(
           v-for="(group, groupIndex) of actionGroups"
           :key="groupIndex"
         >
-          <UIDropdownMenuSeparator v-if="groupIndex > 0" />
-          <UIDropdownMenuGroup>
-            <ActionDropdownMenuItem
+          <UIContextMenuSeparator v-if="groupIndex > 0" />
+          <UIContextMenuGroup>
+            <ActionContextMenuItem
               v-for="action of group"
               :key="action.id"
               :models="props.models"
@@ -119,7 +119,7 @@ const isFilterVisible = computed<boolean>(
               :preview="preview"
               :close-on-select="parentAction?.multiSelectSubActions !== true"
             />
-          </UIDropdownMenuGroup>
+          </UIContextMenuGroup>
         </template>
       </template>
 

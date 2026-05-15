@@ -9,7 +9,7 @@ export const createAvatarGroupAddButtonStyle = tv({
 
     root: `
       group/button flex cursor-pointer items-center justify-center rounded-full
-      border border-dashed border-primary bg-primary outline-2
+      border border-dashed border-secondary bg-primary outline-2
       outline-transparent transition-all duration-200
       hover:bg-secondary
       focus-visible:outline-fg-brand-primary

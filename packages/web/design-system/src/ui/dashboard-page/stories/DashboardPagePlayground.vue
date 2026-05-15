@@ -140,7 +140,7 @@ const tabsModelValue = ref<string>('tab1')
 <template>
   <div
     class="
-      relative flex w-full overflow-hidden rounded-lg border border-primary
+      relative flex w-full overflow-hidden rounded-lg border border-secondary
     "
   >
     <MainLayout

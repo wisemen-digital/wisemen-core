@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { GroupPriority, useTemporaryActions } from '@wisemen/vue-core-actions'
+import {
+  GroupPriority,
+  useTemporaryActions,
+} from '@wisemen/vue-core-actions'
 import {
   _UIActionDropdownMenu as UIActionDropdownMenu,
   UIIconButton,
@@ -13,7 +16,7 @@ import { useInjectFiltersContext } from '@/context/filters.context'
 const i18n = useI18n()
 
 const {
-  action, clearFiltersAction,
+  action,
 } = useInjectFiltersContext()
 
 useTemporaryActions(clearFiltersAction, GroupPriority.VIEW)

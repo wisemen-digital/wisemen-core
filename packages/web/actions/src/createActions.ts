@@ -13,6 +13,7 @@ export const isAuthenticated = shallowRef<boolean>(false)
 type TypedActionDropdownMenu<TActionContext extends ActionContext> = DefineComponent<{
   isOpen?: boolean
   actions?: Action<TActionContext>[]
+  currentContextOnly: boolean
   metadata?: TActionContext['metadata']
   models?: TActionContext['models']
   parentAction?: Action<TActionContext>
@@ -21,6 +22,7 @@ type TypedActionDropdownMenu<TActionContext extends ActionContext> = DefineCompo
 type TypedActionTrigger<TActionContext extends ActionContext> = new () => {
   $props: {
     action: Action<TActionContext>
+    currentContextOnly: boolean
     metadata?: TActionContext['metadata']
     models?: TActionContext['models']
   }

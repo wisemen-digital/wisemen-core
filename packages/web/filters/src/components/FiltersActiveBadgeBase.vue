@@ -39,6 +39,7 @@ const clearFilterAction = _createUntypedAction({
   },
   group: {
     name: () => props.filter.label,
+    category: () => i18n.t('component.filters.action_category'),
     priority: GroupPriority.HOVER,
   },
   icon: () => Trash01Icon,
@@ -50,7 +51,11 @@ const clearFilterAction = _createUntypedAction({
 
 <template>
   <UIActionFocus :actions="[clearFilterAction]">
-    <div class="flex h-6 items-center rounded-sm border border-secondary">
+    <div
+      class="
+        flex h-6 items-center rounded-sm border border-secondary select-none
+      "
+    >
       <slot />
 
       <template v-if="props.filter.isStatic !== true">

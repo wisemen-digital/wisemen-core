@@ -47,7 +47,7 @@ function onReset(): void {
       <button
         type="reset"
         class="
-          rounded-md border border-primary px-md py-xs text-xs text-secondary
+          rounded-md border border-secondary px-md py-xs text-xs text-secondary
         "
       >
         Reset
