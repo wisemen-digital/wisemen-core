@@ -15,10 +15,14 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
   ...POPPER_PROPS_DEFAULTS,
   popoverSideOffset: 4,
 })
+
+const isOpen = defineModel<boolean>('isOpen', {
+  default: false,
+})
 </script>
 
 <template>
-  <RekaDropdownMenuRoot>
+  <RekaDropdownMenuRoot v-model:open="isOpen">
     <RekaDropdownMenuTrigger :as-child="true">
       <slot name="trigger" />
     </RekaDropdownMenuTrigger>
@@ -26,6 +30,7 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
     <RekaDropdownMenuPortal to="body">
       <ThemeProvider :as-child="true">
         <RekaDropdownMenuContent
+          :reference="props.popoverAnchorReferenceElement ?? undefined"
           :align="props.popoverAlign"
           :align-offset="props.popoverAlignOffset"
           :collision-padding="props.popoverCollisionPadding"

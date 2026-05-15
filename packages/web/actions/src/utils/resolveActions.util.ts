@@ -292,8 +292,8 @@ export function resolveApplicable(action: Action, ctx: ActionContext): boolean {
     return false
   }
 
-  // onlyVisibleThroughSearch — only show when user has typed something
-  if (action.onlyVisibleThroughSearch && ctx.searchInput.length === 0) {
+  // onlyVisibleThroughSearch — only hide in menus when user has not typed anything
+  if (action.onlyVisibleThroughSearch && ctx.menuType !== undefined && ctx.searchInput.length === 0) {
     return false
   }
 

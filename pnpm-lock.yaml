@@ -675,6 +675,9 @@ catalogs:
     reka-ui:
       specifier: 2.9.7
       version: 2.9.7
+    superjson:
+      specifier: 2.2.6
+      version: 2.2.6
     vue:
       specifier: 3.5.27
       version: 3.5.27
@@ -2591,6 +2594,85 @@ importers:
       typescript:
         specifier: catalog:build
         version: 5.9.3
+
+  packages/web/filters:
+    dependencies:
+      superjson:
+        specifier: catalog:vue
+        version: 2.2.6
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: catalog:vite
+        version: 4.1.18(rolldown-vite@7.3.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@24.8.1)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(terser@5.47.1)(yaml@2.8.3))
+      '@types/node':
+        specifier: catalog:types
+        version: 24.8.1
+      '@vitejs/plugin-vue':
+        specifier: catalog:vite
+        version: 6.0.3(rolldown-vite@7.3.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@24.8.1)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(terser@5.47.1)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
+      '@vue/test-utils':
+        specifier: catalog:test
+        version: 2.4.6
+      '@vue/tsconfig':
+        specifier: catalog:vue
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@wisemen/vue-core-actions':
+        specifier: workspace:*
+        version: link:../actions
+      '@wisemen/vue-core-dates':
+        specifier: workspace:*
+        version: link:../dates
+      '@wisemen/vue-core-design-system':
+        specifier: workspace:*
+        version: link:../design-system
+      '@wisemen/vue-core-icons':
+        specifier: workspace:*
+        version: link:../icons
+      '@wisemen/vue-core-tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind-config
+      '@wisemen/vue-core-utils':
+        specifier: workspace:*
+        version: link:../utils
+      eslint:
+        specifier: catalog:lint-web
+        version: 9.39.4(jiti@2.7.0)
+      formango:
+        specifier: catalog:peer
+        version: 3.2.4(vue@3.5.27(typescript@5.9.3))(zod@4.4.3)
+      husky:
+        specifier: catalog:build
+        version: 9.1.7
+      pinia:
+        specifier: catalog:vue
+        version: 3.0.4(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      tailwindcss:
+        specifier: catalog:style
+        version: 4.1.18
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vite:
+        specifier: npm:rolldown-vite@7.3.1
+        version: rolldown-vite@7.3.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@24.8.1)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(terser@5.47.1)(yaml@2.8.3)
+      vite-plugin-dts:
+        specifier: catalog:vite
+        version: 4.5.4(@types/node@24.8.1)(rolldown-vite@7.3.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@24.8.1)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(terser@5.47.1)(yaml@2.8.3))(rollup@4.60.3)(typescript@5.9.3)
+      vitest:
+        specifier: catalog:test
+        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@24.8.1)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(rolldown-vite@7.3.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@24.8.1)(esbuild@0.28.0)(jiti@2.7.0)(sass@1.97.3)(terser@5.47.1)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
+      vue-i18n:
+        specifier: catalog:peer
+        version: 11.4.2(vue@3.5.27(typescript@5.9.3))
+      vue-tsc:
+        specifier: catalog:vue
+        version: 3.2.2(typescript@5.9.3)
 
   packages/web/formango:
     dependencies:
@@ -13111,8 +13193,8 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
-  vue-component-type-helpers@3.2.8:
-    resolution: {integrity: sha512-9689efAXhN/EV86plgkL/XFiJSXhGtWPG6JDboZ+QnjlUWUUQrQ0ILKQtw4iQsuwIwu5k6Aw+JnehDe7161e7A==}
+  vue-component-type-helpers@3.2.9:
+    resolution: {integrity: sha512-S3BiWYaLSzHxTpln665ELSrMR9UYmrIDUmhik7nVZxmJjTKL2/a+ew1hvGxksKelivm0ujjWfG1fYOiU/2e8rA==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -18220,7 +18302,7 @@ snapshots:
       storybook: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       type-fest: 2.19.0
       vue: 3.5.27(typescript@5.9.3)
-      vue-component-type-helpers: 3.2.8
+      vue-component-type-helpers: 3.2.9
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.2.1(jiti@2.7.0))':
     dependencies:
@@ -25551,7 +25633,7 @@ snapshots:
 
   vue-component-type-helpers@2.2.12: {}
 
-  vue-component-type-helpers@3.2.8: {}
+  vue-component-type-helpers@3.2.9: {}
 
   vue-demi@0.14.10(vue@3.5.27(typescript@5.9.3)):
     dependencies:
