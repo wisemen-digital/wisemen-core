@@ -7,15 +7,19 @@ import {
 } from 'vue'
 
 import { useInjectConfigContext } from '@/ui/config-provider'
+import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
 import type {
   DashboardPageProps,
   PageBreadcrumb,
 } from '@/ui/dashboard-page/dashboardPage.type'
+import DashboardPageDetailPanePadding from '@/ui/dashboard-page/DashboardPageDetailPanePadding.vue'
 import DashboardPageDetailPane from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPane.vue'
+import DashboardPageDetailPaneToggle from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneToggle.vue'
 import { useDetailPane } from '@/ui/dashboard-page/detail-pane/detailPane.composable'
 import { useProvideDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 import type { DetailPaneConfig } from '@/ui/dashboard-page/detail-pane/detailPane.type'
 import Page from '@/ui/dashboard-page/Page.vue'
+import { UIRowLayout } from '@/ui/row-layout'
 import { useTopBarNavigation } from '@/ui/top-bar/topBarNavigation.composable'
 
 const props = withDefaults(defineProps<DashboardPageProps & {
@@ -87,16 +91,35 @@ if (hasDetailPane.value) {
     onResizeStart,
   })
 }
+
+const isPageActionsSlotVisible = computed<boolean>(() => {
+  if (props.detailPane !== null) {
+    return true
+  }
+
+  return slots['page-actions-left'] !== undefined || slots['page-actions-right'] !== undefined
+})
 </script>
 
 <template>
-  <Page
-    class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary"
-  >
+  <Page class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
+    <DashboardPageActions v-if="isPageActionsSlotVisible">
+      <slot name="page-actions-left" />
+
+      <template #right>
+        <UIRowLayout gap="none">
+          <slot name="page-actions-right" />
+          <DashboardPageDetailPaneToggle v-if="props.detailPane !== null" />
+        </UIRowLayout>
+      </template>
+    </DashboardPageActions>
+
     <div class="relative flex size-full overflow-hidden">
-      <div class="flex size-full flex-col overflow-hidden">
-        <slot />
-      </div>
+      <DashboardPageDetailPanePadding>
+        <div class="flex size-full flex-col overflow-hidden">
+          <slot />
+        </div>
+      </DashboardPageDetailPanePadding>
 
       <DashboardPageDetailPane v-if="hasDetailPane">
         <slot name="detail-pane" />
