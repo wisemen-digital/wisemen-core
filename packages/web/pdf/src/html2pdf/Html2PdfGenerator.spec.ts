@@ -152,7 +152,7 @@ describe('Html2PdfGenerator', () => {
         margin: 8,
       },
       pagebreak: {
-        avoid: ['.keep-together'],
+        avoid: ['.pdf-keep-together'],
         before: ['.page-start'],
         mode: ['css', 'legacy'],
       },
@@ -180,8 +180,35 @@ describe('Html2PdfGenerator', () => {
       }),
       margin: 8,
       pagebreak: {
-        avoid: ['.keep-together'],
+        avoid: ['.pdf-keep-together'],
         before: ['.page-start'],
+        mode: ['css', 'legacy'],
+      },
+    }))
+  })
+
+  it('uses renderer-agnostic pagebreak selectors by default', async () => {
+    const wrapper = mountComponent()
+
+    const generator = wrapper.vm as unknown as Html2PdfGeneratorExpose
+
+    await generator.generate()
+
+    expect(mocks.set).toHaveBeenCalledWith(expect.objectContaining({
+      pagebreak: {
+        after: [
+          '.pdf-page-break-after',
+          '.custom-page-break-after',
+        ],
+        avoid: [
+          '.pdf-page-break-avoid',
+          '.pdf-keep-together',
+          '.custom-page-break-avoid',
+        ],
+        before: [
+          '.pdf-page-break-before',
+          '.custom-page-break-before',
+        ],
         mode: ['css', 'legacy'],
       },
     }))

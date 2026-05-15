@@ -43,10 +43,20 @@ const props = withDefaults(defineProps<{
   isImageFixEnabled: true,
   isPreviewEnabled: false,
   pagebreak: () => ({
-    after: '.custom-page-break-after',
-    avoid: '.custom-page-break-avoid',
-    before: '.custom-page-break-before',
-    mode: ['css'],
+    after: [
+      '.pdf-page-break-after',
+      '.custom-page-break-after',
+    ],
+    avoid: [
+      '.pdf-page-break-avoid',
+      '.pdf-keep-together',
+      '.custom-page-break-avoid',
+    ],
+    before: [
+      '.pdf-page-break-before',
+      '.custom-page-break-before',
+    ],
+    mode: ['css', 'legacy'],
   }),
   previewTitle: 'PDF preview',
   quality: 2,

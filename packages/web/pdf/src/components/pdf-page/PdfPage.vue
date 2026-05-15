@@ -75,6 +75,22 @@ const cssVariables = computed<Record<string, string>>(() => {
   page-break-after: auto;
 }
 
+.pdf-page-break-before {
+  break-before: page;
+  page-break-before: always;
+}
+
+.pdf-page-break-after {
+  break-after: page;
+  page-break-after: always;
+}
+
+.pdf-page-break-avoid,
+.pdf-keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 .pdf-page--print-color-exact {
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;

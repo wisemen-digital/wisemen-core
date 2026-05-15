@@ -75,6 +75,38 @@ PdfFilenameUtil.ensureExtension('invoice')
 
 Use `BrowserDownloadUtil` from `@wisemen/vue-core-utils` for generic browser-only URL and Blob downloads.
 
+## Choosing a renderer
+
+Use the `html2pdf` adapter for browser-only convenience downloads, drafts, previews, and local exports. For official, legal, financial, emailed, archived, or highly pagination-sensitive documents, prefer a server-side renderer with controlled fonts, assets, runtime, and pagination behavior.
+
+Keep business templates in consuming apps. Use this package for shared page primitives, renderer-agnostic pagebreak conventions, preview helpers, and optional client-side generation.
+
+## Pagebreak conventions
+
+Use semantic pagebreak classes in templates so browser preview, client-side `html2pdf`, browser print, and future server-side renderers can share the same layout intent:
+
+```html
+<section class="pdf-page-break-before">
+  Starts on a new page
+</section>
+
+<section class="pdf-keep-together">
+  Avoid splitting this block across pages
+</section>
+
+<section class="pdf-page-break-after">
+  Force the following content to a new page
+</section>
+```
+
+Available classes:
+
+- `.pdf-page-break-before` applies `break-before: page` and `page-break-before: always`.
+- `.pdf-page-break-after` applies `break-after: page` and `page-break-after: always`.
+- `.pdf-page-break-avoid` and `.pdf-keep-together` apply `break-inside: avoid` and `page-break-inside: avoid`.
+
+The `html2pdf` adapter defaults to these classes and also supports the legacy `.custom-page-break-before`, `.custom-page-break-after`, and `.custom-page-break-avoid` selectors.
+
 ## Composables
 
 - `usePdfObjectUrl()` creates and revokes object URLs safely.
@@ -114,8 +146,8 @@ import { ref } from 'vue'
 const generator = ref<Html2PdfGeneratorExpose | null>(null)
 
 const pagebreak: Html2PdfPagebreakOptions = {
-  avoid: ['.keep-together', '.line-item'],
-  before: ['.new-page'],
+  avoid: ['.pdf-keep-together', '.line-item'],
+  before: ['.pdf-page-break-before'],
   mode: ['css', 'legacy'],
 }
 
@@ -176,7 +208,7 @@ Notes:
 - `html2pdf.js` is browser-only and relatively heavy; lazy-load routes/components that use it where possible.
 - `html2pdf.js` rasterizes DOM through canvas. Prefer server-generated PDFs for official/legal/email documents.
 - The adapter provides `--html2pdf-page-width` and `--html2pdf-page-height` CSS variables to slotted content.
-- Pagebreak selectors default to `.custom-page-break-before`, `.custom-page-break-after`, and `.custom-page-break-avoid`.
-- Pass `pagebreak` explicitly for business-critical templates; prefer semantic classes such as `.keep-together`, `.new-page`, or `.line-item` over layout-dependent selectors.
+- Pagebreak selectors default to `.pdf-page-break-before`, `.pdf-page-break-after`, `.pdf-page-break-avoid`, `.pdf-keep-together`, and legacy `.custom-page-break-*` selectors.
+- Pass `pagebreak` explicitly for business-critical templates; prefer semantic classes such as `.pdf-keep-together`, `.pdf-page-break-before`, or `.pdf-page-break-after` over layout-dependent selectors.
 - `html2canvas`, `jsPdf`, `image`, and `options` props let consuming apps tune rendering while preserving package defaults.
 - Dedicated props are merged after nested `options` values, so `:html2canvas="{ scale: 3 }"` overrides `:options="{ html2canvas: { scale: 2 } }"`.
