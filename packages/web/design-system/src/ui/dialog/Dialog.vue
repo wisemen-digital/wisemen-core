@@ -66,6 +66,15 @@ function onOpenChange(value: boolean): void {
     emit('close')
   }
 }
+
+function onInteractOutside(event: CustomEvent): void {
+  const target = event.target as HTMLElement
+  const isOverlay = target.attributes.getNamedItem('data-dialog-overlay') !== null
+
+  if (!isOverlay) {
+    event.preventDefault()
+  }
+}
 </script>
 
 <template>
@@ -77,21 +86,23 @@ function onOpenChange(value: boolean): void {
     <RekaDialogOverlay
       :class="style.overlay()"
       data-animation="dialog"
+      data-dialog-overlay
     />
+
     <RekaDialogContent
       :class="style.contentWrapper()"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
       @pointer-down-outside="onPointerDownOutside"
       @after-leave="emit('afterLeave')"
+      @interact-outside="onInteractOutside"
     >
       <div :class="style.content()">
         <slot />
         <DialogCloseButton v-if="props.showCloseButton" />
       </div>
-      <DialogChin
-        :chin="props.chin"
-      />
+
+      <DialogChin :chin="props.chin" />
     </RekaDialogContent>
   </RekaDialogRoot>
 </template>
