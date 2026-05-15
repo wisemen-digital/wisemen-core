@@ -68,10 +68,11 @@ function onOpenChange(value: boolean): void {
 }
 
 function onInteractOutside(event: CustomEvent): void {
-  const target = event.target as HTMLElement
-  const isOverlay = target.attributes.getNamedItem('data-dialog-overlay') !== null
+  if (!(event.target instanceof Element)) {
+    return
+  }
 
-  if (!isOverlay) {
+  if (!event.target.hasAttribute('data-dialog-overlay')) {
     event.preventDefault()
   }
 }

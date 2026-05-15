@@ -5,6 +5,7 @@ import type {
 } from '@wisemen/vue-core-actions'
 import {
   GroupPriority,
+  resolveApplicable,
   useActionManagerStore,
   useTemporaryActions,
 } from '@wisemen/vue-core-actions'
@@ -44,12 +45,7 @@ const hasApplicableActions = computed<boolean>(() => {
     models: props.models ?? [],
   })
 
-  return (props.actions ?? []).some((action) => {
-    const applicable = action.isApplicable === undefined || action.isApplicable(ctx)
-    const hasDisabledReason = action.disabledReason?.(ctx) != null
-
-    return applicable || hasDisabledReason
-  })
+  return (props.actions ?? []).some((action) => resolveApplicable(action, ctx))
 })
 </script>
 
