@@ -23,7 +23,7 @@ export default defineConfig({
       },
     },
 
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         'vue',
         'vue-i18n',
