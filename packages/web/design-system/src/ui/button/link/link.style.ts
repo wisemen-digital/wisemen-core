@@ -112,7 +112,7 @@ export const createLinkStyle = tv({
           border-secondary bg-primary
           hover:bg-primary-hover
           focus-visible:outline-fg-brand-primary
-          dark:border-primary
+          dark:border-secondary
         `,
       },
       'tertiary': {

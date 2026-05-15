@@ -18,7 +18,7 @@ export const createSwitchStyle = tv({
       data-invalid:data-[state=checked]:border-error
       data-invalid:data-[state=checked]:bg-error-solid
       data-invalid:data-[state=unchecked]:border-error
-      dark:border-primary
+      dark:border-secondary
     `,
     thumb: `
       flex size-4 items-center justify-center overflow-hidden rounded-full

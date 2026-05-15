@@ -130,7 +130,7 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
   <div
     class="
       relative flex h-[80dvh] w-full overflow-hidden rounded-lg border
-      border-primary
+      border-secondary
     "
   >
     <MainSidebar
