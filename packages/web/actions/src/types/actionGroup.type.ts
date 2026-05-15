@@ -7,6 +7,7 @@ import type {
 
 export interface ActionGroup<TActionContext = any> {
   name?: Resolvable<string, TActionContext>
+  category?: Resolvable<string, TActionContext>
   /**
    * When a child action is "lifted" into a top-level search result, its group is
    * replaced with this one rather than the original group.

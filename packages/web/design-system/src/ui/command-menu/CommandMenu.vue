@@ -217,7 +217,7 @@ function onUpdateIsOpen(value: boolean): void {
           <ListboxFilter
             v-model="searchInput"
             :placeholder="placeholder"
-            class="block w-full px-xl py-lg text-xs text-secondary outline-none"
+            class="block w-full p-lg text-xs text-secondary outline-none"
             @keydown="onKeyDown"
           />
         </div>
@@ -245,12 +245,23 @@ function onUpdateIsOpen(value: boolean): void {
                     && (group.showIfOnlyGroup || currentParent === null || groups.length > 1)"
                   class="px-md py-xs"
                 >
-                  <UIRowLayout>
+                  <UIRowLayout gap="xs">
                     <Component
                       :is="group.icon"
                       v-if="group.icon !== null"
                       class="size-3 text-disabled"
                     />
+
+                    <template v-if="group.category !== null">
+                      <span
+                        class="text-xxs text-tertiary"
+                      >
+                        {{ group.category }}
+                      </span>
+
+                      <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+                      <span class="text-xxs text-tertiary">&bull;</span>
+                    </template>
 
                     <span class="text-xxs text-disabled">
                       {{ group.label }}
