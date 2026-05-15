@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.13.0
+
+### Minor Changes
+
+- [#985](https://github.com/wisemen-digital/wisemen-core/pull/985) [`ea220f5`](https://github.com/wisemen-digital/wisemen-core/commit/ea220f55b92394093a8768ddb9fa5c5475145ff2) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add empty state component
+
+- [#1015](https://github.com/wisemen-digital/wisemen-core/pull/1015) [`1e47245`](https://github.com/wisemen-digital/wisemen-core/commit/1e47245cfb6c4361fc9eae658707131a59cee2c4) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add UI prefix to all type exports
+
+- [#1021](https://github.com/wisemen-digital/wisemen-core/pull/1021) [`2963267`](https://github.com/wisemen-digital/wisemen-core/commit/2963267c08e4c4752664ec39f9f0dfb8f1e84e35) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add new top bar component + restructure dashboard page components
+
+- [#1018](https://github.com/wisemen-digital/wisemen-core/pull/1018) [`62a0298`](https://github.com/wisemen-digital/wisemen-core/commit/62a029887da5b4609506729c25baba1ea375820f) Thanks [@wouterlms](https://github.com/wouterlms)! - Implement actions in design system
+
 ## 0.12.0
 
 ### Minor Changes
