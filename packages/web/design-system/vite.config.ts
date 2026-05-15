@@ -25,7 +25,7 @@ export default defineConfig({
       },
     },
 
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         '@vueuse/core',
         '@vueuse/router',
