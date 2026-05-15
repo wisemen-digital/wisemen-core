@@ -24,6 +24,10 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Build icons
         run: pnpm --filter @wisemen/vue-core-icons build
+      - name: Build actions
+        run: pnpm --filter @wisemen/vue-core-actions build
+      - name: Build dates
+        run: pnpm --filter @wisemen/vue-core-dates build
       - name: Build storybook
         run: pnpm build-storybook
       - name: Build docs
