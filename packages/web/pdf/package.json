@@ -42,6 +42,9 @@
     "test": "vitest --run",
     "type-check": "vue-tsc --noEmit"
   },
+  "dependencies": {
+    "@wisemen/vue-core-utils": "workspace:*"
+  },
   "peerDependencies": {
     "html2pdf.js": "^0.14.0",
     "vue": "catalog:peer"
@@ -56,6 +59,7 @@
     "@vue/test-utils": "catalog:test",
     "@vue/tsconfig": "catalog:vue",
     "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-utils": "workspace:*",
     "eslint": "catalog:lint-web",
     "html2pdf.js": "^0.14.0",
     "jsdom": "catalog:test",

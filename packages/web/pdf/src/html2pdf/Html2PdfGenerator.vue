@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { BrowserDownloadUtil } from '@wisemen/vue-core-utils'
 import html2pdf from 'html2pdf.js'
 import {
   computed,
@@ -7,7 +8,6 @@ import {
 
 import { usePdfObjectUrl } from '@/composables/pdf-object-url'
 import type { PdfNamedPageFormat } from '@/types/pdfPageFormat.type'
-import { PdfDownloadUtil } from '@/utils/pdfDownload.util'
 import { PdfPageSizeUtil } from '@/utils/pdfPageSize.util'
 import type {
   Html2PdfBeforeGeneratePayload,
@@ -185,7 +185,7 @@ async function download(): Promise<Blob> {
     return blob
   }
 
-  PdfDownloadUtil.downloadBlob(blob, {
+  BrowserDownloadUtil.downloadBlob(blob, {
     filename: props.filename,
   })
 
@@ -195,16 +195,22 @@ async function download(): Promise<Blob> {
 }
 
 async function preview(): Promise<string> {
-  const blob = await generate()
-  const objectUrl = setPreviewBlob(blob)
+  await generate()
 
-  previewUrl.value = objectUrl
+  if (previewUrl.value === null) {
+    throw new Error('PDF preview URL was not created')
+  }
 
-  return objectUrl
+  return previewUrl.value
+}
+
+function revokeGeneratedObjectUrl(): void {
+  revokePreviewUrl()
+  previewUrl.value = null
 }
 
 function closePreview(): void {
-  previewUrl.value = null
+  revokeGeneratedObjectUrl()
 }
 
 defineExpose({
@@ -212,7 +218,7 @@ defineExpose({
   download,
   generate,
   preview,
-  revokePreviewUrl,
+  revokePreviewUrl: revokeGeneratedObjectUrl,
 })
 </script>
 

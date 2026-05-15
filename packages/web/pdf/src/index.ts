@@ -7,7 +7,6 @@ export { usePdfObjectUrl } from '@/composables/pdf-object-url'
 export type { PdfObjectUrlReturn } from '@/composables/pdf-object-url'
 export { usePdfViewerPagination } from '@/composables/pdf-viewer-pagination'
 export type { PdfViewerPaginationReturn } from '@/composables/pdf-viewer-pagination'
-export { PdfDownloadUtil } from '@/utils/pdfDownload.util'
 export { PdfFilenameUtil } from '@/utils/pdfFilename.util'
 export { PdfPageSizeUtil } from '@/utils/pdfPageSize.util'
 export type {
@@ -18,4 +17,3 @@ export type {
   PdfPageSize,
   PdfPageSizeUnit,
 } from '@/types/pdfPageFormat.type'
-export type { PdfDownloadOptions } from '@/types/pdfDownloadOptions.type'

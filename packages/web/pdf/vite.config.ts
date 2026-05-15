@@ -25,11 +25,13 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
+        '@wisemen/vue-core-utils',
         'html2pdf.js',
         'vue',
       ],
       output: {
         globals: {
+          '@wisemen/vue-core-utils': 'WisemenVueCoreUtils',
           'html2pdf.js': 'html2pdf',
           vue: 'Vue',
         },

@@ -71,8 +71,9 @@ Custom page sizes are supported:
 ```ts
 PdfPageSizeUtil.getSize('a4', 'mm')
 PdfFilenameUtil.ensureExtension('invoice')
-PdfDownloadUtil.downloadBlob(blob, { filename: 'invoice.pdf' })
 ```
+
+Use `BrowserDownloadUtil` from `@wisemen/vue-core-utils` for generic browser-only URL and Blob downloads.
 
 ## Composables
 

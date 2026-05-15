@@ -1,7 +1,10 @@
-import type { PdfDownloadOptions } from '@/types/pdfDownloadOptions.type'
+import type { BrowserDownloadOptions } from './browserDownload.type'
 
-export class PdfDownloadUtil {
-  static downloadUrl(url: string, options: PdfDownloadOptions = {}): void {
+export class BrowserDownloadUtil {
+  /**
+   * Browser-only utility for triggering a download from an existing URL.
+   */
+  static downloadUrl(url: string, options: BrowserDownloadOptions = {}): void {
     const link = document.createElement('a')
 
     link.href = url
@@ -23,7 +26,10 @@ export class PdfDownloadUtil {
     document.body.removeChild(link)
   }
 
-  static downloadBlob(blob: Blob, options: PdfDownloadOptions = {}): void {
+  /**
+   * Browser-only utility for triggering a download from a Blob.
+   */
+  static downloadBlob(blob: Blob, options: BrowserDownloadOptions = {}): void {
     const url = URL.createObjectURL(blob)
 
     try {
@@ -33,6 +39,9 @@ export class PdfDownloadUtil {
     }
   }
 
+  /**
+   * Browser-only utility for opening a URL in a new tab without exposing window.opener.
+   */
   static openInNewTab(url: string): void {
     const openedWindow = window.open(url, '_blank', 'noopener,noreferrer')
 

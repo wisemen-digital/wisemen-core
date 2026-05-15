@@ -2799,6 +2799,10 @@ importers:
         version: 5.9.3
 
   packages/web/pdf:
+    dependencies:
+      '@wisemen/vue-core-utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: catalog:vite

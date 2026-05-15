@@ -2,6 +2,8 @@ export { ArrayUtil } from '@/array/array.util'
 export {
   assert, assertDefined, assertNever,
 } from '@/assert/assert'
+export { BrowserDownloadUtil } from '@/browser-download/browserDownload.util'
+export type { BrowserDownloadOptions } from '@/browser-download/browserDownload.type'
 export { isDevelopment } from '@/is-development/isDevelopment.util'
 export {
   Logger, logger,
