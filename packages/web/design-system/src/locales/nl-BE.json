@@ -5,6 +5,7 @@
   "action.global.toggle_main_sidebar.keywords": "dicht open menu navigatie",
   "action.global.toggle_main_sidebar.name": "Zijbalk verbergen/tonen",
   "component.action_dropdown_menu.loading_actions": "Acties laden",
+  "component.action_menu.no_matching_actions": "No acties gevonden",
   "component.autocomplete.more_results_available": "Er zijn meer resultaten beschikbaar, verfijn je zoekopdracht",
   "component.autocomplete.no_results_found": "Geen resultaten gevonden",
   "component.autocomplete.search_placeholder": "Zoeken...",

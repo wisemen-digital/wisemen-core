@@ -128,7 +128,7 @@ const isFilterVisible = computed<boolean>(
         class="flex px-lg py-md"
       >
         <UIText
-          text="No matching actions"
+          :text="i18n.t('component.action_menu.no_matching_actions')"
           class="text-xs text-tertiary"
         />
       </div>
