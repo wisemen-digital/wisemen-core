@@ -1,4 +1,5 @@
 {
+  "component.filters.action_category": "Filter",
   "component.filters.add_filter": "Filter toevoegen",
   "component.filters.add_filter_placeholder": "Filters zoeken...",
   "component.filters.add_filters": "Filters toevoegen",

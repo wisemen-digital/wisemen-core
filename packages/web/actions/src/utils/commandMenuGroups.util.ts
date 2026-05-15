@@ -6,6 +6,7 @@ import type { ActionGroup } from '#types/actionGroup.type.ts'
 import { resolveActionValue } from '#utils/resolveActions.util.ts'
 
 export interface CommandMenuGroup {
+  category: string | null
   icon: Component | null
   items: Action[]
   key: string
@@ -46,8 +47,10 @@ export function buildCommandMenuGroups(actions: Action[], ctx: ActionContext): C
 
     if (commandGroup === undefined) {
       const rawName = group?.name ? resolveActionValue(group.name, ctx) : null
+      const rawGroup = group?.category ? resolveActionValue(group.category, ctx) : null
 
       commandGroup = {
+        category: rawGroup,
         icon: group?.icon?.(ctx) ?? null,
         items: [],
         key,
