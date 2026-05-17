@@ -25,7 +25,7 @@ export default defineConfig({
       },
     },
 
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         '@wisemen/vue-core-actions',
         '@wisemen/vue-core-dates',

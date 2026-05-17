@@ -1,7 +1,7 @@
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
 
 import defu from 'defu'
-import type { OutputOptions } from 'rollup'
+import type { OutputOptions } from 'rolldown'
 import type { UserConfig } from 'vite'
 
 function getOutput() {
@@ -35,7 +35,7 @@ export function GET_DEFAULT_VITE_CONFIG(envConfig: ViteEnvConfig): Partial<UserC
       chunkSizeWarningLimit: 1000,
       cssMinify: 'lightningcss',
       minify: 'esbuild',
-      rollupOptions: {
+      rolldownOptions: {
         output: getOutput(),
       },
       sourcemap: envConfig.mode !== 'production',

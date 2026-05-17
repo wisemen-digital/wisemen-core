@@ -44,7 +44,6 @@ import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 import { UIText } from '@/ui/text/index'
-import TopBar from '@/ui/top-bar/TopBar.vue'
 
 interface NavigationGroup {
   label: string
@@ -217,15 +216,13 @@ const tabsModelValue = ref<string>('tab1')
       </MainSidebar>
 
       <MainContent>
-        <TopBar>
-          <template #actions>
-            <UIBadge
-              :icon="Bell01Icon"
-              color="warning"
-              label="3 Alerts"
-            />
-          </template>
-        </TopBar>
+        <template #top-bar-actions>
+          <UIBadge
+            :icon="Bell01Icon"
+            color="warning"
+            label="3 Alerts"
+          />
+        </template>
 
         <DashboardPage
           :breadcrumbs="breadcrumbs"

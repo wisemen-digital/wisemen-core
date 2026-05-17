@@ -15,7 +15,7 @@ import {
   omit,
 } from '@/types/input.type'
 import { UIAvatar } from '@/ui/avatar'
-import type { BadgeData } from '@/ui/badge/BadgeGroupTruncate.vue'
+import type { BadgeProps } from '@/ui/badge/badge.props'
 import BadgeGroupTruncate from '@/ui/badge/BadgeGroupTruncate.vue'
 import { UIDot } from '@/ui/dot'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
@@ -80,7 +80,7 @@ const {
   ariaRequired,
 } = useInput(id, props)
 
-const selectedBadges = computed<BadgeData[]>(() => {
+const selectedBadges = computed<BadgeProps[]>(() => {
   if (!isMultiple(modelValue.value)) {
     return []
   }

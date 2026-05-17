@@ -49,7 +49,11 @@ const contentPaddingLeft = computed<string>(() => {
     }"
     class="flex size-full flex-col overflow-hidden bg-secondary p-md"
   >
-    <TopBar />
+    <TopBar>
+      <template #actions>
+        <slot name="top-bar-actions" />
+      </template>
+    </TopBar>
     <slot />
   </Motion>
 </template>

@@ -4,8 +4,8 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.1.1",
+  "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",

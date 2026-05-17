@@ -21,10 +21,6 @@ export function useActionGroup() {
       name: i18n.t('action.group.account'),
       priority: GroupPriority.ACCOUNT,
     },
-    contact: {
-      name: i18n.t('action.group.contact'),
-      priority: GroupPriority.MODEL,
-    },
     developer: {
       name: i18n.t('action.group.developer'),
       priority: GroupPriority.DEVELOPER,
