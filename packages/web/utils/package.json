@@ -37,10 +37,14 @@
     "test": "vitest --run",
     "type-check": "pnpm tsc"
   },
+  "peerDependencies": {
+    "libphonenumber-js": "catalog:peer"
+  },
   "devDependencies": {
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint-web",
+    "libphonenumber-js": "catalog:general",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
     "vitest": "catalog:test"
