@@ -20,5 +20,10 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 export const FieldSet: Story = {
-  render: () => ({ components: { FormFieldSetPlayground }, template: '<FormFieldSetPlayground />' }),
+  render: () => ({
+    components: {
+      FormFieldSetPlayground,
+    },
+    template: '<FormFieldSetPlayground />',
+  }),
 }
