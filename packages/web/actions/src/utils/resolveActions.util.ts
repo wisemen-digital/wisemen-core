@@ -43,6 +43,10 @@ export async function applicableActions(
 
       syncCandidates.push(action)
 
+      if (!resolveApplicable(action, ctx)) {
+        continue
+      }
+
       const searchSubActionsConfig = resolveSearchSubActionsConfig(action, ctx)
 
       const searchInputMinLengthForSubActions = searchSubActionsConfig?.minLength
