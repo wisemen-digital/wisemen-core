@@ -14,6 +14,7 @@ export function useCommandMenuAction() {
     id: 'command-menu',
     isApplicable: (ctx: ActionContext) => ctx.menuType === undefined,
     name: () => i18n.t('action.global.open_command_menu.name'),
+    availableWhenUnauthenticated: true,
     execute: () => {
       const isOpen = overlay.isOpen(commandMenuDialog.id)
 

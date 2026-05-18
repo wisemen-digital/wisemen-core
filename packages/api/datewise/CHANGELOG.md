@@ -1,5 +1,14 @@
 # @wisemen/datewise
 
+## 1.0.1
+
+### Patch Changes
+
+- [#1059](https://github.com/wisemen-digital/wisemen-core/pull/1059) [`a26da5a`](https://github.com/wisemen-digital/wisemen-core/commit/a26da5a8af508d7021cf00dea23ecd74f49a3396) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add EndsBeforeOrAt and StartsAfertOrAt typeorm operators'
+
+- Updated dependencies [[`bd0ed26`](https://github.com/wisemen-digital/wisemen-core/commit/bd0ed260d360559ca551f70e383e9c7ff7591113), [`f659833`](https://github.com/wisemen-digital/wisemen-core/commit/f65983333ed3cb8d2a16129d082d1fa482655853)]:
+  - @wisemen/quantity@0.7.0
+
 ## 1.0.0
 
 ### Major Changes

@@ -12,7 +12,9 @@ const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
 }
 
 export class Duration extends Quantity<DurationUnit, Duration> {
-  protected baseUnit = DurationUnit.SECONDS
+  protected getBaseUnit () {
+    return DurationUnit.SECONDS
+  }
 
   protected convertValueToBaseUnit (value: number, unit: DurationUnit): number {
     return value * DISTANCE_MULTIPLIERS[unit]
@@ -46,4 +48,6 @@ export class Duration extends Quantity<DurationUnit, Duration> {
   get days (): number {
     return this.asNumber(DurationUnit.DAYS)
   }
+
+  static ZERO = new Duration(0, DurationUnit.SECONDS)
 }

@@ -27,7 +27,7 @@ const props = defineProps<{
 const manager = useActionManagerStore()
 
 if (!props.currentContextOnly) {
-  useTemporaryActions(props.action, GroupPriority.VIEW)
+  useTemporaryActions(props.action, (props.action.group?.priority as GroupPriority) ?? GroupPriority.VIEW)
   useViewModels(computed(() => props.models ?? []))
 }
 

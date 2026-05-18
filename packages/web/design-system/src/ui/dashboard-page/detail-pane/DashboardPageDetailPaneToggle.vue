@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   _createUntypedAction,
+  GroupPriority,
   useActionGroup,
 } from '@wisemen/vue-core-actions'
 import {
@@ -52,6 +53,7 @@ const label = computed<string>(() => (isOpen.value
     <ActionTrigger
       :current-context-only="false"
       :action="toggleDetailPaneAction"
+      :group-priority="GroupPriority.NAVIGATION"
     >
       <UIClickableElement>
         <Toggle

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   _createUntypedAction,
+  GroupPriority,
   useActionGroup,
 } from '@wisemen/vue-core-actions'
 import {
@@ -59,6 +60,7 @@ function toggleSidebar(): void {
     <ActionTrigger
       :action="toggleMainSidebarAction"
       :current-context-only="false"
+      :group-priority="GroupPriority.NAVIGATION"
     >
       <Toggle
         :model-value="isSidebarOpen"
