@@ -204,6 +204,7 @@ catalogs:
     "@vitejs/plugin-vue": ">=6.0.3"
     "eslint": ">=10.0.3"
     formango: ^3.2.1
+    "libphonenumber-js": ">=1.12.35"
     "motion-v": ">=1.7.3"
     "neverthrow": ">=8.2.0"
     "reka-ui": ">=2.9.7"
