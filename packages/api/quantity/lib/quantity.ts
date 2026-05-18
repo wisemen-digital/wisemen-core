@@ -1,4 +1,5 @@
 import assert from 'assert'
+import { Rate } from './rate.js'
 
 export type QuantityConstructor<U extends string, Q extends Quantity<U, Q>> = {
   new (quantityOrValue: Q | number, unit?: U): Q
@@ -118,21 +119,26 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   }
 
   /** Creates a new quantity by multiplying the current quantity with the specified factor */
-  multiply (factor: number): Q {
+  multiply (factor: number): Q
+  multiply (rate: Rate): Q
+  multiply (factorOrRate: number | Rate): Q {
+    const factor = factorOrRate instanceof Rate ? factorOrRate.asDecimal() : factorOrRate
     return this.construct(this.valueOf() * factor, this.getBaseUnit()).to(this.unit)
   }
 
   /** Creates a new quantity by dividing the current quantity by the specified divisor */
   divide (divisor: number): Q
+  divide (rate: Rate): Q
   divide (value: number, unit: U): number
   divide (quantity: Q): number
-  divide (divisor: number | Q, unit?: U): Q | number {
-    if (divisor instanceof Quantity || unit !== undefined) {
+  divide (divisor: number | Q | Rate, unit?: U): Q | number {
+    if (divisor instanceof Quantity || (typeof divisor === 'number' && unit !== undefined)) {
       const other = this.construct(divisor, unit)
 
       return this.valueOf() / other.valueOf()
     } else {
-      return this.construct(this.valueOf() / divisor, this.getBaseUnit()).to(this.unit)
+      const factor = divisor instanceof Rate ? divisor.asDecimal() : divisor
+      return this.construct(this.valueOf() / factor, this.getBaseUnit()).to(this.unit)
     }
   }
 
