@@ -11,6 +11,11 @@ export interface MenuItemProps {
    */
   config?: MenuItemConfig | null
   /**
+   * When provided, the item is visually disabled and a tooltip is shown with this text explaining why.
+   * @default null
+   */
+  disabledReason?: string | null
+  /**
    * The label text displayed in the menu item.
    */
   label: string
