@@ -1,7 +1,11 @@
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
+import type { ApiUtilType } from '@/utils/api/api.util'
+import { createApiUtil } from '@/utils/api/api.util'
+import type { ApiErrorUtilType } from '@/utils/api-error/apiError.util'
+import { createApiErrorUtil } from '@/utils/api-error/apiError.util'
+
 import { createApiInfiniteQueryUtils } from './createApiInfiniteQueryUtils'
 import { createApiMutationUtils } from './createApiMutationUtils'
-import { createApiPrefetchInfiniteQueryUtils } from './createApiPrefetchInfiniteQueryUtils'
 import { createApiPrefetchQueryUtils } from './createApiPrefetchQueryUtils'
 import { createApiQueryClientUtils } from './createApiQueryClientUtils'
 import { createApiQueryUtils } from './createApiQueryUtils'
@@ -14,8 +18,6 @@ export type {
 export { createApiInfiniteQueryUtils } from './createApiInfiniteQueryUtils'
 export type { CreateApiMutationUtilsReturnType } from './createApiMutationUtils'
 export { createApiMutationUtils } from './createApiMutationUtils'
-export type { CreateApiPrefetchInfiniteQueryUtilsReturnType } from './createApiPrefetchInfiniteQueryUtils'
-export { createApiPrefetchInfiniteQueryUtils } from './createApiPrefetchInfiniteQueryUtils'
 export type { CreateApiPrefetchQueryUtilsReturnType } from './createApiPrefetchQueryUtils'
 export { createApiPrefetchQueryUtils } from './createApiPrefetchQueryUtils'
 export type { CreateApiQueryClientUtilsReturnType } from './createApiQueryClientUtils'
@@ -41,12 +43,16 @@ export function createApiUtils<
   TQueryKeys extends object,
   TErrorCode extends string = string,
 >() {
+  const ApiUtil: ApiUtilType<TErrorCode> = createApiUtil<TErrorCode>()
+  const ApiErrorUtil: ApiErrorUtilType<TErrorCode> = createApiErrorUtil<TErrorCode>()
+
   return {
     ...createApiQueryUtils<TQueryKeys, TErrorCode>(),
     ...createApiPrefetchQueryUtils<TQueryKeys, TErrorCode>(),
-    ...createApiPrefetchInfiniteQueryUtils<TQueryKeys, TErrorCode>(),
     ...createApiInfiniteQueryUtils<TQueryKeys, TErrorCode>(),
     ...createApiMutationUtils<TQueryKeys, TErrorCode>(),
     ...createApiQueryClientUtils<TQueryKeys>(),
+    ApiErrorUtil,
+    ApiUtil,
   }
 }

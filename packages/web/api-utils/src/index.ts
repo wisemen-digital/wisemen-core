@@ -5,8 +5,15 @@ export {
   AsyncResultOk,
 } from './async-result/asyncResult'
 export type { UseMutationReturnType } from './composables/mutation/mutation.composable'
+export { useMutation } from './composables/mutation/mutation.composable'
 export type { KeysetInfiniteQueryOptions } from './composables/query/keysetInfiniteQuery.composable'
+export { useKeysetInfiniteQuery } from './composables/query/keysetInfiniteQuery.composable'
 export type { OffsetInfiniteQueryOptions } from './composables/query/offsetInfiniteQuery.composable'
+export { useOffsetInfiniteQuery } from './composables/query/offsetInfiniteQuery.composable'
+export type { PrefetchKeysetInfiniteQueryOptions } from './composables/query/prefetchKeysetInfiniteQuery.composable'
+export { usePrefetchKeysetInfiniteQuery } from './composables/query/prefetchKeysetInfiniteQuery.composable'
+export type { PrefetchOffsetInfiniteQueryOptions } from './composables/query/prefetchOffsetInfiniteQuery.composable'
+export { usePrefetchOffsetInfiniteQuery } from './composables/query/prefetchOffsetInfiniteQuery.composable'
 export type {
   UseQueryOptions, UseQueryReturnType,
 } from './composables/query/query.composable'
@@ -18,19 +25,10 @@ export {
 export type {
   ApiUseKeysetInfiniteQueryReturnType,
   ApiUseOffsetInfiniteQueryReturnType,
-  CreateApiInfiniteQueryUtilsReturnType,
-  CreateApiMutationUtilsReturnType,
-  CreateApiPrefetchInfiniteQueryUtilsReturnType,
-  CreateApiPrefetchQueryUtilsReturnType,
-  CreateApiQueryClientUtilsReturnType,
-  CreateApiQueryUtilsReturnType,
-} from './factory/createApiUtils'
-export { createApiUtils } from './factory/createApiUtils'
+} from './factory/createApiInfiniteQueryUtils'
 export type {
-  ApiUseKeysetInfinitePrefetchQueryOptions,
   ApiUseKeysetInfiniteQueryOptions,
   ApiUseMutationOptions,
-  ApiUseOffsetInfinitePrefetchQueryOptions,
   ApiUseOffsetInfiniteQueryOptions,
   ApiUsePrefetchQueryOptions,
   ApiUseQueryOptions,
@@ -39,25 +37,28 @@ export type {
 } from './factory/createApiUtils.types'
 export { apiUtilsPlugin } from './plugin/apiUtilsPlugin'
 export type {
+  Register, RegisteredApiUseMutationOptions, RegisteredErrorCodes as RegisteredErrorCode, RegisteredQueryKeys,
+} from './register'
+export type {
+  ApiError,
+  ApiErrorObject,
+  ApiExpectedError,
+  ApiKnownErrorObject,
+  ApiResult,
   ApiUnexpectedError,
   ApiUnknownErrorObject,
-  ApiError as '~ApiError',
-  ApiErrorObject as '~ApiErrorObject',
-  ApiExpectedError as '~ApiExpectedError',
-  ApiKnownErrorObject as '~ApiKnownErrorObject',
-  ApiResult as '~ApiResult',
-  AsyncApiResult as '~AsyncApiResult',
+  AsyncApiResult,
 } from './types/apiError.type'
 export type {
   KeysetPagination,
   KeysetPaginationParams,
   KeysetPaginationResponse,
+  KeysetPaginationResult,
   OffsetPagination,
   OffsetPaginationParams,
   OffsetPaginationResponse,
+  OffsetPaginationResult,
   PaginatedDataDto,
-  KeysetPaginationResult as '~KeysetPaginationResult',
-  OffsetPaginationResult as '~OffsetPaginationResult',
 } from './types/pagination.type'
 export type {
   InfiniteQueryOptions,
@@ -69,6 +70,8 @@ export type {
 } from './types/queryOptions'
 export type { Sort } from './types/sort.type'
 export { SortDirection } from './types/sort.type'
+export { ApiUtil } from './utils/api/api.util'
+export { ApiErrorUtil } from './utils/api-error/apiError.util'
 export {
   QueryClient,
   type QueryClientUpdateOptions,

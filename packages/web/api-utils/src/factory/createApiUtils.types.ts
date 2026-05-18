@@ -94,21 +94,6 @@ export type ApiUseOffsetInfiniteQueryOptions<
     : { params: QueryKeyParamsFromConfig<TQueryKeys, TKey> }
 )
 
-export type ApiUseOffsetInfinitePrefetchQueryOptions<
-  TQueryKeys extends object,
-  TKey extends QueryKeysWithArrayEntityFromConfig<TQueryKeys>,
-  TErrorCode extends string = string,
-> = {
-  staleTime?: number
-  limit?: number
-  queryFn: (paginationParams: OffsetPaginationParams)
-  => Promise<OffsetPaginationResult<QueryKeyArrayItemFromConfig<TQueryKeys, TKey>, TErrorCode>>
-} & (
-  QueryKeyParamsFromConfig<TQueryKeys, TKey> extends void
-    ? { params?: QueryKeyParamsFromConfig<TQueryKeys, TKey> }
-    : { params: QueryKeyParamsFromConfig<TQueryKeys, TKey> }
-)
-
 export type ApiUseKeysetInfiniteQueryOptions<
   TQueryKeys extends object,
   TKey extends QueryKeysWithArrayEntityFromConfig<TQueryKeys>,
@@ -116,21 +101,6 @@ export type ApiUseKeysetInfiniteQueryOptions<
 > = {
   staleTime?: number
   isEnabled?: MaybeRef<boolean>
-  limit?: number
-  queryFn: (paginationParams: KeysetPaginationParams)
-  => Promise<KeysetPaginationResult<QueryKeyArrayItemFromConfig<TQueryKeys, TKey>, TErrorCode>>
-} & (
-  QueryKeyParamsFromConfig<TQueryKeys, TKey> extends void
-    ? { params?: QueryKeyParamsFromConfig<TQueryKeys, TKey> }
-    : { params: QueryKeyParamsFromConfig<TQueryKeys, TKey> }
-)
-
-export type ApiUseKeysetInfinitePrefetchQueryOptions<
-  TQueryKeys extends object,
-  TKey extends QueryKeysWithArrayEntityFromConfig<TQueryKeys>,
-  TErrorCode extends string = string,
-> = {
-  staleTime?: number
   limit?: number
   queryFn: (paginationParams: KeysetPaginationParams)
   => Promise<KeysetPaginationResult<QueryKeyArrayItemFromConfig<TQueryKeys, TKey>, TErrorCode>>

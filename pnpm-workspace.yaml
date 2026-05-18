@@ -4,6 +4,7 @@ packages:
 catalog:
   "@tanstack/vue-hotkeys": ^0.10.0
   "@wisemen/eslint-config-nestjs": ^1.1.1
+  "@wisemen/vue-core-api-utils": catalog
   superjson: "2.2.6"
 
 catalogs:
@@ -294,6 +295,7 @@ catalogs:
     "@vue/tsconfig": "0.8.1"
     "@vueuse/core": "14.1.0"
     "@vueuse/router": "14.1.0"
+    "@wisemen/vue-core-api-utils": ^0.0.0
     "motion-v": "2.2.1"
     "pinia": "3.0.4"
     "reka-ui": "2.9.7"
@@ -307,3 +309,23 @@ catalogs:
   wisemen:
     "@wisemen/vue-core-design-system": "0.10.0"
     "@wisemen/vue-core-icons": "0.0.2"
+  vu:
+    "@wisemen/vue-core-api-utils": ^0.0.0
+  v:
+    "@wisemen/vue-core-api-utils": ^0.0.0
+  conflicts_vue_:
+    "@wisemen/vue-core-api-utils": ""
+  conflicts_vue_w:
+    "@wisemen/vue-core-api-utils": w
+  conflicts_vue_work:
+    "@wisemen/vue-core-api-utils": work
+  conflicts_vue_works:
+    "@wisemen/vue-core-api-utils": works
+  conflicts_vue_worksl:
+    "@wisemen/vue-core-api-utils": worksl
+  conflicts_vue_worksp:
+    "@wisemen/vue-core-api-utils": worksp
+  conflicts_vue_workspa:
+    "@wisemen/vue-core-api-utils": workspa
+  conflicts_vue_workspac:
+    "@wisemen/vue-core-api-utils": workspac

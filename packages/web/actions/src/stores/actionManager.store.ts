@@ -6,22 +6,21 @@ import {
 } from 'vue-router'
 
 import { useIsSelectorVisible } from '#composables/isSelectorVisible.composable.ts'
+import type { RegisteredActionContext } from '#register'
 import type { Action } from '#types/action.type.ts'
-import type { ActionContext } from '#types/actionContext.type.ts'
-import type { ActionModel } from '#types/actionModel.type.ts'
 
 interface ActionContextOptions {
   keyboardEvent?: KeyboardEvent
   menuType?: 'commandMenu' | 'contextualMenu'
-  metadata?: Record<string, unknown>
-  models?: ActionModel[]
+  metadata?: RegisteredActionContext['metadata']
+  models?: RegisteredActionContext['models']
   searchInput?: string
   subActionsMeta?: Record<string, number | null>
 }
 
 async function executeAction(
   action: Action,
-  ctx: ActionContext,
+  ctx: RegisteredActionContext,
   options?: { onComplete?: () => void },
 ): Promise<void> {
   if (action.execute === undefined) {
@@ -33,7 +32,7 @@ async function executeAction(
   options?.onComplete?.()
 }
 
-function dedupeModels(models: ActionModel[]): ActionModel[] {
+function dedupeModels(models: RegisteredActionContext['models']): RegisteredActionContext['models'] {
   const seen = new Set<unknown>()
 
   return models.filter((model) => {
@@ -48,14 +47,14 @@ function dedupeModels(models: ActionModel[]): ActionModel[] {
 }
 
 export const useActionManagerStore = defineStore('actionManager', () => {
-  const focusedModels = ref<ActionModel[]>([])
-  const viewModels = ref<ActionModel[]>([])
-  const metadata = ref<Record<string, unknown>>({})
+  const focusedModels = ref<RegisteredActionContext['models']>([])
+  const viewModels = ref<RegisteredActionContext['models']>([])
+  const metadata = ref<RegisteredActionContext['metadata']>({} as RegisteredActionContext['metadata'])
   const router = useRouter()
   const route = useRoute<any>()
   const isAnyDialogOpen = useIsSelectorVisible('[data-dialog]:not([data-command-menu])')
 
-  function registerMetadata(meta: Record<string, unknown>): void {
+  function registerMetadata(meta: RegisteredActionContext['metadata']): void {
     metadata.value = {
       ...metadata.value,
       ...meta,
@@ -65,21 +64,21 @@ export const useActionManagerStore = defineStore('actionManager', () => {
   function unregisterMetadata(key: string): void {
     const copy = {
       ...metadata.value,
-    }
+    } as Record<string, unknown>
 
     delete copy[key]
-    metadata.value = copy
+    metadata.value = copy as RegisteredActionContext['metadata']
   }
 
-  function setFocusedModels(models: ActionModel[]): void {
+  function setFocusedModels(models: RegisteredActionContext['models']): void {
     focusedModels.value = models
   }
 
-  function setViewModels(models: ActionModel[]): void {
+  function setViewModels(models: RegisteredActionContext['models']): void {
     viewModels.value = models
   }
 
-  function actionContext(options: ActionContextOptions): ActionContext {
+  function actionContext(options: ActionContextOptions): RegisteredActionContext {
     const allModels = dedupeModels([
       ...(options.models ?? []),
       ...viewModels.value,
@@ -94,8 +93,8 @@ export const useActionManagerStore = defineStore('actionManager', () => {
     return {
       getPaginationOffsetForSubActionId: (id: string) => options.subActionsMeta?.[id] ?? null,
       hasActiveDialogs: () => isAnyDialogOpen.value,
-      hasTargetedModelsOfType: (type) => allModels.some((m) => (m as any).modelName === type),
-      isRouteActive: (routeName, exact): boolean => {
+      hasTargetedModelsOfType: (type: any) => allModels.some((m) => (m as any).modelName === type),
+      isRouteActive: (routeName: any, exact: any): boolean => {
         if (exact === undefined || exact === false) {
           return route.matched.some((route: any) => route.name === routeName)
         }
@@ -106,13 +105,13 @@ export const useActionManagerStore = defineStore('actionManager', () => {
       focusedModels: focusedModels.value,
       keyboardEvent: options.keyboardEvent,
       menuType: options.menuType,
-      metadata: mergedMetadata,
+      metadata: mergedMetadata as RegisteredActionContext['metadata'],
       models: options.models ?? [],
       router,
       searchInput: options.searchInput ?? '',
       subActionsMeta: options.subActionsMeta,
-      targetedModelOfType: (type) => allModels.find((m) => (m as any).modelName === type) ?? null,
-      targetedModelOfTypeOrThrow: (type): any => {
+      targetedModelOfType: (type: any) => allModels.find((m) => (m as any).modelName === type) ?? null,
+      targetedModelOfTypeOrThrow: (type: any): any => {
         const model = allModels.find((m) => (m as any).modelName === type) ?? null
 
         if (model === null) {
@@ -121,8 +120,8 @@ export const useActionManagerStore = defineStore('actionManager', () => {
 
         return model
       },
-      targetedModelsOfType: (type) => allModels.filter((m) => (m as any).modelName === type),
-    }
+      targetedModelsOfType: (type: any) => allModels.filter((m) => (m as any).modelName === type),
+    } as RegisteredActionContext
   }
 
   return {

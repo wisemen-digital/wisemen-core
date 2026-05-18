@@ -1,5 +1,6 @@
 import type { Component } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
+
+import type { RegisteredRouteLocationRaw } from '@/register'
 
 export interface BreadcrumbItemProps {
   /**
@@ -18,5 +19,5 @@ export interface BreadcrumbItemProps {
    * The route location to navigate to when clicking the breadcrumb.
    * When not provided, the breadcrumb is rendered as plain text.
    */
-  to?: RouteLocationRaw
+  to?: RegisteredRouteLocationRaw
 }

@@ -12,22 +12,17 @@ import {
   nextTick,
 } from 'vue'
 
-import { createApiUtils } from '@/factory/createApiUtils'
 import { flushPromises } from '@/test/flushPromises'
 import { runInSetup } from '@/test/runInSetup'
+
+import { useKeysetInfiniteQuery } from './keysetInfiniteQuery.composable'
+import { useOffsetInfiniteQuery } from './offsetInfiniteQuery.composable'
+import { usePrefetchKeysetInfiniteQuery } from './prefetchKeysetInfiniteQuery.composable'
+import { usePrefetchOffsetInfiniteQuery } from './prefetchOffsetInfiniteQuery.composable'
 
 interface PrefetchUser {
   id: string
   email: string
-}
-
-interface PrefetchQueryKeys {
-  userIndex: {
-    entity: PrefetchUser[]
-    params: {
-      search: string
-    }
-  }
 }
 
 function createPrefetchUserItems(count: number): PrefetchUser[] {
@@ -39,9 +34,10 @@ function createPrefetchUserItems(count: number): PrefetchUser[] {
   }))
 }
 
-describe('createApiUtils - prefetch infinite queries', () => {
+describe('prefetch infinite query composables', () => {
   it('prefetches offset infinite query and avoids extra fetch', async () => {
     const items = createPrefetchUserItems(5)
+    const search = computed<string>(() => 'user')
 
     const queryFn = vi.fn(({
       limit, offset,
@@ -58,17 +54,11 @@ describe('createApiUtils - prefetch infinite queries', () => {
     })
 
     const setup = runInSetup(() => {
-      const {
-        useOffsetInfiniteQuery, usePrefetchOffsetInfiniteQuery,
-      } = createApiUtils<PrefetchQueryKeys>()
-
       return {
-        prefetch: usePrefetchOffsetInfiniteQuery('userIndex', {
+        prefetch: usePrefetchOffsetInfiniteQuery({
           staleTime: 999_999,
           limit: 2,
-          params: {
-            search: computed<string>(() => 'user'),
-          },
+          queryKey: { userIndex: { search } },
           queryFn: ({
             limit, offset,
           }) => queryFn({
@@ -76,12 +66,10 @@ describe('createApiUtils - prefetch infinite queries', () => {
             offset,
           }),
         }),
-        query: useOffsetInfiniteQuery('userIndex', {
+        query: useOffsetInfiniteQuery({
           staleTime: 999_999,
           limit: 2,
-          params: {
-            search: computed<string>(() => 'user'),
-          },
+          queryKey: { userIndex: { search } },
           queryFn: ({
             limit, offset,
           }) => queryFn({
@@ -114,6 +102,7 @@ describe('createApiUtils - prefetch infinite queries', () => {
 
   it('prefetches keyset infinite query and avoids extra fetch', async () => {
     const items = createPrefetchUserItems(5)
+    const search = computed<string>(() => 'user')
 
     const queryFn = vi.fn(({
       key, limit,
@@ -130,17 +119,11 @@ describe('createApiUtils - prefetch infinite queries', () => {
     })
 
     const setup = runInSetup(() => {
-      const {
-        useKeysetInfiniteQuery, usePrefetchKeysetInfiniteQuery,
-      } = createApiUtils<PrefetchQueryKeys>()
-
       return {
-        prefetch: usePrefetchKeysetInfiniteQuery('userIndex', {
+        prefetch: usePrefetchKeysetInfiniteQuery({
           staleTime: 999_999,
           limit: 2,
-          params: {
-            search: computed<string>(() => 'user'),
-          },
+          queryKey: { userIndex: { search } },
           queryFn: ({
             key, limit,
           }) => queryFn({
@@ -148,12 +131,10 @@ describe('createApiUtils - prefetch infinite queries', () => {
             limit,
           }),
         }),
-        query: useKeysetInfiniteQuery('userIndex', {
+        query: useKeysetInfiniteQuery({
           staleTime: 999_999,
           limit: 2,
-          params: {
-            search: computed<string>(() => 'user'),
-          },
+          queryKey: { userIndex: { search } },
           queryFn: ({
             key, limit,
           }) => queryFn({
