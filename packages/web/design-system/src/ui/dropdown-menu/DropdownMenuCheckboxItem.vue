@@ -5,11 +5,11 @@ import {
   DropdownMenuItemIndicator,
 } from 'reka-ui'
 
-import { UIActionTooltip } from '@/ui/action-tooltip/index'
 import { UIMenuItem } from '@/ui/menu-item'
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = withDefaults(defineProps<{
+  isDisabled?: boolean
   config?: MenuItemConfig | null
   disabledReason?: string | null
   label: string
@@ -24,29 +24,26 @@ const checked = defineModel<boolean>({
 </script>
 
 <template>
-  <UIActionTooltip
-    :is-disabled="props.disabledReason === null"
-    :label="props.disabledReason"
+  <RekaDropdownMenuCheckboxItem
+    v-model="checked"
+    :disabled="props.isDisabled || props.disabledReason !== null"
+    class="
+      group/dropdown-menu-item cursor-default rounded-sm outline-none
+      data-disabled:cursor-not-allowed
+      not-data-disabled:data-highlighted:bg-secondary-hover
+    "
   >
-    <RekaDropdownMenuCheckboxItem
-      v-model="checked"
-      :disabled="props.disabledReason !== null"
-      class="
-        group/dropdown-menu-item cursor-default rounded-sm outline-none
-        data-disabled:cursor-not-allowed
-        not-data-disabled:data-highlighted:bg-secondary-hover
-      "
+    <UIMenuItem
+      :is-disabled="props.isDisabled"
+      :disabled-reason="props.disabledReason"
+      :config="props.config"
+      :label="props.label"
     >
-      <UIMenuItem
-        :config="props.config"
-        :label="props.label"
-      >
-        <template #right>
-          <DropdownMenuItemIndicator>
-            <CheckIcon class="size-3.5 text-tertiary" />
-          </DropdownMenuItemIndicator>
-        </template>
-      </UIMenuItem>
-    </RekaDropdownMenuCheckboxItem>
-  </UIActionTooltip>
+      <template #right>
+        <DropdownMenuItemIndicator>
+          <CheckIcon class="size-3.5 text-tertiary" />
+        </DropdownMenuItemIndicator>
+      </template>
+    </UIMenuItem>
+  </RekaDropdownMenuCheckboxItem>
 </template>
