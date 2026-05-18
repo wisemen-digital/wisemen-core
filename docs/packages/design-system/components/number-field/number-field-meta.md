@@ -1,0 +1,218 @@
+<!-- This file was automatically generated. Do not edit it manually -->
+
+<script lang="ts">
+import { createNumberFieldStyle } from '@/ui/number-field/numberField.style'
+
+const propsData = [
+  {
+    "description": "<p>The autocomplete attribute of the input.</p>\n",
+    "name": "autocomplete",
+    "required": false,
+    "type": "string"
+  },
+  {
+    "description": "<p>Provides a reason why the element is disabled,\nwhen provided a tooltip will be shown on hover with the provided text.</p>\n",
+    "name": "disabledReason",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "description": "<p>The error associated with the input.</p>\n",
+    "name": "errorMessage",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "description": "<p>The id of the element the label is for.</p>\n",
+    "name": "for",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "default": "null",
+    "description": "<p>Specifies formatting options for the number input, using <code>Intl.NumberFormatOptions</code>.\nThis controls how the number is displayed (e.g., decimal places, currency, or percentage).\nWhen <code>null</code>, no formatting is applied.</p>\n",
+    "name": "formatOptions",
+    "required": false,
+    "type": "Intl.NumberFormatOptions | null"
+  },
+  {
+    "description": "<p>The help text displayed in a tooltip next to the label.\nWhen provided, a help circle icon is shown next to the label.</p>\n",
+    "name": "helpText",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "description": "<p>Determines whether to hide the error message visually.</p>\n",
+    "name": "hideErrorMessage",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>The hint text of the input.</p>\n",
+    "name": "hint",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "description": "<p>The icon displayed on the left side of the input.</p>\n",
+    "name": "iconLeft",
+    "required": false,
+    "type": "Component | null"
+  },
+  {
+    "description": "<p>The icon displayed on the right side of the input.</p>\n",
+    "name": "iconRight",
+    "required": false,
+    "type": "Component | null"
+  },
+  {
+    "description": "<p>The id of the element.</p>\n",
+    "name": "id",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "description": "<p>Determines whether the element is disabled. When <code>true</code>, the element becomes non-interactive.</p>\n",
+    "name": "isDisabled",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>Whether the label and hint are displayed horizontally.</p>\n",
+    "name": "isHorizontal",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>Whether the label is visually hidden but still accessible to screen readers.</p>\n",
+    "name": "isLabelHidden",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>Whether the input is in a loading state.</p>\n",
+    "name": "isLoading",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>Whether the input is read-only. When <code>true</code>, the input value cannot be changed.</p>\n",
+    "name": "isReadonly",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>Whether the input is required.</p>\n",
+    "name": "isRequired",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "description": "<p>The label of the input.</p>\n",
+    "name": "label",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "default": "null",
+    "description": "<p>The maximum value of the number input.</p>\n",
+    "name": "max",
+    "required": false,
+    "type": "number | null"
+  },
+  {
+    "default": "null",
+    "description": "<p>The minimum value of the number input.</p>\n",
+    "name": "min",
+    "required": false,
+    "type": "number | null"
+  },
+  {
+    "description": "",
+    "name": "modelValue",
+    "required": true,
+    "type": "number | null"
+  },
+  {
+    "description": "<p>The name of the input.</p>\n",
+    "name": "name",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "description": "<p>The placeholder text of the input.</p>\n",
+    "name": "placeholder",
+    "required": false,
+    "type": "string | null"
+  },
+  {
+    "default": "false",
+    "description": "<p>Determines whether the number input should display increment and decrement controls.\nWhen <code>true</code>, buttons for increasing and decreasing the value will be hidden.</p>\n",
+    "name": "showControls",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "default": "1",
+    "description": "<p>Defines the increment and decrement step for the number input.\nThis determines how much the value changes when using controls or arrow keys.</p>\n",
+    "name": "step",
+    "required": false,
+    "type": "number"
+  }
+]
+
+const eventsData = [
+  {
+    "description": "",
+    "name": "blur",
+    "type": "[event: FocusEvent]"
+  },
+  {
+    "description": "",
+    "name": "update:modelValue",
+    "type": "[value: number | null]"
+  }
+]
+
+const slotsData = [
+  {
+    "description": "",
+    "name": "label-left",
+    "type": "-"
+  },
+  {
+    "description": "",
+    "name": "label-right",
+    "type": "-"
+  },
+  {
+    "description": "",
+    "name": "left",
+    "type": "-"
+  },
+  {
+    "description": "",
+    "name": "right",
+    "type": "-"
+  }
+]
+
+export default {
+  setup() {
+    return {
+      createNumberFieldStyle,
+      propsData,
+      eventsData,
+      slotsData,
+    }
+  },
+}
+</script>
+
+<PropsTable :data="propsData" />
+
+<EmitsTable :data="eventsData" />
+
+<SlotsTable :data="slotsData" />
+
+<ClassConfig :style-function="createNumberFieldStyle" />

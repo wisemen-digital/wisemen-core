@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@source "../../../packages/web/design-system/src";
 
 @variant motion-reduce (&:where(.reduce-motion, .reduce-motion *));
 @variant dark (&:where(.dark, .dark *));

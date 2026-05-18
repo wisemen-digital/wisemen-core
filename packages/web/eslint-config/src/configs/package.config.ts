@@ -2,25 +2,25 @@ import antfu from '@antfu/eslint-config'
 import type { FlatConfigComposer } from 'eslint-flat-config-utils'
 import globals from 'globals'
 
-import { a11yConfig } from '#rules/a11y.ts'
-import { baseConfig } from '#rules/base.ts'
-import { compatConfig } from '#rules/compatLint.ts'
+import { a11yConfig } from '../rules/a11y.ts'
+import { baseConfig } from '../rules/base.ts'
+import { compatConfig } from '../rules/compatLint.ts'
 import {
   DEFAULT_I18N_LOCALES_FOLDER_PATH,
   i18nConfig,
-} from '#rules/i18n.ts'
-import { jsonConfig } from '#rules/json.ts'
-import { pathConfig } from '#rules/path.ts'
-import { perfectionistConfig } from '#rules/perfectionist.ts'
-import { simpleSortConfig } from '#rules/simpleSort.ts'
-import { spacingConfig } from '#rules/spacing.ts'
+} from '../rules/i18n.ts'
+import { jsonConfig } from '../rules/json.ts'
+import { pathConfig } from '../rules/path.ts'
+import { perfectionistConfig } from '../rules/perfectionist.ts'
+import { simpleSortConfig } from '../rules/simpleSort.ts'
+import { spacingConfig } from '../rules/spacing.ts'
 import {
   DEFAULT_TAILWIND_CONFIG_PATH,
   tailwindConfig,
-} from '#rules/tailwind.ts'
-import { unicornConfig } from '#rules/unicorn.ts'
-import { vitestConfig } from '#rules/vitest.ts'
-import { wisemenConfig } from '#rules/wisemen.ts'
+} from '../rules/tailwind.ts'
+import { unicornConfig } from '../rules/unicorn.ts'
+import { vitestConfig } from '../rules/vitest.ts'
+import { wisemenConfig } from '../rules/wisemen.ts'
 
 import type { PackageConfigOptions } from './default.config'
 

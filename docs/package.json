@@ -12,7 +12,7 @@
     "docs:build:debug": "DEBUG=\"vite:*\" vitepress build",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
-    "docs:gen": "vue-tsc --noEmit --project tsconfig.autogen.json && tsx scripts/autogen.ts",
+    "docs:gen": "vue-tsc --noEmit --project tsconfig.autogen.json && node --experimental-strip-types scripts/autogen.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "type-check": "vue-tsc --noEmit --project tsconfig.autogen.json"
@@ -31,6 +31,7 @@
     "markdown-it": "catalog:docs",
     "motion-v": "catalog:vue",
     "oxc-minify": "catalog:docs",
+    "pinia": "catalog:vue",
     "postcss": "catalog:style",
     "postcss-prefix-selector": "catalog:style",
     "tailwindcss": "catalog:style",

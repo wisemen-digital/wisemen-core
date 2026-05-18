@@ -7,9 +7,6 @@ hero:
   tagline: "A collection of reusable packages from wisemen.digital."
 
 features:
-  - title: 🧩 Component Library
-    details: Designed with accessibility in mind to ensure an inclusive user experience.
-    link: /packages/components/getting-started/installation
   - title: 🎨 Design System
     details: A comprehensive Vue 3 design system for building consistent user interfaces.
     link: /packages/design-system/pages/getting-started/installation

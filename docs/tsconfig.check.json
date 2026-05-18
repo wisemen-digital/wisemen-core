@@ -26,9 +26,9 @@
     "playground/**/*.ts",
     "playground/**/*.tsx",
     "playground/**/*.vue",
-    "components-next/**/*",
-    "components-next/**/*.ts",
-    "components-next/**/*.tsx",
-    "components-next/**/*.vue"
+    "../packages/web/design-system/src/**/*",
+    "../packages/web/design-system/src/**/*.ts",
+    "../packages/web/design-system/src/**/*.tsx",
+    "../packages/web/design-system/src/**/*.vue"
   ]
 }
