@@ -2,7 +2,9 @@ import { Quantity } from '../../quantity.js'
 import { TemperatureUnit } from './temperature-unit.enum.js'
 
 export class Temperature extends Quantity<TemperatureUnit, Temperature> {
-  protected baseUnit = TemperatureUnit.KELVIN
+  protected getBaseUnit () {
+    return TemperatureUnit.KELVIN
+  }
 
   protected convertValueToBaseUnit (value: number, unit: TemperatureUnit): number {
     switch (unit) {
@@ -29,4 +31,7 @@ export class Temperature extends Quantity<TemperatureUnit, Temperature> {
         return (value - 273.15) * 1000
     }
   }
+
+  /** Absolute zero = 0 Kelvin. NOTE: this does NOT represent 0° Celsius or Fahrenheit */
+  static ZERO = new Temperature(0, TemperatureUnit.KELVIN)
 }
