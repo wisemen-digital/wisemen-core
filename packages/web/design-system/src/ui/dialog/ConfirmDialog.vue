@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<ConfirmDialogProps>(), {
   icon: null,
   preventClickOutside: false,
   preventEsc: false,
-  onConfirm: null,
 })
 
 const emit = defineEmits<{
@@ -74,7 +73,7 @@ function onClose(): void {
     <DialogFooter>
       <template #right>
         <DialogFooterCancel
-          :label="props.cancelLabel ?? i18n.t('component.unsaved_changes_dialog.cancel')"
+          :label="props.cancelLabel"
           @click="onCancelClick"
         />
         <Button

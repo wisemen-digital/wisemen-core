@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<{
   <UILink
     v-else-if="props.action.type === 'link'"
     v-bind="props.action"
+    :variant="props.variant"
   />
 
   <!-- TODO: add when ActionTrigger component is added -->

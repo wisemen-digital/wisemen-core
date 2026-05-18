@@ -78,7 +78,7 @@ const dialogContext = useInjectDialogContext(null)
         />
       </div>
 
-      <div class="flex min-w-0 flex-1 flex-col gap-xxs">
+      <div class="flex min-w-0 flex-1 flex-col gap-sm">
         <RekaDialogTitle
           as="h2"
           class="text-sm font-semibold text-primary"
@@ -86,15 +86,15 @@ const dialogContext = useInjectDialogContext(null)
           {{ props.title }}
         </RekaDialogTitle>
 
+        <!--  eslint-disable vue/no-v-text-v-html-on-component -->
         <RekaDialogDescription
           :class="{
             'sr-only': props.hideDescription,
           }"
           as="p"
           class="text-xs text-tertiary"
-        >
-          {{ props.description }}
-        </RekaDialogDescription>
+          v-html="props.description"
+        />
       </div>
     </RowLayout>
 

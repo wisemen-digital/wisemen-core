@@ -35,35 +35,33 @@ const attrs = useAttrs()
         <RowLayout class="h-4.5">
           <slot />
         </RowLayout>
-        <div>
-          <InputWrapperLabel
-            :label="props.label"
-            :for="props.for"
-            :is-required="props.isRequired"
-            :is-horizontal="props.isHorizontal"
-            :is-label-hidden="props.isLabelHidden"
-            :help-text="props.helpText"
-          >
-            <template #left>
-              <slot name="label-left" />
-            </template>
+        <InputWrapperLabel
+          :label="props.label"
+          :for="props.for"
+          :is-required="props.isRequired"
+          :is-horizontal="props.isHorizontal"
+          :is-label-hidden="props.isLabelHidden"
+          :help-text="props.helpText"
+        >
+          <template #left>
+            <slot name="label-left" />
+          </template>
 
-            <template #right>
-              <slot name="label-right" />
-            </template>
-          </InputWrapperLabel>
+          <template #right>
+            <slot name="label-right" />
+          </template>
+        </InputWrapperLabel>
 
-          <InputWrapperHint
-            :hint="props.hint"
-            :for="props.for"
-          />
+        <InputWrapperHint
+          :hint="props.hint"
+          :for="props.for"
+        />
 
-          <InputWrapperErrorMessage
-            v-if="!props.hideErrorMessage"
-            :error-message="props.errorMessage"
-            :for="props.for"
-          />
-        </div>
+        <InputWrapperErrorMessage
+          v-if="!props.hideErrorMessage"
+          :error-message="props.errorMessage"
+          :for="props.for"
+        />
       </RowLayout>
     </div>
     <div
