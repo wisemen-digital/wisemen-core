@@ -4,8 +4,8 @@ export const createBaseCheckboxStyle = tv({
   slots: {
     control: `
       relative flex size-4 items-center justify-center overflow-hidden
-      rounded-xs border border-solid border-secondary outline-2 outline-offset-1
-      outline-transparent duration-300
+      rounded-xs border border-solid border-secondary bg-primary outline-2
+      outline-offset-1 outline-transparent duration-300
       group-focus-visible/checkbox:outline-brand-600
       group-disabled/checkbox:bg-disabled-subtle
       group-focus-visible/checkbox:group-data-invalid/checkbox:outline-error-600
@@ -16,6 +16,8 @@ export const createBaseCheckboxStyle = tv({
       group-data-invalid/checkbox:group-data-[state=checked]/checkbox:border-error
       group-data-invalid/checkbox:group-data-[state=checked]/checkbox:bg-error-solid
       group-data-invalid/checkbox:group-data-[state=unchecked]/checkbox:border-error
+      not-group-disabled/checkbox:hover:border-primary
+      not-group-disabled/checkbox:group-data-[state=checked]/checkbox:hover:border-brand-600
       disabled:border-disabled
     `,
     indicator: `

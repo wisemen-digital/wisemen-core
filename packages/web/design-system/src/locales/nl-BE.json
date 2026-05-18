@@ -42,6 +42,7 @@
   "component.date_range_picker.preset.today": "Vandaag",
   "component.date_range_picker.preset.yesterday": "Gisteren",
   "component.date_range_picker.previous_month": "Vorige maand",
+  "component.dialog.cancel": "Annuleren",
   "component.dialog.close": "Dialoog sluiten",
   "component.keyboard_shortcut.then": "dan",
   "component.number_field.decrement": "Aftrekken",
