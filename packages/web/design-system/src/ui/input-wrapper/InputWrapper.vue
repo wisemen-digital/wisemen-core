@@ -52,16 +52,18 @@ const attrs = useAttrs()
           </template>
         </InputWrapperLabel>
 
-        <InputWrapperHint
-          :hint="props.hint"
-          :for="props.for"
-        />
+        <div v-if="props.hint !== null || (props.errorMessage !== null && !props.hideErrorMessage)">
+          <InputWrapperHint
+            :hint="props.hint"
+            :for="props.for"
+          />
 
-        <InputWrapperErrorMessage
-          v-if="!props.hideErrorMessage"
-          :error-message="props.errorMessage"
-          :for="props.for"
-        />
+          <InputWrapperErrorMessage
+            v-if="!props.hideErrorMessage"
+            :error-message="props.errorMessage"
+            :for="props.for"
+          />
+        </div>
       </RowLayout>
     </div>
     <div

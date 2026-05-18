@@ -27,10 +27,6 @@ const i18n = useI18n()
 const isLoading = ref<boolean>(false)
 
 async function onConfirmClick(): Promise<void> {
-  if (props.onConfirm === null) {
-    return
-  }
-
   const result = props.onConfirm()
 
   if (result instanceof Promise) {
