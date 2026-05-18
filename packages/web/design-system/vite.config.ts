@@ -25,7 +25,7 @@ export default defineConfig({
       },
     },
 
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         '@vueuse/core',
         '@vueuse/router',
@@ -35,6 +35,7 @@ export default defineConfig({
         'reka-ui',
         'formango',
         'temporal-polyfill',
+        '@wisemen/vue-core-actions',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
@@ -42,6 +43,7 @@ export default defineConfig({
         globals: {
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
+          '@wisemen/vue-core-actions': 'VueCoreActions',
           'formango': 'Formango',
           'reka-ui': 'RekaUI',
           'temporal-polyfill': 'Temporal',

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.10.0",
+  "version": "0.13.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -50,7 +50,7 @@
     "type-check": "vue-tsc --noEmit",
     "storybook:clean": "rimraf node_modules/.cache node_modules/.vite",
     "storybook": "pnpm storybook:clean && storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build"
   },
   "peerDependencies": {
     "@vueuse/core": "catalog:vue",
@@ -60,9 +60,12 @@
     "reka-ui": "catalog:peer",
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
+    "pinia": "catalog:vue",
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
-    "vue-sonner": "catalog:vue"
+    "vue-sonner": "catalog:vue",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",
@@ -89,18 +92,21 @@
     "@vitest/coverage-v8": "catalog:test",
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
+    "pinia": "catalog:vue",
     "playwright": "catalog:test",
     "reka-ui": "catalog:vue",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
-    "vue": "catalog:peer",
+    "vue": "catalog:vue",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
     "vue-tsc": "catalog:vue"

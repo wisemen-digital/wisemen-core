@@ -1,11 +1,9 @@
 {
   "action.group.account": "Account",
-  "action.group.contact": "Contact",
   "action.group.developer": "Ontwikkelaar",
   "action.group.general": "Algemeen",
   "action.group.navigation": "Navigatie",
   "action.group.preferences": "Voorkeuren",
-  "action.group.user": "Gebruiker",
   "search": "Zoeken...",
   "type_a_command_or_search": "Type een command of zoek..."
 }

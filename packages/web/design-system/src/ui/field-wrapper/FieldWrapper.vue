@@ -32,12 +32,12 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     }"
     gap="none"
     class="
-      group/field-wrapper relative rounded-md border border-primary bg-primary
+      group/field-wrapper relative rounded-md border border-secondary bg-primary
       outline outline-transparent duration-100
       data-disabled:cursor-not-allowed data-disabled:border-disabled-subtle
       data-disabled:bg-disabled-subtle data-disabled:text-disabled
       data-error:border-error
-      not-data-error:data-interactive:hover:border-primary
+      not-data-error:data-interactive:hover:border-secondary
       [&:has([data-field-wrapper]:focus-visible)]:data-interactive:border-fg-brand-primary
       [&:has([data-field-wrapper]:focus-visible)]:data-interactive:outline-fg-brand-primary
       [&:has([data-field-wrapper]:focus-visible)]:data-interactive:data-error:border-error

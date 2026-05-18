@@ -1,0 +1,91 @@
+{
+  "name": "@wisemen/vue-core-filters",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/filters"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "prerelease": "pnpm version prerelease --preid=alpha",
+    "dev": "vite --config vite.config.dev.ts --open /playground/index.html",
+    "build": "vite build",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "test:unit": "vitest --run",
+    "test": "vitest --run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/"
+  },
+  "peerDependencies": {
+    "@wisemen/vue-core-actions": ">=0.1.1",
+    "@wisemen/vue-core-dates": ">=0.0.2",
+    "@wisemen/vue-core-design-system": ">=0.13.1",
+    "@wisemen/vue-core-utils": ">=0.0.1",
+    "@wisemen/vue-core-icons": ">=0.0.1",
+    "formango": "catalog:peer",
+    "vue": "catalog:peer",
+    "vue-i18n": "catalog:peer",
+    "tailwindcss": "catalog:style",
+    "pinia": "catalog:vue"
+  },
+  "dependencies": {
+    "superjson": "catalog:vue"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "catalog:vite",
+    "@types/node": "catalog:types",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vue/test-utils": "catalog:test",
+    "@vue/tsconfig": "catalog:vue",
+    "formango": "catalog:peer",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-tailwind-config": "workspace:*",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
+    "@wisemen/vue-core-design-system": "workspace:*",
+    "@wisemen/vue-core-utils": "workspace:*",
+    "@wisemen/vue-core-icons": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "husky": "catalog:build",
+    "tailwindcss": "catalog:style",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vite-plugin-dts": "catalog:vite",
+    "vitest": "catalog:test",
+    "pinia": "catalog:vue",
+    "vue": "catalog:vue",
+    "vue-i18n": "catalog:peer",
+    "vue-tsc": "catalog:vue"
+  }
+}
