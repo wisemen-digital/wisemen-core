@@ -3,7 +3,7 @@ import DashboardPageContainer from '@/ui/dashboard-page/DashboardPageContainer.v
 </script>
 
 <template>
-  <DashboardPageContainer class="py-4xl">
+  <DashboardPageContainer class="h-full overflow-auto py-4xl">
     <slot />
   </DashboardPageContainer>
 </template>

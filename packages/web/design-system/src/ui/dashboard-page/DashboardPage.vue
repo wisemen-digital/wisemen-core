@@ -93,7 +93,7 @@ if (hasDetailPane.value) {
 }
 
 const isPageActionsSlotVisible = computed<boolean>(() => {
-  if (props.detailPane !== null) {
+  if (hasDetailPane.value) {
     return true
   }
 
@@ -104,7 +104,9 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
 <template>
   <Page class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
     <DashboardPageActions v-if="isPageActionsSlotVisible">
-      <slot name="page-actions-left" />
+      <template #left>
+        <slot name="page-actions-left" />
+      </template>
 
       <template #right>
         <UIRowLayout gap="none">
