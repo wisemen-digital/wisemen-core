@@ -2,7 +2,6 @@
 import { DropdownMenuItem as RekaDropdownMenuItem } from 'reka-ui'
 import type { Component } from 'vue'
 
-import { UIActionTooltip } from '@/ui/action-tooltip/index'
 import type { KeyboardShortcut as KeyboardShortcutType } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import { UIMenuItem } from '@/ui/menu-item'
 import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
@@ -25,24 +24,20 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <UIActionTooltip
-    :is-disabled="props.disabledReason === null"
-    :label="props.disabledReason"
+  <RekaDropdownMenuItem
+    :disabled="props.isDisabled || props.disabledReason !== null"
+    class="
+      group/dropdown-menu-item cursor-default rounded-sm outline-none
+      data-disabled:cursor-not-allowed
+      not-data-disabled:data-highlighted:bg-secondary-hover
+    "
+    @select="(e) => emit('select', e)"
   >
-    <RekaDropdownMenuItem
-      :disabled="props.disabledReason !== null"
-      class="
-        group/dropdown-menu-item cursor-default rounded-sm outline-none
-        data-disabled:cursor-not-allowed
-        not-data-disabled:data-highlighted:bg-secondary-hover
-      "
-      @select="(e) => emit('select', e)"
-    >
-      <UIMenuItem
-        :is-disabled="props.isDisabled"
-        :config="props.config"
-        :label="props.label"
-      />
-    </RekaDropdownMenuItem>
-  </UIActionTooltip>
+    <UIMenuItem
+      :is-disabled="props.isDisabled"
+      :disabled-reason="props.disabledReason"
+      :config="props.config"
+      :label="props.label"
+    />
+  </RekaDropdownMenuItem>
 </template>
