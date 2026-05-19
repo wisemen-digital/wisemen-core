@@ -6,7 +6,7 @@ export interface FormFieldGridProps {
 
   /**
    * Number of columns at medium container width.
-   * @default 1
+   * @default lg
    */
   md?: 1 | 2 | 3
 
