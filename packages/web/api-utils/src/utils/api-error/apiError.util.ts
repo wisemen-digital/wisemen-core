@@ -29,7 +29,7 @@ export class ApiErrorUtil {
       return error
     }
 
-    console.error(`'Unexpected API error:' ${error}`)
+    console.error(`Unexpected API error: ${error}`)
 
     if (error instanceof Error) {
       return error
