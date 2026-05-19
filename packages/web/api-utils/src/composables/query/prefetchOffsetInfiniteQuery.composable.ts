@@ -13,8 +13,8 @@ import type {
   OffsetPaginationResult,
 } from '@/types/pagination.type'
 
-type WithParams<TKey extends PropertyKey> =
-  RegisteredQueryKeyParams<TKey> extends undefined
+type WithParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyParams<TKey> extends undefined
     ? { params?: undefined }
     : { params: RegisteredQueryKeyParams<TKey> }
 
@@ -67,12 +67,17 @@ export function usePrefetchOffsetInfiniteQuery<
         return total
       },
       initialPageParam: 0,
-      queryFn: async ({ pageParam }) =>
+      queryFn: async ({
+        pageParam,
+      }) =>
         AsyncResult.fromResult(await options.queryFn({
           limit: options.limit ?? QUERY_CONFIG.limit,
           offset: (pageParam ?? 0) as number,
         })),
-      queryKey: [key, params],
+      queryKey: [
+        key,
+        params,
+      ],
     })
   }
 

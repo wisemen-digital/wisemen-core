@@ -13,8 +13,8 @@ import type {
   KeysetPaginationResult,
 } from '@/types/pagination.type'
 
-type WithParams<TKey extends PropertyKey> =
-  RegisteredQueryKeyParams<TKey> extends undefined
+type WithParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyParams<TKey> extends undefined
     ? { params?: undefined }
     : { params: RegisteredQueryKeyParams<TKey> }
 
@@ -63,12 +63,17 @@ export function usePrefetchKeysetInfiniteQuery<
         return (next === null || next === undefined) ? null : next as string
       },
       initialPageParam: undefined as unknown as string | undefined,
-      queryFn: async ({ pageParam }) =>
+      queryFn: async ({
+        pageParam,
+      }) =>
         AsyncResult.fromResult(await options.queryFn({
           key: pageParam as KeysetPaginationParams['key'],
           limit: options.limit ?? QUERY_CONFIG.limit,
         })),
-      queryKey: [key, params],
+      queryKey: [
+        key,
+        params,
+      ],
     })
   }
 

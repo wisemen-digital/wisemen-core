@@ -8,8 +8,8 @@ import type {
 } from '@/register'
 import type { ApiResult } from '@/types/apiError.type'
 
-type WithParams<TKey extends PropertyKey> =
-  RegisteredQueryKeyParams<TKey> extends undefined
+type WithParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyParams<TKey> extends undefined
     ? { params?: undefined }
     : { params: RegisteredQueryKeyParams<TKey> }
 
@@ -44,7 +44,10 @@ export function usePrefetchQuery<
     await queryClient.prefetchQuery({
       staleTime: options.staleTime ?? QUERY_CONFIG.prefetchStaleTime,
       queryFn: options.queryFn,
-      queryKey: [key, params],
+      queryKey: [
+        key,
+        params,
+      ],
     })
   }
 
