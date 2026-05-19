@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import {
   UIFormFieldGrid,
   UIFormFieldGroup,
-  UIFormFieldSeparator,
+  UIFormFieldSeperator,
   UIFormFieldSet,
   UIFormLayout,
 } from '@/ui/field'
@@ -56,7 +56,7 @@ const phone = ref<string | null>(null)
       </UIFormFieldGroup>
     </UIFormFieldSet>
 
-    <UIFormFieldSeparator />
+    <UIFormFieldSeperator />
 
     <UIFormFieldSet
       description="Default terms applied to new invoices"
@@ -76,7 +76,7 @@ const phone = ref<string | null>(null)
       </UIFormFieldGrid>
     </UIFormFieldSet>
 
-    <UIFormFieldSeparator />
+    <UIFormFieldSeperator />
 
     <UIFormFieldSet
       horizontal-alignment="end"
