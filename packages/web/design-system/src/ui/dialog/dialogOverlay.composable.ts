@@ -64,13 +64,17 @@ export type Overlay = OverlayOptions<Component> & ManagedOverlayOptionsPrivate<C
 type OverlayInstance<T extends Component> = Omit<ManagedOverlayOptionsPrivate<T>, 'component'> & {
   id: symbol
   close: (value?: any) => void
-  open: (props?: ComponentProps<T>) => OpenedOverlay<T>
-  patch: (props: Partial<ComponentProps<T>>) => void
+  open: (props?: PublicComponentProps<T>) => OpenedOverlay<T>
+  patch: (props: Partial<PublicComponentProps<T>>) => void
 }
 
 type OpenedOverlay<T extends Component> = Omit<OverlayInstance<T>, 'close' | 'modelValue' | 'open' | 'patch' | 'resolvePromise'> & {
   result: Promise<CloseEventArgType<ComponentEmit<T>>>
 } & Promise<CloseEventArgType<ComponentEmit<T>>>
+
+type InternalPropKeys = 'class' | 'key' | 'onVnodeBeforeMount' | 'onVnodeBeforeUnmount' | 'onVnodeBeforeUpdate' | 'onVnodeMounted' | 'onVnodeUnmounted' | 'onVnodeUpdated' | 'ref' | 'ref_for' | 'ref_key' | 'style'
+type PublicComponentProps<T extends Component> = PublicProps<ComponentProps<T>>
+type PublicProps<T> = Omit<T, InternalPropKeys>
 
 function _useOverlay() {
   const overlays = shallowReactive<Overlay[]>([])
@@ -101,15 +105,14 @@ function _useOverlay() {
     return {
       ...options,
       close: (value) => close(options.id, value),
-      open: <T extends Component>(props?: ComponentProps<T>) => open(options.id, props),
-      patch: <T extends Component>(props: Partial<ComponentProps<T>>) => patch(options.id, props),
+      open: <T extends Component>(props?: PublicComponentProps<T>) => open(options.id, props),
+      patch: <T extends Component>(props: Partial<PublicComponentProps<T>>) => patch(options.id, props),
     }
   }
 
-  const open = <T extends Component>(id: symbol, props?: ComponentProps<T>): OpenedOverlay<T> => {
+  const open = <T extends Component>(id: symbol, props?: PublicComponentProps<T>): OpenedOverlay<T> => {
     const overlay = getOverlay(id)
 
-    // If props are provided, merge them with the original props, otherwise use the original props
     if (props) {
       overlay.props = {
         ...overlay.originalProps,
@@ -165,7 +168,7 @@ function _useOverlay() {
     }
   }
 
-  const patch = <T extends Component>(id: symbol, props: Partial<ComponentProps<T>>): void => {
+  const patch = <T extends Component>(id: symbol, props: Partial<PublicComponentProps<T>>): void => {
     const overlay = getOverlay(id)
 
     overlay.props = {
