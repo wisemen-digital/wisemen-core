@@ -4,7 +4,9 @@ import {
   AnimatePresence,
   Motion,
 } from 'motion-v'
+import { computed } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { UIText } from '@/ui/text/index'
 
@@ -12,6 +14,9 @@ const props = defineProps<{
   errorMessage: string | null
   for: string | null
 }>()
+
+const isReducedMotion = useIsReducedMotion()
+const transitionDuration = computed<number>(() => isReducedMotion.value ? 0 : 0.3)
 </script>
 
 <template>
@@ -34,7 +39,7 @@ const props = defineProps<{
         filter: 'blur(4px)',
       }"
       :transition="{
-        duration: 0.3,
+        duration: transitionDuration,
         type: 'spring',
         bounce: 0,
       }"

@@ -6,6 +6,7 @@ import {
 } from 'motion-v'
 import { useI18n } from 'vue-i18n'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 
 const props = defineProps<{
@@ -13,6 +14,7 @@ const props = defineProps<{
 }>()
 
 const i18n = useI18n()
+const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const i18n = useI18n()
         filter: 'blur(4px)',
       }"
       :transition="{
-        duration: 0.3,
+        duration: isReducedMotion ? 0 : 0.3,
         type: 'spring',
         bounce: 0,
       }"

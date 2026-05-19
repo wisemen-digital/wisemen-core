@@ -1,12 +1,12 @@
-import { useReducedMotion } from 'motion-v'
 import { computed } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 
 export function useDetailPanePadding() {
   const detailPaneContext = useInjectDetailPaneContext(null)
 
-  const isReduceMotionEnabledOnDevice = useReducedMotion()
+  const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
   const contentPaddingRight = computed<string>(() => {
     if (detailPaneContext === null) {

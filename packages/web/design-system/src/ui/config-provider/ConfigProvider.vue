@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useReducedMotion } from 'motion-v'
+import { watchEffect } from 'vue'
+
 import { toComputedRefs } from '@/composables/context.composable'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
 import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
@@ -10,6 +13,7 @@ const props = withDefaults(defineProps<ConfigProviderProps>(), {
   hourCycle: null,
   numberFormat: 'system',
   projectName: 'wisemen',
+  reducedMotion: false,
 })
 
 defineSlots<{
@@ -20,6 +24,12 @@ defineSlots<{
 }>()
 
 useProvideConfigContext(toComputedRefs(props))
+
+const systemReducedMotion = useReducedMotion()
+
+watchEffect(() => {
+  document.documentElement.classList.toggle('ui-reduced-motion', props.reducedMotion || systemReducedMotion.value)
+})
 </script>
 
 <template>

@@ -134,3 +134,13 @@
 [data-animation='popover-default'][data-state='closed'][data-side='left'] {
   animation-name: popoverFadeOutToLeft;
 }
+
+.ui-reduced-motion *,
+.ui-reduced-motion *::before,
+.ui-reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: -1ms !important;
+  transition-duration: 0.001ms !important;
+  transition-delay: 0ms !important;
+}

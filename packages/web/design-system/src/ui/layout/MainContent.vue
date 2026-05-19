@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import {
-  Motion,
-  useReducedMotion,
-} from 'motion-v'
+import { Motion } from 'motion-v'
 import { computed } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import TopBar from '@/ui/top-bar/TopBar.vue'
 
@@ -15,7 +13,7 @@ const {
   sidebarWidth,
 } = useMainSidebar()
 
-const isReduceMotionEnabledOnDevice = useReducedMotion()
+const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
 const contentPaddingLeft = computed<string>(() => {
   if (isFloatingSidebar.value) {

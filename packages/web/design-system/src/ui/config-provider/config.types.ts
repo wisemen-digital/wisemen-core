@@ -51,4 +51,11 @@ export interface ConfigProviderProps {
    * The name of the project, used for example in the document title template.
    */
   projectName: string
+  /**
+   * When true, all animations in the design system run instantly.
+   * Useful for accessibility (reduced motion preference) or testing.
+   * Note: this also activates when the user has `prefers-reduced-motion: reduce` set on their OS.
+   * @default false
+   */
+  reducedMotion?: boolean
 }

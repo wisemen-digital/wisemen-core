@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import {
-  Motion,
-  useReducedMotion,
-} from 'motion-v'
+import { Motion } from 'motion-v'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 import type { DetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
 import { createDetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
@@ -19,7 +17,7 @@ const {
   onResizeStart,
 } = useInjectDetailPaneContext()
 
-const isReduceMotionEnabledOnDevice = useReducedMotion()
+const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
 const duration = computed<number>(() => {
   if (isResizing.value) {

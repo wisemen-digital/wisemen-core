@@ -12,6 +12,7 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { UIClickableElement } from '@/ui/clickable-element'
 import { UIText } from '@/ui/text'
 
@@ -33,6 +34,8 @@ watch(isOffline, (isOffline) => {
     isDismissed.value = false
   }
 })
+
+const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -55,7 +58,7 @@ watch(isOffline, (isOffline) => {
       :transition="{
         type: 'spring',
         bounce: 0,
-        duration: 0.3,
+        duration: isReducedMotion ? 0 : 0.3,
       }"
       while-hover="hovered"
     >

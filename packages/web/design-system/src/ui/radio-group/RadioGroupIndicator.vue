@@ -5,11 +5,14 @@ import {
 } from 'motion-v'
 import { RadioGroupIndicator as RekaRadioGroupIndicator } from 'reka-ui'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectRadioGroupItemContext } from '@/ui/radio-group/base/baseRadioGroup.context'
 
 const {
   radioGroupStyle,
 } = useInjectRadioGroupItemContext()
+
+const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -32,7 +35,7 @@ const {
           scale: 1.5,
         }"
         :transition="{
-          duration: 0.3,
+          duration: isReducedMotion ? 0 : 0.3,
           type: 'spring',
           bounce: 0,
         }"
