@@ -56,6 +56,8 @@
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
   "component.toast.close.label": "Close",
+  "component.top_bar.navigation.back": "Back",
+  "component.top_bar.navigation.forward": "Forward",
   "component.top_bar.search": "Type a command or search...",
   "component.unsaved_changes_dialog.cancel": "Keep editing",
   "component.unsaved_changes_dialog.confirm": "Discard changes",
