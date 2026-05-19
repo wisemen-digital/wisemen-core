@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/vue-query'
 
+import { AsyncResult } from '@/async-result/asyncResult'
 import { QUERY_CONFIG } from '@/config/config'
 import type {
   RegisteredErrorCodes,
@@ -43,7 +44,7 @@ export function usePrefetchQuery<
   async function execute(): Promise<void> {
     await queryClient.prefetchQuery({
       staleTime: options.staleTime ?? QUERY_CONFIG.prefetchStaleTime,
-      queryFn: options.queryFn,
+      queryFn: async () => AsyncResult.fromResult(await options.queryFn()),
       queryKey: [
         key,
         params,
