@@ -3,6 +3,7 @@ import { useAttrs } from 'vue'
 
 import { INPUT_META_DEFAULTS } from '@/types/input.type'
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
+import { UIColumnLayout } from '@/ui/column-layout'
 import type { InputWrapperProps } from '@/ui/input-wrapper/inputWrapper.props'
 import InputWrapperErrorMessage from '@/ui/input-wrapper/InputWrapperErrorMessage.vue'
 import InputWrapperHint from '@/ui/input-wrapper/InputWrapperHint.vue'
@@ -35,35 +36,38 @@ const attrs = useAttrs()
         <RowLayout class="h-4.5">
           <slot />
         </RowLayout>
-        <InputWrapperLabel
-          :label="props.label"
-          :for="props.for"
-          :is-required="props.isRequired"
-          :is-horizontal="props.isHorizontal"
-          :is-label-hidden="props.isLabelHidden"
-          :help-text="props.helpText"
-        >
-          <template #left>
-            <slot name="label-left" />
-          </template>
 
-          <template #right>
-            <slot name="label-right" />
-          </template>
-        </InputWrapperLabel>
-
-        <div v-if="props.hint !== null || (props.errorMessage !== null && !props.hideErrorMessage)">
-          <InputWrapperHint
-            :hint="props.hint"
+        <UIColumnLayout gap="none">
+          <InputWrapperLabel
+            :label="props.label"
             :for="props.for"
-          />
+            :is-required="props.isRequired"
+            :is-horizontal="props.isHorizontal"
+            :is-label-hidden="props.isLabelHidden"
+            :help-text="props.helpText"
+          >
+            <template #left>
+              <slot name="label-left" />
+            </template>
 
-          <InputWrapperErrorMessage
-            v-if="!props.hideErrorMessage"
-            :error-message="props.errorMessage"
-            :for="props.for"
-          />
-        </div>
+            <template #right>
+              <slot name="label-right" />
+            </template>
+          </InputWrapperLabel>
+
+          <div v-if="props.hint !== null || (props.errorMessage !== null && !props.hideErrorMessage)">
+            <InputWrapperHint
+              :hint="props.hint"
+              :for="props.for"
+            />
+
+            <InputWrapperErrorMessage
+              v-if="!props.hideErrorMessage"
+              :error-message="props.errorMessage"
+              :for="props.for"
+            />
+          </div>
+        </UIColumnLayout>
       </RowLayout>
     </div>
     <div
