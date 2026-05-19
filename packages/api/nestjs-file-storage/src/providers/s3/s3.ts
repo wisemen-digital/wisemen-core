@@ -73,7 +73,7 @@ export class S3 extends FileStorage {
     key: string,
     mimeType: string,
     expiresInSeconds?: number,
-    isPublic?: boolean
+    isPublic: boolean = false
   ): Promise<string> {
     this.validateKey(key)
 
@@ -81,7 +81,7 @@ export class S3 extends FileStorage {
       Bucket: this.bucketName,
       Key: key,
       ContentType: mimeType,
-      ACL: isPublic === undefined ? 'public-read' : 'private'
+      ACL: isPublic ? 'public-read' : 'private'
     })
 
     return await getSignedUrl(this.client, command, {
@@ -136,14 +136,14 @@ export class S3 extends FileStorage {
     return `${this._config.endpoint}/${this.bucketName}/${key}`
   }
 
-  public async upload (key: string, content: Buffer, isPublic?: boolean): Promise<void> {
+  public async upload (key: string, content: Buffer, isPublic: boolean = false): Promise<void> {
     this.validateKey(key)
 
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
       Body: content,
-      ACL: isPublic === undefined ? 'public-read' : 'private'
+      ACL: isPublic ? 'public-read' : 'private'
     })
 
     await this.client.send(command, {
@@ -170,7 +170,7 @@ export class S3 extends FileStorage {
     return Buffer.from(chunks)
   }
 
-  public async uploadStream (key: string, stream: Readable, isPublic?: boolean): Promise<void> {
+  public async uploadStream (key: string, stream: Readable, isPublic: boolean = false): Promise<void> {
     this.validateKey(key)
 
     const parallelUploads = new Upload({
@@ -179,7 +179,7 @@ export class S3 extends FileStorage {
         Bucket: this.bucketName,
         Key: key,
         Body: stream,
-        ACL: isPublic === undefined ? 'public-read' : 'private'
+        ACL: isPublic ? 'public-read' : 'private'
       },
       queueSize: 10,
       leavePartsOnError: false
