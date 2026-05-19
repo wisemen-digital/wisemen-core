@@ -20,7 +20,7 @@ const themeSchema = z.object({
 type Theme = z.infer<typeof themeSchema>
 
 const themesDir = path.resolve(process.cwd(), 'src/themes')
-const stylesDir = path.resolve(process.cwd(), 'src/assets/styles/themes')
+const stylesDir = path.resolve(process.cwd(), 'src/tailwind/themes')
 
 async function getThemes(): Promise<string[]> {
   try {
