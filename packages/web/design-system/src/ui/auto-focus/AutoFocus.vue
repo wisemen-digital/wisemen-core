@@ -5,6 +5,12 @@ import {
   ref,
 } from 'vue'
 
+const props = withDefaults(defineProps<{
+  isDisabled?: boolean
+}>(), {
+  isDisabled: false,
+})
+
 const primitiveRef = ref<InstanceType<typeof Primitive> | null>(null)
 
 function findFirstFocusableElement(element: HTMLElement): HTMLElement | null {
@@ -20,6 +26,10 @@ function findFirstFocusableElement(element: HTMLElement): HTMLElement | null {
 }
 
 onMounted(() => {
+  if (props.isDisabled) {
+    return
+  }
+
   const primitiveEl = primitiveRef.value?.$el as HTMLElement | null
 
   if (primitiveEl === null) {
