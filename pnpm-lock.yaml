@@ -637,6 +637,9 @@ catalogs:
     '@types/node':
       specifier: 24.8.1
       version: 24.8.1
+    vue-component-type-helpers:
+      specifier: 3.3.0
+      version: 3.3.0
   vite:
     '@tailwindcss/vite':
       specifier: 4.1.18
@@ -2364,9 +2367,6 @@ importers:
       '@vueuse/router':
         specifier: catalog:vue
         version: 14.1.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
-      '@wisemen/vue-core-api-utils':
-        specifier: workspace:*
-        version: link:../api-utils
       '@wisemen/vue-core-icons':
         specifier: workspace:*
         version: link:../icons
@@ -2391,6 +2391,9 @@ importers:
       vue-component-meta:
         specifier: catalog:storybook
         version: 3.2.6(typescript@5.9.3)
+      vue-component-type-helpers:
+        specifier: catalog:types
+        version: 3.3.0
       vue-i18n:
         specifier: catalog:peer
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
