@@ -24,7 +24,7 @@ interface TestItem {
 declare module '@/register' {
   interface Register {
     queryKeys: {
-      keysetSpecTest: { entity: TestItem[] }
+      keysetSpecTest: { entity: TestItem }
     }
   }
 }
