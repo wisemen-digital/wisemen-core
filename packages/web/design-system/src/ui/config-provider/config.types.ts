@@ -19,7 +19,7 @@ export interface ConfigProviderProps {
    *
    * @default 'always'
    */
-  autoCloseToast?: ToastAutoClose
+  autoCloseToast: ToastAutoClose
   /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null
@@ -58,4 +58,9 @@ export interface ConfigProviderProps {
    * @default false
    */
   reducedMotion?: boolean
+  /*
+   * Whether to show 'Back' and 'Forward' navigation arrows in the top bar
+   * @default false
+   */
+  showNavigationArrowsInTopBar?: boolean
 }
