@@ -76,7 +76,8 @@
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
-    "vue-component-meta": "catalog:storybook"
+    "vue-component-meta": "catalog:storybook",
+    "@wisemen/vue-core-api-utils": "workspace:*"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:storybook",

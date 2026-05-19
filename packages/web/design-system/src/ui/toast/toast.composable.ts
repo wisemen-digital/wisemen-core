@@ -1,8 +1,11 @@
+import { ApiErrorUtil } from '@wisemen/vue-core-api-utils'
+import { AlertCircleIcon } from '@wisemen/vue-core-icons'
 import {
   defineComponent,
   h,
   markRaw,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { toast as toastState } from 'vue-sonner'
 
 import { useInjectConfigContext } from '@/ui/config-provider'
@@ -46,6 +49,7 @@ function dismiss(toastId: string): void {
 }
 
 export function useToast() {
+  const i18n = useI18n()
   const configContext = useInjectConfigContext()
 
   function show(toast: Toast): void {
@@ -115,9 +119,48 @@ export function useToast() {
     toast.promise.then(() => update(toast.success, 'info')).catch(() => update(toast.error, 'error'))
   }
 
+  function unableToSave(): void {
+    show({
+      id: 'unable-to-save',
+      icon: AlertCircleIcon,
+      message: i18n.t('component.toast.unable_to_save_changes.message'),
+      variant: 'error',
+    })
+  }
+
+  function apiError(error: unknown): void {
+    if (!ApiErrorUtil.isExpectedApiError(error)) {
+      show({
+        icon: AlertCircleIcon,
+        message: i18n.t('component.toast.unexpected_error.message'),
+        variant: 'error',
+      })
+
+      console.error(`Unknown error occurred:`, error)
+
+      return
+    }
+
+    const [
+      firstError,
+    ] = error.errors
+
+    if (firstError === undefined) {
+      return
+    }
+
+    show({
+      icon: AlertCircleIcon,
+      message: firstError.detail,
+      variant: 'error',
+    })
+  }
+
   return {
+    apiError,
     dismiss,
     promise,
     show,
+    unableToSave,
   }
 }

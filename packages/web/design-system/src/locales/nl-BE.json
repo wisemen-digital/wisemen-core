@@ -56,6 +56,8 @@
   "component.tabs.scroll_left": "Naar links scrollen",
   "component.tabs.scroll_right": "Naar rechts scrollen",
   "component.toast.close.label": "Sluiten",
+  "component.toast.unable_to_save_changes.message": "Sommige velden zijn ongeldig",
+  "component.toast.unexpected_error.message": "Probeer later opnieuw",
   "component.top_bar.search": "Voer een actie uit of zoek...",
   "component.unsaved_changes_dialog.cancel": "Blijven bewerken",
   "component.unsaved_changes_dialog.confirm": "Weggooien",
