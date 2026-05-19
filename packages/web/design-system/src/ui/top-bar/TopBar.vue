@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { useInjectConfigContext } from '@/ui/config-provider'
 import DashboardPageHeaderBreadcrumbs from '@/ui/dashboard-page/header/DashboardPageHeaderBreadcrumbs.vue'
 import DashboardPageHeaderSidebarToggle from '@/ui/dashboard-page/header/DashboardPageHeaderSidebarToggle.vue'
 import Separator from '@/ui/separator/Separator.vue'
 import TopBarCommandMenuSearch from '@/ui/top-bar/TopBarCommandMenuSearch.vue'
 import { useTopBarNavigation } from '@/ui/top-bar/topBarNavigation.composable'
+import TopBarNavigationArrows from '@/ui/top-bar/TopBarNavigationArrows.vue'
+
+const {
+  showNavigationArrowsInTopBar,
+} = useInjectConfigContext()
 
 const {
   title, breadcrumbs,
@@ -17,21 +23,34 @@ const {
 
       <Separator
         v-if="breadcrumbs.length > 0 || title !== null"
-        class="mr-lg ml-md h-4"
+        class="ml-sm h-4"
         orientation="vertical"
       />
+
+      <template v-if="showNavigationArrowsInTopBar">
+        <TopBarNavigationArrows class="ml-sm" />
+
+        <Separator
+          v-if="breadcrumbs.length > 0 || title !== null"
+          class="ml-sm h-4"
+          orientation="vertical"
+        />
+      </template>
 
       <template v-if="breadcrumbs.length > 0">
         <h1 class="sr-only">
           {{ title }}
         </h1>
 
-        <DashboardPageHeaderBreadcrumbs :breadcrumbs="breadcrumbs" />
+        <DashboardPageHeaderBreadcrumbs
+          :breadcrumbs="breadcrumbs"
+          class="ml-lg"
+        />
       </template>
 
       <h1
         v-else-if="title !== null"
-        class="text-xs text-primary"
+        class="ml-lg text-xs text-primary"
       >
         {{ title }}
       </h1>
