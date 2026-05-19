@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  _createUntypedAction,
+  createAction,
   GroupPriority,
   useActionGroup,
 } from '@wisemen/vue-core-actions'
@@ -23,7 +23,7 @@ const {
 const i18n = useI18n()
 const actionGroup = useActionGroup()
 
-const toggleMainSidebarAction = _createUntypedAction({
+const toggleMainSidebarAction = createAction({
   id: 'toggle-main-sidebar',
   name: () => i18n.t('action.global.toggle_main_sidebar.name'),
   execute: () => {
