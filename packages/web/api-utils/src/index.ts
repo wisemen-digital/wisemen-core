@@ -4,40 +4,44 @@ export {
   AsyncResultLoading,
   AsyncResultOk,
 } from './async-result/asyncResult'
-export type { UseMutationReturnType } from './composables/mutation/mutation.composable'
+export type {
+  UseMutationOptions,
+  UseMutationReturnType,
+} from './composables/mutation/mutation.composable'
 export { useMutation } from './composables/mutation/mutation.composable'
-export type { KeysetInfiniteQueryOptions } from './composables/query/keysetInfiniteQuery.composable'
+export type {
+  KeysetInfiniteQueryOptions,
+  UseKeysetInfiniteQueryReturnType,
+} from './composables/query/keysetInfiniteQuery.composable'
 export { useKeysetInfiniteQuery } from './composables/query/keysetInfiniteQuery.composable'
-export type { OffsetInfiniteQueryOptions } from './composables/query/offsetInfiniteQuery.composable'
+export type {
+  OffsetInfiniteQueryOptions,
+  UseOffsetInfiniteQueryReturnType,
+} from './composables/query/offsetInfiniteQuery.composable'
 export { useOffsetInfiniteQuery } from './composables/query/offsetInfiniteQuery.composable'
 export type { PrefetchKeysetInfiniteQueryOptions } from './composables/query/prefetchKeysetInfiniteQuery.composable'
 export { usePrefetchKeysetInfiniteQuery } from './composables/query/prefetchKeysetInfiniteQuery.composable'
 export type { PrefetchOffsetInfiniteQueryOptions } from './composables/query/prefetchOffsetInfiniteQuery.composable'
 export { usePrefetchOffsetInfiniteQuery } from './composables/query/prefetchOffsetInfiniteQuery.composable'
+export { usePrefetchQuery } from './composables/query/prefetchQuery.composable'
 export type {
-  UseQueryOptions, UseQueryReturnType,
+  UseQueryOptions,
+  UseQueryReturnType,
 } from './composables/query/query.composable'
+export { useQuery } from './composables/query/query.composable'
 export {
   getQueryClient as getTanstackQueryClient,
   initializeApiUtils,
-  type QueryConfig, setQueryConfig,
+  type QueryConfig,
+  setQueryConfig,
 } from './config/config'
-export type {
-  ApiUseKeysetInfiniteQueryReturnType,
-  ApiUseOffsetInfiniteQueryReturnType,
-} from './factory/createApiInfiniteQueryUtils'
-export type {
-  ApiUseKeysetInfiniteQueryOptions,
-  ApiUseMutationOptions,
-  ApiUseOffsetInfiniteQueryOptions,
-  ApiUsePrefetchQueryOptions,
-  ApiUseQueryOptions,
-  QueryKeyArrayItemFromConfig,
-  QueryKeysWithArrayEntityFromConfig,
-} from './factory/createApiUtils.types'
 export { apiUtilsPlugin } from './plugin/apiUtilsPlugin'
 export type {
-  Register, RegisteredApiUseMutationOptions, RegisteredErrorCodes as RegisteredErrorCode, RegisteredQueryKeys,
+  Register,
+  RegisteredApiUseMutationOptions,
+  RegisteredErrorCodes,
+  RegisteredQueryKeyInput,
+  RegisteredQueryKeys,
 } from './register'
 export type {
   ApiError,
@@ -78,6 +82,4 @@ export {
   type QueryClientUpdateResult,
 } from './utils/query-client/queryClient'
 export { SortUtil } from './utils/sort/sort.utils'
-export type { UseKeysetInfiniteQueryReturnType } from '@/composables/query/keysetInfiniteQuery.composable'
-export type { UseOffsetInfiniteQueryReturnType } from '@/composables/query/offsetInfiniteQuery.composable'
 export type { QueryClient as TanstackQueryClient } from '@tanstack/vue-query'

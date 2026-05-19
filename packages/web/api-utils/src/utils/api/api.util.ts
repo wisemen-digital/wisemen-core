@@ -5,6 +5,7 @@ import {
   ResultAsync,
 } from 'neverthrow'
 
+import type { AsyncResult } from '@/async-result/asyncResult'
 import type { RegisteredErrorCodes } from '@/register'
 import type {
   ApiError,
@@ -27,14 +28,26 @@ export class ApiUtil {
     return (keysetPaginationMeta.next as { offset?: number })?.offset ?? null
   }
 
-  static getResultError(result: Result<unknown, ApiError> | null): ApiError<RegisteredErrorCodes> | null {
+  static getResultError(
+    result: AsyncResult<unknown, ApiError> | Result<unknown, ApiError> | null,
+  ): ApiError<RegisteredErrorCodes> | null {
     if (result === null) {
       return null
     }
 
-    return result.isErr()
-      ? result.error as ApiError<RegisteredErrorCodes>
-      : null
+    if (!result.isErr()) {
+      return null
+    }
+
+    if (ApiUtil.isAsyncResult(result)) {
+      return result.getError()
+    }
+
+    return result.error
+  }
+
+  private static isAsyncResult(value: unknown): value is AsyncResult<unknown, ApiError> {
+    return (value as AsyncResult<unknown, ApiError>).getResult !== undefined
   }
 
   static void<T, TApiResult extends ApiResult<void>>(result: ApiResult<T>): TApiResult {

@@ -1,4 +1,4 @@
-import type { ApiUseMutationOptions } from './factory/createApiUtils.types'
+import type { UseMutationOptions } from './composables/mutation/mutation.composable'
 
 export interface Register {}
 
@@ -11,4 +11,17 @@ export type RegisteredErrorCodes = Register extends { errorCodes: infer T }
   : string
 
 export type RegisteredApiUseMutationOptions<TReqData, TResData, TParams = void>
-  = ApiUseMutationOptions<RegisteredQueryKeys, TReqData, TResData, TParams, RegisteredErrorCodes>
+  = UseMutationOptions<TReqData, TResData, TParams, RegisteredErrorCodes>
+
+export type RegisteredQueryKeyInput = {
+  [K in keyof RegisteredQueryKeys]?: RegisteredQueryKeys[K] extends { params: infer P } ? P : unknown
+}
+
+export type RegisteredQueryKeyConfig<TKey extends PropertyKey>
+  = RegisteredQueryKeys extends Record<TKey, infer V> ? V : unknown
+
+export type RegisteredQueryKeyEntity<TKey extends PropertyKey>
+  = RegisteredQueryKeyConfig<TKey> extends { entity: infer E } ? E : unknown
+
+export type RegisteredQueryKeyParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyConfig<TKey> extends { params: infer P } ? P : undefined

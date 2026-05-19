@@ -21,6 +21,14 @@ interface TestItem {
   name: string
 }
 
+declare module '@/register' {
+  interface Register {
+    queryKeys: {
+      keysetSpecTest: { entity: TestItem[] }
+    }
+  }
+}
+
 describe('useKeysetInfiniteQuery with AsyncResult', () => {
   it('should be defined', () => {
     expect(useKeysetInfiniteQuery).toBeDefined()
@@ -28,13 +36,10 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
 
   it('result should start in loading state', () => {
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         queryFn: async () => {
           // Never resolves during the test
-          return await new Promise(() => {})
-        },
-        queryKey: {
-          test: {},
+          return await new Promise<never>(() => {})
         },
       })
     })
@@ -61,7 +66,7 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         limit: 2,
         queryFn: async ({
           key, limit,
@@ -74,9 +79,6 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
               next: startIdx + limit < items.length ? String(startIdx + limit) : null,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -106,11 +108,8 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(err(apiError)),
-        queryKey: {
-          test: {},
-        },
       })
     })
 
@@ -136,7 +135,7 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         queryFn: async ({
           key, limit,
         }) => {
@@ -148,9 +147,6 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
               next: startIdx + limit < items.length ? String(startIdx + limit) : null,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -187,7 +183,7 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
     }))
 
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         limit: 2,
         queryFn: async ({
           key, limit,
@@ -200,9 +196,6 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
               next: startIdx + limit < items.length ? String(startIdx + limit) : null,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -246,7 +239,7 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         limit: 5,
         queryFn: async ({
           key, limit,
@@ -259,9 +252,6 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
               next: startIdx + limit < items.length ? String(startIdx + limit) : null,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -294,7 +284,7 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useKeysetInfiniteQuery<TestItem>({
+      return useKeysetInfiniteQuery('keysetSpecTest', {
         limit: 2,
         queryFn: async ({
           key,
@@ -307,9 +297,6 @@ describe('useKeysetInfiniteQuery with AsyncResult', () => {
               next: startIdx + 2 < items.length ? String(startIdx + 2) : null,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })

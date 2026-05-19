@@ -3,61 +3,58 @@ import { useQueryClient } from '@tanstack/vue-query'
 import { AsyncResult } from '@/async-result/asyncResult'
 import { QUERY_CONFIG } from '@/config/config'
 import type {
+  RegisteredErrorCodes,
+  RegisteredQueryKeyParams,
+  RegisteredQueryKeys,
+} from '@/register'
+import type {
   OffsetPaginationAsyncResult,
   OffsetPaginationParams,
   OffsetPaginationResult,
 } from '@/types/pagination.type'
 
-export interface PrefetchOffsetInfiniteQueryOptions<TData, TErrorCode extends string = string> {
+type WithParams<TKey extends PropertyKey> =
+  RegisteredQueryKeyParams<TKey> extends undefined
+    ? { params?: undefined }
+    : { params: RegisteredQueryKeyParams<TKey> }
+
+export type PrefetchOffsetInfiniteQueryOptions<
+  TKey extends keyof RegisteredQueryKeys,
+  TData,
+  TErrorCode extends string = RegisteredErrorCodes,
+> = {
   /**
-   * The time in milliseconds after which the query will be considered stale
-   * @default QUERY_CONFIG.prefetchStaleTime
+   * The time in milliseconds after which the prefetched query will be considered stale
+   * @default config.prefetchStaleTime
    */
   staleTime?: number
   /**
-   * Maximum number of items to fetch per page, default can be set in config
+   * Maximum number of items to fetch per page
    * @default 20
    */
   limit?: number
   /**
    * Function that will be called when query is executed
-   * @returns Promise with response data
    */
   queryFn: (paginationParams: OffsetPaginationParams) => Promise<OffsetPaginationResult<TData, TErrorCode>>
-  /**
-   * Query key associated with the query
-   */
-  queryKey: Record<string, unknown>
-}
+} & WithParams<TKey>
 
-const DEFAULT_LIMIT = QUERY_CONFIG.limit
-
-export function usePrefetchOffsetInfiniteQuery<TData, TErrorCode extends string = string>(
-  options: PrefetchOffsetInfiniteQueryOptions<TData, TErrorCode>,
-): { execute: () => Promise<void> } {
+export function usePrefetchOffsetInfiniteQuery<
+  TKey extends keyof RegisteredQueryKeys,
+  TData = unknown,
+  TErrorCode extends string = RegisteredErrorCodes,
+>(
+  key: TKey,
+  options: PrefetchOffsetInfiniteQueryOptions<TKey, TData, TErrorCode>,
+) {
   const queryClient = useQueryClient()
-
-  function getQueryKey(): unknown[] {
-    const entries = Object.entries(options.queryKey)
-    const [first] = entries
-
-    if (!first) {
-      return []
-    }
-
-    const [queryKey, params] = first as [string, unknown]
-
-    return [
-      queryKey,
-      params,
-    ]
-  }
+  const params = (options as { params?: unknown }).params
 
   async function execute(): Promise<void> {
     await queryClient.prefetchInfiniteQuery({
       staleTime: options.staleTime ?? QUERY_CONFIG.prefetchStaleTime,
       getNextPageParam: (lastPage: OffsetPaginationAsyncResult<TData, TErrorCode>) => {
-        if (lastPage.isErr() || lastPage.isLoading()) {
+        if (!lastPage.isOk()) {
           return null
         }
 
@@ -70,12 +67,12 @@ export function usePrefetchOffsetInfiniteQuery<TData, TErrorCode extends string 
         return total
       },
       initialPageParam: 0,
-      queryFn: async ({ pageParam }: { pageParam: unknown }) =>
+      queryFn: async ({ pageParam }) =>
         AsyncResult.fromResult(await options.queryFn({
-          limit: options.limit ?? DEFAULT_LIMIT,
-          offset: (pageParam ?? 0) as OffsetPaginationParams['offset'],
+          limit: options.limit ?? QUERY_CONFIG.limit,
+          offset: (pageParam ?? 0) as number,
         })),
-      queryKey: getQueryKey(),
+      queryKey: [key, params],
     })
   }
 
