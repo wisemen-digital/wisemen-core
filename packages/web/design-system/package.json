@@ -49,7 +49,7 @@
     "test:coverage": "vitest --run --coverage",
     "type-check": "vue-tsc --noEmit",
     "storybook:clean": "rimraf node_modules/.cache node_modules/.vite",
-    "storybook": "pnpm storybook:clean && storybook dev -p 6006 --no-open",
+    "storybook": "pnpm storybook:clean && NODE_OPTIONS=--max-old-space-size=8192 storybook dev -p 6006 --no-open",
     "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build"
   },
   "peerDependencies": {
