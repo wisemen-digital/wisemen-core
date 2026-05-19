@@ -1,7 +1,7 @@
 export type { FormFieldGridProps as UIFormFieldGridProps } from './formFieldGrid.props'
 export { default as UIFormFieldGrid } from './FormFieldGrid.vue'
 export { default as UIFormFieldGroup } from './FormFieldGroup.vue'
-export { default as UIFormFieldSeparator } from './FormFieldSeperator.vue'
+export { default as UIFormFieldSeparator } from './FormFieldSeparator.vue'
 export type { FormFieldSetProps as UIFormFieldSetProps } from './formFieldSet.props'
 export { default as UIFormFieldSet } from './FormFieldSet.vue'
 export { default as UIFormLayout } from './FormLayout.vue'
