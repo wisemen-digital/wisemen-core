@@ -6,6 +6,7 @@ catalog:
   "@wisemen/eslint-config-nestjs": ^1.1.1
   "@wisemen/vue-core-api-utils": catalog
   superjson: "2.2.6"
+  vue-component-type-helpers: ^0.0.0
 
 catalogs:
   backend:
@@ -272,6 +273,7 @@ catalogs:
     "@commitlint/config-conventional": "20.5.0"
     "@tanstack/intent": ^0.0.29
   types:
+    "vue-component-type-helpers": "3.3.0"
     "@tsconfig/node18": "18.2.4"
     "@types/babel__traverse": "7.28.0"
     "@types/clone-deep": 4.0.4
