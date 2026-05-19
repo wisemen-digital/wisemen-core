@@ -48,7 +48,7 @@
   "component.number_field.decrement": "Decrement",
   "component.number_field.increment": "Increment",
   "component.offline_warning.dismiss": "Click to dismiss",
-  "component.offline_warning.title": "You're offline",
+  "component.offline_warning.title": "You are currently offline",
   "component.search_input.clear": "Clear search",
   "component.search_input.placeholder": "Search...",
   "component.skip_to_main_content_link.label": "Skip to main content",

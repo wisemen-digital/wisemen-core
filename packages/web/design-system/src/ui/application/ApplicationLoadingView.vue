@@ -10,7 +10,7 @@ import {
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
-import { UICenterLayout } from '@/ui/center-layout'
+import { UIColumnLayout } from '@/ui/column-layout'
 import { useMainSidebar } from '@/ui/sidebar'
 import { UITextShimmer } from '@/ui/text-shimmer'
 
@@ -60,13 +60,18 @@ setTimeout(() => {
             size-full rounded-2xl border border-secondary bg-primary shadow-sm/5
           "
         >
-          <UICenterLayout v-if="isLoadingTextVisible">
+          <UIColumnLayout
+            v-if="isLoadingTextVisible"
+            class="size-full"
+            align="center"
+            justify="center"
+          >
             <UITextShimmer>
               <h1 class="text-sm font-medium">
                 {{ i18n.t('component.dashboard_page_loading_state.loading') }}
               </h1>
             </UITextShimmer>
-          </UICenterLayout>
+          </UIColumnLayout>
         </div>
       </div>
     </Motion>

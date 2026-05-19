@@ -1,7 +1,4 @@
 <script setup lang="ts">
-/**
- * Animates its height when its content changes.
- */
 import { useElementSize } from '@vueuse/core'
 import { Motion } from 'motion-v'
 import {

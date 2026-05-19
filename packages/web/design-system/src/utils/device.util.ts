@@ -1,4 +1,3 @@
-/* eslint-disable e18e/prefer-static-regex */
 const MOBILE_REGEX = /Mobi|Android/i
 const TABLET_REGEX = /Tablet|iPad/i
 
