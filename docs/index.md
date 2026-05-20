@@ -37,6 +37,9 @@ features:
   - title: 📝 Formango
     details: Form state management and validation library for Vue applications.
     link: /packages/formango/guide/getting-started
+  - title: 🔐 Permissions
+    details: Permission-based rendering with a composable and render-less component, with support for type-safe permission strings.
+    link: /packages/permissions/pages/getting-started/installation
   - title: 📊 Telemetry
     details: OpenTelemetry integration for monitoring and tracing Vue applications.
     link: /packages/telemetry/pages/getting-started/installation
