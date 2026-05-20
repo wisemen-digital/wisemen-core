@@ -32,6 +32,7 @@
 
       <div class="px-md py-xxs">
         <div class="flex items-center justify-between">
+          <!--  eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
           <span class="text-xs font-bold text-tertiary">
             Dashboard
           </span>

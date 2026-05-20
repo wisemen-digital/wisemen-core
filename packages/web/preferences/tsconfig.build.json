@@ -23,11 +23,11 @@
     "strict": true,
     "target": "esnext"
   },
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "exclude": [
     "src/**/*.test.ts",
     "src/**/*.spec.ts"
   ],
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": [
     "src/**/*",
     "src/**/*.ts",
