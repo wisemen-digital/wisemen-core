@@ -4,10 +4,8 @@ description: >
   Three-state AsyncResult type (Loading, Ok, Err), isLoading/isOk/isErr type predicates, getValue/getError accessors, match() pattern matching, map/mapErr transformations, safe value extraction without undefined.
 type: core
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/concepts/result-types.md"
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/overview.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts"
 ---
 
@@ -149,15 +147,15 @@ If you omit a handler, TypeScript errors and the UI renders nothing during the o
 
 Source: `docs/packages/api-utils/pages/concepts/result-types.md` Pattern Matching Section
 
-### HIGH: Use state flags (isLoading, isError, isSuccess) instead of AsyncResult state
+### HIGH: Use deprecated state flags (isLoading, isError, isSuccess) instead of AsyncResult state
 
 ```typescript
-// ❌ Wrong: mixing old flags with AsyncResult
+// ❌ Wrong: using deprecated flags
 const { result, isLoading } = useQuery(...)
 if (isLoading.value) {
   // Show spinner
 } else {
-  const data = result.value.getValue() // Could be null!
+  const data = result.value.getValue() // Could be null if isErr!
 }
 ```
 
@@ -171,9 +169,9 @@ if (result.value.isLoading()) {
 }
 ```
 
-Composables export both AsyncResult (exhaustive) and backward-compatible flags (`isLoading`, `isError`, `isSuccess`). Mixing them causes logic bugs where flags say the query is done but the result is still loading.
+`isLoading`, `isError`, and `isSuccess` on `UseQueryReturnType` are deprecated — they exist for backward compatibility but are less type-safe than AsyncResult. Always prefer `result.value.isLoading()`, `result.value.isErr()`, and `result.value.isOk()`.
 
-Source: Maintainer interview — library provides both patterns for backward compatibility, but agents should prefer AsyncResult
+Source: `src/composables/query/query.composable.ts` — `UseQueryReturnType` deprecated annotations
 
 ## Next Steps
 

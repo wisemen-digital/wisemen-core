@@ -12,9 +12,7 @@ import { ContactService } from '@/services'
 
 export function useCreateContact() {
   return useMutation({
-    queryFn: async (body: ContactCreateForm) => {
-      return await ContactService.create(body)
-    },
+    queryFn: ({ body }: { body: ContactCreateForm }) => ContactService.create(body),
     queryKeysToInvalidate: {
       contactList: {},
     },
@@ -28,13 +26,13 @@ export function useCreateContact() {
 <script setup lang="ts">
 import { useCreateContact } from '@/composables'
 
-const { execute, isLoading, result } = useCreateContact()
+const { execute, result } = useCreateContact()
 
 async function handleSubmit(form: ContactCreateForm) {
-  await execute(form)
-  
-  if (result.value.isOk()) {
-    const contactId = result.value.getValue()
+  const mutationResult = await execute({ body: form })
+
+  if (mutationResult.isOk()) {
+    const contactId = mutationResult.value
     console.log('Contact created with ID:', contactId)
     // Redirect or show success message
   }
@@ -44,11 +42,11 @@ async function handleSubmit(form: ContactCreateForm) {
 <template>
   <form @submit.prevent="handleSubmit">
     <input v-model="form.name" placeholder="Contact name" />
-    <button :disabled="isLoading">
-      {{ isLoading ? 'Creating...' : 'Create' }}
+    <button :disabled="result.isLoading()">
+      {{ result.isLoading() ? 'Creating...' : 'Create' }}
     </button>
     <div v-if="result.isErr()" class="error">
-      {{ result.getError().message }}
+      {{ result.getError().errors[0].detail }}
     </div>
   </form>
 </template>
@@ -64,11 +62,9 @@ import { ContactService } from '@/services'
 
 export function useUpdateContact(contactId: string) {
   return useMutation({
-    queryFn: (body: ContactUpdateForm) => {
-      return ContactService.update(contactId, body)
-    },
+    queryFn: ({ body }: { body: ContactUpdateForm }) => ContactService.update(contactId, body),
     queryKeysToInvalidate: {
-      contactDetail: { contactId },
+      contactDetail: {},
       contactList: {},
     },
   })
@@ -82,27 +78,24 @@ export function useUpdateContact(contactId: string) {
 import { useUpdateContact } from '@/composables'
 
 const props = defineProps<{ contactId: string }>()
-const { execute, isLoading } = useUpdateContact(props.contactId)
+const { execute, result } = useUpdateContact(props.contactId)
 
 async function handleSubmit(form: ContactUpdateForm) {
-  const result = await execute(form)
-  
-  result.value.match(
-    (data) => {
-      console.log('Contact updated:', data)
-      // Show success message
-    },
-    (error) => {
-      console.error('Update failed:', error.message)
-    }
-  )
+  const mutationResult = await execute({ body: form })
+
+  if (mutationResult.isErr()) {
+    console.error('Update failed:', mutationResult.error)
+    return
+  }
+
+  console.log('Contact updated successfully')
 }
 </script>
 
 <template>
   <form @submit.prevent="handleSubmit">
     <input v-model="form.name" />
-    <button :disabled="isLoading">Save</button>
+    <button :disabled="result.isLoading()">Save</button>
   </form>
 </template>
 ```
@@ -117,9 +110,7 @@ import { ContactService } from '@/services'
 
 export function useDeleteContact() {
   return useMutation({
-    queryFn: async (contactId: string) => {
-      return await ContactService.delete(contactId)
-    },
+    queryFn: ({ body: contactId }: { body: string }) => ContactService.delete(contactId),
     queryKeysToInvalidate: {
       contactList: {},
     },
@@ -134,33 +125,32 @@ export function useDeleteContact() {
 import { useDeleteContact } from '@/composables'
 
 const props = defineProps<{ contactId: string }>()
-const { execute, isLoading, result } = useDeleteContact()
+const { execute, result } = useDeleteContact()
 
 async function handleDelete() {
   if (!confirm('Are you sure?')) return
-  
-  await execute(props.contactId)
-  
-  if (result.value.isOk()) {
+
+  const mutationResult = await execute({ body: props.contactId })
+
+  if (mutationResult.isOk()) {
     // Navigate away or show success
   }
 }
 </script>
 
 <template>
-  <button @click="handleDelete" :disabled="isLoading">
-    {{ isLoading ? 'Deleting...' : 'Delete' }}
+  <button @click="handleDelete" :disabled="result.isLoading()">
+    {{ result.isLoading() ? 'Deleting...' : 'Delete' }}
   </button>
 </template>
 ```
 
 ## Return Values
 
-- **`result`**: ComputedRef to an AsyncResult containing the response or error
-- **`execute`**: Function to trigger the mutation
-- **`isLoading`**: Whether the mutation is in progress
-- **`data`** (deprecated): Use `result.value.getValue()` instead
-- **`error`** (deprecated): Use `result.value.getError()` instead
+- **`result`**: `ComputedRef<AsyncResult<T, E>>` — reactive mutation state
+- **`execute`**: Function to trigger the mutation; returns `Promise<ApiResult<T, E>>` (a neverthrow `Result`)
+- **`isLoading`** _(deprecated)_: Use `result.value.isLoading()` instead
+- **`data`** _(deprecated)_: Use `result.value.getValue()` instead
 
 ## Handling Results
 
@@ -307,7 +297,7 @@ const form = useForm({
 
     // Handle result using isErr()
     if (result.isErr()) {
-      errorToast.show(result.getError())
+      errorToast.show(result.error)
       return
     }
 
@@ -360,12 +350,12 @@ result.match(
 const result = await mutation.execute({ body: data })
 
 if (result.isErr()) {
-  console.error('Error:', result.getError())
+  console.error('Error:', result.error)
   return
 }
 
 // TypeScript knows result is Ok here
-console.log('Success:', result.getValue())
+console.log('Success:', result.value)
 ```
 
 ## Cache Invalidation
@@ -384,14 +374,21 @@ queryKeysToInvalidate: {
 
 ### Targeted Invalidation
 
-Invalidates specific queries based on parameters:
+To invalidate a specific query by params, pass the mutation's `TParams` through `execute()` and extract them with a function:
 
 ```typescript
-queryKeysToInvalidate: {
-  contactDetail: {
-    contactUuid: 'some-id',
+// Mutation with params
+useMutation<ContactUpdateForm, void, { contactUuid: string }>({
+  queryFn: ({ body, params }) => ContactService.update(params.contactUuid, body),
+  queryKeysToInvalidate: {
+    contactDetail: {
+      contactUuid: (params) => params.contactUuid,
+    },
   },
-}
+})
+
+// Call with body + params
+await execute({ body: formData, params: { contactUuid: 'some-id' } })
 ```
 
 ### Multiple Keys
@@ -401,7 +398,7 @@ Invalidate multiple query caches at once:
 ```typescript
 queryKeysToInvalidate: {
   contactDetail: {
-    contactUuid: 'some-id',
+    contactUuid: (params) => params.contactUuid,
   },
   contactList: {},
   userProfile: {},
