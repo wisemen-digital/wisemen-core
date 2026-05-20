@@ -1,0 +1,83 @@
+{
+  "name": "@wisemen/vue-core-preferences",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/preferences"
+  },
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "prerelease": "pnpm version prerelease --preid=alpha",
+    "build": "vite build",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "test": "vitest --run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/"
+  },
+  "peerDependencies": {
+    "@vueuse/core": ">=14.0.0",
+    "@wisemen/vue-core-dates": ">=0.0.2",
+    "@wisemen/vue-core-design-system": "catalog:wisemen",
+    "@wisemen/vue-core-icons": "catalog:wisemen",
+    "reka-ui": "catalog:peer",
+    "tailwindcss": "catalog:style",
+    "vue": "catalog:peer",
+    "vue-i18n": "catalog:peer"
+  },
+  "dependencies": {
+    "highlight-words": "catalog:general"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:types",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vueuse/core": "catalog:vue",
+    "@vue/tsconfig": "catalog:vue",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-tailwind-config": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
+    "@wisemen/vue-core-design-system": "workspace:*",
+    "@wisemen/vue-core-icons": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "tailwindcss": "catalog:style",
+    "husky": "catalog:build",
+    "reka-ui": "catalog:vue",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vite-plugin-dts": "catalog:vite",
+    "vitest": "catalog:test",
+    "vue": "catalog:vue",
+    "vue-i18n": "catalog:vue",
+    "vue-tsc": "catalog:vue"
+  }
+}
