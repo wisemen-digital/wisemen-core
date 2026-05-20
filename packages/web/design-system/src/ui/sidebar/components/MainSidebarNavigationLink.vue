@@ -91,8 +91,8 @@ const isTooltipDisabled = computed<boolean>(() => {
             }"
             class="
               group grid rounded-md duration-100
-              hover:bg-secondary-hover
-              data-active:bg-tertiary
+              hover:bg-fg-primary/4
+              data-active:bg-fg-primary/4
             "
           >
             <RowLayout

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { createAction } from '@wisemen/vue-core-actions'
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -135,6 +136,13 @@ const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
 ]))
 
 const tabsModelValue = ref<string>('tab1')
+
+const exampleAction = createAction({
+  id: 'example',
+  name: () => 'Example',
+  availableWhenUnauthenticated: true,
+  execute: () => {},
+})
 </script>
 
 <template>
@@ -197,20 +205,10 @@ const tabsModelValue = ref<string>('tab1')
             />
           </MainSidebarNavigationGroup>
           <MainSidebarFooterAccountCard
-            :menu-options="[{
-              icon: Settings01Icon,
-              label: 'Account settings',
-              onSelect: () => {},
-            }, {
-              icon: LifeBuoy01Icon,
-              label: 'Support',
-              onSelect: () => {},
-            }]"
-            :actions="[]"
+            :actions="[exampleAction]"
             avatar-url="../../../storybook-assets/profile-picture.jpg"
             name="Jane Doe"
             email="jane.doe@example.com"
-            @sign-out="() => {}"
           />
         </template>
       </MainSidebar>

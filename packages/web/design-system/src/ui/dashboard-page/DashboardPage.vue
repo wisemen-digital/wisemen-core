@@ -102,7 +102,7 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
 </script>
 
 <template>
-  <Page class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
+  <Page class="z-1 flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
     <DashboardPageActions v-if="isPageActionsSlotVisible">
       <template #left>
         <slot name="page-actions-left" />

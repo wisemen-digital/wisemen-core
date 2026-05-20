@@ -86,6 +86,8 @@
   --border-brand-alt: var(--brand-600);
   --border-error: var(--error-500);
   --border-error-subtle: var(--error-300);
+
+  --corner-highlight: var(--brand-300);
 }
 
 .dark {
@@ -177,6 +179,8 @@
   --border-brand-alt: var(--gray-700);
   --border-error: var(--error-400);
   --border-error-subtle: var(--error-500);
+
+  --corner-highlight: var(--brand-900);
 }
 
 .system {
@@ -268,6 +272,8 @@
   --border-error: var(--error-500);
   --border-error-subtle: var(--error-300);
 
+  --corner-highlight: var(--brand-300);
+
   @media (prefers-color-scheme: dark) {
     --fg-primary: var(--white);
     --fg-secondary: var(--gray-300);
@@ -357,5 +363,7 @@
     --border-brand-alt: var(--gray-700);
     --border-error: var(--error-400);
     --border-error-subtle: var(--error-500);
+
+    --corner-highlight: var(--brand-900);
   }
 }

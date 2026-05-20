@@ -34,6 +34,8 @@
   --color-black: #000000;
   --color-white: #ffffff;
 
+  --color-corner-highlight: var(--corner-highlight);
+
   --color-brand-25: var(--brand-25);
   --color-brand-50: var(--brand-50);
   --color-brand-100: var(--brand-100);
