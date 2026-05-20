@@ -1,19 +1,19 @@
 ---
 name: getting-started
 description: >
-  Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, define typed query keys interface, create API composables with error codes.
+  Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, register typed query keys via module augmentation, re-export composables.
 type: lifecycle
 library: vue-core-api-utils
-library_version: "1.0.1"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/getting-started/installation.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/plugin/apiUtilsPlugin.ts"
+  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/register.ts"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"
 ---
 
 # @wisemen/vue-core-api-utils — Getting Started
 
-Get `@wisemen/vue-core-api-utils` installed, your Vue Query plugin initialized, query keys defined, and typed composables created.
+Get `@wisemen/vue-core-api-utils` installed, your Vue Query plugin initialized, query keys defined, and typed composables available.
 
 ## Setup
 
@@ -40,13 +40,13 @@ export interface ProjectQueryKeys {
   // List query with offset pagination
   contactList: {
     entity: Contact[]
-    params: { page: number; limit: number; search?: string }
+    params: { search?: string }
   }
   
   // List query with keyset pagination
   contactListKeyset: {
     entity: Contact[]
-    params: { limit: number; key?: string }
+    params: { search?: string }
   }
 }
 ```
@@ -78,7 +78,9 @@ app.mount('#app')
 
 The `apiUtilsPlugin` function creates a QueryClient with your config and handles @tanstack/vue-query setup internally.
 
-### 4. Create your API composables
+### 4. Register your types and re-export composables
+
+Use module augmentation to register your query keys and error codes for library-wide type safety, then re-export composables for convenient importing across your project:
 
 ```typescript
 // src/api/index.ts
@@ -88,15 +90,23 @@ import type {
   KeysetPaginationResult as ApiUtilsKeysetPaginationResult,
   OffsetPaginationResult as ApiUtilsOffsetPaginationResult,
 } from '@wisemen/vue-core-api-utils'
-import { createApiUtils } from '@wisemen/vue-core-api-utils'
 
 import type { ProjectQueryKeys } from '@/types/queryKey.type'
 
 // Define your error codes
 export type ERROR_KEYS = 'NOT_FOUND' | 'UNAUTHORIZED' | 'NETWORK_ERROR' | 'VALIDATION_ERROR'
 
-// Create factory with your types
-export const {
+// Register query keys and error codes via module augmentation
+// This makes all composables fully typed without a factory function
+declare module '@wisemen/vue-core-api-utils' {
+  interface Register {
+    queryKeys: ProjectQueryKeys
+    errorCodes: ERROR_KEYS
+  }
+}
+
+// Re-export composables for convenient importing
+export {
   useKeysetInfiniteQuery,
   useMutation,
   useOffsetInfiniteQuery,
@@ -104,14 +114,15 @@ export const {
   usePrefetchKeysetInfiniteQuery,
   usePrefetchOffsetInfiniteQuery,
   usePrefetchQuery,
-  useQueryClient,
-} = createApiUtils<ProjectQueryKeys, ERROR_KEYS>()
+} from '@wisemen/vue-core-api-utils'
 
 // Export typed result types
 export type ApiResult<T> = ApiUtilsApiResult<T, ERROR_KEYS>
 export type OffsetPaginationResult<T> = ApiUtilsOffsetPaginationResult<T, ERROR_KEYS>
 export type KeysetPaginationResult<T> = ApiUtilsKeysetPaginationResult<T, ERROR_KEYS>
 ```
+
+The `declare module` block tells the library about your project's types. After this, every composable automatically knows your query keys and error codes.
 
 ## Core Patterns
 
@@ -185,7 +196,7 @@ All queries and mutations return `AsyncResult` with three states: loading, ok, a
 
 ## Common Mistakes
 
-### CRITICAL: Forget to initialize apiUtilsPlugin with QueryClient config
+### CRITICAL: Forget to initialize apiUtilsPlugin
 
 ```typescript
 // ❌ Wrong: plugin not initialized
@@ -205,7 +216,7 @@ app.use(apiUtilsPlugin({
 app.mount('#app')
 ```
 
-If you skip the plugin, `createApiUtils()` has no QueryClient and throws immediately.
+Without the plugin, composables have no QueryClient and throw immediately.
 
 Source: `src/config/config.ts` — `getQueryClient()` assertion
 
@@ -228,21 +239,46 @@ export interface ProjectQueryKeys {
   }
   contactList: {
     entity: Contact[]
-    params: { page: number; limit: number }
+    params: { search?: string }
   }
 }
 ```
 
-Query keys without proper structure prevent the factory from typing composables correctly and cause runtime errors during query key resolution.
+Query keys without proper structure cause TypeScript errors and prevent correct query key resolution.
 
-Source: `docs/packages/api-utils/pages/getting-started/installation.md` Section 3
+Source: `src/register.ts` — `RegisteredQueryKeyEntity` and `RegisteredQueryKeyParams` type derivation
+
+### HIGH: Skip the module augmentation; composables lose type safety
+
+```typescript
+// ❌ Wrong: no declare module block in @/api/index.ts
+// Composables fall back to `object` for query keys and `string` for error codes
+// TypeScript won't catch wrong query key names or invalid error codes
+```
+
+```typescript
+// ✅ Correct: declare module augments the Register interface
+declare module '@wisemen/vue-core-api-utils' {
+  interface Register {
+    queryKeys: ProjectQueryKeys
+    errorCodes: ERROR_KEYS
+  }
+}
+// Now useQuery('nonExistentKey', ...) is a compile error
+// And error.code is typed as ERROR_KEYS, not just string
+```
+
+Without the `declare module` block the library types fall back to generic `object` and `string`. All query key checks and error code checks become useless at compile time.
+
+Source: `src/register.ts`
 
 ## You're all set!
 
 You now have:
 - ✅ Plugin initialized with Vue Query
 - ✅ Query keys defined with types
-- ✅ API composables created
+- ✅ Types registered via module augmentation
+- ✅ Composables re-exported from `@/api`
 - ✅ Error codes enumerated
 
-Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [handling-asyncresult-types](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.
+Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [asyncresult-handling](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.

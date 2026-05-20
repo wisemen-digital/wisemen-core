@@ -55,81 +55,81 @@ export interface ProjectQueryKeys {
 
 ## 4. Initialize in your Vue app
 
-In your app setup or plugin file, initialize the API utils with your Vue Query client:
+Use `apiUtilsPlugin` to set up TanStack Query and initialize the API utilities in a single step:
 
 ```typescript
-// filepath: src/plugins/vueQuery.ts
+// filepath: src/main.ts
 
-import { App } from 'vue'
-import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
-import { initializeApiUtils } from '@wisemen/vue-core-api-utils'
+import { createApp } from 'vue'
+import { apiUtilsPlugin } from '@wisemen/vue-core-api-utils'
+import App from './App.vue'
 
-const queryClient = new QueryClient({
+const app = createApp(App)
+
+app.use(apiUtilsPlugin({
   defaultOptions: {
     queries: {
       retry: 1,
       staleTime: 1000 * 60 * 5, // 5 minutes
     },
   },
-})
+}))
 
-export const vueQueryPlugin = {
-  install: (app: App): void => {
-    app.use(VueQueryPlugin, { queryClient })
-    initializeApiUtils(queryClient)
-  },
-}
-```
-
-Then register it in your main.ts:
-
-```typescript
-// filepath: src/main.ts
-
-import { createApp } from 'vue'
-import { vueQueryPlugin } from '@/plugins/vueQuery'
-import App from './App.vue'
-
-const app = createApp(App)
-app.use(vueQueryPlugin)
 app.mount('#app')
 ```
 
-## 5. Create your API service layer
+## 5. Register your query keys and error codes
 
-Now create your composables that consume the API utilities:
+Use module augmentation to register your `ProjectQueryKeys` and error codes with the library. This unlocks full type safety across all composables without needing to pass generics everywhere.
 
 ```typescript
 // filepath: src/api/index.ts
-
-import type {
-  ApiResult as ApiUtilsApiResult,
-  KeysetPaginationResult as ApiUtilsKeysetPaginationResult,
-  OffsetPaginationResult as ApiUtilsOffsetPaginationResult,
-} from '@wisemen/vue-core-api-utils'
-import { createApiUtils } from '@wisemen/vue-core-api-utils'
 
 import type { ProjectQueryKeys } from '@/types/queryKey.type'
 
 // Define your error codes
 export type ERROR_KEYS = 'NOT_FOUND' | 'UNAUTHORIZED' | 'SERVER_ERROR'
 
-// Create typed composables
-export const {
+// Register types with the library globally
+declare module '@wisemen/vue-core-api-utils' {
+  interface Register {
+    queryKeys: ProjectQueryKeys
+    errorCodes: ERROR_KEYS
+  }
+}
+
+// Re-export composables for a single import path in your app
+export {
   useKeysetInfiniteQuery,
   useMutation,
   useOffsetInfiniteQuery,
-  useQueryClient,
   usePrefetchKeysetInfiniteQuery,
   usePrefetchOffsetInfiniteQuery,
   usePrefetchQuery,
   useQuery,
-} = createApiUtils<ProjectQueryKeys, ERROR_KEYS>()
+} from '@wisemen/vue-core-api-utils'
 
 // Export typed result types for convenience
-export type ApiResult<T> = ApiUtilsApiResult<T, ERROR_KEYS>
-export type OffsetPaginationResult<T> = ApiUtilsOffsetPaginationResult<T, ERROR_KEYS>
-export type KeysetPaginationResult<T> = ApiUtilsKeysetPaginationResult<T, ERROR_KEYS>
+export type {
+  ApiResult,
+  KeysetPaginationResult,
+  OffsetPaginationResult,
+} from '@wisemen/vue-core-api-utils'
+```
+
+### Typed query client helper
+
+The library does not export a `useQueryClient` composable. Create a thin wrapper in your project for type-safe cache operations:
+
+```typescript
+// filepath: src/api/queryClient.ts
+
+import { QueryClient, getTanstackQueryClient } from '@wisemen/vue-core-api-utils'
+import type { ProjectQueryKeys } from '@/types/queryKey.type'
+
+export function useQueryClient() {
+  return new QueryClient<ProjectQueryKeys>(getTanstackQueryClient())
+}
 ```
 
 ## 6. You're all set!

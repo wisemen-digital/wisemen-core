@@ -1,5 +1,16 @@
 # @wisemen/date-time-range
 
+## 1.1.0
+
+### Minor Changes
+
+- [#1083](https://github.com/wisemen-digital/wisemen-core/pull/1083) [`8a6756e`](https://github.com/wisemen-digital/wisemen-core/commit/8a6756eab32e79c873daedff49836207d6f3e43b) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump @wisemen/pagination
+
+### Patch Changes
+
+- Updated dependencies [[`a3e5786`](https://github.com/wisemen-digital/wisemen-core/commit/a3e5786c925125459579925740fcfbf3edf610c3)]:
+  - @wisemen/pagination@1.0.0
+
 ## 1.0.23
 
 ### Patch Changes

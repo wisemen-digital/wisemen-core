@@ -19,7 +19,7 @@ export interface ConfigProviderProps {
    *
    * @default 'always'
    */
-  autoCloseToast?: ToastAutoClose
+  autoCloseToast: ToastAutoClose
   /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null
@@ -51,4 +51,9 @@ export interface ConfigProviderProps {
    * The name of the project, used for example in the document title template.
    */
   projectName: string
+  /**
+   * Whether to show 'Back' and 'Forward' navigation arrows in the top bar
+   * @default false
+   */
+  showNavigationArrowsInTopBar?: boolean
 }

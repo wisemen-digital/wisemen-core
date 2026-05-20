@@ -18,8 +18,9 @@ export abstract class SortQuery {
   abstract order: SortDirection
 }
 
-export abstract class FilterQuery {
-  [key: string]: unknown
+// oxlint-disable-next-line typescript/no-empty-object-type
+export interface FilterQuery {
+
 }
 
 export abstract class SearchQuery {

@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
 
+import type { RegisteredRouteLocationRaw } from '@/register'
 import type { DisabledWithReason } from '@/types/disabledWithReason.type'
 
 export type TabsVariant = 'button-border' | 'button-brand' | 'underline'
@@ -94,5 +94,5 @@ export interface TabsRouterLinkItemProps extends DisabledWithReason {
   /**
    * The route location to navigate to when the tab is clicked.
    */
-  to: RouteLocationRaw
+  to: RegisteredRouteLocationRaw
 }

@@ -1,4 +1,9 @@
-import type { FactoryUser } from '@/factory/createApiUtils.setup'
+interface FactoryUser {
+  id: string
+  uuid: string
+  name: string
+  email: string
+}
 
 export class FactoryUserBuilder {
   private data: FactoryUser = {

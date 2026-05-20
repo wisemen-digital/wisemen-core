@@ -1,5 +1,17 @@
 # @wisemen/address
 
+## 0.4.0
+
+### Minor Changes
+
+- [#991](https://github.com/wisemen-digital/wisemen-core/pull/991) [`a191064`](https://github.com/wisemen-digital/wisemen-core/commit/a19106462da14b0fb4644bbcc666cdea48e4032b) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Security updates: resolved npm vulnerabilities via pnpm overrides
+  - Fixed critical protobufjs vulnerabilities (CVE: GHSA-xq3m-2v4x-88gg)
+  - Fixed high severity vite vulnerabilities
+  - Fixed high severity fastify vulnerability (CVE: GHSA-247c-9743-5963)
+  - Fixed moderate follow-redirects vulnerability (CVE: GHSA-r4q5-vmmm-2653)
+  - Fixed moderate fast-xml-parser vulnerability (CVE: GHSA-gh4j-gqv2-49f6)
+  - Fixed moderate uuid vulnerability (CVE: GHSA-w5hq-g745-h8pq)
+
 ## 0.3.7
 
 ### Patch Changes
