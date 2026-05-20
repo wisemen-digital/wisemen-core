@@ -1,5 +1,14 @@
 # @wisemen/datewise
 
+## 1.0.3
+
+### Patch Changes
+
+- [#1083](https://github.com/wisemen-digital/wisemen-core/pull/1083) [`a3e5786`](https://github.com/wisemen-digital/wisemen-core/commit/a3e5786c925125459579925740fcfbf3edf610c3) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: update readme to match package definition
+
+- Updated dependencies [[`a3e5786`](https://github.com/wisemen-digital/wisemen-core/commit/a3e5786c925125459579925740fcfbf3edf610c3)]:
+  - @wisemen/pagination@1.0.0
+
 ## 1.0.2
 
 ### Patch Changes
