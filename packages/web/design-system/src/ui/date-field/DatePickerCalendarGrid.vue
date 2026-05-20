@@ -53,7 +53,7 @@ const {
             :month="props.month.value"
             class="
               group/cell inline-flex size-9 shrink-0 items-center justify-center
-              rounded-full text-xs font-normal text-secondary transition-colors
+              rounded-full text-xs font-regular text-secondary transition-colors
               outline-none
               not-data-disabled:hover:bg-secondary-hover
               focus-visible:ring-2 focus-visible:ring-fg-brand-primary

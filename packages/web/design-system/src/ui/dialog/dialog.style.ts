@@ -9,8 +9,8 @@ export const createDialogStyle = tv({
       group-has-data-dialog-footer/dialog:pb-xs
     `,
     chin: `
-      shadow-xl absolute bottom-0 -z-10 w-full rounded-t-[calc(1rem+5px)]
-      rounded-b-none transition-transform duration-200
+      absolute bottom-0 -z-10 w-full rounded-t-[calc(1rem+5px)] rounded-b-none
+      transition-transform duration-200
       sm:top-0 sm:rounded-[calc(1rem+5px)]
     `,
     content: `

@@ -13,7 +13,7 @@ export const datePickerYearPopoverStyle = tv({
     pickerCell: `relative flex-1 p-0 text-center text-xs`,
     pickerCellTrigger: `
       inline-flex h-9 w-full items-center justify-center rounded-lg text-xs
-      font-normal text-secondary transition-colors duration-100 outline-none
+      font-regular text-secondary transition-colors duration-100 outline-none
       hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
       data-disabled:pointer-events-none data-disabled:text-disabled
