@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  _UIActionTrigger as UIActionTrigger,
+  UIActionTrigger,
   UIClickableElement,
 } from '@wisemen/vue-core-design-system'
 

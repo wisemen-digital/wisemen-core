@@ -4,35 +4,17 @@ This document explains how to create service classes that act as the bridge betw
 
 ## ApiUtil Helper
 
-Create a utility to wrap API calls without try-catch:
+`ApiUtil` is exported directly from `@wisemen/vue-core-api-utils` — no need to write your own. It wraps a promise in a neverthrow `Result` without try-catch:
 
 ```typescript
-// src/utils/api.util.ts
+import { ApiUtil } from '@wisemen/vue-core-api-utils'
 
-import type { ApiResult } from '@/api'
-import { ResultAsync } from 'neverthrow'
+// Wraps any promise in ApiResult<T>
+const result = await ApiUtil.fromPromise(someApi.getContact(uuid))
 
-export class ApiUtil {
-  /**
-   * Wraps a promise from an API call and converts it to an ApiResult
-   * This eliminates the need for try-catch blocks in services
-   */
-  static async fromPromise<T>(
-    promise: Promise<T>,
-    errorHandler?: (error: unknown) => { code: string; message: string }
-  ): Promise<ApiResult<T>> {
-    return await ResultAsync.fromPromise(promise, (error) => {
-      if (errorHandler) {
-        return errorHandler(error)
-      }
-      
-      // Default error handling
-      return {
-        code: 'ERROR',
-        message: error instanceof Error ? error.message : 'An error occurred',
-      }
-    })
-  }
+// result is ApiResult<ContactDto> = Result<ContactDto, ApiError>
+if (result.isOk()) {
+  console.log(result.value)
 }
 ```
 
@@ -66,7 +48,7 @@ import type { ContactIndexQueryParams } from '@/types'
 import { ContactIndexQueryParamsTransformer } from '@/transformers/contact-index-params.transformer'
 import { ContactUpdateTransformer } from '@/transformers/contact-update.transformer'
 import type { ContactUpdateForm } from '@/types'
-import { ApiUtil } from '@/utils/api.util'
+import { ApiUtil } from '@wisemen/vue-core-api-utils'
 
 export class ContactService {
   // Create - Transform form to DTO, call API, extract UUID
@@ -547,18 +529,16 @@ Services are consumed by queries and mutations:
 ```typescript
 // Query uses service
 export function useContactDetailQuery(contactUuid: ComputedRef<ContactUuid>) {
-  return useQuery({
+  return useQuery('contactDetail', {
+    params: { contactUuid },
     queryFn: () => ContactService.getByUuid(toValue(contactUuid)),
-    queryKey: { contactDetail: { contactUuid } },
   })
 }
 
 // Mutation uses service
 export function useContactCreateMutation() {
   return useMutation({
-    queryFn: async (queryOptions: { body: ContactCreateForm }) => {
-      return await ContactService.create(queryOptions.body)
-    },
+    queryFn: ({ body }: { body: ContactCreateForm }) => ContactService.create(body),
     queryKeysToInvalidate: { contactIndex: {} },
   })
 }

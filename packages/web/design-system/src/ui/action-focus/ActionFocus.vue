@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  Action,
-  ActionModel,
-} from '@wisemen/vue-core-actions'
+import type { Action } from '@wisemen/vue-core-actions'
 import {
   GroupPriority,
   useFocusedModels,
@@ -11,9 +8,11 @@ import {
 import { Primitive } from 'reka-ui'
 import { computed } from 'vue'
 
+import type { RegisteredActionContext } from '@/register'
+
 const props = defineProps<{
   actions: Action[]
-  models?: ActionModel[]
+  models?: RegisteredActionContext['models']
 }>()
 
 const {
