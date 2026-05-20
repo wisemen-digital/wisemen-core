@@ -15,6 +15,7 @@ const alignClass = computed<string>(() => {
     case 'center': return 'items-center'
     case 'end': return 'items-end'
     case 'start': return 'items-start'
+    case 'stretch': return 'items-stretch'
     default: return 'items-start'
   }
 })
