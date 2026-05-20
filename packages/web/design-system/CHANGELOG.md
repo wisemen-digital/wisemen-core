@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.14.0
+
+### Minor Changes
+
+- [#1068](https://github.com/wisemen-digital/wisemen-core/pull/1068) [`38dbe43`](https://github.com/wisemen-digital/wisemen-core/commit/38dbe43b30125dcea8c716aa1019f81461356292) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add missing application components in the application provider
+
+- [#1065](https://github.com/wisemen-digital/wisemen-core/pull/1065) [`ea37a96`](https://github.com/wisemen-digital/wisemen-core/commit/ea37a96a4c1a475a863bf39bdb9a598f3b390957) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add form field layouts
+
+### Patch Changes
+
+- [#1070](https://github.com/wisemen-digital/wisemen-core/pull/1070) [`673f352`](https://github.com/wisemen-digital/wisemen-core/commit/673f352d20d563c3e9f4751f08f97ca4d8765e0f) Thanks [@wouterlms](https://github.com/wouterlms)! - Change Button, IconButton, Link foreground colors to white in dark mode
+
+- Updated dependencies [[`2654ffc`](https://github.com/wisemen-digital/wisemen-core/commit/2654ffc638375858b8e7023f4ce0062123131299)]:
+  - @wisemen/vue-core-actions@0.1.2
+
 ## 0.13.1
 
 ### Patch Changes

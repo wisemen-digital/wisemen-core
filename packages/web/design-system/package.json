@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.13.1",
+  "version": "0.14.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -76,7 +76,9 @@
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
-    "vue-component-meta": "catalog:storybook"
+    "vue-component-meta": "catalog:storybook",
+    "@wisemen/vue-core-api-utils": "workspace:*",
+    "vue-component-type-helpers": "catalog:types"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:storybook",

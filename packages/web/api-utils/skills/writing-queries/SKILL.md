@@ -1,13 +1,11 @@
 ---
 name: writing-queries
 description: >
-  Single resource queries using factory-provided useQuery, computed ref params, staleTime configuration, queryFn, refetch, isFetching vs isLoading distinctions, automatic cache management.
+  Single resource queries using useQuery, computed ref params, staleTime configuration, queryFn, refetch, isFetching vs isLoading distinctions, automatic cache management.
 type: core
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/query.md"
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/overview.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/query.composable.ts"
 ---
 
@@ -73,6 +71,20 @@ const { result } = useQuery('contactDetail', {
 
 `staleTime` determines how long cached data is considered fresh. After this time, the next query interaction triggers a background refetch.
 
+### Conditionally enable a query
+
+```typescript
+const isEnabled = computed(() => contactUuid.value !== null)
+
+const { result } = useQuery('contactDetail', {
+  params: { contactUuid: computed(() => contactUuid.value!) },
+  queryFn: () => ContactService.getByUuid(contactUuid.value!),
+  isEnabled,
+})
+```
+
+Use `isEnabled` to prevent the query from running until required data is available.
+
 ### Manually refetch on demand
 
 ```typescript
@@ -92,7 +104,7 @@ if (result.value.isOk()) {
 
 ## Common Mistakes
 
-### CRITICAL: Import useQuery from @tanstack/vue-query instead of factory
+### CRITICAL: Import useQuery from @tanstack/vue-query instead of your api module
 
 ```typescript
 // ❌ Wrong: using TanStack directly
@@ -106,7 +118,7 @@ const { data, error, isLoading } = useQuery({
 ```
 
 ```typescript
-// ✅ Correct: use factory-provided composable
+// ✅ Correct: use the composable from your api module (or directly from the library)
 import { useQuery } from '@/api'
 import { computed } from 'vue'
 
@@ -118,9 +130,9 @@ const { result, isLoading } = useQuery('contactDetail', {
 // Full type safety, AsyncResult wrapping, automatic error codes
 ```
 
-Importing directly from @tanstack/vue-query bypasses the typed factory, losing AsyncResult wrapping, type-safe query keys, and error code typing.
+Importing directly from @tanstack/vue-query bypasses the typed composable, losing AsyncResult wrapping, type-safe query keys, and error code typing.
 
-Source: Library architecture — always use composables from `createApiUtils()` factory
+Source: `src/composables/query/query.composable.ts`
 
 ### HIGH: Use plain ref for params instead of computed
 
@@ -147,9 +159,9 @@ const { result } = useQuery('userDetail', {
 
 When params are plain refs, the query doesn't watch them and the cache isn't invalidated when the param changes.
 
-Source: `docs/packages/api-utils/pages/usage/query.md` Usage in Vue Component section
+Source: `src/composables/query/query.composable.ts` — `NestedMaybeRefOrGetter` type
 
-### HIGH: Not set staleTime; serve stale cache indefinitely
+### HIGH: Not set staleTime; background refetch on every interaction
 
 ```typescript
 // ❌ Wrong: no staleTime; background refetch constantly
@@ -173,8 +185,6 @@ const { result } = useQuery('userDetail', {
 
 Default `staleTime` is 0, meaning the cache is immediately considered stale. Every interaction triggers a background refetch. Set `staleTime` based on how frequently the data changes.
 
-Source: `docs/packages/api-utils/pages/getting-started/installation.md` Setup section
-
 ### MEDIUM: Confuse isFetching with isLoading
 
 ```typescript
@@ -195,9 +205,11 @@ if (result.value.isLoading()) {
 // Use isFetching separately for background fetch indicator
 ```
 
-`isLoading` is true only during the initial fetch. `isFetching` is true whenever any fetch is in progress (including background refetches). Use `result.isLoading()` for conditional rendering; use `isFetching` for loading indicators on load-more buttons.
+`isLoading` is true only during the initial fetch. `isFetching` is true whenever any fetch is in progress (including background refetches). Use `result.isLoading()` for conditional rendering; use `isFetching` for loading indicators.
 
-Source: `docs/packages/api-utils/pages/usage/query.md` Return Values section
+Note: `isLoading`, `isError`, and `isSuccess` on the return type are deprecated — prefer `result.value.isLoading()`, `result.value.isErr()`, and `result.value.isOk()`.
+
+Source: `src/composables/query/query.composable.ts` — `UseQueryReturnType`
 
 ## See Also
 
