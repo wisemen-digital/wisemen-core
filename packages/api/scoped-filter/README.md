@@ -5,6 +5,7 @@ Scope-based UUID filtering for NestJS/TypeORM applications. Provides DTO classes
 ## Features
 
 - **ScopedUuidFilter DTO**: Validated filter class with include/exclude scope
+- **Validation Decorator**: `@IsScopedUuidFilter` for nested validation
 - **TypeORM Integration**: `MatchesScopedUuids` operator for query building
 - **Query Builder Support**: Direct integration with TypeORM query builders
 - **Built-in Validation**: Class validator decorators for API inputs
@@ -27,7 +28,21 @@ pnpm add typeorm class-validator class-transformer @nestjs/swagger
 ### DTO
 
 ```typescript
+import { ScopedUuidFilter, IsScopedUuidFilter } from '@wisemen/scoped-filter'
+
+export class ListUsersQuery {
+  @ApiProperty({type: ScopedUuidFilter})
+  @IsScopedUuidFilter()
+  uuid: ScopedUuidFilter<UserUuid>
+}
+```
+
+Or use the manual decorators:
+
+```typescript
 import { ScopedUuidFilter } from '@wisemen/scoped-filter'
+import { Type } from 'class-transformer'
+import { ValidateNested, IsObject } from 'class-validator'
 
 export class ListUsersQuery {
   @ApiProperty({type: ScopedUuidFilter})

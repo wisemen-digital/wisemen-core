@@ -1,9 +1,9 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'expect'
 import { DataSource } from 'typeorm'
-import { matchesScopedUuids } from '#src/typeorm/matches-scoped-uuids.query-builder.js'
+import { matches } from '#src/typeorm/matches-scoped-uuids.query-builder.js'
 import { Scope } from '#src/scope.js'
-import { ScopedUuidFilter } from '#src/scoped-uuid-filter.js'
+import { type ScopedUuidFilter } from '#src/scoped-uuid-filter.js'
 import { dataSource } from './sql/datasource.js'
 import { ScopedFilterTest } from './sql/scoped-filter-test.entity.js'
 import { IntegrationTestSetup } from './test-setup.js'
@@ -29,12 +29,12 @@ describe('matchesScopedUuids (query builder)', () => {
 
   describe('scope: include', () => {
     it('returns only rows matching the provided uuids', async () => {
-      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, uuids: [UUID_1, UUID_2] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, values: [UUID_1, UUID_2] }
 
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matchesScopedUuids<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(2)
@@ -44,12 +44,12 @@ describe('matchesScopedUuids (query builder)', () => {
 
     it('returns an empty result when no rows match', async () => {
       const nonExistentUuid = '00000000-0000-0000-0000-000000000099'
-      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, uuids: [nonExistentUuid] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, values: [nonExistentUuid] }
 
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matchesScopedUuids<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(0)
@@ -58,12 +58,12 @@ describe('matchesScopedUuids (query builder)', () => {
 
   describe('scope: exclude', () => {
     it('returns rows not matching the provided uuids', async () => {
-      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, uuids: [UUID_1, UUID_2] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, values: [UUID_1, UUID_2] }
 
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matchesScopedUuids<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(1)
@@ -72,12 +72,12 @@ describe('matchesScopedUuids (query builder)', () => {
 
     it('returns all rows when no rows match the exclusion', async () => {
       const nonExistentUuid = '00000000-0000-0000-0000-000000000099'
-      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, uuids: [nonExistentUuid] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, values: [nonExistentUuid] }
 
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matchesScopedUuids<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(3)

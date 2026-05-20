@@ -1,9 +1,9 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'expect'
 import { DataSource, In } from 'typeorm'
-import { MatchesScopedUuids } from '#src/typeorm/matches-scoped-uuids.js'
+import { Matches } from '#src/typeorm/matches.js'
 import { Scope } from '#src/scope.js'
-import { ScopedUuidFilter } from '#src/scoped-uuid-filter.js'
+import { type ScopedUuidFilter } from '#src/scoped-uuid-filter.js'
 import { dataSource } from './sql/datasource.js'
 import { ScopedFilterTest } from './sql/scoped-filter-test.entity.js'
 import { IntegrationTestSetup } from './test-setup.js'
@@ -29,12 +29,12 @@ describe('MatchesScopedUuids', () => {
 
   describe('scope: include', () => {
     it('returns only rows matching the provided uuids', async () => {
-      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, uuids: [UUID_1, UUID_2] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, values: [UUID_1, UUID_2] }
 
       const results = await dataSource.manager.find(ScopedFilterTest, {
         where: {
           id: In([1, 2, 3]),
-          uuid: MatchesScopedUuids(filter)
+          uuid: Matches(filter)
         }
       })
 
@@ -45,12 +45,12 @@ describe('MatchesScopedUuids', () => {
 
     it('returns an empty result when no rows match', async () => {
       const nonExistentUuid = '00000000-0000-0000-0000-000000000099'
-      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, uuids: [nonExistentUuid] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.INCLUDE, values: [nonExistentUuid] }
 
       const results = await dataSource.manager.find(ScopedFilterTest, {
         where: {
           id: In([1, 2, 3]),
-          uuid: MatchesScopedUuids(filter)
+          uuid: Matches(filter)
         }
       })
 
@@ -60,12 +60,12 @@ describe('MatchesScopedUuids', () => {
 
   describe('scope: exclude', () => {
     it('returns rows not matching the provided uuids', async () => {
-      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, uuids: [UUID_1, UUID_2] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, values: [UUID_1, UUID_2] }
 
       const results = await dataSource.manager.find(ScopedFilterTest, {
         where: {
           id: In([1, 2, 3]),
-          uuid: MatchesScopedUuids(filter)
+          uuid: Matches(filter)
         }
       })
 
@@ -75,12 +75,12 @@ describe('MatchesScopedUuids', () => {
 
     it('returns all rows when no rows match the exclusion', async () => {
       const nonExistentUuid = '00000000-0000-0000-0000-000000000099'
-      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, uuids: [nonExistentUuid] }
+      const filter: ScopedUuidFilter<string> = { scope: Scope.EXCLUDE, values: [nonExistentUuid] }
 
       const results = await dataSource.manager.find(ScopedFilterTest, {
         where: {
           id: In([1, 2, 3]),
-          uuid: MatchesScopedUuids(filter)
+          uuid: Matches(filter)
         }
       })
 
@@ -90,7 +90,7 @@ describe('MatchesScopedUuids', () => {
 
   describe('undefined filter', () => {
     it('returns undefined when filter is undefined', () => {
-      const result = MatchesScopedUuids(undefined)
+      const result = Matches(undefined)
 
       expect(result).toBeUndefined()
     })

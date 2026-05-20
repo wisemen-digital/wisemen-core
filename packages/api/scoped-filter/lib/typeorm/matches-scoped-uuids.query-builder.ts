@@ -1,10 +1,10 @@
 import { Scope } from "#src/scope.js"
-import { ScopedUuidFilter } from "#src/scoped-uuid-filter.js"
+import { ScopedFilter } from "#src/scoped-filter.js"
 import { randomUUID } from "crypto"
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm"
 
 /**  
- * Checks if the uuid matches any of the requested scoped uuids.
+ * Checks if the column matches any of the requested scoped values.
  * Best used for query builders.
  * 
  * Uses `column = ANY(...)` for inclusive scope. \
@@ -13,15 +13,15 @@ import { ObjectLiteral, SelectQueryBuilder } from "typeorm"
  * @param column the name of the column to match on.
  * @param filter the scoped filter to match.
  * 
- * @example qb.where(matchesScopedUuids("user.uuid", query.filter.uuid))
+ * @example qb.where(matches("user.uuid", query.filter.uuid))
  */
-export function matchesScopedUuids<T extends ObjectLiteral, Uuid extends string> (
+export function matches<T extends ObjectLiteral, V> (
   column: string,
-  filter: ScopedUuidFilter<Uuid>
+  filter: ScopedFilter<V>
 ): (qb: SelectQueryBuilder<T>) => string {
   return (qb: SelectQueryBuilder<T>) => {
     const paramName = randomUUID().replaceAll('-', '')
-    qb.setParameter(paramName, filter.uuids)
+    qb.setParameter(paramName, filter.values)
 
     if (filter.scope === Scope.INCLUDE) {
       return `${column} = ANY(:${paramName})`
