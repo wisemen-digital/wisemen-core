@@ -1,5 +1,11 @@
 # @wisemen/datewise
 
+## 1.0.2
+
+### Patch Changes
+
+- [#1085](https://github.com/wisemen-digital/wisemen-core/pull/1085) [`8be066b`](https://github.com/wisemen-digital/wisemen-core/commit/8be066be205affe4b1bf8b5221ee9756ce22b1e8) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add duration getter on `DateTimeRange`
+
 ## 1.0.1
 
 ### Patch Changes
