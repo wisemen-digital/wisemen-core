@@ -7,14 +7,18 @@ import type {
   RegisteredQueryKeyParams,
   RegisteredQueryKeys,
 } from '@/register'
-import type { ApiResult } from '@/types/apiError.type'
+import type {
+  KeysetPaginationAsyncResult,
+  KeysetPaginationParams,
+  KeysetPaginationResult,
+} from '@/types/pagination.type'
 
 type WithParams<TKey extends PropertyKey>
   = RegisteredQueryKeyParams<TKey> extends undefined
     ? { params?: undefined }
     : { params: RegisteredQueryKeyParams<TKey> }
 
-export type UsePrefetchQueryOptions<
+export type PrefetchKeysetInfiniteQueryOptions<
   TKey extends keyof RegisteredQueryKeys,
   TData,
   TErrorCode extends string = RegisteredErrorCodes,
@@ -25,26 +29,47 @@ export type UsePrefetchQueryOptions<
    */
   staleTime?: number
   /**
+   * Maximum number of items to fetch per page
+   * @default 20
+   */
+  limit?: number
+  /**
    * Function that will be called when query is executed
    */
-  queryFn: () => Promise<ApiResult<TData, TErrorCode>>
+  queryFn: (paginationParams: KeysetPaginationParams) => Promise<KeysetPaginationResult<TData, TErrorCode>>
 } & WithParams<TKey>
 
-export function usePrefetchQuery<
+export function usePrefetchKeysetInfiniteQuery<
   TKey extends keyof RegisteredQueryKeys,
   TData = unknown,
   TErrorCode extends string = RegisteredErrorCodes,
 >(
   key: TKey,
-  options: UsePrefetchQueryOptions<TKey, TData, TErrorCode>,
+  options: PrefetchKeysetInfiniteQueryOptions<TKey, TData, TErrorCode>,
 ) {
   const queryClient = useQueryClient()
   const params = (options as { params?: unknown }).params
 
   async function execute(): Promise<void> {
-    await queryClient.prefetchQuery({
+    await queryClient.prefetchInfiniteQuery({
       staleTime: options.staleTime ?? QUERY_CONFIG.prefetchStaleTime,
-      queryFn: async () => AsyncResult.fromResult(await options.queryFn()),
+      getNextPageParam: (lastPage: KeysetPaginationAsyncResult<TData, TErrorCode>) => {
+        if (!lastPage.isOk()) {
+          return null
+        }
+
+        const next = lastPage.getValue().meta.next
+
+        return (next === null || next === undefined) ? null : next as string
+      },
+      initialPageParam: undefined as unknown as string | undefined,
+      queryFn: async ({
+        pageParam,
+      }) =>
+        AsyncResult.fromResult(await options.queryFn({
+          key: pageParam as KeysetPaginationParams['key'],
+          limit: options.limit ?? QUERY_CONFIG.limit,
+        })),
       queryKey: [
         key,
         params,

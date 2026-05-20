@@ -179,14 +179,4 @@ if (result.value.isOk()) {
 2. **Use computed for display** - Transform the result only when needed for rendering
 3. **Handle empty results** - Show appropriate messaging when there's no data
 4. **Prefetch on hover** - Use `usePrefetchOffsetInfiniteQuery` to load data before user interaction
-resultData.value.match(
-  (data) => {
-    // Success case
-    console.log('Data:', data)
-  },
-  (error) => {
-    // Error case
-    console.error('Error:', error)
-  }
-)
-```
+5. **Use `isFetchingNextPage` on load-more buttons** - `isFetching` is also true on initial load; use the more specific flag to only disable the button during pagination

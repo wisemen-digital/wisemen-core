@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHotkey } from '@tanstack/vue-hotkeys'
 import {
-  _UIActionDropdownMenu as UIActionDropdownMenu,
+  UIActionDropdownMenu,
   UIButton,
 } from '@wisemen/vue-core-design-system'
 import { FilterLinesIcon } from '@wisemen/vue-core-icons'

@@ -1,14 +1,12 @@
 ---
 name: writing-mutations
 description: >
-  Create, update, delete resources using factory-provided useMutation, typed queryKeysToInvalidate, AsyncResult error handling, execute function, request shape with body/params separation.
+  Create, update, delete resources using useMutation, typed queryKeysToInvalidate with optional param extractors, AsyncResult error handling, execute function, request shape with body/params separation.
 type: core
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/mutation.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/mutation/mutation.composable.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/factory/createApiMutationUtils.ts"
 ---
 
 # @wisemen/vue-core-api-utils — Writing Mutations
@@ -33,7 +31,7 @@ export function useCreateContact() {
 }
 ```
 
-Every mutation must list which queries to invalidate via `queryKeysToInvalidate`.
+Every mutation should list which queries to invalidate via `queryKeysToInvalidate`.
 
 ## Core Patterns
 
@@ -52,8 +50,7 @@ async function handleSubmit(formData: ContactCreateForm) {
     // Invalidated queries will refetch automatically
   } else if (response.isErr()) {
     const error = response.getError()
-    // Handle error based on code
-    if (error.errors[0].code === 'EMAIL_EXISTS') {
+    if ('errors' in error && error.errors[0].code === 'EMAIL_EXISTS') {
       toast.error('That email is already registered')
     } else {
       toast.error('Creation failed')
@@ -64,29 +61,54 @@ async function handleSubmit(formData: ContactCreateForm) {
 
 Always `await execute()` and check the result state before continuing.
 
-### Update mutation with specific query invalidation
+### Update mutation with specific query invalidation using param extractors
+
+When you need to invalidate a specific query (rather than all queries with a key), pass param extractor functions:
 
 ```typescript
-export function useUpdateContact(contactUuid: string) {
-  return useMutation({
-    queryFn: async (options: { body: ContactUpdateForm }) => {
-      return await ContactService.update(contactUuid, options.body)
+export function useUpdateContact() {
+  return useMutation<ContactUpdateForm, Contact, { contactUuid: string }>({
+    queryFn: async (options) => {
+      return await ContactService.update(options.params.contactUuid, options.body)
     },
     queryKeysToInvalidate: {
-      contactDetail: {}, // Invalidate the specific contact
-      contactList: {},   // And the list
+      // Invalidate only the specific contact that was updated
+      contactDetail: {
+        contactUuid: (params) => params.contactUuid,
+      },
+      // Invalidate all contact lists
+      contactList: {},
     },
   })
 }
 ```
 
-You can invalidate multiple queries. Include queries that depend on the data you're changing.
+Param extractors receive `(mutationParams, responseData)` and return the value for that query param. Empty object `{}` invalidates all queries with that key.
+
+### Mutation with URL params only (no body)
+
+```typescript
+export function useDeleteContact() {
+  return useMutation<void, void, { contactUuid: string }>({
+    queryFn: async (options) => {
+      return await ContactService.delete(options.params.contactUuid)
+    },
+    queryKeysToInvalidate: {
+      contactList: {},
+    },
+  })
+}
+
+// execute({ params: { contactUuid: '123' } })
+```
+
+When `TReqData` is `void`, the `execute` call takes `{ params: TParams }` instead of `{ body, params }`.
 
 ### Form integration
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import { useCreateContact } from '@/composables'
 
 const form = reactive({ name: '', email: '' })
@@ -110,7 +132,7 @@ async function handleSubmit() {
       {{ result.isLoading() ? 'Creating...' : 'Create' }}
     </button>
     <div v-if="result.isErr()">
-      Error: {{ result.getError().errors[0].detail }}
+      Error: {{ result.getError().errors?.[0]?.detail }}
     </div>
   </form>
 </template>
@@ -120,7 +142,7 @@ Use `result.isLoading()` to disable the button during mutation.
 
 ## Common Mistakes
 
-### CRITICAL: Import useMutation from @tanstack/vue-query instead of factory
+### CRITICAL: Import useMutation from @tanstack/vue-query instead of your api module
 
 ```typescript
 // ❌ Wrong: using TanStack directly
@@ -136,7 +158,7 @@ const mutation = useMutation({
 ```
 
 ```typescript
-// ✅ Correct: use factory composable
+// ✅ Correct: use the composable from your api module
 import { useMutation } from '@/api'
 
 const { execute, result } = useMutation({
@@ -150,9 +172,9 @@ const { execute, result } = useMutation({
 // Full AsyncResult, type-safe queryKeysToInvalidate, error codes
 ```
 
-Direct TanStack import loses the factory's type safety and AsyncResult wrapping.
+Direct TanStack import loses type safety and AsyncResult wrapping.
 
-Source: Library architecture — always use composables from `createApiUtils()` factory
+Source: `src/composables/mutation/mutation.composable.ts`
 
 ### CRITICAL: Forget to list queryKeysToInvalidate; cache becomes stale
 
@@ -180,9 +202,9 @@ const { execute } = useMutation({
 // After success, contactList queries refetch
 ```
 
-If you don't list which queries to invalidate, the cache stays stale and the UI shows outdated data. Update returns success but list still shows old items.
+If you don't list which queries to invalidate, the cache stays stale and the UI shows outdated data.
 
-Source: `docs/packages/api-utils/pages/usage/mutation.md` Create Mutation Example
+Source: `src/composables/mutation/mutation.composable.ts` — `onSuccess` invalidation logic
 
 ### HIGH: Not await execute(); code runs before mutation completes
 
@@ -205,34 +227,37 @@ async function handleSubmit() {
 }
 ```
 
-Not awaiting `execute()` means the mutation is still in flight when you navigate away or access the result. Always await and check the result before continuing.
+Not awaiting `execute()` means the mutation is still in flight when you navigate away or access the result.
 
-Source: `docs/packages/api-utils/pages/usage/mutation.md` Usage in Component
+Source: `src/composables/mutation/mutation.composable.ts` — `execute` returns `Promise<ApiResult>`
 
-### HIGH: Use body instead of params for query parameters
+### HIGH: Use body instead of params for URL parameters
 
 ```typescript
-// ❌ Wrong: filter/search as body
-const { execute } = useMutation({
+// ❌ Wrong: URL params passed as body
+const { execute } = useMutation<SearchForm, Results, void>({
   queryFn: async (options) => {
-    return await SearchService.search(options.body) // params should go in URL!
+    return await SearchService.search(options.body) // URL params shouldn't be in body
   },
 })
 ```
 
 ```typescript
-// ✅ Correct: separate body and params
-const { execute } = useMutation({
+// ✅ Correct: separate body (payload) from params (URL query string)
+const { execute } = useMutation<SearchForm, Results, { category: string }>({
   queryFn: async (options) => {
     const { body, params } = options
-    return await SearchService.search(params) // URL params
+    return await SearchService.search(body, params.category)
   },
 })
+
+// Call with both:
+execute({ body: searchForm, params: { category: 'contacts' } })
 ```
 
-When mutations accept query parameters (filters, search), pass them in the `params` field of the options, not `body`. `body` is for request payload; `params` is for URL query string.
+`body` is for the request payload (POST/PUT body); `params` is for URL query string parameters. The `RequestParams` type enforces this shape automatically based on your generics.
 
-Source: Source code `mutation.composable.ts` — request shape documentation
+Source: `src/composables/mutation/mutation.composable.ts` — `RequestParams` type
 
 ## See Also
 

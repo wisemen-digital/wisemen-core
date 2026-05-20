@@ -3,7 +3,7 @@ import type {
   ActionGroup,
 } from '@wisemen/vue-core-actions'
 import {
-  _createUntypedAction,
+  createAction,
   useTemporaryActions,
 } from '@wisemen/vue-core-actions'
 import type { PlainDateRange } from '@wisemen/vue-core-dates'
@@ -235,7 +235,7 @@ export function useFilters<TFilters extends Filter[]>(
       case FilterType.MULTI_SELECT:
       case FilterType.MULTI_AUTOCOMPLETE:
         return {
-          action: _createUntypedAction({
+          action: createAction({
             id: filter.key,
             name: filter.label,
             group: options.actionGroup,
@@ -266,7 +266,7 @@ export function useFilters<TFilters extends Filter[]>(
                     (option) => !selectedValues.some((v) => SuperJSON.stringify(v) === SuperJSON.stringify(option)),
                   )
 
-              const actions = uniqueOptions.map((option: SelectFilterValue) => _createUntypedAction({
+              const actions = uniqueOptions.map((option: SelectFilterValue) => createAction({
                 id: SuperJSON.stringify(option),
                 name: filter.displayFn(option),
                 execute: () => {
@@ -319,7 +319,7 @@ export function useFilters<TFilters extends Filter[]>(
         }
       case FilterType.BOOLEAN:
         return {
-          action: _createUntypedAction({
+          action: createAction({
             id: filter.key,
             name: filter.label,
             disabledReason: () => values.value[filter.key] === null ? null : i18n.t('component.filters.boolean_filter_already_active'),
@@ -337,7 +337,7 @@ export function useFilters<TFilters extends Filter[]>(
         }
       case FilterType.NUMBER:
         return {
-          action: _createUntypedAction({
+          action: createAction({
             id: filter.key,
             name: filter.label,
             execute: () => {
@@ -358,7 +358,7 @@ export function useFilters<TFilters extends Filter[]>(
         }
       case FilterType.DATE_RANGE:
         return {
-          action: _createUntypedAction({
+          action: createAction({
             id: filter.key,
             name: filter.label,
             execute: () => {
@@ -382,7 +382,7 @@ export function useFilters<TFilters extends Filter[]>(
     }
   })
 
-  const clearFiltersAction = _createUntypedAction({
+  const clearFiltersAction = createAction({
     id: 'clear-filters',
     isApplicable: (ctx) => activeFiltersKeys.value.size > 0 && ctx.menuType !== 'contextualMenu',
     name: () => i18n.t('component.filters.clear_filters'),
@@ -395,7 +395,7 @@ export function useFilters<TFilters extends Filter[]>(
     },
   })
 
-  const addFilterAction = _createUntypedAction({
+  const addFilterAction = createAction({
     id,
     name: () => i18n.t('component.filters.add_filters'),
     forceAsRootMenu: true,
@@ -408,7 +408,7 @@ export function useFilters<TFilters extends Filter[]>(
     },
     subActions: () => [
       ...filterActions.map((filterAction) => filterAction.action),
-      _createUntypedAction({
+      createAction({
         id: 'add-filters-action-clear-filters',
         isApplicable: (ctx) => {
           if (activeFiltersKeys.value.size === 0) {

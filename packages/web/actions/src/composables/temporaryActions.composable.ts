@@ -51,11 +51,11 @@ export function useTemporaryActions(
 
   if (!controlled) {
     register()
-
-    onBeforeUnmount(() => {
-      unregister()
-    })
   }
+
+  onBeforeUnmount(() => {
+    unregister()
+  })
 
   return {
     register,
