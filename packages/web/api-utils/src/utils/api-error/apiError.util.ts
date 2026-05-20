@@ -38,7 +38,7 @@ export class ApiErrorUtil {
     return new Error(message ?? 'An unknown error occurred')
   }
 
-  static isExpectedApiError(error: unknown): error is ApiExpectedError<RegisteredErrorCodes> {
+  static isExpectedApiError(error: unknown): error is ApiExpectedError {
     return (error as ApiExpectedError)?.errors !== undefined
   }
 

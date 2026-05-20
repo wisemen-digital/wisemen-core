@@ -1,3 +1,5 @@
+import type { RegisteredErrorCodes } from '@/register'
+
 import type {
   ApiResult,
   AsyncApiResult,
@@ -37,15 +39,15 @@ export interface KeysetPaginationResponse<TData> {
     next: unknown
   }
 }
-export type OffsetPaginationResult<TData, TErrorCode extends string = string>
+export type OffsetPaginationResult<TData, TErrorCode extends string = RegisteredErrorCodes>
   = ApiResult<OffsetPaginationResponse<TData>, TErrorCode>
-export type KeysetPaginationResult<TData, TErrorCode extends string = string>
+export type KeysetPaginationResult<TData, TErrorCode extends string = RegisteredErrorCodes>
   = ApiResult<KeysetPaginationResponse<TData>, TErrorCode>
 
-export type KeysetPaginationAsyncResult<TData, TErrorCode extends string = string>
+export type KeysetPaginationAsyncResult<TData, TErrorCode extends string = RegisteredErrorCodes>
   = AsyncApiResult<KeysetPaginationResponse<TData>, TErrorCode>
 
-export type OffsetPaginationAsyncResult<TData, TErrorCode extends string = string>
+export type OffsetPaginationAsyncResult<TData, TErrorCode extends string = RegisteredErrorCodes>
   = AsyncApiResult<OffsetPaginationResponse<TData>, TErrorCode>
 
 export interface PaginatedDataDto<TSchema> {

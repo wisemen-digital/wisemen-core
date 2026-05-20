@@ -11,7 +11,6 @@ import type {
   ApiError,
   ApiResult,
 } from '@/types/apiError.type'
-import type { KeysetPaginationResponse } from '@/types/pagination.type'
 import { ApiErrorUtil } from '@/utils/api-error/apiError.util'
 
 export class ApiUtil {
@@ -21,15 +20,11 @@ export class ApiUtil {
         error,
         message,
       })
-    }) as ApiResult<T, RegisteredErrorCodes>
+    })
   }
 
-  static getKeysetPaginationNextOffset(keysetPaginationMeta: KeysetPaginationResponse<any>['meta']): number | null {
-    return (keysetPaginationMeta.next as { offset?: number })?.offset ?? null
-  }
-
-  static getResultError(
-    result: AsyncResult<unknown, ApiError> | Result<unknown, ApiError> | null,
+  static getResultError<T>(
+    result: AsyncResult<T, ApiError> | Result<T, ApiError> | null,
   ): ApiError<RegisteredErrorCodes> | null {
     if (result === null) {
       return null
@@ -50,11 +45,11 @@ export class ApiUtil {
     return (value as AsyncResult<unknown, ApiError>).getResult !== undefined
   }
 
-  static void<T, TApiResult extends ApiResult<void>>(result: ApiResult<T>): TApiResult {
+  static void<T>(result: ApiResult<T>): ApiResult<void> {
     if (result.isErr()) {
-      return err(result.error) as TApiResult
+      return err(result.error)
     }
 
-    return ok() as TApiResult
+    return ok()
   }
 }
