@@ -2480,6 +2480,9 @@ importers:
       '@wisemen/vue-core-dates':
         specifier: workspace:*
         version: link:../dates
+      '@wisemen/vue-core-tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind-config
       eslint:
         specifier: catalog:lint-web
         version: 9.39.4(jiti@2.6.1)

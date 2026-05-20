@@ -1,6 +1,6 @@
 // badge.variants.ts
 
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const badgeVariants = tv({
   compoundVariants: [

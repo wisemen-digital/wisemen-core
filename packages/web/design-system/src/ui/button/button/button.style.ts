@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createButtonStyle = tv({
   compoundVariants: [

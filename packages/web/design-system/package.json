@@ -22,8 +22,7 @@
       "types": "./dist/locales.d.ts",
       "import": "./dist/locales.js"
     },
-    "./style.css": "./dist/index.css",
-    "./source.css": "./dist/source.css"
+    "./style.css": "./dist/style.css"
   },
   "style": "./dist/index.css",
   "main": "./dist/index.umd.cjs",
@@ -34,8 +33,7 @@
     "./dist"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:source",
-    "build:source": "cat src/styles/source.css src/styles/utilities.css > dist/source.css",
+    "build": "vite build",
     "dev": "vite build --watch",
     "pub:release": "pnpm publish --access public",
     "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
@@ -96,6 +94,7 @@
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-actions": "workspace:*",
     "@wisemen/vue-core-dates": "workspace:*",
+    "@wisemen/vue-core-tailwind-config": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",

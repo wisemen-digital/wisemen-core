@@ -11,7 +11,7 @@ export default defineConfig({
   build: {
     lib: {
       name: 'vue-core-design-system',
-      cssFileName: 'index',
+      cssFileName: 'style',
       entry: [
         resolve(__dirname, 'src/index.ts'),
         resolve(__dirname, 'src/locales.ts'),

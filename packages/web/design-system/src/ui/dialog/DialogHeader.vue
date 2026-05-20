@@ -5,7 +5,7 @@ import {
 } from 'reka-ui'
 import { computed } from 'vue'
 
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { useInjectDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogHeaderProps } from '@/ui/dialog/dialogHeader.props'
