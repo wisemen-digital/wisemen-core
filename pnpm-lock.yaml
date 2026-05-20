@@ -111,6 +111,9 @@ catalogs:
     pg-boss:
       specifier: 12.15.0
       version: 12.15.0
+    redis:
+      specifier: 5.11.0
+      version: 5.11.0
     twilio:
       specifier: 5.13.1
       version: 5.13.1
@@ -123,6 +126,91 @@ catalogs:
     yaml:
       specifier: 2.8.3
       version: 2.8.3
+  backend-peer:
+    '@aws-sdk/client-s3':
+      specifier: '>=3.1023.0'
+      version: 3.1023.0
+    '@aws-sdk/lib-storage':
+      specifier: '>=3.1023.0'
+      version: 3.1023.0
+    '@aws-sdk/s3-request-presigner':
+      specifier: '>=3.1023.0'
+      version: 3.1023.0
+    '@azure/storage-blob':
+      specifier: '>=12.31.0'
+      version: 12.31.0
+    '@nestjs/common':
+      specifier: '>=11.1.17'
+      version: 11.1.19
+    '@nestjs/config':
+      specifier: '>=4.0.3'
+      version: 4.0.3
+    '@nestjs/core':
+      specifier: '>=11.1.17'
+      version: 11.1.19
+    '@nestjs/platform-express':
+      specifier: '>=11.1.17'
+      version: 11.1.18
+    '@nestjs/swagger':
+      specifier: '>=11.2.6'
+      version: 11.4.2
+    '@nestjs/typeorm':
+      specifier: '>=11.0.0'
+      version: 11.0.0
+    '@opentelemetry/api':
+      specifier: '>=1.9.1'
+      version: 1.9.1
+    '@opentelemetry/api-logs':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@sentry/nestjs':
+      specifier: '>=10.47.0'
+      version: 10.47.0
+    '@sentry/node':
+      specifier: '>=10.47.0'
+      version: 10.47.0
+    '@sentry/tracing':
+      specifier: '>=7.120.4'
+      version: 7.120.4
+    axios:
+      specifier: '>=1.14.0'
+      version: 1.15.2
+    change-case:
+      specifier: '>=5.4.4'
+      version: 5.4.4
+    class-transformer:
+      specifier: '>=0.5.1'
+      version: 0.5.1
+    class-validator:
+      specifier: '>=0.15.1'
+      version: 0.15.1
+    colors:
+      specifier: '>=1.4.0'
+      version: 1.4.0
+    dayjs:
+      specifier: '>=1.11.20'
+      version: 1.11.20
+    express:
+      specifier: '>=5.2.1'
+      version: 5.2.1
+    moment:
+      specifier: '>=2.30.1'
+      version: 2.30.1
+    pg:
+      specifier: '>=8.20.0'
+      version: 8.20.0
+    qs:
+      specifier: '>=6.15.0'
+      version: 6.15.0
+    reflect-metadata:
+      specifier: '>=0.2.2'
+      version: 0.2.2
+    rxjs:
+      specifier: '>=7.8.2'
+      version: 7.8.2
+    typeorm:
+      specifier: '>=0.3.28'
+      version: 0.3.28
   build:
     bumpp:
       specifier: 11.0.1
@@ -350,21 +438,45 @@ catalogs:
       specifier: 0.94.0
       version: 0.94.0
   peer:
+    '@hey-api/openapi-ts':
+      specifier: '>=0.86.0'
+      version: 0.94.0
+    '@tanstack/vue-query':
+      specifier: '>=5.90.5'
+      version: 5.100.6
+    '@typescript-eslint/parser':
+      specifier: ^8.46.1
+      version: 8.59.0
     formango:
       specifier: ^3.2.1
       version: 3.2.4
     motion-v:
       specifier: '>=1.7.3'
       version: 2.2.1
+    neverthrow:
+      specifier: '>=8.2.0'
+      version: 8.2.0
+    reka-ui:
+      specifier: '>=2.9.7'
+      version: 2.9.7
+    temporal-polyfill:
+      specifier: '>=0.3.0'
+      version: 0.3.0
     typescript:
       specifier: '>=4.8.4 <=5.9.3'
       version: 5.9.3
+    vue:
+      specifier: '>=3.5.22'
+      version: 3.5.27
     vue-i18n:
       specifier: '>=11.1.12'
       version: 11.2.8
     vue-router:
       specifier: '>=4.6.3'
       version: 4.6.4
+    zod:
+      specifier: '>=4.3.5'
+      version: 4.3.5
   stories:
     '@histoire/plugin-vue':
       specifier: 1.0.0-alpha.3
@@ -2463,7 +2575,7 @@ importers:
     dependencies:
       '@typescript-eslint/parser':
         specifier: catalog:peer
-        version: 8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
+        version: 8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/scope-manager':
         specifier: catalog:lint-web
         version: 8.53.1
@@ -13022,6 +13134,9 @@ packages:
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
+  vue-component-type-helpers@3.3.0:
+    resolution: {integrity: sha512-vwR8DDsBysI9NWXa0okPFpCcW+BUC3sPTuLBNo1faMzw4QWMFd+3/lFYFu29ZN0q+8UReXWJHEYesC9dcXYCLg==}
+
   vue-component-type-helpers@3.3.1:
     resolution: {integrity: sha512-pu58kqxmVyEH6VfNYW1UyEfR3XAnJ27ZXT3yzXxxpjLxVzAbyC35Zk/nm/RMs7ijWnJNSd9fWkeex2OhUsx3MA==}
 
@@ -13385,7 +13500,7 @@ snapshots:
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.1(eslint@9.39.4(jiti@2.6.1))
       '@eslint/markdown': 7.5.1
       '@stylistic/eslint-plugin': 5.10.0(eslint@9.39.4(jiti@2.6.1))
-      '@typescript-eslint/eslint-plugin': 8.59.0(@typescript-eslint/parser@8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/eslint-plugin': 8.59.0(@typescript-eslint/parser@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/parser': 8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@vitest/eslint-plugin': 1.6.9(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)(vitest@4.1.0)
       ansis: 4.2.0
@@ -18531,22 +18646,6 @@ snapshots:
     dependencies:
       '@types/yargs-parser': 21.0.3
 
-  '@typescript-eslint/eslint-plugin@8.59.0(@typescript-eslint/parser@8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)':
-    dependencies:
-      '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.59.0
-      '@typescript-eslint/type-utils': 8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
-      '@typescript-eslint/visitor-keys': 8.59.0
-      eslint: 9.39.4(jiti@2.6.1)
-      ignore: 7.0.5
-      natural-compare: 1.4.0
-      ts-api-utils: 2.5.0(typescript@5.9.3)
-      typescript: 5.9.3
-    transitivePeerDependencies:
-      - supports-color
-
   '@typescript-eslint/eslint-plugin@8.59.0(@typescript-eslint/parser@8.59.0(eslint@10.2.1(jiti@2.6.1))(typescript@5.9.3))(eslint@10.2.1(jiti@2.6.1))(typescript@5.9.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
@@ -18656,8 +18755,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.58.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.58.0(typescript@5.9.3)
-      '@typescript-eslint/types': 8.58.0
+      '@typescript-eslint/tsconfig-utils': 8.59.0(typescript@5.9.3)
+      '@typescript-eslint/types': 8.59.0
       debug: 4.4.3
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -20980,7 +21079,7 @@ snapshots:
     dependencies:
       eslint: 9.39.4(jiti@2.6.1)
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.59.0(@typescript-eslint/parser@8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
+      '@typescript-eslint/eslint-plugin': 8.59.0(@typescript-eslint/parser@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
 
   eslint-plugin-vue@10.8.0(@stylistic/eslint-plugin@5.10.0(eslint@9.39.4(jiti@2.6.1)))(@typescript-eslint/parser@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1))):
     dependencies:
@@ -25261,6 +25360,8 @@ snapshots:
       typescript: 5.9.3
 
   vue-component-type-helpers@2.2.12: {}
+
+  vue-component-type-helpers@3.3.0: {}
 
   vue-component-type-helpers@3.3.1: {}
 
