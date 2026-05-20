@@ -1,0 +1,46 @@
+<template>
+  <svg
+    width="360"
+    height="585"
+    viewBox="0 0 360 585"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="absolute -bottom-10 -left-10"
+  >
+    <g
+      opacity="0.4"
+      filter="url(#filter0_f_5410_8853)"
+    >
+      <path
+        d="M-39 642L13.5 84L74.5 525L276 577.5L-39 642Z"
+        class="fill-corner-highlight"
+      />
+    </g>
+    <defs>
+      <filter
+        id="filter0_f_5410_8853"
+        x="-123"
+        y="0"
+        width="483"
+        height="726"
+        filterUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+      >
+        <feFlood
+          flood-opacity="0"
+          result="BackgroundImageFix"
+        />
+        <feBlend
+          mode="normal"
+          in="SourceGraphic"
+          in2="BackgroundImageFix"
+          result="shape"
+        />
+        <feGaussianBlur
+          stdDeviation="42"
+          result="effect1_foregroundBlur_5410_8853"
+        />
+      </filter>
+    </defs>
+  </svg>
+</template>
