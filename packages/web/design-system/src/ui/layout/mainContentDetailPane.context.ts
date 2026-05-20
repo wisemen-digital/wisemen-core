@@ -10,7 +10,6 @@ export interface MainContentDetailPaneContext {
   isOpen: ComputedRef<boolean>
   registerDetailPane: (isOpen: Ref<boolean>, toggle: () => void) => void
   toggle: () => void
-
   unregisterDetailPane: () => void
 }
 

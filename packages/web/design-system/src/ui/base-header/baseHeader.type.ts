@@ -16,7 +16,6 @@ export type BaseHeaderLeftConfig
   | {
     color?: FeaturedIconColor
     icon: Component
-
     type: 'featured-icon'
   }
   | {
