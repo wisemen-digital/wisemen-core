@@ -177,6 +177,15 @@ export class DateTimeRange {
     return this.upper.diff(this.lower, 'milliseconds')
   }
 
+  /** 
+   * Get the duration of this DateTimeRange. 
+   * 
+   * The duration is calculated as `from.until(until)`
+   */
+  get duration(): Duration {
+    return this.from.until(this.until)
+  }
+
   /** Checks if the given date falls within the range. */
   contains (date: TimestampInput): boolean {
     date = timestamp(date)

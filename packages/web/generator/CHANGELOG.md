@@ -1,5 +1,11 @@
 # @wisemen/vue-core-generator
 
+## 2.0.0
+
+### Major Changes
+
+- [#1069](https://github.com/wisemen-digital/wisemen-core/pull/1069) [`9eaaf7d`](https://github.com/wisemen-digital/wisemen-core/commit/9eaaf7dfaef945bd4bf070f8a8a749346a49fcc6) Thanks [@wouterlms](https://github.com/wouterlms)! - Update generate stylesheets path
+
 ## 1.2.3
 
 ### Patch Changes

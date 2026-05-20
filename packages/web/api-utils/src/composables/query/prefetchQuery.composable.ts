@@ -1,39 +1,54 @@
 import { useQueryClient } from '@tanstack/vue-query'
 
+import { AsyncResult } from '@/async-result/asyncResult'
 import { QUERY_CONFIG } from '@/config/config'
+import type {
+  RegisteredErrorCodes,
+  RegisteredQueryKeyParams,
+  RegisteredQueryKeys,
+} from '@/register'
+import type { ApiResult } from '@/types/apiError.type'
 
-import type { UseQueryOptions } from './query.composable'
+type WithParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyParams<TKey> extends undefined
+    ? { params?: undefined }
+    : { params: RegisteredQueryKeyParams<TKey> }
 
-export function usePrefetchQuery<TResData, TErrorCode extends string = string>(
-  query: UseQueryOptions<TResData, TErrorCode>,
+export type UsePrefetchQueryOptions<
+  TKey extends keyof RegisteredQueryKeys,
+  TData,
+  TErrorCode extends string = RegisteredErrorCodes,
+> = {
+  /**
+   * The time in milliseconds after which the prefetched query will be considered stale
+   * @default config.prefetchStaleTime
+   */
+  staleTime?: number
+  /**
+   * Function that will be called when query is executed
+   */
+  queryFn: () => Promise<ApiResult<TData, TErrorCode>>
+} & WithParams<TKey>
+
+export function usePrefetchQuery<
+  TKey extends keyof RegisteredQueryKeys,
+  TData = unknown,
+  TErrorCode extends string = RegisteredErrorCodes,
+>(
+  key: TKey,
+  options: UsePrefetchQueryOptions<TKey, TData, TErrorCode>,
 ) {
   const queryClient = useQueryClient()
-
-  function getQueryKey(): unknown[] {
-    const entries = Object.entries(query.queryKey)
-    const [
-      first,
-    ] = entries
-
-    if (!first) {
-      return []
-    }
-    const [
-      queryKey,
-      params,
-    ] = first as [string, unknown]
-
-    return [
-      queryKey,
-      params,
-    ]
-  }
+  const params = (options as { params?: unknown }).params
 
   async function execute(): Promise<void> {
     await queryClient.prefetchQuery({
-      staleTime: query.staleTime ?? QUERY_CONFIG.prefetchStaleTime,
-      queryFn: query.queryFn,
-      queryKey: getQueryKey(),
+      staleTime: options.staleTime ?? QUERY_CONFIG.prefetchStaleTime,
+      queryFn: async () => AsyncResult.fromResult(await options.queryFn()),
+      queryKey: [
+        key,
+        params,
+      ],
     })
   }
 

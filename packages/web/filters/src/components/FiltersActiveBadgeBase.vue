@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {
-  _createUntypedAction,
+  createAction,
   GroupPriority,
 } from '@wisemen/vue-core-actions'
 import {
-  _UIActionFocus as UIActionFocus,
-  _UIActionTrigger as UIActionTrigger,
+  UIActionFocus,
+  UIActionTrigger,
   UIIconButton,
   UISeparator,
 } from '@wisemen/vue-core-design-system'
@@ -31,7 +31,7 @@ const {
   clearFilter,
 } = useInjectFiltersContext()
 
-const clearFilterAction = _createUntypedAction({
+const clearFilterAction = createAction({
   id: `clear-filter-${props.filter.key}`,
   name: () => i18n.t('component.filters.remove_filter'),
   execute: () => {

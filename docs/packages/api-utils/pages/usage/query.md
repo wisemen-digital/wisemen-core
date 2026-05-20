@@ -91,12 +91,12 @@ const { result, isLoading } = useContactDetail(props.contactUuid)
 
 ## Return Values
 
-- **`result`**: ComputedRef to an AsyncResult containing the contact data or error
-- **`isLoading`**: Whether the query is initially loading
+- **`result`**: `ComputedRef<AsyncResult<T, E>>` — use `result.value.isLoading()`, `.isOk()`, `.isErr()` for state checks
 - **`isFetching`**: Whether data is being fetched (includes background refetches)
-- **`isError`**: Whether an error has occurred
-- **`isSuccess`**: Whether the query succeeded
 - **`refetch`**: Function to manually refetch the data
+- **`isLoading`** _(deprecated)_: Use `result.value.isLoading()` instead
+- **`isError`** _(deprecated)_: Use `result.value.isErr()` instead
+- **`isSuccess`** _(deprecated)_: Use `result.value.isOk()` instead
 
 ## Error States
 
@@ -156,33 +156,25 @@ function onMouseEnter() {
 
 ## Working with Results
 
-The query returns a `result` that is an `ApiResult` type from `neverthrow`:
-
 ```typescript
-// Check if result is an error
+// Check state before extracting values
 if (result.value.isErr()) {
   console.error('Error:', result.value.getError())
-} else {
+} else if (result.value.isOk()) {
   console.log('Data:', result.value.getValue())
 }
 
-// Pattern matching
-result.value.match(
-  (data) => {
-    // Success case - data is properly typed as ContactDetail
+// Or use exhaustive pattern matching
+result.value.match({
+  loading: () => {
+    console.log('Loading...')
+  },
+  ok: (data) => {
+    // data is properly typed as ContactDetail
     console.log('Contact:', data)
   },
-  (error) => {
-    // Error case - error is properly typed
+  err: (error) => {
     console.error('Error:', error)
-  }
-)
+  },
+})
 ```
-
-## Returned Properties
-
-- **`result`**: A `Ref<ApiResult<ContactDetail>>` containing the query data or error
-- **`isLoading`**: A `Ref<boolean>` indicating if the query is loading
-- **`isFetching`**: A `Ref<boolean>` indicating if the query is fetching (including background refetch)
-- **`error`**: A `Ref<Error | null>` containing any error that occurred
-- **`refetch`**: A function to manually refetch the query

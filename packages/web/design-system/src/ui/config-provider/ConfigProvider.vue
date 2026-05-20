@@ -5,11 +5,9 @@ import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
 
 const props = withDefaults(defineProps<ConfigProviderProps>(), {
   addressAutocompleteAdapter: null,
-  autoCloseToast: 'always',
   googleMapsApiKey: null,
   hourCycle: null,
-  numberFormat: 'system',
-  projectName: 'wisemen',
+  showNavigationArrowsInTopBar: false,
 })
 
 defineSlots<{

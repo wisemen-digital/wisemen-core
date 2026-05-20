@@ -1,5 +1,11 @@
 # @wisemen/vue-core-actions
 
+## 0.1.2
+
+### Patch Changes
+
+- [#1058](https://github.com/wisemen-digital/wisemen-core/pull/1058) [`2654ffc`](https://github.com/wisemen-digital/wisemen-core/commit/2654ffc638375858b8e7023f4ce0062123131299) Thanks [@wouterlms](https://github.com/wouterlms)! - Resolve issue where sub actions are applicable when their parent is not applicable
+
 ## 0.1.1
 
 ### Patch Changes

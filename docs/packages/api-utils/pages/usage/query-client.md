@@ -2,34 +2,49 @@
 
 Type-safe query client utilities allow you to immediately update the cache with expected results before the server responds. This provides instant UI feedback while the request is in flight.
 
+## Setup
+
+The library exports a `QueryClient` class and `getTanstackQueryClient` function. Create a typed wrapper in your project:
+
+```typescript
+// src/api/queryClient.ts
+
+import { QueryClient, getTanstackQueryClient } from '@wisemen/vue-core-api-utils'
+import type { ProjectQueryKeys } from '@/types/queryKey.type'
+
+export function useQueryClient() {
+  return new QueryClient<ProjectQueryKeys>(getTanstackQueryClient())
+}
+```
+
+Import `useQueryClient` from this file wherever you need cache access.
+
 ## Overview
 
-The `useQueryClient()` composable provides three core methods:
-- **`update()`** - Update cached data based on a predicate
+The `QueryClient` class provides four core methods:
+- **`update()`** - Update cached data based on a predicate; returns `{ rollback }` for reverting
 - **`get()`** - Read cached data
 - **`set()`** - Write data to cache
-- **`invalidate()`** - Trigger a refetch
+- **`invalidate()`** - Mark queries as stale and trigger a refetch
 
-All methods are **fully type-safe** and work with your query keys configuration.
+All methods are **fully type-safe** and infer types from your `ProjectQueryKeys`.
 
 ## Basic Usage
 
 ### Single Entity Update
 
-Update a specific query's cached data. The `update` method returns a `{ rollback }` function that reverts the affected cache entries to their state before the update:
+Update a specific query's cached data. `update()` returns a `{ rollback }` function that reverts the affected cache entries to their state before the update:
 
 ```typescript
 // src/composables/useUpdateContact.ts
 
 import { useMutation } from '@/api'
+import { useQueryClient } from '@/api/queryClient'
 import { ContactService } from '@/services'
-import { useQueryClient } from '@/api'
 
 export function useUpdateContact(contactUuid: string) {
   const { execute } = useMutation({
-    queryFn: async (body: ContactUpdateForm) => {
-      return await ContactService.update(contactUuid, body)
-    },
+    queryFn: ({ body }: { body: ContactUpdateForm }) => ContactService.update(contactUuid, body),
   })
 
   const queryClient = useQueryClient()
@@ -103,7 +118,8 @@ queryClient.set(
 // src/composables/useEditContact.ts
 
 import { ref, computed } from 'vue'
-import { useQuery, useMutation, useQueryClient } from '@/api'
+import { useQuery, useMutation } from '@/api'
+import { useQueryClient } from '@/api/queryClient'
 import { ContactService } from '@/services'
 import type { ContactUuid, ContactDetail, ContactUpdateForm } from '@/types'
 
@@ -115,9 +131,7 @@ export function useEditContact(contactUuid: string) {
   })
 
   const updateMutation = useMutation({
-    queryFn: async (body: ContactUpdateForm) => {
-      return await ContactService.update(contactUuid, body)
-    },
+    queryFn: ({ body }: { body: ContactUpdateForm }) => ContactService.update(contactUuid, body),
   })
 
   const queryClient = useQueryClient()
@@ -133,7 +147,7 @@ export function useEditContact(contactUuid: string) {
     )
 
     // Execute the mutation
-    const result = await updateMutation.execute(updates)
+    const result = await updateMutation.execute({ body: updates })
 
     if (result.isErr()) {
       // Revert to pre-update state
@@ -242,7 +256,8 @@ Optimistic updates work seamlessly with infinite queries:
 ```typescript
 // src/composables/useToggleProductFavorite.ts
 
-import { useMutation, useQueryClient } from '@/api'
+import { useMutation } from '@/api'
+import { useQueryClient } from '@/api/queryClient'
 import { ProductService } from '@/services'
 
 export function useToggleProductFavorite() {

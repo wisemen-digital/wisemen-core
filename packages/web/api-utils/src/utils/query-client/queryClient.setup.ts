@@ -1,9 +1,8 @@
 import { QueryClient as TanStackQueryClient } from '@tanstack/vue-query'
 
 import { initializeApiUtils } from '@/config/config'
-import { createApiUtils } from '@/factory/createApiUtils'
 
-import type { QueryClient } from './queryClient'
+import { QueryClient } from './queryClient'
 
 export interface User {
   id: string
@@ -57,11 +56,7 @@ export function createTestSetup(): {
 
   initializeApiUtils(tanstackQueryClient)
 
-  const {
-    useQueryClient,
-  } = createApiUtils<TestQueryKeys>()
-
-  const queryClient = useQueryClient()
+  const queryClient = new QueryClient<TestQueryKeys>(tanstackQueryClient)
 
   return {
     queryClient,

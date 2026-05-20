@@ -513,6 +513,91 @@ describe('DateTimeRange unit tests', () => {
     })
   })
 
+  describe('duration', () => {
+    it('returns a Duration object', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'second'))
+
+      expect(range.duration).toBeInstanceOf(Duration)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now, '[]')
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1ms)', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'millisecond'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 second]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'second'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 minute]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'minute'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 hour]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 day]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'day'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 year]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'year'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, +Infinity)', () => {
+      const range = new DateTimeRange(
+        timestamp(),
+        new FutureInfinity()
+      )
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [-Infinity, now]', () => {
+      const range = new DateTimeRange(
+        new PastInfinity(),
+        timestamp()
+      )
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [-Infinity, +Infinity]', () => {
+      const range = new DateTimeRange(
+        new PastInfinity(),
+        new FutureInfinity()
+      )
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+  })
+
   describe('overlaps', () => {
     it('two infinite ranges overlap', () => {
       const first = new DateTimeRange(
