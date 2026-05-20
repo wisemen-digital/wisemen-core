@@ -12,6 +12,8 @@ const hasError = ref<boolean>(false)
   <div
     v-if="hasError"
     :class="{
+      'size-12 rounded-2xl': props.size === 'lg',
+      'size-10 rounded-xl': props.size === 'md',
       'size-8 rounded-lg': props.size === 'sm',
       'size-6 rounded-md': props.size === 'xs',
       'size-5 rounded-sm': props.size === 'xxs',
@@ -24,6 +26,8 @@ const hasError = ref<boolean>(false)
     :src="props.src"
     :alt="props.alt"
     :class="{
+      'size-12 rounded-2xl': props.size === 'lg',
+      'size-10 rounded-xl': props.size === 'md',
       'size-8 rounded-lg': props.size === 'sm',
       'size-6 rounded-md': props.size === 'xs',
       'size-5 rounded-sm': props.size === 'xxs',

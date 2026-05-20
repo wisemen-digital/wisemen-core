@@ -1,50 +1,31 @@
 <script setup lang="ts">
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
   BarChartSquare02Icon,
   Bell01Icon,
   CalendarIcon,
   File05Icon,
-  InfoCircleIcon,
   LifeBuoy01Icon,
-  PlusIcon,
   Rows01Icon,
   Settings01Icon,
-  Trash01Icon,
 } from '@wisemen/vue-core-icons'
 import type { Component } from 'vue'
-import {
-  computed,
-  ref,
-} from 'vue'
+import { computed } from 'vue'
 
 import { UIBadge } from '@/ui/badge'
-import {
-  UIButton,
-  UIIconButton,
-} from '@/ui/button/index'
-import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
-import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
-import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
+import { UIColumnLayout } from '@/ui/column-layout'
+import DashboardPageCenteredContentHeader from '@/ui/dashboard-page/centered-content/DashboardPageCenteredContentHeader.vue'
+import DashboardPageCenteredContentScrollable from '@/ui/dashboard-page/centered-content/DashboardPageCenteredContentScrollable.vue'
 import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
-import { UIRowLayout } from '@/ui/row-layout'
-import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
 import MainSidebarGlobalSearch from '@/ui/sidebar/components/MainSidebarGlobalSearch.vue'
 import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHeaderLogoWithText.vue'
-import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHeaderReturnToApp.vue'
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
-import Tabs from '@/ui/tabs/Tabs.vue'
-import TabsItem from '@/ui/tabs/TabsItem.vue'
-import TabsList from '@/ui/tabs/TabsList.vue'
-import { UIText } from '@/ui/text/index'
 
 interface NavigationGroup {
   label: string
@@ -122,20 +103,147 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
 
 const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
   {
-    label: 'Projects',
+    label: 'Settings',
     to: {
-      path: '/projects',
+      path: '/settings',
     },
   },
   {
-    label: 'Project Alpha',
+    label: 'Profile',
     to: {
-      path: '/projects/alpha',
+      path: '/settings/profile',
     },
   },
 ]))
 
-const tabsModelValue = ref<string>('tab1')
+const sections = [
+  {
+    title: 'Personal Information',
+    fields: [
+      {
+        label: 'Full name',
+        value: 'Jane Doe',
+      },
+      {
+        label: 'Email address',
+        value: 'jane.doe@example.com',
+      },
+      {
+        label: 'Phone number',
+        value: '+1 (555) 000-0000',
+      },
+      {
+        label: 'Date of birth',
+        value: 'January 14, 1990',
+      },
+    ],
+  },
+  {
+    title: 'Work Details',
+    fields: [
+      {
+        label: 'Job title',
+        value: 'Product Designer',
+      },
+      {
+        label: 'Department',
+        value: 'Design',
+      },
+      {
+        label: 'Location',
+        value: 'San Francisco, CA',
+      },
+      {
+        label: 'Start date',
+        value: 'March 1, 2021',
+      },
+    ],
+  },
+  {
+    title: 'Notifications',
+    fields: [
+      {
+        label: 'Email notifications',
+        value: 'Enabled',
+      },
+      {
+        label: 'Push notifications',
+        value: 'Disabled',
+      },
+      {
+        label: 'Weekly digest',
+        value: 'Enabled',
+      },
+      {
+        label: 'Marketing emails',
+        value: 'Disabled',
+      },
+    ],
+  },
+  {
+    title: 'Security',
+    fields: [
+      {
+        label: 'Two-factor authentication',
+        value: 'Active',
+      },
+      {
+        label: 'Last password change',
+        value: '3 months ago',
+      },
+      {
+        label: 'Active sessions',
+        value: '2 devices',
+      },
+      {
+        label: 'Recovery email',
+        value: 'recovery@example.com',
+      },
+    ],
+  },
+  {
+    title: 'Integrations',
+    fields: [
+      {
+        label: 'Slack',
+        value: 'Connected',
+      },
+      {
+        label: 'GitHub',
+        value: 'Connected',
+      },
+      {
+        label: 'Jira',
+        value: 'Not connected',
+      },
+      {
+        label: 'Figma',
+        value: 'Connected',
+      },
+    ],
+  },
+  {
+    title: 'Billing',
+    fields: [
+      {
+        label: 'Plan',
+        value: 'Pro',
+      },
+      {
+        label: 'Billing cycle',
+        value: 'Monthly',
+      },
+      {
+        label: 'Next invoice',
+        value: 'June 1, 2026',
+      },
+      {
+        label: 'Payment method',
+        value: 'Visa •••• 4242',
+      },
+    ],
+  },
+]
 </script>
 
 <template>
@@ -151,12 +259,7 @@ const tabsModelValue = ref<string>('tab1')
         collapsed-variant="minified"
       >
         <template #header>
-          <MainSidebarHeaderReturnToApp
-            v-if="false"
-            to="/"
-          />
           <MainSidebarHeaderLogoWithText
-            v-if="true"
             url="../../../storybook-assets/wisemen-logo.png"
             name="Wisemen"
           >
@@ -228,99 +331,48 @@ const tabsModelValue = ref<string>('tab1')
         <DashboardPage
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
-            variant: 'full-height-inline',
             storage: {
-              key: 'dashboard-page-detail-pane-is-open',
+              key: 'centered-page-scrollabel-detail-pane',
               strategy: 'localStorage',
             },
+            variant: 'bordered-inline',
           }"
-          title="Dashboard"
+          title="Profile"
         >
-          <template #page-actions-left>
-            <RowLayout>
-              <Tabs
-                v-model="tabsModelValue"
-                variant="button-border"
+          <DashboardPageCenteredContentScrollable>
+            <DashboardPageCenteredContentHeader
+              :left-header-config="{
+                type: 'featured-icon',
+                icon: Settings01Icon,
+              }"
+              title="Settings"
+            />
+            <UIColumnLayout columns="w-full">
+              <div
+                v-for="section in sections"
+                :key="section.title"
+                class="w-full rounded-lg border border-secondary p-4xl"
               >
-                <TabsList>
-                  <TabsItem
-                    label="Tab"
-                    value="tab1"
-                  />
-                  <TabsItem
-                    label="Tab"
-                    value="tab2"
-                  />
-                  <TabsItem
-                    label="Tab"
-                    value="tab3"
-                  />
-                </TabsList>
-              </Tabs>
-            </RowLayout>
-          </template>
+                <h3 class="mb-lg text-sm font-semibold text-primary">
+                  {{ section.title }}
+                </h3>
 
-          <template #page-actions-right>
-            <UIRowLayout>
-              <UIIconButton
-                :icon="Trash01Icon"
-                variant="destructive-primary"
-                size="md"
-                label="Destructive"
-              />
-              <UIIconButton
-                :icon="PlusIcon"
-                size="md"
-                label="Button"
-              />
-              <UIIconButton
-                :icon="InfoCircleIcon"
-                variant="secondary"
-                size="md"
-                label="Secondary"
-              />
-            </UIRowLayout>
-          </template>
-
-          <DashboardPageActions>
-            <template #left>
-              <div>
-                <UIButton
-                  :icon-right="ArrowRightIcon"
-                  variant="secondary"
-                  size="md"
-                  label="Page Actions Left"
-                />
+                <dl class="grid grid-cols-2 gap-lg">
+                  <div
+                    v-for="field in section.fields"
+                    :key="field.label"
+                  >
+                    <dt class="text-xs text-tertiary">
+                      {{ field.label }}
+                    </dt>
+                    <dd class="mt-xs text-sm text-primary">
+                      {{ field.value }}
+                    </dd>
+                  </div>
+                </dl>
               </div>
-            </template>
-            <template #right>
-              <div>
-                <UIButton
-                  :icon-left="ArrowLeftIcon"
-                  variant="secondary"
-                  size="md"
-                  label="Page Actions Right"
-                />
-              </div>
-            </template>
-          </DashboardPageActions>
-
-          <DashboardPageContent>
-            <ColumnLayout>
-              <div class="rounded-lg border border-secondary p-4xl">
-                <p class="text-sm text-secondary">
-                  Main content area. The detail pane pushes this content to the left when open.
-                </p>
-              </div>
-              <div class="h-200 rounded-lg border border-secondary p-4xl">
-                <UIText
-                  class="text-sm text-secondary"
-                  text="Overflow test"
-                />
-              </div>
-            </ColumnLayout>
-          </DashboardPageContent>
-
+            </UIColumnLayout>
+          </DashboardPageCenteredContentScrollable>
           <template #detail-pane>
             <div class="flex h-full flex-col gap-lg p-lg">
               <h2 class="text-sm font-medium text-primary">

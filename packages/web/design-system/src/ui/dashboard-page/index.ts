@@ -1,3 +1,6 @@
+export { default as UIDashboardPageCenteredContent } from './centered-content/DashboardPageCenteredContent.vue'
+export { default as UIDashboardPageCenteredContentHeader } from './centered-content/DashboardPageCenteredContentHeader.vue'
+export { default as UIDashboardPageCenteredContentScrollable } from './centered-content/DashboardPageCenteredContentScrollable.vue'
 export { default as UIDashboardPageActions } from './content/DashboardPageActions.vue'
 export { default as UIDashboardPageContent } from './content/DashboardPageContent.vue'
 export { default as UIDashboardPageLoadingState } from './content/DashboardPageLoadingState.vue'
