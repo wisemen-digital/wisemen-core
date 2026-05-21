@@ -1,3 +1,4 @@
+import { ACTIONS_NAVIGATION } from './actions/actions.navigation'
 import { API_UTILS_NAVIGATION } from './api-utils/apiUtils.navigation'
 import { COMPONENTS_DOC_NAVIGATION } from './components/components.navigation'
 import { CONFIGS_NAVIGATION } from './configs/configs.navigation'
@@ -23,6 +24,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
     items: [
       DESIGN_SYSTEM_NAVIGATION,
       COMPONENTS_DOC_NAVIGATION,
+      ACTIONS_NAVIGATION,
     ],
   },
   {

@@ -10,6 +10,9 @@ features:
   - title: 🧩 Component Library
     details: Designed with accessibility in mind to ensure an inclusive user experience.
     link: /packages/components/getting-started/installation
+  - title: ⚡ Actions
+    details: Context-aware command dispatch system with command menus, keyboard shortcuts, sub-actions, and model targeting.
+    link: /packages/actions/pages/getting-started/installation
   - title: 🎨 Design System
     details: A comprehensive Vue 3 design system for building consistent user interfaces.
     link: /packages/design-system/pages/getting-started/installation
