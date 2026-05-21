@@ -4,6 +4,7 @@ import {
   AnimatePresence,
   Motion,
 } from 'motion-v'
+
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { UIText } from '@/ui/text/index'
 
@@ -11,7 +12,6 @@ const props = defineProps<{
   errorMessage: string | null
   for: string | null
 }>()
-
 </script>
 
 <template>

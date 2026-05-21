@@ -33,7 +33,6 @@ useHotkey('Meta+F', () => {
 }, {
   preventDefault: true,
 })
-
 </script>
 
 <template>

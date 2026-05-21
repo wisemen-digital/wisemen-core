@@ -11,7 +11,6 @@ const props = defineProps<{
   isVisible: boolean
   badge: NonNullable<DetailListCollapseOptions['badge']>
 }>()
-
 </script>
 
 <template>
