@@ -1,7 +1,6 @@
 import { FilterScopeApiProperty, Scope } from "#src/scope.js"
 import { ArrayMinSize, ArrayUnique, IsArray, IsEnum } from "class-validator"
 
-
 export interface ScopedFilter<T> {
     scope: Scope
     values: T[]
@@ -27,7 +26,7 @@ export function buildScopedFilter<T>(
     }
 
     Object.defineProperty(C, 'name', {value: name})
-    const prototype = Object.getPrototypeOf(C) as object
+    const prototype = C.prototype as object
 
     FilterScopeApiProperty()(prototype, 'scope')
     IsEnum(Scope)(prototype, 'scope')

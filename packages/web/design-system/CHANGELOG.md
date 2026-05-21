@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.14.1
+
+### Patch Changes
+
+- Updated dependencies [[`5c26828`](https://github.com/wisemen-digital/wisemen-core/commit/5c268289a865f43c12cbaa5b64e9f0bd70c0858a)]:
+  - @wisemen/vue-core-actions@0.1.3
+
 ## 0.14.0
 
 ### Minor Changes

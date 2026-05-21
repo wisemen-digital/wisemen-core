@@ -1,50 +1,33 @@
 <script setup lang="ts">
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
   BarChartSquare02Icon,
   Bell01Icon,
   CalendarIcon,
+  DotsGridIcon,
   File05Icon,
-  InfoCircleIcon,
   LifeBuoy01Icon,
-  PlusIcon,
   Rows01Icon,
   Settings01Icon,
-  Trash01Icon,
 } from '@wisemen/vue-core-icons'
 import type { Component } from 'vue'
-import {
-  computed,
-  ref,
-} from 'vue'
+import { computed } from 'vue'
 
 import { UIBadge } from '@/ui/badge'
-import {
-  UIButton,
-  UIIconButton,
-} from '@/ui/button/index'
-import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
-import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
-import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
+import { UIIconButton } from '@/ui/button'
+import DashboardPageCenteredContent from '@/ui/dashboard-page/centered-content/DashboardPageCenteredContent.vue'
+import DashboardPageCenteredContentHeader from '@/ui/dashboard-page/centered-content/DashboardPageCenteredContentHeader.vue'
 import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
 import { UIRowLayout } from '@/ui/row-layout'
-import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
 import MainSidebarGlobalSearch from '@/ui/sidebar/components/MainSidebarGlobalSearch.vue'
 import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHeaderLogoWithText.vue'
-import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHeaderReturnToApp.vue'
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
-import Tabs from '@/ui/tabs/Tabs.vue'
-import TabsItem from '@/ui/tabs/TabsItem.vue'
-import TabsList from '@/ui/tabs/TabsList.vue'
-import { UIText } from '@/ui/text/index'
 
 interface NavigationGroup {
   label: string
@@ -122,20 +105,18 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
 
 const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
   {
-    label: 'Projects',
+    label: 'Settings',
     to: {
-      path: '/projects',
+      path: '/settings',
     },
   },
   {
-    label: 'Project Alpha',
+    label: 'Profile',
     to: {
-      path: '/projects/alpha',
+      path: '/settings/profile',
     },
   },
 ]))
-
-const tabsModelValue = ref<string>('tab1')
 </script>
 
 <template>
@@ -151,12 +132,7 @@ const tabsModelValue = ref<string>('tab1')
         collapsed-variant="minified"
       >
         <template #header>
-          <MainSidebarHeaderReturnToApp
-            v-if="false"
-            to="/"
-          />
           <MainSidebarHeaderLogoWithText
-            v-if="true"
             url="../../../storybook-assets/wisemen-logo.png"
             name="Wisemen"
           >
@@ -228,98 +204,56 @@ const tabsModelValue = ref<string>('tab1')
         <DashboardPage
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
-            variant: 'full-height-inline',
             storage: {
-              key: 'dashboard-page-detail-pane-is-open',
+              key: 'centered-page-detail-pane',
               strategy: 'localStorage',
             },
+            variant: 'bordered-overlay',
           }"
-          title="Dashboard"
+          title="Profile"
         >
-          <template #page-actions-left>
-            <RowLayout>
-              <Tabs
-                v-model="tabsModelValue"
-                variant="button-border"
-              >
-                <TabsList>
-                  <TabsItem
-                    label="Tab"
-                    value="tab1"
+          <DashboardPageCenteredContent
+            :has-vertical-padding="false"
+          >
+            <DashboardPageCenteredContentHeader
+              :left-header-config="{
+                type: 'featured-icon',
+                icon: Settings01Icon,
+              }"
+              title="Settings"
+            >
+              <template #subtitle>
+                <UIRowLayout v-if="true">
+                  <UIBadge
+                    label="10 assets"
+                    size="sm"
                   />
-                  <TabsItem
-                    label="Tab"
-                    value="tab2"
+                  <UIBadge
+                    label="0 users"
+                    size="sm"
                   />
-                  <TabsItem
-                    label="Tab"
-                    value="tab3"
-                  />
-                </TabsList>
-              </Tabs>
-            </RowLayout>
-          </template>
+                </UIRowLayout>
+              </template>
 
-          <template #page-actions-right>
-            <UIRowLayout>
-              <UIIconButton
-                :icon="Trash01Icon"
-                variant="destructive-primary"
-                size="md"
-                label="Destructive"
-              />
-              <UIIconButton
-                :icon="PlusIcon"
-                size="md"
-                label="Button"
-              />
-              <UIIconButton
-                :icon="InfoCircleIcon"
-                variant="secondary"
-                size="md"
-                label="Secondary"
-              />
-            </UIRowLayout>
-          </template>
-
-          <DashboardPageActions>
-            <template #left>
-              <div>
-                <UIButton
-                  :icon-right="ArrowRightIcon"
-                  variant="secondary"
-                  size="md"
-                  label="Page Actions Left"
+              <template #actions>
+                <UIIconButton
+                  :icon="Bell01Icon"
+                  label="Notifications"
+                  variant="tertiary"
                 />
-              </div>
-            </template>
-            <template #right>
-              <div>
-                <UIButton
-                  :icon-left="ArrowLeftIcon"
-                  variant="secondary"
-                  size="md"
-                  label="Page Actions Right"
+                <UIIconButton
+                  :icon="DotsGridIcon"
+                  label="Settings"
+                  variant="tertiary"
                 />
-              </div>
-            </template>
-          </DashboardPageActions>
-
-          <DashboardPageContent>
-            <ColumnLayout>
-              <div class="rounded-lg border border-secondary p-4xl">
-                <p class="text-sm text-secondary">
-                  Main content area. The detail pane pushes this content to the left when open.
-                </p>
-              </div>
-              <div class="h-200 rounded-lg border border-secondary p-4xl">
-                <UIText
-                  class="text-sm text-secondary"
-                  text="Overflow test"
-                />
-              </div>
-            </ColumnLayout>
-          </DashboardPageContent>
+              </template>
+            </DashboardPageCenteredContentHeader>
+            <div class="rounded-lg border border-secondary p-4xl">
+              <p class="text-sm text-secondary">
+                Centered content area with a max-width constraint. Ideal for forms and settings pages.
+              </p>
+            </div>
+          </DashboardPageCenteredContent>
 
           <template #detail-pane>
             <div class="flex h-full flex-col gap-lg p-lg">
