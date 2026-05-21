@@ -1,4 +1,4 @@
-import { And, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsSelectByString, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository } from 'typeorm'
+import { And, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
 
@@ -68,9 +68,9 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
   }
 
   private addBatchingToSelect (
-    select: FindOptionsSelect<T> | FindOptionsSelectByString<T> | undefined,
+    select: FindOptionsSelect<T> | undefined,
     order: FindOptionsOrder<T>
-  ): FindOptionsSelect<T> | FindOptionsSelectByString<T> | undefined {
+  ): FindOptionsSelect<T> | undefined {
     if (select === undefined) {
       return select
     }
@@ -78,7 +78,7 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     const keys = Object.keys(order)
 
     if (Array.isArray(select)) {
-      return [...new Set([...select, ...keys])]
+      return Array.from(new Set([...select, ...keys])) as FindOptionsSelect<T>
     }
 
     return {
