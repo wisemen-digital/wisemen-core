@@ -2995,6 +2995,42 @@ importers:
         specifier: catalog:build
         version: 5.9.3
 
+  packages/web/permissions:
+    devDependencies:
+      '@types/node':
+        specifier: catalog:types
+        version: 24.8.1
+      '@vitejs/plugin-vue':
+        specifier: catalog:vite
+        version: 6.0.3(vite@8.0.6(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.47.1)(tsx@4.20.3)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
+      '@vue/tsconfig':
+        specifier: catalog:vue
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      eslint:
+        specifier: catalog:lint-web
+        version: 9.39.4(jiti@2.6.1)
+      rimraf:
+        specifier: catalog:build
+        version: 6.1.3
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vite:
+        specifier: catalog:vite
+        version: 8.0.6(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.47.1)(tsx@4.20.3)(yaml@2.8.3)
+      vite-plugin-dts:
+        specifier: catalog:vite
+        version: 4.5.4(@types/node@24.8.1)(rollup@4.60.3)(typescript@5.9.3)(vite@8.0.6(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.47.1)(tsx@4.20.3)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
+      vue-tsc:
+        specifier: catalog:vue
+        version: 3.2.2(typescript@5.9.3)
+
   packages/web/tailwind-config:
     dependencies:
       '@fontsource-variable/inter':
