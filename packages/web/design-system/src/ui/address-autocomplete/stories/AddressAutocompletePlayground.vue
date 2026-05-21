@@ -74,18 +74,23 @@ const modelValue = ref<Address | null>(null)
         />
       </UIFormFieldGrid>
 
-      <UIAddressAutocomplete
-        v-model="modelValue"
-        :error-message="props.errorMessage"
-        :hide-error-message="props.hideErrorMessage"
-        :hint="props.hint"
-        :is-disabled="props.isDisabled"
-        :is-readonly="props.isReadonly"
-        :is-required="props.isRequired"
-        :label="props.label"
-        :placeholder="props.placeholder"
-        :size="props.size"
-      />
+      <UIFormFieldGrid
+        :lg="1"
+        :sm="1"
+      >
+        <UIAddressAutocomplete
+          v-model="modelValue"
+          :error-message="props.errorMessage"
+          :hide-error-message="props.hideErrorMessage"
+          :hint="props.hint"
+          :is-disabled="props.isDisabled"
+          :is-readonly="props.isReadonly"
+          :is-required="props.isRequired"
+          :label="props.label"
+          :placeholder="props.placeholder"
+          :size="props.size"
+        />
+      </UIFormFieldGrid>
     </UIFormFieldGroup>
   </div>
 </template>
