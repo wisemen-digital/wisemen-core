@@ -366,4 +366,9 @@ function onUpdateIsOpen(value: boolean): void {
 [data-overlay][data-state='closed'] {
   animation: overlay-exit 0.1s;
 }
+
+body.reduced-motion [data-command-menu],
+body.reduced-motion [data-overlay] {
+  animation-duration: 0ms !important;
+}
 </style>

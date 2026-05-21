@@ -48,5 +48,21 @@ void describe('Current class', () => {
       expect(r2.isEqualTo(300, CurrentUnit.MILLIAMPERE)).toBe(true)
       expect(r3.isEqualTo(25, CurrentUnit.AMPERE)).toBe(true)
     })
+
+    void it('formats a current as a string', () => {
+      const c1 = new Current(10, CurrentUnit.AMPERE)
+      const c2 = new Current(500, CurrentUnit.MILLIAMPERE)
+      const c3 = new Current(0.5, CurrentUnit.AMPERE)
+
+      expect(c1.format('nl-BE')).toBe('10 A')
+      expect(c2.format('nl-BE')).toBe('500 mA')
+      expect(c3.format('nl-BE')).toBe('0,5 A')
+      expect(c3.format('nl-BE', { minimumFractionDigits: 3, maximumFractionDigits: 3})).toBe('0,500 A')
+
+      expect(c1.format('en-US')).toBe('10 A')
+      expect(c2.format('en-US')).toBe('500 mA')
+      expect(c3.format('en-US')).toBe('0.5 A')
+      expect(c3.format('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3})).toBe('0.500 A')
+    })
   })
 })

@@ -83,7 +83,7 @@ function isLastDayOfMonth(date: any): boolean {
             <div
               class="
                 relative flex size-9 shrink-0 items-center justify-center
-                rounded-full text-xs font-normal text-secondary
+                rounded-full text-xs font-regular text-secondary
                 group-focus-visible/celtrig:ring-2
                 group-focus-visible/celtrig:ring-fg-brand-primary
                 group-data-disabled/celtrig:text-disabled
