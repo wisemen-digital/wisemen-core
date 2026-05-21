@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -12,7 +12,9 @@
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/web/preferences"
   },
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

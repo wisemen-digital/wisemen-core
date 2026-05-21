@@ -1,6 +1,6 @@
-import { useReducedMotion } from 'motion-v'
 import { computed } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 
 const PADDING_INLINE_BORDERED_OFFSET = 10
@@ -8,7 +8,7 @@ const PADDING_INLINE_BORDERED_OFFSET = 10
 export function useDetailPanePadding() {
   const detailPaneContext = useInjectDetailPaneContext(null)
 
-  const isReduceMotionEnabledOnDevice = useReducedMotion()
+  const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
   const contentPaddingRight = computed<string>(() => {
     if (detailPaneContext === null) {

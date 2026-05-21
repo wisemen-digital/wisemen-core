@@ -2,9 +2,12 @@
 import { useElementSize } from '@vueuse/core'
 import { Motion } from 'motion-v'
 import {
+  computed,
   onMounted,
   ref,
 } from 'vue'
+
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 
 const props = withDefaults(defineProps<{
   duration?: number
@@ -18,6 +21,8 @@ const {
 } = useElementSize(el)
 
 const isTransitionActive = ref<boolean>(false)
+const isReducedMotion = useIsReducedMotion()
+const duration = computed<number>(() => (isTransitionActive.value && !isReducedMotion.value) ? props.duration : 0)
 
 onMounted(() => {
   setTimeout(() => {
@@ -31,7 +36,7 @@ onMounted(() => {
     :animate="{ height }"
     :transition="{
       bounce: 0,
-      duration: isTransitionActive ? props.duration : 0,
+      duration,
       type: 'spring',
     }"
     tabindex="-1"
