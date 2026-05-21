@@ -1,3 +1,5 @@
-export { ScopedUuidFilter } from "#src/scoped-uuid-filter.js"
-export { MatchesScopedUuids } from "#src/typeorm/matches-scoped-uuids.js"
-export { matchesScopedUuids } from "#src/typeorm/matches-scoped-uuids.query-builder.js"
+export { ScopedUuidFilter, type ScopedUuidFilter as ScopedUuidFilterType } from "#src/scoped-uuid-filter.js"
+export { Scope } from "#src/scope.js"
+export { IsScopedUuidFilter } from "#src/is-scoped-uuid-filter.decorator.js"
+export { Matches } from "#src/typeorm/matches.js"
+export { matches } from "#src/typeorm/matches-scoped-uuids.query-builder.js"
