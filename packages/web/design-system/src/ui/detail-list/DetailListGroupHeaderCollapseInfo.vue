@@ -4,7 +4,6 @@ import {
   Motion,
 } from 'motion-v'
 
-import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { UIBadge } from '@/ui/badge'
 import type { DetailListCollapseOptions } from '@/ui/detail-list/detailList.type'
 
@@ -13,7 +12,6 @@ const props = defineProps<{
   badge: NonNullable<DetailListCollapseOptions['badge']>
 }>()
 
-const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -35,7 +33,7 @@ const isReducedMotion = useIsReducedMotion()
         width: 0,
         marginLeft: '0rem',
       }"
-      :transition="{ duration: isReducedMotion ? 0 : 0.15 }"
+      :transition="{ duration: 0.15 }"
       class="flex"
     >
       <UIBadge

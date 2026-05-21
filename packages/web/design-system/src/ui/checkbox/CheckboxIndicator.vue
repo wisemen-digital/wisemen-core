@@ -5,14 +5,10 @@ import {
   motion,
 } from 'motion-v'
 import { CheckboxIndicator as RekaCheckboxIndicator } from 'reka-ui'
-import { computed } from 'vue'
 
-import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectCheckboxContext } from '@/ui/checkbox/base/baseCheckbox.context'
 
-const isReducedMotion = useIsReducedMotion()
-
-const draw = computed<Record<string, VariantType>>(() => ({
+const draw: Record<string, VariantType> = {
   hidden: {
     opacity: 0,
     pathLength: 0,
@@ -26,12 +22,12 @@ const draw = computed<Record<string, VariantType>>(() => ({
       },
       pathLength: {
         bounce: 0,
-        duration: isReducedMotion.value ? 0 : 0.5,
+        duration: 0.5,
         type: 'spring',
       },
     },
   },
-}))
+}
 
 const {
   isIndeterminate, checkboxStyle,

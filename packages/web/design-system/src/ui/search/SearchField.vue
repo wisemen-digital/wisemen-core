@@ -15,7 +15,6 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { UIIconButton } from '@/ui/button'
 import type { Search } from '@/ui/search/search.composable'
 import { UITextField } from '@/ui/text-field'
@@ -35,7 +34,6 @@ useHotkey('Meta+F', () => {
   preventDefault: true,
 })
 
-const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -55,7 +53,7 @@ const isReducedMotion = useIsReducedMotion()
         <Motion
           v-if="!StringUtil.isEmpty(props.search.search.value)"
           :transition="{
-            duration: isReducedMotion ? 0 : 0.2,
+            duration: 0.2,
             type: 'spring',
             bounce: 0,
           }"

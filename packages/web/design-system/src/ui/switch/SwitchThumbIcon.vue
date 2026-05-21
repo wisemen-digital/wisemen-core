@@ -6,7 +6,6 @@ import {
 import type { Component } from 'vue'
 import { computed } from 'vue'
 
-import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectSwitchContext } from '@/ui/switch/switch.context'
 
 const {
@@ -15,8 +14,6 @@ const {
   iconUnchecked,
   switchStyle,
 } = useInjectSwitchContext()
-
-const isReducedMotion = useIsReducedMotion()
 
 const icon = computed<Component | null>(() => {
   if (isChecked.value) {
@@ -52,7 +49,7 @@ const icon = computed<Component | null>(() => {
         filter: 'blur(2px)',
       }"
       :transition="{
-        duration: isReducedMotion ? 0 : 0.25,
+        duration: 0.25,
         type: 'spring',
         bounce: 0,
       }"
