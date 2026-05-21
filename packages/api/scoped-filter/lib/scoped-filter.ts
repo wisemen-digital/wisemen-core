@@ -16,7 +16,7 @@ export function buildScopedFilter<T>(
     valueApiProperty: PropertyDecorator,
     valueValidator: PropertyDecorator,
 ): ScopedFilterConstructor<T>  {
-    const C: any =  class {
+    const C: ScopedFilterConstructor<T> =  class {
         scope: Scope;
         values: T[]
 
@@ -27,15 +27,16 @@ export function buildScopedFilter<T>(
     }
 
     Object.defineProperty(C, 'name', {value: name})
+    const prototype = Object.getPrototypeOf(C) as object
 
-    FilterScopeApiProperty()(C.prototype, 'scope')
-    IsEnum(Scope)(C.prototype, 'scope')
+    FilterScopeApiProperty()(prototype, 'scope')
+    IsEnum(Scope)(prototype, 'scope')
 
-    valueApiProperty(C.prototype, 'values')
-    valueValidator(C.prototype, 'values')
-    IsArray()(C.prototype, 'values')
-    ArrayMinSize(1)(C.prototype, 'values')
-    ArrayUnique()(C.prototype, 'values')
+    valueApiProperty(prototype, 'values')
+    valueValidator(prototype, 'values')
+    IsArray()(prototype, 'values')
+    ArrayMinSize(1)(prototype, 'values')
+    ArrayUnique()(prototype, 'values')
 
-    return C as ScopedFilterConstructor<T>
+    return C
 }
