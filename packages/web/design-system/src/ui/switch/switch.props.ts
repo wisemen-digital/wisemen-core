@@ -16,9 +16,4 @@ export interface SwitchProps extends Input, InputWrapper {
    * @default null
    */
   iconUnchecked?: Component | null
-  /**
-   * Defines the size of the switch.
-   * @default 'md'
-   */
-  size?: 'md' | 'sm'
 }
