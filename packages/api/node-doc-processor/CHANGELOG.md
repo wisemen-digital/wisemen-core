@@ -1,5 +1,19 @@
 # @wisemen/node-doc-processor
 
+## 1.3.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.2
+
+## 1.3.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.1
+
 ## 1.3.4
 
 ### Patch Changes

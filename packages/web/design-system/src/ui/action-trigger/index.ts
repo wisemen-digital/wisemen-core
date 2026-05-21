@@ -1,1 +1,1 @@
-export { default as _UIActionTrigger } from './ActionTrigger.vue'
+export { default as UIActionTrigger } from './ActionTrigger.vue'

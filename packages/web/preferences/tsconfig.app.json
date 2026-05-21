@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "lib": ["esnext", "dom"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noUncheckedIndexedAccess": true,
+    "outDir": "dist",
+    "paths": {
+      "#components/*": ["./src/components/*"],
+      "#composables/*": ["./src/composables/*"],
+      "#context/*": ["./src/context/*"],
+      "#sections/*": ["./src/sections/*"],
+      "#types/*": ["./src/types/*"],
+      "#views/*": ["./src/views/*"],
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext"
+  },
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "eslint.config.ts",
+    "src/**/*",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}

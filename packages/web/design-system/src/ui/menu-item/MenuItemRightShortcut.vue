@@ -8,5 +8,8 @@ defineProps<{
 </script>
 
 <template>
-  <KeyboardShortcut :keyboard-shortcut="right.keyboardShortcut" />
+  <KeyboardShortcut
+    :keyboard-shortcut="right.keyboardShortcut"
+    class="ml-sm"
+  />
 </template>

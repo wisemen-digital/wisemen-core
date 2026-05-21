@@ -5,7 +5,7 @@ export interface ColumnLayoutProps {
    * Controls the vertical alignment of items within the column.
    * @default 'start'
    */
-  align?: 'center' | 'end' | 'start'
+  align?: 'center' | 'end' | 'start' | 'stretch'
   /**
    * The HTML element to render as the container.
    * @default 'div'

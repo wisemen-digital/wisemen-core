@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  Action,
-  ActionModel,
-} from '@wisemen/vue-core-actions'
+import type { Action } from '@wisemen/vue-core-actions'
 import {
   GroupPriority,
   resolveApplicable,
@@ -11,6 +8,7 @@ import {
 } from '@wisemen/vue-core-actions'
 import { computed } from 'vue'
 
+import type { RegisteredActionContext } from '@/register'
 import ActionDropdownMenuContent from '@/ui/action-dropdown-menu/ActionDropdownMenuContent.vue'
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
@@ -18,8 +16,8 @@ import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 const props = defineProps<DropdownMenuProps & {
   actions?: Action[]
   currentContextOnly: boolean
-  metadata?: Record<string, unknown>
-  models?: ActionModel[]
+  metadata?: RegisteredActionContext['metadata']
+  models?: RegisteredActionContext['models']
   parentAction?: Action
 }>()
 

@@ -10,9 +10,15 @@ features:
   - title: 🧩 Component Library
     details: Designed with accessibility in mind to ensure an inclusive user experience.
     link: /packages/components/getting-started/installation
+  - title: ⚡ Actions
+    details: Context-aware command dispatch system with command menus, keyboard shortcuts, sub-actions, and model targeting.
+    link: /packages/actions/pages/getting-started/installation
   - title: 🎨 Design System
     details: A comprehensive Vue 3 design system for building consistent user interfaces.
     link: /packages/design-system/pages/getting-started/installation
+  - title: ⚙️ Preferences
+    details: A ready-made preferences modal with built-in sections for appearance, language, time zone, and more.
+    link: /packages/preferences/pages/getting-started/installation
   - title: 🔗 API Utils
     details: A set of utility functions and composables to streamline API interactions in Vue applications.
     link: /packages/api-utils/pages/getting-started/installation
@@ -37,6 +43,9 @@ features:
   - title: 📝 Formango
     details: Form state management and validation library for Vue applications.
     link: /packages/formango/guide/getting-started
+  - title: 🔐 Permissions
+    details: Permission-based rendering with a composable and render-less component, with support for type-safe permission strings.
+    link: /packages/permissions/pages/getting-started/installation
   - title: 📊 Telemetry
     details: OpenTelemetry integration for monitoring and tracing Vue applications.
     link: /packages/telemetry/pages/getting-started/installation

@@ -1,5 +1,33 @@
 # @wisemen/datewise
 
+## 1.0.5
+
+### Patch Changes
+
+- [#987](https://github.com/wisemen-digital/wisemen-core/pull/987) [`0cfb275`](https://github.com/wisemen-digital/wisemen-core/commit/0cfb2759c1e9aaa328540acbeeac9f3205dd620d) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add `iterate` method on `DateRange` and `DateTimeRange`
+
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`025b4ac`](https://github.com/wisemen-digital/wisemen-core/commit/025b4acc0509f28d00b498c21396aa346fd393a8)]:
+  - @wisemen/quantity@0.8.0
+
+## 1.0.3
+
+### Patch Changes
+
+- [#1083](https://github.com/wisemen-digital/wisemen-core/pull/1083) [`a3e5786`](https://github.com/wisemen-digital/wisemen-core/commit/a3e5786c925125459579925740fcfbf3edf610c3) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: update readme to match package definition
+
+- Updated dependencies [[`a3e5786`](https://github.com/wisemen-digital/wisemen-core/commit/a3e5786c925125459579925740fcfbf3edf610c3)]:
+  - @wisemen/pagination@1.0.0
+
+## 1.0.2
+
+### Patch Changes
+
+- [#1085](https://github.com/wisemen-digital/wisemen-core/pull/1085) [`8be066b`](https://github.com/wisemen-digital/wisemen-core/commit/8be066be205affe4b1bf8b5221ee9756ce22b1e8) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add duration getter on `DateTimeRange`
+
 ## 1.0.1
 
 ### Patch Changes

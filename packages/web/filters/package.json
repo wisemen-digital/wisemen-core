@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -48,10 +48,10 @@
     "cleanup": "rimraf dist/ node_modules/ .turbo/"
   },
   "peerDependencies": {
-    "@wisemen/vue-core-actions": ">=0.1.1",
+    "@wisemen/vue-core-actions": ">=0.1.2",
     "@wisemen/vue-core-dates": ">=0.0.2",
-    "@wisemen/vue-core-design-system": ">=0.13.1",
-    "@wisemen/vue-core-utils": ">=0.0.1",
+    "@wisemen/vue-core-design-system": ">=0.14.0",
+    "@wisemen/vue-core-utils": ">=0.1.0",
     "@wisemen/vue-core-icons": ">=0.0.1",
     "formango": "catalog:peer",
     "vue": "catalog:peer",

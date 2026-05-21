@@ -3,7 +3,7 @@ import { IsWiseDateString, wiseDate } from '@wisemen/wise-date'
 import { FilterQuery } from '@wisemen/pagination'
 import { DateRange } from './date-range.js'
 
-export class DateRangeDto extends FilterQuery {
+export class DateRangeDto implements FilterQuery {
   @ApiProperty({ format: 'date' })
   @IsWiseDateString()
   startDate: string
