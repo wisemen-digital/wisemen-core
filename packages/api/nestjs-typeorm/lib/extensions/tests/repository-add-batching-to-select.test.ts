@@ -1,9 +1,7 @@
 import { after, before, describe, it } from 'node:test'
 import { expect } from 'expect'
-import { LessThan, MoreThanOrEqual } from 'typeorm'
 import { dataSource } from './sql/datasource.js'
 import { UserEntity } from './sql/entities/user.entity.js'
-import { MessageEntity } from './sql/entities/message.entity.js'
 import { TypeOrmRepository } from '#src/extensions/repository.js'
 
 describe('Repository find in batches test', () => {
@@ -18,10 +16,8 @@ describe('Repository find in batches test', () => {
 
   describe('Test addBatchingToSelect', () => {
     let userRepo: TypeOrmRepository<UserEntity>
-    let messageRepo: TypeOrmRepository<MessageEntity>
     before(async () => {
       userRepo = new TypeOrmRepository(UserEntity, dataSource.manager)
-      messageRepo = new TypeOrmRepository(MessageEntity, dataSource.manager)
 
       await userRepo.insert([
         { id: 1, name: 'Alice', age: 25 },
