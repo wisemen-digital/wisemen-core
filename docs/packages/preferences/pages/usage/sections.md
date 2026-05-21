@@ -70,7 +70,7 @@ const reducedMotion = useReducedMotionPreference({
 
 Shows or hides breadcrumb navigation arrows in the UI.
 
-**Type:** `'show' | 'hide'`
+**Type:** `boolean`
 
 ```typescript
 import { useNavigationArrowsPreference } from '@wisemen/vue-core-preferences'

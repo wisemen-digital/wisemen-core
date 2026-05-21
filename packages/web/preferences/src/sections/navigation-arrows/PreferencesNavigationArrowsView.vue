@@ -4,23 +4,29 @@ import { useI18n } from 'vue-i18n'
 
 import PreferencesSection from '#components/content/PreferencesSection.vue'
 import PreferencesDropdownMenu from '#components/PreferencesDropdownMenu.vue'
-import type { NavigationArrowsPreference } from '#sections/navigation-arrows/navigationArrowsPreference.composable'
 import type { PreferencesDropdownMenuOption } from '#types/preferencesDropdownMenuOption.type'
 
-const model = defineModel<NavigationArrowsPreference>({
+const model = defineModel<boolean>({
   required: true,
 })
 
 const i18n = useI18n()
 
-const options = computed<PreferencesDropdownMenuOption<NavigationArrowsPreference>[]>(() => [
+const stringModel = computed<'false' | 'true'>({
+  get: () => model.value ? 'true' : 'false',
+  set: (value) => {
+    model.value = value === 'true'
+  },
+})
+
+const options = computed<PreferencesDropdownMenuOption<'false' | 'true'>[]>(() => [
   {
     label: i18n.t('module.preferences.navigation_arrows.option.show'),
-    value: 'show',
+    value: 'true',
   },
   {
     label: i18n.t('module.preferences.navigation_arrows.option.hide'),
-    value: 'hide',
+    value: 'false',
   },
 ])
 </script>
@@ -28,7 +34,7 @@ const options = computed<PreferencesDropdownMenuOption<NavigationArrowsPreferenc
 <template>
   <PreferencesSection>
     <PreferencesDropdownMenu
-      v-model="model"
+      v-model="stringModel"
       :options="options"
     />
   </PreferencesSection>

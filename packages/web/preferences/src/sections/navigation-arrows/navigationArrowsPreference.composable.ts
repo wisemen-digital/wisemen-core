@@ -8,7 +8,7 @@ import type { CreatePreferencesSectionOptions } from '#sections/createPreference
 import { createPreferencesSection } from '#sections/createPreferencesSection'
 import PreferencesNavigationArrowsView from '#sections/navigation-arrows/PreferencesNavigationArrowsView.vue'
 
-export type NavigationArrowsPreference = 'hide' | 'show'
+export type NavigationArrowsPreference = boolean
 
 export function useNavigationArrowsPreference(options: CreatePreferencesSectionOptions<NavigationArrowsPreference>) {
   const i18n = useI18n()
