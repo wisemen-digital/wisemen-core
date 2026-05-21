@@ -1,5 +1,16 @@
 # @wisemen/quantity
 
+## 0.8.0
+
+### Minor Changes
+
+- [#1061](https://github.com/wisemen-digital/wisemen-core/pull/1061) [`025b4ac`](https://github.com/wisemen-digital/wisemen-core/commit/025b4acc0509f28d00b498c21396aa346fd393a8) Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - quantity add format method
+
+### Patch Changes
+
+- Updated dependencies [[`69126c5`](https://github.com/wisemen-digital/wisemen-core/commit/69126c58322d45bf1fb86220ced9301209509acb)]:
+  - @wisemen/nestjs-typeorm@1.0.0
+
 ## 0.7.0
 
 ### Minor Changes
