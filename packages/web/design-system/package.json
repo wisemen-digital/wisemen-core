@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -51,35 +51,36 @@
     "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build"
   },
   "peerDependencies": {
+    "@internationalized/date": "catalog:date",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "formango": "catalog:peer",
     "motion-v": "catalog:peer",
+    "pinia": "catalog:vue",
     "reka-ui": "catalog:peer",
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
-    "pinia": "catalog:vue",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer",
-    "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*",
-    "@wisemen/vue-core-dates": "workspace:*"
+    "vue-router": "catalog:peer"
   },
   "dependencies": {
-    "@internationalized/date": "catalog:date",
     "@tailwindcss/vite": "catalog:vite",
+    "@wisemen/vue-core-api-utils": "workspace:*",
     "@wisemen/vue-core-icons": "workspace:*",
     "country-flag-icons": "catalog:general",
     "libphonenumber-js": "catalog:general",
+    "vue-sonner": "catalog:vue",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
     "vue-component-meta": "catalog:storybook",
-    "@wisemen/vue-core-api-utils": "workspace:*",
     "vue-component-type-helpers": "catalog:types"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:storybook",
+    "@internationalized/date": "catalog:date",
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-docs": "catalog:storybook",
     "@storybook/addon-vitest": "catalog:storybook",
@@ -109,7 +110,6 @@
     "vitest": "catalog:test",
     "vue": "catalog:vue",
     "vue-router": "catalog:peer",
-    "vue-sonner": "catalog:vue",
     "vue-tsc": "catalog:vue"
   }
 }

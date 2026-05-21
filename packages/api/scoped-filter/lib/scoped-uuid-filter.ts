@@ -1,14 +1,12 @@
-import { FilterScopeApiProperty, Scope } from "#src/scope.js"
+import { buildScopedFilter, ScopedFilter } from "#src/scoped-filter.js"
 import { ApiProperty } from "@nestjs/swagger"
-import { ArrayMinSize, IsArray, IsUUID } from "class-validator"
+import { IsUUID } from "class-validator"
 
-export class ScopedUuidFilter<T extends string>  {
-    @FilterScopeApiProperty()
-    scope: Scope
+export const ScopedUuidFilter = buildScopedFilter<string>(
+    'ScopedUuidFilter',
+    ApiProperty({type: 'string', format: 'uuid', isArray: true}),
+    IsUUID('all', {each: true}),
+)
 
-    @ApiProperty({type: 'string', format: 'uuid', isArray: true})
-    @IsArray()
-    @ArrayMinSize(1)
-    @IsUUID('all', {each: true})
-    uuids: T[]
-}
+// Interface for the instance type with 'uuids' property
+export type ScopedUuidFilter<T extends string> = ScopedFilter<T>

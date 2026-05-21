@@ -2,7 +2,6 @@
 import {
   AnimatePresence,
   Motion,
-  useReducedMotion,
 } from 'motion-v'
 import {
   DialogContent,
@@ -13,6 +12,7 @@ import {
 } from 'reka-ui'
 import { useI18n } from 'vue-i18n'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import MainSidebarContent from '@/ui/sidebar/components/MainSidebarContent.vue'
 import MainSidebarTransition from '@/ui/sidebar/components/MainSidebarTransition.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
@@ -30,7 +30,7 @@ const {
 } = useMainSidebar()
 
 const i18n = useI18n()
-const isReduceMotionEnabledOnDevice = useReducedMotion()
+const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
 setCollapsedVariant(props.collapsedVariant)
 </script>

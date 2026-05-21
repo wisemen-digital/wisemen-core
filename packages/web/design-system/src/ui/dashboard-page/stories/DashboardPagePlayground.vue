@@ -31,6 +31,7 @@ import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
+import { UIRowLayout } from '@/ui/row-layout'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
@@ -235,7 +236,7 @@ const tabsModelValue = ref<string>('tab1')
           }"
           title="Dashboard"
         >
-          <template #header-action-left>
+          <template #page-actions-left>
             <RowLayout>
               <Tabs
                 v-model="tabsModelValue"
@@ -259,24 +260,26 @@ const tabsModelValue = ref<string>('tab1')
             </RowLayout>
           </template>
 
-          <template #header-action-right>
-            <UIIconButton
-              :icon="Trash01Icon"
-              variant="destructive-primary"
-              size="md"
-              label="Destructive"
-            />
-            <UIIconButton
-              :icon="PlusIcon"
-              size="md"
-              label="Button"
-            />
-            <UIIconButton
-              :icon="InfoCircleIcon"
-              variant="secondary"
-              size="md"
-              label="Secondary"
-            />
+          <template #page-actions-right>
+            <UIRowLayout>
+              <UIIconButton
+                :icon="Trash01Icon"
+                variant="destructive-primary"
+                size="md"
+                label="Destructive"
+              />
+              <UIIconButton
+                :icon="PlusIcon"
+                size="md"
+                label="Button"
+              />
+              <UIIconButton
+                :icon="InfoCircleIcon"
+                variant="secondary"
+                size="md"
+                label="Secondary"
+              />
+            </UIRowLayout>
           </template>
 
           <DashboardPageActions>

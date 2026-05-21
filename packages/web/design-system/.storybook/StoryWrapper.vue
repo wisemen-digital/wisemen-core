@@ -94,13 +94,16 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     :locale="locale ?? 'en-US'"
     :hour-cycle="hourCycle ?? '24-hour'"
     :address-autocomplete-adapter="mockAddressAutocompleteAdapter"
+    :reduced-motion="false"
     number-format="system"
     project-name="story-book"
   >
     <ThemeProvider
       :appearance="theme ?? 'light'"
     >
-      <ApplicationProvider>
+      <ApplicationProvider
+        :is-fetching-auth-user="false"
+      >
         <div
           class="
             default flex items-center justify-center bg-primary p-4 text-primary
