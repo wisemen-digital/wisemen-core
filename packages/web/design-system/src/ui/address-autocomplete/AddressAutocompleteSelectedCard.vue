@@ -9,6 +9,7 @@ import {
   ref,
   watch,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { z } from 'zod'
 
 import type { Address } from '@/ui/address-autocomplete/addressAutocomplete.type'
@@ -54,6 +55,10 @@ const emit = defineEmits<{
   'error': [error: unknown]
   'update:modelValue': [address: Address]
 }>()
+
+const {
+  t,
+} = useI18n()
 
 const configContext = useInjectConfigContext()
 
@@ -222,7 +227,7 @@ function onCancel(): void {
             :icon="Edit02Icon"
             :is-disabled="isInteractionDisabled"
             :is-loading="props.isLoading"
-            label="Edit address"
+            :label="t('component.address_autocomplete_selected_card.edit_address')"
             size="sm"
             variant="tertiary"
           />
@@ -235,7 +240,7 @@ function onCancel(): void {
               :form="form"
             >
               <UIColumnLayout gap="3xl">
-                <UIFormFieldSet title="Edit manually">
+                <UIFormFieldSet :title="t('component.address_autocomplete_selected_card.edit_manually')">
                   <UIFormFieldGroup>
                     <UIFormFieldGrid
                       :lg="3"
@@ -244,16 +249,16 @@ function onCancel(): void {
                     >
                       <UITextField
                         :is-required="true"
+                        :label="t('component.address_autocomplete_selected_card.street.label')"
+                        :placeholder="t('component.address_autocomplete_selected_card.street.placeholder')"
                         class="col-span-2"
                         v-bind="toFormField(streetField)"
-                        label="Street"
-                        placeholder="Street"
                       />
                       <UITextField
                         :is-required="true"
+                        :label="t('component.address_autocomplete_selected_card.number.label')"
+                        :placeholder="t('component.address_autocomplete_selected_card.number.placeholder')"
                         v-bind="toFormField(streetNumberField)"
-                        label="Number"
-                        placeholder="Number"
                       />
                     </UIFormFieldGrid>
 
@@ -263,16 +268,16 @@ function onCancel(): void {
                       :sm="2"
                     >
                       <UITextField
+                        :label="t('component.address_autocomplete_selected_card.bus.label')"
+                        :placeholder="t('component.address_autocomplete_selected_card.bus.placeholder')"
                         v-bind="toFormField(busField)"
-                        label="Bus"
-                        placeholder="Buidling, apartment, etc"
                       />
 
                       <UITextField
                         :is-required="true"
+                        :label="t('component.address_autocomplete_selected_card.postal_code.label')"
+                        :placeholder="t('component.address_autocomplete_selected_card.postal_code.placeholder')"
                         v-bind="toFormField(postalCodeField)"
-                        label="Postal code"
-                        placeholder="Postal code"
                       />
                     </UIFormFieldGrid>
 
@@ -283,9 +288,9 @@ function onCancel(): void {
                     >
                       <UITextField
                         :is-required="true"
+                        :label="t('component.address_autocomplete_selected_card.city.label')"
+                        :placeholder="t('component.address_autocomplete_selected_card.city.placeholder')"
                         v-bind="toFormField(cityField)"
-                        label="City"
-                        placeholder="Brussels"
                       />
 
                       <UISelect
@@ -298,9 +303,9 @@ function onCancel(): void {
                           ? countryField.errors.value?.[0]?.message ?? null
                           : null"
                         :has-virtual-scroll="true"
+                        :label="t('component.address_autocomplete_selected_card.country.label')"
                         :prioritize-position="false"
                         popover-align="end"
-                        label="Country"
                         content-width-class="w-[20rem]"
                         search="remote"
                         popover-width="content-width"
@@ -317,12 +322,12 @@ function onCancel(): void {
                   justify="end"
                 >
                   <UIButton
-                    label="Cancel"
+                    :label="t('component.address_autocomplete_selected_card.cancel')"
                     variant="secondary"
                     @click="onCancel"
                   />
                   <UIFormSubmitButton
-                    label="Save"
+                    :label="t('component.address_autocomplete_selected_card.save')"
                   />
                 </RowLayout>
               </UIColumnLayout>
@@ -334,8 +339,7 @@ function onCancel(): void {
       <UIIconButton
         :icon="DeleteIcon"
         :is-disabled="isInteractionDisabled"
-        label="Clear address"
-
+        :label="t('component.address_autocomplete_selected_card.clear_address')"
         variant="tertiary"
         @click="emit('clear')"
       />

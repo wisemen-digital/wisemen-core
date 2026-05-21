@@ -61,13 +61,15 @@ const modelValue = ref<Address | null>(null)
         :sm="2"
       >
         <UITextField
-          model-value="Tr"
-          label="Address"
-          placeholder="Street"
+          :is-readonly="true"
+          model-value="Steve"
+          label="First name"
+          placeholder="First name"
         />
         <UITextField
-          model-value="TR"
-          label="Address"
+          :is-readonly="true"
+          model-value="The Boss"
+          label="Last name"
           placeholder="Street"
         />
       </UIFormFieldGrid>
