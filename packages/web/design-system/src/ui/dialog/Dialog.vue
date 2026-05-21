@@ -167,4 +167,12 @@ function onInteractOutside(event: CustomEvent): void {
     animation-duration: 0ms;
   }
 }
+
+body.reduced-motion [data-animation='dialog'],
+body.reduced-motion [data-animation='dialog'][data-state='open'],
+body.reduced-motion [data-animation='dialog'][data-state='closed'],
+body.reduced-motion [role='dialog'][data-animation='dialog'][data-state='open'],
+body.reduced-motion [role='dialog'][data-animation='dialog'][data-state='closed'] {
+  animation-duration: 0ms;
+}
 </style>

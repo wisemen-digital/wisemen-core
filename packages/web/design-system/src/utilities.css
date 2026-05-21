@@ -96,3 +96,7 @@
 [data-animation='popover-default'][data-state='closed'][data-side='left'] {
   animation-name: popoverFadeOutToLeft;
 }
+
+body.reduced-motion [data-animation='popover-default'] {
+  animation-duration: 0ms;
+}

@@ -151,4 +151,8 @@ const effectiveFirstBreadcrumbIcon = computed<Component | null>(() => {
   z-index: -1;
   border-radius: var(--radius-md);
 }
+
+body.reduced-motion [data-content]::before {
+  transition: none;
+}
 </style>

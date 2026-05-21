@@ -10,3 +10,4 @@ export {
 export * from './ui'
 export { toFormField } from './utils/toFormField.util'
 export { useNumberFormat } from '@/composables/numberFormat.composable'
+export { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
