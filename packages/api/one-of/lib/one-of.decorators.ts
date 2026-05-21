@@ -89,7 +89,7 @@ export function OneOfApiProperty (
 }
 
 export function OneOfApiExtraModels (forClass: ClassConstructor<unknown>): ClassDecorator {
-   
+  // oxlint-disable-next-line typescript/no-unsafe-function-type
   return <TFunction extends Function>(target: TFunction) => {
     const decorators = new OneOfDecorators(forClass)
     const decorator = decorators.OneOfApiExtraModelsDecorator()
@@ -125,7 +125,7 @@ interface PropertyDecoratorArgs {
 }
 
 interface ClassDecoratorArgs {
-   
+  // oxlint-disable-next-line typescript/no-unsafe-function-type
   target: Function
 }
 
@@ -163,7 +163,7 @@ class OneOfDecoratorCallbacks {
 
   subscribeApiExtraModels (
     toClass: ClassConstructor<unknown>,
-     
+    // oxlint-disable-next-line typescript/no-unsafe-function-type
     target: Function
   ): void {
     const subscribers = this.apiExtraModels.get(toClass) ?? []
