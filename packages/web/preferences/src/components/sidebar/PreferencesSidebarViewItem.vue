@@ -32,19 +32,17 @@ const isSectionOfViewActive = computed<boolean>(() => {
     }"
     :data-active-section="isSectionOfViewActive || undefined"
     class="
-      group
-      dark:data-[state=checked]:glassy
-      w-full cursor-default rounded-md p-px
+      group w-full cursor-default rounded-md p-px
       data-highlighted:bg-tertiary
       data-[state=checked]:bg-quaternary
+      dark:data-[state=checked]:glassy
     "
   >
     <UIRowLayout
       gap="md"
       class="
-        group
+        group h-7 rounded-[0.4rem] px-lg duration-100
         dark:group-data-[state=checked]:glassy-inner-content
-        h-7 rounded-[0.4rem] px-lg duration-100
       "
     >
       <Component
