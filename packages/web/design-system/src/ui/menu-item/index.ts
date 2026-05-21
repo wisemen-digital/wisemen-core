@@ -1,8 +1,8 @@
 export type { MenuItemProps as UIMenuItemProps } from './menuItem.props'
 export type {
-  MenuItemAvatarConfig as UIMenuItemAvatarConfig,
+  MenuItemBreadcrumb as UIMenuItemBreadcrumb,
   MenuItemConfig as UIMenuItemConfig,
-  MenuItemDotConfig as UIMenuItemDotConfig,
+  MenuItemLeftConfig as UIMenuItemLeftConfig,
   MenuItemRightConfig as UIMenuItemRightConfig,
 } from './menuItem.type'
 export { default as UIMenuItem } from './MenuItem.vue'

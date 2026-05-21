@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import { UIText } from '@/ui/text/index'
 import type { TextProps } from '@/ui/text/text.props'
 

@@ -4,7 +4,7 @@ import { TimestampApiProperty } from './timestamp.api-property.js'
 import { timestamp } from './timestamp.factory.js'
 import { DateTimeRange } from './date-time-range.js'
 
-export class DateTimeRangeDto extends FilterQuery {
+export class DateTimeRangeDto implements FilterQuery {
   @TimestampApiProperty()
   @IsTimestampString()
   startDate: string

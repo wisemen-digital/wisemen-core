@@ -1,5 +1,11 @@
 # @wisemen/vue-core-utils
 
+## 0.1.0
+
+### Minor Changes
+
+- [#1057](https://github.com/wisemen-digital/wisemen-core/pull/1057) [`59f590a`](https://github.com/wisemen-digital/wisemen-core/commit/59f590af0cb9078794aed963b63da95e07367120) Thanks [@wouterlms](https://github.com/wouterlms)! - Add PhoneNumberUtil + allow undefined in StringUtil methods
+
 ## 0.0.4
 
 ### Patch Changes

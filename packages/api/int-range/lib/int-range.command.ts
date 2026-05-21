@@ -3,7 +3,7 @@ import { IsNumberString } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { IntRange } from './int-range.js'
 
-export class IntRangeDto extends FilterQuery {
+export class IntRangeDto implements FilterQuery {
   @ApiProperty({ type: 'string', example: '100' })
   @IsNumberString()
   start: string

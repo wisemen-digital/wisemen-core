@@ -36,7 +36,7 @@ export class DateTimeRange {
   constructor (
     from: TimestampInput,
     until: TimestampInput,
-    inclusivitiy: InclusivityString
+    inclusivity: InclusivityString
   )
   constructor (
     from: TimestampInput,

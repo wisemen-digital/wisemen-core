@@ -4,11 +4,11 @@ description: >
   Infinite pagination with useOffsetInfiniteQuery and useKeysetInfiniteQuery, offset vs keyset strategies determined by backend API, fetchNextPage, hasNextPage, isFetchingNextPage, data/meta result structure, proper page assembly.
 type: core
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/paginated-query.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/offsetInfiniteQuery.composable.ts"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/keysetInfiniteQuery.composable.ts"
+  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/types/pagination.type.ts"
 subsystems:
   - "Offset Pagination"
   - "Keyset Pagination"
@@ -16,13 +16,13 @@ subsystems:
 
 # @wisemen/vue-core-api-utils — Writing Infinite Queries
 
-Paginate through large datasets with two strategies: offset-based (page/limit) for traditional pagination, or keyset-based (cursor) for real-time data and large datasets.
+Paginate through large datasets with two strategies: offset-based (offset/limit) for traditional pagination, or keyset-based (cursor key) for real-time data and large datasets.
 
 **Choose your strategy based on what your backend API provides — not preference.**
 
 ## Setup
 
-### Offset Pagination (page-based)
+### Offset Pagination (offset/limit-based)
 
 ```typescript
 import { ref, computed } from 'vue'
@@ -37,7 +37,7 @@ export function useContactList() {
       search: computed(() => search.value),
     },
     queryFn: (pagination) => ContactService.getAll({
-      page: pagination.pageParam,
+      offset: pagination.offset,
       limit: pagination.limit,
       search: search.value,
     }),
@@ -45,7 +45,7 @@ export function useContactList() {
 }
 ```
 
-Pagination parameter `pageParam` starts at 0 and increments. Return results with `{ data: Contact[], meta: { page, limit, total } }`.
+The `queryFn` receives `{ offset: number, limit: number }`. Offset starts at 0 and advances by `limit` for each next page. Return results with `{ data: Contact[], meta: { offset, limit, total } }`.
 
 ### Keyset Pagination (cursor-based)
 
@@ -63,14 +63,14 @@ export function useContactListKeyset() {
     },
     queryFn: (pagination) => ContactService.getAllKeyset({
       limit: pagination.limit,
-      cursor: pagination.pageParam,
+      key: pagination.key,
       search: search.value,
     }),
   })
 }
 ```
 
-Pagination parameter `pageParam` is a cursor (string). Return results with `{ data: Contact[], meta: { next?: string } }` — the next cursor or undefined if no more pages.
+The `queryFn` receives `{ key?: any, limit: number }`. The `key` is the cursor value from the previous page's `meta.next`, or `undefined` for the first page. Return results with `{ data: Contact[], meta: { next: unknown } }` — set `meta.next` to `null`/`undefined` when there are no more pages.
 
 ## Core Patterns
 
@@ -105,9 +105,56 @@ All pages are automatically concatenated into `data`. Access with `result.getVal
 
 Use `isFetchingNextPage` (not `isFetching`) to disable the load-more button only during pagination, not during initial load.
 
+### Custom page limit
+
+```typescript
+useOffsetInfiniteQuery('contactList', {
+  params: { search: computed(() => search.value) },
+  limit: 50, // Default is 20
+  queryFn: (pagination) => ContactService.getAll({
+    offset: pagination.offset,
+    limit: pagination.limit,
+  }),
+})
+```
+
+Pass `limit` as a top-level option to override the default page size (20).
+
+## Response Structures
+
+### Offset pagination response
+
+Your `queryFn` must return:
+```typescript
+{
+  data: Contact[],
+  meta: {
+    offset: number,  // Current offset
+    limit: number,   // Items per page
+    total: number,   // Total items across all pages
+  }
+}
+```
+
+The library uses `meta.offset + meta.limit >= meta.total` to determine if there are more pages.
+
+### Keyset pagination response
+
+Your `queryFn` must return:
+```typescript
+{
+  data: Contact[],
+  meta: {
+    next: unknown, // Cursor for the next page; null/undefined if no more pages
+  }
+}
+```
+
+The library uses `meta.next` as the `key` parameter for the subsequent page fetch.
+
 ## Common Mistakes
 
-### CRITICAL: Import useInfiniteQuery from @tanstack/vue-query instead of factory
+### CRITICAL: Import useInfiniteQuery from @tanstack/vue-query instead of your api module
 
 ```typescript
 // ❌ Wrong: using TanStack directly
@@ -122,54 +169,75 @@ const { data, error } = useInfiniteQuery({
 ```
 
 ```typescript
-// ✅ Correct: use factory composable
+// ✅ Correct: use the composable from your api module
 import { useOffsetInfiniteQuery } from '@/api'
 
 const { result, fetchNextPage, hasNextPage } = useOffsetInfiniteQuery('contactList', {
   params: { search: computed(() => '...') },
   queryFn: (pagination) => ContactService.getAll({
-    page: pagination.pageParam,
+    offset: pagination.offset,
     limit: pagination.limit,
   }),
 })
 // Full AsyncResult wrapping, type safety, automatic error codes
 ```
 
-Direct TanStack import loses the factory's type safety, AsyncResult wrapping, and error code typing.
-
-Source: Library architecture — always use composables from `createApiUtils()` factory
+Source: `src/composables/query/offsetInfiniteQuery.composable.ts`
 
 ### CRITICAL: Return paginated data without wrapping in data/meta structure
 
 ```typescript
 // ❌ Wrong: returning array directly
 queryFn: (pagination) => ContactService.getAll({
-  page: pagination.pageParam,
+  offset: pagination.offset,
   limit: pagination.limit,
 })
-// Returns Contact[] directly instead of { data: Contact[], meta: {...} }
-// QueryClient doesn't know how to append pages; pages overwrite instead of concat
+// Returns Contact[] directly instead of { data: Contact[], meta: { offset, limit, total } }
+// Library can't determine if there are more pages — infinite loop or stops too early
 ```
 
 ```typescript
 // ✅ Correct: return { data, meta } structure
 queryFn: (pagination) => ContactService.getAll({
-  page: pagination.pageParam,
+  offset: pagination.offset,
   limit: pagination.limit,
-}).then(data => ({
-  data,
-  meta: {
-    page: pagination.pageParam,
-    limit: pagination.limit,
-    total: 100, // Total count if available
-  }
-}))
-// QueryClient knows how to append pages
+})
+// Where ContactService.getAll already returns { data: Contact[], meta: { offset, limit, total } }
 ```
 
-Pagination requires the library to know which part of the response is the data array and which part is pagination metadata. Return an object with `data` (array) and `meta` (metadata).
+The library requires the `{ data, meta }` shape to know how to concatenate pages and when to stop.
 
-Source: `docs/packages/api-utils/pages/usage/paginated-query.md` Handling Pagination Results
+Source: `src/types/pagination.type.ts` — `OffsetPaginationResponse`
+
+### HIGH: Use pageParam or cursor instead of offset/key
+
+```typescript
+// ❌ Wrong: using old pageParam naming
+queryFn: (pagination) => ContactService.getAll({
+  page: pagination.pageParam, // pageParam doesn't exist!
+  cursor: pagination.cursor,  // cursor doesn't exist!
+})
+```
+
+```typescript
+// ✅ Correct: use offset for offset pagination, key for keyset
+// Offset:
+queryFn: (pagination) => ContactService.getAll({
+  offset: pagination.offset, // OffsetPaginationParams.offset
+  limit: pagination.limit,
+})
+
+// Keyset:
+queryFn: (pagination) => ContactService.getAllKeyset({
+  key: pagination.key, // KeysetPaginationParams.key
+  limit: pagination.limit,
+})
+```
+
+`OffsetPaginationParams` has `{ offset: number, limit: number }`.
+`KeysetPaginationParams` has `{ key?: any, limit: number }`.
+
+Source: `src/types/pagination.type.ts`
 
 ### HIGH: Mix offset and keyset pagination patterns in same query
 
@@ -177,7 +245,7 @@ Source: `docs/packages/api-utils/pages/usage/paginated-query.md` Handling Pagina
 // ❌ Wrong: mixing pagination patterns
 const { result } = useOffsetInfiniteQuery('contactList', {
   queryFn: (pagination) => ContactService.getAllKeyset({
-    cursor: pagination.pageParam, // offset expects page number!
+    key: pagination.key, // offset composable doesn't have key!
     limit: pagination.limit,
   }),
 })
@@ -185,26 +253,26 @@ const { result } = useOffsetInfiniteQuery('contactList', {
 
 ```typescript
 // ✅ Correct: match composable to backend API
-// Use useOffsetInfiniteQuery for page/limit APIs:
+// Use useOffsetInfiniteQuery for offset/limit APIs:
 const { result } = useOffsetInfiniteQuery('contactList', {
   queryFn: (pagination) => ContactService.getAll({
-    page: pagination.pageParam,
+    offset: pagination.offset,
     limit: pagination.limit,
   }),
 })
 
 // Use useKeysetInfiniteQuery for cursor-based APIs:
-const { result } = useKeysetInfiniteQuery('contactList', {
+const { result } = useKeysetInfiniteQuery('contactListKeyset', {
   queryFn: (pagination) => ContactService.getAllKeyset({
-    cursor: pagination.pageParam,
+    key: pagination.key,
     limit: pagination.limit,
   }),
 })
 ```
 
-Each composable expects a specific pagination parameter type. Offset expects a number; keyset expects a cursor string. Choose the right composable for your backend API.
+Each composable expects a specific pagination parameter type. Choose the right composable for your backend API.
 
-Source: `docs/packages/api-utils/pages/usage/paginated-query.md` Offset vs Keyset comparison
+Source: `src/composables/query/offsetInfiniteQuery.composable.ts` and `keysetInfiniteQuery.composable.ts`
 
 ### MEDIUM: Forget isFetchingNextPage flag; show loading on first page load
 
@@ -225,18 +293,16 @@ const { result, isFetchingNextPage, fetchNextPage } = useOffsetInfiniteQuery(...
 </button>
 ```
 
-`isFetching` is true during initial load and when fetching next pages. `isFetchingNextPage` is true only when loading additional pages. Use `isFetchingNextPage` for the load-more button.
+`isFetching` is true during initial load and when fetching next pages. `isFetchingNextPage` is true only when loading additional pages.
 
-Source: `docs/packages/api-utils/pages/usage/paginated-query.md` Return Values
+Source: `src/composables/query/offsetInfiniteQuery.composable.ts` — `UseOffsetInfiniteQueryReturnType`
 
 ## Backend API Strategy
 
 > Offset vs keyset pagination depends entirely on your backend endpoint. Use the strategy your API provides.
->
-> — Maintainer guidance
 
-If your API provides `page` and `limit` parameters, use `useOffsetInfiniteQuery`.
-If your API provides a `cursor` parameter, use `useKeysetInfiniteQuery`.
+If your API accepts `offset` and `limit` parameters, use `useOffsetInfiniteQuery`.
+If your API accepts a cursor `key` parameter, use `useKeysetInfiniteQuery`.
 
 ## See Also
 

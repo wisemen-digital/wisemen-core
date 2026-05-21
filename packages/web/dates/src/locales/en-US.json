@@ -1,0 +1,5 @@
+{
+  "date_time_format.from": "From {value}",
+  "date_time_format.now": "Now",
+  "date_time_format.until": "Until {value}"
+}

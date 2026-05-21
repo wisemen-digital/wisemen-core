@@ -102,6 +102,16 @@ export class FutureInfinity implements Timestamp {
     return Infinity
   }
 
+  compare (withOther: TimestampInput): number {
+    const parsedOther = factory(withOther)
+
+    if(parsedOther.isFutureInfinity()) {
+      return 0
+    } else {
+      return Infinity
+    }
+  }
+
   getTime (): number {
     return Infinity
   }

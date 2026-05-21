@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.8.0",
+  "version": "0.14.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -22,8 +22,7 @@
       "types": "./dist/locales.d.ts",
       "import": "./dist/locales.js"
     },
-    "./style.css": "./dist/index.css",
-    "./source.css": "./dist/source.css"
+    "./style.css": "./dist/style.css"
   },
   "style": "./dist/index.css",
   "main": "./dist/index.umd.cjs",
@@ -34,8 +33,7 @@
     "./dist"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:source",
-    "build:source": "cat src/styles/source.css src/styles/utilities.css > dist/source.css",
+    "build": "vite build",
     "dev": "vite build --watch",
     "pub:release": "pnpm publish --access public",
     "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
@@ -49,53 +47,69 @@
     "test:coverage": "vitest --run --coverage",
     "type-check": "vue-tsc --noEmit",
     "storybook:clean": "rimraf node_modules/.cache node_modules/.vite",
-    "storybook": "pnpm storybook:clean && storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "storybook": "pnpm storybook:clean && NODE_OPTIONS=--max-old-space-size=8192 storybook dev -p 6006 --no-open",
+    "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build"
   },
   "peerDependencies": {
+    "@internationalized/date": "catalog:date",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
+    "formango": "catalog:peer",
     "motion-v": "catalog:peer",
+    "pinia": "catalog:vue",
     "reka-ui": "catalog:peer",
+    "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer",
-    "formango": "catalog:peer"
+    "vue-router": "catalog:peer"
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",
+    "@wisemen/vue-core-api-utils": "workspace:*",
     "@wisemen/vue-core-icons": "workspace:*",
+    "country-flag-icons": "catalog:general",
+    "libphonenumber-js": "catalog:general",
+    "vue-sonner": "catalog:vue",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
-    "vue-component-meta": "catalog:storybook"
+    "vue-component-meta": "catalog:storybook",
+    "vue-component-type-helpers": "catalog:types"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:storybook",
+    "@internationalized/date": "catalog:date",
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-docs": "catalog:storybook",
     "@storybook/addon-vitest": "catalog:storybook",
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
+    "@tanstack/vue-hotkeys": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
     "@vitest/browser-playwright": "catalog:test",
     "@vitest/coverage-v8": "catalog:test",
     "@vue/test-utils": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
+    "@wisemen/vue-core-tailwind-config": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
+    "formango": "catalog:peer",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
+    "pinia": "catalog:vue",
     "playwright": "catalog:test",
-    "reka-ui": "catalog:peer",
+    "reka-ui": "catalog:vue",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
-    "vue": "catalog:peer",
+    "vue": "catalog:vue",
     "vue-router": "catalog:peer",
-    "formango": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }

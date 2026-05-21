@@ -374,7 +374,7 @@ For detailed API documentation, see the TypeScript interfaces:
 
 ## License
 
-GPL
+SEE LICENSE IN LICENSE.md
 
 ## Author
 

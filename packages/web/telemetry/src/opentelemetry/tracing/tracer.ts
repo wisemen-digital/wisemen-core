@@ -1,106 +1,58 @@
 /* eslint-disable no-console */
 
 import { ZoneContextManager } from '@opentelemetry/context-zone'
-import type { ExportResult } from '@opentelemetry/core'
-import { ExportResultCode } from '@opentelemetry/core'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import type { OTLPExporterNodeConfigBase } from '@opentelemetry/otlp-exporter-base'
-import { resourceFromAttributes } from '@opentelemetry/resources'
-import type { ReadableSpan } from '@opentelemetry/sdk-trace-base'
 import {
   BatchSpanProcessor,
   WebTracerProvider,
 } from '@opentelemetry/sdk-trace-web'
 
-import type { OpenTelemetryOptions } from '@/types.ts'
+import {
+  createTelemetryHeaders,
+  createTelemetryResource,
+} from '@/opentelemetry/shared.ts'
+import type { TelemetryOptions } from '@/types.ts'
 
-export async function initOpenTelemetry(options: OpenTelemetryOptions): Promise<void> {
-  console.log('Initializing OpenTelemetry tracing...', options)
+export function initOpenTelemetryTracing(
+  options: TelemetryOptions,
+): Promise<boolean> {
+  if (options.enabled === false) {
+    if (options.debug) {
+      console.warn('[Telemetry] OpenTelemetry tracing is disabled.')
+    }
 
-  const endpoint = options.traceEndpoint
-
-  if (endpoint == null) {
-    console.warn('OpenTelemetry is disabled. No trace endpoint provided.')
-
-    return
+    return Promise.resolve(false)
   }
 
-  const accessToken = await options.accessTokenFn()
+  if (options.traceEndpoint == null || options.traceEndpoint === '') {
+    if (options.debug) {
+      console.warn('[Telemetry] OpenTelemetry tracing skipped: no trace endpoint configured.')
+    }
 
-  const customOTLPTraceExporter = new CustomOTLPTraceExporter({
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
+    return Promise.resolve(false)
+  }
+
+  const traceExporter = new OTLPTraceExporter({
+    headers: (): Promise<Record<string, string>> => {
+      return createTelemetryHeaders(options)
     },
-    url: `${endpoint}`,
-  }, options.accessTokenFn)
+    url: options.traceEndpoint,
+  })
 
   const tracerProvider = new WebTracerProvider({
-    resource: resourceFromAttributes({
-      'deployment.build': options.buildNumber ?? 'unknown',
-      'deployment.commit': options.commitHash ?? 'unknown',
-      'deployment.environment': options.environment ?? 'unknown',
-      'deployment.timestamp': options.buildTimestamp ?? 'unknown',
-      'service.name': options.serviceName,
-    }),
+    resource: createTelemetryResource(options),
     spanProcessors: [
-      new BatchSpanProcessor(customOTLPTraceExporter),
+      new BatchSpanProcessor(traceExporter),
     ],
   })
 
   tracerProvider.register({
     contextManager: new ZoneContextManager(),
   })
-}
 
-// https://github.com/open-telemetry/opentelemetry-js/issues/2903
-export class CustomOTLPTraceExporter extends OTLPTraceExporter {
-  private _headers: Record<string, unknown>
-  private accessTokenFn: () => Promise<string>
-
-  constructor(
-    config: OTLPExporterNodeConfigBase,
-    accessTokenFn: () => Promise<string>,
-  ) {
-    super(config)
-    this._headers = {
-      ...config.headers,
-    }
-    this.accessTokenFn = accessTokenFn
+  if (options.debug) {
+    console.log('[Telemetry] OpenTelemetry tracing initialized.')
   }
 
-  async export(
-    items: ReadableSpan[],
-    resultCallback: (result: ExportResult) => void,
-  ): Promise<void> {
-    const token = await this.accessTokenFn()
-
-    if (token !== null) {
-      this._headers = {
-        ...this._headers,
-        Authorization: `Bearer ${token}`,
-      }
-    }
-
-    if (!this._headers?.Authorization) {
-      resultCallback({
-        code: ExportResultCode.FAILED,
-      })
-
-      return
-    }
-
-    /* @ts-expect-error delegate */
-    const params = this._delegate?._transport?._transport?._parameters
-
-    if (typeof params === 'object' && params !== null) {
-      params.headers = (): Record<string, unknown> => {
-        return this._headers
-      }
-    }
-
-    return super.export(items, (result) => {
-      return resultCallback(result)
-    })
-  }
+  return Promise.resolve(true)
 }

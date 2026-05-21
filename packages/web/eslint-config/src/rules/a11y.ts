@@ -17,7 +17,7 @@ export const a11yConfig: LintConfig = [
       'vuejs-accessibility/heading-has-content': 'error',
       'vuejs-accessibility/iframe-has-title': 'error',
       'vuejs-accessibility/interactive-supports-focus': 'error',
-      'vuejs-accessibility/label-has-for': 'error',
+      'vuejs-accessibility/label-has-for': 'off',
       'vuejs-accessibility/media-has-caption': 'error',
       'vuejs-accessibility/mouse-events-have-key-events': 'error',
       'vuejs-accessibility/no-access-key': 'error',

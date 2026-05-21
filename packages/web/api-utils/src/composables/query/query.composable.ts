@@ -2,46 +2,58 @@ import { useQuery as useTanstackQuery } from '@tanstack/vue-query'
 import type {
   ComputedRef,
   MaybeRef,
+  MaybeRefOrGetter,
 } from 'vue'
 import { computed } from 'vue'
 
 import { AsyncResult } from '@/async-result/asyncResult'
 import type {
+  RegisteredErrorCodes,
+  RegisteredQueryKeyEntity,
+  RegisteredQueryKeyParams,
+  RegisteredQueryKeys,
+} from '@/register'
+import type {
   ApiError,
   ApiResult,
 } from '@/types/apiError.type'
 
-export interface UseQueryOptions<TResData, TErrorCode extends string = string> {
+type NestedMaybeRefOrGetter<T> = {
+  [K in keyof T]: MaybeRefOrGetter<T[K]>
+}
+
+type WithParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyParams<TKey> extends undefined
+    ? { params?: undefined }
+    : { params: NestedMaybeRefOrGetter<RegisteredQueryKeyParams<TKey>> }
+
+export type UseQueryOptions<
+  TKey extends keyof RegisteredQueryKeys,
+  TData,
+  TErrorCode extends string = RegisteredErrorCodes,
+> = {
   /**
    * The time in milliseconds after which the query will be considered stale
-   * After this time, the query will be refetched automatically in the background when it is rendered or accessed
    * @default 0
    */
   staleTime?: number
   /**
    * Whether to enable debug mode
-   * When enabled, the query key and parameters will be logged to the console
    * @default false
    */
   isDebug?: boolean
   /**
    * Whether the query is enabled
-   * If false, the query will not be executed
    * @default true
    */
   isEnabled?: MaybeRef<boolean>
   /**
    * Function that will be called when query is executed
-   * @returns Promise with response data
    */
-  queryFn: () => Promise<ApiResult<TResData, TErrorCode>>
-  /**
-   * Query key associated with the query
-   */
-  queryKey: Record<string, unknown>
-}
+  queryFn: () => Promise<ApiResult<TData, TErrorCode>>
+} & WithParams<TKey>
 
-export interface UseQueryReturnType<TResData, TErrorCode extends string = string> {
+export interface UseQueryReturnType<TResData, TErrorCode extends string = RegisteredErrorCodes> {
   /**
    * Whether query has errored at least once
    * @deprecated - use `result.value.isErr()` instead
@@ -77,10 +89,16 @@ export interface UseQueryReturnType<TResData, TErrorCode extends string = string
   result: ComputedRef<AsyncResult<TResData, ApiError<TErrorCode>>>
 }
 
-export function useQuery<TResData, TErrorCode extends string = string>(
-  options: UseQueryOptions<TResData, TErrorCode>,
-): UseQueryReturnType<TResData, TErrorCode> {
+export function useQuery<
+  TKey extends keyof RegisteredQueryKeys,
+  TData = RegisteredQueryKeyEntity<TKey>,
+  TErrorCode extends string = RegisteredErrorCodes,
+>(
+  key: TKey,
+  options: UseQueryOptions<TKey, TData, TErrorCode>,
+): UseQueryReturnType<TData, TErrorCode> {
   const isDebug = options.isDebug ?? false
+  const params = (options as { params?: unknown }).params
 
   const query = useTanstackQuery({
     staleTime: options.staleTime,
@@ -89,24 +107,15 @@ export function useQuery<TResData, TErrorCode extends string = string>(
     queryFn: async () => {
       return AsyncResult.fromResult(await options.queryFn())
     },
-    queryKey: getQueryKey(),
+    queryKey: [
+      key,
+      params,
+    ],
   })
 
-  function getQueryKey(): unknown[] {
-    const [
-      queryKey,
-      params,
-    ] = Object.entries(options.queryKey)[0]
-
-    if (isDebug) {
-      // eslint-disable-next-line no-console
-      console.debug(`Create query with key ${queryKey}`, params)
-    }
-
-    return [
-      queryKey,
-      params,
-    ]
+  if (isDebug) {
+    // eslint-disable-next-line no-console
+    console.debug(`Create query with key ${String(key)}`, params)
   }
 
   async function refetch(): Promise<void> {
@@ -119,9 +128,9 @@ export function useQuery<TResData, TErrorCode extends string = string>(
     isLoading: computed<boolean>(() => query.isLoading.value),
     isSuccess: computed<boolean>(() => query.data.value?.isOk() ?? false),
     refetch,
-    result: computed<AsyncResult<TResData, ApiError<TErrorCode>>>(() => {
+    result: computed<AsyncResult<TData, ApiError<TErrorCode>>>(() => {
       if (query.isLoading.value) {
-        return AsyncResult.loading<TResData, ApiError<TErrorCode>>()
+        return AsyncResult.loading<TData, ApiError<TErrorCode>>()
       }
 
       if (query.data.value?.isOk()) {
@@ -129,10 +138,10 @@ export function useQuery<TResData, TErrorCode extends string = string>(
       }
 
       if (query.data.value?.isErr()) {
-        return AsyncResult.err<TResData, ApiError<TErrorCode>>(query.data.value.getError())
+        return AsyncResult.err<TData, ApiError<TErrorCode>>(query.data.value.getError())
       }
 
-      return AsyncResult.loading<TResData, ApiError<TErrorCode>>()
+      return AsyncResult.loading<TData, ApiError<TErrorCode>>()
     }),
   }
 }

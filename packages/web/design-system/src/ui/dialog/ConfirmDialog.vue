@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import Button from '@/ui/button/button/Button.vue'
 import type { ConfirmDialogProps } from '@/ui/dialog/confirmDialog.props'
 import Dialog from '@/ui/dialog/Dialog.vue'
 import DialogFooter from '@/ui/dialog/DialogFooter.vue'
 import DialogFooterCancel from '@/ui/dialog/DialogFooterCancel.vue'
+import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
 import DialogHeader from '@/ui/dialog/DialogHeader.vue'
 
 const props = withDefaults(defineProps<ConfirmDialogProps>(), {
@@ -16,7 +16,6 @@ const props = withDefaults(defineProps<ConfirmDialogProps>(), {
   icon: null,
   preventClickOutside: false,
   preventEsc: false,
-  onConfirm: null,
 })
 
 const emit = defineEmits<{
@@ -28,10 +27,6 @@ const i18n = useI18n()
 const isLoading = ref<boolean>(false)
 
 async function onConfirmClick(): Promise<void> {
-  if (props.onConfirm === null) {
-    return
-  }
-
   const result = props.onConfirm()
 
   if (result instanceof Promise) {
@@ -74,13 +69,14 @@ function onClose(): void {
     <DialogFooter>
       <template #right>
         <DialogFooterCancel
-          :label="props.cancelLabel ?? i18n.t('component.unsaved_changes_dialog.cancel')"
+          :label="props.cancelLabel"
           @click="onCancelClick"
         />
-        <Button
+
+        <DialogFooterPrimary
           :label="props.confirmLabel ?? i18n.t('component.unsaved_changes_dialog.confirm')"
           :is-loading="isLoading"
-          :variant="props.isDestructive ? 'destructive-primary' : 'primary'"
+          :is-destructive="props.isDestructive"
           @click="onConfirmClick"
         />
       </template>

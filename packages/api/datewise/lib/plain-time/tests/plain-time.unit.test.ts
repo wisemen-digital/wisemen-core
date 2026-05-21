@@ -810,4 +810,172 @@ describe('PlainTime', () => {
       expect(result.seconds()).toBe(0)
     })
   })
+
+  describe('compare', () => {
+    it('returns 0 when comparing a time to itself', () => {
+      const time = plainTime('12:30:45')
+      const result = time.compare(time)
+
+      expect(result).toBe(0)
+    })
+
+    it('returns 0 when comparing identical times', () => {
+      const time1 = plainTime('12:30:45.123')
+      const time2 = plainTime('12:30:45.123')
+      const result = time1.compare(time2)
+
+      expect(result).toBe(0)
+    })
+
+    it('returns negative value when this time is before the other', () => {
+      const earlier = plainTime('10:00:00')
+      const later = plainTime('15:00:00')
+      const result = earlier.compare(later)
+
+      expect(result).toBeLessThan(0)
+    })
+
+    it('returns positive value when this time is after the other', () => {
+      const later = plainTime('15:00:00')
+      const earlier = plainTime('10:00:00')
+      const result = later.compare(earlier)
+
+      expect(result).toBeGreaterThan(0)
+    })
+
+    it('returns exact millisecond difference', () => {
+      const time1 = plainTime('12:00:00.000')
+      const time2 = plainTime('12:00:00.500')
+      const result = time1.compare(time2)
+
+      expect(result).toBe(-500)
+    })
+
+    it('returns exact millisecond difference when after', () => {
+      const time1 = plainTime('12:00:01.000')
+      const time2 = plainTime('12:00:00.000')
+      const result = time1.compare(time2)
+
+      expect(result).toBe(1000)
+    })
+
+    it('can be used to sort times in ascending order', () => {
+      const times = [
+        plainTime('15:30:00'),
+        plainTime('08:15:00'),
+        plainTime('12:00:00')
+      ]
+
+      times.sort((a, b) => a.compare(b))
+
+      expect(times[0].format('hh:mm')).toBe('08:15')
+      expect(times[1].format('hh:mm')).toBe('12:00')
+      expect(times[2].format('hh:mm')).toBe('15:30')
+    })
+
+    it('can be used to sort times in descending order', () => {
+      const times = [
+        plainTime('08:15:00'),
+        plainTime('15:30:00'),
+        plainTime('12:00:00')
+      ]
+
+      times.sort((a, b) => b.compare(a))
+
+      expect(times[0].format('hh:mm')).toBe('15:30')
+      expect(times[1].format('hh:mm')).toBe('12:00')
+      expect(times[2].format('hh:mm')).toBe('08:15')
+    })
+
+    it('correctly handles midnight', () => {
+      const midnight = plainTime('00:00:00')
+      const noon = plainTime('12:00:00')
+      const result = midnight.compare(noon)
+
+      expect(result).toBeLessThan(0)
+    })
+
+    it('correctly handles end of day', () => {
+      const endOfDay = plainTime('23:59:59.999')
+      const startOfDay = plainTime('00:00:00.000')
+      const result = endOfDay.compare(startOfDay)
+
+      expect(result).toBeGreaterThan(0)
+    })
+
+    it('sorts times with millisecond precision', () => {
+      const times = [
+        plainTime('12:00:00.500'),
+        plainTime('12:00:00.100'),
+        plainTime('12:00:00.300')
+      ]
+
+      times.sort((a, b) => a.compare(b))
+
+      expect(times[0].milliseconds()).toBe(100)
+      expect(times[1].milliseconds()).toBe(300)
+      expect(times[2].milliseconds()).toBe(500)
+    })
+
+    it('returns consistent results with isBefore', () => {
+      const time1 = plainTime('10:30:00')
+      const time2 = plainTime('15:45:00')
+
+      expect(time1.compare(time2) < 0).toBe(time1.isBefore(time2))
+      expect(time2.compare(time1) < 0).toBe(time2.isBefore(time1))
+    })
+
+    it('returns consistent results with isAfter', () => {
+      const time1 = plainTime('10:30:00')
+      const time2 = plainTime('15:45:00')
+
+      expect(time1.compare(time2) > 0).toBe(time1.isAfter(time2))
+      expect(time2.compare(time1) > 0).toBe(time2.isAfter(time1))
+    })
+
+    it('returns consistent results with isSame', () => {
+      const time1 = plainTime('12:30:45.123')
+      const time2 = plainTime('12:30:45.123')
+      const time3 = plainTime('13:30:45.123')
+
+      expect(time1.compare(time2) === 0).toBe(time1.isSame(time2))
+      expect(time1.compare(time3) === 0).toBe(time1.isSame(time3))
+    })
+
+    it('handles complex sorting scenario', () => {
+      const times = [
+        plainTime('23:59:59.999'),
+        plainTime('00:00:00.001'),
+        plainTime('12:00:00.000'),
+        plainTime('00:00:00.000'),
+        plainTime('18:30:15.500')
+      ]
+
+      times.sort((a, b) => a.compare(b))
+
+      expect(times[0].format()).toBe('00:00:00.000')
+      expect(times[1].format()).toBe('00:00:00.001')
+      expect(times[2].format()).toBe('12:00:00.000')
+      expect(times[3].format()).toBe('18:30:15.500')
+      expect(times[4].format()).toBe('23:59:59.999')
+    })
+
+    it('works with different input formats', () => {
+      const time1 = plainTime('12:30:00')
+      const time2 = plainTime({ hours: 15, minutes: 45, seconds: 0, milliseconds: 0 })
+      const result = time1.compare(time2)
+
+      expect(result).toBeLessThan(0)
+    })
+
+    it('works with Date objects', () => {
+      const date1 = new Date('2025-01-01T10:30:00')
+      const date2 = new Date('2025-01-01T15:45:00')
+      const time1 = plainTime(date1)
+      const time2 = plainTime(date2)
+      const result = time1.compare(time2)
+
+      expect(result).toBeLessThan(0)
+    })
+  })
 })

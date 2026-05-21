@@ -16,7 +16,9 @@ const SPEED_MULTIPLIERS: Record<SpeedUnit, number> = {
 }
 
 export class Speed extends Quantity<SpeedUnit, Speed> {
-  protected baseUnit = SpeedUnit.METER_PER_SECOND
+  protected getBaseUnit () {
+    return SpeedUnit.METER_PER_SECOND
+  }
 
   protected convertValueToBaseUnit (value: number, fromUnit: SpeedUnit): number {
     return value * SPEED_MULTIPLIERS[fromUnit]
@@ -25,4 +27,6 @@ export class Speed extends Quantity<SpeedUnit, Speed> {
   protected convertBaseUnitValueTo (value: number, toUnit: SpeedUnit): number {
     return value / SPEED_MULTIPLIERS[toUnit]
   }
+
+  static ZERO = new Speed(0, SpeedUnit.METER_PER_SECOND)
 }

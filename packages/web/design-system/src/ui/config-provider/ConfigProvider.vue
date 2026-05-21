@@ -2,9 +2,13 @@
 import { toComputedRefs } from '@/composables/context.composable'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
 import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
-import TooltipProvider from '@/ui/tooltip/TooltipProvider.vue'
 
-const props = defineProps<ConfigProviderProps>()
+const props = withDefaults(defineProps<ConfigProviderProps>(), {
+  addressAutocompleteAdapter: null,
+  googleMapsApiKey: null,
+  hourCycle: null,
+  showNavigationArrowsInTopBar: false,
+})
 
 defineSlots<{
   /**
@@ -17,7 +21,5 @@ useProvideConfigContext(toComputedRefs(props))
 </script>
 
 <template>
-  <TooltipProvider>
-    <slot />
-  </TooltipProvider>
+  <slot />
 </template>

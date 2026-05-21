@@ -16,7 +16,7 @@ export type AutocompleteDisplayFn<TValue extends AutocompleteValue> = (
 ) => string
 
 export interface AutocompleteProps<TValue extends AutocompleteValue>
-  extends Input, AutocompleteInput, InputWrapper, FieldWrapper, PopoverProps {
+  extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
    * Function to display the item label.
    */

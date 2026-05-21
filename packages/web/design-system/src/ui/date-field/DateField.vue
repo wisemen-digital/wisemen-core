@@ -1,0 +1,231 @@
+<script setup lang="ts">
+import { CalendarIcon } from '@wisemen/vue-core-icons'
+import {
+  DatePickerCalendar as RekaDatePickerCalendar,
+  DatePickerContent as RekaDatePickerContent,
+  DatePickerField as RekaDatePickerField,
+  DatePickerInput as RekaDatePickerInput,
+  DatePickerRoot as RekaDatePickerRoot,
+  DatePickerTrigger as RekaDatePickerTrigger,
+} from 'reka-ui'
+import type { Temporal } from 'temporal-polyfill'
+import {
+  computed,
+  ref,
+  toRef,
+  useAttrs,
+  useId,
+} from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import { useDatePicker } from '@/composables/datePicker.composable'
+import { useInput } from '@/composables/input.composable'
+import {
+  INPUT_DEFAULTS,
+  INPUT_FIELD_DEFAULTS,
+  INPUT_META_DEFAULTS,
+} from '@/types/input.type'
+import { UIIconButton } from '@/ui/button'
+import type { DateFieldProps } from '@/ui/date-field/dateField.props'
+import { createDateFieldStyle } from '@/ui/date-field/dateField.style'
+import DatePickerCalendarGrid from '@/ui/date-field/DatePickerCalendarGrid.vue'
+import DatePickerCalendarHeader from '@/ui/date-field/DatePickerCalendarHeader.vue'
+import { createDatePickerFieldStyle } from '@/ui/date-field/datePickerField.style'
+import { useProvideDatePickerContext } from '@/ui/date-picker/datePicker.context'
+import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
+import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
+import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
+import { getWeekStartsOn } from '@/utils/weekStartsOn.util'
+
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<DateFieldProps>(), {
+  ...INPUT_DEFAULTS,
+  ...INPUT_META_DEFAULTS,
+  ...INPUT_FIELD_DEFAULTS,
+  maxDate: null,
+  minDate: null,
+  isPickerHidden: false,
+  size: 'md',
+})
+
+const modelValue = defineModel<Temporal.PlainDate | null>({
+  required: true,
+})
+
+const i18n = useI18n()
+
+const id = props.id ?? useId()
+
+const attrs = useAttrs()
+
+const {
+  isError,
+  ariaDescribedBy,
+  ariaInvalid,
+} = useInput(id, props)
+
+const isOpen = ref(false)
+
+const {
+  calendarPlaceholder,
+  calendarValue,
+  locale,
+  maxDateValue,
+  minDateValue,
+  setPlaceholder,
+} = useDatePicker({
+  maxDate: toRef(props, 'maxDate'),
+  minDate: toRef(props, 'minDate'),
+  modelValue,
+})
+
+const dateFieldStyle = computed(() => createDateFieldStyle({
+  isPickerHidden: props.isPickerHidden,
+  size: props.size,
+}))
+
+const datePickerStyle = computed(() => createDatePickerFieldStyle({
+  size: props.size,
+}))
+
+useProvideDatePickerContext({
+  datePickerStyle,
+  placeholder: calendarPlaceholder,
+  setPlaceholder,
+  onClose: () => { isOpen.value = false },
+})
+</script>
+
+<template>
+  <InputWrapper
+    :error-message="props.errorMessage"
+    :is-disabled="props.isDisabled"
+    :is-required="props.isRequired"
+    :disabled-reason="props.disabledReason"
+    :hint="props.hint"
+    :label="props.label"
+    :class="props.class"
+    :style="props.style"
+    :for="id"
+    :help-text="props.helpText"
+    :hide-error-message="props.hideErrorMessage"
+  >
+    <template #label-left>
+      <slot name="label-left" />
+    </template>
+
+    <template #label-right>
+      <slot name="label-right" />
+    </template>
+
+    <RekaDatePickerRoot
+      :id="id"
+      v-model="calendarValue"
+      v-model:open="isOpen"
+      v-model:placeholder="calendarPlaceholder"
+      :week-starts-on="getWeekStartsOn(locale)"
+      :disabled="props.isDisabled"
+      :max-value="maxDateValue"
+      :min-value="minDateValue"
+      :readonly="props.isReadonly"
+      :required="props.isRequired"
+      :locale="locale"
+    >
+      <FieldWrapper
+        :is-disabled="props.isDisabled"
+        :is-error="isError"
+        :is-loading="props.isLoading"
+        :is-readonly="props.isReadonly"
+        :size="props.size"
+      >
+        <RekaDatePickerField
+          :id="id"
+          v-slot="{ segments }"
+          v-bind="attrs"
+          :aria-describedby="ariaDescribedBy"
+          :aria-invalid="ariaInvalid"
+          :aria-required="props.isRequired || undefined"
+          :class="dateFieldStyle.field()"
+        >
+          <template
+            v-for="{ part, value } in segments"
+            :key="part"
+          >
+            <RekaDatePickerInput
+              v-if="part !== 'literal'"
+              :part="part"
+              :class="dateFieldStyle.segment()"
+              data-field-wrapper
+            >
+              {{ value }}
+            </RekaDatePickerInput>
+            <RekaDatePickerInput
+              v-else
+              :part="part"
+              :class="dateFieldStyle.literal()"
+            >
+              {{ value }}
+            </RekaDatePickerInput>
+          </template>
+        </RekaDatePickerField>
+
+        <template
+          v-if="!props.isPickerHidden"
+          #right
+        >
+          <RekaDatePickerTrigger
+            :as-child="true"
+          >
+            <UIIconButton
+              :is-disabled="props.isDisabled || props.isReadonly"
+              :is-tooltip-disabled="true"
+              :icon="CalendarIcon"
+              :label="i18n.t('component.date_picker.open')"
+              :class="{
+                'mr-xs': props.size === 'md',
+                'mr-xxs': props.size === 'sm',
+              }"
+              size="xs"
+              type="button"
+              variant="tertiary"
+            />
+          </RekaDatePickerTrigger>
+        </template>
+      </FieldWrapper>
+
+      <ThemeProvider :as-child="true">
+        <RekaDatePickerContent
+          :side-offset="8"
+          :collision-padding="10"
+          data-animation="popover-default"
+          class="
+            z-40 origin-(--reka-popover-content-transform-origin)
+            will-change-[transform,opacity]
+          "
+          align="end"
+        >
+          <RekaDatePickerCalendar
+            v-slot="{ weekDays, grid }"
+            class="
+              flex flex-col gap-lg overflow-hidden rounded-2xl border
+              border-secondary bg-primary px-xl py-lg shadow-lg
+            "
+            weekday-format="short"
+          >
+            <DatePickerCalendarHeader />
+
+            <DatePickerCalendarGrid
+              v-for="month in grid"
+              :key="month.value.toString()"
+              :month="month"
+              :week-days="weekDays"
+            />
+          </RekaDatePickerCalendar>
+        </RekaDatePickerContent>
+      </ThemeProvider>
+    </RekaDatePickerRoot>
+  </InputWrapper>
+</template>

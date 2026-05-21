@@ -2,14 +2,16 @@ export type AvatarStatus = 'away' | 'busy' | 'offline' | 'online'
 
 export interface AvatarProps {
   /**
+   * By default, the avatar's background color is generated based on
+   * the provided name to ensure consistency across renders.
+   * Setting this prop to `true` will disable this behavior and
+   * use a static background color instead.
+   */
+  isStaticColor?: boolean
+  /**
    * The name used to generate fallback initials.
    */
   name: string
-  /**
-   * The alt text for the avatar image.
-   * @default null
-   */
-  imageAlt?: string | null
   /**
    * The image source URL for the avatar's logo.
    * Falls back to initials when not provided.
@@ -32,7 +34,6 @@ export interface AvatarProps {
    * @default null
    */
   src?: string | null
-
   /**
    * The online status indicator shown at the bottom-right of the avatar.
    * @default null
@@ -41,8 +42,8 @@ export interface AvatarProps {
 }
 
 export const AVATAR_DEFAULTS: AvatarProps = {
+  isStaticColor: false,
   name: '',
-  imageAlt: null,
   logo: null,
   logoAlt: null,
   size: 'md',

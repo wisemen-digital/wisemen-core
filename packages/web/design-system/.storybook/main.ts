@@ -52,7 +52,6 @@ const config: StorybookConfig = {
 
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      force: true,
     }
 
     return config
