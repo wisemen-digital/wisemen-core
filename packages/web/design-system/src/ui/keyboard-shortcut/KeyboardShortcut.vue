@@ -12,18 +12,15 @@ import {
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import type { KeyboardShortcutProps } from '@/ui/keyboard-shortcut/keyboardShortcut.props'
 import type {
-  KeyboardShortcut,
   KeyboardShortcutKeyPart,
   KeyboardShortcutPart,
 } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import KeyboardShortcutKey from '@/ui/keyboard-shortcut/KeyboardShortcutKey.vue'
 import { UIRowLayout } from '@/ui/row-layout'
 
-const props = withDefaults(defineProps<{
-  enableKeyHoldVisualization?: boolean
-  keyboardShortcut: KeyboardShortcut
-}>(), {
+const props = withDefaults(defineProps<KeyboardShortcutProps>(), {
   enableKeyHoldVisualization: false,
 })
 
@@ -49,6 +46,8 @@ function buildKeyParts(step: RegisterableHotkey): KeyboardShortcutKeyPart[] {
     value: (displayValues[i] ?? rawKey),
   }))
 }
+
+const isSequence = computed<boolean>(() => 'sequence' in props.keyboardShortcut)
 
 const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
   const sc = props.keyboardShortcut
@@ -77,7 +76,7 @@ const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
 </script>
 
 <template>
-  <UIRowLayout gap="xs">
+  <UIRowLayout :gap="isSequence ? 'xs' : 'xxs'">
     <template
       v-for="(part, partIndex) of shortcutParts"
       :key="partIndex"

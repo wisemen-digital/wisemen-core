@@ -1,5 +1,13 @@
 # @wisemen/quantity
 
+## 0.7.0
+
+### Minor Changes
+
+- [#1003](https://github.com/wisemen-digital/wisemen-core/pull/1003) [`bd0ed26`](https://github.com/wisemen-digital/wisemen-core/commit/bd0ed260d360559ca551f70e383e9c7ff7591113) Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - added rate and percentage support for use with quantities
+
+- [#999](https://github.com/wisemen-digital/wisemen-core/pull/999) [`f659833`](https://github.com/wisemen-digital/wisemen-core/commit/f65983333ed3cb8d2a16129d082d1fa482655853) Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - quantities add ZERO statics
+
 ## 0.6.1
 
 ### Patch Changes

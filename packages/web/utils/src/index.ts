@@ -7,5 +7,6 @@ export {
   Logger, logger,
 } from '@/logger/logger'
 export { NumberUtil } from '@/number/number.util'
+export { PhoneNumberUtil } from '@/phone-number/phoneNumber.util'
 export { StringUtil } from '@/string/string.util'
 export { UuidUtil } from '@/uuid/uuid.util'

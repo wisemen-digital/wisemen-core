@@ -233,15 +233,17 @@ function getCountryItemConfig(cc: CountryCode): MenuItemConfig {
   const flagUrl = getCountryFlagSvgUrl(cc)
 
   return {
-    description: `+${getCountryCallingCode(cc)}`,
-    descriptionLayout: 'inline',
-    image: flagUrl === null
+    description: {
+      layout: 'inline',
+      value: `+${getCountryCallingCode(cc)}`,
+    },
+    left: flagUrl === null
       ? null
       : {
-          aspect: 'rectangle',
+          aspect: 'rectangle' as const,
           src: flagUrl,
+          type: 'image' as const,
         },
-    label: getCountryName(cc, locale.value),
   }
 }
 

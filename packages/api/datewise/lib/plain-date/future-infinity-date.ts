@@ -74,7 +74,15 @@ export class FutureInfinityDate implements PlainDate {
     return this
   }
 
+  addDuration (_duration: Duration): FutureInfinityDate {
+    return this 
+  }
+
   subtract (_amount: number, _unit: PlainDateUnit): FutureInfinityDate {
+    return this
+  }
+
+  subtractDuration (_duration: Duration): FutureInfinityDate {
     return this
   }
 

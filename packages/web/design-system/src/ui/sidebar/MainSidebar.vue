@@ -45,14 +45,13 @@ setCollapsedVariant(props.collapsedVariant)
         v-if="isSidebarOpen"
         :as-child="true"
         :force-mount="true"
-        @open-auto-focus.prevent
       >
         <MainSidebarTransition
           class="absolute z-6 h-full w-64 p-md outline-none"
         >
           <div
             class="
-              size-full rounded-xl border border-secondary bg-secondary
+              size-full rounded-xl border border-secondary bg-secondary py-md
               shadow-lg/5
             "
           >
@@ -113,7 +112,7 @@ setCollapsedVariant(props.collapsedVariant)
       :style="{
         width: sidebarWidth,
       }"
-      class="absolute h-full"
+      class="absolute h-full pt-md"
     >
       <MainSidebarContent>
         <template #header>
@@ -141,7 +140,7 @@ setCollapsedVariant(props.collapsedVariant)
       bounce: 0,
     }"
     :style="{ width: sidebarWidth }"
-    class="absolute h-full overflow-hidden"
+    class="absolute h-full overflow-hidden pt-[0.475rem]"
   >
     <MainSidebarContent>
       <template #header>

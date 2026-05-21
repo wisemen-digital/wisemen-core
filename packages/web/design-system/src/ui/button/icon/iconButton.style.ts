@@ -45,6 +45,7 @@ export const createIconButtonStyle = tv({
     rowLayout: `
       duration-100 [grid-area:stack]
       group-not-disabled/button:group-active/button:scale-98
+      group-not-disabled/button:group-active/button:will-change-transform
     `,
   },
   variants: {
@@ -118,10 +119,12 @@ export const createIconButtonStyle = tv({
         icon: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         loader: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         root: `
           border-brand-600 bg-brand-solid
@@ -146,7 +149,7 @@ export const createIconButtonStyle = tv({
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:bg-primary-hover
-          dark:border-primary
+          dark:border-secondary
         `,
       },
       'tertiary': {

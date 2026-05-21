@@ -1,0 +1,34 @@
+@import '@fontsource-variable/inter';
+@import 'tailwindcss';
+
+@import './design-token-colors.css';
+@import './tailwind-design-tokens.css';
+
+@variant dark {
+  :where(.dark) & {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :where(.system) & {
+      @slot;
+    }
+  }
+}
+
+@variant light {
+  :where(.light) & {
+    @slot;
+  }
+}
+
+@layer base {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: gray transparent;
+  }
+
+  body {
+    font-family: 'Inter Variable';
+  }
+}

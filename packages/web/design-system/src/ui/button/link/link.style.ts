@@ -34,14 +34,15 @@ export const createLinkStyle = tv({
   slots: {
     container: `grid size-full [grid-template-areas:'stack']`,
     icon: `shrink-0`,
-    label: `font-medium`,
+    label: `truncate font-medium`,
     root: `
       group/link inline-flex shrink-0 cursor-pointer items-center justify-center
       border outline-2 outline-offset-1 outline-transparent duration-100
     `,
     rowLayout: `
-      duration-100 [grid-area:stack]
-      group-active/link:scale-98
+      flex items-center justify-center overflow-hidden duration-100
+      [grid-area:stack]
+      group-active/link:scale-98 group-active/link:will-change-transform
     `,
   },
   variants: {
@@ -50,21 +51,25 @@ export const createLinkStyle = tv({
         icon: `size-4`,
         label: `text-sm`,
         root: 'h-8 min-w-8 rounded-lg px-lg',
+        rowLayout: 'gap-sm',
       },
       md: {
         icon: `size-3.5`,
         label: `text-xs`,
         root: 'h-7 min-w-7 rounded-md px-md',
+        rowLayout: 'gap-sm',
       },
       sm: {
         icon: `size-3.5`,
         label: `text-xs`,
         root: 'h-6 min-w-6 rounded-sm px-sm',
+        rowLayout: 'gap-xs',
       },
       xs: {
         icon: `size-3.5`,
         label: `text-xs`,
-        root: 'h-5.5 min-w-5.5 rounded-xs px-xs',
+        root: 'h-5.5 min-w-5.5 rounded-sm px-xs',
+        rowLayout: 'gap-xs',
       },
     },
     variant: {
@@ -92,8 +97,14 @@ export const createLinkStyle = tv({
       },
       'primary': {
         container: `dark:glassy-inner-content`,
-        icon: `text-primary-on-brand`,
-        label: `text-primary-on-brand`,
+        icon: `
+          text-primary-on-brand
+          dark:text-white
+        `,
+        label: `
+          text-primary-on-brand
+          dark:text-white
+        `,
         root: `
           border-brand-600 bg-brand-solid
           hover:brightness-95
@@ -108,7 +119,7 @@ export const createLinkStyle = tv({
           border-secondary bg-primary
           hover:bg-primary-hover
           focus-visible:outline-fg-brand-primary
-          dark:border-primary
+          dark:border-secondary
         `,
       },
       'tertiary': {

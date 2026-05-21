@@ -75,7 +75,15 @@ export class PastInfinityDate implements PlainDate {
     return this
   }
 
+  addDuration (_duration: Duration): PastInfinityDate {
+    return this
+  }
+
   subtract (_amount: number, _unit: PlainDateUnit): PastInfinityDate {
+    return this
+  }
+
+  subtractDuration (_duration: Duration): PastInfinityDate {
     return this
   }
 

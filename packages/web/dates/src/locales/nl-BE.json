@@ -1,0 +1,5 @@
+{
+  "date_time_format.from": "Vanaf {value}",
+  "date_time_format.now": "Nu",
+  "date_time_format.until": "Tot {value}"
+}

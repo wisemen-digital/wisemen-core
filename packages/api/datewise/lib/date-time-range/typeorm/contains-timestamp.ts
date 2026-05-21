@@ -4,6 +4,9 @@ import { DateTimeRange } from '../date-time-range.js'
 import { TimestampInput } from '../../timestamp/timestamp.js'
 import { timestamp } from '../../timestamp/index.js'
 
+/**
+ * Checks that the range contains the given timestamp with the `@>` operator.
+ */
 export function ContainsTimestamp (date: TimestampInput): FindOperator<DateTimeRange> {
   const paramName = randomUUID().replaceAll('-', '')
 

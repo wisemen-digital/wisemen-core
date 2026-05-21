@@ -1,5 +1,54 @@
 # Changelog
 
+## 0.14.0
+
+### Minor Changes
+
+- [#1068](https://github.com/wisemen-digital/wisemen-core/pull/1068) [`38dbe43`](https://github.com/wisemen-digital/wisemen-core/commit/38dbe43b30125dcea8c716aa1019f81461356292) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add missing application components in the application provider
+
+- [#1065](https://github.com/wisemen-digital/wisemen-core/pull/1065) [`ea37a96`](https://github.com/wisemen-digital/wisemen-core/commit/ea37a96a4c1a475a863bf39bdb9a598f3b390957) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add form field layouts
+
+### Patch Changes
+
+- [#1070](https://github.com/wisemen-digital/wisemen-core/pull/1070) [`673f352`](https://github.com/wisemen-digital/wisemen-core/commit/673f352d20d563c3e9f4751f08f97ca4d8765e0f) Thanks [@wouterlms](https://github.com/wouterlms)! - Change Button, IconButton, Link foreground colors to white in dark mode
+
+- Updated dependencies [[`2654ffc`](https://github.com/wisemen-digital/wisemen-core/commit/2654ffc638375858b8e7023f4ce0062123131299)]:
+  - @wisemen/vue-core-actions@0.1.2
+
+## 0.13.1
+
+### Patch Changes
+
+- Updated dependencies [[`c79086b`](https://github.com/wisemen-digital/wisemen-core/commit/c79086bff6820bf244c2397a9b236a9b60cc5382)]:
+  - @wisemen/vue-core-actions@0.1.1
+  - @wisemen/vue-core-dates@0.0.2
+
+## 0.13.0
+
+### Minor Changes
+
+- [#985](https://github.com/wisemen-digital/wisemen-core/pull/985) [`ea220f5`](https://github.com/wisemen-digital/wisemen-core/commit/ea220f55b92394093a8768ddb9fa5c5475145ff2) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add empty state component
+
+- [#1015](https://github.com/wisemen-digital/wisemen-core/pull/1015) [`1e47245`](https://github.com/wisemen-digital/wisemen-core/commit/1e47245cfb6c4361fc9eae658707131a59cee2c4) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add UI prefix to all type exports
+
+- [#1021](https://github.com/wisemen-digital/wisemen-core/pull/1021) [`2963267`](https://github.com/wisemen-digital/wisemen-core/commit/2963267c08e4c4752664ec39f9f0dfb8f1e84e35) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add new top bar component + restructure dashboard page components
+
+- [#1018](https://github.com/wisemen-digital/wisemen-core/pull/1018) [`62a0298`](https://github.com/wisemen-digital/wisemen-core/commit/62a029887da5b4609506729c25baba1ea375820f) Thanks [@wouterlms](https://github.com/wouterlms)! - Implement actions in design system
+
+## 0.12.0
+
+### Minor Changes
+
+- [#986](https://github.com/wisemen-digital/wisemen-core/pull/986) [`5acef70`](https://github.com/wisemen-digital/wisemen-core/commit/5acef7057bf7de364a3f6b11118f70f50d634331) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add context menu
+
+## 0.11.0
+
+### Minor Changes
+
+- [#1002](https://github.com/wisemen-digital/wisemen-core/pull/1002) [`fdc6742`](https://github.com/wisemen-digital/wisemen-core/commit/fdc6742d7d1384353171e1c471402f6dab3f1343) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dropdown menu items with menu items component
+
+- [#1011](https://github.com/wisemen-digital/wisemen-core/pull/1011) [`36f009e`](https://github.com/wisemen-digital/wisemen-core/commit/36f009e8a710eb509122fa73c8e4aa3fcdba91ce) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export context provider
+
 ## 0.10.0
 
 ### Minor Changes

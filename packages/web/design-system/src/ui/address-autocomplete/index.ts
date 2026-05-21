@@ -1,9 +1,9 @@
 export type { AddressAutocompleteProps as UIAddressAutocompleteProps } from './addressAutocomplete.props'
 export type {
-  Address,
-  AddressAutocompleteAdapter,
-  AddressComponentType,
-  FormattedAddress,
+  Address as UIAddress,
+  AddressAutocompleteAdapter as UIAddressAutocompleteAdapter,
+  AddressComponentType as UIAddressComponentType,
+  FormattedAddress as UIFormattedAddress,
 } from './addressAutocomplete.type'
 export {
   addressToFormattedAddress,

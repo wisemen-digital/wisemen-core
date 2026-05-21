@@ -15,3 +15,5 @@ export type { DialogHeaderProps as UIDialogHeaderProps } from '@/ui/dialog/dialo
 export { default as UIDialogHeader } from '@/ui/dialog/DialogHeader.vue'
 export { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 export { useDialogTriggerProps } from '@/ui/dialog/dialogTriggerProps.composable'
+export { default as UIFormDialog } from '@/ui/dialog/FormDialog.vue'
+export { default as UIFormDialogForm } from '@/ui/dialog/FormDialogForm.vue'

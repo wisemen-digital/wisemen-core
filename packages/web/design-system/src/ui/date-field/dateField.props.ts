@@ -1,4 +1,4 @@
-import type { Temporal } from 'temporal-polyfill'
+import type { PlainDate } from '@wisemen/vue-core-dates'
 
 import type {
   FieldWrapper,
@@ -11,12 +11,12 @@ export interface DateFieldProps extends Input, InputWrapper, FieldWrapper {
    * The maximum selectable date.
    * @default null
    */
-  maxDate?: Temporal.PlainDate | null
+  maxDate?: PlainDate | null
   /**
    * The minimum selectable date.
    * @default null
    */
-  minDate?: Temporal.PlainDate | null
+  minDate?: PlainDate | null
   /**
    * Whether to hide the calendar picker trigger.
    * @default false

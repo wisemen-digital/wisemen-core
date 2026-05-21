@@ -4,7 +4,6 @@ import {
   ref,
 } from 'vue'
 
-import { useInjectAddressAutocompleteAdapter } from '@/ui/address-autocomplete/addressAutocomplete.context'
 import type { AddressAutocompleteProps } from '@/ui/address-autocomplete/addressAutocomplete.props'
 import type {
   Address,
@@ -16,6 +15,7 @@ import {
 } from '@/ui/address-autocomplete/addressAutocomplete.util'
 import { UIAutocomplete } from '@/ui/autocomplete'
 import { createAutocompleteOptions } from '@/ui/autocomplete/autocomplete.type'
+import { useInjectConfigContext } from '@/ui/config-provider'
 
 const props = defineProps<Omit<AddressAutocompleteProps, 'displayFn' | 'getItemConfig' | 'isLoading' | 'items' | 'searchMode'>>()
 
@@ -28,16 +28,18 @@ const modelValue = defineModel<Address | null>({
   required: true,
 })
 
-const maybeAdapter = useInjectAddressAutocompleteAdapter(null)
+const {
+  addressAutocompleteAdapter: maybeAdapter,
+} = useInjectConfigContext()
 
-if (maybeAdapter === null) {
+if (maybeAdapter.value === null) {
   throw new Error(
     '[AddressAutocomplete] No adapter provided. Add an adapter to the ConfigProvider.\n'
     + 'Example: <ConfigProvider :address-autocomplete-adapter="myAdapter"><AddressAutocomplete ... /></ConfigProvider>',
   )
 }
 
-const adapter = maybeAdapter
+const adapter = maybeAdapter.value
 
 const isLoading = ref<boolean>(false)
 const addressResults = ref<FormattedAddress[]>([])
