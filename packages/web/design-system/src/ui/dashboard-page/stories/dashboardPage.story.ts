@@ -23,14 +23,18 @@ export const Default: Story = {}
 
 export const CenteredPage: Story = {
   render: () => ({
-    components: { CenteredPagePlayground },
+    components: {
+      CenteredPagePlayground,
+    },
     template: '<CenteredPagePlayground />',
   }),
 }
 
 export const CenteredPageScrollable: Story = {
   render: () => ({
-    components: { CenteredPageScrollablePlayground },
+    components: {
+      CenteredPageScrollablePlayground,
+    },
     template: '<CenteredPageScrollablePlayground />',
   }),
 }

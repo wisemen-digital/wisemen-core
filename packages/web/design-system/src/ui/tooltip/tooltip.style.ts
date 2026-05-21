@@ -16,6 +16,9 @@ export const createTooltipStyle = tv({
       'available-width': {
         content: 'w-(--reka-tooltip-content-available-width)',
       },
+      'content-width': {
+        content: '',
+      },
     },
   },
 })

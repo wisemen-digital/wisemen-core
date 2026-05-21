@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  _createUntypedAction,
+  createAction,
   GroupPriority,
   useActionGroup,
 } from '@wisemen/vue-core-actions'
@@ -23,7 +23,7 @@ const {
 
 const i18n = useI18n()
 const actionGroup = useActionGroup()
-const toggleDetailPaneAction = _createUntypedAction({
+const toggleDetailPaneAction = createAction({
   id: 'toggle-detail-pane',
   name: () => i18n.t('action.global.toggle_detail_pane.name'),
   execute: () => {
