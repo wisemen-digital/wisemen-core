@@ -100,7 +100,9 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     <ThemeProvider
       :appearance="theme ?? 'light'"
     >
-      <ApplicationProvider>
+      <ApplicationProvider
+        :is-fetching-auth-user="false"
+      >
         <div
           class="
             default flex items-center justify-center bg-primary p-4 text-primary
