@@ -12,6 +12,7 @@ import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
 import DialogChin from '@/ui/dialog/DialogChin.vue'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
+import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -76,6 +77,10 @@ function onInteractOutside(event: CustomEvent): void {
     event.preventDefault()
   }
 }
+
+const overlay = useOverlay()
+
+const dialogContentZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}`
 </script>
 
 <template>
@@ -92,6 +97,9 @@ function onInteractOutside(event: CustomEvent): void {
 
     <RekaDialogContent
       :class="style.contentWrapper()"
+      :style="{
+        zIndex: dialogContentZIndex,
+      }"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
       @pointer-down-outside="onPointerDownOutside"
@@ -166,5 +174,13 @@ function onInteractOutside(event: CustomEvent): void {
   [data-animation='dialog'] {
     animation-duration: 0ms;
   }
+}
+
+body.reduced-motion [data-animation='dialog'],
+body.reduced-motion [data-animation='dialog'][data-state='open'],
+body.reduced-motion [data-animation='dialog'][data-state='closed'],
+body.reduced-motion [role='dialog'][data-animation='dialog'][data-state='open'],
+body.reduced-motion [role='dialog'][data-animation='dialog'][data-state='closed'] {
+  animation-duration: 0ms;
 }
 </style>

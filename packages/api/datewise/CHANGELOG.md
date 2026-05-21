@@ -1,5 +1,18 @@
 # @wisemen/datewise
 
+## 1.0.5
+
+### Patch Changes
+
+- [#987](https://github.com/wisemen-digital/wisemen-core/pull/987) [`0cfb275`](https://github.com/wisemen-digital/wisemen-core/commit/0cfb2759c1e9aaa328540acbeeac9f3205dd620d) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add `iterate` method on `DateRange` and `DateTimeRange`
+
+## 1.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`025b4ac`](https://github.com/wisemen-digital/wisemen-core/commit/025b4acc0509f28d00b498c21396aa346fd393a8)]:
+  - @wisemen/quantity@0.8.0
+
 ## 1.0.3
 
 ### Patch Changes

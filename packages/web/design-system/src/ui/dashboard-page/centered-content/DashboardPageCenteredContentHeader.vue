@@ -8,14 +8,15 @@ import ActionDropdownMenu from '@/ui/action-dropdown-menu/ActionDropdownMenu.vue
 import { UIBaseHeader } from '@/ui/base-header'
 import type { BaseHeaderLeftConfig } from '@/ui/base-header/baseHeader.type'
 import { UIIconButton } from '@/ui/button'
+import DashboardPageCenteredContentHeaderScrollGradient from '@/ui/dashboard-page/centered-content/DashboardPageCenteredContentHeaderScrollGradient.vue'
 
 const props = withDefaults(defineProps<{
   title: string
   actions?: Action[]
-  leftHeaderConfig?: BaseHeaderLeftConfig | null
+  headerLeftConfig?: BaseHeaderLeftConfig | null
 }>(), {
   actions: () => [],
-  leftHeaderConfig: null,
+  headerLeftConfig: null,
 })
 
 const i18n = useI18n()
@@ -25,44 +26,10 @@ const slots = useSlots()
 
 <template>
   <header class="sticky top-0 z-1 py-4xl">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-0"
-    >
-      <div class="absolute inset-0 bg-linear-to-b from-primary to-transparent" />
-      <div
-        class="
-          absolute inset-0
-          mask-[linear-gradient(to_bottom,black_0%,transparent_100%)]
-          backdrop-blur-xs
-        "
-      />
-      <div
-        class="
-          absolute inset-0
-          mask-[linear-gradient(to_bottom,black_0%,transparent_75%)]
-          backdrop-blur-xs
-        "
-      />
-      <div
-        class="
-          absolute inset-0
-          mask-[linear-gradient(to_bottom,black_0%,transparent_50%)]
-          backdrop-blur-sm
-        "
-      />
-      <div
-        class="
-          absolute inset-0
-          mask-[linear-gradient(to_bottom,black_0%,transparent_25%)]
-          backdrop-blur-md
-        "
-      />
-    </div>
-
+    <DashboardPageCenteredContentHeaderScrollGradient />
     <UIBaseHeader
       :title="props.title"
-      :left="props.leftHeaderConfig"
+      :left="props.headerLeftConfig"
       class="relative"
     >
       <template

@@ -19,6 +19,7 @@ const DEFAULT_MIN_WIDTH = '16rem'
 const DEFAULT_MAX_WIDTH = '25rem'
 
 interface UseDetailPaneOptions {
+  isOpen: Ref<boolean>
   isResizable: boolean
   storage: DetailPaneStorage | null
   variant: DetailPaneVariant
@@ -34,8 +35,6 @@ function remToPx(rem: string): number {
 }
 
 export function useDetailPane(options: UseDetailPaneOptions) {
-  const isDetailPaneOpen = ref<boolean>(true)
-
   const isResizable = options.isResizable ?? true
   const storage = options.storage
   const variant = options.variant
@@ -65,15 +64,15 @@ export function useDetailPane(options: UseDetailPaneOptions) {
 
   function getStorageRef(): Ref<boolean> {
     if (storage === null || storage === undefined) {
-      return isDetailPaneOpen
+      return options.isOpen
     }
 
     if (storage.strategy === 'localStorage') {
-      return useLocalStorage<boolean>(storage.key, isDetailPaneOpen.value)
+      return useLocalStorage<boolean>(storage.key, options.isOpen.value)
     }
 
     if (storage.strategy === 'routeQuery') {
-      const queryValue = useRouteQuery<string>(storage.key, String(isDetailPaneOpen.value))
+      const queryValue = useRouteQuery<string>(storage.key, String(options.isOpen.value))
 
       return computed<boolean>({
         get: () => queryValue.value === 'true',
@@ -83,7 +82,7 @@ export function useDetailPane(options: UseDetailPaneOptions) {
       })
     }
 
-    return isDetailPaneOpen
+    return options.isOpen
   }
 
   const storageRef = getStorageRef()
