@@ -16,7 +16,7 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
         :collision-padding="5"
         data-animation="popover-default"
         class="
-          z-40 max-w-64 min-w-52
+          z-50 max-w-64 min-w-52
           origin-(--reka-context-menu-content-transform-origin)
           will-change-[transform,opacity]
         "
