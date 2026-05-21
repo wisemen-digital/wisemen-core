@@ -92,7 +92,7 @@
 
 .dark {
   --corner-highlight: var(--corner-highlight);
-  
+
   --fg-primary: var(--white);
   --fg-secondary: var(--gray-300);
   --fg-secondary-hover: var(--gray-200);

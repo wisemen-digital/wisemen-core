@@ -332,7 +332,7 @@
 
   @media (prefers-color-scheme: dark) {
     --corner-highlight: var(--brand-900);
-    
+
     --blue-25: #f5f8ff;
     --blue-50: #eff4ff;
     --blue-100: #d1e0ff;
