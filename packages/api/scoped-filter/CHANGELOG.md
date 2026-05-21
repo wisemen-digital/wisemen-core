@@ -1,5 +1,11 @@
 # @wisemen/scoped-filter
 
+## 0.0.4
+
+### Patch Changes
+
+- [#1109](https://github.com/wisemen-digital/wisemen-core/pull/1109) [`d510d0f`](https://github.com/wisemen-digital/wisemen-core/commit/d510d0f803e06decd8a27651b3680d2a81670817) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: issue in openapi generated docs
+
 ## 0.0.3
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wisemen/vue-core-actions
 
+## 0.1.3
+
+### Patch Changes
+
+- [#1098](https://github.com/wisemen-digital/wisemen-core/pull/1098) [`5c26828`](https://github.com/wisemen-digital/wisemen-core/commit/5c268289a865f43c12cbaa5b64e9f0bd70c0858a) Thanks [@wouterlms](https://github.com/wouterlms)! - fix: subActions no longer crash when opening menus
+
 ## 0.1.2
 
 ### Patch Changes

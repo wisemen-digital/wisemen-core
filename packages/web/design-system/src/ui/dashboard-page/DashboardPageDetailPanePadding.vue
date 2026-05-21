@@ -21,7 +21,7 @@ const {
       type: 'spring',
       bounce: 0,
     }"
-    :as-child="true"
+    class="flex size-full flex-col overflow-hidden"
   >
     <slot />
   </Motion>
