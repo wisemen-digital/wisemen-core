@@ -1,5 +1,11 @@
 # @wisemen/scoped-filter
 
+## 0.0.2
+
+### Patch Changes
+
+- [#1094](https://github.com/wisemen-digital/wisemen-core/pull/1094) [`ffd3430`](https://github.com/wisemen-digital/wisemen-core/commit/ffd3430870085d0a49ed6dddf91b22794bc200b4) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - rework: make generic scopedfilter with builder for enum and a prebuilt uuid scoped filter
+
 ## 0.0.1
 
 ### Patch Changes
