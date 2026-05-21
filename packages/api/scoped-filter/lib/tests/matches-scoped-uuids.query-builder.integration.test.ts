@@ -34,7 +34,7 @@ describe('matchesScopedUuids (query builder)', () => {
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(2)
@@ -49,7 +49,7 @@ describe('matchesScopedUuids (query builder)', () => {
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(0)
@@ -63,7 +63,7 @@ describe('matchesScopedUuids (query builder)', () => {
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(1)
@@ -77,7 +77,7 @@ describe('matchesScopedUuids (query builder)', () => {
       const results = await dataSource.manager
         .createQueryBuilder(ScopedFilterTest, 'e')
         .where('e.id IN (:...ids)', { ids: [1, 2, 3] })
-        .andWhere(matches<ScopedFilterTest, string>('e.uuid', filter))
+        .andWhere(matches('e.uuid', filter))
         .getMany()
 
       expect(results.length).toBe(3)
