@@ -1,5 +1,11 @@
 # @wisemen/vue-core-preferences
 
+## 0.0.3
+
+### Patch Changes
+
+- [#1112](https://github.com/wisemen-digital/wisemen-core/pull/1112) [`225f591`](https://github.com/wisemen-digital/wisemen-core/commit/225f591f5327bebb1d0382f375651b6e8156ad4c) Thanks [@wouterlms](https://github.com/wouterlms)! - Add a preference for reduced motion
+
 ## 0.0.2
 
 ### Patch Changes

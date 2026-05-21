@@ -1,5 +1,11 @@
 # @wisemen/pgboss-nestjs-job
 
+## 4.0.3
+
+### Patch Changes
+
+- [#1116](https://github.com/wisemen-digital/wisemen-core/pull/1116) [`c579547`](https://github.com/wisemen-digital/wisemen-core/commit/c579547eb4568b1e57c0edeaa6ec24fd931fd360) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove console logs from worker
+
 ## 4.0.2
 
 ### Patch Changes
