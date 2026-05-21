@@ -1,4 +1,6 @@
-export { ScopedUuidFilter, type ScopedUuidFilter as ScopedUuidFilterType } from "#src/scoped-uuid-filter.js"
+export { buildScopedFilter } from "#src/scoped-filter.js"
+export { buildScopedEnumFilter } from "#src/scoped-enum-filter.js"
+export { ScopedUuidFilter } from "#src/scoped-uuid-filter.js"
 export { Scope } from "#src/scope.js"
 export { IsScopedUuidFilter } from "#src/is-scoped-uuid-filter.decorator.js"
 export { Matches } from "#src/typeorm/matches.js"
