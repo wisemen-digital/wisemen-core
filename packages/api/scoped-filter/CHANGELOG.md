@@ -1,5 +1,11 @@
 # @wisemen/scoped-filter
 
+## 0.0.3
+
+### Patch Changes
+
+- [#1105](https://github.com/wisemen-digital/wisemen-core/pull/1105) [`77b0c17`](https://github.com/wisemen-digital/wisemen-core/commit/77b0c17fae3205da6499fe6a1bbe3221ef90d3ae) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: export buildScopedFilter and buildScopedEnumFilter
+
 ## 0.0.2
 
 ### Patch Changes
