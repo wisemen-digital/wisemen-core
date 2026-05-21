@@ -36,6 +36,7 @@ export default defineConfig({
         'formango',
         'temporal-polyfill',
         '@wisemen/vue-core-actions',
+        'zod',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
@@ -50,6 +51,7 @@ export default defineConfig({
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',
           'vue-router': 'VueRouter',
+          'zod': 'zod',
         },
       },
     },

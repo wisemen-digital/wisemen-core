@@ -218,6 +218,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
       <SelectDropdown
         v-model="modelValue"
         v-bind="props"
+        :content-width-class="props.contentWidthClass"
         @blur="emit('blur')"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"

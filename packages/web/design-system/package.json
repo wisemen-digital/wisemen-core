@@ -65,7 +65,8 @@
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
     "@wisemen/vue-core-actions": "workspace:*",
-    "@wisemen/vue-core-dates": "workspace:*"
+    "@wisemen/vue-core-dates": "workspace:*",
+    "zod": "catalog:general"
   },
   "dependencies": {
     "@internationalized/date": "catalog:date",
@@ -110,6 +111,8 @@
     "vue": "catalog:vue",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "vue-tsc": "catalog:vue"
+    "vue-tsc": "catalog:vue",
+    "zod": "catalog:general"
+
   }
 }
