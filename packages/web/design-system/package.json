@@ -55,7 +55,6 @@
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
     "@wisemen/vue-core-actions": "workspace:*",
-    "@wisemen/vue-core-dates": "workspace:*",
     "formango": "catalog:peer",
     "motion-v": "catalog:peer",
     "pinia": "catalog:vue",
@@ -63,11 +62,9 @@
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
     "vue-i18n": "catalog:peer",
-    "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*",
     "@wisemen/vue-core-dates": "workspace:*",
-    "zod": "catalog:general"
+    "zod": "catalog:general",
     "vue-router": "catalog:peer"
   },
   "dependencies": {
