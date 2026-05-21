@@ -200,11 +200,11 @@ function onCancel(): void {
   <div
     :class="props.class"
     class="
-      flex items-center justify-between rounded-lg border border-secondary
-      bg-secondary px-lg py-md
+      flex max-w-full items-center justify-between gap-md rounded-lg border
+      border-secondary bg-secondary px-lg py-md
     "
   >
-    <div class="flex flex-col gap-0.5">
+    <div class="flex max-w-full flex-col gap-none overflow-hidden">
       <UIText
         :text="mainText"
         class="text-sm text-primary"
@@ -215,7 +215,7 @@ function onCancel(): void {
       />
     </div>
 
-    <UIRowLayout>
+    <UIRowLayout gap="xxs">
       <UIPopover
         v-model:is-open="isEditOpen"
         :popover-side-offset="8"

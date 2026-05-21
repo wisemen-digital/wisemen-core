@@ -73,6 +73,7 @@ const modelValue = ref<Address | null>(null)
           placeholder="Street"
         />
       </UIFormFieldGrid>
+
       <UIAddressAutocomplete
         v-model="modelValue"
         :error-message="props.errorMessage"
@@ -84,7 +85,6 @@ const modelValue = ref<Address | null>(null)
         :label="props.label"
         :placeholder="props.placeholder"
         :size="props.size"
-        class="w-full"
       />
     </UIFormFieldGroup>
   </div>
