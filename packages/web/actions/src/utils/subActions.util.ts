@@ -4,6 +4,7 @@ import type {
   SubActionsWithMeta,
 } from '#types/action.type.ts'
 import type { ActionContext } from '#types/actionContext.type.ts'
+import { isPromise } from '#utils/isPromise.util.ts'
 
 export function isSubActionsWithMeta(v: unknown): v is SubActionsWithMeta {
   return v !== null
@@ -49,7 +50,7 @@ export async function resolveSubActions(
     return storeSubActionsPagination(action, result, subActionsMetaMap)
   }
 
-  if (result instanceof Promise) {
+  if (isPromise(result)) {
     return storeSubActionsPagination(action, await result, subActionsMetaMap)
   }
 

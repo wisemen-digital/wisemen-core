@@ -18,6 +18,7 @@ import type {
 import type { ActionContext } from '#types/actionContext.type.ts'
 import type { ActionModel } from '#types/actionModel.type.ts'
 import type { NavFrame } from '#types/commandMenu.type.ts'
+import { isPromise } from '#utils/isPromise.util.ts'
 import { applicableActions } from '#utils/resolveActions.util.ts'
 import {
   isSubActionsWithMeta,
@@ -178,7 +179,7 @@ export function useCommandMenuActions({
       if (Array.isArray(raw) || isSubActionsWithMeta(raw)) {
         normalized = raw
       }
-      else if (raw instanceof Promise) {
+      else if (isPromise<Action[] | SubActionsWithMeta>(raw)) {
         normalized = await raw
       }
       else {
