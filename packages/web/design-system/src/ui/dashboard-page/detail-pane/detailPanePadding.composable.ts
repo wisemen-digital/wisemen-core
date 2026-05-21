@@ -3,6 +3,8 @@ import { computed } from 'vue'
 
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 
+const PADDING_INLINE_BORDERED_OFFSET = 10
+
 export function useDetailPanePadding() {
   const detailPaneContext = useInjectDetailPaneContext(null)
 
@@ -15,6 +17,10 @@ export function useDetailPanePadding() {
 
     if (detailPaneContext.isFloatingDetailPane.value) {
       return '0px'
+    }
+
+    if (detailPaneContext.isOpen.value && detailPaneContext.variant === 'bordered-inline') {
+      return `calc(${detailPaneContext.sidebarWidth.value} + ${PADDING_INLINE_BORDERED_OFFSET}px)`
     }
 
     if (detailPaneContext.isOpen.value) {
