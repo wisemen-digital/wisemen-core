@@ -50,7 +50,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   displayZoom: 'default',
   hourCycle: null,
   language: 'en-US',
-  navigationArrows: 'show',
+  navigationArrows: true,
   numberFormat: 'system',
   reducedMotion: false,
   timeZone: TimeZoneUtil.getCurrentTimeZone(),
