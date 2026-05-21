@@ -20,7 +20,7 @@ export const createDialogStyle = tv({
       sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
     `,
     contentWrapper: `
-      fixed inset-x-0 bottom-0 z-40 flex w-full flex-col
+      fixed inset-x-0 bottom-0 flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
     `,
