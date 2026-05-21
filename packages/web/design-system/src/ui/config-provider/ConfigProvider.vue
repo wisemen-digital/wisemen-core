@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import { toComputedRefs } from '@/composables/context.composable'
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useProvideConfigContext } from '@/ui/config-provider/config.context'
 import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
 
@@ -10,12 +13,7 @@ const props = withDefaults(defineProps<ConfigProviderProps>(), {
   showNavigationArrowsInTopBar: false,
 })
 
-defineSlots<{
-  /**
-   * Wrap your application in this component to provide configuration to all components.
-   */
-  default: () => void
-}>()
+useIsReducedMotion(computed(() => props.reducedMotion))
 
 useProvideConfigContext(toComputedRefs(props))
 </script>

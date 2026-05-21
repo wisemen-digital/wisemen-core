@@ -5,6 +5,7 @@ import {
   Motion,
 } from 'motion-v'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { UIText } from '@/ui/text/index'
 
@@ -12,6 +13,8 @@ const props = defineProps<{
   errorMessage: string | null
   for: string | null
 }>()
+
+const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -34,7 +37,7 @@ const props = defineProps<{
         filter: 'blur(4px)',
       }"
       :transition="{
-        duration: 0.3,
+        duration: isReducedMotion ? 0 : 0.3,
         type: 'spring',
         bounce: 0,
       }"

@@ -1,11 +1,29 @@
+import { createSharedComposable } from '@vueuse/core'
 import { useReducedMotion as useSystemReducedMotion } from 'motion-v'
-import { computed } from 'vue'
+import type { ComputedRef } from 'vue'
+import {
+  computed,
+  toValue,
+  watch,
+} from 'vue'
 
 import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 
-export function useIsReducedMotion() {
+export const useIsReducedMotion = createSharedComposable((reducedMotion?: ComputedRef<boolean>) => {
   const configContext = useInjectConfigContext(null)
   const systemReducedMotion = useSystemReducedMotion()
 
-  return computed(() => configContext?.reducedMotion.value === true || systemReducedMotion.value)
-}
+  const isReducedMotion = computed<boolean>(
+    () => toValue(reducedMotion) === true
+      || configContext?.reducedMotion.value === true
+      || systemReducedMotion.value,
+  )
+
+  watch(isReducedMotion, (value) => {
+    document.body.classList.toggle('reduced-motion', value)
+  }, {
+    immediate: true,
+  })
+
+  return isReducedMotion
+})
