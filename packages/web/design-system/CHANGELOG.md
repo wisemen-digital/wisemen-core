@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.15.0
+
+### Minor Changes
+
+- [#1104](https://github.com/wisemen-digital/wisemen-core/pull/1104) [`ff0a5ce`](https://github.com/wisemen-digital/wisemen-core/commit/ff0a5cea92fac51c4b6686935770be020e6c4377) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add address card to address autocomplete
+
 ## 0.14.1
 
 ### Patch Changes
