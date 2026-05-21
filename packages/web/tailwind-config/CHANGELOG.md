@@ -1,5 +1,11 @@
 # @wisemen/vue-core-tailwind-config
 
+## 0.0.3
+
+### Patch Changes
+
+- [#1123](https://github.com/wisemen-digital/wisemen-core/pull/1123) [`44f3a20`](https://github.com/wisemen-digital/wisemen-core/commit/44f3a20c37e721204b2f08b13b9835c57594b71f) Thanks [@wouterlms](https://github.com/wouterlms)! - Improvements
+
 ## 0.0.2
 
 ### Patch Changes
