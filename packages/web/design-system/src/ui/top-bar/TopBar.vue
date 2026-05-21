@@ -4,7 +4,6 @@ import DashboardPageDetailPaneToggle from '@/ui/dashboard-page/detail-pane/Dashb
 import DashboardPageHeaderBreadcrumbs from '@/ui/dashboard-page/header/DashboardPageHeaderBreadcrumbs.vue'
 import DashboardPageHeaderSidebarToggle from '@/ui/dashboard-page/header/DashboardPageHeaderSidebarToggle.vue'
 import { useInjectMainContentDetailPaneContext } from '@/ui/layout/mainContentDetailPane.context'
-import { UISeparator } from '@/ui/separator'
 import Separator from '@/ui/separator/Separator.vue'
 import TopBarCommandMenuSearch from '@/ui/top-bar/TopBarCommandMenuSearch.vue'
 import { useTopBarNavigation } from '@/ui/top-bar/topBarNavigation.composable'
@@ -69,13 +68,7 @@ const {
 
     <div class="flex h-full flex-1 items-center justify-end">
       <slot name="actions" />
-      <template v-if="hasDetailPane">
-        <UISeparator
-          class="mr-md ml-lg h-4"
-          orientation="vertical"
-        />
-        <DashboardPageDetailPaneToggle />
-      </template>
+      <DashboardPageDetailPaneToggle v-if="hasDetailPane" />
     </div>
   </div>
 </template>
