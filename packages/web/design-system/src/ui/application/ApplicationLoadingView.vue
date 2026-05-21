@@ -10,6 +10,7 @@ import {
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { UIColumnLayout } from '@/ui/column-layout'
 import { useMainSidebar } from '@/ui/sidebar'
 import { UITextShimmer } from '@/ui/text-shimmer'
@@ -29,6 +30,7 @@ const {
 
 const isRouterLoading = ref<boolean>(true)
 const isLoadingTextVisible = ref<boolean>(false)
+const isReducedMotion = useIsReducedMotion()
 
 router.isReady().then(() => {
   isRouterLoading.value = false
@@ -48,7 +50,9 @@ setTimeout(() => {
     <Motion
       v-if="isLoadingVisible"
       :exit="{ opacity: 0 }"
-      :transition="{ duration: 0.2 }"
+      :transition="{
+        duration: isReducedMotion ? 0 : 0.2,
+      }"
       :style="{
         paddingLeft: isSidebarOpen && !isFloatingSidebar ? sidebarWidth : '0.5rem',
       }"
