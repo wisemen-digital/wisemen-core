@@ -3,14 +3,9 @@ import {
   Motion,
   useReducedMotion,
 } from 'motion-v'
-import type { Ref } from 'vue'
-import {
-  computed,
-  ref,
-  shallowRef,
-} from 'vue'
+import { computed } from 'vue'
 
-import { useProvideMainContentDetailPaneContext } from '@/ui/layout/mainContentDetailPane.context'
+import { useMainContentDetailPane } from '@/ui/layout/mainContentDetailPane.composable'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import TopBar from '@/ui/top-bar/TopBar.vue'
 
@@ -21,41 +16,9 @@ const {
   sidebarWidth,
 } = useMainSidebar()
 
-const hasDetailPane = ref<boolean>(false)
-
-const detailPaneState = shallowRef<{
-  isOpen: Ref<boolean>
-  toggle: () => void
-} | null>(null)
-
-const detailPaneIsOpen = computed<boolean>(() => detailPaneState.value?.isOpen.value ?? false)
-
-function toggleDetailPane(): void {
-  detailPaneState.value?.toggle()
-}
-
-function registerDetailPane(isOpen: Ref<boolean>, toggle: () => void): void {
-  detailPaneState.value = {
-    isOpen,
-    toggle,
-  }
-  hasDetailPane.value = true
-}
-
-function unregisterDetailPane(): void {
-  detailPaneState.value = null
-  hasDetailPane.value = false
-}
-
-useProvideMainContentDetailPaneContext({
-  hasDetailPane,
-  isOpen: detailPaneIsOpen,
-  registerDetailPane,
-  toggle: toggleDetailPane,
-  unregisterDetailPane,
-})
-
 const isReduceMotionEnabledOnDevice = useReducedMotion()
+
+useMainContentDetailPane()
 
 const contentPaddingLeft = computed<string>(() => {
   if (isFloatingSidebar.value) {
