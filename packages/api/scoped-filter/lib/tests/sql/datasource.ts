@@ -2,7 +2,6 @@ import { DataSource } from 'typeorm'
 import { ScopedFilterTest } from './scoped-filter-test.entity.js'
 
 export const dataSource = new DataSource({
-  name: 'default',
   type: 'postgres',
   url: process.env.DATABASE_URI,
   ssl: false,
@@ -10,5 +9,9 @@ export const dataSource = new DataSource({
   logging: false,
   synchronize: false,
   migrationsRun: true,
-  entities: [ScopedFilterTest]
+  entities: [ScopedFilterTest],
+  invalidWhereValuesBehavior: {
+    null: 'throw',
+    undefined: 'ignore',
+  }
 })
