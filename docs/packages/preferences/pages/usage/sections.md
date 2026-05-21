@@ -49,11 +49,28 @@ watch(displayZoom, (value) => {
 })
 ```
 
+## Reduced Motion
+
+Enables or disables motion effects in the interface.
+
+**Type:** `boolean`
+
+```typescript
+import { useReducedMotionPreference } from '@wisemen/vue-core-preferences'
+
+const reducedMotion = useReducedMotionPreference({
+  get: () => store.reducedMotion,
+  set: (value) => {
+    store.reducedMotion = value
+  },
+})
+```
+
 ## Navigation Arrows
 
 Shows or hides breadcrumb navigation arrows in the UI.
 
-**Type:** `'show' | 'hide'`
+**Type:** `boolean`
 
 ```typescript
 import { useNavigationArrowsPreference } from '@wisemen/vue-core-preferences'

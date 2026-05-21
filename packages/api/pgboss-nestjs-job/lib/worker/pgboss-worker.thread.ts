@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
+ 
 import { captureException } from '@sentry/nestjs'
-import colors from 'colors'
 import { getOtelTracer } from '@wisemen/opentelemetry'
 import { propagation, context, SpanStatusCode, Context, trace } from '@opentelemetry/api'
 import { PgBossClient } from '../client/pgboss-client.js'
@@ -22,7 +21,7 @@ export class PgBossWorkerThread {
 
         await this.client.complete(job.name, job.id, result ?? undefined)
       } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        captureException(error) 
         await this.client.fail(job.name, job.id, { error }).catch(() => {})
       }
     }
@@ -57,8 +56,6 @@ export class PgBossWorkerThread {
           'job.execution_time': executionTime
         })
 
-        console.info(colors.blue(job.data.className), 'succeeded', `(${executionTime}ms)`)
-
         return result
       } catch (e) {
         const executionTime = Date.now() - startedAt
@@ -74,21 +71,12 @@ export class PgBossWorkerThread {
           const className = prototype.constructor.name as string | undefined
 
           span.setAttribute('exception.type', className ?? e.name)
-
-          console.error(
-            colors.blue(job.data.className),
-            'failed with error:',
-            colors.red(`${e.name}: ${e.message}`),
-            `(${executionTime}ms)`
-          )
         }
 
         span.addEvent('job.failed', {
           'job.execution_time': executionTime,
           'job.error': e instanceof Error ? e.message : String(e)
         })
-
-        captureException(e)
 
         throw e
       } finally {

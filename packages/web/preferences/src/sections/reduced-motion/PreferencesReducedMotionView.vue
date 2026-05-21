@@ -21,11 +21,11 @@ const stringModel = computed<'false' | 'true'>({
 
 const options = computed<PreferencesDropdownMenuOption<'false' | 'true'>[]>(() => [
   {
-    label: i18n.t('module.preferences.navigation_arrows.option.show'),
+    label: i18n.t('module.preferences.reduced_motion.option.enabled'),
     value: 'true',
   },
   {
-    label: i18n.t('module.preferences.navigation_arrows.option.hide'),
+    label: i18n.t('module.preferences.reduced_motion.option.disabled'),
     value: 'false',
   },
 ])

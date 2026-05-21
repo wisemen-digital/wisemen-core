@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTitle } from '@vueuse/core'
 import {
   computed,
   onUnmounted,
@@ -8,7 +7,6 @@ import {
   watch,
 } from 'vue'
 
-import { useInjectConfigContext } from '@/ui/config-provider'
 import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
 import type {
   DashboardPageProps,
@@ -35,9 +33,7 @@ const props = withDefaults(defineProps<DashboardPageProps & {
 
 const mainContentDetailPaneContext = useInjectMainContentDetailPaneContext(null)
 
-const configContext = useInjectConfigContext()
 const slots = useSlots()
-const documentTitle = useTitle()
 
 const {
   setNavigation,
@@ -50,7 +46,6 @@ watch([
   title,
   breadcrumbs,
 ]) => {
-  documentTitle.value = `${title} — ${configContext.projectName.value}`
   setNavigation(title, breadcrumbs)
 }, {
   immediate: true,
@@ -104,7 +99,10 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
 </script>
 
 <template>
-  <Page class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
+  <Page
+    :title="title"
+    class="z-1 flex min-h-0 flex-1 flex-col overflow-hidden bg-primary"
+  >
     <DashboardPageActions v-if="isPageActionsSlotVisible">
       <template #left>
         <slot name="page-actions-left" />

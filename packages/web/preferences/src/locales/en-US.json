@@ -29,6 +29,10 @@
   "module.preferences.number_format.option.space_period": "1 234.56",
   "module.preferences.number_format.option.system": "Default",
   "module.preferences.number_format.title": "Number format",
+  "module.preferences.reduced_motion.description": "Reduce or disable motion effects in the interface.",
+  "module.preferences.reduced_motion.option.disabled": "Disabled",
+  "module.preferences.reduced_motion.option.enabled": "Enabled",
+  "module.preferences.reduced_motion.title": "Reduced motion",
   "module.preferences.search.clear.label": "Clear",
   "module.preferences.search.label": "Search",
   "module.preferences.search.placeholder": "Search...",
@@ -50,6 +54,7 @@
   "module.preferences.toast_auto_close.option.never": "Never",
   "module.preferences.toast_auto_close.option.never.description": "All notifications stay visible",
   "module.preferences.toast_auto_close.title": "Auto-close notifications",
+  "module.preferences.views.accessibility.name": "Accessibility",
   "module.preferences.views.general.name": "General",
   "module.preferences.views.language_and_region.name": "Language & Region"
 }
