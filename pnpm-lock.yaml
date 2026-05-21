@@ -2389,9 +2389,6 @@ importers:
 
   packages/web/design-system:
     dependencies:
-      '@internationalized/date':
-        specifier: catalog:date
-        version: 3.10.1
       '@tailwindcss/vite':
         specifier: catalog:vite
         version: 4.1.18(vite@8.0.6(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.98.0)(terser@5.47.1)(tsx@4.20.3)(yaml@2.8.3))
@@ -2434,10 +2431,16 @@ importers:
       vue-i18n:
         specifier: catalog:peer
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      vue-sonner:
+        specifier: catalog:vue
+        version: 2.0.9
     devDependencies:
       '@chromatic-com/storybook':
         specifier: catalog:storybook
         version: 5.0.2(storybook@10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
+      '@internationalized/date':
+        specifier: catalog:date
+        version: 3.10.1
       '@storybook/addon-a11y':
         specifier: catalog:storybook
         version: 10.3.0(storybook@10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
@@ -2522,9 +2525,6 @@ importers:
       vue-router:
         specifier: catalog:peer
         version: 4.6.4(vue@3.5.27(typescript@5.9.3))
-      vue-sonner:
-        specifier: catalog:vue
-        version: 2.0.9
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)
