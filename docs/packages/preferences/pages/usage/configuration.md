@@ -18,7 +18,10 @@ Sections read and write values through a `get` / `set` pair you provide. Start b
 // preferences.model.ts
 import type { TimeZone } from '@wisemen/vue-core-dates'
 import type { NumberFormat, UIToastAutoClose } from '@wisemen/vue-core-design-system'
-import type { NavigationArrowsPreference } from '@wisemen/vue-core-preferences'
+import type {
+  NavigationArrowsPreference,
+  ReducedMotionPreference,
+} from '@wisemen/vue-core-preferences'
 
 export type AppearancePreference = 'dark' | 'light' | 'system'
 export type DisplayZoomPreference = 'default' | 'large' | 'small'
@@ -31,6 +34,7 @@ export interface Preferences {
   language: string
   navigationArrows: NavigationArrowsPreference
   numberFormat: NumberFormat
+  reducedMotion: ReducedMotionPreference
   timeZone: TimeZone
   toastAutoClose: UIToastAutoClose
 }
@@ -48,6 +52,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   language: 'en-US',
   navigationArrows: 'show',
   numberFormat: 'system',
+  reducedMotion: false,
   timeZone: TimeZoneUtil.getCurrentTimeZone(),
   toastAutoClose: 'always',
 }
@@ -112,6 +117,7 @@ import {
   useLanguagePreference,
   useNavigationArrowsPreference,
   useNumberFormatPreference,
+  useReducedMotionPreference,
   useTimeZonePreference,
   useToastAutoClosePreference,
 } from '@wisemen/vue-core-preferences'
@@ -141,9 +147,14 @@ export function usePreferences() {
     set: (value) => store.setPreference('timeZone', value),
   })
 
+  const reducedMotion = useReducedMotionPreference({
+    get: () => store.getPreference('reducedMotion'),
+    set: (value) => store.setPreference('reducedMotion', value),
+  })
+
   // … other sections
 
-  return { appearance, language, timeZone }
+  return { appearance, language, reducedMotion, timeZone }
 }
 ```
 
@@ -155,11 +166,12 @@ Wrap sections into views using the built-in view composables:
 
 ```typescript
 import {
+  usePreferencesAccessibilityView,
   usePreferencesGeneralView,
   usePreferencesLanguageAndRegionView,
 } from '@wisemen/vue-core-preferences'
 
-const { appearance, displayZoom, navigationArrows, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
+const { appearance, displayZoom, navigationArrows, reducedMotion, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
 
 const generalView = usePreferencesGeneralView([
   appearance,
@@ -173,6 +185,10 @@ const languageView = usePreferencesLanguageAndRegionView([
   numberFormat,
   hourCycle,
   timeZone,
+])
+
+const accessibilityView = usePreferencesAccessibilityView([
+  reducedMotion,
 ])
 ```
 
@@ -203,6 +219,7 @@ Call `useCreatePreferencesDialog` with your config to get a type-safe dialog ins
 ```typescript
 import {
   useCreatePreferencesDialog,
+  usePreferencesAccessibilityView,
   usePreferencesGeneralView,
   usePreferencesLanguageAndRegionView,
 } from '@wisemen/vue-core-preferences'
@@ -210,7 +227,7 @@ import {
 import { usePreferences } from './preferences.composable'
 
 export function usePreferencesDialog() {
-  const { appearance, displayZoom, navigationArrows, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
+  const { appearance, displayZoom, navigationArrows, reducedMotion, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
 
   return useCreatePreferencesDialog({
     activeView: 'general',
@@ -220,16 +237,19 @@ export function usePreferencesDialog() {
         {
           views: [
             usePreferencesGeneralView([
-              appearance, 
-              displayZoom, 
-              navigationArrows, 
-              toastAutoClose
+              appearance,
+              displayZoom,
+              navigationArrows,
+              toastAutoClose,
             ]),
             usePreferencesLanguageAndRegionView([
-              language, 
-              numberFormat, 
+              language,
+              numberFormat,
               hourCycle,
-              timeZone
+              timeZone,
+            ]),
+            usePreferencesAccessibilityView([
+              reducedMotion,
             ]),
           ],
         },
