@@ -194,6 +194,12 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
     }
   }
 
+  format (locale: string = 'en-US', options?: Intl.NumberFormatOptions): string {
+    const formatter = new Intl.NumberFormat(locale, options)
+
+    return `${formatter.format(this.value)} ${this.unit}`
+  }
+
   /** Returns the maximum quantity from the provided quantities */
   static max<U extends string, Q extends Quantity<U, Q>> (
     ...quantities: Q[]
