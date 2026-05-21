@@ -1,7 +1,6 @@
 import { DataSource } from 'typeorm'
 
 export const dataSource = new DataSource({
-  name: 'default',
   type: 'postgres',
   url: process.env.DATABASE_URI,
   ssl: false,
@@ -15,5 +14,9 @@ export const dataSource = new DataSource({
     'dist/**/finite-date-time-range-test.entity.js',
     'dist/**/timestamp-test.entity.js',
     'dist/**/date-test.entity.js'
-  ]
+  ],
+  invalidWhereValuesBehavior: {
+    null: 'throw',
+    undefined: 'ignore',
+  }
 })
