@@ -29,6 +29,10 @@
   "module.preferences.number_format.option.space_period": "1 234.56",
   "module.preferences.number_format.option.system": "Standaard",
   "module.preferences.number_format.title": "Getalopmaak",
+  "module.preferences.reduced_motion.description": "Verminder of schakel bewegingseffecten in de interface uit.",
+  "module.preferences.reduced_motion.option.disabled": "Uitgeschakeld",
+  "module.preferences.reduced_motion.option.enabled": "Ingeschakeld",
+  "module.preferences.reduced_motion.title": "Verminderde beweging",
   "module.preferences.search.clear.label": "Wissen",
   "module.preferences.search.label": "Zoeken",
   "module.preferences.search.placeholder": "Zoeken...",
@@ -50,6 +54,7 @@
   "module.preferences.toast_auto_close.option.never": "Nooit",
   "module.preferences.toast_auto_close.option.never.description": "Alle meldingen blijven zichtbaar",
   "module.preferences.toast_auto_close.title": "Meldingen automatisch sluiten",
+  "module.preferences.views.accessibility.name": "Toegankelijkheid",
   "module.preferences.views.general.name": "Algemeen",
   "module.preferences.views.language_and_region.name": "Taal & Regio"
 }
