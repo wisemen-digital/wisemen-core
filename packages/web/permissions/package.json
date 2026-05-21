@@ -1,0 +1,57 @@
+{
+  "name": "@wisemen/vue-core-permissions",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/permissions"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/"
+  },
+  "peerDependencies": {
+    "vue": "catalog:peer"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:types",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vue/tsconfig": "catalog:vue",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "rimraf": "catalog:build",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vite-plugin-dts": "catalog:vite",
+    "vue": "catalog:vue",
+    "vue-tsc": "catalog:vue"
+  }
+}

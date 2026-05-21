@@ -1,7 +1,7 @@
 import { DynamicModule } from '@nestjs/common'
 import { TypeOrmModule as TM, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm'
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type.js'
-import { createConnection, DataSource, DataSourceOptions } from 'typeorm'
+import { DataSource, DataSourceOptions } from 'typeorm'
 import { DEFAULT_DATA_SOURCE_NAME } from '@nestjs/typeorm/dist/typeorm.constants.js'
 import { EntitiesMetadataStorage } from '@nestjs/typeorm/dist/entities-metadata.storage.js'
 import { ColumnType } from 'typeorm/browser'
@@ -32,9 +32,8 @@ export class TypeOrmModule extends TM {
 
   static forRootAsync (options: NestjsTypeOrmModuleAsyncOptions): DynamicModule {
     options.dataSourceFactory = async (dataSourceOptions: DataSourceOptions) => {
-      const source = DataSource === undefined
-        ? await createConnection(dataSourceOptions)
-        : new DataSource(dataSourceOptions)
+      const source =  new DataSource(dataSourceOptions)
+      await source.initialize()
 
       source.driver.supportedDataTypes.push(...(options.customDataTypes ?? []) as ColumnType[])
 

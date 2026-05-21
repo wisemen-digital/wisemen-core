@@ -31,4 +31,10 @@
   body {
     font-family: 'Inter Variable';
   }
+
+  em {
+    font-weight: 500;
+    font-style: normal;
+    color: var(--text-primary);
+  }
 }
