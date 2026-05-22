@@ -101,7 +101,7 @@ function getEstimateSize(itemIndex: number): number {
     return size.value === 'sm' ? 28 : 32
   }
 
-  if (itemConfig.description != null && itemConfig.descriptionLayout === 'block') {
+  if (itemConfig.description?.layout === 'block') {
     return 50
   }
 
@@ -147,6 +147,7 @@ onBeforeUnmount(() => {
     :highlight-on-hover="true"
     :multiple="isMultiple(modelValue)"
     :selection-behavior="isMultiple(modelValue) ? 'toggle' : 'replace'"
+    :class="props.contentWidthClass"
     class="
       flex max-h-[min(var(--reka-popover-content-available-height),32rem)]
       flex-col overflow-hidden

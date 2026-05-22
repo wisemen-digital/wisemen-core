@@ -9,12 +9,10 @@ import {
 import { UIMenuItem } from '@/ui/menu-item'
 import { useInjectSelectContext } from '@/ui/select/select.context'
 
-const props = withDefaults(defineProps<{
-  label?: string | null
+const props = defineProps<{
+  label: string
   value: AcceptableValue
-}>(), {
-  label: null,
-})
+}>()
 
 const {
   getItemConfig,

@@ -84,9 +84,7 @@ useProvideCheckboxContext({
       :value="props.value"
       @blur="emit('blur')"
     >
-      <div
-        :class="checkboxStyle.control()"
-      >
+      <div :class="checkboxStyle.control()">
         <CheckboxIndicator />
       </div>
     </RekaCheckboxRoot>

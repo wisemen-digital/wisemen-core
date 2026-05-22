@@ -36,14 +36,6 @@ const meta = {
       control: 'text',
       description: 'The label of the switch',
     },
-    size: {
-      control: 'select',
-      description: 'The size of the switch',
-      options: [
-        'md',
-        'sm',
-      ],
-    },
   },
   tags: [
     'autodocs',
@@ -57,7 +49,6 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     label: 'Switch Label',
-    size: 'md',
   },
   play: async ({
     canvasElement,

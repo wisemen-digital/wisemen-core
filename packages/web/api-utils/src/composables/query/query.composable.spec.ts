@@ -32,13 +32,10 @@ describe('useQuery with AsyncResult', () => {
 
   it('result should start in loading state', () => {
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => {
           // Never resolves during the test
-          return await new Promise(() => {})
-        },
-        queryKey: {
-          test: {},
+          return await new Promise<never>(() => {})
         },
       })
     })
@@ -55,11 +52,8 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(ok(user)),
-        queryKey: {
-          test: {},
-        },
       })
     })
 
@@ -85,12 +79,8 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(err(apiError)),
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -115,12 +105,8 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(ok(user)),
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -154,12 +140,8 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(ok(user)),
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -183,15 +165,11 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => {
           // Never resolves during this check
-          return await new Promise(() => {})
+          return await new Promise<never>(() => {})
         },
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -208,12 +186,8 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(ok(user)),
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -246,7 +220,7 @@ describe('useQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => {
           const user = users[callCount]
 
@@ -254,10 +228,6 @@ describe('useQuery with AsyncResult', () => {
 
           return await Promise.resolve(ok(user))
         },
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -291,13 +261,9 @@ describe('useQuery with AsyncResult', () => {
     })))
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         isEnabled,
         queryFn,
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -327,12 +293,8 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(ok(user)),
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -353,14 +315,10 @@ describe('useQuery with AsyncResult', () => {
 
   it('getResult() should return null during loading', () => {
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => {
-          return await new Promise(() => {})
+          return await new Promise<never>(() => {})
         },
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -376,17 +334,13 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => {
           // Simulate a slow API call (100ms delay)
           await new Promise((resolve) => setTimeout(resolve, 100))
 
           return await Promise.resolve(ok(user))
         },
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 
@@ -435,17 +389,13 @@ describe('useQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useQuery<TestUser>({
+      return useQuery('keysetSpecTest', {
         queryFn: async () => {
           // Simulate a slow API call that fails (100ms delay)
           await new Promise((resolve) => setTimeout(resolve, 100))
 
           return await Promise.resolve(err(apiError))
         },
-        queryKey: {
-          test: {},
-        },
-
       })
     })
 

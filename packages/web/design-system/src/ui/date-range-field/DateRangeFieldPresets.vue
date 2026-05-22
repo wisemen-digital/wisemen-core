@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PlainDate } from '@wisemen/vue-core-dates'
 import { Temporal } from 'temporal-polyfill'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -8,8 +9,10 @@ import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeF
 interface Preset {
   key: string
   label: string
-  range: { end: Temporal.PlainDate
-    start: Temporal.PlainDate } | null
+  range: {
+    from: PlainDate
+    until: PlainDate
+  } | null
 }
 
 const i18n = useI18n()
@@ -76,64 +79,64 @@ const presets = computed<Preset[]>(() => {
       key: 'today',
       label: i18n.t('component.date_range_picker.preset.today'),
       range: {
-        end: today,
-        start: today,
+        from: today,
+        until: today,
       },
     },
     {
       key: 'yesterday',
       label: i18n.t('component.date_range_picker.preset.yesterday'),
       range: {
-        end: yesterday,
-        start: yesterday,
+        from: yesterday,
+        until: yesterday,
       },
     },
     {
       key: 'this_week',
       label: i18n.t('component.date_range_picker.preset.this_week'),
       range: {
-        end: endOfWeek,
-        start: startOfWeek,
+        from: startOfWeek,
+        until: endOfWeek,
       },
     },
     {
       key: 'last_week',
       label: i18n.t('component.date_range_picker.preset.last_week'),
       range: {
-        end: endOfLastWeek,
-        start: startOfLastWeek,
+        from: startOfLastWeek,
+        until: endOfLastWeek,
       },
     },
     {
       key: 'this_month',
       label: i18n.t('component.date_range_picker.preset.this_month'),
       range: {
-        end: endOfMonth,
-        start: startOfMonth,
+        from: startOfMonth,
+        until: endOfMonth,
       },
     },
     {
       key: 'last_month',
       label: i18n.t('component.date_range_picker.preset.last_month'),
       range: {
-        end: endOfLastMonth,
-        start: startOfLastMonth,
+        from: startOfLastMonth,
+        until: endOfLastMonth,
       },
     },
     {
       key: 'this_year',
       label: i18n.t('component.date_range_picker.preset.this_year'),
       range: {
-        end: endOfYear,
-        start: startOfYear,
+        from: startOfYear,
+        until: endOfYear,
       },
     },
     {
       key: 'last_year',
       label: i18n.t('component.date_range_picker.preset.last_year'),
       range: {
-        end: endOfLastYear,
-        start: startOfLastYear,
+        from: startOfLastYear,
+        until: endOfLastYear,
       },
     },
     {
@@ -157,12 +160,12 @@ function isActivePreset(preset: Preset): boolean {
   const draftEnd = draftValue.value.end
 
   return (
-    draftStart.year === preset.range.start.year
-    && draftStart.month === preset.range.start.month
-    && draftStart.day === preset.range.start.day
-    && draftEnd.year === preset.range.end.year
-    && draftEnd.month === preset.range.end.month
-    && draftEnd.day === preset.range.end.day
+    draftStart.year === preset.range.from.year
+    && draftStart.month === preset.range.from.month
+    && draftStart.day === preset.range.from.day
+    && draftEnd.year === preset.range.until.year
+    && draftEnd.month === preset.range.until.month
+    && draftEnd.day === preset.range.until.day
   )
 }
 </script>

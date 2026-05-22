@@ -31,7 +31,6 @@ const props = withDefaults(defineProps<SwitchProps>(), {
   ...INPUT_META_DEFAULTS,
   iconChecked: null,
   iconUnchecked: null,
-  size: 'md',
 })
 
 const emit = defineEmits<{
@@ -44,9 +43,7 @@ const modelValue = defineModel<boolean>({
 
 const id = props.id ?? useId()
 
-const switchStyle = computed<SwitchStyle>(() => createSwitchStyle({
-  size: props.size,
-}))
+const switchStyle = computed<SwitchStyle>(() => createSwitchStyle())
 
 useProvideSwitchContext({
   isChecked: computed<boolean>(() => modelValue.value),
@@ -87,7 +84,7 @@ useProvideSwitchContext({
           <slot name="left" />
 
           <UIText
-            :for="props.for ?? undefined"
+            :for="props.for ?? id"
             :text="props.label"
             :class="twMerge(
               'text-xs/5 font-medium text-secondary',

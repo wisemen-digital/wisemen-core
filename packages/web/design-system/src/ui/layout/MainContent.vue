@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {
-  Motion,
-  useReducedMotion,
-} from 'motion-v'
+import { Motion } from 'motion-v'
 import { computed } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
+import { useMainContentDetailPane } from '@/ui/layout/mainContentDetailPane.composable'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import TopBar from '@/ui/top-bar/TopBar.vue'
 
 const {
   isFloatingSidebar,
@@ -14,7 +14,9 @@ const {
   sidebarWidth,
 } = useMainSidebar()
 
-const isReduceMotionEnabledOnDevice = useReducedMotion()
+const isReduceMotionEnabledOnDevice = useIsReducedMotion()
+
+useMainContentDetailPane()
 
 const contentPaddingLeft = computed<string>(() => {
   if (isFloatingSidebar.value) {
@@ -46,24 +48,13 @@ const contentPaddingLeft = computed<string>(() => {
       type: 'spring',
       bounce: 0,
     }"
-    class="size-full overflow-hidden bg-secondary p-md"
+    class="flex size-full flex-col overflow-hidden bg-secondary p-md"
   >
-    <div
-      class="
-        custom-content-shadow size-full overflow-hidden rounded-xl border
-        border-secondary
-        dark:shadow-none
-      "
-    >
-      <slot />
-    </div>
+    <TopBar>
+      <template #actions>
+        <slot name="top-bar-actions" />
+      </template>
+    </TopBar>
+    <slot />
   </Motion>
 </template>
-
-<style scoped>
-.custom-content-shadow {
-  box-shadow:
-    lch(0 0 0 / 0.02) 0px 3px 6px -2px,
-    lch(0 0 0 / 0.04) 0px 1px 1px;
-}
-</style>

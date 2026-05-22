@@ -121,10 +121,7 @@ useProvideButtonContext({
             :variant="props.variant"
           />
 
-          <span
-            :class="buttonStyle.label()"
-            class=""
-          >
+          <span :class="buttonStyle.label()">
             {{ props.label }}
           </span>
 

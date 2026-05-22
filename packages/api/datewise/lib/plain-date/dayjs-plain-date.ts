@@ -143,8 +143,26 @@ export class DayjsPlainDate implements PlainDate {
     return new DayjsPlainDate(this.date.add(amount, unit))
   }
 
+  /**
+   * Returns a new `PlainDate` instance with the duration added. \
+   * Any duration less than a full day does not change the date, but still returns a new instance. \
+   * Similarly a duration of 1.4 days is applied as 1 day.
+   */
+  addDuration (duration: Duration): PlainDate {
+    return new DayjsPlainDate(this.date.add(Math.trunc(duration.days), 'days'))
+  }
+
   subtract (amount: number, unit: PlainDateUnit): DayjsPlainDate {
     return new DayjsPlainDate(this.date.subtract(amount, unit))
+  }
+
+  /**
+   * Returns a new `PlainDate` instance with the duration subtracted. \
+   * Any duration less than a full day does not change the date, but still returns a new instance. \
+   * Similarly a duration of 1.4 days is applied as 1 day.
+   */
+  subtractDuration (duration: Duration): PlainDate {
+    return new DayjsPlainDate(this.date.subtract(Math.trunc(duration.days), 'days')) 
   }
 
   until (otherDate: PlainDateInput): Duration {

@@ -82,7 +82,7 @@ function onAutoFocusOnClose(event: Event): void {
           position-strategy="absolute"
           sticky="always"
           class="
-            z-40 origin-(--reka-popover-content-transform-origin)
+            z-50 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]
           "
           @close-auto-focus="onAutoFocusOnClose"

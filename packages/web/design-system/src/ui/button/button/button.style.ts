@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createButtonStyle = tv({
   compoundVariants: [
@@ -34,7 +34,7 @@ export const createButtonStyle = tv({
   slots: {
     container: `grid size-full items-center [grid-template-areas:'stack']`,
     icon: `shrink-0`,
-    label: `font-medium`,
+    label: `truncate font-medium`,
     loader: `mx-auto items-center duration-100 [grid-area:stack]`,
     root: `
       group/button shrink-0 cursor-pointer items-center justify-center border
@@ -42,8 +42,10 @@ export const createButtonStyle = tv({
       not-data-interactive:cursor-not-allowed
     `,
     rowLayout: `
-      flex items-center justify-center duration-100 [grid-area:stack]
+      flex items-center justify-center overflow-hidden duration-100
+      [grid-area:stack]
       group-not-disabled/button:group-active/button:scale-98
+      group-not-disabled/button:group-active/button:will-change-transform
     `,
   },
   variants: {
@@ -146,14 +148,17 @@ export const createButtonStyle = tv({
         icon: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         label: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         loader: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         root: `
           border-brand-600 bg-brand-solid
@@ -182,7 +187,7 @@ export const createButtonStyle = tv({
           focus-visible:outline-fg-brand-primary
           disabled:border-disabled-subtle disabled:bg-disabled
           data-interactive:hover:bg-primary-hover
-          dark:border-primary
+          dark:border-secondary
         `,
       },
       'tertiary': {

@@ -1,8 +1,9 @@
 import { Inclusivity, InclusivityString, mapToInclusivity, isInclusive } from '../common/inclusivity.js'
 import { PlainDate, PlainDateInput } from '../plain-date/plain-date.js'
-import { plainDate } from '../plain-date/index.js'
+import { plainDate, PlainDateUnit } from '../plain-date/index.js'
 import { DatePeriod } from '../common/date-period.enum.js'
 import { InvalidDateRangeBounds, NoDateRangeOverlap } from './date-range-errors.js'
+import { Duration } from '@wisemen/quantity'
 
 /**
  * DateRange only works with inclusive ranges internally, except for infinities
@@ -195,17 +196,38 @@ export class DateRange {
     return this.toString()
   }
 
-  setEndDate (endDate: PlainDateInput): DateRange {
+  /** Returns a new date range instance with the new end date */
+  withEndDate (endDate: PlainDateInput): DateRange {
     return new DateRange(this.startDate, endDate)
   }
 
-  setStartDate (startDate: PlainDateInput): DateRange {
+  /** Returns a new date range instance with the new start date */
+  withStartDate (startDate: PlainDateInput): DateRange {
     return new DateRange(startDate, this.endDate)
   }
 
   /** Returns true if this range ends before the other range starts */
   isStrictlyBefore (other: DateRange): boolean {
     return this.endDate.isBefore(other.startDate)
+  }
+
+  /** 
+   * Returns a new date range with both boundaries expanded \
+   *    - start date = this.startDate.subtractDuration(duration)
+   *    - end date = this.endDate.addDuration(duration)
+   */
+  expand(duration: Duration): DateRange
+  /** 
+   * Returns a new date range with both boundaries expanded \
+   *    - start date = this.startDate.subtractDuration(lower)
+   *    - end date = this.endDate.addDuration(upper)
+   */
+  expand(lower: Duration, upper: Duration): DateRange
+  expand(duration: Duration, upper?: Duration): DateRange {
+    return new DateRange(
+      this.startDate.subtractDuration(duration),
+      this.endDate.addDuration(upper ?? duration)
+    )
   }
 
   /** Returns true if this range starts after the other range ends */
@@ -237,9 +259,9 @@ export class DateRange {
 
   merge (withOther: DateRange): DateRange {
     if (this.isPrecededBy(withOther)) {
-      return this.setStartDate(withOther.startDate)
+      return this.withStartDate(withOther.startDate)
     } else if (this.isSucceededBy(withOther)) {
-      return this.setEndDate(withOther.endDate)
+      return this.withEndDate(withOther.endDate)
     } else {
       throw new Error('cannot merge non adjacent date ranges')
     }
@@ -262,5 +284,23 @@ export class DateRange {
     }
 
     return this.endDate.compare(withOther.endDate)
+  }
+
+  /**
+   * Creates an iterable for every date in this range starting from the start date
+   * until the end date (inclusive). 
+   * 
+   * By default every date is generated (amount = 1, interval = 'day'). \
+   * Increasing the interval between generated dates will always return the start date of this range
+   * even if the next value lies beyond this range.
+   */
+  *iterate(amount: number = 1, interval: PlainDateUnit = 'day'): Iterable<PlainDate>  {
+    let date = this.startDate
+
+    while(date.isSameOrBefore(this.endDate)) {
+      yield date
+
+      date = date.add(amount, interval)
+    }
   }
 }

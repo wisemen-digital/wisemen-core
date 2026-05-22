@@ -2,13 +2,23 @@ import type { MenuItemConfig } from './menuItem.type'
 
 export interface MenuItemProps {
   /**
-   * Configuration object for advanced content layout (avatar, icon, description, right content).
+   * Disable this menu item.
+   * @default false
+   */
+  isDisabled?: boolean
+  /**
+   * Configuration object for content layout (left, description, right).
    */
   config?: MenuItemConfig | null
   /**
-   * The label text displayed in the menu item. Falls back to `config.label` when not provided.
+   * When provided, the item is visually disabled and a tooltip is shown with this text explaining why.
+   * @default null
    */
-  label?: string | null
+  disabledReason?: string | null
+  /**
+   * The label text displayed in the menu item.
+   */
+  label: string
   /**
    * The size of the menu item.
    * @default 'md'

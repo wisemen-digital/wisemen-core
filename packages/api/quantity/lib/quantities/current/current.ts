@@ -32,7 +32,9 @@ export const CURRENT_MULTIPLIERS: Record<CurrentUnit, number> = {
 }
 
 export class Current extends Quantity<CurrentUnit, Current> {
-  protected baseUnit = CurrentUnit.AMPERE
+  protected getBaseUnit () {
+    return CurrentUnit.AMPERE
+  } 
 
   protected convertValueToBaseUnit (value: number, unit: CurrentUnit): number {
     return value * CURRENT_MULTIPLIERS[unit]
@@ -41,4 +43,6 @@ export class Current extends Quantity<CurrentUnit, Current> {
   protected convertBaseUnitValueTo (value: number, unit: CurrentUnit): number {
     return value / CURRENT_MULTIPLIERS[unit]
   }
+
+  static ZERO = new Current(0, CurrentUnit.AMPERE)
 }

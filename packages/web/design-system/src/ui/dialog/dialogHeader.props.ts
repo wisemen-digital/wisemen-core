@@ -7,9 +7,15 @@ export interface DialogHeaderProps {
   title: string
 
   /**
-   * Optional description text displayed below the title.
+   * Description text displayed below the title. Can be hidden by setting `hideDescription` to `true`
    */
-  description?: string | null
+  description: string
+
+  /**
+   * Whether to hide the description visually
+   * @default false
+   */
+  hideDescription?: boolean
 
   /**
    * Optional featured icon component displayed at the start of the header.

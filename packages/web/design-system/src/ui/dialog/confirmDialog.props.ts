@@ -18,7 +18,7 @@ export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutsi
    * Label for the cancel button.
    * @default null
    */
-  cancelLabel: string | null
+  cancelLabel?: string | null
 
   /**
    * Label for the confirm button.
@@ -40,7 +40,6 @@ export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutsi
   /**
    * Callback invoked when the confirm button is clicked.
    * If it returns a Promise, the button will show a loading state until the Promise resolves.
-   * @default null
    */
-  onConfirm?: (() => Promise<void> | void) | null
+  onConfirm: (() => Promise<void> | void)
 }

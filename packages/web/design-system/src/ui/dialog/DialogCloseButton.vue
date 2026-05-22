@@ -15,6 +15,9 @@ const i18n = useI18n()
     <UIIconButton
       :icon="XCloseIcon"
       :label="i18n.t('component.dialog.close')"
+      :keyboard-shortcut="{
+        key: 'Escape',
+      }"
       class="absolute top-0 right-0 z-10 m-lg"
       variant="tertiary"
     />

@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createLinkStyle = tv({
   compoundVariants: [
@@ -34,14 +34,15 @@ export const createLinkStyle = tv({
   slots: {
     container: `grid size-full [grid-template-areas:'stack']`,
     icon: `shrink-0`,
-    label: `font-medium`,
+    label: `truncate font-medium`,
     root: `
       group/link inline-flex shrink-0 cursor-pointer items-center justify-center
       border outline-2 outline-offset-1 outline-transparent duration-100
     `,
     rowLayout: `
-      flex items-center justify-center duration-100 [grid-area:stack]
-      group-active/link:scale-98
+      flex items-center justify-center overflow-hidden duration-100
+      [grid-area:stack]
+      group-active/link:scale-98 group-active/link:will-change-transform
     `,
   },
   variants: {
@@ -96,8 +97,14 @@ export const createLinkStyle = tv({
       },
       'primary': {
         container: `dark:glassy-inner-content`,
-        icon: `text-primary-on-brand`,
-        label: `text-primary-on-brand`,
+        icon: `
+          text-primary-on-brand
+          dark:text-white
+        `,
+        label: `
+          text-primary-on-brand
+          dark:text-white
+        `,
         root: `
           border-brand-600 bg-brand-solid
           hover:brightness-95
@@ -112,7 +119,7 @@ export const createLinkStyle = tv({
           border-secondary bg-primary
           hover:bg-primary-hover
           focus-visible:outline-fg-brand-primary
-          dark:border-primary
+          dark:border-secondary
         `,
       },
       'tertiary': {

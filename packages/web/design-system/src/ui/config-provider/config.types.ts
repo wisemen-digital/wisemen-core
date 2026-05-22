@@ -1,7 +1,7 @@
 import type { HourCycle } from '@/types/hourCycle.type'
 import type { NumberFormat } from '@/types/numberFormat.type'
-import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete'
-import type { ToastAutoClose } from '@/ui/toast'
+import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete/addressAutocomplete.type'
+import type { ToastAutoClose } from '@/ui/toast/toast.type'
 
 export interface ConfigProviderProps {
   /**
@@ -19,7 +19,7 @@ export interface ConfigProviderProps {
    *
    * @default 'always'
    */
-  autoCloseToast?: ToastAutoClose
+  autoCloseToast: ToastAutoClose
   /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null
@@ -51,4 +51,16 @@ export interface ConfigProviderProps {
    * The name of the project, used for example in the document title template.
    */
   projectName: string
+  /**
+   * When true, all animations in the design system run instantly.
+   * Useful for accessibility (reduced motion preference) or testing.
+   * Note: this also activates when the user has `prefers-reduced-motion: reduce` set on their OS.
+   * @default false
+   */
+  reducedMotion?: boolean
+  /*
+   * Whether to show 'Back' and 'Forward' navigation arrows in the top bar
+   * @default false
+   */
+  showNavigationArrowsInTopBar?: boolean
 }

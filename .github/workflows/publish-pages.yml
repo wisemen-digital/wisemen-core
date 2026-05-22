@@ -3,7 +3,7 @@ name: Publish Docs & Storybook to GitHub Pages
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
   workflow_call:
 jobs:
@@ -18,18 +18,18 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: ${{ inputs.node-version }}
-          cache: 'pnpm'
+          node-version: 24
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build icons
-        run: pnpm --filter @wisemen/vue-core-icons build
       - name: Build storybook
-        run: pnpm build-storybook
+        run: pnpm story:build
       - name: Build docs
         run: pnpm docs:build
       - name: Copy static files
         run: |
+          mkdir -p static/storybook
+          cp -r packages/web/design-system/storybook-static/* static/storybook/
           mkdir -p static/docs
           cp -r docs/.vitepress/dist/* static/docs/
       - name: Store archive
