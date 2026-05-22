@@ -116,6 +116,54 @@ describe('CSV util', () => {
 
       expect(rawText).toBe(`name,age\nJohn Doe,30\nJane Doe,25\n`)
     })
+
+    it('encodes a csv stream with batch size', async () => {
+      const data = [
+        { name: 'John Doe', age: '30' },
+        { name: 'Jane Doe', age: '25' },
+        { name: 'Jack Doe', age: '20' }
+      ]
+
+      const stream = CSV.encodeStream(data, { columns: ['name', 'age'], batchSize: 1, maxChunkBytes: Number.MAX_SAFE_INTEGER })
+      
+      const chunks: string[] = []
+
+      for await (const chunk of stream) {
+        chunks.push(String(chunk))
+      }
+
+      expect(chunks).toEqual([
+        'name;age\nJohn Doe;30\n',
+        'Jane Doe;25\n',
+        'Jack Doe;20\n'
+      ])
+    })
+
+    it('encodes a csv stream with max chunk bytes', async () => {
+      const data = [
+        { name: 'John Doe', age: '30' },
+        { name: 'Jane Doe', age: '25' },
+        { name: 'Jack Doe', age: '20' }
+      ]
+
+      const stream = CSV.encodeStream(data, {
+        columns: ['name', 'age'],
+        maxChunkBytes: 20,
+        batchSize: Number.MAX_SAFE_INTEGER
+      })
+
+      const chunks: string[] = []
+
+      for await (const chunk of stream) {
+        
+        chunks.push(String(chunk))
+      }
+
+      expect(chunks).toEqual([
+        'name;age\nJohn Doe;30\n',
+        'Jane Doe;25\nJack Doe;20\n'
+      ])
+    })
   })
 
   describe('encode', () => {

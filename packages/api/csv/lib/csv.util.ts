@@ -7,6 +7,10 @@ export interface CSVRow<K extends string> {
   data: Record<K, string>
 }
 
+const DEFAULT_DELIMITER = ';'
+const DEFAULT_BATCH_SIZE = 100
+const DEFAULT_MAX_CHUNK_BYTES = 64 * 1024
+
 export class CSV {
   static decode <K extends string> (
     csv: string,
@@ -15,7 +19,7 @@ export class CSV {
       delimiter?: string
     }
   ): Array<Record<K, string>> {
-    const delimiter = options?.delimiter ?? ';'
+    const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
     const [keys, ...data] = csv
       .replace(/(\\r)/gm, '')
@@ -47,7 +51,7 @@ export class CSV {
       delimiter?: string
     }
   ): AsyncGenerator<CSVRow<K>> {
-    const delimiter = options?.delimiter ?? ';'
+    const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
     const rl = readline.createInterface({
       input: stream,
@@ -95,7 +99,7 @@ export class CSV {
     }
   ): string {
     const keys = options?.columns ?? Object.keys(data[0])
-    const delimiter = options?.delimiter ?? ';'
+    const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
     return [
       keys.join(delimiter),
@@ -105,31 +109,65 @@ export class CSV {
     ].join('\n')
   }
 
- static encodeStream<K extends string>(
+  static encodeStream<K extends string>(
     data: Iterable<Record<K, string>> | AsyncIterable<Record<K, string>>,
     options?: {
       columns?: readonly K[]
       delimiter?: string
+      batchSize?: number
+      maxChunkBytes?: number,
+
     }
   ): Readable {
-    const delimiter = options?.delimiter ?? ';'
+    const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
+    const batchSize = Math.max(1, options?.batchSize ?? DEFAULT_BATCH_SIZE)
+    const maxChunkBytes = Math.max(1, options?.maxChunkBytes ?? DEFAULT_MAX_CHUNK_BYTES)
+
     let keys: readonly K[] | null = options?.columns ?? null
 
     const iterator = (async function* () {
       let headerWritten = false
+      let rowCount = 0
+      let chunkBytes = 0
+      let chunks: string[] = []
 
       for await (const row of data) {
         if (!headerWritten) {
-          keys = keys ?? Object.keys(row) as K[]
-          yield keys.join(delimiter) + '\n'
+          keys = keys ?? (Object.keys(row) as K[])
+
+          const header =
+            keys.join(delimiter) + '\n'
+
+          chunks.push(header)
+          chunkBytes += Buffer.byteLength(header)
+
           headerWritten = true
         }
 
-        const line = keys!
-          .map(key => row[key] ?? '')
-          .join(delimiter)
+        const line =
+          keys!
+            .map(key => row[key] ?? '')
+            .join(delimiter) + '\n'
 
-        yield line + '\n'
+        chunks.push(line)
+
+        rowCount++
+        chunkBytes += Buffer.byteLength(line)
+
+        if (
+          rowCount >= batchSize ||
+          chunkBytes >= maxChunkBytes
+        ) {
+          yield chunks.join('')
+
+          chunks = []
+          rowCount = 0
+          chunkBytes = 0
+        }
+      }
+
+      if (chunks.length > 0) {
+        yield chunks.join('')
       }
     })()
 
