@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { usePreferredContrast } from '@vueuse/core'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -11,9 +12,12 @@ const model = defineModel<boolean>({
 })
 
 const i18n = useI18n()
+const preferredContrast = usePreferredContrast()
+
+const prefersMoreContrast = computed<boolean>(() => preferredContrast.value === 'more')
 
 const stringModel = computed<'false' | 'true'>({
-  get: () => model.value ? 'true' : 'false',
+  get: () => model.value || prefersMoreContrast.value ? 'true' : 'false',
   set: (value) => {
     model.value = value === 'true'
   },
@@ -36,6 +40,7 @@ const options = computed<PreferencesDropdownMenuOption<'false' | 'true'>[]>(() =
     <PreferencesDropdownMenu
       v-model="stringModel"
       :options="options"
+      :is-disabled="prefersMoreContrast"
     />
   </PreferencesSection>
 </template>
