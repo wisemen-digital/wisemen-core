@@ -41,6 +41,7 @@
     "cleanup": "rimraf dist/ node_modules/ .turbo/",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "bench": "vitest run --config vitest.bench.config.ts",
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
@@ -52,20 +53,22 @@
   },
   "peerDependencies": {
     "@internationalized/date": "catalog:date",
+    "@tanstack/vue-virtual": "^3.0.0",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
     "@wisemen/vue-core-actions": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "formango": "catalog:peer",
     "motion-v": "catalog:peer",
     "pinia": "catalog:vue",
     "reka-ui": "catalog:peer",
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
+    "vue-draggable-plus": "^0.6.0",
     "vue-i18n": "catalog:peer",
+    "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-dates": "workspace:*",
-    "zod": "catalog:general",
-    "vue-router": "catalog:peer"
+    "zod": "catalog:general"
   },
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",
@@ -73,12 +76,12 @@
     "@wisemen/vue-core-icons": "workspace:*",
     "country-flag-icons": "catalog:general",
     "libphonenumber-js": "catalog:general",
-    "vue-sonner": "catalog:vue",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
     "vue-component-meta": "catalog:storybook",
-    "vue-component-type-helpers": "catalog:types"
+    "vue-component-type-helpers": "catalog:types",
+    "vue-sonner": "catalog:vue"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:storybook",
@@ -89,6 +92,7 @@
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
     "@tanstack/vue-hotkeys": "catalog:",
+    "@tanstack/vue-virtual": "^3.13.18",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
     "@vitest/browser-playwright": "catalog:test",
@@ -111,6 +115,7 @@
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
     "vue": "catalog:vue",
+    "vue-draggable-plus": "catalog:",
     "vue-router": "catalog:peer",
     "vue-tsc": "catalog:vue",
     "zod": "catalog:general"
