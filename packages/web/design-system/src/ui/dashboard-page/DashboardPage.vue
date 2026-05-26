@@ -101,7 +101,11 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
 <template>
   <Page
     :title="title"
-    class="z-1 flex min-h-0 flex-1 flex-col overflow-hidden bg-primary"
+    class="
+      custom-content-shadow z-1 flex min-h-0 flex-1 flex-col overflow-hidden
+      rounded-xl border border-secondary bg-primary
+      dark:shadow-none
+    "
   >
     <DashboardPageActions v-if="isPageActionsSlotVisible">
       <template #left>
@@ -124,3 +128,11 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
     </div>
   </Page>
 </template>
+
+<style scoped>
+.custom-content-shadow {
+  box-shadow:
+    lch(0 0 0 / 0.02) 0px 3px 6px -2px,
+    lch(0 0 0 / 0.04) 0px 1px 1px;
+}
+</style>
