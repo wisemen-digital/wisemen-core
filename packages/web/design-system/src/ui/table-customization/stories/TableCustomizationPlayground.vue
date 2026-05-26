@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type { ActionGroup } from '@wisemen/vue-core-actions'
-import { computed, ref } from 'vue'
+import {
+  computed,
+  ref,
+} from 'vue'
 
 import { UIButton } from '@/ui/button'
+import type { TableColumn } from '@/ui/table/types/table.type'
 import type { TableColumnState } from '@/ui/table-customization/tableCustomization.composable'
 import UITableCustomizationDialog from '@/ui/table-customization/TableCustomizationDialog.vue'
 import { UIText } from '@/ui/text/index'
-import type { TableColumn } from '@/ui/table/types/table.type'
 
 interface User {
   id: string
@@ -15,8 +17,6 @@ interface User {
   role: string
   status: string
 }
-
-const actionGroup: ActionGroup = {}
 
 const allColumns: TableColumn<User>[] = [
   {
@@ -50,6 +50,7 @@ const columnStates = ref<TableColumnState[]>(
   })),
 )
 
+// eslint-disable-next-line eslint-plugin-wisemen/vue-computed-ref-generics
 const visibleColumns = computed(() => columnStates.value.filter((s) => s.isVisible))
 
 function onColumnStatesChange(updated: TableColumnState[]): void {

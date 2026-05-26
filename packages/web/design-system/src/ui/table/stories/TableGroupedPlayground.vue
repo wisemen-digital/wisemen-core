@@ -24,6 +24,7 @@ function makeCellComponent(item: User, key: keyof User, isPrimary = false) {
   return markRaw(defineComponent({
     name: `Cell_${key}`,
     setup() {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       return () => h(UITableBodyRowCell, null, {
         default: () => h(UITableBodyRowCellText, {
           isPrimaryCell: isPrimary,

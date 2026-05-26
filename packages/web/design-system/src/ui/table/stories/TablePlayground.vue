@@ -38,6 +38,7 @@ const data: User[] = Array.from({
   id: String(i + 1),
   name: `User ${i + 1}`,
   email: `user${i + 1}@example.com`,
+  // eslint-disable-next-line no-nested-ternary
   role: i % 3 === 0 ? 'Admin' : (i % 3 === 1 ? 'Editor' : 'Viewer'),
   status: i % 4 === 0 ? 'inactive' : 'active',
 }))
@@ -46,6 +47,7 @@ function makeCellComponent(item: User, key: keyof User, isPrimary = false) {
   return markRaw(defineComponent({
     name: `Cell_${key}`,
     setup() {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       return () => h(UITableBodyRowCell, null, {
         default: () => h(UITableBodyRowCellText, {
           isPrimaryCell: isPrimary,

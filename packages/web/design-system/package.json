@@ -92,7 +92,7 @@
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
     "@tanstack/vue-hotkeys": "catalog:",
-    "@tanstack/vue-virtual": "^3.13.18",
+    "@tanstack/vue-virtual": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
     "@vitest/browser-playwright": "catalog:test",
