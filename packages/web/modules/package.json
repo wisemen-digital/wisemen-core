@@ -59,7 +59,7 @@
     "@vueuse/core": "catalog:vue",
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-components": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "highlight-words": "catalog:general",
     "histoire": "catalog:stories",
     "husky": "catalog:build",

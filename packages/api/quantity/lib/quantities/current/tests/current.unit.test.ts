@@ -2,6 +2,7 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { Current } from '../current.js'
 import { CurrentUnit } from '../current-unit.enum.js'
+import { Rate } from '../../../rate.js'
 
 void describe('Current class', () => {
   void describe('Current calculations', () => {
@@ -32,6 +33,36 @@ void describe('Current class', () => {
       expect(r1.isEqualTo(500, CurrentUnit.MILLIAMPERE)).toBe(true)
       expect(r2).toBe(4)
       expect(r3).toBe(2)
+    })
+
+    void it('takes a rate of a current', () => {
+      const c1 = new Current(100, CurrentUnit.AMPERE)
+      const p1 = Rate.fromPercent(10)
+      const p2 = Rate.fromPermille(3)
+      const p3 = Rate.fromDecimal(0.25)
+      const r1 = c1.multiply(p1)
+      const r2 = c1.multiply(p2)
+      const r3 = c1.multiply(p3)
+
+      expect(r1.isEqualTo(10, CurrentUnit.AMPERE)).toBe(true)
+      expect(r2.isEqualTo(300, CurrentUnit.MILLIAMPERE)).toBe(true)
+      expect(r3.isEqualTo(25, CurrentUnit.AMPERE)).toBe(true)
+    })
+
+    void it('formats a current as a string', () => {
+      const c1 = new Current(10, CurrentUnit.AMPERE)
+      const c2 = new Current(500, CurrentUnit.MILLIAMPERE)
+      const c3 = new Current(0.5, CurrentUnit.AMPERE)
+
+      expect(c1.format('nl-BE')).toBe('10 A')
+      expect(c2.format('nl-BE')).toBe('500 mA')
+      expect(c3.format('nl-BE')).toBe('0,5 A')
+      expect(c3.format('nl-BE', { minimumFractionDigits: 3, maximumFractionDigits: 3})).toBe('0,500 A')
+
+      expect(c1.format('en-US')).toBe('10 A')
+      expect(c2.format('en-US')).toBe('500 mA')
+      expect(c3.format('en-US')).toBe('0.5 A')
+      expect(c3.format('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3})).toBe('0.500 A')
     })
   })
 })

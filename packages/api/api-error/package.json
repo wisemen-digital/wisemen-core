@@ -32,10 +32,10 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "expect": "catalog:test",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "typescript": "catalog:peer",
-    "oxlint": "catalog:lint",
-    "oxlint-tsgolint": "catalog:lint"
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api"
   },
   "author": "Kobe Kwanten",
   "license": "SEE LICENSE IN LICENSE.md",

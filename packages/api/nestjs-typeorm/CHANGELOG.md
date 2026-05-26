@@ -1,5 +1,11 @@
 # @wisemen/nestjs-typeorm
 
+## 1.0.0
+
+### Major Changes
+
+- [#1099](https://github.com/wisemen-digital/wisemen-core/pull/1099) [`69126c5`](https://github.com/wisemen-digital/wisemen-core/commit/69126c58322d45bf1fb86220ced9301209509acb) Thanks [@senne-vanreusel](https://github.com/senne-vanreusel)! - Added support for typeorm v1.0.0
+
 ## 0.2.1
 
 ### Patch Changes

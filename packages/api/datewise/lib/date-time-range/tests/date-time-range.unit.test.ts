@@ -1,11 +1,13 @@
 import { before, describe, it } from 'node:test'
 import { expect } from 'expect'
+import { Duration, DurationUnit } from '@wisemen/quantity'
 import { DateTimeRange } from '../date-time-range.js'
 import { InvalidDateTimeRangeBounds } from '../date-time-range.errors.js'
 import { initDayjs } from '../../common/init-dayjs.js'
 import { Inclusivity } from '../../common/inclusivity.js'
 import { FutureInfinity } from '../../timestamp/future-infinity.js'
 import { timestamp } from '../../timestamp/index.js'
+import type { Timestamp } from '../../timestamp/timestamp.js'
 import { PastInfinity } from '../../timestamp/past-infinity.js'
 
 describe('DateTimeRange unit tests', () => {
@@ -509,6 +511,91 @@ describe('DateTimeRange unit tests', () => {
       )
 
       expect(range.milliseconds).toBe(Infinity)
+    })
+  })
+
+  describe('duration', () => {
+    it('returns a Duration object', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'second'))
+
+      expect(range.duration).toBeInstanceOf(Duration)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now, '[]')
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1ms)', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'millisecond'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 second]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'second'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 minute]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'minute'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 hour]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 day]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'day'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, now + 1 year]', () => {
+      const now = timestamp()
+      const range = new DateTimeRange(now, now.add(1, 'year'))
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [now, +Infinity)', () => {
+      const range = new DateTimeRange(
+        timestamp(),
+        new FutureInfinity()
+      )
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [-Infinity, now]', () => {
+      const range = new DateTimeRange(
+        new PastInfinity(),
+        timestamp()
+      )
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
+    })
+
+    it('duration milliseconds are consistent with milliseconds property for [-Infinity, +Infinity]', () => {
+      const range = new DateTimeRange(
+        new PastInfinity(),
+        new FutureInfinity()
+      )
+
+      expect(range.duration.milliseconds).toBe(range.milliseconds)
     })
   })
 
@@ -1028,7 +1115,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newUntil = now.add(2, 'minute')
 
-      const newRange = range.setUntil(newUntil)
+      const newRange = range.withUntil(newUntil)
 
       expect(newRange.inclLower.isSame(range.inclLower)).toBe(true)
       expect(newRange.exclUpper.isSame(newUntil)).toBe(true)
@@ -1040,7 +1127,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newUntil = now.add(2, 'minute').toDate()
 
-      const newRange = range.setUntil(newUntil)
+      const newRange = range.withUntil(newUntil)
 
       expect(newRange.exclUpper.isSame(timestamp(newUntil))).toBe(true)
     })
@@ -1053,7 +1140,7 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newFrom = now.subtract(1, 'minute')
 
-      const newRange = range.setFrom(newFrom)
+      const newRange = range.withFrom(newFrom)
 
       expect(newRange.inclLower.isSame(newFrom)).toBe(true)
       expect(newRange.exclUpper.isSame(range.exclUpper)).toBe(true)
@@ -1065,9 +1152,61 @@ describe('DateTimeRange unit tests', () => {
       const range = new DateTimeRange(now, later)
       const newFrom = now.subtract(1, 'minute').toDate()
 
-      const newRange = range.setFrom(newFrom)
+      const newRange = range.withFrom(newFrom)
 
       expect(newRange.inclLower.isSame(timestamp(newFrom))).toBe(true)
+    })
+  })
+
+  describe('isStrictlyBefore', () => {
+    it('returns true when this range ends exactly when the other starts', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(1, 'second'), now.add(2, 'second'))
+
+      expect(first.isStrictlyBefore(second)).toBe(true)
+    })
+
+    it('returns true when this range is fully before the other range', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(3, 'second'), now.add(4, 'second'))
+
+      expect(first.isStrictlyBefore(second)).toBe(true)
+    })
+
+    it('returns false when ranges overlap', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(3, 'second'))
+      const second = new DateTimeRange(now.add(2, 'second'), now.add(4, 'second'))
+
+      expect(first.isStrictlyBefore(second)).toBe(false)
+    })
+  })
+
+  describe('isStrictlyAfter', () => {
+    it('returns true when this range starts exactly when the other ends', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(1, 'second'), now.add(2, 'second'))
+
+      expect(second.isStrictlyAfter(first)).toBe(true)
+    })
+
+    it('returns true when this range is fully after the other range', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(1, 'second'))
+      const second = new DateTimeRange(now.add(3, 'second'), now.add(4, 'second'))
+
+      expect(second.isStrictlyAfter(first)).toBe(true)
+    })
+
+    it('returns false when ranges overlap', () => {
+      const now = timestamp()
+      const first = new DateTimeRange(now, now.add(3, 'second'))
+      const second = new DateTimeRange(now.add(2, 'second'), now.add(4, 'second'))
+
+      expect(second.isStrictlyAfter(first)).toBe(false)
     })
   })
 
@@ -1350,6 +1489,414 @@ describe('DateTimeRange unit tests', () => {
       const inner = new DateTimeRange(now.add(1, 'day').add(1, 'ms'), now.add(2, 'day'))
 
       expect(outer.containsRange(inner)).toBe(false)
+    })
+  })
+
+  describe('compare', () => {
+    it('returns negative value when this range starts before the other range', () => {
+      const now = timestamp()
+      const earlier = new DateTimeRange(now.subtract(1, 'day'), now)
+      const later = new DateTimeRange(now.add(1, 'day'), now.add(2, 'days'))
+
+      expect(earlier.compare(later)).toBeLessThan(0)
+    })
+
+    it('returns positive value when this range starts after the other range', () => {
+      const now = timestamp()
+      const earlier = new DateTimeRange(now.subtract(1, 'day'), now)
+      const later = new DateTimeRange(now.add(1, 'day'), now.add(2, 'days'))
+
+      expect(later.compare(earlier)).toBeGreaterThan(0)
+    })
+
+    it('returns 0 when both ranges are identical', () => {
+      const now = timestamp()
+      const range1 = new DateTimeRange(now, now.add(1, 'hour'))
+      const range2 = new DateTimeRange(now, now.add(1, 'hour'))
+
+      expect(range1.compare(range2)).toBe(0)
+    })
+
+    it('returns negative value when ranges have same start but this ends before the other', () => {
+      const now = timestamp()
+      const shorter = new DateTimeRange(now, now.add(1, 'hour'))
+      const longer = new DateTimeRange(now, now.add(2, 'hours'))
+
+      expect(shorter.compare(longer)).toBeLessThan(0)
+    })
+
+    it('returns positive value when ranges have same start but this ends after the other', () => {
+      const now = timestamp()
+      const shorter = new DateTimeRange(now, now.add(1, 'hour'))
+      const longer = new DateTimeRange(now, now.add(2, 'hours'))
+
+      expect(longer.compare(shorter)).toBeGreaterThan(0)
+    })
+
+    it('handles comparison with past infinity lower bound', () => {
+      const now = timestamp()
+      const infiniteRange = new DateTimeRange(new PastInfinity(), now)
+      const finiteRange = new DateTimeRange(now.subtract(1, 'year'), now)
+
+      expect(infiniteRange.compare(finiteRange)).toBeLessThan(0)
+      expect(finiteRange.compare(infiniteRange)).toBeGreaterThan(0)
+    })
+
+    it('handles comparison with future infinity upper bound', () => {
+      const now = timestamp()
+      const infiniteRange = new DateTimeRange(now, new FutureInfinity())
+      const finiteRange = new DateTimeRange(now, now.add(1, 'year'))
+
+      expect(finiteRange.compare(infiniteRange)).toBeLessThan(0)
+      expect(infiniteRange.compare(finiteRange)).toBeGreaterThan(0)
+    })
+
+    it('handles comparison of two infinite ranges', () => {
+      const range1 = new DateTimeRange(new PastInfinity(), new FutureInfinity())
+      const range2 = new DateTimeRange(new PastInfinity(), new FutureInfinity())
+
+      expect(range1.compare(range2)).toBe(0)
+    })
+
+    it('compares ranges with millisecond precision', () => {
+      const now = timestamp()
+      const range1 = new DateTimeRange(now, now.add(100, 'ms'))
+      const range2 = new DateTimeRange(now.add(1, 'ms'), now.add(100, 'ms'))
+
+      expect(range1.compare(range2)).toBe(-1)
+      expect(range2.compare(range1)).toBe(1)
+    })
+
+    it('correctly sorts an array of date time ranges by start and end times', () => {
+      const now = timestamp()
+      
+      // Create ranges in random order
+      const range1 = new DateTimeRange(now.add(2, 'days'), now.add(3, 'days')) // Latest start
+      const range2 = new DateTimeRange(now, now.add(2, 'hours'))                // Earliest start, shorter
+      const range3 = new DateTimeRange(now, now.add(1, 'day'))                  // Same start as range2, longer
+      const range4 = new DateTimeRange(now.add(1, 'day'), now.add(2, 'days'))   // Middle start
+      const range5 = new DateTimeRange(now.subtract(1, 'day'), now)             // Before all others
+
+      const unsorted = [range1, range2, range3, range4, range5]
+      const sorted = [...unsorted].sort((a, b) => a.compare(b))
+
+      // Verify the order: range5, range2, range3, range4, range1
+      expect(sorted[0]).toBe(range5) // Starts earliest (now - 1 day)
+      expect(sorted[1]).toBe(range2) // Starts at 'now', ends sooner (2 hours)
+      expect(sorted[2]).toBe(range3) // Starts at 'now', ends later (1 day)
+      expect(sorted[3]).toBe(range4) // Starts at now + 1 day
+      expect(sorted[4]).toBe(range1) // Starts latest (now + 2 days)
+    })
+
+    it('correctly sorts an array including ranges with infinity bounds', () => {
+      const now = timestamp()
+      
+      const infinitePast = new DateTimeRange(new PastInfinity(), now)
+      const finiteMid = new DateTimeRange(now, now.add(1, 'day'))
+      const infiniteFuture = new DateTimeRange(now.add(1, 'day'), new FutureInfinity())
+      const fullInfinite = new DateTimeRange(new PastInfinity(), new FutureInfinity())
+
+      const unsorted = [infiniteFuture, finiteMid, fullInfinite, infinitePast]
+      const sorted = [...unsorted].sort((a, b) => a.compare(b))
+
+      expect(sorted[0].inclLower.isPastInfinity()).toBe(true) // fullInfinite or infinitePast first
+      expect(sorted[sorted.length - 1]).toBe(infiniteFuture)   // Starts latest
+    })
+
+    it('maintains stable sort for overlapping ranges with different boundaries', () => {
+      const now = timestamp()
+      
+      const range1 = new DateTimeRange(now, now.add(1, 'hour'))
+      const range2 = new DateTimeRange(now, now.add(2, 'hours'))
+      const range3 = new DateTimeRange(now, now.add(30, 'minutes'))
+
+      const sorted = [range1, range2, range3].sort((a, b) => a.compare(b))
+
+      // All start at the same time, so sorted by end time
+      expect(sorted[0]).toBe(range3) // Ends at 30 minutes
+      expect(sorted[1]).toBe(range1) // Ends at 1 hour
+      expect(sorted[2]).toBe(range2) // Ends at 2 hours
+    })
+  })
+
+  describe('iterate', () => {
+    it('iterates over a single millisecond range', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(1, 'ms'))
+      const timestamps = Array.from(range.iterate())
+
+      expect(timestamps).toHaveLength(1)
+      expect(timestamps[0].isSame(start)).toBe(true)
+    })
+
+    it('iterates over all milliseconds in a range', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'ms'))
+      const timestamps = Array.from(range.iterate(1, 'ms'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'ms'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'ms'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'ms'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'ms'))).toBe(true)
+    })
+
+    it('iterates with second intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'seconds'))
+      const timestamps = Array.from(range.iterate(1, 'second'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'second'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'seconds'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'seconds'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'seconds'))).toBe(true)
+    })
+
+    it('iterates with minute intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'minutes'))
+      const timestamps = Array.from(range.iterate(1, 'minute'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'minute'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'minutes'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'minutes'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'minutes'))).toBe(true)
+    })
+
+    it('iterates with hour intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'hours'))
+      const timestamps = Array.from(range.iterate(1, 'hour'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'hour'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'hours'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'hours'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'hours'))).toBe(true)
+    })
+
+    it('iterates with day intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'days'))
+      const timestamps = Array.from(range.iterate(1, 'day'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'day'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'days'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'days'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'days'))).toBe(true)
+    })
+
+    it('iterates with week intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(4, 'weeks'))
+      const timestamps = Array.from(range.iterate(1, 'week'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'week'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'weeks'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'weeks'))).toBe(true)
+    })
+
+    it('iterates with month intervals', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(4, 'months'))
+      const timestamps = Array.from(range.iterate(1, 'month'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'month'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'months'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'months'))).toBe(true)
+    })
+
+    it('iterates with year intervals', () => {
+      const start = timestamp('2020-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'years'))
+      const timestamps = Array.from(range.iterate(1, 'year'))
+
+      expect(timestamps).toHaveLength(5)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'year'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'years'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(3, 'years'))).toBe(true)
+      expect(timestamps[4].isSame(start.add(4, 'years'))).toBe(true)
+    })
+
+    it('always includes start timestamp even when interval exceeds range', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(5, 'seconds'))
+      const timestamps = Array.from(range.iterate(10, 'seconds'))
+
+      expect(timestamps).toHaveLength(1)
+      expect(timestamps[0].isSame(start)).toBe(true)
+    })
+
+    it('stops before end timestamp when interval does not divide range evenly', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(10, 'seconds'))
+      const timestamps = Array.from(range.iterate(3, 'seconds'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(3, 'seconds'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(6, 'seconds'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(9, 'seconds'))).toBe(true)
+    })
+
+    it('excludes end timestamp (exclusive upper bound)', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(8, 'seconds'))
+      const timestamps = Array.from(range.iterate(3, 'seconds'))
+
+      // 0, 3, 6, 9 (9 exceeds range end of 8)
+      expect(timestamps).toHaveLength(3)
+      expect(timestamps[timestamps.length - 1].isSame(start.add(6, 'seconds'))).toBe(true)
+    })
+
+    it('iterates with combined amount and interval (2 hours)', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(8, 'hours'))
+      const timestamps = Array.from(range.iterate(2, 'hours'))
+
+      expect(timestamps).toHaveLength(4)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(2, 'hours'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(4, 'hours'))).toBe(true)
+      expect(timestamps[3].isSame(start.add(6, 'hours'))).toBe(true)
+    })
+
+    it('can be used in a for...of loop', () => {
+      const start = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(start, start.add(3, 'seconds'))
+      const timestamps: Timestamp[] = []
+
+      for (const ts of range.iterate(1, 'second')) {
+        timestamps.push(ts)
+      }
+
+      expect(timestamps).toHaveLength(3)
+      expect(timestamps[0].isSame(start)).toBe(true)
+      expect(timestamps[1].isSame(start.add(1, 'second'))).toBe(true)
+      expect(timestamps[2].isSame(start.add(2, 'seconds'))).toBe(true)
+    })
+
+    it('handles large intervals with millisecond precision', () => {
+      const start = timestamp('2024-01-01T00:00:00.123Z')
+      const range = new DateTimeRange(start, start.add(3, 'days'))
+      const timestamps = Array.from(range.iterate(1, 'day'))
+
+      expect(timestamps).toHaveLength(3)
+      expect(timestamps[0].toISOString()).toBe('2024-01-01T00:00:00.123Z')
+      expect(timestamps[1].toISOString()).toBe('2024-01-02T00:00:00.123Z')
+      expect(timestamps[2].toISOString()).toBe('2024-01-03T00:00:00.123Z')
+    })
+  })
+  
+  describe('expand', () => {
+    it('expands both boundaries symmetrically by the given duration', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(30, DurationUnit.MINUTES))
+
+      expect(expanded.from.isSame(now.subtract(30, 'minute'))).toBe(true)
+      expect(expanded.until.isSame(now.add(90, 'minute'))).toBe(true)
+    })
+
+    it('expanding by zero duration returns an equal range', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(0, DurationUnit.MILLISECONDS))
+
+      expect(expanded.isSame(range)).toBe(true)
+    })
+
+    it('expanding by one hour moves each boundary by exactly one hour', () => {
+      const now = timestamp('2024-06-01T10:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(2, 'hours'))
+      const expanded = range.expand(new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isSame(now.subtract(1, 'hour'))).toBe(true)
+      expect(expanded.until.isSame(now.add(3, 'hours'))).toBe(true)
+    })
+
+    it('expanding by milliseconds works at fine-grained precision', () => {
+      const now = timestamp('2024-01-01T00:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'second'))
+      const expanded = range.expand(new Duration(500, DurationUnit.MILLISECONDS))
+
+      expect(expanded.from.isSame(now.subtract(500, 'ms'))).toBe(true)
+      expect(expanded.until.isSame(now.add(1500, 'ms'))).toBe(true)
+    })
+
+    it('preserves the original range unchanged', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      range.expand(new Duration(30, DurationUnit.MINUTES))
+
+      expect(range.from.isSame(now)).toBe(true)
+      expect(range.until.isSame(now.add(1, 'hour'))).toBe(true)
+    })
+
+    it('expanding a range with a past-infinity lower bound keeps lower bound as past-infinity', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(new PastInfinity(), now)
+      const expanded = range.expand(new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isPastInfinity()).toBe(true)
+      expect(expanded.until.isSame(now.add(1, 'hour'))).toBe(true)
+    })
+
+    it('expanding a range with a future-infinity upper bound keeps upper bound as future-infinity', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, new FutureInfinity())
+      const expanded = range.expand(new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isSame(now.subtract(1, 'hour'))).toBe(true)
+      expect(expanded.until.isFutureInfinity()).toBe(true)
+    })
+
+    it('expands boundaries asymmetrically when two durations are given', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(2, 'hours'))
+      const expanded = range.expand(new Duration(30, DurationUnit.MINUTES), new Duration(1, DurationUnit.HOURS))
+
+      expect(expanded.from.isSame(now.subtract(30, 'minute'))).toBe(true)
+      expect(expanded.until.isSame(now.add(3, 'hours'))).toBe(true)
+    })
+
+    it('expanding with two durations of zero returns an equal range', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(0, DurationUnit.MILLISECONDS), new Duration(0, DurationUnit.MILLISECONDS))
+
+      expect(expanded.isSame(range)).toBe(true)
+    })
+
+    it('can expand only the start by passing zero for the upper duration', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(30, DurationUnit.MINUTES), new Duration(0, DurationUnit.MILLISECONDS))
+
+      expect(expanded.from.isSame(now.subtract(30, 'minute'))).toBe(true)
+      expect(expanded.until.isSame(now.add(1, 'hour'))).toBe(true)
+    })
+
+    it('can expand only the end by passing zero for the lower duration', () => {
+      const now = timestamp('2024-01-10T12:00:00.000Z')
+      const range = new DateTimeRange(now, now.add(1, 'hour'))
+      const expanded = range.expand(new Duration(0, DurationUnit.MILLISECONDS), new Duration(30, DurationUnit.MINUTES))
+
+      expect(expanded.from.isSame(now)).toBe(true)
+      expect(expanded.until.isSame(now.add(90, 'minute'))).toBe(true)
     })
   })
 })

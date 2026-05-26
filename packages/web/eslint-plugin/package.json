@@ -46,15 +46,15 @@
     "typescript": "catalog:peer"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "catalog:lint",
-    "@typescript-eslint/type-utils": "catalog:lint",
-    "@typescript-eslint/utils": "catalog:lint",
+    "@typescript-eslint/scope-manager": "catalog:lint-web",
+    "@typescript-eslint/type-utils": "catalog:lint-web",
+    "@typescript-eslint/utils": "catalog:lint-web",
     "graphemer": "catalog:general",
     "ts-api-utils": "catalog:general"
   },
   "devDependencies": {
-    "@wisemen/eslint-config-vue": "catalog:lint",
-    "eslint": "catalog:lint",
+    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "eslint": "catalog:lint-web",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build"

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
     "bumpp": "catalog:build",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",

@@ -54,7 +54,7 @@
     "@types/clone-deep": "catalog:types",
     "@vitest/coverage-v8": "catalog:test",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "tailwindcss": "catalog:style",
     "vite": "catalog:vite",
     "vitest": "catalog:test",

@@ -1,13 +1,7 @@
-import type {
-  ComputedRef,
-  InjectionKey,
-} from 'vue'
-import {
-  computed,
-  inject,
-  provide,
-} from 'vue'
+import type { ComputedRef } from 'vue'
+import { computed } from 'vue'
 
+import { useContext } from '@/composables/context.composable'
 import type { Appearance } from '@/types/appearance.type'
 
 interface ThemeProviderContext {
@@ -15,21 +9,16 @@ interface ThemeProviderContext {
   theme: ComputedRef<string & {} | 'default'>
 }
 
-export const themeProviderContextKey: InjectionKey<ThemeProviderContext> = Symbol('themeProviderContextKey')
+const [
+  useProvideThemeProviderContext,
+  useInjectThemeProviderContextBase,
+] = useContext<ThemeProviderContext>('themeProviderContext')
 
-export function useProvideThemeProviderContext(context: ThemeProviderContext): void {
-  provide(themeProviderContextKey, context)
-}
+export { useProvideThemeProviderContext }
 
 export function useInjectThemeProviderContext(): ThemeProviderContext {
-  const context = inject(themeProviderContextKey, null)
-
-  if (context === null) {
-    return {
-      appearance: computed<Appearance>(() => 'light'),
-      theme: computed<string>(() => 'default'),
-    }
+  return useInjectThemeProviderContextBase(null) ?? {
+    appearance: computed<Appearance>(() => 'light'),
+    theme: computed<string>(() => 'default'),
   }
-
-  return context
 }

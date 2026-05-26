@@ -1,7 +1,6 @@
 import { DataSource } from 'typeorm'
 
 export const dataSource = new DataSource({
-  name: 'default',
   type: 'postgres',
   url: process.env.DATABASE_URI,
   ssl: false,
@@ -9,5 +8,9 @@ export const dataSource = new DataSource({
   logging: false,
   synchronize: false,
   migrationsRun: false,
-  entities: ['dist/**/*.entity.js']
+  entities: ['dist/**/*.entity.js'],
+  invalidWhereValuesBehavior: {
+    null: 'throw',
+    undefined: 'ignore',
+  }
 })

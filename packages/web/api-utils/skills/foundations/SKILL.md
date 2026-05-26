@@ -4,9 +4,8 @@ description: >
   neverthrow Result architectural basis; three-state AsyncResult relationship to Result; @tanstack/vue-query lifecycle (staleTime, gcTime, refetch); composition of TanStack Query + neverthrow + Vue 3 reactivity.
 type: core
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/concepts/result-types.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/types/apiError.type.ts"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"

@@ -106,8 +106,6 @@ useProvideIconButtonContext({
         >
           <IconButtonIcon
             :icon="props.icon"
-            :size="props.size"
-            :variant="props.variant"
           />
         </UIRowLayout>
       </div>

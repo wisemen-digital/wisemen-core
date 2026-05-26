@@ -1,8 +1,10 @@
+import type { ManipulateType } from 'dayjs'
 import { Inclusivity, InclusivityString, mapToInclusivity, isInclusive } from '../common/inclusivity.js'
 import { timestamp } from '../timestamp/index.js'
 import { Timestamp, TimestampInput } from '../timestamp/timestamp.js'
 import { MultiDateTimeRange } from '../multi-date-time-range/multi-date-time-range.js'
 import { InvalidDateTimeRangeBounds, NoDateTimeRangeOverlap } from './date-time-range.errors.js'
+import { Duration } from '@wisemen/quantity'
 
 /**
  * DateTimeRange only works with [) ranges internally, except for infinities
@@ -176,6 +178,15 @@ export class DateTimeRange {
     return this.upper.diff(this.lower, 'milliseconds')
   }
 
+  /** 
+   * Get the duration of this DateTimeRange. 
+   * 
+   * The duration is calculated as `from.until(until)`
+   */
+  get duration(): Duration {
+    return this.from.until(this.until)
+  }
+
   /** Checks if the given date falls within the range. */
   contains (date: TimestampInput): boolean {
     date = timestamp(date)
@@ -308,17 +319,46 @@ export class DateTimeRange {
   }
 
   /** Returns a new DateTimeRange with updated end boundary. */
-  setUntil (until: TimestampInput): DateTimeRange {
+  withUntil (until: TimestampInput): DateTimeRange {
     until = timestamp(until)
 
     return new DateTimeRange(this.lower, until)
   }
 
   /** Returns a new DateTimeRange with updated start boundary. */
-  setFrom (from: TimestampInput): DateTimeRange {
+  withFrom (from: TimestampInput): DateTimeRange {
     from = timestamp(from)
 
     return new DateTimeRange(from, this.upper)
+  }
+
+  /** 
+   * Returns a new date time range with both boundaries expanded \
+   *    - from = this.from.subtractDuration(duration)
+   *    - until = this.until.addDuration(duration)
+   */
+  expand(duration: Duration): DateTimeRange
+  /** 
+   * Returns a new date time range with both boundaries expanded \
+   *    - from = this.from.subtractDuration(lower)
+   *    - until = this.until.addDuration(upper)
+   */
+  expand(lower: Duration, upper: Duration): DateTimeRange
+  expand(duration: Duration, upper?: Duration): DateTimeRange {
+    return new DateTimeRange(
+      this.from.subtractDuration(duration),
+      this.until.addDuration(upper ?? duration)
+    )
+  }
+
+  /** Returns true if this range ends before the other range starts */
+  isStrictlyBefore (other: DateTimeRange): boolean {
+    return this.until.isSameOrBefore(other.from)
+  }
+
+  /** Returns true if this range starts after the other range ends */
+  isStrictlyAfter (other: DateTimeRange): boolean {
+    return this.from.isSameOrAfter(other.until)
   }
 
   /** Returns true if this range ends immediately before the other range starts. */
@@ -348,6 +388,27 @@ export class DateTimeRange {
     return this.precedes(other) || this.succeeds(other)
   }
 
+  /** 
+   * Compares the order (in time) of the given range with this range. \
+   * returns < 0 if this range is before the given range \
+   * returns 0 if this range is the same as the given range \
+   * returns > 0 if this range is after the given range \
+   * \
+   * The order is determined by first comparing the `from` of both ranges.
+   * If `from` is the same for both ranges, `until` is compared. \
+   * \
+   * The returned value is the result of a `diff` milliseconds between the compared values.
+  */
+  compare(other: DateTimeRange): number {
+    const fromDiff = this.from.compare(other.from)
+
+    if(fromDiff !== 0) {
+      return fromDiff
+    }
+
+    return this.until.compare(other.until)
+  }
+
   /**
    * Merges two overlapping or adjacent ranges into a new range which consists of the
    * earliest timestamp until the latest timestamp of both ranges
@@ -371,11 +432,29 @@ export class DateTimeRange {
   /** Merges two adjacent ranges into one; throws if not adjacent. */
   mergeAdjacent (withOther: DateTimeRange): DateTimeRange {
     if (this.isPrecededBy(withOther)) {
-      return this.setFrom(withOther.lower)
+      return this.withFrom(withOther.lower)
     } else if (this.isSucceededBy(withOther)) {
-      return this.setUntil(withOther.upper)
+      return this.withUntil(withOther.upper)
     } else {
       throw new Error('cannot merge non adjacent date time ranges')
+    }
+  }
+
+  /**
+   * Creates an iterable for every timestamp in this range starting from the start timestamp
+   * until the end timestamp (exclusive). 
+   * 
+   * By default every day is generated (amount = 1, interval = 'day'). \
+   * Increasing the interval between generated timestamps will always return the start timestamp of this range
+   * even if the next value lies beyond this range.
+   */
+  *iterate(amount: number = 1, interval: ManipulateType = 'day'): Iterable<Timestamp>  {
+    let current = this.lower
+
+    while(current.isBefore(this.upper)) {
+      yield current
+
+      current = current.add(amount, interval)
     }
   }
 }

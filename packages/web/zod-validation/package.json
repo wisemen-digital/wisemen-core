@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@types/node": "catalog:types",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-web",
     "vue-i18n": "catalog:vue",
     "tsdown": "catalog:build",
     "zod": "catalog:general",

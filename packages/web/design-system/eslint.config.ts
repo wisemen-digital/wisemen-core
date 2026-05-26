@@ -2,7 +2,7 @@ import { packageConfig } from '@wisemen/eslint-config-vue'
 
 export default [
   ...(await packageConfig({
-    tailwindConfigPath: 'src/styles/index.css',
+    tailwindConfigPath: 'src/index.css',
   })),
   {
     rules: {
@@ -25,9 +25,19 @@ export default [
       '**/*.story.tsx',
       '**/*.stories.ts',
       '**/*.stories.tsx',
+      '**/*Playground.vue',
     ],
     rules: {
+      '@intlify/vue-i18n/no-raw-text': 'off',
       'eslint-plugin-wisemen/explicit-function-return-type-with-regex': 'off',
+    },
+  },
+  {
+    files: [
+      '**/*Playground.vue',
+    ],
+    rules: {
+      '@intlify/vue-i18n/no-raw-text': 'off',
     },
   },
 ]

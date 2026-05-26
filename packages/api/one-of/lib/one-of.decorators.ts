@@ -8,10 +8,12 @@ import {
 } from '@nestjs/swagger'
 import { applyDecorators, Type } from '@nestjs/common'
 import { ReferenceObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface.js'
-import { DECORATORS } from '@nestjs/swagger/dist/constants.js'
 import { isFunction, isString } from '@nestjs/common/utils/shared.utils.js'
 import { ApiResponseCommonMetadata } from '@nestjs/swagger/dist/decorators/api-response.decorator.js'
 import { pascalCase } from './pascal-case.js'
+
+const SWAGGER_API_MODEL_PROPERTIES_ARRAY = 'swagger/apiModelPropertiesArray'
+const SWAGGER_API_MODEL_PROPERTIES = 'swagger/apiModelProperties'
 
 export const ONE_OF_TYPE_API_PROPERTY = 'wisemen.one_of_type_api_property'
 export const ONE_OF_META_API_PROPERTY = 'wisemen.one_of_meta_api_property'
@@ -87,7 +89,7 @@ export function OneOfApiProperty (
 }
 
 export function OneOfApiExtraModels (forClass: ClassConstructor<unknown>): ClassDecorator {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  // oxlint-disable-next-line typescript/no-unsafe-function-type
   return <TFunction extends Function>(target: TFunction) => {
     const decorators = new OneOfDecorators(forClass)
     const decorator = decorators.OneOfApiExtraModelsDecorator()
@@ -123,7 +125,7 @@ interface PropertyDecoratorArgs {
 }
 
 interface ClassDecoratorArgs {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  // oxlint-disable-next-line typescript/no-unsafe-function-type
   target: Function
 }
 
@@ -161,7 +163,7 @@ class OneOfDecoratorCallbacks {
 
   subscribeApiExtraModels (
     toClass: ClassConstructor<unknown>,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    // oxlint-disable-next-line typescript/no-unsafe-function-type
     target: Function
   ): void {
     const subscribers = this.apiExtraModels.get(toClass) ?? []
@@ -387,12 +389,12 @@ class OneOfDecorators {
     dynamicClass: ClassConstructor<unknown>
   ): void {
     const propertiesMetadata = Reflect.getMetadata(
-      DECORATORS.API_MODEL_PROPERTIES_ARRAY,
+      SWAGGER_API_MODEL_PROPERTIES_ARRAY,
       responseClass.prototype as Type<unknown>
     ) as Array<string>
 
     Reflect.defineMetadata(
-      DECORATORS.API_MODEL_PROPERTIES_ARRAY,
+      SWAGGER_API_MODEL_PROPERTIES_ARRAY,
       Array.from(propertiesMetadata),
       dynamicClass.prototype as Type<unknown>
     )
@@ -404,7 +406,7 @@ class OneOfDecorators {
   ): void {
     for (const property of this.getModelProperties(responseClass.prototype as Type<unknown>)) {
       const metaData: object = Reflect.getMetadata(
-        DECORATORS.API_MODEL_PROPERTIES,
+        SWAGGER_API_MODEL_PROPERTIES,
         responseClass.prototype as object,
         property
       ) as object
@@ -473,7 +475,7 @@ class OneOfDecorators {
 
   private getModelProperties (prototype: Type<unknown>): string[] {
     const properties = Reflect.getMetadata(
-      DECORATORS.API_MODEL_PROPERTIES_ARRAY,
+      SWAGGER_API_MODEL_PROPERTIES_ARRAY,
       prototype
     ) as Array<unknown> ?? []
 

@@ -32,7 +32,7 @@
   "devDependencies": {
     "@sentry/types": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "@types/express": "catalog:backend",
     "@types/node": "catalog:backend",
     "@types/qs": "catalog:backend",

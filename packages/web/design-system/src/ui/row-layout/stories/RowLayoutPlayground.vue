@@ -1,5 +1,4 @@
 <script setup lang="ts">
-/* eslint-disable @intlify/vue-i18n/no-raw-text */
 import Button from '@/ui/button/button/Button.vue'
 import type { RowLayoutProps } from '@/ui/row-layout/rowLayout.props'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'

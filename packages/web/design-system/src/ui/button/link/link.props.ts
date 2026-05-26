@@ -1,7 +1,9 @@
 import type { Component } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
 
-export interface LinkProps {
+import type { RegisteredRouteLocationRaw } from '@/register'
+import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
+
+export interface LinkProps extends WithKeyboardShortcut {
   /**
    * Icon displayed before the button label.
    * @default null
@@ -12,15 +14,6 @@ export interface LinkProps {
    * @default null
    */
   iconRight?: Component | null
-  /**
-   * Visual representation of a keyboard shortcut (e.g. "⌘K", "Ctrl+S").
-   *
-   * This is purely presentational and does not implement or bind
-   * any keyboard shortcut behavior.
-   *
-   * @default null
-   */
-  keyboardShortcut?: string | null
   /**
    * Text label displayed inside the button.
    */
@@ -43,7 +36,7 @@ export interface LinkProps {
    * The link destination. Uses Vue Router's `router-link` when provided.
    * @default null
    */
-  to?: RouteLocationRaw | null
+  to?: RegisteredRouteLocationRaw | null
   /**
    * Tooltip text shown on hover or focus.
    * @default null

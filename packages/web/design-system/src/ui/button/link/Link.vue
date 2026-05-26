@@ -11,7 +11,6 @@ import type { LinkProps } from '@/ui/button/link/link.props'
 import type { LinkStyle } from '@/ui/button/link/link.style'
 import { createLinkStyle } from '@/ui/button/link/link.style'
 import LinkIcon from '@/ui/button/link/LinkIcon.vue'
-import { UIRowLayout } from '@/ui/row-layout/index'
 
 defineOptions({
   inheritAttrs: false,
@@ -91,10 +90,8 @@ useProvideLinkContext({
       <div
         :class="linkStyle.container()"
       >
-        <UIRowLayout
+        <div
           :class="linkStyle.rowLayout()"
-          gap="sm"
-          justify="center"
         >
           <LinkIcon
             v-if="props.iconLeft !== null"
@@ -115,7 +112,7 @@ useProvideLinkContext({
             :size="props.size"
             :variant="props.variant"
           />
-        </UIRowLayout>
+        </div>
       </div>
     </Component>
   </ActionTooltip>

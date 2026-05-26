@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/quantity",
-  "version": "0.6.1",
+  "version": "0.8.0",
   "publishConfig": {
     "access": "public"
   },
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

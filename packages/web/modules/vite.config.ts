@@ -24,7 +24,7 @@ export default defineConfig({
         return `${name}.${format}`
       },
     },
-    rollupOptions: {
+    rolldownOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library (Vue)
       external: [

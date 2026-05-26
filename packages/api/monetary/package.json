@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/monetary",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,7 @@
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

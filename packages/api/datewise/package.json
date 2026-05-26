@@ -1,12 +1,15 @@
 {
   "name": "@wisemen/datewise",
-  "version": "0.1.11",
+  "version": "1.0.5",
   "publishConfig": {
     "access": "public"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
   "files": [
     "dist/"
   ],
@@ -33,7 +36,7 @@
     "@nestjs/common": "catalog:backend",
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint",
+    "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

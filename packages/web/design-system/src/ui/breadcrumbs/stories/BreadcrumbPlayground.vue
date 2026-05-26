@@ -7,39 +7,36 @@ import {
 
 import BreadcrumbItem from '@/ui/breadcrumbs/BreadcrumbItem.vue'
 import BreadcrumbItems from '@/ui/breadcrumbs/BreadcrumbItems.vue'
-import BreadcrumbRoot from '@/ui/breadcrumbs/BreadcrumbRoot.vue'
 import BreadcrumbSeparator from '@/ui/breadcrumbs/BreadcrumbSeparator.vue'
 </script>
 
 <template>
-  <BreadcrumbRoot>
-    <BreadcrumbItems>
-      <BreadcrumbItem
-        :icon="Users01Icon"
-        label="Users"
-        to="/"
-      />
+  <BreadcrumbItems>
+    <BreadcrumbItem
+      :icon="Users01Icon"
+      label="Users"
+      to="/"
+    />
 
-      <BreadcrumbSeparator />
+    <BreadcrumbSeparator />
 
-      <BreadcrumbItem
-        :icon="NotificationMessageIcon"
-        :is-label-hidden="true"
-        label="Messages"
-        to="/"
-      />
+    <BreadcrumbItem
+      :icon="NotificationMessageIcon"
+      :is-label-hidden="true"
+      label="Messages"
+      to="/"
+    />
 
-      <BreadcrumbSeparator />
+    <BreadcrumbSeparator />
 
-      <BreadcrumbItem
-        :icon="User01Icon"
-        label="Jeroen"
-        to="/"
-      />
+    <BreadcrumbItem
+      :icon="User01Icon"
+      label="Jeroen"
+      to="/"
+    />
 
-      <BreadcrumbSeparator />
+    <BreadcrumbSeparator />
 
-      <BreadcrumbItem label="Projects" />
-    </BreadcrumbItems>
-  </BreadcrumbRoot>
+    <BreadcrumbItem label="Projects" />
+  </BreadcrumbItems>
 </template>

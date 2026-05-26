@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.3
+
+### Patch Changes
+
+- [#1110](https://github.com/wisemen-digital/wisemen-core/pull/1110) [`f37658c`](https://github.com/wisemen-digital/wisemen-core/commit/f37658c4c3e9089a98ca565f8631b0beb72d8feb) Thanks [@JonasVannieuwenhuijsen](https://github.com/JonasVannieuwenhuijsen)! - Added optional parameter for forbidNonWhitelisted validation and set default to false
+
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`a191064`](https://github.com/wisemen-digital/wisemen-core/commit/a19106462da14b0fb4644bbcc666cdea48e4032b)]:
+  - @wisemen/opentelemetry@0.2.0
+
 ## 0.3.1
 
 ### Patch Changes

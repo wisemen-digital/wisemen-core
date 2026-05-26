@@ -47,7 +47,7 @@ const options = [
           <div
             class="
               flex w-xl items-center justify-between rounded-md border
-              border-primary p-md px-lg
+              border-secondary p-md px-lg
             "
           >
             <ColumnLayout gap="none">

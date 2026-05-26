@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import {
-  Motion,
-  useReducedMotion,
-} from 'motion-v'
+import { Motion } from 'motion-v'
 
-const isReduceMotionEnabledOnDevice = useReducedMotion()
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
+
+const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 </script>
 
 <template>

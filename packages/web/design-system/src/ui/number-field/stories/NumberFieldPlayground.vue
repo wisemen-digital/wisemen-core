@@ -52,7 +52,7 @@ const modelValue = ref<number | null>(null)
       :min="props.min"
       :placeholder="props.placeholder"
       :show-controls="props.showControls"
-      :step="props.step"
+      :step="0.001"
       class="w-72"
     />
   </div>

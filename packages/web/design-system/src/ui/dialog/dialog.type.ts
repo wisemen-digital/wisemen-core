@@ -1,11 +1,9 @@
 import type { Component } from 'vue'
 
 export interface DialogTriggerProps {
-  'id': string
-  'aria-controls'?: string
   'aria-expanded': boolean
   'aria-haspopup': 'dialog'
-  'data-state': boolean
+  'data-state': 'closed' | 'open'
 }
 
 export type IgnoredProps
