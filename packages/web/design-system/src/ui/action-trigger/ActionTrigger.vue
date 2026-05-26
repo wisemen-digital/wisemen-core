@@ -2,7 +2,6 @@
 import type {
   Action,
   ActionContext,
-  ActionModel,
 } from '@wisemen/vue-core-actions'
 import {
   GroupPriority,
@@ -18,16 +17,18 @@ import {
   ref,
 } from 'vue'
 
+import type { RegisteredActionContext } from '@/register'
+
 const props = defineProps<{
   action: Action
   currentContextOnly: boolean
-  models?: ActionModel[]
+  models?: RegisteredActionContext['models']
 }>()
 
 const manager = useActionManagerStore()
 
 if (!props.currentContextOnly) {
-  useTemporaryActions(props.action, GroupPriority.VIEW)
+  useTemporaryActions(props.action, (props.action.group?.priority as GroupPriority) ?? GroupPriority.VIEW)
   useViewModels(computed(() => props.models ?? []))
 }
 

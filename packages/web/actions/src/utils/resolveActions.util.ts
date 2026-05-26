@@ -16,6 +16,7 @@ import type {
   SubActionsWithMeta,
 } from '#types/action.type.ts'
 import type { ActionContext } from '#types/actionContext.type.ts'
+import { isPromise } from '#utils/isPromise.util.ts'
 
 export type ActionFactory = (() => Action[]) | Action
 
@@ -42,6 +43,10 @@ export async function applicableActions(
       const action = queue.shift()!
 
       syncCandidates.push(action)
+
+      if (!resolveApplicable(action, ctx)) {
+        continue
+      }
 
       const searchSubActionsConfig = resolveSearchSubActionsConfig(action, ctx)
 
@@ -222,7 +227,7 @@ async function resolveAsyncSubActions(
   result: AsyncGenerator<Action> | Promise<Action[] | SubActionsWithMeta>,
   maxSubActions: number,
 ): Promise<Action[]> {
-  if (result instanceof Promise) {
+  if (isPromise(result)) {
     const awaited = await result
 
     if (isSubActionsWithMeta(awaited)) {
@@ -230,6 +235,10 @@ async function resolveAsyncSubActions(
     }
 
     return (awaited as Action[]).slice(0, maxSubActions)
+  }
+
+  if (result == null || !(Symbol.asyncIterator in (result as object))) {
+    return []
   }
 
   // AsyncGenerator

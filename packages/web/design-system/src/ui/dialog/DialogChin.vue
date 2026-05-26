@@ -10,6 +10,7 @@ import {
   watch,
 } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import {
   UIButton,
   UIIconButton,
@@ -75,6 +76,8 @@ const iconColor = computed<string>(() => props.chin?.variant === 'error' ? 'text
 const {
   style,
 } = useInjectDialogContext()
+
+const isReducedMotion = useIsReducedMotion()
 </script>
 
 <template>
@@ -82,7 +85,7 @@ const {
     :animate="{ height: isOpen ? `calc(100% + ${(chinHeight + 14)}px)` : '100%' }"
     :initial="false"
     :transition="{
-      duration: 0.3,
+      duration: isReducedMotion ? 0 : 0.3,
       type: 'spring',
       bounce: 0,
     }"

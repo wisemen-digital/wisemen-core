@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
       data-disabled:cursor-not-allowed data-disabled:border-disabled-subtle
       data-disabled:bg-disabled-subtle data-disabled:text-disabled
       data-error:border-error
-      not-data-error:data-interactive:hover:border-secondary
+      not-data-error:data-interactive:hover:border-primary
       [&:has([data-field-wrapper]:focus-visible)]:data-interactive:border-fg-brand-primary
       [&:has([data-field-wrapper]:focus-visible)]:data-interactive:outline-fg-brand-primary
       [&:has([data-field-wrapper]:focus-visible)]:data-interactive:data-error:border-error

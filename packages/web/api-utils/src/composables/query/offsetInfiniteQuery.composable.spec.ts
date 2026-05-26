@@ -28,13 +28,10 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
 
   it('result should start in loading state', () => {
     const query = runInSetup(() => {
-      return useOffsetInfiniteQuery<TestItem>({
+      return useOffsetInfiniteQuery('keysetSpecTest', {
         queryFn: async () => {
           // Never resolves during the test
-          return await new Promise(() => {})
-        },
-        queryKey: {
-          test: {},
+          return await new Promise<never>(() => {})
         },
       })
     })
@@ -57,7 +54,7 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useOffsetInfiniteQuery<TestItem>({
+      return useOffsetInfiniteQuery('keysetSpecTest', {
         queryFn: async ({
           limit, offset,
         }) => {
@@ -69,9 +66,6 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
               total: items.length,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -100,11 +94,8 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
     }
 
     const query = runInSetup(() => {
-      return useOffsetInfiniteQuery<TestItem>({
+      return useOffsetInfiniteQuery('keysetSpecTest', {
         queryFn: async () => await Promise.resolve(err(apiError)),
-        queryKey: {
-          test: {},
-        },
       })
     })
 
@@ -130,7 +121,7 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useOffsetInfiniteQuery<TestItem>({
+      return useOffsetInfiniteQuery('keysetSpecTest', {
         queryFn: async ({
           limit, offset,
         }) => {
@@ -142,9 +133,6 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
               total: items.length,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -181,7 +169,7 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
     }))
 
     const query = runInSetup(() => {
-      return useOffsetInfiniteQuery<TestItem>({
+      return useOffsetInfiniteQuery('keysetSpecTest', {
         limit: 3,
         queryFn: async ({
           limit, offset,
@@ -194,9 +182,6 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
               total: items.length,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })
@@ -242,7 +227,7 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
     ]
 
     const query = runInSetup(() => {
-      return useOffsetInfiniteQuery<TestItem>({
+      return useOffsetInfiniteQuery('keysetSpecTest', {
         limit: 5,
         queryFn: async ({
           limit, offset,
@@ -255,9 +240,6 @@ describe('useOffsetInfiniteQuery with AsyncResult', () => {
               total: items.length,
             },
           }))
-        },
-        queryKey: {
-          test: {},
         },
       })
     })

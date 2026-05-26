@@ -1,6 +1,6 @@
 import type { Component } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
 
+import type { RegisteredRouteLocationRaw } from '@/register'
 import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
 
 export interface LinkProps extends WithKeyboardShortcut {
@@ -36,7 +36,7 @@ export interface LinkProps extends WithKeyboardShortcut {
    * The link destination. Uses Vue Router's `router-link` when provided.
    * @default null
    */
-  to?: RouteLocationRaw | null
+  to?: RegisteredRouteLocationRaw | null
   /**
    * Tooltip text shown on hover or focus.
    * @default null

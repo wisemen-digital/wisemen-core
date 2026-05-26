@@ -2,21 +2,10 @@
 import { useHotkey } from '@tanstack/vue-hotkeys'
 
 import { UIButton } from '@/ui/button'
-import type { DialogFooterButtonProps } from '@/ui/dialog/dialogFooterButton.props'
 import { useInjectFormContext } from '@/ui/form'
 
-const props = withDefaults(defineProps<DialogFooterButtonProps>(), {
-  isDisabled: false,
-  isLoading: false,
-  disabledReason: null,
-  form: null,
-  iconLeft: null,
-  iconRight: null,
-  type: 'submit',
-})
-
-const emit = defineEmits<{
-  click: []
+const props = defineProps<{
+  label: string
 }>()
 
 const {
@@ -30,12 +19,13 @@ useHotkey('Meta+Enter', () => {
 
 <template>
   <UIButton
-    v-bind="props"
+    :label="props.label"
+    :is-loading="form.isSubmitting.value"
     :keyboard-shortcut="{
       key: 'Enter',
       meta: true,
     }"
     variant="primary"
-    @click="emit('click')"
+    @click="form.submit"
   />
 </template>

@@ -1,5 +1,25 @@
 # @wisemen/pgboss-nestjs-job
 
+## 4.0.3
+
+### Patch Changes
+
+- [#1116](https://github.com/wisemen-digital/wisemen-core/pull/1116) [`c579547`](https://github.com/wisemen-digital/wisemen-core/commit/c579547eb4568b1e57c0edeaa6ec24fd931fd360) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove console logs from worker
+
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`69126c5`](https://github.com/wisemen-digital/wisemen-core/commit/69126c58322d45bf1fb86220ced9301209509acb)]:
+  - @wisemen/nestjs-typeorm@1.0.0
+
+## 4.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`a191064`](https://github.com/wisemen-digital/wisemen-core/commit/a19106462da14b0fb4644bbcc666cdea48e4032b)]:
+  - @wisemen/opentelemetry@0.2.0
+
 ## 4.0.0
 
 ### Major Changes

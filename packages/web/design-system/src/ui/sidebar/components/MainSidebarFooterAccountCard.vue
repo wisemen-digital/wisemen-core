@@ -44,8 +44,8 @@ const accountCardGridTemplateColumns = `${sidebarIconCellSize} 1fr`
           :class="collapsedVariant === 'minified' && !isSidebarOpen
             ? 'border-transparent'
             : `
-              bg-primary-alt p-md py-sm pl-xs
-              hover:bg-tertiary/50
+              border-fg-primary/10 bg-fg-primary/3 p-md py-sm pl-xs
+              hover:bg-fg-primary/4
             `
           "
           :style="{

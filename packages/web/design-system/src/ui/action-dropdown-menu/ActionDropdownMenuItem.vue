@@ -6,6 +6,7 @@ import type {
   ActionModel,
 } from '@wisemen/vue-core-actions'
 import {
+  resolveActionHint,
   resolveActionName,
   resolveActionSelected,
   resolveActionValue,
@@ -58,6 +59,10 @@ const isApplicable = computed<boolean>(() => {
 
 const disabledReason = computed<string | null>(() => {
   return props.action.disabledReason?.(context.value) ?? null
+})
+
+const hint = computed<string | null>(() => {
+  return resolveActionHint(props.action, context.value)
 })
 
 const isSelected = computed<boolean>(() => {
@@ -125,6 +130,10 @@ function onSelectAction(event: Event): void {
     :label="label"
     :config="{
       left: itemLeft,
+      description: hint === null ? null : {
+        layout: parentLabel === null ? 'block' : 'inline',
+        value: hint,
+      },
       right: isSelected ? {
         icon: CheckIcon,
         type: 'icon',

@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  Action,
-  ActionModel,
-} from '@wisemen/vue-core-actions'
+import type { Action } from '@wisemen/vue-core-actions'
 import {
   GroupPriority,
   resolveApplicable,
@@ -11,14 +8,16 @@ import {
 } from '@wisemen/vue-core-actions'
 import { computed } from 'vue'
 
+import type { RegisteredActionContext } from '@/register'
 import ActionDropdownMenuContent from '@/ui/action-dropdown-menu/ActionDropdownMenuContent.vue'
+import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 
-const props = defineProps<{
+const props = defineProps<DropdownMenuProps & {
   actions?: Action[]
   currentContextOnly: boolean
-  metadata?: Record<string, unknown>
-  models?: ActionModel[]
+  metadata?: RegisteredActionContext['metadata']
+  models?: RegisteredActionContext['models']
   parentAction?: Action
 }>()
 
@@ -35,15 +34,15 @@ if (!props.currentContextOnly) {
 const manager = useActionManagerStore()
 
 const hasApplicableActions = computed<boolean>(() => {
-  if (props.parentAction !== undefined) {
-    return true
-  }
-
   const ctx = manager.actionContext({
     menuType: 'contextualMenu',
     metadata: props.metadata,
     models: props.models ?? [],
   })
+
+  if (props.parentAction !== undefined) {
+    return resolveApplicable(props.parentAction, ctx)
+  }
 
   return (props.actions ?? []).some((action) => resolveApplicable(action, ctx))
 })
@@ -52,6 +51,7 @@ const hasApplicableActions = computed<boolean>(() => {
 <template>
   <UIDropdownMenu
     v-if="hasApplicableActions"
+    v-bind="props"
     v-model:is-open="isOpen"
   >
     <template #trigger>
@@ -67,4 +67,9 @@ const hasApplicableActions = computed<boolean>(() => {
       />
     </template>
   </UIDropdownMenu>
+
+  <slot
+    v-else
+    name="fallback"
+  />
 </template>

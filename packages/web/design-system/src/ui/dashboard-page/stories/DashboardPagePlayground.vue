@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { createAction } from '@wisemen/vue-core-actions'
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -31,6 +32,7 @@ import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
+import { UIRowLayout } from '@/ui/row-layout'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFooterAccountCard from '@/ui/sidebar/components/MainSidebarFooterAccountCard.vue'
 import MainSidebarFooterFeaturedCard from '@/ui/sidebar/components/MainSidebarFooterFeaturedCard.vue'
@@ -135,6 +137,13 @@ const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
 ]))
 
 const tabsModelValue = ref<string>('tab1')
+
+const exampleAction = createAction({
+  id: 'example',
+  name: () => 'Example',
+  availableWhenUnauthenticated: true,
+  execute: () => {},
+})
 </script>
 
 <template>
@@ -197,20 +206,10 @@ const tabsModelValue = ref<string>('tab1')
             />
           </MainSidebarNavigationGroup>
           <MainSidebarFooterAccountCard
-            :menu-options="[{
-              icon: Settings01Icon,
-              label: 'Account settings',
-              onSelect: () => {},
-            }, {
-              icon: LifeBuoy01Icon,
-              label: 'Support',
-              onSelect: () => {},
-            }]"
-            :actions="[]"
+            :actions="[exampleAction]"
             avatar-url="../../../storybook-assets/profile-picture.jpg"
             name="Jane Doe"
             email="jane.doe@example.com"
-            @sign-out="() => {}"
           />
         </template>
       </MainSidebar>
@@ -235,7 +234,7 @@ const tabsModelValue = ref<string>('tab1')
           }"
           title="Dashboard"
         >
-          <template #header-action-left>
+          <template #page-actions-left>
             <RowLayout>
               <Tabs
                 v-model="tabsModelValue"
@@ -259,24 +258,26 @@ const tabsModelValue = ref<string>('tab1')
             </RowLayout>
           </template>
 
-          <template #header-action-right>
-            <UIIconButton
-              :icon="Trash01Icon"
-              variant="destructive-primary"
-              size="md"
-              label="Destructive"
-            />
-            <UIIconButton
-              :icon="PlusIcon"
-              size="md"
-              label="Button"
-            />
-            <UIIconButton
-              :icon="InfoCircleIcon"
-              variant="secondary"
-              size="md"
-              label="Secondary"
-            />
+          <template #page-actions-right>
+            <UIRowLayout>
+              <UIIconButton
+                :icon="Trash01Icon"
+                variant="destructive-primary"
+                size="md"
+                label="Destructive"
+              />
+              <UIIconButton
+                :icon="PlusIcon"
+                size="md"
+                label="Button"
+              />
+              <UIIconButton
+                :icon="InfoCircleIcon"
+                variant="secondary"
+                size="md"
+                label="Secondary"
+              />
+            </UIRowLayout>
           </template>
 
           <DashboardPageActions>

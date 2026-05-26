@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createIconButtonStyle = tv({
   compoundVariants: [
@@ -119,10 +119,12 @@ export const createIconButtonStyle = tv({
         icon: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         loader: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         root: `
           border-brand-600 bg-brand-solid

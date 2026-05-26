@@ -3,8 +3,12 @@ packages:
   - "packages/**/*"
 catalog:
   "@tanstack/vue-hotkeys": ^0.10.0
+  "@tanstack/vue-virtual": ^3.13.18
   "@wisemen/eslint-config-nestjs": ^1.1.1
+  "@wisemen/vue-core-api-utils": catalog
   superjson: "2.2.6"
+  vue-component-type-helpers: ^0.0.0
+  vue-draggable-plus: ^0.6.1
 
 catalogs:
   backend:
@@ -25,20 +29,20 @@ catalogs:
     "@nestjs/swagger": "11.4.2"
     "@nestjs/typeorm": "11.0.1"
     "@opentelemetry/api": "1.9.1"
-    "@opentelemetry/exporter-logs-otlp-http": "0.214.0"
-    "@opentelemetry/exporter-metrics-otlp-proto": "0.214.0"
-    "@opentelemetry/exporter-trace-otlp-http": "0.214.0"
-    "@opentelemetry/instrumentation": "0.214.0"
+    "@opentelemetry/exporter-logs-otlp-http": "0.217.0"
+    "@opentelemetry/exporter-metrics-otlp-proto": "0.217.0"
+    "@opentelemetry/exporter-trace-otlp-http": "0.217.0"
+    "@opentelemetry/instrumentation": "0.217.0"
     "@opentelemetry/instrumentation-aws-sdk": "0.69.0"
     "@opentelemetry/instrumentation-express": "0.62.0"
-    "@opentelemetry/instrumentation-http": "0.214.0"
+    "@opentelemetry/instrumentation-http": "0.217.0"
     "@opentelemetry/instrumentation-nestjs-core": "0.60.0"
     "@opentelemetry/instrumentation-pg": "0.66.0"
     "@opentelemetry/instrumentation-redis": "0.62.0"
     "@opentelemetry/resources": "2.6.1"
-    "@opentelemetry/sdk-logs": "0.214.0"
+    "@opentelemetry/sdk-logs": "0.217.0"
     "@opentelemetry/sdk-metrics": "2.6.1"
-    "@opentelemetry/sdk-node": "0.214.0"
+    "@opentelemetry/sdk-node": "0.217.0"
     "@opentelemetry/sdk-trace-base": "2.6.1"
     "@sentry/nestjs": "10.47.0"
     "@sentry/node": "10.47.0"
@@ -86,9 +90,9 @@ catalogs:
     "@nestjs/platform-express": ">=11.1.17"
     "@nestjs/platform-fastify": ">=11.1.17"
     "@nestjs/swagger": ">=11.2.6"
-    "@nestjs/typeorm": ">=11.0.0"
+    "@nestjs/typeorm": ">=11.0.1"
     "@opentelemetry/api": ">=1.9.1"
-    "@opentelemetry/api-logs": "0.214.0"
+    "@opentelemetry/api-logs": "0.217.0"
     "@sentry/nestjs": ">=10.47.0"
     "@sentry/node": ">=10.47.0"
     "@sentry/tracing": ">=7.120.4"
@@ -105,7 +109,7 @@ catalogs:
     "qs": ">=6.15.0"
     "reflect-metadata": ">=0.2.2"
     "rxjs": ">=7.8.2"
-    "typeorm": ">=0.3.28"
+    "typeorm": ">=1.0.0"
   build:
     "bumpp": "11.0.1"
     "chalk": "5.6.2"
@@ -113,7 +117,7 @@ catalogs:
     "husky": "^9.1.7"
     "rimraf": "6.1.3"
     "tsdown": "0.18.4"
-    "turbo": "2.7.5"
+    "turbo": "2.9.14"
     "typescript": "5.9.3"
   date:
     "@internationalized/date": "3.10.1"
@@ -205,6 +209,7 @@ catalogs:
     "@vitejs/plugin-vue": ">=6.0.3"
     "eslint": ">=10.0.3"
     formango: ^3.2.1
+    "libphonenumber-js": ">=1.12.35"
     "motion-v": ">=1.7.3"
     "neverthrow": ">=8.2.0"
     "reka-ui": ">=2.9.7"
@@ -279,11 +284,12 @@ catalogs:
     "@types/google.maps": "3.58.1"
     "@types/markdown-it": "14.1.2"
     "@types/node": "24.8.1"
+    "vue-component-type-helpers": "3.3.0"
   vite:
     "@import-meta-env/unplugin": "0.4.2"
     "@tailwindcss/vite": "4.1.18"
     "@vitejs/plugin-vue": "6.0.3"
-    "vite": "8.0.6"
+    "vite": "8.0.14"
     "vite-plugin-compression": "0.5.1"
     "vite-plugin-dts": "4.5.4"
     "vite-plugin-pwa": "0.20.2"
@@ -294,6 +300,7 @@ catalogs:
     "@vue/tsconfig": "0.8.1"
     "@vueuse/core": "14.1.0"
     "@vueuse/router": "14.1.0"
+    "@wisemen/vue-core-api-utils": ^0.0.0
     "motion-v": "2.2.1"
     "pinia": "3.0.4"
     "reka-ui": "2.9.7"

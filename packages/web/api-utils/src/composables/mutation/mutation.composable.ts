@@ -7,6 +7,10 @@ import { computed } from 'vue'
 
 import { AsyncResult } from '@/async-result/asyncResult'
 import type {
+  RegisteredErrorCodes,
+  RegisteredQueryKeyInput,
+} from '@/register'
+import type {
   ApiError,
   ApiResult,
   AsyncApiResult,
@@ -21,7 +25,10 @@ type RequestParams<TReqData, TParams> = TReqData extends void
     : { body: TReqData
         params: TParams }
 
-interface UseMutationOptions<TReqData, TResData, TParams = void, TErrorCode extends string = string> {
+export interface UseMutationOptions<
+  TReqData, TResData, TParams = void,
+  TErrorCode extends string = RegisteredErrorCodes,
+> {
   /**
    * Whether to enable debug mode
    */
@@ -45,13 +52,17 @@ interface UseMutationOptions<TReqData, TResData, TParams = void, TErrorCode exte
    * }
    * ```
    */
-  queryKeysToInvalidate?: Record<
-    string,
-    Record<string, (params: TParams, data: TResData) => any> | undefined
-  >
+  queryKeysToInvalidate?: {
+    [K in keyof RegisteredQueryKeyInput]?: Record<string, (params: TParams, data: TResData) => any>
+  }
 }
 
-export interface UseMutationReturnType<TReqData, TResData, TParams = void, TErrorCode extends string = string> {
+export interface UseMutationReturnType<
+  TReqData,
+  TResData,
+  TParams = void,
+  TErrorCode extends string = RegisteredErrorCodes,
+> {
   /**
    * Whether mutation is loading
    * @deprecated - use `result.value.isLoading()` instead
@@ -82,7 +93,7 @@ export function useMutation<
   TReqData = void,
   TResData = void,
   TParams = void,
-  TErrorCode extends string = string,
+  TErrorCode extends string = RegisteredErrorCodes,
 >(
   options: UseMutationOptions<TReqData, TResData, TParams, TErrorCode>,
 ): UseMutationReturnType<TReqData, TResData, TParams, TErrorCode> {

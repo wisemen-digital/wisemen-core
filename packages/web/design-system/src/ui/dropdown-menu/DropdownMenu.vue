@@ -47,7 +47,7 @@ const isOpen = defineModel<boolean>('isOpen', {
           position-strategy="absolute"
           sticky="always"
           class="
-            z-40 min-w-48 origin-(--reka-dropdown-menu-content-transform-origin)
+            z-50 min-w-48 origin-(--reka-dropdown-menu-content-transform-origin)
             will-change-[transform,opacity]
           "
         >

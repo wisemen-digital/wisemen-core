@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createLinkStyle = tv({
   compoundVariants: [
@@ -97,8 +97,14 @@ export const createLinkStyle = tv({
       },
       'primary': {
         container: `dark:glassy-inner-content`,
-        icon: `text-primary-on-brand`,
-        label: `text-primary-on-brand`,
+        icon: `
+          text-primary-on-brand
+          dark:text-white
+        `,
+        label: `
+          text-primary-on-brand
+          dark:text-white
+        `,
         root: `
           border-brand-600 bg-brand-solid
           hover:brightness-95

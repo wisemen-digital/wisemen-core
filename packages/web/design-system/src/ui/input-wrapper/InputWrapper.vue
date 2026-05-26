@@ -3,6 +3,7 @@ import { useAttrs } from 'vue'
 
 import { INPUT_META_DEFAULTS } from '@/types/input.type'
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
+import { UIColumnLayout } from '@/ui/column-layout'
 import type { InputWrapperProps } from '@/ui/input-wrapper/inputWrapper.props'
 import InputWrapperErrorMessage from '@/ui/input-wrapper/InputWrapperErrorMessage.vue'
 import InputWrapperHint from '@/ui/input-wrapper/InputWrapperHint.vue'
@@ -35,7 +36,8 @@ const attrs = useAttrs()
         <RowLayout class="h-4.5">
           <slot />
         </RowLayout>
-        <div>
+
+        <UIColumnLayout gap="none">
           <InputWrapperLabel
             :label="props.label"
             :for="props.for"
@@ -53,17 +55,19 @@ const attrs = useAttrs()
             </template>
           </InputWrapperLabel>
 
-          <InputWrapperHint
-            :hint="props.hint"
-            :for="props.for"
-          />
+          <div v-if="props.hint !== null || (props.errorMessage !== null && !props.hideErrorMessage)">
+            <InputWrapperHint
+              :hint="props.hint"
+              :for="props.for"
+            />
 
-          <InputWrapperErrorMessage
-            v-if="!props.hideErrorMessage"
-            :error-message="props.errorMessage"
-            :for="props.for"
-          />
-        </div>
+            <InputWrapperErrorMessage
+              v-if="!props.hideErrorMessage"
+              :error-message="props.errorMessage"
+              :for="props.for"
+            />
+          </div>
+        </UIColumnLayout>
       </RowLayout>
     </div>
     <div

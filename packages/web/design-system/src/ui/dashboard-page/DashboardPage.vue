@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useTitle } from '@vueuse/core'
 import {
   computed,
+  onUnmounted,
+  ref,
   useSlots,
   watch,
 } from 'vue'
 
-import { useInjectConfigContext } from '@/ui/config-provider'
 import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
 import type {
   DashboardPageProps,
@@ -14,12 +14,11 @@ import type {
 } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPageDetailPanePadding from '@/ui/dashboard-page/DashboardPageDetailPanePadding.vue'
 import DashboardPageDetailPane from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPane.vue'
-import DashboardPageDetailPaneToggle from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneToggle.vue'
 import { useDetailPane } from '@/ui/dashboard-page/detail-pane/detailPane.composable'
 import { useProvideDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 import type { DetailPaneConfig } from '@/ui/dashboard-page/detail-pane/detailPane.type'
 import Page from '@/ui/dashboard-page/Page.vue'
-import { UIRowLayout } from '@/ui/row-layout'
+import { useInjectMainContentDetailPaneContext } from '@/ui/layout/mainContentDetailPane.context'
 import { useTopBarNavigation } from '@/ui/top-bar/topBarNavigation.composable'
 
 const props = withDefaults(defineProps<DashboardPageProps & {
@@ -32,13 +31,9 @@ const props = withDefaults(defineProps<DashboardPageProps & {
   tabs: () => [],
 })
 
-const isOpen = defineModel<boolean>('isDetailPaneOpen', {
-  default: true,
-})
+const mainContentDetailPaneContext = useInjectMainContentDetailPaneContext(null)
 
-const configContext = useInjectConfigContext()
 const slots = useSlots()
-const documentTitle = useTitle()
 
 const {
   setNavigation,
@@ -51,11 +46,12 @@ watch([
   title,
   breadcrumbs,
 ]) => {
-  documentTitle.value = `${title} — ${configContext.projectName.value}`
   setNavigation(title, breadcrumbs)
 }, {
   immediate: true,
 })
+
+const isDetailPaneOpen = ref<boolean>(true)
 
 const hasDetailPane = computed<boolean>(() => {
   return props.detailPane !== null && slots['detail-pane'] !== undefined
@@ -63,7 +59,7 @@ const hasDetailPane = computed<boolean>(() => {
 
 const {
   isFloatingDetailPane,
-  isOpen: detailPaneIsOpen,
+  isOpen: computedIsDetailPaneOpen,
   isResizable,
   isResizing,
   sidebarWidth,
@@ -72,7 +68,7 @@ const {
   onResizeKeyDown,
   onResizeStart,
 } = useDetailPane({
-  isOpen,
+  isOpen: isDetailPaneOpen,
   isResizable: props.detailPane?.isResizable ?? true,
   storage: props.detailPane?.storage ?? null,
   variant: props.detailPane?.variant ?? 'full-height-inline',
@@ -81,7 +77,7 @@ const {
 if (hasDetailPane.value) {
   useProvideDetailPaneContext({
     isFloatingDetailPane: computed<boolean>(() => isFloatingDetailPane.value),
-    isOpen: detailPaneIsOpen,
+    isOpen: computedIsDetailPaneOpen,
     isResizable,
     isResizing,
     sidebarWidth,
@@ -90,37 +86,36 @@ if (hasDetailPane.value) {
     onResizeKeyDown,
     onResizeStart,
   })
+
+  if (mainContentDetailPaneContext != null) {
+    mainContentDetailPaneContext.registerDetailPane(computedIsDetailPaneOpen, toggleIsOpen)
+    onUnmounted(() => mainContentDetailPaneContext.unregisterDetailPane())
+  }
 }
 
 const isPageActionsSlotVisible = computed<boolean>(() => {
-  if (hasDetailPane.value) {
-    return true
-  }
-
   return slots['page-actions-left'] !== undefined || slots['page-actions-right'] !== undefined
 })
 </script>
 
 <template>
-  <Page class="flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
+  <Page
+    :title="title"
+    class="z-1 flex min-h-0 flex-1 flex-col overflow-hidden bg-primary"
+  >
     <DashboardPageActions v-if="isPageActionsSlotVisible">
       <template #left>
         <slot name="page-actions-left" />
       </template>
 
       <template #right>
-        <UIRowLayout gap="none">
-          <slot name="page-actions-right" />
-          <DashboardPageDetailPaneToggle v-if="props.detailPane !== null" />
-        </UIRowLayout>
+        <slot name="page-actions-right" />
       </template>
     </DashboardPageActions>
 
     <div class="relative flex size-full overflow-hidden">
       <DashboardPageDetailPanePadding>
-        <div class="flex size-full flex-col overflow-hidden">
-          <slot />
-        </div>
+        <slot />
       </DashboardPageDetailPanePadding>
 
       <DashboardPageDetailPane v-if="hasDetailPane">

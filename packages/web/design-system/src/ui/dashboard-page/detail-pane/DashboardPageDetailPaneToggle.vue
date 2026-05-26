@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
-  _createUntypedAction,
+  createAction,
+  GroupPriority,
   useActionGroup,
 } from '@wisemen/vue-core-actions'
 import {
@@ -14,19 +15,19 @@ import { useI18n } from 'vue-i18n'
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ActionTrigger from '@/ui/action-trigger/ActionTrigger.vue'
 import { UIClickableElement } from '@/ui/clickable-element'
-import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
+import { useInjectMainContentDetailPaneContext } from '@/ui/layout/mainContentDetailPane.context'
 
 const {
-  isOpen, toggleIsOpen,
-} = useInjectDetailPaneContext()
+  isOpen, toggle,
+} = useInjectMainContentDetailPaneContext()
 
 const i18n = useI18n()
 const actionGroup = useActionGroup()
-const toggleDetailPaneAction = _createUntypedAction({
+const toggleDetailPaneAction = createAction({
   id: 'toggle-detail-pane',
   name: () => i18n.t('action.global.toggle_detail_pane.name'),
   execute: () => {
-    toggleIsOpen()
+    toggle()
   },
   group: actionGroup.navigation,
   icon: () => isOpen.value
@@ -52,6 +53,7 @@ const label = computed<string>(() => (isOpen.value
     <ActionTrigger
       :current-context-only="false"
       :action="toggleDetailPaneAction"
+      :group-priority="GroupPriority.NAVIGATION"
     >
       <UIClickableElement>
         <Toggle

@@ -47,7 +47,7 @@ export class StringUtil {
    * StringUtil.isEmpty(null) // true
    * StringUtil.isEmpty('hello') // false
    */
-  static isEmpty(value?: string | null): boolean {
+  static isEmpty(value?: string | null | undefined): boolean {
     return value === null || value === undefined || value.trim().length === 0
   }
 
@@ -88,7 +88,7 @@ export class StringUtil {
    * StringUtil.trimOrNull('    ') // null
    * StringUtil.trimOrNull(null) // null
    */
-  static trimOrNull(value: string | null): string | null {
+  static trimOrNull(value: string | null | undefined): string | null {
     return value?.trim() || null
   }
 
@@ -100,7 +100,7 @@ export class StringUtil {
    * StringUtil.trimOrUndefined('    ') // undefined
    * StringUtil.trimOrUndefined(null) // undefined
    */
-  static trimOrUndefined(value: string | null): string | undefined {
+  static trimOrUndefined(value: string | null | undefined): string | undefined {
     return value?.trim() || undefined
   }
 

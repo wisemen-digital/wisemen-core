@@ -11,7 +11,7 @@ export default defineConfig({
   build: {
     lib: {
       name: 'vue-core-design-system',
-      cssFileName: 'index',
+      cssFileName: 'style',
       entry: [
         resolve(__dirname, 'src/index.ts'),
         resolve(__dirname, 'src/locales.ts'),
@@ -27,29 +27,39 @@ export default defineConfig({
 
     rolldownOptions: {
       external: [
+        '@tanstack/vue-virtual',
         '@vueuse/core',
         '@vueuse/router',
         'vue',
+        'vue-draggable-plus',
         'vue-i18n',
         'vue-router',
         'reka-ui',
         'formango',
         'temporal-polyfill',
         '@wisemen/vue-core-actions',
+        'zod',
+        'motion-v',
+        '@internationalized/date',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
         // Only relevant when consumed via <script> tags without a bundler.
         globals: {
+          '@internationalized/date': 'InternationalizedDate',
+          '@tanstack/vue-virtual': 'TanstackVueVirtual',
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
           '@wisemen/vue-core-actions': 'VueCoreActions',
           'formango': 'Formango',
+          'motion-v': 'MotionV',
           'reka-ui': 'RekaUI',
           'temporal-polyfill': 'Temporal',
           'vue': 'Vue',
+          'vue-draggable-plus': 'VueDraggablePlus',
           'vue-i18n': 'VueI18n',
           'vue-router': 'VueRouter',
+          'zod': 'zod',
         },
       },
     },

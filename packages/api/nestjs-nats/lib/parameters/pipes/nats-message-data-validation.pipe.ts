@@ -4,7 +4,17 @@ import type { NatsPipeTransform } from './nats-pipe-transform.js'
 import { convertValidationErrorToJsonApiError } from '#src/validation/convert-validation-errors.js'
 import type { NatsParameterMetadata } from '#src/parameters/nats-parameter-metadata.js'
 
+export interface NatsMsgDataValidationPipeOptions {
+  forbidNonWhitelisted?: boolean
+}
+
 export class NatsMsgDataValidationPipe implements NatsPipeTransform {
+  private readonly forbidNonWhitelisted: boolean
+
+  constructor (options: NatsMsgDataValidationPipeOptions = {}) {
+    this.forbidNonWhitelisted = options.forbidNonWhitelisted ?? false
+  }
+
   async transform (value: unknown, metadata: NatsParameterMetadata): Promise<unknown> {
     if (metadata.metaType === undefined) {
       throw new Error(
@@ -14,7 +24,7 @@ export class NatsMsgDataValidationPipe implements NatsPipeTransform {
     }
 
     const instance = plainToInstance(metadata.metaType, value) as object
-    const errors = await validate(instance, { whitelist: true, forbidNonWhitelisted: true })
+    const errors = await validate(instance, { whitelist: true, forbidNonWhitelisted: this.forbidNonWhitelisted })
 
     if (errors.length > 0) {
       throw convertValidationErrorToJsonApiError(errors)
