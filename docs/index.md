@@ -52,5 +52,8 @@ features:
   - title: 📱 Zod Validation
     details: Reusable Zod schemas with localized validation messages and i18n-factory integration.
     link: /packages/zod-validation/pages/getting-started/installation
+  - title: 🏗️ Project Template
+    details: An opinionated Vue 3 starter with a pre-configured stack, module structure, and theming setup for production-grade applications.
+    link: /packages/template/pages/getting-started/overview
 
 ---
