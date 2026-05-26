@@ -1,0 +1,10 @@
+{
+  "codeConnect": {
+    "include": ["src/ui/**/*.figma.ts"],
+    "exclude": ["**/node_modules/**", "**/*.stories.ts", "**/*.test.ts"],
+    "parser": "custom",
+    "importPaths": {
+      "@/*": "@wisemen/vue-core-design-system"
+    }
+  }
+}
