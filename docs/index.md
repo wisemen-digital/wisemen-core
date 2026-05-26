@@ -16,6 +16,12 @@ features:
   - title: 📅 Dates
     details: "@wisemen/vue-core-dates — Temporal-based date utilities with formatting, time zones, and DTO transformers."
     link: /packages/dates/pages/getting-started/installation
+  - title: 📏 Quantity
+    details: Unit-safe quantity models for frontend conversion, formatting, and DTO serialization.
+    link: /packages/quantity/pages/getting-started/installation
+  - title: 🛠️ Utils
+    details: Utility helpers for arrays, strings, numbers, UUID handling, assertions, and logging.
+    link: /packages/utils/pages/getting-started/installation
   - title: 🎨 Design System
     details: "@wisemen/vue-core-design-system — Vue 3 component library for building consistent user interfaces."
     link: /packages/design-system/pages/getting-started/installation
