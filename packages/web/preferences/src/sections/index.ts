@@ -1,5 +1,6 @@
 export * from './appearance/appearancePreference.composable'
 export * from './display-zoom/displayZoomPreference.composable'
+export * from './high-contrast/highContrastPreference.composable'
 export * from './hour-cycle/hourCyclePreference.composable'
 export * from './language/languagePreference.composable'
 export * from './navigation-arrows/navigationArrowsPreference.composable'

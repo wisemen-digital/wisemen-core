@@ -49,6 +49,23 @@ watch(displayZoom, (value) => {
 })
 ```
 
+## High Contrast
+
+Enables or disables high contrast styles in the interface. Also activates automatically when the user has `prefers-contrast: more` set on their OS.
+
+**Type:** `boolean`
+
+```typescript
+import { useHighContrastPreference } from '@wisemen/vue-core-preferences'
+
+const highContrast = useHighContrastPreference({
+  get: () => store.highContrast,
+  set: (value) => {
+    store.highContrast = value
+  },
+})
+```
+
 ## Reduced Motion
 
 Enables or disables motion effects in the interface.
