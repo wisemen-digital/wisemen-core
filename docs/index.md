@@ -31,6 +31,9 @@ features:
   - title: 🔤 Format
     details: Locale-aware string and number formatting utilities, plus masking helpers for common sensitive values.
     link: /packages/format/pages/getting-started/installation
+  - title: 📅 Dates
+    details: Temporal-based date and time utilities with locale-aware formatting, time zone helpers, range checks, and DTO transformers.
+    link: /packages/dates/pages/getting-started/installation
   - title: 🛠️ Utils
     details: Utility helpers for arrays, strings, numbers, UUID handling, assertions, and logging.
     link: /packages/utils/pages/getting-started/installation

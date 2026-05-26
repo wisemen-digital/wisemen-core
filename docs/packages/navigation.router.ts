@@ -2,6 +2,7 @@ import { ACTIONS_NAVIGATION } from './actions/actions.navigation'
 import { API_UTILS_NAVIGATION } from './api-utils/apiUtils.navigation'
 import { COMPONENTS_DOC_NAVIGATION } from './components/components.navigation'
 import { CONFIGS_NAVIGATION } from './configs/configs.navigation'
+import { DATES_NAVIGATION } from './dates/dates.navigation'
 import { DESIGN_SYSTEM_NAVIGATION } from './design-system/designSystem.navigation'
 import { ESLINT_NAVIGATION } from './eslint/eslint.navigation'
 import { FORMANGO_NAVIGATION } from './formango/formango.navigation'
@@ -61,6 +62,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
       TYPE_UTILS_NAVIGATION,
       UTILS_NAVIGATION,
       FORMAT_NAVIGATION,
+      DATES_NAVIGATION,
     ],
   },
   {
