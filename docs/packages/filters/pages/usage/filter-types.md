@@ -214,28 +214,3 @@ createDateRangeFilter({
 | `defaultValue` | `PlainDateRange` | | Defaults to `{ from: null, until: null }` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isStatic` | `boolean` | | See multi-select |
-
----
-
-## Typed values
-
-`FilterValues<TFilters>` maps each filter's `key` to its value type, inferred from the filter definitions you pass. This means `values.value` is fully typed with no manual type annotation needed:
-
-```typescript
-const filterDefs = [
-  createMultiSelectFilter({ key: 'status', ... }),
-  createBooleanFilter({ key: 'isVerified', ... }),
-  createDateRangeFilter({ key: 'createdAt', ... }),
-] as const
-
-const filters = useFilters({ actionGroup, filters: filterDefs })
-
-// filters.values.value is typed as:
-// {
-//   status: string[]
-//   isVerified: boolean | null
-//   createdAt: PlainDateRange
-// }
-```
-
-Use `as const` on the filters array to preserve the literal key types and get precise per-key typing.
