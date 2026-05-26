@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { usePreferredContrast } from '@vueuse/core'
-import { computed } from 'vue'
+import {
+  computed,
+  watch,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import PreferencesSection from '#components/content/PreferencesSection.vue'
@@ -16,8 +19,16 @@ const preferredContrast = usePreferredContrast()
 
 const prefersMoreContrast = computed<boolean>(() => preferredContrast.value === 'more')
 
+watch(prefersMoreContrast, (value) => {
+  if (value) {
+    model.value = true
+  }
+}, {
+  immediate: true,
+})
+
 const stringModel = computed<'false' | 'true'>({
-  get: () => model.value || prefersMoreContrast.value ? 'true' : 'false',
+  get: () => model.value ? 'true' : 'false',
   set: (value) => {
     model.value = value === 'true'
   },
