@@ -54,7 +54,7 @@
   "module.preferences.toast_auto_close.option.all_except_errors": "All except errors",
   "module.preferences.toast_auto_close.option.all_except_errors.description": "Error notifications stay visible",
   "module.preferences.toast_auto_close.option.always": "Always",
-  "module.preferences.toast_auto_close.option.always.description": "Notifications stay until dismissed",
+  "module.preferences.toast_auto_close.option.always.description": "Notifications are dismissed automatically",
   "module.preferences.toast_auto_close.option.never": "Never",
   "module.preferences.toast_auto_close.option.never.description": "All notifications stay visible",
   "module.preferences.toast_auto_close.title": "Auto-close notifications",
