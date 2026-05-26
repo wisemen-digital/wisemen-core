@@ -54,7 +54,7 @@
   "module.preferences.toast_auto_close.option.all_except_errors": "Alles behalve fouten",
   "module.preferences.toast_auto_close.option.all_except_errors.description": "Foutmeldingen blijven zichtbaar",
   "module.preferences.toast_auto_close.option.always": "Altijd",
-  "module.preferences.toast_auto_close.option.always.description": "Meldingen blijven zichtbaar totdat je ze sluit",
+  "module.preferences.toast_auto_close.option.always.description": "Alle meldingen sluiten automatisch",
   "module.preferences.toast_auto_close.option.never": "Nooit",
   "module.preferences.toast_auto_close.option.never.description": "Alle meldingen blijven zichtbaar",
   "module.preferences.toast_auto_close.title": "Meldingen automatisch sluiten",
