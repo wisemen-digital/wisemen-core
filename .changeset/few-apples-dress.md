@@ -1,5 +1,5 @@
 ---
-"@wisemen/vue-core-quantity": major
+"@wisemen/vue-core-quantity": patch
 ---
 
 Initial setup of quantity FE package
