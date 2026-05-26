@@ -49,7 +49,10 @@
     "type-check": "vue-tsc --noEmit",
     "storybook:clean": "rimraf node_modules/.cache node_modules/.vite",
     "storybook": "pnpm storybook:clean && NODE_OPTIONS=--max-old-space-size=8192 storybook dev -p 6006 --no-open",
-    "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build"
+    "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build",
+    "figma:publish": "figma connect publish",
+    "figma:unpublish": "figma connect unpublish",
+    "figma:dry-run": "figma connect --dry-run"
   },
   "peerDependencies": {
     "@internationalized/date": "catalog:date",
@@ -84,6 +87,7 @@
     "vue-sonner": "catalog:vue"
   },
   "devDependencies": {
+    "@figma/code-connect": "1.4.5",
     "@chromatic-com/storybook": "catalog:storybook",
     "@internationalized/date": "catalog:date",
     "@storybook/addon-a11y": "catalog:storybook",
