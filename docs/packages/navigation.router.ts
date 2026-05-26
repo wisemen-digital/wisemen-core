@@ -11,6 +11,7 @@ import { I18N_FACTORY_NAVIGATION } from './i18n-factory/i18nFactory.navigation'
 import type { PackageDocNavigation } from './navigation.utils'
 import { PERMISSIONS_NAVIGATION } from './permissions/permissions.navigation'
 import { PREFERENCES_NAVIGATION } from './preferences/preferences.navigation'
+import { QUANTITY_NAVIGATION } from './quantity/quantity.navigation'
 import { TELEMETRY_NAVIGATION } from './telemetry/telemetry.navigation'
 import { TYPE_UTILS_NAVIGATION } from './type-utils/typeUtils.navigation'
 import { UTILS_NAVIGATION } from './utils/utils.navigation'
@@ -63,6 +64,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
       UTILS_NAVIGATION,
       FORMAT_NAVIGATION,
       DATES_NAVIGATION,
+      QUANTITY_NAVIGATION,
     ],
   },
   {

@@ -34,6 +34,9 @@ features:
   - title: 📅 Dates
     details: Temporal-based date and time utilities with locale-aware formatting, time zone helpers, range checks, and DTO transformers.
     link: /packages/dates/pages/getting-started/installation
+  - title: Quantity
+    details: Unit-safe quantity models for frontend conversion, formatting, and DTO serialization.
+    link: /packages/quantity/pages/getting-started/installation
   - title: 🛠️ Utils
     details: Utility helpers for arrays, strings, numbers, UUID handling, assertions, and logging.
     link: /packages/utils/pages/getting-started/installation
