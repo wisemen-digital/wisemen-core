@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0
+
+### Minor Changes
+
+- [#1140](https://github.com/wisemen-digital/wisemen-core/pull/1140) [`c6a5357`](https://github.com/wisemen-digital/wisemen-core/commit/c6a5357393ef6d0e9ac5c9192aca60a3a9fe167b) Thanks [@wouterlms](https://github.com/wouterlms)! - Export `UIPage` component
+
 ## 0.16.0
 
 ### Minor Changes

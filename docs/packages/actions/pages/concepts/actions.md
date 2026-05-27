@@ -157,8 +157,6 @@ keyboardShortcut: { sequence: ['G', 'S'] }
 
 Add `runWithInputFocus: true` to allow the shortcut to fire even when a text input is focused.
 
-See [Keyboard Shortcuts](../usage/keyboard-shortcuts) for full details.
-
 ### `selected` — toggle indicator
 
 When resolved to `true`, a checkmark is displayed. Use this for on/off toggle actions:
