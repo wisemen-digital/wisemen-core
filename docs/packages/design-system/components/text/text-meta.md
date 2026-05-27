@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createTextStyle } from '@/ui/text/text.style'
-
 const propsData = [
   {
     "default": "\"span\"",
@@ -36,7 +34,6 @@ const propsData = [
 export default {
   setup() {
     return {
-      createTextStyle,
       propsData,
     }
   },
@@ -44,5 +41,3 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
-
-<ClassConfig :style-function="createTextStyle" />

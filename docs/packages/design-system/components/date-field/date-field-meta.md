@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createDateFieldStyle } from '@/ui/date-field/dateField.style'
-
 const propsData = [
   {
     "description": "<p>Provides a reason why the element is disabled,\nwhen provided a tooltip will be shown on hover with the provided text.</p>\n",
@@ -158,12 +156,10 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "label-left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-right",
     "type": "-"
   }
@@ -172,7 +168,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createDateFieldStyle,
       propsData,
       eventsData,
       slotsData,
@@ -186,5 +181,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createDateFieldStyle" />

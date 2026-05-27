@@ -13,22 +13,18 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "bottom-navigation",
     "type": "-"
   },
   {
-    "description": "",
     "name": "footer",
     "type": "-"
   },
   {
-    "description": "",
     "name": "header",
     "type": "-"
   },
   {
-    "description": "",
     "name": "navigation",
     "type": "-"
   }

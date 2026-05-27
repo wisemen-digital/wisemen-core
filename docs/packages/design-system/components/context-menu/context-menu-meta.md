@@ -27,12 +27,10 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "content",
     "type": "-"
   },
   {
-    "description": "",
     "name": "trigger",
     "type": "-"
   }

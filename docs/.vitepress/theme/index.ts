@@ -1,5 +1,4 @@
 import '@wisemen/vue-core-components/style.css'
-import '../../../packages/web/design-system/src/styles/index.css'
 import './index.css'
 
 import ClassConfig from '@docs/.vitepress/components/ClassConfig.vue'
@@ -45,10 +44,10 @@ export const i18nPlugin = createI18n({
   missingWarn: false,
   legacy: false,
   messages: {
-    en: enMessages,
+    'en': enMessages,
     'en-NL': enMessages,
     'en-US': enMessages,
-    nl: nlMessages,
+    'nl': nlMessages,
     'nl-BE': nlMessages,
   },
 })

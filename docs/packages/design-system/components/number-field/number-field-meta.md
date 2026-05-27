@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createNumberFieldStyle } from '@/ui/number-field/numberField.style'
-
 const propsData = [
   {
     "description": "<p>The autocomplete attribute of the input.</p>\n",
@@ -176,22 +174,18 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "label-left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-right",
     "type": "-"
   },
   {
-    "description": "",
     "name": "left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "right",
     "type": "-"
   }
@@ -200,7 +194,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createNumberFieldStyle,
       propsData,
       eventsData,
       slotsData,
@@ -214,5 +207,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createNumberFieldStyle" />

@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createSwitchStyle } from '@/ui/switch/switch.style'
-
 const propsData = [
   {
     "description": "<p>Provides a reason why the element is disabled,\nwhen provided a tooltip will be shown on hover with the provided text.</p>\n",
@@ -107,13 +105,6 @@ const propsData = [
     "name": "name",
     "required": false,
     "type": "string | null"
-  },
-  {
-    "default": "\"md\"",
-    "description": "<p>Defines the size of the switch.</p>\n",
-    "name": "size",
-    "required": false,
-    "type": "\"md\" | \"sm\""
   }
 ]
 
@@ -132,12 +123,10 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "right",
     "type": "-"
   }
@@ -146,7 +135,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createSwitchStyle,
       propsData,
       eventsData,
       slotsData,
@@ -160,5 +148,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createSwitchStyle" />

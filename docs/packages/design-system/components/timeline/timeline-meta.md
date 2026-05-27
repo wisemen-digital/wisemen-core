@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { timelineVariants } from '@/ui/timeline/timeline.style'
-
 const propsData = [
   {
     "default": "\"md\"",
@@ -22,7 +20,6 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }
@@ -31,7 +28,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      timelineVariants,
       propsData,
       slotsData,
     }
@@ -42,5 +38,3 @@ export default {
 <PropsTable :data="propsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="timelineVariants" />

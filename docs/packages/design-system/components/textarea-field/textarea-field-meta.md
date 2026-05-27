@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createTextareaFieldStyle } from '@/ui/textarea-field/textareaField.style'
-
 const propsData = [
   {
     "description": "<p>The autocomplete attribute of the input.</p>\n",
@@ -154,22 +152,18 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "bottom",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-right",
     "type": "-"
   },
   {
-    "description": "",
     "name": "top",
     "type": "-"
   }
@@ -178,7 +172,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createTextareaFieldStyle,
       propsData,
       eventsData,
       slotsData,
@@ -192,5 +185,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createTextareaFieldStyle" />

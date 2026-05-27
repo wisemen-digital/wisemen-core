@@ -41,7 +41,6 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }

@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createButtonStyle } from '@/ui/button/button/button.style'
-
 const propsData = [
   {
     "default": "null",
@@ -54,7 +52,7 @@ const propsData = [
     "type": "KeyboardShortcut | null"
   },
   {
-    "description": "<p>Text label displayed inside the button. Yolo test</p>\n",
+    "description": "<p>Text label displayed inside the button.</p>\n",
     "name": "label",
     "required": true,
     "type": "string"
@@ -106,7 +104,6 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "left",
     "type": "-"
   }
@@ -115,7 +112,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createButtonStyle,
       propsData,
       eventsData,
       slotsData,
@@ -129,5 +125,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createButtonStyle" />

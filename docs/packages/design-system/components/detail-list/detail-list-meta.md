@@ -3,7 +3,6 @@
 <script lang="ts">
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }

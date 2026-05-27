@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createDialogStyle } from '@/ui/dialog/dialog.style'
-
 const propsData = [
   {
     "default": "null",
@@ -68,7 +66,6 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }
@@ -77,7 +74,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createDialogStyle,
       propsData,
       eventsData,
       slotsData,
@@ -91,5 +87,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createDialogStyle" />

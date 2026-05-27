@@ -34,7 +34,6 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }

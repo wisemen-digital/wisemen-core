@@ -58,7 +58,7 @@ function parseTypeFromSchema(schema: PropertyMetaSchema): string {
 
 type DesignSystemTableItem = {
   default?: string
-  description: string
+  description?: string
   name: string
   required?: boolean
   type: string
@@ -133,7 +133,6 @@ function parseDesignSystemMeta(meta: ComponentMeta): DesignSystemMeta {
       const type = parseTypeFromSchema(slot.schema) || normalizeType(slot.type) || '-'
 
       return {
-        description: renderDescription(slot.description),
         name: slot.name,
         type: type === '{}' ? '-' : type,
       }
@@ -156,15 +155,10 @@ function parseDesignSystemMeta(meta: ComponentMeta): DesignSystemMeta {
   }
 }
 
-function renderDesignSystemMeta(component: DesignSystemComponentConfig, meta: DesignSystemMeta): string {
+function renderDesignSystemMeta(meta: DesignSystemMeta): string {
   const scriptLines: string[] = []
   const returnedScriptNames: string[] = []
   const bodyLines: string[] = []
-
-  if (component.styleFunctionName && component.styleImportPath) {
-    scriptLines.push(`import { ${component.styleFunctionName} } from '${component.styleImportPath}'`)
-    returnedScriptNames.push(component.styleFunctionName)
-  }
 
   if (meta.props.length) {
     scriptLines.push(`const propsData = ${JSON.stringify(meta.props, null, 2)}`)
@@ -198,9 +192,6 @@ function renderDesignSystemMeta(component: DesignSystemComponentConfig, meta: De
   if (meta.methods.length)
     bodyLines.push('<MethodsTable :data="methodsData" />')
 
-  if (component.styleFunctionName)
-    bodyLines.push(`<ClassConfig :style-function="${component.styleFunctionName}" />`)
-
   return [
     '<!-- This file was automatically generated. Do not edit it manually -->',
     scriptLines.length > 0
@@ -216,7 +207,6 @@ function renderDesignSystemPage(component: DesignSystemComponentConfig): string 
   const previewTemplate = component.previewTemplate ?? '<Preview />'
 
   return [
-    '<!-- This file was automatically generated. Do not edit it manually -->',
     '<script setup lang="ts">',
     `import Preview from '${component.previewPath}'`,
     component.previewSetup ?? '',
@@ -292,8 +282,10 @@ for (const component of designSystemComponents) {
   const metaMdFilePath = join(metaDirPath, `${toKebabCase(component.componentName)}-meta.md`)
   const componentMdFilePath = join(metaDirPath, `${toKebabCase(component.componentName)}.md`)
 
-  writeFileSync(metaMdFilePath, renderDesignSystemMeta(component, meta))
-  writeFileSync(componentMdFilePath, renderDesignSystemPage(component))
+  writeFileSync(metaMdFilePath, renderDesignSystemMeta(meta))
+
+  if (!existsSync(componentMdFilePath))
+    writeFileSync(componentMdFilePath, renderDesignSystemPage(component))
 }
 
 writeFileSync(

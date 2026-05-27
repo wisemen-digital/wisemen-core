@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createAvatarLabelStyle } from '@/ui/avatar/avatar-label/avatarLabel.style'
-
 const propsData = [
   {
     "description": "<p>By default, the avatar's background color is generated based on\nthe provided name to ensure consistency across renders.\nSetting this prop to <code>true</code> will disable this behavior and\nuse a static background color instead.</p>\n",
@@ -57,7 +55,6 @@ const propsData = [
 export default {
   setup() {
     return {
-      createAvatarLabelStyle,
       propsData,
     }
   },
@@ -65,5 +62,3 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
-
-<ClassConfig :style-function="createAvatarLabelStyle" />

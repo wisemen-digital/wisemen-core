@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createTextFieldStyle } from '@/ui/text-field/textField.style'
-
 const propsData = [
   {
     "description": "<p>The autocomplete attribute of the input.</p>\n",
@@ -150,22 +148,18 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "label-left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-right",
     "type": "-"
   },
   {
-    "description": "",
     "name": "left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "right",
     "type": "-"
   }
@@ -182,7 +176,6 @@ const methodsData = [
 export default {
   setup() {
     return {
-      createTextFieldStyle,
       propsData,
       eventsData,
       slotsData,
@@ -199,5 +192,3 @@ export default {
 <SlotsTable :data="slotsData" />
 
 <MethodsTable :data="methodsData" />
-
-<ClassConfig :style-function="createTextFieldStyle" />

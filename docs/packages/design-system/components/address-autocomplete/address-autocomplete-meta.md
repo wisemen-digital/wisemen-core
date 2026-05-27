@@ -177,10 +177,10 @@ const propsData = [
     "type": "number"
   },
   {
-    "description": "<p>Determines the width of the popper content.</p>\n<ul>\n<li><code>anchor-width</code>: Matches the width of the trigger element.</li>\n<li><code>available-width</code>: Expands to fit the available space.</li>\n<li><code>null</code>: Uses the natural width of the content.</li>\n</ul>\n",
+    "description": "<p>Determines the width of the popper content.</p>\n<ul>\n<li><code>anchor-width</code>: Matches the width of the trigger element.</li>\n<li><code>available-width</code>: Expands to fit the available space.</li>\n<li><code>content-width</code>: Uses the natural width of the content.</li>\n</ul>\n",
     "name": "popoverWidth",
     "required": false,
-    "type": "PopperWidth | null"
+    "type": "PopperWidth"
   },
   {
     "description": "<p>Constrain the content to remain within the viewport. This may cause it\nto overlap the reference element, which might be undesirable.</p>\n",
@@ -216,17 +216,14 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "label-left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-right",
     "type": "-"
   },
   {
-    "description": "",
     "name": "left",
     "type": "-"
   }

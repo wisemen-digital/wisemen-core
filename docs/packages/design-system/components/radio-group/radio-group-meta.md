@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createBaseRadioGroupStyle } from '@/ui/radio-group/base/baseRadioGroup.style'
-
 const propsData = [
   {
     "default": "null",
@@ -116,7 +114,6 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }
@@ -125,7 +122,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createBaseRadioGroupStyle,
       propsData,
       eventsData,
       slotsData,
@@ -139,5 +135,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createBaseRadioGroupStyle" />

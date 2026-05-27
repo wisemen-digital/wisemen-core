@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { numberBadgeVariants } from '@/ui/number-badge/numberBadge.style'
-
 const propsData = [
   {
     "default": "null",
@@ -43,7 +41,6 @@ const propsData = [
 export default {
   setup() {
     return {
-      numberBadgeVariants,
       propsData,
     }
   },
@@ -51,5 +48,3 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
-
-<ClassConfig :style-function="numberBadgeVariants" />

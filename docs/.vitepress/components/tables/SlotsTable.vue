@@ -5,7 +5,6 @@ import { computed } from 'vue'
 
 interface SlotDef {
   name: string
-  description: string
   type: string
 }
 
@@ -23,10 +22,6 @@ const appearance = computed<'dark' | 'light'>(() => isDark.value ? 'dark' : 'lig
 function sortSlots(slots: SlotDef[]): SlotDef[] {
   return slots.sort((a, b) => a.name.localeCompare(b.name))
 }
-
-function formatDescription(description: string): string {
-  return description.trim() || '<p>-</p>'
-}
 </script>
 
 <template>
@@ -38,15 +33,12 @@ function formatDescription(description: string): string {
     <div
       class="
         border-secondary gap-x-2xl mt-3xl grid max-h-120
-        grid-cols-[1fr_2fr_1fr] overflow-auto rounded-lg border border-solid
+        grid-cols-[1fr_2fr] overflow-auto rounded-lg border border-solid
       "
     >
       <div class="bg-secondary col-span-full grid grid-cols-subgrid">
         <div class="p-lg text-primary min-w-32 text-sm font-semibold">
           Slot
-        </div>
-        <div class="p-lg text-primary text-sm font-semibold">
-          Description
         </div>
         <div class="p-lg text-primary text-sm font-semibold">
           Slot Props
@@ -66,11 +58,6 @@ function formatDescription(description: string): string {
           {{ slot.name }}
         </div>
 
-        <div
-          class="p-lg description"
-          v-html="formatDescription(slot.description)"
-        />
-
         <div class="p-lg">
           <code>
             {{ slot.type }}
@@ -80,9 +67,3 @@ function formatDescription(description: string): string {
     </div>
   </VcThemeProvider>
 </template>
-
-<style>
-.description p {
-  margin: 0 !important;
-}
-</style>

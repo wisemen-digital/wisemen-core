@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createSeparatorStyle } from '@/ui/separator/separator.style'
-
 const propsData = [
   {
     "default": "\"horizontal\"",
@@ -16,7 +14,6 @@ const propsData = [
 export default {
   setup() {
     return {
-      createSeparatorStyle,
       propsData,
     }
   },
@@ -24,5 +21,3 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
-
-<ClassConfig :style-function="createSeparatorStyle" />

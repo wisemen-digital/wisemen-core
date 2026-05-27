@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createBaseCheckboxStyle } from '@/ui/checkbox/base/baseCheckbox.style'
-
 const propsData = [
   {
     "description": "<p>The autocomplete attribute of the input.</p>\n",
@@ -124,7 +122,6 @@ const eventsData = [
 export default {
   setup() {
     return {
-      createBaseCheckboxStyle,
       propsData,
       eventsData,
     }
@@ -135,5 +132,3 @@ export default {
 <PropsTable :data="propsData" />
 
 <EmitsTable :data="eventsData" />
-
-<ClassConfig :style-function="createBaseCheckboxStyle" />

@@ -46,11 +46,14 @@ const options = [
         >
           <div
             class="
-              flex w-xl items-center justify-between rounded-md border
+              flex w-full items-center justify-between gap-lg rounded-md border
               border-secondary p-md px-lg
             "
           >
-            <ColumnLayout gap="none">
+            <ColumnLayout
+              gap="none"
+              class="flex-1 min-w-0"
+            >
               <UIText
                 :text="option.title"
                 class="text-xs"

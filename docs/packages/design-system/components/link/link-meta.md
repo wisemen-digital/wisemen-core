@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createLinkStyle } from '@/ui/button/link/link.style'
-
 const propsData = [
   {
     "default": "null",
@@ -50,7 +48,7 @@ const propsData = [
     "description": "<p>The link destination. Uses Vue Router's <code>router-link</code> when provided.</p>\n",
     "name": "to",
     "required": false,
-    "type": "string | vt | mt | null"
+    "type": "string | kt | Tt | null"
   },
   {
     "default": "null",
@@ -78,7 +76,6 @@ const propsData = [
 export default {
   setup() {
     return {
-      createLinkStyle,
       propsData,
     }
   },
@@ -86,5 +83,3 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
-
-<ClassConfig :style-function="createLinkStyle" />

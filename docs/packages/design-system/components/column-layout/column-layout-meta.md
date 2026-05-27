@@ -7,7 +7,7 @@ const propsData = [
     "description": "<p>Controls the vertical alignment of items within the column.</p>\n",
     "name": "align",
     "required": false,
-    "type": "\"center\" | \"end\" | \"start\""
+    "type": "\"center\" | \"end\" | \"start\" | \"stretch\""
   },
   {
     "default": "\"div\"",
@@ -34,7 +34,6 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }

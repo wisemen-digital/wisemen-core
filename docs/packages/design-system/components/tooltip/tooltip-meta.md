@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createTooltipStyle } from '@/ui/tooltip/tooltip.style'
-
 const propsData = [
   {
     "default": "300",
@@ -94,10 +92,10 @@ const propsData = [
     "type": "number"
   },
   {
-    "description": "<p>Determines the width of the popper content.</p>\n<ul>\n<li><code>anchor-width</code>: Matches the width of the trigger element.</li>\n<li><code>available-width</code>: Expands to fit the available space.</li>\n<li><code>null</code>: Uses the natural width of the content.</li>\n</ul>\n",
+    "description": "<p>Determines the width of the popper content.</p>\n<ul>\n<li><code>anchor-width</code>: Matches the width of the trigger element.</li>\n<li><code>available-width</code>: Expands to fit the available space.</li>\n<li><code>content-width</code>: Uses the natural width of the content.</li>\n</ul>\n",
     "name": "popoverWidth",
     "required": false,
-    "type": "PopperWidth | null"
+    "type": "PopperWidth"
   }
 ]
 
@@ -111,12 +109,10 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "content",
     "type": "-"
   },
   {
-    "description": "",
     "name": "trigger",
     "type": "-"
   }
@@ -125,7 +121,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createTooltipStyle,
       propsData,
       eventsData,
       slotsData,
@@ -139,5 +134,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createTooltipStyle" />

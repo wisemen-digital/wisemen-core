@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { badgeVariants } from '@/ui/badge/badge.style'
-
 const propsData = [
   {
     "default": "null",
@@ -71,7 +69,6 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }
@@ -80,7 +77,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      badgeVariants,
       propsData,
       slotsData,
     }
@@ -91,5 +87,3 @@ export default {
 <PropsTable :data="propsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="badgeVariants" />

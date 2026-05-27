@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createAutocompleteStyle } from '@/ui/autocomplete/autocomplete.style'
-
 const propsData = [
   {
     "description": "<p>The autocomplete attribute of the input.</p>\n",
@@ -210,10 +208,10 @@ const propsData = [
   },
   {
     "default": "\"anchor-width\"",
-    "description": "<p>Determines the width of the popper content.</p>\n<ul>\n<li><code>anchor-width</code>: Matches the width of the trigger element.</li>\n<li><code>available-width</code>: Expands to fit the available space.</li>\n<li><code>null</code>: Uses the natural width of the content.</li>\n</ul>\n",
+    "description": "<p>Determines the width of the popper content.</p>\n<ul>\n<li><code>anchor-width</code>: Matches the width of the trigger element.</li>\n<li><code>available-width</code>: Expands to fit the available space.</li>\n<li><code>content-width</code>: Uses the natural width of the content.</li>\n</ul>\n",
     "name": "popoverWidth",
     "required": false,
-    "type": "PopperWidth | null"
+    "type": "PopperWidth"
   },
   {
     "default": "true",
@@ -263,17 +261,14 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "label-left",
     "type": "-"
   },
   {
-    "description": "",
     "name": "label-right",
     "type": "-"
   },
   {
-    "description": "",
     "name": "left",
     "type": "-"
   }
@@ -282,7 +277,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createAutocompleteStyle,
       propsData,
       eventsData,
       slotsData,
@@ -296,5 +290,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createAutocompleteStyle" />

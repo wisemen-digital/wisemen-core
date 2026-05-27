@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createAvatarGroupStyle } from '@/ui/avatar/avatar-group/avatarGroup.style'
-
 const propsData = [
   {
     "description": "<p>The list of avatars to display.</p>\n",
@@ -29,7 +27,6 @@ const propsData = [
 export default {
   setup() {
     return {
-      createAvatarGroupStyle,
       propsData,
     }
   },
@@ -37,5 +34,3 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
-
-<ClassConfig :style-function="createAvatarGroupStyle" />

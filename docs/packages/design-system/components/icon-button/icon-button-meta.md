@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createIconButtonStyle } from '@/ui/button/icon/iconButton.style'
-
 const propsData = [
   {
     "default": "null",
@@ -99,7 +97,6 @@ const eventsData = [
 export default {
   setup() {
     return {
-      createIconButtonStyle,
       propsData,
       eventsData,
     }
@@ -110,5 +107,3 @@ export default {
 <PropsTable :data="propsData" />
 
 <EmitsTable :data="eventsData" />
-
-<ClassConfig :style-function="createIconButtonStyle" />

@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { tabsVariants } from '@/ui/tabs/tabs.style'
-
 const propsData = [
   {
     "default": "false",
@@ -50,7 +48,6 @@ const eventsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "default",
     "type": "-"
   }
@@ -59,7 +56,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      tabsVariants,
       propsData,
       eventsData,
       slotsData,
@@ -73,5 +69,3 @@ export default {
 <EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="tabsVariants" />

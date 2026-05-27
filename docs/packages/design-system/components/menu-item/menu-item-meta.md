@@ -1,8 +1,6 @@
 <!-- This file was automatically generated. Do not edit it manually -->
 
 <script lang="ts">
-import { createMenuItemStyle } from '@/ui/menu-item/menuItem.style'
-
 const propsData = [
   {
     "default": "null",
@@ -10,6 +8,13 @@ const propsData = [
     "name": "config",
     "required": false,
     "type": "MenuItemConfig | null"
+  },
+  {
+    "default": "null",
+    "description": "<p>When provided, the item is visually disabled and a tooltip is shown with this text explaining why.</p>\n",
+    "name": "disabledReason",
+    "required": false,
+    "type": "string | null"
   },
   {
     "default": "false",
@@ -35,7 +40,6 @@ const propsData = [
 
 const slotsData = [
   {
-    "description": "",
     "name": "right",
     "type": "-"
   }
@@ -44,7 +48,6 @@ const slotsData = [
 export default {
   setup() {
     return {
-      createMenuItemStyle,
       propsData,
       slotsData,
     }
@@ -55,5 +58,3 @@ export default {
 <PropsTable :data="propsData" />
 
 <SlotsTable :data="slotsData" />
-
-<ClassConfig :style-function="createMenuItemStyle" />
