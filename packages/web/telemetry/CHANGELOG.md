@@ -1,3 +1,16 @@
+## Unreleased
+
+## 2.0.0
+
+### Major Changes
+
+- [#1145](https://github.com/wisemen-digital/wisemen-core/pull/1145) [`6585496`](https://github.com/wisemen-digital/wisemen-core/commit/658549632e5826c0188c1906e4cfaabfe6f1e8e2) Thanks [@maltsavkiryl](https://github.com/maltsavkiryl)! - add sample rate and required tracePropagationUrls
+
+### Major Changes
+
+- Breaking change: require `tracePropagationUrls` in `TelemetryOptions` and `registerAppInstrumentations()` so fetch trace headers are only propagated to explicitly configured cross-origin URLs.
+- Add optional `traceSampleRate` to `TelemetryOptions` for trace-only sampling.
+
 ## 1.1.0
 
 ### Minor Changes
