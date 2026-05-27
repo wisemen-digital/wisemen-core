@@ -17,9 +17,7 @@ const filters = useContactOverviewFilters()
 </script>
 
 <template>
-  <div class="toolbar">
-    <UIFiltersDropdownMenu />
-  </div>
+  <UIFiltersDropdownMenu />
 </template>
 ```
 
@@ -33,10 +31,8 @@ Renders a horizontal row of badges, one for each currently active filter. Each b
 
 ```vue
 <template>
-  <div class="toolbar">
-    <UIFiltersDropdownMenu />
-    <UIFiltersActive />
-  </div>
+  <UIFiltersDropdownMenu />
+  <UIFiltersActive />
 </template>
 ```
 
