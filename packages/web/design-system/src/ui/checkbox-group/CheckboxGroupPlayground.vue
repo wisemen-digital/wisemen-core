@@ -52,7 +52,7 @@ const options = [
           >
             <ColumnLayout
               gap="none"
-              class="flex-1 min-w-0"
+              class="min-w-0 flex-1"
             >
               <UIText
                 :text="option.title"
