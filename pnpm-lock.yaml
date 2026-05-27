@@ -2362,9 +2362,15 @@ importers:
       '@wisemen/eslint-config-vue':
         specifier: workspace:*
         version: link:../eslint-config
+      '@wisemen/vue-core-design-system':
+        specifier: workspace:*
+        version: link:../design-system
       eslint:
         specifier: catalog:lint-web
         version: 9.39.4(jiti@2.6.1)
+      formango:
+        specifier: catalog:peer
+        version: 3.2.4(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
       husky:
         specifier: catalog:build
         version: 9.1.7
@@ -2410,6 +2416,9 @@ importers:
       '@wisemen/vue-core-icons':
         specifier: workspace:*
         version: link:../icons
+      blurhash:
+        specifier: catalog:general
+        version: 2.0.5
       country-flag-icons:
         specifier: catalog:general
         version: 1.5.13
