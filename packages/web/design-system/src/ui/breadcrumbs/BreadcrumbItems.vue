@@ -6,6 +6,7 @@ import RowLayout from '@/ui/row-layout/RowLayout.vue'
   <nav class="min-w-0">
     <RowLayout
       align="center"
+      gap="sm"
     >
       <slot />
     </RowLayout>

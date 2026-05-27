@@ -12,6 +12,7 @@ describe('initOpenTelemetryMetrics', () => {
     const metricsEnabled = await initOpenTelemetryMetrics({
       accessTokenFn: (): Promise<string> => Promise.resolve('token'),
       serviceName: 'telemetry-web',
+      tracePropagationUrls: [],
     })
 
     expect(metricsEnabled).toBeFalsy()
@@ -24,6 +25,7 @@ describe('initOpenTelemetryMetrics', () => {
       accessTokenFn,
       metricsEndpoint: 'https://collector.example/metrics',
       serviceName: 'telemetry-web',
+      tracePropagationUrls: [],
     })
 
     expect(accessTokenFn).not.toHaveBeenCalled()

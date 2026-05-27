@@ -75,7 +75,15 @@ export class PastInfinityDate implements PlainDate {
     return this
   }
 
+  addDuration (_duration: Duration): PastInfinityDate {
+    return this
+  }
+
   subtract (_amount: number, _unit: PlainDateUnit): PastInfinityDate {
+    return this
+  }
+
+  subtractDuration (_duration: Duration): PastInfinityDate {
     return this
   }
 
@@ -97,6 +105,16 @@ export class PastInfinityDate implements PlainDate {
 
   diff (_withOther: DayjsPlainDate, _unit: DiffPlainDateUnit, _precise = false): number {
     return Infinity
+  }
+
+  compare (withOther: PlainDateInput): number {
+    const parsedOther = factory(withOther)
+
+    if (parsedOther.isPastInfinity()) {
+      return 0
+    } else {
+      return -Infinity
+    }
   }
 
   format (_template: string): string {

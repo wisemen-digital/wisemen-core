@@ -15,10 +15,14 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
   ...POPPER_PROPS_DEFAULTS,
   popoverSideOffset: 4,
 })
+
+const isOpen = defineModel<boolean>('isOpen', {
+  default: false,
+})
 </script>
 
 <template>
-  <RekaDropdownMenuRoot>
+  <RekaDropdownMenuRoot v-model:open="isOpen">
     <RekaDropdownMenuTrigger :as-child="true">
       <slot name="trigger" />
     </RekaDropdownMenuTrigger>
@@ -26,6 +30,7 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
     <RekaDropdownMenuPortal to="body">
       <ThemeProvider :as-child="true">
         <RekaDropdownMenuContent
+          :reference="props.popoverAnchorReferenceElement ?? undefined"
           :align="props.popoverAlign"
           :align-offset="props.popoverAlignOffset"
           :collision-padding="props.popoverCollisionPadding"
@@ -38,18 +43,20 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
           }"
           :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
           :prioritize-position="props.prioritizePosition"
-          :data-animation="props.popoverAnimationName ?? 'dropdown-default'"
+          :data-animation="props.popoverAnimationName ?? 'popover-default'"
           position-strategy="absolute"
           sticky="always"
           class="
-            z-40 min-w-48 origin-(--reka-dropdown-menu-content-transform-origin)
+            z-50 min-w-48 origin-(--reka-dropdown-menu-content-transform-origin)
             will-change-[transform,opacity]
           "
         >
           <div
             class="
-              relative size-full overflow-hidden rounded-md border
-              border-secondary bg-primary shadow-lg
+              relative size-full
+              max-h-(--reka-dropdown-menu-content-available-height)
+              overflow-hidden rounded-md border border-secondary bg-primary
+              shadow-lg
             "
           >
             <slot name="content" />
@@ -61,98 +68,3 @@ const props = withDefaults(defineProps<DropdownMenuProps>(), {
     </RekaDropdownMenuPortal>
   </RekaDropdownMenuRoot>
 </template>
-
-<style>
-@keyframes dropdownFadeInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeInFromBottom {
-  from {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToTop {
-  to {
-    opacity: 0;
-    transform: translateY(4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToRight {
-  to {
-    opacity: 0;
-    transform: translateX(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToBottom {
-  to {
-    opacity: 0;
-    transform: translateY(-4px) scale(0.9);
-  }
-}
-
-@keyframes dropdownFadeOutToLeft {
-  to {
-    opacity: 0;
-    transform: translateX(4px) scale(0.9);
-  }
-}
-
-[data-animation='dropdown-default'] {
-  animation-duration: 100ms;
-  animation-timing-function: ease-in-out;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='top'] {
-  animation-name: dropdownFadeInFromTop;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='right'] {
-  animation-name: dropdownFadeInFromRight;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='bottom'] {
-  animation-name: dropdownFadeInFromBottom;
-}
-
-[data-animation='dropdown-default'][data-state='open'][data-side='left'] {
-  animation-name: dropdownFadeInFromLeft;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='top'] {
-  animation-name: dropdownFadeOutToTop;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='right'] {
-  animation-name: dropdownFadeOutToRight;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='bottom'] {
-  animation-name: dropdownFadeOutToBottom;
-}
-
-[data-animation='dropdown-default'][data-state='closed'][data-side='left'] {
-  animation-name: dropdownFadeOutToLeft;
-}
-</style>

@@ -271,7 +271,7 @@ export class Telemetry {
       return
     }
 
-    registerDefaultAppInstrumentations()
+    registerDefaultAppInstrumentations(this.options.tracePropagationUrls)
     this.traceEnabled = await initOpenTelemetryTracing(this.options)
     await initOpenTelemetryMetrics(this.options)
     this.logger = await initOpenTelemetryLogging(this.options)
@@ -337,6 +337,7 @@ export class Telemetry {
   }
 }
 
+export type { RegisterAppInstrumentationsOptions } from './opentelemetry/tracing/instrumentation.ts'
 export { registerAppInstrumentations } from './opentelemetry/tracing/instrumentation.ts'
 export type {
   TelemetryAttributes,
@@ -344,5 +345,6 @@ export type {
   TelemetryLogOptions,
   TelemetryOptions,
   TelemetrySeverity,
+  TelemetryTracePropagationUrl,
   TelemetryUser,
 } from './types.ts'

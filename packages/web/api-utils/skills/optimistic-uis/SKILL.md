@@ -1,28 +1,38 @@
 ---
 name: optimistic-uis
 description: >
-  Combining mutations, cache updates, and AsyncResult to create responsive UIs with instant feedback; optimistic updates with error handling, async transitions, immediate user feedback without request latency.
+  Combining mutations, QueryClient.update() with built-in rollback, and AsyncResult to create responsive UIs with instant feedback; optimistic updates with automatic error reversal.
 type: core
 library: vue-core-api-utils
-library_version: "0.0.3"
+library_version: "1.2.0"
 sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/mutation.md"
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/usage/query-client.md"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/mutation/mutation.composable.ts"
   - "wisemen-digital/wisemen-core:packages/web/api-utils/src/utils/query-client/queryClient.ts"
 ---
 
 # @wisemen/vue-core-api-utils — Optimistic UIs
 
-Create fast, responsive UIs by updating the cache immediately while mutations execute in the background. Combine `useMutation()`, `useQueryClient()`, and `AsyncResult` pattern matching to provide instant feedback to users.
+Create fast, responsive UIs by updating the cache immediately while mutations execute in the background. Combine `useMutation()`, `QueryClient`, and `AsyncResult` pattern matching to provide instant feedback to users.
 
 ## Setup
 
 ```typescript
-import { useMutation, useQueryClient, useQuery } from '@/api'
+// src/api/queryClient.ts
+import { QueryClient, getTanstackQueryClient } from '@wisemen/vue-core-api-utils'
+import type { ProjectQueryKeys } from '@/types/queryKey.type'
+
+export function useQueryClient() {
+  return new QueryClient<ProjectQueryKeys>(getTanstackQueryClient())
+}
+```
+
+```typescript
+import { useQuery, useMutation } from '@/api'
+import { useQueryClient } from '@/api/queryClient'
 import { computed } from 'vue'
 
 const queryClient = useQueryClient()
+
 const { result: contact } = useQuery('contactDetail', {
   params: {
     contactUuid: computed(() => contactUuid),
@@ -30,27 +40,24 @@ const { result: contact } = useQuery('contactDetail', {
   queryFn: () => ContactService.getDetail(contactUuid),
 })
 
-const { execute, isLoading, result: mutationResult } = useMutation({
+const { execute, result: mutationResult } = useMutation({
   queryFn: ({ body }) => ContactService.updateContact(contactUuid, body),
   queryKeysToInvalidate: { contactList: {} },
 })
 
 async function handleSubmit(formData) {
-  // Save original (for rollback)
-  const originalContact = contact.value.isOk() ? contact.value.getValue() : null
-  
-  // Optimistic update: immediate cache change
-  queryClient.update(['contactDetail', { contactUuid }], {
-    by: (c) => true,
+  // Optimistic update — returns rollback function
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
+    by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
   // Execute mutation
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   
-  // On error, rollback
+  // Revert cache on error
   if (result.isErr()) {
-    queryClient.set(['contactDetail', { contactUuid }], originalContact)
+    rollback()
   }
 }
 ```
@@ -60,72 +67,65 @@ async function handleSubmit(formData) {
 ### Immediate cache update while request pending
 
 ```typescript
-const { result } = useQuery('contactDetail', {
-  params: computed(() => ({ contactUuid })),
-  queryFn: () => ContactService.getDetail(contactUuid),
-})
+const queryClient = useQueryClient()
 
-const { execute, isLoading } = useMutation({
+const { execute } = useMutation({
   queryFn: (data) => ContactService.updateContact(contactUuid, data),
-  queryKeysToInvalidate: { /* ... */ },
+  queryKeysToInvalidate: { contactList: {} },
 })
 
 async function handleSave(formData) {
-  // Cache update happens immediately
-  queryClient.update(['contactDetail', { contactUuid }], {
-    by: (c) => true,
+  // Cache update happens immediately — UI shows new data right away
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
+    by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
   // Mutation executes in background
-  await execute(formData)
+  const result = await execute({ body: formData })
   
-  // UI shows updated data from cache right away
-  // isLoading is true while request pending
-  // result.value changes when mutation completes
+  // On error, revert to the previous state
+  if (result.isErr()) {
+    rollback()
+  }
 }
 ```
 
-Users see changes instantly. `isLoading` stays true during request, giving visual feedback. No perceived latency.
+Users see changes instantly. No perceived latency. If the server rejects the change, `rollback()` restores the previous cache state automatically.
 
 ### Error handling with AsyncResult
 
 ```typescript
 async function handleSave(formData) {
-  const originalContact = contact.value?.getValue()
-  
-  queryClient.update(['contactDetail', { contactUuid }], {
-    by: (c) => true,
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
+    by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   
-  // Match on mutation result
   result.match({
     ok: () => {
       // Server confirmed the update
-      // Cache already reflects the change
+      // Cache already reflects the change from the optimistic update
       showSuccessMessage('Contact updated')
     },
     err: (error) => {
       // Revert optimistic update
-      queryClient.set(['contactDetail', { contactUuid }], originalContact)
-      showErrorMessage(`Failed: ${error.message}`)
+      rollback()
+      showErrorMessage(`Failed: ${'errors' in error ? error.errors[0].detail : error.message}`)
     },
     loading: () => {
-      // Should not happen after await, but handle just in case
+      // Won't happen after await, but required by match()
     },
   })
 }
 ```
 
-When mutation fails, revert the optimistic change using the saved original value.
-
 ### Composable combining query + mutation + optimistic UI
 
 ```typescript
-export function useContactEditor(contactUuid) {
+export function useContactEditor(contactUuid: string) {
   const queryClient = useQueryClient()
   
   const { result: contact } = useQuery('contactDetail', {
@@ -133,29 +133,26 @@ export function useContactEditor(contactUuid) {
     queryFn: () => ContactService.getDetail(contactUuid),
   })
   
-  const { execute, isLoading, result: mutationResult } = useMutation({
-    queryFn: (data) => ContactService.updateContact(contactUuid, data),
+  const { execute, result: mutationResult } = useMutation({
+    queryFn: ({ body }) => ContactService.updateContact(contactUuid, body),
     queryKeysToInvalidate: {
-      contactList: () => true,
-      'contact-stats': () => true,
+      contactList: {},
     },
   })
   
   async function saveContact(formData) {
-    const original = contact.value?.getValue()
-    
-    // Optimistic
-    queryClient.update(['contactDetail', { contactUuid }], {
+    // Optimistic update
+    const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
       by: () => true,
       value: (c) => ({ ...c, ...formData }),
     })
     
     // Execute
-    const result = await execute(formData)
+    const result = await execute({ body: formData })
     
     // Rollback on error
     if (result.isErr()) {
-      queryClient.set(['contactDetail', { contactUuid }], original)
+      rollback()
     }
     
     return result
@@ -164,7 +161,6 @@ export function useContactEditor(contactUuid) {
   return {
     contact,
     saveContact,
-    isLoading,
     mutationResult,
   }
 }
@@ -174,226 +170,173 @@ Encapsulate the full flow in a composable for reusability across components.
 
 ## Common Mistakes
 
-### HIGH: Forget to save original data before optimistic update; can't rollback on error
+### HIGH: Ignore the rollback return from update(); can't revert on error
 
 ```typescript
-// ❌ Wrong: no original saved, rollback impossible
-const { execute, result } = useMutation({
-  queryFn: (data) => ContactService.updateContact(data),
-  queryKeysToInvalidate: { contactList: () => true },
-})
-
+// ❌ Wrong: discarding rollback
 async function handleSave(formData) {
-  // Update cache immediately
-  queryClient.update(['contactDetail', { contactUuid }], {
+  queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
+  // rollback discarded!
   
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   
   if (result.isErr()) {
     // No way to undo the optimistic change!
     showErrorMessage('Save failed')
+    // UI now shows wrong data permanently
   }
 }
 ```
 
 ```typescript
-// ✅ Correct: save original before update
+// ✅ Correct: capture and use rollback
 async function handleSave(formData) {
-  // Save original FIRST
-  const originalContact = contact.value?.getValue()
-  
-  // Update cache
-  queryClient.update(['contactDetail', { contactUuid }], {
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   
   if (result.isErr()) {
-    // Restore original
-    queryClient.set(['contactDetail', { contactUuid }], originalContact)
+    rollback() // Restores previous state automatically
     showErrorMessage('Save failed, changes reverted')
   }
 }
 ```
 
-Always save the current value before modifying the cache. Use it to rollback if the mutation fails.
+`update()` captures the previous state internally and exposes it via `rollback()`. Always capture and use it when doing optimistic updates.
 
-Source: `docs/packages/api-utils/pages/usage/query-client.md` Real-World Example
+Source: `src/utils/query-client/queryClient.ts` — `QueryClientUpdateResult`
 
-### CRITICAL: Handle stale optimistic updates; if component unmounts, optimistic change remains in cache
+### CRITICAL: Stale optimistic update if component unmounts during pending mutation
 
 ```typescript
-// ❌ Wrong: optimistic update lives in cache even if user navigates away
+// ❌ Wrong: mutation pending, user navigates away, rollback never called
 async function handleSave(formData) {
-  const originalContact = contact.value?.getValue()
-  
-  queryClient.update(['contactDetail', { contactUuid }], {
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
-  // User navigates away while mutation pending
+  // User navigates away while mutation is pending
   // Cache still has optimistic data
-  // When user returns, data is stale
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   if (result.isErr()) {
-    // Rollback happens but user is gone
-    queryClient.set(['contactDetail', { contactUuid }], originalContact)
+    rollback() // User is gone — rollback still works but user won't see it
   }
 }
 ```
 
 ```typescript
-// ✅ Correct: clear optimistic flag or track mutation completion
+// ✅ Correct: rollback on unmount if mutation is still in flight
 import { onUnmounted } from 'vue'
 
-let originalContact = null
-let isSaving = false
+let pendingRollback: (() => void) | null = null
 
 async function handleSave(formData) {
-  originalContact = contact.value?.getValue()
-  isSaving = true
-  
-  queryClient.update(['contactDetail', { contactUuid }], {
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, ...formData }),
   })
+  pendingRollback = rollback
   
-  const result = await execute(formData)
-  isSaving = false
+  const result = await execute({ body: formData })
+  pendingRollback = null
   
-  if (result.isErr() && originalContact) {
-    queryClient.set(['contactDetail', { contactUuid }], originalContact)
+  if (result.isErr()) {
+    rollback()
   }
 }
 
 onUnmounted(() => {
-  // If still saving and user leaves, rollback
-  if (isSaving && originalContact) {
-    queryClient.set(['contactDetail', { contactUuid }], originalContact)
-  }
+  // If still saving and user leaves, rollback stale optimistic update
+  pendingRollback?.()
 })
 ```
 
-If user navigates away while a mutation is pending, rollback the optimistic change using component lifecycle hooks. Otherwise, stale data persists in the cache.
+If the user navigates away while a mutation is pending, rollback the optimistic change using component lifecycle hooks. Otherwise, stale unconfirmed data persists in the global cache.
 
 Source: Architectural consideration from cache invalidation patterns
 
-### HIGH: Miss querying the correct data structure; optimistic update patches wrong field
+### HIGH: Optimistic update on list query with wrong predicate; patches wrong item
 
 ```typescript
-// ❌ Wrong: update assuming flat entity, but query returns paginated structure
-const { result: paginatedContacts } = useQuery('contactList', {
-  params: computed(() => ({ limit: 20, offset: 0 })),
-  queryFn: () => ContactService.list({ limit: 20, offset: 0 }),
-})
-
+// ❌ Wrong: update without proper predicate
 queryClient.update('contactList', {
-  by: (contact) => contact.id === '123',
-  value: (contact) => ({ ...contact, name: 'Updated' }),
+  by: () => true, // Matches ALL contacts in the list!
+  value: (c) => ({ ...c, name: 'Updated' }),
 })
-// This fails because contactList is not Contact[] but { data: Contact[], meta: {...} }
+// Every contact in the cached list gets "Updated" as name
 ```
 
 ```typescript
-// ✅ Correct: QueryClient handles nested structures automatically
-const { result: paginatedContacts } = useQuery('contactList', {
-  params: computed(() => ({ limit: 20, offset: 0 })),
-  queryFn: () => ContactService.list({ limit: 20, offset: 0 }),
-})
-
-// QueryClient infers the data structure from query keys
-// If contactList query returns { data: Contact[], meta: {...} }
-// QueryClient knows to iterate contact.data and apply the predicate
+// ✅ Correct: use a specific predicate
 queryClient.update('contactList', {
-  by: (contact) => contact.id === '123',
-  value: (contact) => ({ ...contact, name: 'Updated' }),
+  by: (contact) => contact.uuid === contactUuid, // Only match the specific item
+  value: (contact) => ({ ...contact, name: formData.name }),
 })
 ```
 
-QueryClient automatically extracts the entity from nested query results (`{ data: [...], meta: {...} }`). You work with the flattened entity, QueryClient handles the nesting. This is why checking your query key definition matters.
+When updating lists, always use a predicate that uniquely identifies the item you're changing. `by: () => true` is only appropriate for single-entity queries.
 
-Source: `packages/web/api-utils/src/utils/query-client/queryClient.ts`
+Source: `src/utils/query-client/queryClient.ts` — `updateEntity` iterates arrays
 
-### MEDIUM: Race condition: multiple mutations affect the same query, order matters
+### MEDIUM: Race condition: multiple mutations affect the same query
 
 ```typescript
 // ❌ Wrong: two mutations in flight affecting the same cache
 async function handleMultipleSaves() {
-  // Mutation 1: add tag
-  queryClient.update(['contactDetail', { contactUuid }], {
+  // Mutation 1 optimistic update
+  const { rollback: rollback1 } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, tags: [...c.tags, 'new-tag'] }),
   })
-  const result1 = await execute({ tags: [...contact.value.tags, 'new-tag'] })
+  // Don't await — start Mutation 2 immediately!
+  execute1({ body: { tags: [...contact.tags, 'new-tag'] } })
   
-  // Mutation 2: change name
-  // But Mutation 1 is still in flight!
-  queryClient.update(['contactDetail', { contactUuid }], {
+  // Mutation 2 on same cache entry
+  const { rollback: rollback2 } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, name: 'Updated' }),
   })
-  const result2 = await execute({ name: 'Updated' })
+  await execute2({ body: { name: 'Updated' } })
   
-  // If Mutation 2 completes before Mutation 1, the tags are lost
+  // If Mutation 2 completes before Mutation 1, the tags may be lost
 }
 ```
 
 ```typescript
-// ✅ Correct: serialize mutations or track multiple originals
+// ✅ Correct: serialize mutations to avoid ordering issues
 async function handleMultipleSaves() {
-  const original = contact.value?.getValue()
-  
-  // Either: await each mutation before starting the next
-  queryClient.update(['contactDetail', { contactUuid }], {
+  const { rollback: rollback1 } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, tags: [...c.tags, 'new-tag'] }),
   })
-  const result1 = await execute({ tags: [...contact.value.tags, 'new-tag'] })
+  const result1 = await execute1({ body: { tags: [...contact.tags, 'new-tag'] } })
   if (result1.isErr()) {
-    queryClient.set(['contactDetail', { contactUuid }], original)
+    rollback1()
     return
   }
   
-  // Now safe to do second mutation
-  const updatedOriginal = queryClient.get(['contactDetail', { contactUuid }])
-  queryClient.update(['contactDetail', { contactUuid }], {
+  // Only start Mutation 2 after Mutation 1 finishes
+  const { rollback: rollback2 } = queryClient.update(['contactDetail', { contactUuid }] as const, {
     by: () => true,
     value: (c) => ({ ...c, name: 'Updated' }),
   })
-  const result2 = await execute({ name: 'Updated' })
+  const result2 = await execute2({ body: { name: 'Updated' } })
   if (result2.isErr()) {
-    queryClient.set(['contactDetail', { contactUuid }], updatedOriginal)
+    rollback2()
   }
 }
 ```
 
-Mutations should be serialized (one at a time) or you need to track the state after each optimistic update. Concurrent mutations on the same cache lead to lost updates.
+Serialize mutations that affect the same cache entry. Concurrent mutations on the same key can lead to lost updates or incorrect rollbacks.
 
 Source: Architectural consideration from query lifecycle patterns
-
-## Rollback Strategy
-
-Rollback is enabled by saving the original data before the optimistic update:
-
-```typescript
-const original = contact.value?.getValue()
-queryClient.update(['contactDetail', { contactUuid }], {
-  by: () => true,
-  value: (c) => ({ ...c, ...formData }),
-})
-const result = await execute(formData)
-if (result.isErr()) {
-  queryClient.set(['contactDetail', { contactUuid }], original)
-}
-```
-
-However, rollback patterns for complex scenarios (partial field updates, nested objects) are being refined in the library. For now, save and restore the entire entity.
 
 ## See Also
 

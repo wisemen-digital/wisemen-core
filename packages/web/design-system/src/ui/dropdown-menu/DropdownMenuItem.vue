@@ -2,67 +2,42 @@
 import { DropdownMenuItem as RekaDropdownMenuItem } from 'reka-ui'
 import type { Component } from 'vue'
 
-import { UIActionTooltip } from '@/ui/action-tooltip/index'
-import KeyboardShortcut from '@/ui/keyboard-shortcut/KeyboardShortcut.vue'
-import { UIRowLayout } from '@/ui/row-layout/index'
-import { UIText } from '@/ui/text/index'
+import type { KeyboardShortcut as KeyboardShortcutType } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
+import { UIMenuItem } from '@/ui/menu-item'
+import type { MenuItemConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = withDefaults(defineProps<{
+  isDisabled?: boolean
+  config?: MenuItemConfig | null
   disabledReason?: string | null
   icon?: Component
-  keyboardShortcut?: string | null
+  keyboardShortcut?: KeyboardShortcutType | null
   label: string
 }>(), {
+  config: null,
   disabledReason: null,
-  keyboardShortcut: null,
 })
 
 const emit = defineEmits<{
-  select: []
+  select: [event: Event]
 }>()
 </script>
 
 <template>
-  <UIActionTooltip
-    :is-disabled="props.disabledReason === null"
-    :label="props.disabledReason"
+  <RekaDropdownMenuItem
+    :disabled="props.isDisabled || props.disabledReason !== null"
+    class="
+      group/dropdown-menu-item cursor-default rounded-sm outline-none
+      data-disabled:cursor-not-allowed
+      not-data-disabled:data-highlighted:bg-secondary-hover
+    "
+    @select="(e) => emit('select', e)"
   >
-    <RekaDropdownMenuItem
-      :disabled="props.disabledReason !== null"
-      class="
-        group/dropdown-menu-item cursor-default rounded-sm px-md py-sm
-        duration-100 outline-none
-        data-disabled:cursor-not-allowed
-        not-data-disabled:data-highlighted:bg-secondary-hover
-      "
-      @select="emit('select')"
-    >
-      <UIRowLayout justify="between">
-        <UIRowLayout>
-          <Component
-            :is="props.icon"
-            v-if="props.icon !== undefined"
-            class="
-              size-3.5 text-tertiary
-              group-data-disabled/dropdown-menu-item:text-disabled
-            "
-          />
-
-          <UIText
-            :text="props.label"
-            class="
-              flex text-sm text-secondary
-              group-data-disabled/dropdown-menu-item:text-disabled
-            "
-          />
-        </UIRowLayout>
-
-        <KeyboardShortcut
-          v-if="props.keyboardShortcut !== null"
-          :keyboard-shortcut="props.keyboardShortcut"
-          class="ml-md"
-        />
-      </UIRowLayout>
-    </RekaDropdownMenuItem>
-  </UIActionTooltip>
+    <UIMenuItem
+      :is-disabled="props.isDisabled"
+      :disabled-reason="props.disabledReason"
+      :config="props.config"
+      :label="props.label"
+    />
+  </RekaDropdownMenuItem>
 </template>

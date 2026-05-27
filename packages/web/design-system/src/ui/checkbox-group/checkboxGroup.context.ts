@@ -1,13 +1,10 @@
 import type { AcceptableValue } from 'reka-ui'
 import type {
   ComputedRef,
-  InjectionKey,
   Ref,
 } from 'vue'
-import {
-  inject,
-  provide,
-} from 'vue'
+
+import { useContext } from '@/composables/context.composable'
 
 interface CheckboxGroupContext {
   isDisabled: ComputedRef<boolean>
@@ -19,18 +16,7 @@ interface CheckboxGroupContext {
   unRegisterCheckbox: (id: string) => void
 }
 
-export const checkboxGroupContextKey: InjectionKey<CheckboxGroupContext> = Symbol('CheckboxGroupContextKey')
-
-export function useProvideCheckboxGroupContext(context: CheckboxGroupContext): void {
-  provide(checkboxGroupContextKey, context)
-}
-
-export function useInjectCheckboxGroupContext(): CheckboxGroupContext {
-  const context = inject(checkboxGroupContextKey, null)
-
-  if (context === null) {
-    throw new Error('CheckboxGroupContext not provided')
-  }
-
-  return context
-}
+export const [
+  useProvideCheckboxGroupContext,
+  useInjectCheckboxGroupContext,
+] = useContext<CheckboxGroupContext>('checkboxGroupContext')

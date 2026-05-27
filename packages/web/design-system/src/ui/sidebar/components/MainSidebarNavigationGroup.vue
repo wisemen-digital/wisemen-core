@@ -21,8 +21,8 @@ const {
         'opacity-0': collapsedVariant === 'minified' && !isSidebarOpen,
       }"
       class="
-        block px-sm pb-sm text-xs font-medium text-quaternary transition-opacity
-        duration-150 ease-in-out
+        block px-sm pb-sm text-xs font-medium whitespace-nowrap text-quaternary
+        transition-opacity duration-150 ease-in-out
       "
     >
       {{ props.label }}

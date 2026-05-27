@@ -10,14 +10,14 @@ const props = withDefaults(defineProps<SeparatorProps>(), {
   orientation: 'horizontal',
 })
 
-const seperatorStyle = computed<SeparatorStyle>(() => createSeparatorStyle({
+const separatorStyle = computed<SeparatorStyle>(() => createSeparatorStyle({
   orientation: props.orientation,
 }))
 </script>
 
 <template>
   <Separator
-    :class="seperatorStyle.separator({
+    :class="separatorStyle.separator({
       class: props.class,
     })"
     :orientation="props.orientation"

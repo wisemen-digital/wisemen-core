@@ -132,6 +132,8 @@ const { result } = useQuery('userDetail', {
 
 ### Using `match()` for Cleaner Code
 
+`match()` takes an object with `loading`, `ok`, and `err` handlers — all three are required:
+
 ```vue
 <script setup lang="ts">
 import { useQuery } from '@/api'
@@ -139,20 +141,20 @@ import { useQuery } from '@/api'
 const { result } = useQuery('userDetail', { /* ... */ })
 
 const displayContent = computed(() => {
-  return result.value.match(
-    (user) => ({
+  return result.value.match({
+    loading: () => ({
+      type: 'loading',
+      content: 'Loading...',
+    }),
+    ok: (user) => ({
       type: 'success',
       content: `Welcome, ${user.name}!`,
     }),
-    (error) => ({
+    err: (error) => ({
       type: 'error',
-      content: error.message,
+      content: 'errors' in error ? error.errors[0].detail : error.message,
     }),
-    () => ({
-      type: 'loading',
-      content: 'Loading...',
-    })
-  )
+  })
 })
 </script>
 
@@ -175,17 +177,25 @@ if (result.value.isOk()) {
   const user = result.value.getValue()
 }
 
-// Get the value with fallback
-const user = result.value.getValueOr({ name: 'Unknown' })
+// Get the value with fallback (returns T | null)
+const user = result.value.unwrapOr(null)
 ```
 
 ### Getting the Error
+
+`ApiError` is `ApiExpectedError | ApiUnexpectedError`. Check which variant you have before accessing fields:
 
 ```typescript
 // Get the error (only when isErr())
 if (result.value.isErr()) {
   const error = result.value.getError()
-  console.error(`Error ${error.code}: ${error.message}`)
+  if ('errors' in error) {
+    // ApiExpectedError — structured server error
+    console.error('API error:', error.errors[0].code, error.errors[0].detail)
+  } else {
+    // ApiUnexpectedError (Error) — network or parsing failure
+    console.error('Unexpected error:', error.message)
+  }
 }
 ```
 
@@ -212,7 +222,8 @@ export function useUserProfile(userId: string) {
   const hasError = computed(() => userResult.value.isErr())
   const errorMessage = computed(() => {
     if (userResult.value.isErr()) {
-      return userResult.value.getError().message
+      const error = userResult.value.getError()
+      return 'errors' in error ? error.errors[0].detail : error.message
     }
     return null
   })
@@ -226,9 +237,10 @@ export function useUserProfile(userId: string) {
   async function updateProfile(updates: Partial<User>) {
     if (!user.value) return
 
-    const result = await useMutation({
-      queryFn: () => UserService.update(userId, updates),
-    }).execute(updates)
+    const { execute } = useMutation({
+      queryFn: ({ body }: { body: Partial<User> }) => UserService.update(userId, body),
+    })
+    const result = await execute({ body: updates })
 
     if (result.isOk()) {
       await refetch()
@@ -276,56 +288,41 @@ const { isLoading, hasError, errorMessage, user } = useUserProfile(props.userId)
 </template>
 ```
 
-## Combining Multiple AsyncResults
-
-### Waiting for Multiple Queries
-
-```typescript
-import { combineResults } from '@wisemen/vue-core-api-utils'
-
-const { result: userResult } = useQuery('userDetail', { /* ... */ })
-const { result: postsResult } = useQuery('userPosts', { /* ... */ })
-
-const combined = computed(() => 
-  combineResults([userResult.value, postsResult.value])
-)
-
-// combined is AsyncResult<[User, Post[]], ApiError>
-// All loading states are combined
-// If any fails, the error is propagated
-```
-
 ## Handling Errors
 
 ### Pattern Matching on Error Types
 
-```typescript
-const result = useQuery('userDetail', { /* ... */ })
+`ApiError` is a union of `ApiExpectedError` (server validation errors with an `errors` array) and `ApiUnexpectedError` (network/parsing errors that are `Error` instances):
 
-result.value.match(
-  (user) => {
+```typescript
+const { result } = useQuery('userDetail', { /* ... */ })
+
+result.value.match({
+  loading: () => {
+    console.log('Loading...')
+  },
+  ok: (user) => {
     console.log('Success:', user)
   },
-  (error) => {
-    // error is typed as ApiError
-    switch (error.code) {
-      case 'NOT_FOUND':
-        showUserNotFoundMessage()
-        break
-      case 'UNAUTHORIZED':
-        redirectToLogin()
-        break
-      case 'NETWORK_ERROR':
-        showRetryButton()
-        break
-      default:
-        showGenericErrorMessage(error.message)
+  err: (error) => {
+    if ('errors' in error) {
+      // ApiExpectedError — server returned structured error
+      switch (error.errors[0].code) {
+        case 'NOT_FOUND':
+          showUserNotFoundMessage()
+          break
+        case 'UNAUTHORIZED':
+          redirectToLogin()
+          break
+        default:
+          showGenericErrorMessage(error.errors[0].detail)
+      }
+    } else {
+      // ApiUnexpectedError — network or parsing failure
+      showRetryButton()
     }
   },
-  () => {
-    console.log('Loading...')
-  }
-)
+})
 ```
 
 ### Transforming Results
@@ -336,15 +333,11 @@ const userNameResult = userResult.value.map(user => user.name)
 // Type: AsyncResult<string, ApiError>
 
 // Transform the error
-const errorMessage = userResult.value.mapErr(error => error.message)
+const errorMessage = userResult.value.mapErr(error => 'errors' in error ? error.errors[0].detail : error.message)
 // Type: AsyncResult<User, string>
 
-// Transform both
-const displayText = userResult.value.match(
-  (user) => `User: ${user.name}`,
-  (error) => `Error: ${error.message}`,
-  () => 'Loading...'
-)
+// Use unwrapOr for a safe default
+const displayName = userResult.value.map(u => u.name).unwrapOr('Unknown')
 ```
 
 ## Type Safety
@@ -352,18 +345,18 @@ const displayText = userResult.value.match(
 AsyncResult enforces type safety at compile time:
 
 ```typescript
-const result = useQuery('userDetail', { /* ... */ })
+const { result } = useQuery('userDetail', { /* ... */ })
 
 // ✅ This is safe - getValue() only works when isOk()
 if (result.value.isOk()) {
   const name = result.value.getValue().name
 }
 
-// ❌ This is a type error - getValue() called when not Ok
-const name = result.value.getValue().name // ERROR!
+// ❌ This is a compile error - getValue() is not available without narrowing
+// const name = result.value.getValue().name // TypeScript error!
 
 // ✅ Better - use unwrapOr() with a default
-const name = result.value.unwrapOr({ name: 'Unknown' }).name
+const name = result.value.unwrapOr(null)?.name ?? 'Unknown'
 ```
 
 ## Best Practices

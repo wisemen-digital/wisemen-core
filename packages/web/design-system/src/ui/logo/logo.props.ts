@@ -6,7 +6,7 @@ export interface LogoProps {
   /**
    * The size of the logo.
    */
-  size: '3xs' | 'sm' | 'xs' | 'xxs'
+  size: '3xs' | 'lg' | 'md' | 'sm' | 'xs' | 'xxs'
   /**
    * The image source URL for the logo.
    */

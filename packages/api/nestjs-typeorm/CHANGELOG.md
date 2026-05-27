@@ -1,5 +1,17 @@
 # @wisemen/nestjs-typeorm
 
+## 1.0.1
+
+### Patch Changes
+
+- [#1053](https://github.com/wisemen-digital/wisemen-core/pull/1053) [`9f7b309`](https://github.com/wisemen-digital/wisemen-core/commit/9f7b3095e56284975d3b28e1ca1b4dfe25dc032f) Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)! - Add createAndInsert function on TypeOrm repository
+
+## 1.0.0
+
+### Major Changes
+
+- [#1099](https://github.com/wisemen-digital/wisemen-core/pull/1099) [`69126c5`](https://github.com/wisemen-digital/wisemen-core/commit/69126c58322d45bf1fb86220ced9301209509acb) Thanks [@senne-vanreusel](https://github.com/senne-vanreusel)! - Added support for typeorm v1.0.0
+
 ## 0.2.1
 
 ### Patch Changes

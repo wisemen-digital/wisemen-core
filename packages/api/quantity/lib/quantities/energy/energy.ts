@@ -44,7 +44,9 @@ const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
 }
 
 export class Energy extends Quantity<EnergyUnit, Energy> {
-  protected baseUnit = EnergyUnit.JOULE
+  protected getBaseUnit () {
+    return EnergyUnit.JOULE
+  }
 
   protected convertValueToBaseUnit (value: number, unit: EnergyUnit): number {
     return value * ENERGY_MULTIPLIERS[unit]
@@ -53,4 +55,6 @@ export class Energy extends Quantity<EnergyUnit, Energy> {
   protected convertBaseUnitValueTo (value: number, unit: EnergyUnit): number {
     return value / ENERGY_MULTIPLIERS[unit]
   }
+
+  static ZERO = new Energy(0, EnergyUnit.JOULE)
 }

@@ -1,11 +1,11 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createDatePickerFieldStyle = tv({
   slots: {
     cell: `relative flex-1 p-0 text-center text-xs`,
     cellTrigger: `
       inline-flex h-9 w-full items-center justify-center rounded-full text-xs
-      font-normal text-secondary outline-none
+      font-regular text-secondary outline-none
       not-data-disabled:hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
       data-disabled:pointer-events-none data-disabled:text-disabled

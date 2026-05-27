@@ -12,6 +12,7 @@ import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
 import DialogChin from '@/ui/dialog/DialogChin.vue'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
+import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -66,6 +67,20 @@ function onOpenChange(value: boolean): void {
     emit('close')
   }
 }
+
+function onInteractOutside(event: CustomEvent): void {
+  if (!(event.target instanceof Element)) {
+    return
+  }
+
+  if (!event.target.hasAttribute('data-dialog-overlay')) {
+    event.preventDefault()
+  }
+}
+
+const overlay = useOverlay()
+
+const dialogContentZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}`
 </script>
 
 <template>
@@ -77,21 +92,26 @@ function onOpenChange(value: boolean): void {
     <RekaDialogOverlay
       :class="style.overlay()"
       data-animation="dialog"
+      data-dialog-overlay
     />
+
     <RekaDialogContent
       :class="style.contentWrapper()"
+      :style="{
+        zIndex: dialogContentZIndex,
+      }"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
       @pointer-down-outside="onPointerDownOutside"
       @after-leave="emit('afterLeave')"
+      @interact-outside="onInteractOutside"
     >
       <div :class="style.content()">
         <slot />
         <DialogCloseButton v-if="props.showCloseButton" />
       </div>
-      <DialogChin
-        :chin="props.chin"
-      />
+
+      <DialogChin :chin="props.chin" />
     </RekaDialogContent>
   </RekaDialogRoot>
 </template>
@@ -154,5 +174,13 @@ function onOpenChange(value: boolean): void {
   [data-animation='dialog'] {
     animation-duration: 0ms;
   }
+}
+
+body.reduced-motion [data-animation='dialog'],
+body.reduced-motion [data-animation='dialog'][data-state='open'],
+body.reduced-motion [data-animation='dialog'][data-state='closed'],
+body.reduced-motion [role='dialog'][data-animation='dialog'][data-state='open'],
+body.reduced-motion [role='dialog'][data-animation='dialog'][data-state='closed'] {
+  animation-duration: 0ms;
 }
 </style>

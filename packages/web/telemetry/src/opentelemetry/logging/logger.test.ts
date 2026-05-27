@@ -12,6 +12,7 @@ describe('initOpenTelemetryLogging', () => {
     const runtime = await initOpenTelemetryLogging({
       accessTokenFn: (): Promise<string> => Promise.resolve('token'),
       serviceName: 'telemetry-web',
+      tracePropagationUrls: [],
     })
 
     expect(runtime).toBeNull()
@@ -24,6 +25,7 @@ describe('initOpenTelemetryLogging', () => {
       accessTokenFn,
       logEndpoint: 'https://collector.example/logs',
       serviceName: 'telemetry-web',
+      tracePropagationUrls: [],
     })
 
     expect(accessTokenFn).not.toHaveBeenCalled()

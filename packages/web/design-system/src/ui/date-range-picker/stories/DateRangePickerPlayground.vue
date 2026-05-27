@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import type { PlainDateRange } from '@wisemen/vue-core-dates'
 import type { Temporal } from 'temporal-polyfill'
 import { ref } from 'vue'
 
-import type { DateRangePickerRange } from '@/ui/date-range-picker/dateRangePicker.props'
 import DateRangePicker from '@/ui/date-range-picker/DateRangePicker.vue'
 
 const props = withDefaults(defineProps<{
@@ -15,7 +15,10 @@ const props = withDefaults(defineProps<{
   showPresets: true,
 })
 
-const modelValue = ref<DateRangePickerRange | null>(null)
+const modelValue = ref<PlainDateRange>({
+  from: null,
+  until: null,
+})
 </script>
 
 <template>

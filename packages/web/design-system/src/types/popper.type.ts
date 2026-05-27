@@ -2,7 +2,8 @@ import type { ReferenceElement } from 'reka-ui'
 
 export type PopperAlign = 'center' | 'end' | 'start'
 export type PopperSide = 'bottom' | 'left' | 'right' | 'top'
-export type PopperWidth = 'anchor-width' | 'available-width'
+
+export type PopperWidth = 'anchor-width' | 'available-width' | 'content-width'
 
 export interface PopperProps {
   /**
@@ -60,10 +61,10 @@ export interface PopperProps {
    * Determines the width of the popper content.
    * - `anchor-width`: Matches the width of the trigger element.
    * - `available-width`: Expands to fit the available space.
-   * - `null`: Uses the natural width of the content.
-   * @default null
+   * - `content-width`: Uses the natural width of the content.
+   * @default 'content-width'
    */
-  popoverWidth?: PopperWidth | null
+  popoverWidth?: PopperWidth
 }
 
 export const POPPER_PROPS_DEFAULTS = {
@@ -76,5 +77,5 @@ export const POPPER_PROPS_DEFAULTS = {
   popoverContainerElement: null,
   popoverSide: 'top',
   popoverSideOffset: 0,
-  popoverWidth: null,
+  popoverWidth: 'content-width',
 } satisfies PopperProps

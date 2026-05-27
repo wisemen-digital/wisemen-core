@@ -3,7 +3,10 @@ import { FindOperator, Raw } from 'typeorm'
 import { DateRange } from '../../date-range/date-range.js'
 import { DateTimeRange } from '../../date-time-range/date-time-range.js'
 
-// Finds database ranges that are immediately succeeded by the given period
+/** 
+ * Checks that a range is immediately succeeded by the given range by
+ * checking both adjacency `-|-` and order `>`.
+ */
 export function IsSucceededBy (period: DateRange): FindOperator<DateRange>
 export function IsSucceededBy (period: DateTimeRange): FindOperator<DateTimeRange>
 export function IsSucceededBy (

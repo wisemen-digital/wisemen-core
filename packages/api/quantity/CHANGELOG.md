@@ -1,5 +1,31 @@
 # @wisemen/quantity
 
+## 0.8.1
+
+### Patch Changes
+
+- Updated dependencies [[`9f7b309`](https://github.com/wisemen-digital/wisemen-core/commit/9f7b3095e56284975d3b28e1ca1b4dfe25dc032f)]:
+  - @wisemen/nestjs-typeorm@1.0.1
+
+## 0.8.0
+
+### Minor Changes
+
+- [#1061](https://github.com/wisemen-digital/wisemen-core/pull/1061) [`025b4ac`](https://github.com/wisemen-digital/wisemen-core/commit/025b4acc0509f28d00b498c21396aa346fd393a8) Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - quantity add format method
+
+### Patch Changes
+
+- Updated dependencies [[`69126c5`](https://github.com/wisemen-digital/wisemen-core/commit/69126c58322d45bf1fb86220ced9301209509acb)]:
+  - @wisemen/nestjs-typeorm@1.0.0
+
+## 0.7.0
+
+### Minor Changes
+
+- [#1003](https://github.com/wisemen-digital/wisemen-core/pull/1003) [`bd0ed26`](https://github.com/wisemen-digital/wisemen-core/commit/bd0ed260d360559ca551f70e383e9c7ff7591113) Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - added rate and percentage support for use with quantities
+
+- [#999](https://github.com/wisemen-digital/wisemen-core/pull/999) [`f659833`](https://github.com/wisemen-digital/wisemen-core/commit/f65983333ed3cb8d2a16129d082d1fa482655853) Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - quantities add ZERO statics
+
 ## 0.6.1
 
 ### Patch Changes
