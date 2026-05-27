@@ -1,3 +1,10 @@
+## Unreleased
+
+### Major Changes
+
+- Breaking change: require `tracePropagationUrls` in `TelemetryOptions` and `registerAppInstrumentations()` so fetch trace headers are only propagated to explicitly configured cross-origin URLs.
+- Add optional `traceSampleRate` to `TelemetryOptions` for trace-only sampling.
+
 ## 1.1.0
 
 ### Minor Changes
