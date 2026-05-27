@@ -3,10 +3,40 @@ import { registerInstrumentations } from '@opentelemetry/instrumentation'
 import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch'
 import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction'
 
-const ALL_CORS_URLS_REGEX = /.*/
+import type { TelemetryTracePropagationUrl } from '@/types.ts'
+
+const REGEXP_SPECIAL_CHARS_REGEX = /[.*+?^${}()|[\]\\]/g
+
 let defaultInstrumentationsRegistered = false
 
-function createDefaultInstrumentations(): Instrumentation[] {
+export interface RegisterAppInstrumentationsOptions {
+  instrumentations?: Instrumentation[]
+  tracePropagationUrls: TelemetryTracePropagationUrl[]
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(REGEXP_SPECIAL_CHARS_REGEX, '\\$&')
+}
+
+export function createTracePropagationMatchers(
+  tracePropagationUrls: TelemetryTracePropagationUrl[],
+): TelemetryTracePropagationUrl[] {
+  return tracePropagationUrls
+    .filter((url) => typeof url !== 'string' || url.trim() !== '')
+    .map((url) => {
+      if (url instanceof RegExp) {
+        return url
+      }
+
+      const normalizedUrl = url.endsWith('/') ? url.slice(0, -1) : url
+
+      return new RegExp(`^${escapeRegExp(normalizedUrl)}(?:$|[/?#])`)
+    })
+}
+
+function createDefaultInstrumentations(
+  tracePropagationUrls: TelemetryTracePropagationUrl[],
+): Instrumentation[] {
   return [
     new UserInteractionInstrumentation({
       eventNames: [
@@ -16,18 +46,20 @@ function createDefaultInstrumentations(): Instrumentation[] {
       ],
     }),
     new FetchInstrumentation({
-      propagateTraceHeaderCorsUrls: ALL_CORS_URLS_REGEX,
+      propagateTraceHeaderCorsUrls: createTracePropagationMatchers(tracePropagationUrls),
     }),
   ]
 }
 
-export function registerDefaultAppInstrumentations(): void {
+export function registerDefaultAppInstrumentations(
+  tracePropagationUrls: TelemetryTracePropagationUrl[],
+): void {
   if (defaultInstrumentationsRegistered) {
     return
   }
 
   registerInstrumentations({
-    instrumentations: createDefaultInstrumentations(),
+    instrumentations: createDefaultInstrumentations(tracePropagationUrls),
   })
   defaultInstrumentationsRegistered = true
 }
@@ -36,18 +68,18 @@ export function registerDefaultAppInstrumentations(): void {
  * Register additional OpenTelemetry instrumentations for web applications.
  * Default Fetch and User Interaction instrumentations are registered once automatically.
  *
- * @param instrumentations - Additional instrumentations to register.
+ * @param options - Trace propagation URLs and additional instrumentations.
  */
 export function registerAppInstrumentations(
-  instrumentations?: Instrumentation[],
+  options: RegisterAppInstrumentationsOptions,
 ): void {
-  registerDefaultAppInstrumentations()
+  registerDefaultAppInstrumentations(options.tracePropagationUrls)
 
-  if (instrumentations == null || instrumentations.length === 0) {
+  if (options.instrumentations == null || options.instrumentations.length === 0) {
     return
   }
 
   registerInstrumentations({
-    instrumentations,
+    instrumentations: options.instrumentations,
   })
 }
