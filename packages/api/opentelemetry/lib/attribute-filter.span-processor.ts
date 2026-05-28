@@ -8,8 +8,6 @@ export class AttributeFilterSpanProcessor implements SpanProcessor {
 
     // PgInstrumentation
     'db.connection_string',
-    'net.peer.name',
-    'net.peer.port',
     'db.user',
 
     // NestInstrumentation
