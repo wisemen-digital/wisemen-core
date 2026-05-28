@@ -13,7 +13,8 @@
     "directory": "packages/opentelemetry"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "prebuild": "rm -rf ./dist",
