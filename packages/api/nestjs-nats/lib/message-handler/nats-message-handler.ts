@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+ 
 
 import type { JsMsg } from '@nats-io/jetstream'
 import type { Msg } from '@nats-io/transport-node'
@@ -8,9 +8,15 @@ import { getOtelTracer, type TraceContextCarrier } from '@wisemen/opentelemetry'
 import type { NatsParameter } from '#src/parameters/nats-parameter.js'
 
 export class NatsMessageHandlerFunction {
+  /**
+   * @param parameters the parameters to build on each handle call
+   * @param handler the handler of the messages
+   * @param context the context in which the handler operates, used to name the span
+   */
   constructor (
     private parameters: NatsParameter[],
-    private handler: (...args: unknown[]) => unknown | Promise<unknown>
+    private handler: (...args: unknown[]) => unknown | Promise<unknown>,
+    private context?: string
   ) {}
 
   async handle (message: Msg | JsMsg): Promise<unknown> {
@@ -29,11 +35,10 @@ export class NatsMessageHandlerFunction {
 
     const parentContext: Context = propagation.extract(context.active(), traceContext)
     const span = tracer.startSpan(
-      'NatsMessageHandler',
+      this.context ?? 'NatsMessageHandler',
       {
         attributes: {
           subject: `${message.subject}`,
-          data: `${message.data?.toString() ?? ''}`
         }
       },
       parentContext
