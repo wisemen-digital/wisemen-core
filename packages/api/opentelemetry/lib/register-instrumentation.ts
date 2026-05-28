@@ -14,9 +14,9 @@ export function registerInstrumentation (
   registerInstrumentations({
     instrumentations: [
       new PgInstrumentation({
-        enhancedDatabaseReporting: true,
+        enhancedDatabaseReporting: false,
         requireParentSpan: true,
-        ignoreConnectSpans: true
+        ignoreConnectSpans: true,
       }),
       new HttpInstrumentation({
         requestHook: (span: Span, request: ClientRequest | IncomingMessage): void => {
