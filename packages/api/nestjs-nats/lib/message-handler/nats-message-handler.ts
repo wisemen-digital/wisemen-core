@@ -15,7 +15,7 @@ export class NatsMessageHandlerFunction {
    */
   constructor (
     private parameters: NatsParameter[],
-    private handler: (...args: unknown[]) => unknown | Promise<unknown>,
+    private handler: (...args: unknown[]) => unknown,
     private context?: string
   ) {}
 
