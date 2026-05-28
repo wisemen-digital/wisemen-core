@@ -8,7 +8,7 @@ library: vue-core-api-utils
 
 # @wisemen/vue-core-api-utils — Cache Management
 
-Manually read, write, update, and invalidate the query cache using the type-safe `useQueryClient()` composable. This is useful for optimistic updates and strategically invalidating affected queries.
+Manually read, write, update, and invalidate the query cache using the type-safe `QueryClient` wrapper. This is useful for optimistic updates and strategically invalidating affected queries.
 
 ## Setup
 
@@ -26,15 +26,17 @@ queryClient.set(
   updatedContact
 )
 
-// Update cached data with a predicate
-queryClient.update('contactList', {
+// Update cached data with a predicate (returns { rollback } for reverting)
+const { rollback } = queryClient.update('contactList', {
   by: (contact) => contact.id === '123',
   value: (contact) => ({ ...contact, name: 'Updated' }),
 })
 
-// Invalidate queries (trigger refetch)
-queryClient.invalidate('contactList')
+// Invalidate queries (async — triggers refetch)
+await queryClient.invalidate('contactList')
 ```
+
+`useQueryClient()` is a helper you create in your `@/api` module (see [getting-started](../getting-started/SKILL.md)) that wraps `new QueryClient(getTanstackQueryClient())`.
 
 ## Core Patterns
 
@@ -81,8 +83,8 @@ queryClient.set('contactList', [
 ```typescript
 const queryClient = useQueryClient()
 
-// Update a single item in a list
-queryClient.update('contactList', {
+// Update a single item in a list — returns { rollback } for reverting
+const { rollback } = queryClient.update('contactList', {
   by: (contact) => contact.id === '123',        // Predicate
   value: (contact) => ({                        // Transform
     ...contact,
@@ -91,13 +93,13 @@ queryClient.update('contactList', {
 })
 
 // For single entities, the predicate always matches
-queryClient.update('contactDetail', {
-  by: (contact) => true, // Always update
+const { rollback: rollbackDetail } = queryClient.update('contactDetail', {
+  by: (contact) => true,
   value: (contact) => ({ ...contact, name: 'Updated' }),
 })
 ```
 
-QueryClient knows whether the entity is an array or single item, so predicates work transparently on lists.
+`update()` returns `{ rollback }` — a function that reverts the cache to its previous state. Use this for optimistic updates. QueryClient knows whether the entity is an array or single item, so predicates work transparently on lists.
 
 ### Invalidate and refetch
 
@@ -105,10 +107,10 @@ QueryClient knows whether the entity is an array or single item, so predicates w
 const queryClient = useQueryClient()
 
 // Invalidate all queries with this key
-queryClient.invalidate('contactList')
+await queryClient.invalidate('contactList')
 
 // Invalidate specific query
-queryClient.invalidate(['contactDetail', { contactUuid: '123' }])
+await queryClient.invalidate(['contactDetail', { contactUuid: '123' }])
 
 // After invalidation, the next query interaction triggers a refetch
 ```

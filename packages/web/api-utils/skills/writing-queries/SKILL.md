@@ -1,7 +1,7 @@
 ---
 name: writing-queries
 description: >
-  Single resource queries using factory-provided useQuery, computed ref params, staleTime configuration, queryFn, refetch, isFetching vs isLoading distinctions, automatic cache management.
+  Single resource queries using useQuery, computed ref params, staleTime configuration, queryFn, refetch, isFetching vs isLoading distinctions, automatic cache management.
 type: core
 library: vue-core-api-utils
 ---

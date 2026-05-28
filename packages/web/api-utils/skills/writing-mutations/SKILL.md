@@ -1,7 +1,7 @@
 ---
 name: writing-mutations
 description: >
-  Create, update, delete resources using factory-provided useMutation, typed queryKeysToInvalidate, AsyncResult error handling, execute function, request shape with body/params separation.
+  Create, update, delete resources using useMutation, typed queryKeysToInvalidate, AsyncResult error handling, execute function, request shape with body/params separation.
 type: core
 library: vue-core-api-utils
 ---
@@ -18,8 +18,8 @@ import { ContactService } from '@/services'
 
 export function useCreateContact() {
   return useMutation({
-    queryFn: async (options: { body: ContactCreateForm }) => {
-      return await ContactService.create(options.body)
+    queryFn: async ({ body }: { body: ContactCreateForm }) => {
+      return await ContactService.create(body)
     },
     queryKeysToInvalidate: {
       contactList: {}, // Invalidate all contactList queries
@@ -47,8 +47,7 @@ async function handleSubmit(formData: ContactCreateForm) {
     // Invalidated queries will refetch automatically
   } else if (response.isErr()) {
     const error = response.getError()
-    // Handle error based on code
-    if (error.errors[0].code === 'EMAIL_EXISTS') {
+    if ('errors' in error && error.errors[0].code === 'EMAIL_EXISTS') {
       toast.error('That email is already registered')
     } else {
       toast.error('Creation failed')
@@ -64,12 +63,14 @@ Always `await execute()` and check the result state before continuing.
 ```typescript
 export function useUpdateContact(contactUuid: string) {
   return useMutation({
-    queryFn: async (options: { body: ContactUpdateForm }) => {
-      return await ContactService.update(contactUuid, options.body)
+    queryFn: async ({ body }: { body: ContactUpdateForm }) => {
+      return await ContactService.update(contactUuid, body)
     },
     queryKeysToInvalidate: {
-      contactDetail: {}, // Invalidate the specific contact
-      contactList: {},   // And the list
+      contactDetail: {
+        contactUuid: () => contactUuid, // Invalidate only this contact's detail query
+      },
+      contactList: {}, // Invalidate all contactList queries
     },
   })
 }
@@ -104,7 +105,7 @@ async function handleSubmit() {
     <button :disabled="result.isLoading()">
       {{ result.isLoading() ? 'Creating...' : 'Create' }}
     </button>
-    <div v-if="result.isErr()">
+    <div v-if="result.isErr() && 'errors' in result.getError()">
       Error: {{ result.getError().errors[0].detail }}
     </div>
   </form>

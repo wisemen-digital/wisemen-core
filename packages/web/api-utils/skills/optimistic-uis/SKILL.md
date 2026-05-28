@@ -25,26 +25,24 @@ const { result: contact } = useQuery('contactDetail', {
 })
 
 const { execute, isLoading, result: mutationResult } = useMutation({
-  queryFn: ({ body }) => ContactService.updateContact(contactUuid, body),
+  queryFn: ({ body }: { body: ContactUpdateForm }) =>
+    ContactService.updateContact(contactUuid, body),
   queryKeysToInvalidate: { contactList: {} },
 })
 
-async function handleSubmit(formData) {
-  // Save original (for rollback)
-  const originalContact = contact.value.isOk() ? contact.value.getValue() : null
-  
-  // Optimistic update: immediate cache change
-  queryClient.update(['contactDetail', { contactUuid }], {
+async function handleSubmit(formData: ContactUpdateForm) {
+  // Optimistic update — returns { rollback } for reverting on error
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }], {
     by: (c) => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
   // Execute mutation
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   
   // On error, rollback
   if (result.isErr()) {
-    queryClient.set(['contactDetail', { contactUuid }], originalContact)
+    rollback()
   }
 }
 ```
@@ -54,29 +52,32 @@ async function handleSubmit(formData) {
 ### Immediate cache update while request pending
 
 ```typescript
+const queryClient = useQueryClient()
+
 const { result } = useQuery('contactDetail', {
-  params: computed(() => ({ contactUuid })),
+  params: { contactUuid: computed(() => contactUuid) },
   queryFn: () => ContactService.getDetail(contactUuid),
 })
 
 const { execute, isLoading } = useMutation({
-  queryFn: (data) => ContactService.updateContact(contactUuid, data),
-  queryKeysToInvalidate: { /* ... */ },
+  queryFn: ({ body }: { body: ContactUpdateForm }) =>
+    ContactService.updateContact(contactUuid, body),
+  queryKeysToInvalidate: { contactList: {} },
 })
 
-async function handleSave(formData) {
-  // Cache update happens immediately
-  queryClient.update(['contactDetail', { contactUuid }], {
+async function handleSave(formData: ContactUpdateForm) {
+  // Cache update happens immediately, rollback returned for error case
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }], {
     by: (c) => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
   // Mutation executes in background
-  await execute(formData)
+  const result = await execute({ body: formData })
   
-  // UI shows updated data from cache right away
-  // isLoading is true while request pending
-  // result.value changes when mutation completes
+  if (result.isErr()) {
+    rollback()
+  }
 }
 ```
 
@@ -85,71 +86,61 @@ Users see changes instantly. `isLoading` stays true during request, giving visua
 ### Error handling with AsyncResult
 
 ```typescript
-async function handleSave(formData) {
-  const originalContact = contact.value?.getValue()
-  
-  queryClient.update(['contactDetail', { contactUuid }], {
+async function handleSave(formData: ContactUpdateForm) {
+  const queryClient = useQueryClient()
+
+  const { rollback } = queryClient.update(['contactDetail', { contactUuid }], {
     by: (c) => true,
     value: (c) => ({ ...c, ...formData }),
   })
   
-  const result = await execute(formData)
+  const result = await execute({ body: formData })
   
-  // Match on mutation result
-  result.match({
-    ok: () => {
-      // Server confirmed the update
-      // Cache already reflects the change
-      showSuccessMessage('Contact updated')
-    },
-    err: (error) => {
-      // Revert optimistic update
-      queryClient.set(['contactDetail', { contactUuid }], originalContact)
-      showErrorMessage(`Failed: ${error.message}`)
-    },
-    loading: () => {
-      // Should not happen after await, but handle just in case
-    },
-  })
+  if (result.isOk()) {
+    showSuccessMessage('Contact updated')
+  } else if (result.isErr()) {
+    rollback()
+    const error = result.getError()
+    if ('errors' in error) {
+      showErrorMessage(`Failed: ${error.errors[0].detail}`)
+    } else {
+      showErrorMessage('An unexpected error occurred')
+    }
+  }
 }
 ```
 
-When mutation fails, revert the optimistic change using the saved original value.
+When mutation fails, call `rollback()` to revert the optimistic cache change. Narrow the error type with `'errors' in error` to distinguish expected API errors from unexpected ones.
 
 ### Composable combining query + mutation + optimistic UI
 
 ```typescript
-export function useContactEditor(contactUuid) {
+export function useContactEditor(contactUuid: string) {
   const queryClient = useQueryClient()
   
   const { result: contact } = useQuery('contactDetail', {
-    params: computed(() => ({ contactUuid })),
+    params: { contactUuid: computed(() => contactUuid) },
     queryFn: () => ContactService.getDetail(contactUuid),
   })
   
   const { execute, isLoading, result: mutationResult } = useMutation({
-    queryFn: (data) => ContactService.updateContact(contactUuid, data),
+    queryFn: ({ body }: { body: ContactUpdateForm }) =>
+      ContactService.updateContact(contactUuid, body),
     queryKeysToInvalidate: {
-      contactList: () => true,
-      'contact-stats': () => true,
+      contactList: {},
     },
   })
   
-  async function saveContact(formData) {
-    const original = contact.value?.getValue()
-    
-    // Optimistic
-    queryClient.update(['contactDetail', { contactUuid }], {
+  async function saveContact(formData: ContactUpdateForm) {
+    const { rollback } = queryClient.update(['contactDetail', { contactUuid }], {
       by: () => true,
       value: (c) => ({ ...c, ...formData }),
     })
     
-    // Execute
-    const result = await execute(formData)
+    const result = await execute({ body: formData })
     
-    // Rollback on error
     if (result.isErr()) {
-      queryClient.set(['contactDetail', { contactUuid }], original)
+      rollback()
     }
     
     return result
@@ -168,21 +159,20 @@ Encapsulate the full flow in a composable for reusability across components.
 
 ## Rollback Strategy
 
-Rollback is enabled by saving the original data before the optimistic update:
+`queryClient.update()` returns a `{ rollback }` function that reverts the cache to its previous state:
 
 ```typescript
-const original = contact.value?.getValue()
-queryClient.update(['contactDetail', { contactUuid }], {
+const { rollback } = queryClient.update(['contactDetail', { contactUuid }], {
   by: () => true,
   value: (c) => ({ ...c, ...formData }),
 })
-const result = await execute(formData)
+const result = await execute({ body: formData })
 if (result.isErr()) {
-  queryClient.set(['contactDetail', { contactUuid }], original)
+  rollback()
 }
 ```
 
-However, rollback patterns for complex scenarios (partial field updates, nested objects) are being refined in the library. For now, save and restore the entire entity.
+Always use the built-in `rollback()` rather than manually saving and restoring the original data — it handles all edge cases including list updates and concurrent modifications.
 
 ## See Also
 

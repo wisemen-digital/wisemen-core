@@ -8,7 +8,7 @@ library: vue-core-api-utils
 
 # @wisemen/vue-core-api-utils — Writing Infinite Queries
 
-Paginate through large datasets with two strategies: offset-based (page/limit) for traditional pagination, or keyset-based (cursor) for real-time data and large datasets.
+Paginate through large datasets with two strategies: offset-based (offset/limit) for traditional pagination, or keyset-based (cursor/key) for real-time data and large datasets.
 
 **Choose your strategy based on what your backend API provides — not preference.**
 
@@ -28,16 +28,16 @@ export function useContactList() {
     params: {
       search: computed(() => search.value),
     },
-    queryFn: (pagination) => ContactService.getAll({
-      page: pagination.pageParam,
-      limit: pagination.limit,
+    queryFn: ({ offset, limit }) => ContactService.getAll({
+      offset,
+      limit,
       search: search.value,
     }),
   })
 }
 ```
 
-Pagination parameter `pageParam` starts at 0 and increments. Return results with `{ data: Contact[], meta: { page, limit, total } }`.
+The `queryFn` receives `{ offset, limit }` — offset is the starting index (0 on the first page) and limit is the page size.
 
 ### Keyset Pagination (cursor-based)
 
@@ -53,16 +53,16 @@ export function useContactListKeyset() {
     params: {
       search: computed(() => search.value),
     },
-    queryFn: (pagination) => ContactService.getAllKeyset({
-      limit: pagination.limit,
-      cursor: pagination.pageParam,
+    queryFn: ({ key, limit }) => ContactService.getAllKeyset({
+      limit,
+      after: key,
       search: search.value,
     }),
   })
 }
 ```
 
-Pagination parameter `pageParam` is a cursor (string). Return results with `{ data: Contact[], meta: { next?: string } }` — the next cursor or undefined if no more pages.
+The `queryFn` receives `{ key, limit }` — `key` is the cursor (`undefined` on the first page) and `limit` is the page size.
 
 ## Core Patterns
 
@@ -103,8 +103,8 @@ Use `isFetchingNextPage` (not `isFetching`) to disable the load-more button only
 >
 > — Maintainer guidance
 
-If your API provides `page` and `limit` parameters, use `useOffsetInfiniteQuery`.
-If your API provides a `cursor` parameter, use `useKeysetInfiniteQuery`.
+If your API provides `offset` and `limit` parameters, use `useOffsetInfiniteQuery`.
+If your API provides a cursor/key parameter, use `useKeysetInfiniteQuery`.
 
 ## See Also
 
