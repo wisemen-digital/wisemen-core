@@ -2,11 +2,11 @@ import type { DisabledWithReason } from '@/types/disabledWithReason.type'
 import type { BaseFileUploadItem } from '@/ui/base-file-upload/baseFileUpload.type'
 
 export interface BaseFileUploadProps extends DisabledWithReason {
-  /*
-    * If true, the uploaded file will be publicly accessible. This typically means that the file
-    * will be uploaded with permissions that allow anyone to view or download it without authentication.
-    *
-    * @default false - The file will be uploaded with private permissions, requiring authentication for access.
+  /**
+   * If true, the uploaded file will be publicly accessible. This typically means that the file
+   * will be uploaded with permissions that allow anyone to view or download it without authentication.
+   *
+   * @default false - The file will be uploaded with private permissions, requiring authentication for access.
    */
   isPublic?: boolean
   /**

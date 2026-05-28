@@ -4,13 +4,17 @@ import type {
 } from '@/ui/base-file-upload/baseFileUpload.type'
 import { BaseFileUploadStatus } from '@/ui/base-file-upload/baseFileUpload.type'
 
-export function mapFileToBaseUploadItem(file: File, order: number, status = BaseFileUploadStatus.PENDING): BaseFileUploadItem {
+export function mapFileToBaseUploadItem(
+  file: File,
+  order: number,
+  status = BaseFileUploadStatus.PENDING,
+): BaseFileUploadItem {
   return {
     uuid: '',
     isSyncedWithModelValue: false,
     name: file.name,
     file,
-    key: `${Math.random()}`,
+    key: crypto.randomUUID(),
     mimeType: file.type,
     order,
     status,
@@ -18,7 +22,10 @@ export function mapFileToBaseUploadItem(file: File, order: number, status = Base
   } as BaseFileUploadItem
 }
 
-export function mapFileInfoToBaseFileUploadItem(fileInfo: BaseFileInfo, status: BaseFileUploadStatus): BaseFileUploadItem {
+export function mapFileInfoToBaseFileUploadItem(
+  fileInfo: BaseFileInfo,
+  status: BaseFileUploadStatus,
+): BaseFileUploadItem {
   return {
     ...fileInfo,
     isSyncedWithModelValue: true,

@@ -8,7 +8,20 @@ export class BlurhashUtil {
       return null
     }
 
-    const image = await this.loadImage(URL.createObjectURL(file))
+    const imageUrl = URL.createObjectURL(file)
+    let image: HTMLImageElement
+
+    try {
+      image = await this.loadImage(imageUrl)
+    }
+    catch {
+      URL.revokeObjectURL(imageUrl)
+
+      return null
+    }
+
+    URL.revokeObjectURL(imageUrl)
+
     const clampedSize = this.getClampedSize(image.width, image.height, 32)
     const imageData = this.getImageData(image, clampedSize.width, clampedSize.height)
 

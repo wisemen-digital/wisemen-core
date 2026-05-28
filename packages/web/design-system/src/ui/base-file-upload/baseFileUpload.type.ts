@@ -1,5 +1,6 @@
 export enum BaseFileUploadError {
-  INVALID_MIME_TYPE = 'INVALID_MIME_TYPE',
+  CONFIRM_UPLOAD_FAILED = 'CONFIRM_UPLOAD_FAILED',
+  GET_FILE_INFO_FAILED = 'GET_FILE_INFO_FAILED',
   PREPROCESSING_FAILED = 'PREPROCESSING_FAILED',
   UPLOAD_FAILED = 'UPLOAD_FAILED',
 }
@@ -77,7 +78,7 @@ export interface BaseFileUploadItemSuccess extends BaseFileUploadItemBase {
 }
 
 export interface BaseFileUploadItemError extends BaseFileUploadItemBase {
-  errorMessage: string
+  error: BaseFileUploadError
   status: BaseFileUploadStatus.ERROR
 }
 

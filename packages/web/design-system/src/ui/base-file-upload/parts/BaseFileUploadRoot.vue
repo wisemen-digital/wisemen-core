@@ -9,6 +9,7 @@ import { useProvideBaseFileUploadContext } from '@/ui/base-file-upload/baseFileU
 import type { BaseFileUploadProps } from '@/ui/base-file-upload/baseFileUpload.props'
 import type {
   BaseFileInfo,
+  BaseFileUploadError,
   BaseFileUploadItem,
   BaseFileUploadItemSuccess,
 } from '@/ui/base-file-upload/baseFileUpload.type'
@@ -135,7 +136,7 @@ function onFilesSelected(files: File[]): void {
 
   validFiles = props.isValidFile === null
     ? validFiles
-    : files.filter((file) => props.isValidFile!(file))
+    : validFiles.filter((file) => props.isValidFile!(file))
 
   validFiles = validFiles.slice(0, isMultiple.value ? undefined : 1)
 
@@ -219,14 +220,21 @@ function onSuccess(item: BaseFileUploadItem): void {
   }
 }
 
-function onError(item: BaseFileUploadItem, errorMessage: string): void {
+function onError(item: BaseFileUploadItem, error: BaseFileUploadError): void {
   updateInternalItem(item.key, {
-    errorMessage,
+    error,
     status: BaseFileUploadStatus.ERROR,
   })
 }
 
+function revokeBlobUrl(url: string | null | undefined): void {
+  if (url?.startsWith('blob:')) {
+    URL.revokeObjectURL(url)
+  }
+}
+
 function onRemoveFileUploadItem(item: BaseFileUploadItem): void {
+  revokeBlobUrl(item.url)
   internalFiles.value = internalFiles.value.filter((file) => file.key !== item.key)
   delegatedModelValue.value = delegatedModelValue.value.filter(
     (file) => file.uuid !== item.uuid,
@@ -239,6 +247,7 @@ function onReplaceFileUploadItem(item: BaseFileUploadItem, file: File): void {
   const fileExistsInInternalFiles = internalFiles.value.some((file) => file.key === item.key)
 
   if (fileExistsInInternalFiles) {
+    revokeBlobUrl(item.url)
     updateInternalItem(item.key, mapFileToBaseUploadItem(file, item.order))
   }
   else {
