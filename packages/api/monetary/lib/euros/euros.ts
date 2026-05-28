@@ -7,6 +7,11 @@ import { MonetaryObject } from '../monetary.object.js'
 import { IsMonetary } from '../monetary.validator.js'
 import { MonetaryAmountColumn, MonetaryAmountColumnOptions } from '../monetary-amount.column.js'
 
+export enum EurosPrecision {
+  EUROS = 0,
+  CENTS = 2
+}
+
 export class Euros extends Monetary {
   constructor (object: MonetaryObject<Currency.EUR>)
   constructor (amount: number, precision: number)
