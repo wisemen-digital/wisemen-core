@@ -32,9 +32,8 @@ function openFileDialog(): void {
 <template>
   <Primitive
     :as-child="true"
-    :disabled="isDisabled"
     @click="openFileDialog"
   >
-    <slot />
+    <slot :is-disabled="isDisabled" />
   </Primitive>
 </template>

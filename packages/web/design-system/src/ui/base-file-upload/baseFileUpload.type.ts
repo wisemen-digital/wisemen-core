@@ -18,6 +18,30 @@ export interface BaseFileUploadInfo {
   uploadUrl: string
 }
 
+export interface BaseFileUploadAdapter {
+  /**
+   * Confirms the upload of a file. In the case of an image, a blur hash can be provided to
+   * generate a placeholder while the image is being loaded.
+   *
+   * @param uuid - The unique identifier of the file being uploaded.
+   * @param blurHash - The blur hash of the image, or `null` if not applicable.
+   * @returns A promise that resolves when the upload is confirmed.
+   */
+  confirmUpload: (uuid: string, blurHash: string | null) => Promise<void>
+  /**
+   * Prepares a file for upload by retrieving upload metadata from the backend.
+   *
+   * This function is typically used before uploading a file to an external storage service
+   * like Amazon S3. It returns the necessary information such as a pre-signed upload URL
+   * and file UUID.
+   *
+   * @param name - The name of the file to be uploaded.
+   * @param mimeType - The MIME type of the file to be uploaded.
+   * @returns A promise that resolves to a `BaseFileUploadInfo` object containing upload metadata.
+   */
+  getFileInfo: (name: string, mimeType: string) => Promise<BaseFileUploadInfo>
+}
+
 export enum BaseFileUploadStatus {
   ERROR = 'ERROR', // Upload failed
   PENDING = 'PENDING', // Awaiting `getFileInfo` response

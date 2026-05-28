@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { BlurhashUtil } from '@/ui/base-file-upload/blurhash.util'
 import { useInjectBaseFileUploadContext } from '@/ui/base-file-upload/baseFileUpload.context'
 import type {
   BaseFileUploadInfo,
@@ -13,6 +12,8 @@ import {
   BaseFileUploadStatus,
 } from '@/ui/base-file-upload/baseFileUpload.type'
 import { useProvideBaseFileUploadItemContext } from '@/ui/base-file-upload/baseFileUploadItem.context'
+import { BlurhashUtil } from '@/ui/base-file-upload/blurhash.util'
+import { useInjectConfigContext } from '@/ui/config-provider'
 
 const props = defineProps<{
   item: BaseFileUploadItem
@@ -20,8 +21,6 @@ const props = defineProps<{
 
 const {
   isPublic,
-  confirmUpload,
-  getFileInfo,
   preprocess,
   onError,
   onRemoveFileUploadItem,
@@ -31,13 +30,26 @@ const {
   onUpdateProgress,
 } = useInjectBaseFileUploadContext()
 
+const {
+  fileUploadAdapter: maybeAdapter,
+} = useInjectConfigContext()
+
+if (maybeAdapter.value === null) {
+  throw new Error(
+    '[BaseFileUpload] No adapter provided. Add an adapter to the ConfigProvider.\n'
+    + 'Example: <UIConfigProvider :file-upload-adapter="myAdapter"><UIBaseFileUploadRoot ... /></UIConfigProvider>',
+  )
+}
+
+const adapter = maybeAdapter.value
+
 async function getFileInfoData(): Promise<BaseFileUploadInfo | null> {
   const {
     name, mimeType,
   } = props.item
 
   try {
-    return await getFileInfo(name, mimeType)
+    return await adapter.getFileInfo(name, mimeType)
   }
   catch {
     onError(props.item, BaseFileUploadError.UPLOAD_FAILED)
@@ -126,7 +138,7 @@ async function uploadFile(): Promise<void> {
 
   try {
     await uploadToS3(uuid, uploadUrl, processedFile)
-    await confirmUpload(uuid, blurHash)
+    await adapter.confirmUpload(uuid, blurHash)
   }
   catch {
     // onError was already called inside uploadToS3 on failure

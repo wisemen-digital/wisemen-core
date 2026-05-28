@@ -10,6 +10,7 @@ export type {
   BaseFileUploadItemPending,
   BaseFileUploadItemSuccess,
   BaseFileUploadItemUploading,
+  BaseFileUploadAdapter as UIBaseFileUploadAdapter,
 } from '@/ui/base-file-upload/baseFileUpload.type'
 export { BaseFileUploadStatus } from '@/ui/base-file-upload/baseFileUpload.type'
 export { default as UIBaseFileUploadDropzone } from '@/ui/base-file-upload/parts/BaseFileUploadDropzone.vue'
