@@ -193,4 +193,4 @@ You now have:
 - ✅ Typed QueryClient wrapper created
 - ✅ Error codes enumerated
 
-Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [handling-asyncresult-types](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.
+Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [asyncresult-handling](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.

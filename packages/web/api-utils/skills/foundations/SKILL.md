@@ -191,8 +191,8 @@ async function handleRefresh() {
 
 // Automatic refetch on mutation (via queryKeysToInvalidate)
 const { execute } = useMutation({
-  queryFn: (data) => ContactService.update(data),
-  queryKeysToInvalidate: { contactDetail: () => true },
+  queryFn: ({ body }: { body: ContactUpdateForm }) => ContactService.update(body),
+  queryKeysToInvalidate: { contactDetail: {} },
 })
 // After execute succeeds, contactDetail is invalidated
 // Next useQuery('contactDetail') refetches fresh data
@@ -240,8 +240,9 @@ Errors are typed and structured using `neverthrow`:
 interface ApiExpectedError {
   errors: Array<{
     code: string
-    message: string
-    details?: unknown
+    detail: string
+    status: string
+    source?: { pointer: string }
   }>
 }
 
@@ -253,10 +254,11 @@ const result = new AsyncResultErr(apiError)
 result.match({
   ok: (data) => {}, // not executed
   err: (error) => {
-    // error is ApiError
-    if (error instanceof ApiExpectedError) {
+    // error is ApiError — narrow with 'errors' in error
+    if ('errors' in error) {
       // Handle known API errors
       const codes = error.errors.map(e => e.code)
+      const detail = error.errors[0].detail
     } else {
       // Handle network/parsing errors
       console.error(error.message)

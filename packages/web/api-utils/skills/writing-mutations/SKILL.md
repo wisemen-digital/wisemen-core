@@ -68,7 +68,7 @@ export function useUpdateContact(contactUuid: string) {
     },
     queryKeysToInvalidate: {
       contactDetail: {
-        contactUuid: () => contactUuid, // Invalidate only this contact's detail query
+        contactUuid: (_params, _result) => contactUuid, // Invalidate only this contact's detail query
       },
       contactList: {}, // Invalidate all contactList queries
     },
