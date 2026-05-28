@@ -64,7 +64,7 @@ import { Users01Icon } from '@wisemen/vue-core-icons'
 For full API details, read the props file. For usage examples, read the playground files.
 
 - Props: `src/ui/breadcrumbs/breadcrumb.props.ts`
-- Components: `src/ui/breadcrumbs/BreadcrumbRoot.vue`, `src/ui/breadcrumbs/BreadcrumbItems.vue`, `src/ui/breadcrumbs/BreadcrumbItem.vue`, `src/ui/breadcrumbs/BreadcrumbSeparator.vue`
+- Components: `src/ui/breadcrumbs/BreadcrumbItems.vue`, `src/ui/breadcrumbs/BreadcrumbItem.vue`, `src/ui/breadcrumbs/BreadcrumbSeparator.vue`
 - Playground: `src/ui/breadcrumbs/stories/`
 
 ## See Also

@@ -26,14 +26,17 @@ A scrollable container that renders gradient overlays at the top and bottom edge
 ## Import
 
 ```ts
-import { UIScrollable } from '@wisemen/vue-core-design-system'
+// UIScrollable is not yet part of the public exports — import from the source path within the design-system package
+import { UIScrollable } from '@wisemen/vue-core-design-system/src/ui/scrollable'
 ```
+
+> **Note:** `UIScrollable` is currently internal. Once it is added to the public exports, import from `@wisemen/vue-core-design-system` instead.
 
 ## Quick Start
 
 ```vue
 <script setup lang="ts">
-import { UIScrollable } from '@wisemen/vue-core-design-system'
+import { UIScrollable } from '@wisemen/vue-core-design-system/src/ui/scrollable'
 </script>
 
 <template>
