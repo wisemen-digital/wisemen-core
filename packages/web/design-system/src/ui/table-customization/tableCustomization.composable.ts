@@ -29,12 +29,34 @@ export function useTableCustomizeColumns<T, TKey extends string>(options: UseTab
   const dialog = overlay.create(TableCustomizationDialog)
 
   const columnStates = ref<TableColumnState[]>(
-    options.availableColumns.value.map((col) => ({
-      isVisible: options.initialState === undefined
+    options.availableColumns.value
+      .map((col) => ({
+        isVisible:
+        options.initialState === undefined
         || options.initialState.length === 0
         || options.initialState.includes(col.key),
-      column: col as TableColumn<unknown>,
-    })),
+        column: col as TableColumn<unknown>,
+      }))
+      .sort((a, b) => {
+        if (options.initialState === undefined || options.initialState.length === 0) {
+          return 0
+        }
+
+        const aIndex = options.initialState.indexOf(a.column.key as TKey)
+        const bIndex = options.initialState.indexOf(b.column.key as TKey)
+
+        if (aIndex !== -1 && bIndex !== -1) {
+          return aIndex - bIndex
+        }
+        if (aIndex !== -1) {
+          return -1
+        }
+        if (bIndex !== -1) {
+          return 1
+        }
+
+        return 0
+      }),
   )
 
   const customizedColumns = computed<TableColumn<T, TKey>[]>(
