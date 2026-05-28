@@ -70,7 +70,7 @@ const activeTab = ref<string>('profile')
 
 For full API details, read the props files. For usage examples, read the playground files.
 
-- Props: `src/ui/tabs/tabs.props.ts`, `src/ui/tabs/tabsItem.props.ts`
+- Props: `src/ui/tabs/tabs.props.ts`
 - Components: `src/ui/tabs/Tabs.vue`, `src/ui/tabs/TabsList.vue`, `src/ui/tabs/TabsItem.vue`, `src/ui/tabs/TabsContent.vue`, `src/ui/tabs/TabsRouterLink.vue`, `src/ui/tabs/TabsRouterLinkItem.vue`
 - Playground: `src/ui/tabs/stories/`
 

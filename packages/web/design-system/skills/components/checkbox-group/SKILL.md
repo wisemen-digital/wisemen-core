@@ -53,4 +53,3 @@ For full API details, read the props file.
 ## See Also
 
 - [checkbox](../checkbox/SKILL.md)
-- [radio-group](../radio-group/SKILL.md)

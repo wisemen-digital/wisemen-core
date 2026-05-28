@@ -21,7 +21,7 @@ A toggle switch for boolean on/off state with optional animated thumb icons and 
 - Binary on/off controls where the visual metaphor of a physical switch is appropriate
 - When you want animated icon transitions inside the thumb
 
-**Use instead:** [UICheckbox](../checkbox/SKILL.md) for form fields that submit with a form, [UIRadioGroup](../radio-group/SKILL.md) for choosing between more than two options.
+**Use instead:** [UICheckbox](../checkbox/SKILL.md) for form fields that submit with a form.
 
 ## Import
 
@@ -58,4 +58,3 @@ For full API details, read the props file. For usage examples, read the playgrou
 ## See Also
 
 - [checkbox](../checkbox/SKILL.md) -- For form fields that submit with a form
-- [radio-group](../radio-group/SKILL.md) -- For choosing between more than two options

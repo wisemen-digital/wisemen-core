@@ -67,5 +67,4 @@ For full API details, read the props file. For usage examples, read the playgrou
 
 ## See Also
 
-- [select](../select/SKILL.md) -- For fixed-list selection without typing
 - [text-field](../text-field/SKILL.md) -- For free-form text input

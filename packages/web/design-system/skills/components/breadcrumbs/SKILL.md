@@ -1,20 +1,17 @@
 ---
 name: breadcrumbs
 description: >
-  UIBreadcrumbs is a composite navigation component built from UIBreadcrumbRoot,
-  UIBreadcrumbItems, UIBreadcrumbItem, and UIBreadcrumbSeparator parts. It renders
-  a horizontal breadcrumb trail with optional icons, router links, and accessible
-  label-hiding for icon-only items.
+  UIBreadcrumbs is a composite navigation component built from UIBreadcrumbItems,
+  UIBreadcrumbItem, and UIBreadcrumbSeparator parts. It renders a horizontal
+  breadcrumb trail with optional icons, router links, and accessible label-hiding
+  for icon-only items.
 type: component
 library: vue-core-design-system
 category: navigation
 exports:
-  - UIBreadcrumbRoot
   - UIBreadcrumbItems
   - UIBreadcrumbItem
   - UIBreadcrumbSeparator
-  - UIBreadcrumbSelect
-  - UIBreadcrumbDateSelect
 ---
 
 # UIBreadcrumbs
@@ -33,7 +30,6 @@ A multi-part breadcrumb navigation component for showing hierarchical page locat
 
 ```ts
 import {
-  UIBreadcrumbRoot,
   UIBreadcrumbItems,
   UIBreadcrumbItem,
   UIBreadcrumbSeparator,
@@ -45,7 +41,6 @@ import {
 ```vue
 <script setup lang="ts">
 import {
-  UIBreadcrumbRoot,
   UIBreadcrumbItems,
   UIBreadcrumbItem,
   UIBreadcrumbSeparator,
@@ -54,15 +49,13 @@ import { Users01Icon } from '@wisemen/vue-core-icons'
 </script>
 
 <template>
-  <UIBreadcrumbRoot>
-    <UIBreadcrumbItems>
+  <UIBreadcrumbItems>
       <UIBreadcrumbItem :icon="Users01Icon" label="Users" to="/" />
       <UIBreadcrumbSeparator />
       <UIBreadcrumbItem label="Jeroen" to="/users/jeroen" />
       <UIBreadcrumbSeparator />
       <UIBreadcrumbItem label="Projects" />
     </UIBreadcrumbItems>
-  </UIBreadcrumbRoot>
 </template>
 ```
 

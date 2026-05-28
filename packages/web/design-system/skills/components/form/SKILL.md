@@ -39,7 +39,7 @@ import { useForm } from 'formango'
 import { z } from 'zod'
 import { UIForm, UIFormSubmitButton } from '@wisemen/vue-core-design-system'
 
-const { form } = useForm({
+const form = useForm({
   schema: z.object({
     name: z.string().min(1),
   }),

@@ -69,9 +69,9 @@ import {
 
 For full API details, read the props and composable files.
 
-- Props: `src/ui/page/dashboardPage.props.ts`
-- Components: `src/ui/page/DashboardPage.vue`, `src/ui/page/DashboardPageContainer.vue`, `src/ui/page/DashboardPageContent.vue`, `src/ui/page/DashboardPageActions.vue`, `src/ui/page/DashboardPageLoadingState.vue`
-- Composables: `src/ui/page/detailPane.context.ts`
+- Types: `src/ui/dashboard-page/dashboardPage.type.ts`
+- Components: `src/ui/dashboard-page/DashboardPage.vue`, `src/ui/dashboard-page/DashboardPageContainer.vue`, `src/ui/dashboard-page/content/DashboardPageContent.vue`, `src/ui/dashboard-page/content/DashboardPageActions.vue`, `src/ui/dashboard-page/content/DashboardPageLoadingState.vue`
+- Composables: `src/ui/dashboard-page/detail-pane/detailPane.context.ts`
 
 ## See Also
 

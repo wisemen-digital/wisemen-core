@@ -23,7 +23,7 @@ A single boolean checkbox with animated check indicator, label, hint, and error 
 - Individual on/off toggles with a text label
 - Inside a form where you need validation on a required boolean field
 
-**Use instead:** [UICheckboxGroup](../checkbox-group/SKILL.md) for selecting multiple values from a set, [UISwitch](../switch/SKILL.md) for on/off toggles that take effect immediately, [UIRadioGroup](../radio-group/SKILL.md) for single selection from multiple options.
+**Use instead:** [UICheckboxGroup](../checkbox-group/SKILL.md) for selecting multiple values from a set, [UISwitch](../switch/SKILL.md) for on/off toggles that take effect immediately.
 
 ## Import
 

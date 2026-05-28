@@ -60,5 +60,4 @@ For full API details, read the props file.
 ## See Also
 
 - [tooltip](../tooltip/SKILL.md) -- For hover-only informational text
-- [dropdown-menu](../dropdown-menu/SKILL.md) -- For menu item lists
 - [dialog](../dialog/SKILL.md) -- For large or blocking content

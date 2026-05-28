@@ -10,6 +10,7 @@ requires:
   - overlay-system
 exports:
   - UIFormDialog
+  - UIFormDialogForm
 ---
 
 # UIFormDialog
@@ -27,11 +28,8 @@ A dialog that integrates with formango for form state management, validation, an
 ## Import
 
 ```ts
-import FormDialog from '@/ui/dialog/FormDialog.vue'
-import FormDialogForm from '@/ui/dialog/FormDialogForm.vue'
+import { UIFormDialog, UIFormDialogForm } from '@wisemen/vue-core-design-system'
 ```
-
-> **Note:** UIFormDialog is currently an internal component. Check if it has been added to the public exports.
 
 ## Quick Start
 
@@ -39,16 +37,15 @@ import FormDialogForm from '@/ui/dialog/FormDialogForm.vue'
 <script setup lang="ts">
 import { useForm } from 'formango'
 import { z } from 'zod'
-import FormDialog from '@/ui/dialog/FormDialog.vue'
-import FormDialogForm from '@/ui/dialog/FormDialogForm.vue'
 import {
+  UIFormDialog, UIFormDialogForm,
   UIDialogHeader, UIDialogBody, UIDialogFooter,
   UIDialogFooterCancel, UIDialogFooterSubmit,
 } from '@wisemen/vue-core-design-system'
 
 const emit = defineEmits<{ close: [] }>()
 
-const { form } = useForm({
+const form = useForm({
   schema: z.object({ name: z.string().min(1) }),
   initialState: { name: '' },
   onSubmit: async (values) => {
@@ -59,9 +56,9 @@ const { form } = useForm({
 </script>
 
 <template>
-  <FormDialog size="md" @close="emit('close')">
+  <UIFormDialog size="md" @close="emit('close')">
     <UIDialogHeader title="Create Item" />
-    <FormDialogForm :form="form">
+    <UIFormDialogForm :form="form">
       <UIDialogBody>
         <!-- form fields here -->
       </UIDialogBody>
@@ -71,8 +68,8 @@ const { form } = useForm({
           <UIDialogFooterSubmit label="Create" />
         </template>
       </UIDialogFooter>
-    </FormDialogForm>
-  </FormDialog>
+    </UIFormDialogForm>
+  </UIFormDialog>
 </template>
 ```
 

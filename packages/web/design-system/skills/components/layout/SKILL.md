@@ -2,7 +2,7 @@
 name: layout
 description: >
   Top-level application shell components that provide the outermost page structure.
-  UIMainLayoutContainer is the full-screen flex wrapper, and UIMainContent is the
+  UIMainLayout is the full-screen flex wrapper, and UIMainContent is the
   sidebar-aware content area with animated padding.
 type: component
 library: vue-core-design-system
@@ -10,11 +10,11 @@ category: layout
 requires:
   - layout-system
 exports:
-  - UIMainLayoutContainer
+  - UIMainLayout
   - UIMainContent
 ---
 
-# UILayout (MainLayoutContainer + MainContent)
+# UIMainLayout / UIMainContent
 
 Top-level application shell that wraps the sidebar and main content area into a full-viewport layout.
 
@@ -29,7 +29,7 @@ Top-level application shell that wraps the sidebar and main content area into a 
 ## Import
 
 ```ts
-import { UIMainLayoutContainer, UIMainContent } from '@wisemen/vue-core-design-system'
+import { UIMainLayout, UIMainContent } from '@wisemen/vue-core-design-system'
 ```
 
 ## Quick Start
@@ -37,21 +37,21 @@ import { UIMainLayoutContainer, UIMainContent } from '@wisemen/vue-core-design-s
 ```vue
 <script setup lang="ts">
 import {
-  UIMainLayoutContainer,
+  UIMainLayout,
   UIMainContent,
   UIMainSidebar,
 } from '@wisemen/vue-core-design-system'
 </script>
 
 <template>
-  <UIMainLayoutContainer>
+  <UIMainLayout>
     <UIMainSidebar>
       <!-- sidebar slots -->
     </UIMainSidebar>
     <UIMainContent>
       <RouterView />
     </UIMainContent>
-  </UIMainLayoutContainer>
+  </UIMainLayout>
 </template>
 ```
 
@@ -59,7 +59,7 @@ import {
 
 For full API details, read the component files.
 
-- Components: `src/ui/layout/MainLayoutContainer.vue`, `src/ui/layout/MainContent.vue`
+- Components: `src/ui/layout/MainLayout.vue`, `src/ui/layout/MainContent.vue`
 
 ## See Also
 

@@ -30,7 +30,8 @@
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "files": [
-    "./dist"
+    "./dist",
+    "./skills"
   ],
   "scripts": {
     "build": "vite build",

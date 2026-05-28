@@ -54,6 +54,3 @@ For full API details, read the props file. For usage examples, read the playgrou
 - Component: `src/ui/column-layout/ColumnLayout.vue`
 - Playground: `src/ui/column-layout/stories/`
 
-## See Also
-
-- [row-layout](../row-layout/SKILL.md) -- Horizontal flex container with the same gap/align/justify API

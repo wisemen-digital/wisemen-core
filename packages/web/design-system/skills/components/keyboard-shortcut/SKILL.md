@@ -52,4 +52,3 @@ For full API details, read the props file.
 ## See Also
 
 - [action-tooltip](../action-tooltip/SKILL.md) -- Often wraps content with a tooltip that includes a keyboard shortcut
-- [dropdown-menu](../dropdown-menu/SKILL.md) -- Menu items commonly display keyboard shortcuts

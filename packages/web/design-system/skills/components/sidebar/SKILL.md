@@ -80,7 +80,7 @@ import { DashboardIcon, UsersIcon } from '@wisemen/vue-core-icons'
 For full API details, read the props files.
 
 - Props: `src/ui/sidebar/mainSidebar.props.ts`
-- Components: `src/ui/sidebar/MainSidebar.vue`, `src/ui/sidebar/MainSidebarHeaderLogoWithText.vue`, `src/ui/sidebar/MainSidebarNavigationGroup.vue`, `src/ui/sidebar/MainSidebarNavigationLink.vue`, `src/ui/sidebar/MainSidebarFooterAccountCard.vue`
+- Components: `src/ui/sidebar/MainSidebar.vue`, `src/ui/sidebar/components/MainSidebarHeaderLogoWithText.vue`, `src/ui/sidebar/components/MainSidebarNavigationGroup.vue`, `src/ui/sidebar/components/MainSidebarNavigationLink.vue`, `src/ui/sidebar/components/MainSidebarFooterAccountCard.vue`
 - Composable: `src/ui/sidebar/mainSidebar.composable.ts`
 
 ## See Also

@@ -59,6 +59,4 @@ For full API details, read the props files. For usage examples, read the playgro
 
 ## See Also
 
-- [dropdown-menu](../dropdown-menu/SKILL.md) -- Often triggered by a button
-- [menu-item](../menu-item/SKILL.md) -- Content layout inside dropdown menus
 - [tabs](../tabs/SKILL.md) -- Tab triggers share similar styling patterns

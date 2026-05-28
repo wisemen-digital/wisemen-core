@@ -51,4 +51,3 @@ For full API details, read the props file. For usage examples, read the playgrou
 ## See Also
 
 - [card](../card/SKILL.md) -- Common container where separators divide sections
-- [row-layout](../row-layout/SKILL.md) -- Horizontal layout where vertical separators are used
