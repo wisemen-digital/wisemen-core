@@ -34,6 +34,7 @@
     "@wisemen/opentelemetry": "workspace:*",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
   "author": "Wisemen",
