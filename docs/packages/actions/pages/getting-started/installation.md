@@ -62,12 +62,12 @@ declare module '@wisemen/vue-core-actions' {
 
 If you are also augmenting other libraries (e.g. `@wisemen/vue-core-api-utils`, `@wisemen/vue-core-design-system`), keep all `declare module` blocks in this same file for consistency.
 
-## 5. Create an AppActionsRegistrar component
+## 5. Create an ApplicationActionsRegistrar component
 
 Add a dedicated root component that registers all static actions and installs the keyboard shortcut listener. Mount it once near the root of your app:
 
 ```vue
-<!-- filepath: src/AppActionsRegistrar.vue -->
+<!-- filepath: src/ApplicationActionsRegistrar.vue -->
 
 <script setup lang="ts">
 import { useActionRegistryStore, useActionShortcuts } from '@wisemen/vue-core-actions'
@@ -88,12 +88,12 @@ registry.registerActions(...useGlobalActions())
 <!-- filepath: src/App.vue -->
 
 <script setup lang="ts">
-import AppActionsRegistrar from '@/AppActionsRegistrar.vue'
+import ApplicationActionsRegistrar from '@/ApplicationActionsRegistrar.vue'
 </script>
 
 <template>
   <RouterView />
-  <AppActionsRegistrar />
+  <ApplicationActionsRegistrar />
 </template>
 ```
 

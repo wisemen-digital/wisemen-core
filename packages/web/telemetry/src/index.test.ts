@@ -75,6 +75,9 @@ function createOptions(
     accessTokenFn: (): Promise<string> => Promise.resolve('token'),
     serviceName: 'telemetry-web',
     traceEndpoint: 'https://collector.example/traces',
+    tracePropagationUrls: [
+      'https://api.example',
+    ],
     ...overrides,
   }
 }
@@ -133,6 +136,9 @@ describe('telemetry', () => {
     expect(addEventListener).toHaveBeenNthCalledWith(1, 'error', expect.any(Function))
     expect(addEventListener).toHaveBeenNthCalledWith(2, 'unhandledrejection', expect.any(Function))
     expect(mocks.registerDefaultAppInstrumentations).toHaveBeenCalledTimes(1)
+    expect(mocks.registerDefaultAppInstrumentations).toHaveBeenCalledWith([
+      'https://api.example',
+    ])
     expect(mocks.initOpenTelemetryMetrics).toHaveBeenCalledTimes(1)
   })
 

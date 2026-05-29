@@ -27,9 +27,11 @@ export default defineConfig({
 
     rolldownOptions: {
       external: [
+        '@tanstack/vue-virtual',
         '@vueuse/core',
         '@vueuse/router',
         'vue',
+        'vue-draggable-plus',
         'vue-i18n',
         'vue-router',
         'reka-ui',
@@ -45,6 +47,7 @@ export default defineConfig({
         // Only relevant when consumed via <script> tags without a bundler.
         globals: {
           '@internationalized/date': 'InternationalizedDate',
+          '@tanstack/vue-virtual': 'TanstackVueVirtual',
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
           '@wisemen/vue-core-actions': 'VueCoreActions',
@@ -53,6 +56,7 @@ export default defineConfig({
           'reka-ui': 'RekaUI',
           'temporal-polyfill': 'Temporal',
           'vue': 'Vue',
+          'vue-draggable-plus': 'VueDraggablePlus',
           'vue-i18n': 'VueI18n',
           'vue-router': 'VueRouter',
           'zod': 'zod',

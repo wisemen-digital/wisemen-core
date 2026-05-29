@@ -3,10 +3,12 @@ packages:
   - "packages/**/*"
 catalog:
   "@tanstack/vue-hotkeys": ^0.10.0
+  "@tanstack/vue-virtual": ^3.13.18
   "@wisemen/eslint-config-nestjs": ^1.1.1
   "@wisemen/vue-core-api-utils": catalog
   superjson: "2.2.6"
   vue-component-type-helpers: ^0.0.0
+  vue-draggable-plus: ^0.6.1
 
 catalogs:
   backend:
@@ -164,6 +166,7 @@ catalogs:
     "typescript-eslint": "8.59.0"
   lint-web:
     "@antfu/eslint-config": "7.7.0"
+    "@eslint/config-inspector": "1.5.0"
     "@eslint/eslintrc": "3.3.3"
     "@eslint/js": "9.39.2"
     "@intlify/eslint-plugin-vue-i18n": "4.1.1"
@@ -243,21 +246,21 @@ catalogs:
     "tailwind-variants": "3.2.2"
     "tailwindcss": "4.1.18"
   telemetry:
-    "@opentelemetry/api": "1.9.0"
-    "@opentelemetry/api-logs": "0.214.0"
-    "@opentelemetry/context-zone": "2.5.0"
-    "@opentelemetry/core": "2.5.0"
-    "@opentelemetry/exporter-logs-otlp-http": "0.214.0"
-    "@opentelemetry/exporter-metrics-otlp-proto": "0.214.0"
-    "@opentelemetry/exporter-trace-otlp-http": "0.211.0"
-    "@opentelemetry/instrumentation": "0.211.0"
-    "@opentelemetry/instrumentation-fetch": "0.211.0"
-    "@opentelemetry/instrumentation-user-interaction": "0.55.0"
-    "@opentelemetry/resources": "2.5.0"
-    "@opentelemetry/sdk-logs": "0.214.0"
-    "@opentelemetry/sdk-metrics": "2.5.0"
-    "@opentelemetry/sdk-trace-base": "2.5.0"
-    "@opentelemetry/sdk-trace-web": "2.5.0"
+    "@opentelemetry/api": "1.9.1"
+    "@opentelemetry/api-logs": "0.218.0"
+    "@opentelemetry/context-zone": "2.7.1"
+    "@opentelemetry/core": "2.7.1"
+    "@opentelemetry/exporter-logs-otlp-http": "0.218.0"
+    "@opentelemetry/exporter-metrics-otlp-proto": "0.218.0"
+    "@opentelemetry/exporter-trace-otlp-http": "0.218.0"
+    "@opentelemetry/instrumentation": "0.218.0"
+    "@opentelemetry/instrumentation-fetch": "0.218.0"
+    "@opentelemetry/instrumentation-user-interaction": "0.62.0"
+    "@opentelemetry/resources": "2.7.1"
+    "@opentelemetry/sdk-logs": "0.218.0"
+    "@opentelemetry/sdk-metrics": "2.7.1"
+    "@opentelemetry/sdk-trace-base": "2.7.1"
+    "@opentelemetry/sdk-trace-web": "2.7.1"
   test:
     "@vitest/browser-playwright": "4.1.0"
     "@vitest/coverage-v8": "4.1.0"
@@ -273,7 +276,6 @@ catalogs:
     "@commitlint/config-conventional": "20.5.0"
     "@tanstack/intent": ^0.0.29
   types:
-    "vue-component-type-helpers": "3.3.0"
     "@tsconfig/node18": "18.2.4"
     "@types/babel__traverse": "7.28.0"
     "@types/clone-deep": 4.0.4
@@ -282,6 +284,7 @@ catalogs:
     "@types/google.maps": "3.58.1"
     "@types/markdown-it": "14.1.2"
     "@types/node": "24.8.1"
+    "vue-component-type-helpers": "3.3.0"
   vite:
     "@import-meta-env/unplugin": "0.4.2"
     "@tailwindcss/vite": "4.1.18"

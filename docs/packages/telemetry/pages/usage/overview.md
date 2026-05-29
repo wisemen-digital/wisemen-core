@@ -5,6 +5,7 @@
 ## Configure providers
 
 - Set `serviceName` and `accessTokenFn` (returns a bearer token).
+- Add `tracePropagationUrls` for APIs that should receive browser trace headers.
 - Add `traceEndpoint` to export traces and `logEndpoint` to export OTEL log records.
 - Add metadata like `environment`, `buildNumber`, `buildTimestamp`, or `commitHash` to attach context to every span and log record.
 - Disable telemetry entirely with `enabled: false`.
@@ -15,6 +16,9 @@ import { Telemetry } from '@wisemen/vue-core-telemetry'
 const telemetry = new Telemetry({
   accessTokenFn: () => authClient.getAccessToken(), // return a bearer token for OTLP exports
   serviceName: 'vue-app',
+  tracePropagationUrls: [
+    import.meta.env.VITE_API_URL,
+  ],
   traceEndpoint: import.meta.env.VITE_OTEL_TRACE_ENDPOINT,
   logEndpoint: import.meta.env.VITE_OTEL_LOG_ENDPOINT,
   environment: import.meta.env.MODE,

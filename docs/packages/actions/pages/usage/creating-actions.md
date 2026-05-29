@@ -39,7 +39,7 @@ Import `createAction` directly from `@wisemen/vue-core-actions`. The `Register` 
 
 ## Collecting global actions
 
-Define a composable that returns all statically registered actions. Call it once from `AppActionsRegistrar`:
+Define a composable that returns all statically registered actions. Call it once from `ApplicationActionsRegistrar`:
 
 ```typescript
 // filepath: src/actions/global/index.ts
@@ -218,10 +218,10 @@ const overviewGroup: ActionGroup = {
 
 ## Static registration
 
-Register actions that should always be available from `AppActionsRegistrar`:
+Register actions that should always be available from `ApplicationActionsRegistrar`:
 
 ```typescript
-// filepath: src/AppActionsRegistrar.vue
+// filepath: src/ApplicationActionsRegistrar.vue
 
 import { useActionRegistryStore, useActionShortcuts } from '@wisemen/vue-core-actions'
 import { useGlobalActions } from '@/actions/global'

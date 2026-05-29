@@ -1,9 +1,10 @@
 import { ACTIONS_NAVIGATION } from './actions/actions.navigation'
 import { API_UTILS_NAVIGATION } from './api-utils/apiUtils.navigation'
-import { COMPONENTS_DOC_NAVIGATION } from './components/components.navigation'
 import { CONFIGS_NAVIGATION } from './configs/configs.navigation'
+import { DATES_NAVIGATION } from './dates/dates.navigation'
 import { DESIGN_SYSTEM_NAVIGATION } from './design-system/designSystem.navigation'
 import { ESLINT_NAVIGATION } from './eslint/eslint.navigation'
+import { FILTERS_NAVIGATION } from './filters/filters.navigation'
 import { FORMANGO_NAVIGATION } from './formango/formango.navigation'
 import { FORMAT_NAVIGATION } from './format/format.navigation'
 import { I18N_FACTORY_NAVIGATION } from './i18n-factory/i18nFactory.navigation'
@@ -25,9 +26,9 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
     text: 'UI and Design',
     items: [
       DESIGN_SYSTEM_NAVIGATION,
-      COMPONENTS_DOC_NAVIGATION,
       PREFERENCES_NAVIGATION,
       ACTIONS_NAVIGATION,
+      FILTERS_NAVIGATION,
     ],
   },
   {
@@ -61,6 +62,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
       TYPE_UTILS_NAVIGATION,
       UTILS_NAVIGATION,
       FORMAT_NAVIGATION,
+      DATES_NAVIGATION,
     ],
   },
   {

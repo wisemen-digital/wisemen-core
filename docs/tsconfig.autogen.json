@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "allowImportingTsExtensions": true
+  },
   "extends": "./tsconfig.json",
   "include": [
     "scripts/autogen.ts"

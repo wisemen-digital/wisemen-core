@@ -1,4 +1,4 @@
-import { And, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository } from 'typeorm'
+import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, QueryDeepPartialEntity, Repository } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
 
@@ -7,6 +7,14 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     const proxy = createTransactionManagerProxy(createReadonlyManagerProxy(manager))
 
     super(entity, proxy)
+  }
+
+  async createAndInsert (entityLike: DeepPartial<T>): Promise<T> {
+    const entity = this.create(entityLike)
+
+    await this.insert(entity as QueryDeepPartialEntity<T>)
+
+    return entity
   }
 
   async findNextBatch (
@@ -116,16 +124,16 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     for (let i = keys.length - 1; i >= 0; i--) {
       const key = keys[i]
       const keyLastEntityValue = keysLastEntityValues[i]
-      const preceedingKeys = keys.slice(0, i)
-      const preceedingKeysLastEntityValues = keysLastEntityValues.slice(0, i)
+      const precedingKeys = keys.slice(0, i)
+      const precedingKeysLastEntityValues = keysLastEntityValues.slice(0, i)
 
-      const preceedingKeysWhere = Object.fromEntries(
-        preceedingKeys.map((k, i) => [k, preceedingKeysLastEntityValues[i]])
+      const precedingKeysWhere = Object.fromEntries(
+        precedingKeys.map((k, i) => [k, precedingKeysLastEntityValues[i]])
       )
 
       const clause = {
         ...where,
-        ...preceedingKeysWhere,
+        ...precedingKeysWhere,
         [key]: this.getKeyCondition(where, order, key, keyLastEntityValue)
       } as FindOptionsWhere<T>
 

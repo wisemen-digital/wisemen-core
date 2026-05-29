@@ -1,5 +1,15 @@
 # @wisemen/vue-core-preferences
 
+## 0.1.0
+
+### Minor Changes
+
+- [#1126](https://github.com/wisemen-digital/wisemen-core/pull/1126) [`1008623`](https://github.com/wisemen-digital/wisemen-core/commit/1008623c6d791537ded08d054e7b7454e486bad5) Thanks [@wouterlms](https://github.com/wouterlms)! - Add high contrast preference
+
+### Patch Changes
+
+- [#1132](https://github.com/wisemen-digital/wisemen-core/pull/1132) [`5bf10d4`](https://github.com/wisemen-digital/wisemen-core/commit/5bf10d40d5ed5dc1319aeb1fd71dd160786fc99c) Thanks [@wouterlms](https://github.com/wouterlms)! - Correct translation for auto close toast option
+
 ## 0.0.3
 
 ### Patch Changes

@@ -19,6 +19,7 @@ Sections read and write values through a `get` / `set` pair you provide. Start b
 import type { TimeZone } from '@wisemen/vue-core-dates'
 import type { NumberFormat, UIToastAutoClose } from '@wisemen/vue-core-design-system'
 import type {
+  HighContrastPreference,
   NavigationArrowsPreference,
   ReducedMotionPreference,
 } from '@wisemen/vue-core-preferences'
@@ -30,6 +31,7 @@ export type HourCyclePreference = '12-hour' | '24-hour'
 export interface Preferences {
   appearance: AppearancePreference
   displayZoom: DisplayZoomPreference
+  highContrast: HighContrastPreference
   hourCycle: HourCyclePreference | null
   language: string
   navigationArrows: NavigationArrowsPreference
@@ -48,6 +50,7 @@ import type { Preferences } from './preferences.model'
 export const DEFAULT_PREFERENCES: Preferences = {
   appearance: 'system',
   displayZoom: 'default',
+  highContrast: false,
   hourCycle: null,
   language: 'en-US',
   navigationArrows: true,
@@ -113,6 +116,7 @@ import { TimeZoneUtil } from '@wisemen/vue-core-dates'
 import {
   useAppearancePreference,
   useDisplayZoomPreference,
+  useHighContrastPreference,
   useHourCyclePreference,
   useLanguagePreference,
   useNavigationArrowsPreference,
@@ -147,6 +151,11 @@ export function usePreferences() {
     set: (value) => store.setPreference('timeZone', value),
   })
 
+  const highContrast = useHighContrastPreference({
+    get: () => store.getPreference('highContrast'),
+    set: (value) => store.setPreference('highContrast', value),
+  })
+
   const reducedMotion = useReducedMotionPreference({
     get: () => store.getPreference('reducedMotion'),
     set: (value) => store.setPreference('reducedMotion', value),
@@ -154,7 +163,7 @@ export function usePreferences() {
 
   // … other sections
 
-  return { appearance, language, reducedMotion, timeZone }
+  return { appearance, highContrast, language, reducedMotion, timeZone }
 }
 ```
 
@@ -171,7 +180,7 @@ import {
   usePreferencesLanguageAndRegionView,
 } from '@wisemen/vue-core-preferences'
 
-const { appearance, displayZoom, navigationArrows, reducedMotion, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
+const { appearance, displayZoom, highContrast, navigationArrows, reducedMotion, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
 
 const generalView = usePreferencesGeneralView([
   appearance,
@@ -188,6 +197,7 @@ const languageView = usePreferencesLanguageAndRegionView([
 ])
 
 const accessibilityView = usePreferencesAccessibilityView([
+  highContrast,
   reducedMotion,
 ])
 ```
@@ -227,7 +237,7 @@ import {
 import { usePreferences } from './preferences.composable'
 
 export function usePreferencesDialog() {
-  const { appearance, displayZoom, navigationArrows, reducedMotion, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
+  const { appearance, displayZoom, highContrast, navigationArrows, reducedMotion, toastAutoClose, language, numberFormat, hourCycle, timeZone } = usePreferences()
 
   return useCreatePreferencesDialog({
     activeView: 'general',
@@ -249,6 +259,7 @@ export function usePreferencesDialog() {
               timeZone,
             ]),
             usePreferencesAccessibilityView([
+              highContrast,
               reducedMotion,
             ]),
           ],
