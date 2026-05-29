@@ -21,8 +21,6 @@ Generate AsyncAPI 3.0.0 specification documents from type-safe channel definitio
 - Generating HTML documentation for async messaging APIs
 - Keeping message schema documentation in sync with TypeScript types
 
-**Use instead:** Manual AsyncAPI YAML when you don't use NestJS Swagger decorators on your DTOs.
-
 ## Import
 
 ```ts
@@ -35,39 +33,67 @@ import type { AsyncAPIDefinition } from '@wisemen/nestjs-async-api'
 ### 1. Define a message DTO with Swagger decorators
 
 ```ts
-// src/events/user-created.event.ts
+// src/events/user-created.integration.event.ts
 import { ApiProperty } from '@nestjs/swagger'
 
-export class UserCreatedEvent {
-  @ApiProperty({ description: 'User ID' })
-  userId: string
+export class UserCreatedEventContent {
+  @ApiProperty({ type: String, format: 'uuid' })
+  uuid: UserUuid
 
-  @ApiProperty({ description: 'User email address' })
-  email: string
+  @UserTypeApiProperty()
+  type: UserType
 
-  @ApiProperty({ description: 'Creation timestamp', type: Date })
-  createdAt: Date
+  constructor (uuid: UserUuid, type: UserType) {
+    this.uuid = uuid
+    this.type = type
+  }
+}
+
+export class UserCreatedIntegrationEvent extends IntegrationEvent {
+  @ApiProperty({
+    enumName: 'UserCreatedEventType',
+    enum: [IntegrationEventType.USER_CREATED],
+  })
+  declare type: IntegrationEventType.USER_CREATED
+
+  @ApiProperty({ type: UserCreatedEventContent })
+  declare data: UserCreatedEventContent
+
+  constructor (uuid: UserUuid, type: UserType) {
+    super({
+      type: IntegrationEventType.USER_CREATED,
+      data: new UserCreatedEventContent(uuid, type),
+      version: '0.0.1'
+    })
+  }
 }
 ```
 
 ### 2. Define a channel
 
 ```ts
-// src/events/users.channel.ts
+// src/events/user-created.integration.event.ts
 import { createChannel } from '@wisemen/nestjs-async-api'
-import { UserCreatedEvent } from './user-created.event.js'
 
-export const usersChannel = createChannel('users.{userId}.events', {
+export const UserCreatedAddress = 'my-application-name.{env}.user.{userUuid}.created'
+export const UserCreatedChannel = createChannel(UserCreatedAddress, {
   parameters: {
-    userId: { description: 'The ID of the user' },
+    env: {
+      enum: Object.values(EnvType),
+      description: 'The environment from which the event originates',
+      examples: [EnvType.DEVELOPMENT]
+    },
+    userUuid: {
+      description: 'The uuid of the user'
+    }
   },
   operations: {
-    userCreated: {
+    sendUserCreated: {
       action: 'send',
-      summary: 'User was created',
-      messages: [UserCreatedEvent],
+      summary: 'this message is sent when an user is created',
+      messages: [UserCreatedIntegrationEvent],
     },
-  },
+  }
 })
 ```
 
@@ -88,7 +114,7 @@ const definition: AsyncAPIDefinition = {
     title: 'My Application Events',
     version: '1.0.0',
   },
-  channels: 'src/**/*.channel.ts',
+  channels: './dist/src/**/*.integration.event.js'
 }
 
 const yaml = await generateAsyncApiYaml(definition)
