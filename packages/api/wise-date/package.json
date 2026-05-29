@@ -35,6 +35,7 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "@wisemen/validators": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

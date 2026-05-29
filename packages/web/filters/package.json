@@ -55,12 +55,14 @@
     "@wisemen/vue-core-icons": ">=0.0.1",
     "formango": "catalog:peer",
     "vue": "catalog:peer",
+    "zod": "catalog:peer",
     "vue-i18n": "catalog:peer",
     "tailwindcss": "catalog:style",
     "pinia": "catalog:vue"
   },
   "dependencies": {
-    "superjson": "catalog:vue"
+    "superjson": "catalog:vue",
+    "@tanstack/vue-hotkeys": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:vite",

@@ -34,7 +34,8 @@
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
-    "eslint": "catalog:lint-api"
+    "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api"
   },
   "dependencies": {
     "@wisemen/pgboss-nestjs-job": "workspace:*"

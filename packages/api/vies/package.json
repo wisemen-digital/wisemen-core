@@ -25,7 +25,8 @@
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "oxlint": "catalog:lint-api"
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",

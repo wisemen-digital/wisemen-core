@@ -37,6 +37,7 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "@wisemen/api-error": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
     "typescript": "catalog:peer"
   }
 }

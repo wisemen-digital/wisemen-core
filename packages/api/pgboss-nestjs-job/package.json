@@ -40,11 +40,14 @@
     "@sentry/nestjs": "catalog:backend-peer",
     "colors": "catalog:backend-peer",
     "rxjs": "catalog:backend-peer",
-    "typeorm": "catalog:backend-peer"
+    "typeorm": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer"
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
-    "typescript": "catalog:peer"
+    "oxlint": "catalog:lint-api",
+    "typescript": "catalog:peer",
+    "@types/node": "catalog:backend"
   }
 }
