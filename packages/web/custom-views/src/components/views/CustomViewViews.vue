@@ -7,11 +7,14 @@ import {
 } from '@wisemen/vue-core-design-system'
 import { ChevronDownIcon } from '@wisemen/vue-core-icons'
 
+import { useI18n } from 'vue-i18n'
+
 import { useCustomViewCreateViewAction } from '@/actions/customViewCreateView.action'
 import { useCustomViewSaveToCurrentViewAction } from '@/actions/customViewSaveToCurrentView.action'
 import CustomViewViewsItem from '@/components/views/CustomViewViewsItem.vue'
 import { useInjectCustomViewManagerContext } from '@/context/customViewManager.context'
 
+const i18n = useI18n()
 const customViewManagerContext = useInjectCustomViewManagerContext()
 const createViewAction = useCustomViewCreateViewAction()
 const saveToCurrentViewAction = useCustomViewSaveToCurrentViewAction()
@@ -44,7 +47,7 @@ const saveToCurrentViewAction = useCustomViewSaveToCurrentViewAction()
       >
         <UIButton
           :icon-right="ChevronDownIcon"
-          label="Save"
+          :label="i18n.t('component.custom_view_list.save')"
           size="sm"
           variant="secondary"
         />

@@ -12,6 +12,7 @@ import {
   RadioGroupRoot,
   useId,
 } from 'reka-ui'
+import { useI18n } from 'vue-i18n'
 
 import type { CustomViewColor } from '@/types/customViewColor.type'
 import {
@@ -23,13 +24,14 @@ const props = defineProps<{
   field: Field<CustomViewColor, CustomViewColor> | Field<CustomViewColor>
 }>()
 
+const i18n = useI18n()
 const id = useId()
 </script>
 
 <template>
   <UIInputWrapper
     :for="id"
-    label="Color"
+    :label="i18n.t('component.custom_view_color_picker.label')"
   >
     <RadioGroupRoot
       :id="id"

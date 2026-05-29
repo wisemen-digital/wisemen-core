@@ -6,6 +6,8 @@ import { createCustomViewStateAdapter } from '@/types/customViewStateAdapter.typ
 export function createCustomViewTableColumnsStateAdapter<T, TKey extends string>(
   customizeColumns: ReturnType<typeof useTableCustomizeColumns<T, TKey>>,
 ) {
+  const defaultState = customizeColumns.customizedColumns.value.map((column) => column.key)
+
   return createCustomViewStateAdapter({
     isDirty: (saved, current) => JSON.stringify(saved) !== JSON.stringify(current),
     apply: (state) => {
@@ -15,6 +17,7 @@ export function createCustomViewTableColumnsStateAdapter<T, TKey extends string>
       ...raw as TKey[],
     ],
     getCurrentState: () => customizeColumns.customizedColumns.value.map((column) => column.key),
+    getDefaultState: () => defaultState,
     key: 'columns',
     serialize: (state) => state,
   })

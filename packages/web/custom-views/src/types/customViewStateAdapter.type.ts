@@ -3,6 +3,7 @@ export interface CustomViewStateAdapter<TKey extends string, T> {
   apply: (state: T) => void
   deserialize: (raw: unknown) => T
   getCurrentState: () => T
+  getDefaultState: () => T
   key: TKey
   serialize: (value: T) => unknown
 }

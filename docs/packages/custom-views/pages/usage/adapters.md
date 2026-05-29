@@ -13,6 +13,7 @@ Each state adapter is an object that tells the view manager how to:
 |---|---|
 | `key` | The property name this adapter occupies inside `view.state` |
 | `getCurrentState()` | Return the current live value |
+| `getDefaultState()` | Return the state to apply when a view has no snapshot for this key (e.g. the view was created before the adapter was added) |
 | `serialize(value)` | Convert the live value to something JSON-safe for storage |
 | `deserialize(raw)` | Restore a stored value back to the live type |
 | `apply(state)` | Push a stored snapshot value back into the live state |
@@ -38,7 +39,13 @@ useCustomViewManager({
 })
 ```
 
-The adapter stores filter values under the `'filters'` key in `view.state`.
+The adapter stores filter values under the `'filters'` key in `view.state`. When a stored view has no `filters` snapshot (e.g. it was created before this adapter was added), the adapter resets all filters to an empty state by default.
+
+Pass `defaultFilterValues` if your filters should reset to a specific non-empty state instead:
+
+```typescript
+createCustomViewFilterStateAdapter(filters, { status: 'active' })
+```
 
 > `@wisemen/vue-core-filters` is an optional peer dependency. Install it only when you use this adapter.
 
@@ -100,10 +107,10 @@ const sortDirection = ref<'asc' | 'desc'>('asc')
 const sortAdapter = createCustomViewStateAdapter({
   key: 'sort',
   getCurrentState: () => ({ field: sortField.value, direction: sortDirection.value }),
+  getDefaultState: () => ({ field: 'name', direction: 'asc' as const }),
   serialize: (state) => state,
   deserialize: (raw) => raw as { field: string; direction: 'asc' | 'desc' },
   apply: (state) => {
-    if (state === null) return
     sortField.value = state.field
     sortDirection.value = state.direction
   },
@@ -111,7 +118,7 @@ const sortAdapter = createCustomViewStateAdapter({
 })
 ```
 
-`apply` is called with `null` when a view has no snapshot for this key (e.g. the view was created before the adapter was added). Handle `null` explicitly to reset to a sensible default.
+`getDefaultState` is called when a stored view has no snapshot for this key — for example, a view that was created before this adapter was added. Return whatever state the adapter should apply in that case.
 
 ## Combining multiple adapters
 

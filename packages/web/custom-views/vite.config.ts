@@ -12,7 +12,10 @@ export default defineConfig({
     lib: {
       name: 'vue-core-custom-views',
       cssFileName: 'style',
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: [
+        resolve(__dirname, 'src/index.ts'),
+        resolve(__dirname, 'src/locales.ts'),
+      ],
       fileName: (format, name) => {
         if (format === 'es') {
           return `${name}.js`
@@ -35,6 +38,7 @@ export default defineConfig({
         'formango',
         'reka-ui',
         'vue',
+        'vue-i18n',
       ],
       output: {
         globals: {
@@ -49,6 +53,7 @@ export default defineConfig({
           'formango': 'Formango',
           'reka-ui': 'RekaUI',
           'vue': 'Vue',
+          'vue-i18n': 'VueI18n',
         },
       },
     },

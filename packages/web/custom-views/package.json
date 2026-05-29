@@ -18,6 +18,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js"
+    },
     "./style.css": "./dist/style.css",
     "./package.json": "./package.json"
   },
@@ -53,7 +57,8 @@
     "formango": "catalog:peer",
     "reka-ui": "catalog:peer",
     "tailwindcss": "catalog:style",
-    "vue": "catalog:peer"
+    "vue": "catalog:peer",
+    "vue-i18n": "catalog:peer"
   },
   "peerDependenciesMeta": {
     "@wisemen/vue-core-filters": {
@@ -85,6 +90,7 @@
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
     "vue": "catalog:vue",
+    "vue-i18n": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }

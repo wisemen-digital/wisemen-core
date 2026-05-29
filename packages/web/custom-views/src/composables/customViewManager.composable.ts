@@ -11,6 +11,7 @@ import {
   shallowRef,
   watch,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useProvideCustomViewManagerContext } from '@/context/customViewManager.context'
 import type {
@@ -37,6 +38,8 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
 }: Options<TAdapters>) {
   type TState = AdaptersToState<TAdapters>
 
+  const i18n = useI18n()
+
   const views = shallowRef<CustomView<TState>[]>(loadAndMergeViews())
 
   assert(views.value.length > 0, 'At least 1 view is required')
@@ -44,7 +47,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
   const activeViewId = useRouteQuery<string | null>('viewId', null)
 
   const actionGroup: ActionGroup = {
-    name: () => 'Views',
+    name: () => i18n.t('action.custom_view.group_name'),
     priority: GroupPriority.VIEW,
   }
 
@@ -62,10 +65,10 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
 
   const isDirty = computed<boolean>(
     () => state.some((stateAdapter) => {
-      const activeViewStateRaw = (activeView.value.state as Record<string, unknown>)[stateAdapter.key] ?? null
+      const activeViewStateRaw = (activeView.value.state as Record<string, unknown>)[stateAdapter.key]
 
-      const activeViewState = activeViewStateRaw === null
-        ? null
+      const activeViewState = activeViewStateRaw == null
+        ? stateAdapter.getDefaultState()
         : stateAdapter.deserialize(activeViewStateRaw)
 
       return stateAdapter.isDirty(
@@ -188,10 +191,10 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
 
   function applyStateAdapters(view: CustomView): void {
     for (const stateAdapter of state) {
-      const activeViewStateRaw = (view.state as Record<string, unknown>)[stateAdapter.key] ?? null
+      const activeViewStateRaw = (view.state as Record<string, unknown>)[stateAdapter.key]
 
-      const activeViewState = activeViewStateRaw === null
-        ? null
+      const activeViewState = activeViewStateRaw == null
+        ? stateAdapter.getDefaultState()
         : stateAdapter.deserialize(activeViewStateRaw)
 
       stateAdapter.apply(activeViewState)
@@ -221,7 +224,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
     useHotkey({
       key: `${i + 1}`,
     }, () => {
-      const view = views.value[i] ?? null
+      const view = sortViews(views.value)[i] ?? null
 
       if (view !== null) {
         setActiveView(view.id)

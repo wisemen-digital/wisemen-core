@@ -4,10 +4,12 @@ import {
   useOverlay,
 } from '@wisemen/vue-core-design-system'
 import { Trash01Icon } from '@wisemen/vue-core-icons'
+import { useI18n } from 'vue-i18n'
 
 import { useInjectCustomViewManagerContext } from '@/context/customViewManager.context'
 
 export function useCustomViewDeleteViewAction() {
+  const i18n = useI18n()
   const overlay = useOverlay()
   const confirmDialog = overlay.create(UIConfirmDialog)
   const customViewManagerContext = useInjectCustomViewManagerContext()
@@ -27,15 +29,15 @@ export function useCustomViewDeleteViewAction() {
 
       return customView.isEditable
     },
-    name: () => 'Delete',
+    name: () => i18n.t('action.custom_view.delete'),
     execute: (ctx) => {
       const customView = ctx.targetedModelOfTypeOrThrow('CustomView')
 
       confirmDialog.open({
-        title: 'Delete view',
+        title: i18n.t('action.custom_view.delete_confirm_title'),
         isDestructive: true,
-        confirmLabel: 'Delete',
-        description: `Are you sure you want to delete <em>${customView.name}</em>?`,
+        confirmLabel: i18n.t('action.custom_view.delete_confirm_label'),
+        description: i18n.t('action.custom_view.delete_confirm_description', { name: customView.name }),
         onConfirm: () => {
           customViewManagerContext.deleteView(customView.id)
           confirmDialog.close()

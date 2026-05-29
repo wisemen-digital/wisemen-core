@@ -36,6 +36,26 @@ Import the component styles in your main CSS file:
 @import '@wisemen/vue-core-custom-views/style.css';
 ```
 
-## 4. You're all set!
+## 4. Register locales
+
+Add the bundled translations to your `vue-i18n` instance:
+
+```typescript
+import { createI18n } from 'vue-i18n'
+import { customViewsLocales } from '@wisemen/vue-core-custom-views/locales'
+
+const i18n = createI18n({
+  messages: {
+    'en-US': {
+      ...customViewsLocales['en-US'],
+    },
+    'nl-BE': {
+      ...customViewsLocales['nl-BE'],
+    },
+  },
+})
+```
+
+## 5. You're all set!
 
 Head over to the [Overview](../usage/overview) to learn how to set up `useCustomViewManager`, or jump to [Adapters](../usage/adapters) to see how to connect filters, search, and table columns to your views.

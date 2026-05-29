@@ -8,6 +8,8 @@ import {
 import type { Field } from 'formango'
 import { ref } from 'vue'
 
+import { useI18n } from 'vue-i18n'
+
 import type { CustomViewIcon } from '@/types/customViewIcon.type'
 import {
   CUSTOM_VIEW_ICONS_MAP,
@@ -18,6 +20,7 @@ const props = defineProps<{
   field: Field<CustomViewIcon, CustomViewIcon>
 }>()
 
+const i18n = useI18n()
 const isOpen = ref<boolean>(false)
 
 function onSelectIcon(icon: CustomViewIcon): void {
@@ -34,11 +37,11 @@ function onSelectIcon(icon: CustomViewIcon): void {
     popover-side="bottom"
   >
     <template #trigger>
-      <UIInputWrapper label="Icon">
+      <UIInputWrapper :label="i18n.t('component.custom_view_icon_picker.label')">
         <UIIconButton
           :icon="getCustomViewIconComponent(props.field.value.value)"
           :is-tooltip-disabled="true"
-          label="View icon"
+          :label="i18n.t('component.custom_view_icon_picker.view_icon_label')"
           variant="secondary"
         />
       </UIInputWrapper>

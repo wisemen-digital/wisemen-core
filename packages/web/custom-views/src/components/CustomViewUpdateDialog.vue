@@ -14,6 +14,7 @@ import {
 } from '@wisemen/vue-core-design-system'
 import { useForm } from 'formango'
 import z from 'zod'
+import { useI18n } from 'vue-i18n'
 
 import CustomViewColorPicker from '@/components/CustomViewColorPicker.vue'
 import CustomViewIconPicker from '@/components/CustomViewIconPicker.vue'
@@ -45,6 +46,8 @@ const form = useForm({
   },
 })
 
+const i18n = useI18n()
+
 const nameField = form.register('name')
 const iconField = form.register('icon', CustomViewIcon.ACTIVITY)
 const colorField = form.register('color')
@@ -58,8 +61,8 @@ const isDefault = form.register('isDefault', false)
   >
     <UIDialogHeader
       :hide-description="true"
-      title="Update view"
-      description="Give your view a name, icon and color"
+      :title="i18n.t('component.custom_view_update_dialog.title')"
+      :description="i18n.t('component.custom_view_update_dialog.description')"
     />
 
     <UIDialogBody>
@@ -67,8 +70,8 @@ const isDefault = form.register('isDefault', false)
         <UITextField
           v-bind="toFormField(nameField)"
           :is-required="true"
-          placeholder="Enter a name for your view"
-          label="Name"
+          :placeholder="i18n.t('component.custom_view_update_dialog.name_placeholder')"
+          :label="i18n.t('component.custom_view_update_dialog.name_label')"
         />
 
         <UIRowLayout gap="2xl">
@@ -78,15 +81,15 @@ const isDefault = form.register('isDefault', false)
 
         <UICheckbox
           v-bind="toFormField(isDefault)"
-          label="Set as default"
-          hint="This view will automatically be applied every time you visit this page."
+          :label="i18n.t('component.custom_view_update_dialog.is_default_label')"
+          :hint="i18n.t('component.custom_view_update_dialog.is_default_hint')"
         />
       </UIFormLayout>
     </UIDialogBody>
 
     <UIDialogFooter>
       <UIDialogFooterCancel />
-      <UIDialogFooterSubmit label="Save" />
+      <UIDialogFooterSubmit :label="i18n.t('component.custom_view_update_dialog.submit')" />
     </UIDialogFooter>
   </UIFormDialog>
 </template>

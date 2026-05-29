@@ -1,11 +1,13 @@
 import { createAction } from '@wisemen/vue-core-actions'
 import { useOverlay } from '@wisemen/vue-core-design-system'
 import { Edit01Icon } from '@wisemen/vue-core-icons'
+import { useI18n } from 'vue-i18n'
 
 import CustomViewUpdateDialog from '@/components/CustomViewUpdateDialog.vue'
 import { useInjectCustomViewManagerContext } from '@/context/customViewManager.context'
 
 export function useCustomViewEditViewAction() {
+  const i18n = useI18n()
   const overlay = useOverlay()
   const viewUpdateDialog = overlay.create(CustomViewUpdateDialog)
   const customViewManagerContext = useInjectCustomViewManagerContext()
@@ -21,7 +23,7 @@ export function useCustomViewEditViewAction() {
 
       return customView.isEditable
     },
-    name: () => 'Edit',
+    name: () => i18n.t('action.custom_view.edit'),
     execute: (ctx) => {
       const customView = ctx.targetedModelOfTypeOrThrow('CustomView')
 

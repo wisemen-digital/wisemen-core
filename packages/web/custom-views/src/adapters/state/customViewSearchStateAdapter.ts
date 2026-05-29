@@ -9,6 +9,7 @@ export function createCustomViewSearchStateAdapter(search: Search) {
     apply: search.updateSearch,
     deserialize: (raw) => raw as string,
     getCurrentState: () => search.search.value,
+    getDefaultState: () => '',
     key: 'search',
     serialize: (state) => state,
   })
