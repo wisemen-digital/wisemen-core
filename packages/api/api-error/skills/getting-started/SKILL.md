@@ -35,8 +35,6 @@ Standardized JSON:API error responses for NestJS with typed error codes, Swagger
 - Creating domain-specific error types with typed codes and metadata
 - Testing that endpoints return specific errors
 
-**Use instead:** Plain NestJS `HttpException` only for generic HTTP errors without structured codes or Swagger docs.
-
 ## Import
 
 ```ts
@@ -51,14 +49,14 @@ import {
 ### 1. Define a custom error
 
 ```ts
-import { NotFoundApiError, ApiErrorCode } from '@wisemen/api-error'
+import { NotFoundApiError, ApiErrorCode } from "@wisemen/api-error"
 
-export class UserNotFoundApiError extends NotFoundApiError {
-  @ApiErrorCode('user_not_found')
-  readonly code = 'user_not_found'
+export class UserNotFoundError extends NotFoundApiError {
+  @ApiErrorCode("user_not_found")
+  readonly code = "user_not_found"
 
   constructor() {
-    super('The requested user was not found')
+    super("The requested user was not found")
   }
 }
 ```
@@ -72,7 +70,7 @@ export class UserService {
     const user = await this.userRepo.findOneBy({ id })
 
     if (user === null) {
-      throw new UserNotFoundApiError()
+      throw new UserNotFoundError()
     }
 
     return user
@@ -83,13 +81,13 @@ export class UserService {
 ### 3. Document on the controller
 
 ```ts
-import { ApiNotFoundErrorResponse } from '@wisemen/api-error'
+import { ApiNotFoundErrorResponse } from "@wisemen/api-error"
 
-@Controller('users')
+@Controller("users")
 export class UserController {
-  @Get(':id')
-  @ApiNotFoundErrorResponse(UserNotFoundApiError)
-  async findOne(@Param('id') id: string): Promise<UserDto> {
+  @Get(":id")
+  @ApiNotFoundErrorResponse(UserNotFoundError)
+  async findOne(@Param("id") id: string): Promise<UserDto> {
     return this.userService.findById(id)
   }
 }
@@ -98,31 +96,43 @@ export class UserController {
 ### 4. Test with toHaveApiError
 
 ```ts
-import { toHaveApiError } from '@wisemen/api-error'
+import { toHaveApiError } from "@wisemen/api-error"
 
 expect.extend({ toHaveApiError })
 
-it('returns 404 for unknown user', async () => {
-  const response = await request(app).get('/users/unknown')
-  expect(response).toHaveApiError(new UserNotFoundApiError())
+it("returns 404 for unknown user", async () => {
+  const response = await request(app).get("/users/unknown")
+  expect(response).toHaveApiError(new UserNotFoundError())
 })
 ```
 
 ### Error with metadata
 
 ```ts
-import { BadRequestApiError, ApiErrorCode, ApiErrorMeta } from '@wisemen/api-error'
+import {
+  BadRequestApiError,
+  ApiErrorCode,
+  ApiErrorMeta,
+} from "@wisemen/api-error"
 
-export class InvalidEmailApiError extends BadRequestApiError {
-  @ApiErrorCode('invalid_email')
-  readonly code = 'invalid_email'
-
-  @ApiErrorMeta()
-  readonly meta: { field: string }
+export class InvalidEmailApiErrorMeta {
+  field: string
 
   constructor(field: string) {
-    super('The email address is invalid')
-    this.meta = { field }
+    this.field = field
+  }
+}
+
+export class InvalidEmailError extends BadRequestApiError {
+  @ApiErrorCode("invalid_email")
+  readonly code = "invalid_email"
+
+  @ApiErrorMeta()
+  readonly meta: InvalidEmailApiErrorMeta
+
+  constructor(field: string) {
+    super("The email address is invalid")
+    this.meta = new InvalidEmailApiErrorMeta(field)
   }
 }
 ```
