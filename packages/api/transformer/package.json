@@ -27,6 +27,7 @@
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
+    "@types/node": "catalog:backend",
     "typescript": "catalog:peer"
   },
   "author": "Joren Vandeweyer",

@@ -1635,6 +1635,9 @@ importers:
         specifier: catalog:backend
         version: 5.11.0
     devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
       '@wisemen/api-error':
         specifier: workspace:*
         version: link:../api-error
@@ -1706,6 +1709,9 @@ importers:
         specifier: workspace:*
         version: link:../pgboss-nestjs-job
     devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
       '@wisemen/eslint-config-nestjs':
         specifier: workspace:*
         version: link:../eslint-config-nestjs
@@ -2086,6 +2092,9 @@ importers:
 
   packages/api/transformer:
     devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
       '@wisemen/eslint-config-nestjs':
         specifier: workspace:*
         version: link:../eslint-config-nestjs
@@ -2182,6 +2191,9 @@ importers:
         specifier: catalog:backend-peer
         version: 1.15.2
     devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
       '@wisemen/eslint-config-nestjs':
         specifier: workspace:*
         version: link:../eslint-config-nestjs
@@ -3026,6 +3038,9 @@ importers:
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
+      tsdown:
+        specifier: catalog:build
+        version: 0.18.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
       vite:
         specifier: catalog:vite
         version: 8.0.14(@types/node@25.3.0)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3)
@@ -3302,6 +3317,9 @@ importers:
 
   packages/web/preferences:
     dependencies:
+      '@tailwindcss/vite':
+        specifier: catalog:vite
+        version: 4.1.18(vite@8.0.14(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3))
       highlight-words:
         specifier: catalog:general
         version: 2.0.0

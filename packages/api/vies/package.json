@@ -27,6 +27,7 @@
     "eslint": "catalog:lint-api",
     "typescript": "catalog:peer",
     "oxlint": "catalog:lint-api",
+    "@types/node": "catalog:backend",
     "oxlint-tsgolint": "catalog:lint-api"
   },
   "peerDependencies": {
