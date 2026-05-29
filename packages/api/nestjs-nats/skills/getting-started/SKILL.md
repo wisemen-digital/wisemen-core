@@ -31,8 +31,6 @@ NATS messaging for NestJS with decorator-driven subscribers, JetStream streams, 
 - Building event-driven microservices with JetStream durability
 - Publishing fire-and-forget messages with NatsClient
 
-**Use instead:** Direct `@nats-io/transport-node` when you don't need NestJS module integration or decorator-driven handlers.
-
 ## Import
 
 ```ts
@@ -49,13 +47,14 @@ import {
 
 ```ts
 import { NatsConnection } from '@wisemen/nestjs-nats'
-import type { ConfigService } from '@nestjs/config'
+import { nkeyAuthenticator } from '@nats-io/transport-node'
 
-@NatsConnection((config: ConfigService) => ({
+@NatsConnection((config) => ({
   name: 'default',
   servers: config.getOrThrow('NATS_ENDPOINT'),
+  authenticator: nkeyAuthenticator(new TextEncoder().encode(config.get('NATS_NKEY') ?? ''))
 }))
-export class AppNatsConnection {}
+export class DefaultNatsConnection {}
 ```
 
 ### 2. Define a stream (optional, for JetStream)
@@ -63,17 +62,14 @@ export class AppNatsConnection {}
 ```ts
 import { NatsStream } from '@wisemen/nestjs-nats'
 import { RetentionPolicy } from '@nats-io/jetstream'
-import { nanos } from '@nats-io/transport-node'
-import { AppNatsConnection } from './app-nats-connection.js'
+import { DefaultNatsConnection } from './default-nats-connection.js'
 
 @NatsStream((config) => ({
-  connection: AppNatsConnection,
+  connection: DefaultNatsConnection,
   name: 'orders',
   subjects: ['orders.>'],
   retention: RetentionPolicy.Limits,
-  max_msgs: 100_000,
-  max_bytes: 1_000_000_000,
-  max_age: nanos(7 * 24 * 60 * 60 * 1000),
+  max_msgs: 100_000
 }))
 export class OrdersStream {}
 ```
@@ -85,18 +81,18 @@ import {
   NatsSubscriber, OnNatsMessage,
   NatsMessageData, NatsMsgDataJsonPipe,
 } from '@wisemen/nestjs-nats'
-import { AppNatsConnection } from './app-nats-connection.js'
+import { DefaultNatsConnection } from './default-nats-connection.js'
 
 @NatsSubscriber((config) => ({
-  connection: AppNatsConnection,
+  connection: DefaultNatsConnection,
   subject: 'orders.created',
 }))
 export class OrderCreatedSubscriber {
   @OnNatsMessage()
   async handle(
-    @NatsMessageData(NatsMsgDataJsonPipe) data: unknown,
+    @NatsMessageData(NatsMsgDataJsonPipe) data: OrderCreatedEvent,
   ): Promise<void> {
-    // data is the decoded JSON payload
+    // Handle the order created event
   }
 }
 ```
@@ -130,10 +126,7 @@ export class OrderService {
   constructor(private readonly nats: NatsClient) {}
 
   publishOrderCreated(order: Order): void {
-    this.nats.publish(
-      'orders.created',
-      new TextEncoder().encode(JSON.stringify(order)),
-    )
+    this.nats.publish('orders.created', new TextEncoder().encode(JSON.stringify(order)),)
   }
 }
 ```

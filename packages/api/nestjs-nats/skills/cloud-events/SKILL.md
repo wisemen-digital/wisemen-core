@@ -45,7 +45,7 @@ import {
   NatsSubscriber, OnNatsCloudEvent, NatsCloudEventData,
 } from '@wisemen/nestjs-nats'
 import { IsString, IsNumber } from 'class-validator'
-import { AppNatsConnection } from './app-nats-connection.js'
+import { DefaultNatsConnection } from './default-nats-connection.js'
 
 class OrderPlacedData {
   @IsString() orderId: string
@@ -53,11 +53,11 @@ class OrderPlacedData {
 }
 
 @NatsSubscriber((config) => ({
-  connection: AppNatsConnection,
+  connection: DefaultNatsConnection,
   subject: 'orders.events',
 }))
 export class OrderEventsSubscriber {
-  @OnNatsCloudEvent({ type: 'com.example.order.placed', version: '1.0' })
+  @OnNatsCloudEvent({ type: 'com.example.order.placed', version: '0.0.1' })
   async handleOrderPlaced(
     @NatsCloudEventData() data: OrderPlacedData,
   ): Promise<void> {
@@ -71,26 +71,78 @@ export class OrderEventsSubscriber {
 ### Publishing CloudEvents
 
 ```ts
+// order-placed.integration.event.ts
+import { ApiProperty } from '@nestjs/swagger'
+import { CloudEvent } from '@wisemen/nestjs-nats'
+import { createChannel } from '@wisemen/nestjs-async-api'
+
+export class OrderPlacedEventContent {
+  @ApiProperty({ type: String })
+  uuid: string
+
+  @ApiProperty({ type: Number })
+  total: number
+
+  constructor(order: Order) {
+    this.uuid = order.uuid
+    this.total = order.total
+  }
+}
+
+export class OrderPlacedIntegrationEvent extends CloudEvent {
+  @ApiProperty({
+    enumName: 'OrderPlacedIntegrationEventType',
+    enum: [IntegrationEventType.ORDER_PLACED]
+  })
+  declare type: IntegrationEventType.ORDER_PLACED
+
+  @ApiProperty({ type: OrderPlacedEventContent })
+  declare data: OrderPlacedEventContent
+
+  constructor (order: Order) {
+    super({
+      type: IntegrationEventType.ORDER_PLACED,
+      data: new OrderPlacedEventContent(order),
+      version: '0.0.1'
+    })
+  }
+}
+
+export const OrderPlacedNatsSubject = 'my-application.{env}.order.{orderUuid}.created'
+export const OrderPlacedChannel = createChannel(OrderPlacedNatsSubject, {
+  parameters: {
+    env: {
+      enum: Object.values(EnvType),
+      description: 'The environment from which the event originates',
+      examples: [EnvType.DEVELOPMENT]
+    },
+    orderUuid: {
+      description: 'The uuid of the order'
+    }
+  },
+  operations: {
+    sendOrderPlaced: {
+      action: 'send',
+      summary: 'this message is sent when an order is placed',
+      messages: [OrderPlacedIntegrationEvent]
+    }
+  }
+})
+```
+
+```ts
+// order.service.ts
 import { NatsClient, CloudEvent } from '@wisemen/nestjs-nats'
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly nats: NatsClient) {}
+  constructor(private readonly natsClient: NatsClient) {}
 
-  publishOrderPlaced(orderId: string, total: number): void {
-    const event: CloudEvent = {
-      id: crypto.randomUUID(),
-      specversion: '1.0',
-      type: 'com.example.order.placed',
-      source: '/orders',
-      datacontenttype: 'application/json',
-      time: new Date().toISOString(),
-      data: { orderId, total },
-    }
-
-    this.nats.publish(
-      'orders.events',
-      new TextEncoder().encode(JSON.stringify(event)),
+  publishOrderPlaced(order: Order): void {
+    const subject = OrderPlacedChannel.subject({ env: EnvType.PRODUCTION, orderUuid: order.uuid })
+    this.natsClient.publish(
+      subject,
+      new TextEncoder().encode(JSON.stringify(new OrderPlacedIntegrationEvent(order))),
     )
   }
 }

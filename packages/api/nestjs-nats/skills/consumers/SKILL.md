@@ -45,25 +45,26 @@ import {
 import { DeliverPolicy, AckPolicy } from '@nats-io/jetstream'
 import { nanos } from '@nats-io/transport-node'
 import type { JsMsg } from '@nats-io/jetstream'
-import { AppNatsConnection } from './app-nats-connection.js'
+import { DefaultNatsConnection } from './default-nats-connection.js'
 
 @NatsConsumer((config) => ({
-  connection: AppNatsConnection,
+  connection: DefaultNatsConnection,
   streamName: 'orders',
-  durable_name: 'order-processor',
-  filter_subject: 'orders.created',
-  deliver_policy: DeliverPolicy.All,
   ack_policy: AckPolicy.Explicit,
-  ack_wait: nanos(30_000),
-  max_deliver: 5,
+  deliver_policy: DeliverPolicy.All,
+  replay_policy: ReplayPolicy.Instant,
+  filter_subject: 'orders.created'
 }))
 export class OrderCreatedConsumer {
-  @OnNatsMessage()
+  @OnNatsCloudEvent({
+    type: 'order.created',
+    version: '0.0.1'
+  })
   async handle(
-    @NatsMessageData(NatsMsgDataJsonPipe) data: unknown,
-    @NatsMessage() msg: JsMsg,
+    @NatsMessageData(NatsMsgDataJsonPipe, NatsMsgDataCloudEventPipe) data: OrderCreatedIntegrationEvent,
+    @NatsMessageSubject() subject: string
   ): Promise<void> {
-    // Process the message...
+    // Process the message
     msg.ack()
   }
 }
