@@ -1178,6 +1178,9 @@ importers:
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -1601,6 +1604,9 @@ importers:
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -1939,6 +1945,9 @@ importers:
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -2053,6 +2062,9 @@ importers:
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typeorm:
         specifier: catalog:backend
         version: 0.3.28(pg@8.20.0)(redis@5.11.0)
@@ -2139,6 +2151,9 @@ importers:
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -2204,6 +2219,9 @@ importers:
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3
