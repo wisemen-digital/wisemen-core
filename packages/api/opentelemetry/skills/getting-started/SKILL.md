@@ -57,17 +57,19 @@ configureOpentelemetryTracing({
 // Then bootstrap NestJS app...
 ```
 
-### 2. Add @Trace() to service methods
+### 2. Add @Trace() to methods
 
 ```ts
-import { Injectable } from '@nestjs/common'
-import { Trace } from '@wisemen/opentelemetry'
+@Module({
+  providers: [CronjobUseCase],
+  exports: [CronjobUseCase]
+})
+export class CronjobModule implements OnApplicationBootstrap {
+  constructor (private useCase: CronjobUseCase) {}
 
-@Injectable()
-export class OrderService {
   @Trace()
-  async processOrder(orderId: string): Promise<void> {
-    // Automatically creates a span named after this method
+  async onApplicationBootstrap (): Promise<void> {
+    await this.useCase.execute()
   }
 }
 ```
