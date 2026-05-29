@@ -22,6 +22,9 @@ features:
   - title: 🔍 Filters
     details: "@wisemen/vue-core-filters — Type-safe, actions-integrated filters with built-in UI for list views."
     link: /packages/filters/pages/getting-started/installation
+  - title: 🗂️ Custom Views
+    details: "@wisemen/vue-core-custom-views — Saved, named views for list and table pages with URL sync and pluggable state adapters."
+    link: /packages/custom-views/pages/getting-started/installation
   - title: 🔤 Format
     details: "@wisemen/vue-core-format — Locale-aware formatting for strings, numbers, and sensitive values."
     link: /packages/format/pages/getting-started/installation
