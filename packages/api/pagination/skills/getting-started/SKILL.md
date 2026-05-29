@@ -47,34 +47,69 @@ import {
 ```ts
 // 1. Define your search query DTO
 import { PaginatedOffsetSearchQuery } from '@wisemen/pagination'
-import { IsOptional, IsString } from 'class-validator'
+import { IsString } from 'class-validator'
+import { IsUndefinable } from '@wisemen/validators'
 
-export class UserSearchQuery extends PaginatedOffsetSearchQuery {
-  @IsOptional()
+export class ViewUserIndexQuery extends PaginatedOffsetSearchQuery {
+  @Equals(undefined)
+  sort: never
+
+  @Equals(undefined)
+  filter: never
+
   @IsString()
+  @IsUndefinable()
   search?: string
-
-  sort?: undefined
-  filter?: undefined
 }
 
-// 2. Use in controller
+// 2. Define your response DTO
+import { ApiProperty } from '@nestjs/swagger'
+import { PaginatedOffsetResponse } from '@wisemen/pagination'
+
+class UserIndexView {
+  @ApiProperty({ type: String, format: 'uuid' })
+  uuid: UserUuid
+
+  @ApiProperty({ type: String})
+  name: string
+
+  constructor (user: User) {
+    this.uuid = user.uuid
+    this.name = user.name
+  }
+}
+
+export class ViewUserIndexResponse extends PaginatedOffsetResponse<UserIndexView> {
+  @ApiProperty({ type: UserIndexView, isArray: true })
+  declare items: UserIndexView[]
+
+  constructor (users: User[]) {
+    const userViews = users.map(user => new UserIndexView(user))
+    super(userViews, users.meta)
+  }
+}
+
+// 3. Use in your controller
 import { PaginatedOffsetResponse, PaginatedOffsetResponseMeta, typeormPagination } from '@wisemen/pagination'
 
-@Get()
-async list(@Query() query: UserSearchQuery): Promise<PaginatedOffsetResponse<UserDto>> {
+@Get('users')
+@Version('1')
+@ApiOkResponse({
+  description: 'Users retrieved',
+  type: ViewUserIndexResponse
+})
+async viewUsers(
+  @Query() query: ViewUserIndexQuery
+): Promise<ViewUserIndexResponse> {
   const { skip, take } = typeormPagination(query.pagination)
 
-  const [users, total] = await this.userRepo.findAndCount({
+  const users = this.userService.findUsers({
+    search: query.search,
     skip,
-    take,
-    where: query.search ? { name: ILike(`%${query.search}%`) } : {},
+    take
   })
 
-  return new PaginatedOffsetResponse(
-    users.map(toDto),
-    new PaginatedOffsetResponseMeta(total, skip, take),
-  )
+  return new ViewUserIndexResponse(users)
 }
 ```
 
@@ -86,6 +121,8 @@ async list(@Query() query: UserSearchQuery): Promise<PaginatedOffsetResponse<Use
 import { PaginatedKeysetQuery, PaginatedKeysetResponse, KeysetDirection } from '@wisemen/pagination'
 
 export abstract class UserKeysetQuery extends PaginatedKeysetQuery {
+  @IsString()
+  @IsOptional()
   key?: string | null
 }
 
