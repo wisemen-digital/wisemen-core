@@ -28,10 +28,13 @@ Expose request-reply endpoints over NATS with service discovery and health monit
 
 ```ts
 import {
-  NatsService, NatsServiceEndpoint,
-  OnNatsMessage, NatsMessageData, NatsMessage,
+  NatsService,
+  NatsServiceEndpoint,
+  OnNatsMessage,
+  NatsMessageData,
+  NatsMessage,
   NatsMsgDataJsonPipe,
-} from '@wisemen/nestjs-nats'
+} from "@wisemen/nestjs-nats";
 ```
 
 ## Quick Start
@@ -39,14 +42,14 @@ import {
 ### 1. Define a service
 
 ```ts
-import { NatsService } from '@wisemen/nestjs-nats'
-import { AppNatsConnection } from './app-nats-connection.js'
+import { NatsService } from "@wisemen/nestjs-nats";
+import { DefaultNatsConnection } from "./default-nats-connection.js";
 
 @NatsService((config) => ({
-  connection: AppNatsConnection,
-  name: 'user-service',
-  version: '1.0.0',
-  description: 'User management service',
+  connection: DefaultNatsConnection,
+  name: "user-service",
+  version: "1.0.0",
+  description: "User management service",
 }))
 export class UserNatsService {}
 ```
@@ -55,16 +58,19 @@ export class UserNatsService {}
 
 ```ts
 import {
-  NatsServiceEndpoint, OnNatsMessage,
-  NatsMessageData, NatsMessage, NatsMsgDataJsonPipe,
-} from '@wisemen/nestjs-nats'
-import type { Msg } from '@nats-io/transport-node'
-import { UserNatsService } from './user-nats.service.js'
+  NatsServiceEndpoint,
+  OnNatsMessage,
+  NatsMessageData,
+  NatsMessage,
+  NatsMsgDataJsonPipe,
+} from "@wisemen/nestjs-nats";
+import type { Msg } from "@nats-io/transport-node";
+import { UserNatsService } from "./user-nats.service.js";
 
 @NatsServiceEndpoint((config) => ({
   service: UserNatsService,
-  subject: 'users.get',
-  name: 'get-user',
+  subject: "users.get",
+  name: "get-user",
 }))
 export class GetUserEndpoint {
   constructor(private readonly userService: UserService) {}
@@ -74,11 +80,9 @@ export class GetUserEndpoint {
     @NatsMessageData(NatsMsgDataJsonPipe) request: { userId: string },
     @NatsMessage() msg: Msg,
   ): Promise<void> {
-    const user = await this.userService.findById(request.userId)
+    const user = await this.userService.findById(request.userId);
 
-    msg.respond(
-      new TextEncoder().encode(JSON.stringify(user)),
-    )
+    msg.respond(new TextEncoder().encode(JSON.stringify(user)));
   }
 }
 ```
