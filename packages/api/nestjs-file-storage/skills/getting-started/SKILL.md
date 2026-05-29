@@ -1,8 +1,7 @@
 ---
 name: getting-started
 description: >
-  Register FileStorageModule with S3 or Azure Blob Storage, inject FileStorage for
-  uploads, downloads, and signed URLs. Use TestFileStorage for unit tests.
+  Register FileStorageModule with S3 or Azure Blob Storage, inject FileStorage for uploads, downloads, index & delete operations, and signed URL's. Use TestFileStorage for unit tests.
 type: lifecycle
 library: nestjs-file-storage
 exports:
@@ -21,8 +20,6 @@ Multi-cloud file storage abstraction for NestJS supporting AWS S3 and Azure Blob
 - Storing and retrieving files in cloud storage (S3, Azure Blob)
 - Generating temporary signed URLs for uploads, downloads, and previews
 - Abstracting storage provider behind a common interface for portability
-
-**Use instead:** Direct AWS SDK or Azure SDK when you need provider-specific features not exposed by FileStorage.
 
 ## Import
 
@@ -58,7 +55,7 @@ import { FileStorageModule, FileStorageProvider } from '@wisemen/nestjs-file-sto
     }),
   ],
 })
-export class StorageModule {}
+export class DefaultFileStorageModule {}
 ```
 
 ### 2. Inject and use FileStorage
@@ -88,10 +85,11 @@ export class DocumentService {
 ### 3. Use TestFileStorage in tests
 
 ```ts
-import { FileStorageModule, FileStorageProvider } from '@wisemen/nestjs-file-storage'
+import { TestFileStorage } from '@wisemen/nestjs-file-storage'
 
-// In test module setup:
-FileStorageModule.forRoot({ provider: FileStorageProvider.TEST })
+const testFileStorage = createStubInstance(TestFileStorage)
+const documentService = new DocumentService(testFileStorage)
+
 ```
 
 `TestFileStorage` is an in-memory implementation that satisfies the FileStorage interface without cloud credentials.
