@@ -26,8 +26,6 @@ Background job processing backed by PostgreSQL via pg-boss, with NestJS module i
 - Scheduling delayed or recurring work backed by PostgreSQL
 - Processing jobs with configurable concurrency, retries, and backoff
 
-**Use instead:** In-process `setTimeout`/`setInterval` only for non-critical, ephemeral tasks that don't need persistence or retry.
-
 ## Import
 
 ```ts
@@ -43,18 +41,19 @@ import type { BaseJobData } from '@wisemen/pgboss-nestjs-job'
 ### 1. Define a job
 
 ```ts
+// create-notification.job.ts
 import { BaseJob, PgBossJob } from '@wisemen/pgboss-nestjs-job'
 import type { BaseJobData } from '@wisemen/pgboss-nestjs-job'
 
-interface NotificationJobData extends BaseJobData {
-  userId: string
+interface CreateNotificationJobData extends BaseJobData {
+  userUuid: string
   message: string
 }
 
 @PgBossJob('notifications')
-export class NotificationJob extends BaseJob<NotificationJobData> {
-  constructor(userId: string, message: string) {
-    super({ userId, message }, { retryLimit: 3 })
+export class CreateNotificationJob extends BaseJob<CreateNotificationJobData> {
+  constructor(userUuid: string, message: string) {
+    super({ userUuid, message }, { retryLimit: 3 })
   }
 }
 ```
@@ -64,19 +63,20 @@ The `@PgBossJob` decorator registers the queue name. `BaseJob` accepts typed dat
 ### 2. Create a handler
 
 ```ts
+// create-notification.job-handler.ts
 import { Injectable } from '@nestjs/common'
 import { JobHandler, PgBossJobHandler } from '@wisemen/pgboss-nestjs-job'
-import { NotificationJob } from './notification.job.js'
+import { CreateNotificationJob } from './create-notification.job.js'
 
-@PgBossJobHandler(NotificationJob)
 @Injectable()
-export class NotificationJobHandler extends JobHandler<NotificationJob> {
+@PgBossJobHandler(CreateNotificationJob)
+export class CreateNotificationJobHandler extends JobHandler<CreateNotificationJob> {
   constructor(private readonly emailService: EmailService) {
     super()
   }
 
-  async run(data: NotificationJob['data']): Promise<void> {
-    await this.emailService.send(data.userId, data.message)
+  async run(data: CreateNotificationJobData): Promise<void> {
+    await this.emailService.send(data.userUuid, data.message)
   }
 }
 ```
@@ -94,15 +94,18 @@ import { PgBossWorkerModule } from '@wisemen/pgboss-nestjs-job'
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         pgBossOptions: {
-          connectionString: config.getOrThrow('DATABASE_URI'),
+          host: config.getOrThrow('DB_HOST'),
+          port: config.getOrThrow('DB_PORT'),
+          user: config.getOrThrow('DB_USERNAME'),
+          password: config.getOrThrow('DB_PASSWORD'),
+          database: config.getOrThrow('DB_NAME'),
+          ssl: sslHelper(config.getOrThrow('DB_SSL'))
         },
-        queues: [
-          { queueName: 'notifications', concurrency: 4, pollInterval: 2000 },
-        ],
+        queueName: 'system'
       }),
     }),
   ],
-  providers: [NotificationJobHandler],
+  providers: [CreateNotificationJobModule],
 })
 export class WorkerModule {}
 ```
@@ -112,15 +115,15 @@ export class WorkerModule {}
 ```ts
 import { Injectable } from '@nestjs/common'
 import { PgBossScheduler } from '@wisemen/pgboss-nestjs-job'
-import { NotificationJob } from './notification.job.js'
+import { CreateNotificationJob } from './create-notification.job.js'
 
 @Injectable()
 export class UserService {
   constructor(private readonly scheduler: PgBossScheduler) {}
 
   async createUser(name: string, email: string): Promise<void> {
-    // ... create user ...
-    await this.scheduler.scheduleJob(new NotificationJob(userId, 'Welcome!'))
+    // Create user logic here
+    await this.scheduler.scheduleJob(new CreateNotificationJob(userId, 'Welcome!'))
   }
 }
 ```
