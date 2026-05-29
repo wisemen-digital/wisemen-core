@@ -25,16 +25,13 @@ TypeORM extensions for NestJS with transaction-safe repository proxies, readonly
 - Running queries inside transactions with automatic repository proxying
 - Processing large datasets in batches with async generators
 
-**Use instead:** Plain `@nestjs/typeorm` when you don't need transaction proxying or batch utilities.
-
 ## Import
 
 ```ts
 import {
   TypeOrmModule, transaction, readonly,
-  SnakeNamingStrategy, AnyOrIgnore,
+  SnakeNamingStrategy, AnyOrIgnore, InjectRepository
 } from '@wisemen/nestjs-typeorm'
-import { InjectRepository } from '@wisemen/nestjs-typeorm'
 ```
 
 ## Quick Start
@@ -42,45 +39,63 @@ import { InjectRepository } from '@wisemen/nestjs-typeorm'
 ### 1. Register TypeOrmModule
 
 ```ts
-import { Module } from '@nestjs/common'
-import { TypeOrmModule, SnakeNamingStrategy } from '@wisemen/nestjs-typeorm'
+import { DynamicModule, Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { SnakeNamingStrategy, sslHelper, TypeOrmModule } from '@wisemen/nestjs-typeorm'
 
-@Module({
-  imports: [
-    TypeOrmModule.forRootAsync({
-      useFactory: () => ({
+@Module({})
+export class DefaultTypeOrmModule {
+  static forRootAsync (
+    options: {
+      migrationsRun?: boolean
+    }
+  ): DynamicModule {
+    const migrationsRun = options.migrationsRun ?? false
+
+    return TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: process.env.DATABASE_URL,
-        namingStrategy: new SnakeNamingStrategy(),
-        entities: [UserEntity],
+        host: configService.getOrThrow('DB_HOST'),
+        port: Number(configService.getOrThrow('DB_PORT')),
+        username: configService.getOrThrow('DB_USERNAME'),
+        password: configService.getOrThrow('DB_PASSWORD'),
+        database: configService.getOrThrow('DB_NAME'),
+        ssl: sslHelper(configService.getOrThrow('DB_SSL')),
+        extra: { max: 50 },
+        logging: false,
+        synchronize: false,
+        migrations: migrationsRun ? ['dist/src/sql/migrations/**/*.js'] : [],
+        migrationsRun,
+        entities: ['dist/src/**/*.entity.js'],
+        namingStrategy: new SnakeNamingStrategy()
       }),
-    }),
-    TypeOrmModule.forFeature([UserEntity]),
-  ],
-})
-export class AppModule {}
+      inject: [ConfigService],
+      customDataTypes: ['tstzrange3', 'tstzmultirange3']
+    })
+  }
+}
+
 ```
 
 ### 2. Use transaction-safe repositories
 
 ```ts
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@wisemen/nestjs-typeorm'
-import { transaction } from '@wisemen/nestjs-typeorm'
-import { DataSource, Repository } from 'typeorm'
+import { InjectRepository, TypeOrmRepository, transaction } from '@wisemen/nestjs-typeorm'
+import { DataSource } from 'typeorm'
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepo: Repository<UserEntity>,
     private readonly dataSource: DataSource,
+    @InjectRepository(UserEntity)
+    private readonly userRepo: TypeOrmRepository<UserEntity>,
   ) {}
 
   async createWithProfile(userData: CreateUserDto): Promise<void> {
-    await transaction(this.dataSource, async (em) => {
-      const user = await em.getRepository(UserEntity).save(userData)
-      await em.getRepository(ProfileEntity).save({ userId: user.id })
+    await transaction(this.dataSource, async () => {
+      const user = await this.userRepo.insert(userData)
+      await this.userRepo.getOneOrFail({ where: { userId: user.id } })
     })
   }
 }
@@ -101,10 +116,9 @@ const users = await readonly(this.dataSource, async () => {
 ### 4. Batch processing
 
 ```ts
-for await (const batch of this.userRepo.findInBatches({}, 100)) {
-  for (const user of batch) {
-    // Process each user
-  }
+const generator = this.userRepo.findInBatches({ where: { isActive: true } }, 100)
+for await (const user of generator) {
+  // Process each user
 }
 ```
 
@@ -118,7 +132,7 @@ const users = await this.userRepo.find({
 })
 ```
 
-Returns `undefined` (no filter) when the array is empty or undefined, otherwise applies an `In()` filter.
+Returns `undefined` (no filter) when the array is undefined, otherwise applies an `Any()` filter.
 
 ## Source Files
 
