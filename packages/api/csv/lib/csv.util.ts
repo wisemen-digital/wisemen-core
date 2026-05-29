@@ -48,14 +48,16 @@ export class CSV {
     stream: Readable,
     options?: {
       columns?: readonly K[]
-      delimiter?: string
+      delimiter?: string,
+      crlfDelay?: number
     }
   ): AsyncGenerator<CSVRow<K>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
+    const crlfDelay = options?.crlfDelay ?? Infinity
 
     const rl = readline.createInterface({
       input: stream,
-      crlfDelay: Infinity
+      crlfDelay
     })
 
     let keys: K[] | null = null
