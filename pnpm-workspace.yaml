@@ -318,16 +318,6 @@ catalogs:
   wisemen:
     "@wisemen/vue-core-design-system": "0.10.0"
     "@wisemen/vue-core-icons": "0.0.2"
-  conflicts_vite_:
-    "@tailwindcss/vite": ""
-  conflicts_vite_ca:
-    "@tailwindcss/vite": ca
-  conflicts_vite_cat:
-    "@tailwindcss/vite": cat
-  conflicts_vite_cata:
-    "@tailwindcss/vite": cata
-  conflicts_vite_catal:
-    "@tailwindcss/vite": catal
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"
