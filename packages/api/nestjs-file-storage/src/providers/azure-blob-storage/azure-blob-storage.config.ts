@@ -18,3 +18,4 @@ export class AzureBlobStorageConfig {
   @IsNotEmpty()
   containerName: string
 }
+

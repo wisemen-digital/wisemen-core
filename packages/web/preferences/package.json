@@ -58,6 +58,7 @@
     "vue-i18n": "catalog:peer"
   },
   "dependencies": {
+    "@tailwindcss/vite": "catalog:vite",
     "highlight-words": "catalog:general"
   },
   "devDependencies": {

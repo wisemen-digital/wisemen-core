@@ -36,7 +36,9 @@
     "typeorm": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
     "expect": "catalog:test",
+    "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",

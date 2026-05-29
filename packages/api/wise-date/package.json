@@ -35,8 +35,10 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "@wisemen/validators": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "oxlint-tsgolint": "catalog:lint-api"
   },
   "author": "Kobe Kwanten",
   "contributors": [],
