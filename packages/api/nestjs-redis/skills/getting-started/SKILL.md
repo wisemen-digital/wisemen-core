@@ -36,17 +36,25 @@ import { RedisModule, RedisClient, RedisCache } from '@wisemen/nestjs-redis'
 
 ```ts
 import { Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { captureException } from '@wisemen/opentelemetry'
 import { RedisModule } from '@wisemen/nestjs-redis'
 
 @Module({
-  imports: [
-    RedisModule.forRoot({
-      url: process.env.REDIS_URL,
-      ttl: 7200,
-    }),
-  ],
+  imports: [RedisModule.forRootAsync({
+    inject: [ConfigService],
+    useFactory: (config: ConfigService) => ({
+      url: config.getOrThrow('REDIS_URL'),
+      pingInterval: config.get('REDIS_PING_INTERVAL'),
+      ttl: config.get('REDIS_DEFAULT_TTL'),
+      onClientError: (error) => {
+        captureException(error)
+      }
+    })
+  })],
+  exports: [RedisModule]
 })
-export class AppModule {}
+export class DefaultRedisModule {}
 ```
 
 ### 2. Use RedisClient directly
@@ -79,12 +87,20 @@ import { RedisCache } from '@wisemen/nestjs-redis'
 export class RoleCache extends RedisCache {
   readonly prefix = 'roles'
 
+  constructor (
+    private readonly client: RedisClient
+  ) {
+    super()
+  }
+
   async getRole(userId: string): Promise<Role | null> {
-    return this.redis.getCachedValue<Role>(this.buildCacheKey(userId))
+    const cacheKey = this.buildCacheKey(userId)
+    return this.client.getCachedValue<Role>(cacheKey)
   }
 
   async setRole(userId: string, role: Role): Promise<void> {
-    await this.redis.putCachedValue(this.buildCacheKey(userId), role)
+    const cacheKey = this.buildCacheKey(userId)
+    await this.client.putCachedValue(cacheKey, role)
   }
 }
 ```
