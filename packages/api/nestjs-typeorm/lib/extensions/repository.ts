@@ -9,7 +9,21 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     super(entity, proxy)
   }
 
-  async createAndInsert (entityLike: DeepPartial<T> | T): Promise<T> {
+  async createAndInsert (entityLike: DeepPartial<T> | T): Promise<T>
+  async createAndInsert (entityLike: Array<DeepPartial<T> | T>): Promise<T[]>
+  async createAndInsert (entityLike: DeepPartial<T> | T | Array<DeepPartial<T> | T>): Promise<T | T[]> {
+    if (Array.isArray(entityLike)) {
+      const EntityClass = this.target as ObjectType<T>
+
+      const entities = entityLike.map(item =>
+        item instanceof EntityClass ? item as T : this.create(item as DeepPartial<T>)
+      )
+
+      await this.insert(entities as QueryDeepPartialEntity<T>[])
+
+      return entities
+    }
+
     const EntityClass = this.target as ObjectType<T>
     const isEntity = entityLike instanceof EntityClass
 
@@ -18,7 +32,7 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
 
       return entityLike as T
     } else {
-      const entity = this.create(entityLike)
+      const entity = this.create(entityLike as DeepPartial<T>)
 
       await this.insert(entity as QueryDeepPartialEntity<T>)
 
