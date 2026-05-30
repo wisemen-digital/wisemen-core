@@ -1,4 +1,4 @@
-import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, QueryDeepPartialEntity, Repository } from 'typeorm'
+import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, ObjectType, QueryDeepPartialEntity, Repository } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
 
@@ -9,12 +9,21 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     super(entity, proxy)
   }
 
-  async createAndInsert (entityLike: DeepPartial<T>): Promise<T> {
-    const entity = this.create(entityLike)
+  async createAndInsert (entityLike: DeepPartial<T> | T): Promise<T> {
+    const EntityClass = this.target as ObjectType<T>
+    const isEntity = entityLike instanceof EntityClass
 
-    await this.insert(entity as QueryDeepPartialEntity<T>)
+    if (isEntity) {
+      await this.insert(entityLike as QueryDeepPartialEntity<T>)
 
-    return entity
+      return entityLike as T
+    } else {
+      const entity = this.create(entityLike)
+
+      await this.insert(entity as QueryDeepPartialEntity<T>)
+
+      return entity
+    }
   }
 
   async findNextBatch (
