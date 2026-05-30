@@ -1,5 +1,12 @@
 # @wisemen/monetary
 
+## 0.4.6
+
+### Patch Changes
+
+- Updated dependencies [[`23b823f`](https://github.com/wisemen-digital/wisemen-core/commit/23b823fd570e61b7d368b782e5330f9fd372e15d)]:
+  - @wisemen/nestjs-typeorm@1.1.0
+
 ## 0.4.5
 
 ### Patch Changes

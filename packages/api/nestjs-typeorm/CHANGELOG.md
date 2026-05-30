@@ -1,5 +1,11 @@
 # @wisemen/nestjs-typeorm
 
+## 1.1.0
+
+### Minor Changes
+
+- [`23b823f`](https://github.com/wisemen-digital/wisemen-core/commit/23b823fd570e61b7d368b782e5330f9fd372e15d) Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)! - Add array support to `createAndInsert` — passing an array now returns `Promise<T[]>` and inserts all entities in a single call
+
 ## 1.0.2
 
 ### Patch Changes

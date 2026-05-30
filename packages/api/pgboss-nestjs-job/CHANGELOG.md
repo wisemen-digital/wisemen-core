@@ -1,5 +1,12 @@
 # @wisemen/pgboss-nestjs-job
 
+## 4.0.7
+
+### Patch Changes
+
+- Updated dependencies [[`23b823f`](https://github.com/wisemen-digital/wisemen-core/commit/23b823fd570e61b7d368b782e5330f9fd372e15d)]:
+  - @wisemen/nestjs-typeorm@1.1.0
+
 ## 4.0.6
 
 ### Patch Changes
