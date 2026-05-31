@@ -76,6 +76,7 @@
     "@wisemen/vue-core-api-utils": "workspace:*",
     "@wisemen/vue-core-icons": "workspace:*",
     "@wisemen/vue-core-utils": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "country-flag-icons": "catalog:general",
     "libphonenumber-js": "catalog:general",
     "vite": "catalog:vite",
