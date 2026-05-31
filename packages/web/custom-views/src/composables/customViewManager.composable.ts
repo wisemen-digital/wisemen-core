@@ -53,15 +53,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
   }
 
   const activeView = computed<CustomView<TState>>(() => {
-    const result = views.value.find((view) => view.id === activeViewId.value) ?? null
-
-    if (result !== null) {
-      return result
-    }
-
-    const defaultView = views.value.find((view) => view.isDefault) ?? null
-
-    return defaultView ?? views.value[0]!
+    return views.value.find((view) => view.id === activeViewId.value) ?? views.value[0]!
   })
 
   const isDirty = computed<boolean>(
@@ -104,16 +96,11 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
     }
     const view: CustomView = {
       id,
-      isDefault: viewMeta.isDefault,
       isEditable: true,
       name: viewMeta.name,
       color: viewMeta.color,
       icon: viewMeta.icon,
       state: captureState(),
-    }
-
-    if (view.isDefault) {
-      resolveDefaultView(id)
     }
 
     views.value = [
@@ -123,13 +110,6 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
 
     persist()
     setActiveView(id)
-  }
-
-  function resolveDefaultView(defaultViewId: string): void {
-    views.value = views.value.map((view) => ({
-      ...view,
-      isDefault: view.id === defaultViewId,
-    }))
   }
 
   function saveToCurrentView(): void {
@@ -170,10 +150,11 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
         })
       : v)
 
-    if (meta.isDefault) {
-      resolveDefaultView(viewId)
-    }
+    persist()
+  }
 
+  function reorderViews(orderedViews: CustomView<TState>[]): void {
+    views.value = orderedViews
     persist()
   }
 
@@ -232,7 +213,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
     useHotkey({
       key: `${i + 1}`,
     }, () => {
-      const view = sortViews(views.value)[i] ?? null
+      const view = views.value[i] ?? null
 
       if (view !== null) {
         setActiveView(view.id)
@@ -242,20 +223,17 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
     })
   }
 
-  function sortViews(views: CustomView[]): CustomView[] {
-    return views.toSorted((a, b) => Number(b.isDefault) - Number(a.isDefault))
-  }
-
   const obj = {
     isDirty,
     actionGroup,
     activeView,
     createView,
     deleteView,
+    reorderViews,
     saveToCurrentView,
     setActiveView,
     updateViewMeta,
-    views: computed(() => sortViews(views.value)),
+    views: computed(() => views.value),
   }
 
   useProvideCustomViewManagerContext(obj)

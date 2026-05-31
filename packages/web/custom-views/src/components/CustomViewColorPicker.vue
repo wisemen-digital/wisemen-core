@@ -49,7 +49,8 @@ const id = useId()
               backgroundColor: getCustomViewColor(colorKey),
             }"
             class="
-              flex size-7 items-center justify-center rounded-md ring-offset-1
+              flex size-6.5 items-center justify-center rounded-md!
+              ring-offset-1
             "
           >
             <RadioGroupIndicator>

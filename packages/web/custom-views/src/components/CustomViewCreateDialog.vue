@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   toFormField,
-  UICheckbox,
   UIDialogBody,
   UIDialogFooter,
   UIDialogFooterCancel,
@@ -30,7 +29,6 @@ const i18n = useI18n()
 
 const form = useForm({
   schema: z.object({
-    isDefault: z.boolean(),
     name: z.string().min(1).max(20),
     color: z.enum(CustomViewColor),
     icon: z.enum(CustomViewIcon),
@@ -43,7 +41,6 @@ const form = useForm({
 const nameField = form.register('name', 'Untitled')
 const iconField = form.register('icon', CustomViewIcon.LAYERS)
 const colorField = form.register('color', CustomViewColor.DEFAULT)
-const isDefault = form.register('isDefault', false)
 </script>
 
 <template>
@@ -69,12 +66,6 @@ const isDefault = form.register('isDefault', false)
           <CustomViewIconPicker :field="iconField" />
           <CustomViewColorPicker :field="colorField" />
         </UIRowLayout>
-
-        <UICheckbox
-          v-bind="toFormField(isDefault)"
-          :label="i18n.t('component.custom_view_create_dialog.is_default_label')"
-          :hint="i18n.t('component.custom_view_create_dialog.is_default_hint')"
-        />
       </UIFormLayout>
     </UIDialogBody>
 
