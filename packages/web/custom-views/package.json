@@ -12,7 +12,7 @@
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/web/custom-views"
   },
-  "sideEffects": false,
+  "sideEffects": ["*.css"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

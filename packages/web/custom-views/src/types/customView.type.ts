@@ -7,7 +7,7 @@ export interface CustomView<TState extends Record<string, unknown> = any> {
   isEditable: boolean
   name: string
   color: CustomViewColor
-  icon: CustomViewIcon
+  icon: CustomViewIcon | null
   state: TState
 }
 
@@ -22,5 +22,5 @@ export interface UpdateCustomViewMeta {
   isDefault: boolean
   name: string
   color: CustomViewColor
-  icon: CustomViewIcon
+  icon?: CustomViewIcon
 }

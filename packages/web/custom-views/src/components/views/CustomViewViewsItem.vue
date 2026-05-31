@@ -50,6 +50,7 @@ const deleteViewAction = useCustomViewDeleteViewAction()
           {
             modelName: 'CustomView',
             ...props.view,
+            key: props.view.id,
           },
         ]"
       >
@@ -73,6 +74,7 @@ const deleteViewAction = useCustomViewDeleteViewAction()
               >
                 <Component
                   :is="getCustomViewIconComponent(props.view.icon)"
+                  v-if="props.view.icon !== null"
                   :style="{
                     color: getCustomViewColor(props.view.color),
                   }"

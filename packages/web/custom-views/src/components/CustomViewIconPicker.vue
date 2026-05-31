@@ -7,7 +7,6 @@ import {
 } from '@wisemen/vue-core-design-system'
 import type { Field } from 'formango'
 import { ref } from 'vue'
-
 import { useI18n } from 'vue-i18n'
 
 import type { CustomViewIcon } from '@/types/customViewIcon.type'
@@ -49,7 +48,7 @@ function onSelectIcon(icon: CustomViewIcon): void {
 
     <template #content>
       <div class="p-sm">
-        <ul class="grid grid-cols-8">
+        <ul class="grid grid-cols-8 gap-xxs">
           <li
             v-for="[iconKey, iconComponent] of CUSTOM_VIEW_ICONS_MAP"
             :key="iconKey"

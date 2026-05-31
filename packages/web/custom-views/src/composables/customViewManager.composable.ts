@@ -1,7 +1,8 @@
 // oxlint-disable unicorn/consistent-function-scoping
 import { useHotkey } from '@tanstack/vue-hotkeys'
 import { useRouteQuery } from '@vueuse/router'
-import { GroupPriority, type ActionGroup } from '@wisemen/vue-core-actions'
+import type { ActionGroup } from '@wisemen/vue-core-actions'
+import { GroupPriority } from '@wisemen/vue-core-actions'
 import {
   assert,
   StringUtil,
@@ -68,7 +69,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
       const activeViewStateRaw = (activeView.value.state as Record<string, unknown>)[stateAdapter.key]
 
       const activeViewState = activeViewStateRaw == null
-        ? stateAdapter.getDefaultState()
+        ? null
         : stateAdapter.deserialize(activeViewStateRaw)
 
       return stateAdapter.isDirty(
@@ -92,8 +93,15 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
   }
 
   function createView(viewMeta: CreateCustomViewMeta): void {
-    const id = StringUtil.slugify(viewMeta.name)
+    const existingIds = new Set(views.value.map((v) => v.id))
+    const slug = StringUtil.slugify(viewMeta.name)
+    let id = slug
+    let counter = 1
 
+    while (existingIds.has(id)) {
+      id = `${slug}-${counter}`
+      counter++
+    }
     const view: CustomView = {
       id,
       isDefault: viewMeta.isDefault,
@@ -194,7 +202,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
       const activeViewStateRaw = (view.state as Record<string, unknown>)[stateAdapter.key]
 
       const activeViewState = activeViewStateRaw == null
-        ? stateAdapter.getDefaultState()
+        ? null
         : stateAdapter.deserialize(activeViewStateRaw)
 
       stateAdapter.apply(activeViewState)

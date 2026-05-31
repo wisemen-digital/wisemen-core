@@ -1,6 +1,6 @@
 export interface CustomViewStateAdapter<TKey extends string, T> {
-  isDirty: (saved: T, current: T) => boolean
-  apply: (state: T) => void
+  isDirty: (saved: T | null, current: T) => boolean
+  apply: (state: T | null) => void
   deserialize: (raw: unknown) => T
   getCurrentState: () => T
   getDefaultState: () => T

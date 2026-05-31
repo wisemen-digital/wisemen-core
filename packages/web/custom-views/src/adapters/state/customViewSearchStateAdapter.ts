@@ -5,8 +5,8 @@ import { createCustomViewStateAdapter } from '@/types/customViewStateAdapter.typ
 // eslint-disable-next-line eslint-plugin-wisemen/explicit-function-return-type-with-regex
 export function createCustomViewSearchStateAdapter(search: Search) {
   return createCustomViewStateAdapter({
-    isDirty: (savedState, currentState) => savedState.trim() !== currentState.trim(),
-    apply: search.updateSearch,
+    isDirty: (savedState, currentState) => (savedState ?? '').trim() !== currentState.trim(),
+    apply: (value) => search.updateSearch(value ?? '', true),
     deserialize: (raw) => raw as string,
     getCurrentState: () => search.search.value,
     getDefaultState: () => '',

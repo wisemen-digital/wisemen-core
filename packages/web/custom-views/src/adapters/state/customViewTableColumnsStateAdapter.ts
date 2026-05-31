@@ -9,9 +9,9 @@ export function createCustomViewTableColumnsStateAdapter<T, TKey extends string>
   const defaultState = customizeColumns.customizedColumns.value.map((column) => column.key)
 
   return createCustomViewStateAdapter({
-    isDirty: (saved, current) => JSON.stringify(saved) !== JSON.stringify(current),
+    isDirty: (saved, current) => JSON.stringify(saved ?? defaultState) !== JSON.stringify(current),
     apply: (state) => {
-      customizeColumns.setState(state)
+      customizeColumns.setState(state ?? defaultState)
     },
     deserialize: (raw) => [
       ...raw as TKey[],
