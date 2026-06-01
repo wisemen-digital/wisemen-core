@@ -179,9 +179,8 @@ function isActivePreset(preset: Preset): boolean {
       :key="preset.key"
       :data-active="isActivePreset(preset)"
       class="
-        flex w-full cursor-pointer items-center rounded-sm px-lg py-xs text-left
-        text-xs font-medium text-secondary transition-colors duration-100
-        outline-none
+        flex w-full items-center rounded-sm px-lg py-xs text-left text-xs
+        font-medium text-secondary transition-colors duration-100 outline-none
         hover:bg-secondary-hover
         focus-visible:ring-2 focus-visible:ring-fg-brand-primary
         data-[active=true]:bg-brand-secondary

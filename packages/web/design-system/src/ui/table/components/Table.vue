@@ -77,7 +77,7 @@ const subGroupedItems = computed<TableSubGroupedData<TItem>[]>(
 
 const columnSizes = computed<TableColumnSize[]>(() => (
   props.columns.map((column) => column.size ?? {
-    max: '15rem',
+    max: '20rem',
     min: 'min-content',
   })
 ))
