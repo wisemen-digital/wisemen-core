@@ -45,7 +45,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
 
   assert(views.value.length > 0, 'At least 1 view is required')
 
-  const activeViewId = useRouteQuery<string | null>('viewId', null)
+  const activeViewId = useRouteQuery<string | null>('view', null)
 
   const actionGroup: ActionGroup = {
     name: () => i18n.t('action.custom_view.group_name'),
