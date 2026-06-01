@@ -51,6 +51,7 @@ const colorField = form.register('color', CustomViewColor.DEFAULT)
     <UIDialogHeader
       :title="i18n.t('component.custom_view_create_dialog.title')"
       :description="i18n.t('component.custom_view_create_dialog.description')"
+      :hide-description="true"
     />
 
     <UIDialogBody>

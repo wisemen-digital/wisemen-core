@@ -250,6 +250,9 @@ catalogs:
     '@wisemen/eslint-config-nestjs':
       specifier: ^1.1.1
       version: 1.1.1
+    '@wisemen/vue-core-dates':
+      specifier: ^0.0.2
+      version: 0.0.2
     vue-draggable-plus:
       specifier: ^0.6.1
       version: 0.6.1
@@ -2618,6 +2621,9 @@ importers:
       '@wisemen/vue-core-actions':
         specifier: workspace:*
         version: link:../actions
+      '@wisemen/vue-core-dates':
+        specifier: 'catalog:'
+        version: 0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
       '@wisemen/vue-core-design-system':
         specifier: workspace:*
         version: link:../design-system
@@ -2645,6 +2651,9 @@ importers:
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
+      temporal-polyfill:
+        specifier: catalog:peer
+        version: 0.3.0
       typescript:
         specifier: catalog:build
         version: 5.9.3
@@ -2669,6 +2678,9 @@ importers:
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)
+      zod:
+        specifier: catalog:general
+        version: 4.3.5
 
   packages/web/dates:
     dependencies:
@@ -8592,6 +8604,14 @@ packages:
       '@typescript-eslint/parser': ^8.46.1
       eslint: '>=10.0.3'
       typescript: '>=4.8.4 <=5.9.3'
+
+  '@wisemen/vue-core-dates@0.0.2':
+    resolution: {integrity: sha512-vlG4Im6Suh5GGa56+pzYD901e4rB3nt5sptfM+OdPe+Dut6ACOQFlQmgBhjf/LHP44a88AiOV+AONYTIEm0cdw==}
+    peerDependencies:
+      temporal-polyfill: '>=0.3.0'
+      vue: '>=3.5.22'
+      vue-i18n: '>=11.1.12'
+      zod: '>=4.3.5'
 
   '@wisemen/vue-core-icons@0.0.2':
     resolution: {integrity: sha512-MAaD9S31riuHyUuHsi3mTFVTi7WV+cKQTHb5lYsEwjVLAkN7mxIn9HWpo7CBmZxM9efKJO819DlCLRee6EhOFw==}
@@ -19597,6 +19617,13 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
+
+  '@wisemen/vue-core-dates@0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)':
+    dependencies:
+      temporal-polyfill: 0.3.0
+      vue: 3.5.27(typescript@5.9.3)
+      vue-i18n: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      zod: 4.3.5
 
   '@wisemen/vue-core-icons@0.0.2(vue@3.5.27(typescript@5.9.3))':
     dependencies:
