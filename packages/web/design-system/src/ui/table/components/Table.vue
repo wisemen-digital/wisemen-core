@@ -114,6 +114,8 @@ function onClearFiltersAndSearch(): void {
     :is-initialized="props.data.length > 0"
     :header-actions="props.headerActions"
     :action-group="props.actionGroup"
+    :disable-column-resize="props.disableColumnResize"
+    :variant="props.variant"
     @clear-filters-and-search="onClearFiltersAndSearch"
   >
     <TableScrollContainer :disable-scroll="props.data.length === 0">
