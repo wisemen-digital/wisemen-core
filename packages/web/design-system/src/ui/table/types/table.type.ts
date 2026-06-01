@@ -4,7 +4,7 @@ import type { Component } from 'vue'
 import type { RegisteredActionContext } from '@/register'
 
 type Unit = '%' | 'fr' | 'rem'
-type Size = 'min-content' | `${number}${Unit}`
+type Size = 'auto' | 'min-content' | `${number}${Unit}`
 
 export interface TableColumnSize {
   max: Size
