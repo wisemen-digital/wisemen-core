@@ -32,7 +32,7 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
 
       return entityLike as T
     } else {
-      const entity = this.create(entityLike as DeepPartial<T>)
+      const entity = this.create(entityLike)
 
       await this.insert(entity as QueryDeepPartialEntity<T>)
 
