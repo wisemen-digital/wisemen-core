@@ -60,9 +60,7 @@ const firstCellPaddingLeft = computed<string>(() => {
     <RouterLink
       v-if="link !== null"
       :to="link"
-      :inert="true"
       tabindex="-1"
-      aria-hidden="true"
       class="absolute inset-0 z-0"
     />
 
