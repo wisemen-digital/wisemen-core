@@ -4,7 +4,7 @@ export const createButtonStyle = tv({
   compoundVariants: [
     {
       class: {
-        container: 'dark:rounded-[0.31rem] dark:px-md',
+        container: 'dark:rounded-[0.35rem] dark:px-md',
       },
       size: 'md',
       variant: 'primary',
