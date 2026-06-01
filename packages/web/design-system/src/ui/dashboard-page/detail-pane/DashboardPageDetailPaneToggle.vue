@@ -22,7 +22,9 @@ const {
 } = useInjectMainContentDetailPaneContext()
 
 const i18n = useI18n()
+
 const actionGroup = useActionGroup()
+
 const toggleDetailPaneAction = createAction({
   id: 'toggle-detail-pane',
   name: () => i18n.t('action.global.toggle_detail_pane.name'),

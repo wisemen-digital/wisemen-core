@@ -68,7 +68,7 @@ const {
   onResizeKeyDown,
   onResizeStart,
 } = useDetailPane({
-  isOpen: isDetailPaneOpen,
+  isOpen: props.detailPane?.isOpen ?? isDetailPaneOpen,
   isResizable: props.detailPane?.isResizable ?? true,
   storage: props.detailPane?.storage ?? null,
   variant: props.detailPane?.variant ?? 'full-height-inline',
@@ -88,7 +88,11 @@ if (hasDetailPane.value) {
   })
 
   if (mainContentDetailPaneContext != null) {
-    mainContentDetailPaneContext.registerDetailPane(computedIsDetailPaneOpen, toggleIsOpen)
+    mainContentDetailPaneContext.registerDetailPane(
+      computedIsDetailPaneOpen,
+      toggleIsOpen,
+      props.detailPane?.isToggleHidden,
+    )
     onUnmounted(() => mainContentDetailPaneContext.unregisterDetailPane())
   }
 }
