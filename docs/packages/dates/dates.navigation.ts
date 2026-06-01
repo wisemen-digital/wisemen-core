@@ -18,6 +18,10 @@ export const DATES_NAVIGATION: PackageDocNavigation = {
       text: 'Usage',
       items: [
         {
+          text: 'Models',
+          link: '/pages/usage/models',
+        },
+        {
           text: 'Configuration',
           link: '/pages/usage/configuration',
         },

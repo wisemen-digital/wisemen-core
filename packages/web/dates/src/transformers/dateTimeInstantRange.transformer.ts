@@ -1,9 +1,9 @@
 /* eslint-disable vue/max-len */
 import type {
-  DateTimeRangeInstant,
-  DateTimeRangeInstantWithEndInfinity,
-  DateTimeRangeInstantWithInfinity,
-  DateTimeRangeInstantWithStartInfinity,
+  DateTimeInstantRange,
+  DateTimeInstantRangeWithEndInfinity,
+  DateTimeInstantRangeWithInfinity,
+  DateTimeInstantRangeWithStartInfinity,
 } from '#models/dateTimeRange.model.ts'
 import type {
   DateTimeInstantRangeField,
@@ -61,10 +61,10 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static fromDto(dto: DateTimeRangeDto): DateTimeRangeInstant
+  static fromDto(dto: DateTimeRangeDto): DateTimeInstantRange
   static fromDto(dto: null): null
-  static fromDto(dto: DateTimeRangeDto | null): DateTimeRangeInstant | null
-  static fromDto(dto: DateTimeRangeDto | null): DateTimeRangeInstant | null {
+  static fromDto(dto: DateTimeRangeDto | null): DateTimeInstantRange | null
+  static fromDto(dto: DateTimeRangeDto | null): DateTimeInstantRange | null {
     if (dto === null) {
       return null
     }
@@ -75,12 +75,12 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static fromDtoWithEndInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeRangeInstantWithEndInfinity
+  static fromDtoWithEndInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeInstantRangeWithEndInfinity
   static fromDtoWithEndInfinity(dto: null): null
-  static fromDtoWithEndInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithEndInfinity | null
+  static fromDtoWithEndInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeInstantRangeWithEndInfinity | null
   static fromDtoWithEndInfinity(
     dto: DateTimeRangeWithInfinityDto | null,
-  ): DateTimeRangeInstantWithEndInfinity | null {
+  ): DateTimeInstantRangeWithEndInfinity | null {
     if (dto === null) {
       return null
     }
@@ -97,10 +97,10 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeRangeInstantWithInfinity
+  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeInstantRangeWithInfinity
   static fromDtoWithInfinity(dto: null): null
-  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithInfinity | null
-  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithInfinity | null {
+  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeInstantRangeWithInfinity | null
+  static fromDtoWithInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeInstantRangeWithInfinity | null {
     if (dto === null) {
       return null
     }
@@ -115,12 +115,12 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static fromDtoWithStartInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeRangeInstantWithStartInfinity | null
-  static fromDtoWithStartInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeRangeInstantWithStartInfinity
+  static fromDtoWithStartInfinity(dto: DateTimeRangeWithInfinityDto | null): DateTimeInstantRangeWithStartInfinity | null
+  static fromDtoWithStartInfinity(dto: DateTimeRangeWithInfinityDto): DateTimeInstantRangeWithStartInfinity
   static fromDtoWithStartInfinity(dto: null): null
   static fromDtoWithStartInfinity(
     dto: DateTimeRangeWithInfinityDto | null,
-  ): DateTimeRangeInstantWithStartInfinity | null {
+  ): DateTimeInstantRangeWithStartInfinity | null {
     if (dto === null) {
       return null
     }
@@ -141,9 +141,9 @@ export class DateTimeInstantRangeTransformer {
     return value === 'infinity' || value === '-infinity'
   }
 
-  static toDto(dateTimeRange: DateTimeRangeInstant): DateTimeRangeDto
+  static toDto(dateTimeRange: DateTimeInstantRange): DateTimeRangeDto
   static toDto(dateTimeRange: null): null
-  static toDto(dateTimeRange: DateTimeRangeInstant | null): DateTimeRangeDto | null {
+  static toDto(dateTimeRange: DateTimeInstantRange | null): DateTimeRangeDto | null {
     if (dateTimeRange === null) {
       return null
     }
@@ -154,10 +154,10 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static toDtoWithInfinity(dateTimeRange: DateTimeRangeInstantWithInfinity): DateTimeRangeWithInfinityDto
+  static toDtoWithInfinity(dateTimeRange: DateTimeInstantRangeWithInfinity): DateTimeRangeWithInfinityDto
   static toDtoWithInfinity(dateTimeRange: null): null
   static toDtoWithInfinity(
-    dateTimeRange: DateTimeRangeInstantWithInfinity | null,
+    dateTimeRange: DateTimeInstantRangeWithInfinity | null,
   ): DateTimeRangeWithInfinityDto | null {
     if (dateTimeRange === null) {
       return null
@@ -173,10 +173,10 @@ export class DateTimeInstantRangeTransformer {
     }
   }
 
-  static toField(dateTimeRange: DateTimeRangeInstant, timeZone: TimeZone): DateTimeInstantRangeField
+  static toField(dateTimeRange: DateTimeInstantRange, timeZone: TimeZone): DateTimeInstantRangeField
   static toField(dateTimeRange: null, timeZone: TimeZone): null
-  static toField(dateTimeRange: DateTimeRangeInstant | null, timeZone: TimeZone): DateTimeInstantRangeField | null
-  static toField(dateTimeRange: DateTimeRangeInstant | null, timeZone: TimeZone): DateTimeInstantRangeField | null {
+  static toField(dateTimeRange: DateTimeInstantRange | null, timeZone: TimeZone): DateTimeInstantRangeField | null
+  static toField(dateTimeRange: DateTimeInstantRange | null, timeZone: TimeZone): DateTimeInstantRangeField | null {
     if (dateTimeRange === null) {
       return null
     }

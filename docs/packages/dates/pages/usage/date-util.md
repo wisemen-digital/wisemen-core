@@ -95,7 +95,7 @@ const instant = DateUtil.plainDateToInstant(plainDate, 'Europe/Brussels')
 
 ## plainDateRangeToDateTimeInstantRange
 
-Converts a `PlainDateRange` to a `DateTimeRangeInstant`. The start instant is set to the beginning of the start day and the end instant is set to 23:59:59.999 of the end day. Returns `null` when either bound is `null`.
+Converts a `PlainDateRange` to a `DateTimeInstantRange`. The start instant is set to the beginning of the start day and the end instant is set to 23:59:59.999 of the end day. Returns `null` when either bound is `null`.
 
 ```typescript
 const range = DateUtil.plainDateRangeToDateTimeInstantRange({
