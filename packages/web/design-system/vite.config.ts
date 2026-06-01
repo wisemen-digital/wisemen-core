@@ -41,6 +41,7 @@ export default defineConfig({
         'zod',
         'motion-v',
         '@internationalized/date',
+        '@wisemen/vue-core-dates',
       ],
       output: {
         // Maps external packages to global variable names for UMD builds (e.g. window.Vue).
@@ -51,6 +52,7 @@ export default defineConfig({
           '@vueuse/core': 'VueUseCore',
           '@vueuse/router': 'VueUseRouter',
           '@wisemen/vue-core-actions': 'VueCoreActions',
+          '@wisemen/vue-core-dates': 'VueCoreDates',
           'formango': 'Formango',
           'motion-v': 'MotionV',
           'reka-ui': 'RekaUI',
