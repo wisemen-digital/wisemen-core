@@ -33,6 +33,7 @@ type TItem = InferTableItem<TTableData>
 
 const props = withDefaults(defineProps<TableProps<TTableData>>(), {
   activeFilterCount: 0,
+  getLink: null,
 })
 
 const emit = defineEmits<{
@@ -143,6 +144,7 @@ function onClearFiltersAndSearch(): void {
             v-for="row of virtualRows"
             :key="props.getKey(flatItems[row.index]!)"
             :action-model="props.getActionModel?.(flatItems[row.index]!)"
+            :link="props.getLink?.(flatItems[row.index]!) ?? null"
           >
             <Component
               :is="column.component(flatItems[row.index]! as any)"
@@ -175,6 +177,7 @@ function onClearFiltersAndSearch(): void {
                 v-for="item of subGroup.items"
                 :key="props.getKey(item)"
                 :action-model="props.getActionModel?.(item)"
+                :link="props.getLink?.(item) ?? null"
               >
                 <Component
                   :is="column.component(item as any)"
@@ -198,6 +201,7 @@ function onClearFiltersAndSearch(): void {
               v-for="item of group.items"
               :key="props.getKey(item)"
               :action-model="props.getActionModel?.(item)"
+              :link="props.getLink?.(item) ?? null"
             >
               <Component
                 :is="column.component(item as any)"

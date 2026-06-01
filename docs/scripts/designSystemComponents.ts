@@ -455,6 +455,16 @@ export const designSystemComponentGroups: DesignSystemComponentGroup[] = [
       },
       {
         category: DATA_DISPLAY,
+        componentName: 'Table',
+        description: 'Data table with sorting, virtual scrolling, grouping, row links, and per-row actions.',
+        previewPath: '@/ui/table/stories/TablePlayground.vue',
+        sourceFolder: 'table/components/Table.vue',
+        storyTitle: 'Components/Table',
+        targetFolder: 'table',
+        title: 'Table',
+      },
+      {
+        category: DATA_DISPLAY,
         componentName: 'Timeline',
         description: 'Ordered timeline for activity history and step-by-step event lists.',
         previewPath: '@/ui/timeline/stories/TimelinePlayground.vue',
