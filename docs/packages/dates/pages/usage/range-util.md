@@ -1,6 +1,6 @@
 # Range Util
 
-`DateTimeRangeUtil` contains static helpers for checking whether an instant falls within a `DateTimeRangeInstant` or `DateTimeRangeInstantWithInfinity`.
+`DateTimeRangeUtil` contains static helpers for checking whether an instant falls within a `DateTimeInstantRange` or `DateTimeInstantRangeWithInfinity`.
 
 ## Import
 

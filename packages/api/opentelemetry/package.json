@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/opentelemetry",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -53,6 +53,8 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",

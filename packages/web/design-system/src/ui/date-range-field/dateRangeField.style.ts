@@ -17,8 +17,8 @@ export const createDateRangeFieldStyle = tv({
       group-data-disabled/field-wrapper:text-fg-disabled-subtle
     `,
     trigger: `
-      mr-sm flex aspect-square size-4 shrink-0 cursor-pointer items-center
-      justify-center bg-transparent p-sm
+      mr-sm flex aspect-square size-4 shrink-0 items-center justify-center
+      bg-transparent p-sm
       focus-visible:outline-fg-brand-primary
       disabled:cursor-not-allowed
     `,

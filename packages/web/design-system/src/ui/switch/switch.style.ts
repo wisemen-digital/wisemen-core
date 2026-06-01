@@ -3,9 +3,9 @@ import { tv } from '@/libs/tailwindVariants.lib'
 export const createSwitchStyle = tv({
   slots: {
     root: `
-      group/switch relative isolate h-5 w-8 cursor-pointer overflow-hidden
-      rounded-full border border-solid border-gray-200 bg-quaternary px-xxs
-      outline-offset-3 outline-brand-600 duration-200
+      group/switch relative isolate h-5 w-8 overflow-hidden rounded-full border
+      border-solid border-gray-200 bg-quaternary px-xxs outline-offset-3
+      outline-brand-600 duration-200
       disabled:cursor-not-allowed disabled:border-disabled-subtle
       disabled:bg-disabled
       data-invalid:bg-error-secondary data-invalid:outline-error-600

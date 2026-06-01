@@ -177,6 +177,10 @@ export const DESIGN_SYSTEM_NAVIGATION: PackageDocNavigation = {
           link: 'components/text/text',
         },
         {
+          text: 'Table',
+          link: 'components/table/table',
+        },
+        {
           text: 'Timeline',
           link: 'components/timeline/timeline',
         },

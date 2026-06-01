@@ -49,7 +49,11 @@
   "peerDependencies": {
     "vue": "catalog:peer",
     "pinia": "catalog:vue",
-    "vue-i18n": "catalog:peer"
+    "vue-i18n": "catalog:peer",
+    "vue-router": "catalog:peer"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "catalog:vite"
   },
   "devDependencies": {
     "@tanstack/vue-hotkeys": "catalog:",

@@ -65,7 +65,6 @@ useProvideTableBodyRowContext({
         <RouterLink
           v-if="link !== null"
           :to="link"
-          :inert="true"
           :aria-label="ariaLabel ?? i18n.t('component.table.row.view_details_label')"
           class="pointer-events-none absolute inset-0 z-0 outline-none"
         />
