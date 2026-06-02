@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1178](https://github.com/wisemen-digital/wisemen-core/pull/1178) [`220b356`](https://github.com/wisemen-digital/wisemen-core/commit/220b356075a19e45cc1b1d1b2f7a5d90a1ed9df7) Thanks [@wouterlms](https://github.com/wouterlms)! - Table: fix column sizing
+
+- Updated dependencies [[`0d85230`](https://github.com/wisemen-digital/wisemen-core/commit/0d852301fc29efbc672479e7aa80f22266d2bfee)]:
+  - @wisemen/vue-core-dates@1.0.1
+
 ## 1.1.0
 
 ### Minor Changes
