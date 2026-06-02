@@ -37,6 +37,7 @@
     "globals": "catalog:lint-api",
     "oxfmt": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer",
     "typescript-eslint": "catalog:lint-api"
   },

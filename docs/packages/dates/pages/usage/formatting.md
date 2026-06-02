@@ -108,7 +108,7 @@ format.toRelativeTime(instant, referenceInstant)
 
 ## toTimeRange
 
-Formats a `DateTimeRangeInstantWithInfinity` as a readable time range string. Open-ended ranges use localized "From" and "Until" labels.
+Formats a `DateTimeInstantRangeWithInfinity` as a readable time range string. Open-ended ranges use localized "From" and "Until" labels.
 
 ```typescript
 // Both ends defined, same day
@@ -140,7 +140,7 @@ format.toTimeRange(range, true)
 
 ## rangeToDuration
 
-Formats a `DateTimeRangeInstant` as a human-readable duration string.
+Formats a `DateTimeInstantRange` as a human-readable duration string.
 
 ```typescript
 format.rangeToDuration({ from: startInstant, until: endInstant })

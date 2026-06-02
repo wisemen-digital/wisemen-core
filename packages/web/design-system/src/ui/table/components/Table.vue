@@ -33,6 +33,7 @@ type TItem = InferTableItem<TTableData>
 
 const props = withDefaults(defineProps<TableProps<TTableData>>(), {
   activeFilterCount: 0,
+  getLink: null,
 })
 
 const emit = defineEmits<{
@@ -76,7 +77,7 @@ const subGroupedItems = computed<TableSubGroupedData<TItem>[]>(
 
 const columnSizes = computed<TableColumnSize[]>(() => (
   props.columns.map((column) => column.size ?? {
-    max: '15rem',
+    max: '20rem',
     min: 'min-content',
   })
 ))
@@ -114,6 +115,8 @@ function onClearFiltersAndSearch(): void {
     :is-initialized="props.data.length > 0"
     :header-actions="props.headerActions"
     :action-group="props.actionGroup"
+    :disable-column-resize="props.disableColumnResize"
+    :variant="props.variant"
     @clear-filters-and-search="onClearFiltersAndSearch"
   >
     <TableScrollContainer :disable-scroll="props.data.length === 0">
@@ -141,6 +144,7 @@ function onClearFiltersAndSearch(): void {
             v-for="row of virtualRows"
             :key="props.getKey(flatItems[row.index]!)"
             :action-model="props.getActionModel?.(flatItems[row.index]!)"
+            :link="props.getLink?.(flatItems[row.index]!) ?? null"
           >
             <Component
               :is="column.component(flatItems[row.index]! as any)"
@@ -173,6 +177,7 @@ function onClearFiltersAndSearch(): void {
                 v-for="item of subGroup.items"
                 :key="props.getKey(item)"
                 :action-model="props.getActionModel?.(item)"
+                :link="props.getLink?.(item) ?? null"
               >
                 <Component
                   :is="column.component(item as any)"
@@ -196,6 +201,7 @@ function onClearFiltersAndSearch(): void {
               v-for="item of group.items"
               :key="props.getKey(item)"
               :action-model="props.getActionModel?.(item)"
+              :link="props.getLink?.(item) ?? null"
             >
               <Component
                 :is="column.component(item as any)"

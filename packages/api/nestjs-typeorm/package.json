@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-typeorm",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -37,6 +37,8 @@
   "devDependencies": {
     "@types/node": "catalog:backend",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer",
     "@wisemen/eslint-config-nestjs": "workspace:*"

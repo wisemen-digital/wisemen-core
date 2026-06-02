@@ -1,5 +1,7 @@
 import { packageConfig } from '@wisemen/eslint-config-vue'
 
 export default [
-  ...(await packageConfig()),
+  ...(await packageConfig({
+    tailwindDisabled: true,
+  })),
 ]

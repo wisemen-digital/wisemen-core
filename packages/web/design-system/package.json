@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.17.0",
+  "version": "1.1.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -30,7 +30,8 @@
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "files": [
-    "./dist"
+    "./dist",
+    "./skills"
   ],
   "scripts": {
     "build": "vite build",
@@ -74,8 +75,11 @@
     "@tailwindcss/vite": "catalog:vite",
     "@wisemen/vue-core-api-utils": "workspace:*",
     "@wisemen/vue-core-icons": "workspace:*",
+    "@wisemen/vue-core-utils": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "country-flag-icons": "catalog:general",
     "libphonenumber-js": "catalog:general",
+    "vite": "catalog:vite",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
@@ -114,6 +118,7 @@
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
+    "@vue/tsconfig": "catalog:vue",
     "vue": "catalog:vue",
     "vue-draggable-plus": "catalog:",
     "vue-router": "catalog:peer",

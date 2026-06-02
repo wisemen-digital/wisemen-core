@@ -4,9 +4,6 @@ description: >
   Three-state AsyncResult type (Loading, Ok, Err), isLoading/isOk/isErr type predicates, getValue/getError accessors, match() pattern matching, map/mapErr transformations, safe value extraction without undefined.
 type: core
 library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts"
 ---
 
 # @wisemen/vue-core-api-utils — Handling AsyncResult Types
@@ -98,80 +95,6 @@ const name = result.value
   .unwrapOr('Unknown')
 // Type: string
 ```
-
-## Common Mistakes
-
-### CRITICAL: Forget to check state before calling getValue/getError
-
-```typescript
-// ❌ Wrong: getValue without isOk check
-const { result } = useQuery('contactDetail', { /* ... */ })
-const contact = result.value.getValue()
-console.log(contact.name) // contact could be null!
-```
-
-```typescript
-// ✅ Correct: check isOk first
-const { result } = useQuery('contactDetail', { /* ... */ })
-if (result.value.isOk()) {
-  const contact = result.value.getValue()
-  console.log(contact.name) // Safe!
-}
-```
-
-Calling `getValue()` without `isOk()` returns null if the result is loading or an error. You get no compile error, and the UI renders nothing or crashes at runtime.
-
-Source: `docs/packages/api-utils/pages/concepts/result-types.md`
-
-### HIGH: Not handle all three states in match()
-
-```typescript
-// ❌ Wrong: missing loading handler
-result.value.match({
-  ok: (data) => <div>{data.name}</div>,
-  err: (error) => <div>Error: {error.detail}</div>,
-  // Forgot loading!
-})
-```
-
-```typescript
-// ✅ Correct: handle all three states
-result.value.match({
-  loading: () => <div>Loading...</div>,
-  ok: (data) => <div>{data.name}</div>,
-  err: (error) => <div>Error: {error.detail}</div>,
-})
-```
-
-If you omit a handler, TypeScript errors and the UI renders nothing during the omitted state. The match is exhaustive by design.
-
-Source: `docs/packages/api-utils/pages/concepts/result-types.md` Pattern Matching Section
-
-### HIGH: Use deprecated state flags (isLoading, isError, isSuccess) instead of AsyncResult state
-
-```typescript
-// ❌ Wrong: using deprecated flags
-const { result, isLoading } = useQuery(...)
-if (isLoading.value) {
-  // Show spinner
-} else {
-  const data = result.value.getValue() // Could be null if isErr!
-}
-```
-
-```typescript
-// ✅ Correct: use AsyncResult state exclusively
-const { result } = useQuery(...)
-if (result.value.isLoading()) {
-  // Show spinner
-} else if (result.value.isOk()) {
-  const data = result.value.getValue() // Safe!
-}
-```
-
-`isLoading`, `isError`, and `isSuccess` on `UseQueryReturnType` are deprecated — they exist for backward compatibility but are less type-safe than AsyncResult. Always prefer `result.value.isLoading()`, `result.value.isErr()`, and `result.value.isOk()`.
-
-Source: `src/composables/query/query.composable.ts` — `UseQueryReturnType` deprecated annotations
 
 ## Next Steps
 

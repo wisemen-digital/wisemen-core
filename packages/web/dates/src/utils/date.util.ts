@@ -1,7 +1,7 @@
 import { Temporal } from 'temporal-polyfill'
 
 import type { DateTimeInstant } from '#models/dateTimeInstant.model.ts'
-import type { DateTimeRangeInstant } from '#models/dateTimeRange.model.ts'
+import type { DateTimeInstantRange } from '#models/dateTimeRange.model.ts'
 import type {
   PlainDate,
   PlainDateRange,
@@ -73,7 +73,7 @@ export class DateUtil {
     )
   }
 
-  static plainDateRangeToDateTimeInstantRange(range: PlainDateRange): DateTimeRangeInstant | null {
+  static plainDateRangeToDateTimeInstantRange(range: PlainDateRange): DateTimeInstantRange | null {
     if (range.from === null || range.until === null) {
       return null
     }

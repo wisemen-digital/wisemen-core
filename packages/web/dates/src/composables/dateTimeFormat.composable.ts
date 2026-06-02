@@ -4,8 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { useDateTimeConfig } from '#composables/config.composable.ts'
 import type { DateTimeInstant } from '#models/dateTimeInstant.model.ts'
 import type {
-  DateTimeRangeInstant,
-  DateTimeRangeInstantWithInfinity,
+  DateTimeInstantRange,
+  DateTimeInstantRangeWithInfinity,
 } from '#models/dateTimeRange.model.ts'
 import type {
   PlainDate,
@@ -74,13 +74,13 @@ export function useDateTimeFormat() {
   }
 
   /**
-   * Format a DateTimeRangeInstantWithInfinity to a time range string.
+   * Format a DateTimeInstantRangeWithInfinity to a time range string.
    * E.g., "From 10:00", "Until 18:00", "10:00 - 18:00".
-   * @param range The DateTimeRangeInstantWithInfinity to format.
+   * @param range The DateTimeInstantRangeWithInfinity to format.
    * @returns The formatted time range string.
    */
   function toTimeRange(
-    range: DateTimeRangeInstantWithInfinity,
+    range: DateTimeInstantRangeWithInfinity,
     showDayAndMonthForSameDayRanges = false,
   ): string {
     const start = range.from
@@ -131,13 +131,13 @@ export function useDateTimeFormat() {
   }
 
   /**
-   * Format a DateTimeRangeInstant to a duration string.
+   * Format a DateTimeInstantRange to a duration string.
    * E.g., "2 hours", "1 hour 30 minutes".
-   * @param range The DateTimeRangeInstant to format.
+   * @param range The DateTimeInstantRange to format.
    * @param format The format for the duration units (long, short, narrow).
    * @returns The formatted duration string.
    */
-  function rangeToDuration(range: DateTimeRangeInstant, format: 'long' | 'narrow' | 'short' = 'long'): string {
+  function rangeToDuration(range: DateTimeInstantRange, format: 'long' | 'narrow' | 'short' = 'long'): string {
     const durationInSeconds = Math.round(range.until.since(range.from).total('seconds'))
     const duration = Temporal.Duration
       .from({

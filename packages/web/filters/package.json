@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "5.0.0",
+  "version": "7.0.0",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -49,18 +49,20 @@
   },
   "peerDependencies": {
     "@wisemen/vue-core-actions": ">=0.1.3",
-    "@wisemen/vue-core-dates": ">=0.0.2",
-    "@wisemen/vue-core-design-system": ">=0.17.0",
+    "@wisemen/vue-core-dates": ">=1.0.1",
+    "@wisemen/vue-core-design-system": ">=1.1.1",
     "@wisemen/vue-core-utils": ">=0.1.0",
     "@wisemen/vue-core-icons": ">=0.0.1",
     "formango": "catalog:peer",
     "vue": "catalog:peer",
+    "zod": "catalog:peer",
     "vue-i18n": "catalog:peer",
     "tailwindcss": "catalog:style",
     "pinia": "catalog:vue"
   },
   "dependencies": {
-    "superjson": "catalog:vue"
+    "superjson": "catalog:vue",
+    "@tanstack/vue-hotkeys": "catalog:"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:vite",

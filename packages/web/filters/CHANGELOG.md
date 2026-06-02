@@ -1,5 +1,20 @@
 # @wisemen/vue-core-filters
 
+## 7.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`fa82fbe`](https://github.com/wisemen-digital/wisemen-core/commit/fa82fbeae7699c8df2967a43ca0fc4208c47d7e7), [`84567be`](https://github.com/wisemen-digital/wisemen-core/commit/84567bec40a3a26f13c115bd299d4cd446e60b7b), [`47adf52`](https://github.com/wisemen-digital/wisemen-core/commit/47adf52605ffecd47de6536393f54629578c2a6d), [`a4749c7`](https://github.com/wisemen-digital/wisemen-core/commit/a4749c74ceb8606abbe83dd5de5bbf0f1c35f225), [`e2cd65d`](https://github.com/wisemen-digital/wisemen-core/commit/e2cd65d16b03718c86eb06b0139ca9c93555ea56), [`f0176d2`](https://github.com/wisemen-digital/wisemen-core/commit/f0176d287a3912fc97478cd305e3e71b13224cfd), [`5b5137d`](https://github.com/wisemen-digital/wisemen-core/commit/5b5137d5cd817e4f8426dcc9d1257bcec3582351)]:
+  - @wisemen/vue-core-design-system@1.1.0
+
+## 6.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`ba325a4`](https://github.com/wisemen-digital/wisemen-core/commit/ba325a4063568821437efe5aa4c8ce279666f8af), [`e45daad`](https://github.com/wisemen-digital/wisemen-core/commit/e45daadb624766f5c0f0bae4a9687e12b3ef45c9), [`b1868dd`](https://github.com/wisemen-digital/wisemen-core/commit/b1868dd96b8200b4fe4ce73ed4acb49c63de9f2f), [`2650566`](https://github.com/wisemen-digital/wisemen-core/commit/26505661db96e1a29490ecf685a1e7dc7595b47e), [`31c3a85`](https://github.com/wisemen-digital/wisemen-core/commit/31c3a85b10f0092550af2adeafc6db20436a1305), [`9137e1d`](https://github.com/wisemen-digital/wisemen-core/commit/9137e1d8afdb91b6fe9fe289f11d977c6ddff8c7)]:
+  - @wisemen/vue-core-design-system@1.0.0
+  - @wisemen/vue-core-dates@1.0.0
+
 ## 5.0.0
 
 ### Patch Changes
