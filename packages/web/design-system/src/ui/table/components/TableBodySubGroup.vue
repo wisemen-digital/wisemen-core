@@ -42,7 +42,7 @@ useProvideTableSubGroupContext({
       <CollapsibleTrigger :as-child="true">
         <button
           class="
-            size-full cursor-pointer px-5xl outline-none
+            size-full px-5xl outline-none
             focus-visible:bg-tertiary
           "
         >
