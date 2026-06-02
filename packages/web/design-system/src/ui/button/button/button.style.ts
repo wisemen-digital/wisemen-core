@@ -206,7 +206,7 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-secondary-hover
+          data-interactive:hover:bg-fg-primary/5
         `,
       },
     },
