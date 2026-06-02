@@ -228,6 +228,10 @@ const exampleAction = createAction({
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
             variant: 'full-height-inline',
+            storage: {
+              key: 'detail-pane',
+              strategy: 'localStorage',
+            },
           }"
           title="Dashboard"
         >
