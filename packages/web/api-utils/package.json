@@ -47,6 +47,7 @@
   "peerDependencies": {
     "@tanstack/vue-query": "catalog:peer",
     "neverthrow": "catalog:peer",
+    "zod": "catalog:peer",
     "vue": "catalog:peer"
   },
   "devDependencies": {

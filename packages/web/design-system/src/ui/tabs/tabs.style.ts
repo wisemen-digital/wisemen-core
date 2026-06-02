@@ -26,8 +26,8 @@ export const tabsVariants = tv({
     `,
     indicatorInner: 'hidden',
     item: `
-      group/tabs-item relative z-10 flex cursor-pointer items-center gap-sm
-      text-sm font-semibold whitespace-nowrap duration-200
+      group/tabs-item relative z-10 flex items-center gap-sm text-sm
+      font-semibold whitespace-nowrap duration-200
       disabled:cursor-not-allowed
       data-[orientation=vertical]:text-left
     `,
