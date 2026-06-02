@@ -1,5 +1,3 @@
-import type { Ref } from 'vue'
-
 export type DetailPaneStorageStrategy = 'localStorage' | 'routeQuery'
 
 export type DetailPaneVariant = | 'bordered-inline' | 'bordered-overlay' | 'full-height-inline' | 'full-height-overlay'
@@ -10,7 +8,6 @@ export interface DetailPaneStorage {
 }
 
 export interface DetailPaneConfig {
-  isOpen?: Ref<boolean>
   isResizable?: boolean
   isToggleHidden?: boolean
   storage?: DetailPaneStorage | null

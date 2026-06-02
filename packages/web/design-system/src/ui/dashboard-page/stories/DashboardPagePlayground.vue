@@ -224,11 +224,10 @@ const exampleAction = createAction({
         </template>
 
         <DashboardPage
+          :is-detail-pane-open="true"
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
-            isOpen: ref(true),
             variant: 'full-height-inline',
-
           }"
           title="Dashboard"
         >

@@ -2,7 +2,6 @@
 import {
   computed,
   onUnmounted,
-  ref,
   useSlots,
   watch,
 } from 'vue'
@@ -51,7 +50,10 @@ watch([
   immediate: true,
 })
 
-const isDetailPaneOpen = ref<boolean>(true)
+const isDetailPaneOpen = defineModel<boolean>('isDetailPaneOpen', {
+  default: true,
+  required: false,
+})
 
 const hasDetailPane = computed<boolean>(() => {
   return props.detailPane !== null && slots['detail-pane'] !== undefined
@@ -68,7 +70,7 @@ const {
   onResizeKeyDown,
   onResizeStart,
 } = useDetailPane({
-  isOpen: props.detailPane?.isOpen ?? isDetailPaneOpen,
+  isOpen: isDetailPaneOpen,
   isResizable: props.detailPane?.isResizable ?? true,
   storage: props.detailPane?.storage ?? null,
   variant: props.detailPane?.variant ?? 'full-height-inline',
