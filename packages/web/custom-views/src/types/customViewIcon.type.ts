@@ -1,4 +1,4 @@
-export const CustomViewIcon = {
+export const CUSTOM_VIEW_ICON = {
   ACTIVITY: 'activity',
   ALERT_TRIANGLE: 'alertTriangle',
   BOOKMARK: 'bookmark',
@@ -36,4 +36,4 @@ export const CustomViewIcon = {
   ZAP: 'zap',
 } as const
 
-export type CustomViewIcon = (typeof CustomViewIcon)[keyof typeof CustomViewIcon]
+export type CustomViewIcon = (typeof CUSTOM_VIEW_ICON)[keyof typeof CUSTOM_VIEW_ICON]

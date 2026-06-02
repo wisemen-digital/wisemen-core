@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 
 import CustomViewUpdateDialog from '@/components/CustomViewUpdateDialog.vue'
 import { useInjectCustomViewManagerContext } from '@/context/customViewManager.context'
+import type { CustomView } from '@/types/customView.type'
 
 export function useCustomViewEditViewAction() {
   const i18n = useI18n()
@@ -15,7 +16,7 @@ export function useCustomViewEditViewAction() {
   return createAction({
     id: 'custom-view-edit-view',
     isApplicable: (ctx) => {
-      const customView = ctx.targetedModelOfType('CustomView')
+      const customView = ctx.targetedModelOfType('CustomView') as CustomView | null
 
       if (customView === null) {
         return false
@@ -25,7 +26,7 @@ export function useCustomViewEditViewAction() {
     },
     name: () => i18n.t('action.custom_view.edit'),
     execute: (ctx) => {
-      const customView = ctx.targetedModelOfTypeOrThrow('CustomView')
+      const customView = ctx.targetedModelOfTypeOrThrow('CustomView') as unknown as CustomView
 
       viewUpdateDialog.open({
         view: customView,

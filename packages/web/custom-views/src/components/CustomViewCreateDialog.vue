@@ -18,8 +18,8 @@ import z from 'zod'
 import CustomViewColorPicker from '@/components/CustomViewColorPicker.vue'
 import CustomViewIconPicker from '@/components/CustomViewIconPicker.vue'
 import type { CreateCustomViewMeta } from '@/types/customView.type'
-import { CustomViewColor } from '@/types/customViewColor.type'
-import { CustomViewIcon } from '@/types/customViewIcon.type'
+import { CUSTOM_VIEW_COLOR } from '@/types/customViewColor.type'
+import { CUSTOM_VIEW_ICON } from '@/types/customViewIcon.type'
 
 const emit = defineEmits<{
   save: [values: CreateCustomViewMeta]
@@ -30,8 +30,8 @@ const i18n = useI18n()
 const form = useForm({
   schema: z.object({
     name: z.string().min(1).max(20),
-    color: z.enum(CustomViewColor),
-    icon: z.enum(CustomViewIcon),
+    color: z.enum(CUSTOM_VIEW_COLOR),
+    icon: z.enum(CUSTOM_VIEW_ICON),
   }),
   onSubmit: (values) => {
     emit('save', values)
@@ -39,8 +39,8 @@ const form = useForm({
 })
 
 const nameField = form.register('name', 'Untitled')
-const iconField = form.register('icon', CustomViewIcon.LAYERS)
-const colorField = form.register('color', CustomViewColor.DEFAULT)
+const iconField = form.register('icon', CUSTOM_VIEW_ICON.LAYERS)
+const colorField = form.register('color', CUSTOM_VIEW_COLOR.DEFAULT)
 </script>
 
 <template>

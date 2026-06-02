@@ -10,8 +10,8 @@ export function useCustomViewSaveToCurrentViewAction() {
 
   return createAction({
     id: 'custom-view-save-to-current-view',
-    name: () => i18n.t('action.custom_view.save_to_current'),
     isApplicable: () => customViewManagerContext.activeView.value.isEditable,
+    name: () => i18n.t('action.custom_view.save_to_current'),
     execute: () => {
       customViewManagerContext.saveToCurrentView()
     },

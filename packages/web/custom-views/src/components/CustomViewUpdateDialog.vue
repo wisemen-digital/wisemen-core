@@ -21,8 +21,8 @@ import type {
   CustomView,
   UpdateCustomViewMeta,
 } from '@/types/customView.type'
-import { CustomViewColor } from '@/types/customViewColor.type'
-import { CustomViewIcon } from '@/types/customViewIcon.type'
+import { CUSTOM_VIEW_COLOR } from '@/types/customViewColor.type'
+import { CUSTOM_VIEW_ICON } from '@/types/customViewIcon.type'
 
 const props = defineProps<{
   view: CustomView
@@ -35,12 +35,12 @@ const emit = defineEmits<{
 const form = useForm({
   initialState: () => ({
     ...props.view,
-    icon: props.view.icon ?? CustomViewIcon.ACTIVITY,
+    icon: props.view.icon ?? CUSTOM_VIEW_ICON.ACTIVITY,
   }),
   schema: z.object({
     name: z.string().min(1).max(20),
-    color: z.enum(CustomViewColor),
-    icon: z.enum(CustomViewIcon),
+    color: z.enum(CUSTOM_VIEW_COLOR),
+    icon: z.enum(CUSTOM_VIEW_ICON),
   }),
   onSubmit: (values) => {
     emit('save', values)
@@ -50,7 +50,7 @@ const form = useForm({
 const i18n = useI18n()
 
 const nameField = form.register('name')
-const iconField = form.register('icon', CustomViewIcon.ACTIVITY)
+const iconField = form.register('icon', CUSTOM_VIEW_ICON.ACTIVITY)
 const colorField = form.register('color')
 </script>
 

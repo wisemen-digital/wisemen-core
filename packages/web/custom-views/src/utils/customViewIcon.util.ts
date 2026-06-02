@@ -37,147 +37,148 @@ import {
 } from '@wisemen/vue-core-icons'
 import type { Component } from 'vue'
 
-import { CustomViewIcon } from '@/types/customViewIcon.type'
+import type { CustomViewIcon } from '@/types/customViewIcon.type'
+import { CUSTOM_VIEW_ICON } from '@/types/customViewIcon.type'
 
 export const CUSTOM_VIEW_ICONS_MAP = new Map<CustomViewIcon, Component>([
   [
-    CustomViewIcon.LAYERS,
+    CUSTOM_VIEW_ICON.LAYERS,
     LayersTwo01Icon,
   ],
   [
-    CustomViewIcon.ACTIVITY,
+    CUSTOM_VIEW_ICON.ACTIVITY,
     ActivityIcon,
   ],
   [
-    CustomViewIcon.ALERT_TRIANGLE,
+    CUSTOM_VIEW_ICON.ALERT_TRIANGLE,
     AlertTriangleIcon,
   ],
   [
-    CustomViewIcon.BOOKMARK,
+    CUSTOM_VIEW_ICON.BOOKMARK,
     BookmarkIcon,
   ],
   [
-    CustomViewIcon.CALENDAR,
+    CUSTOM_VIEW_ICON.CALENDAR,
     CalendarIcon,
   ],
   [
-    CustomViewIcon.CHECK_CIRCLE,
+    CUSTOM_VIEW_ICON.CHECK_CIRCLE,
     CheckCircleIcon,
   ],
   [
-    CustomViewIcon.CHECK_SQUARE,
+    CUSTOM_VIEW_ICON.CHECK_SQUARE,
     CheckSquareIcon,
   ],
   [
-    CustomViewIcon.CLOCK,
+    CUSTOM_VIEW_ICON.CLOCK,
     ClockIcon,
   ],
   [
-    CustomViewIcon.CLOCK_REWIND,
+    CUSTOM_VIEW_ICON.CLOCK_REWIND,
     ClockRewindIcon,
   ],
   [
-    CustomViewIcon.CUBE,
+    CUSTOM_VIEW_ICON.CUBE,
     Cube01Icon,
   ],
   [
-    CustomViewIcon.DATABASE,
+    CUSTOM_VIEW_ICON.DATABASE,
     Database01Icon,
   ],
   [
-    CustomViewIcon.EDIT,
+    CUSTOM_VIEW_ICON.EDIT,
     Edit01Icon,
   ],
   [
-    CustomViewIcon.FLAG,
+    CUSTOM_VIEW_ICON.FLAG,
     Flag01Icon,
   ],
   [
-    CustomViewIcon.HEART,
+    CUSTOM_VIEW_ICON.HEART,
     HeartIcon,
   ],
   [
-    CustomViewIcon.HOME,
+    CUSTOM_VIEW_ICON.HOME,
     Home01Icon,
   ],
   [
-    CustomViewIcon.HOURGLASS,
+    CUSTOM_VIEW_ICON.HOURGLASS,
     Hourglass01Icon,
   ],
   [
-    CustomViewIcon.INFO_SQUARE,
+    CUSTOM_VIEW_ICON.INFO_SQUARE,
     InfoSquareIcon,
   ],
   [
-    CustomViewIcon.LINK_04,
+    CUSTOM_VIEW_ICON.LINK_04,
     Link04Icon,
   ],
   [
-    CustomViewIcon.LOCK,
+    CUSTOM_VIEW_ICON.LOCK,
     Lock01Icon,
   ],
   [
-    CustomViewIcon.MAGIC_WAND,
+    CUSTOM_VIEW_ICON.MAGIC_WAND,
     MagicWand01Icon,
   ],
   [
-    CustomViewIcon.MAIL_01,
+    CUSTOM_VIEW_ICON.MAIL_01,
     Mail01Icon,
   ],
   [
-    CustomViewIcon.MAIL_04,
+    CUSTOM_VIEW_ICON.MAIL_04,
     Mail04Icon,
   ],
   [
-    CustomViewIcon.MARKER_PIN,
+    CUSTOM_VIEW_ICON.MARKER_PIN,
     MarkerPin01Icon,
   ],
   [
-    CustomViewIcon.UNLOCK,
+    CUSTOM_VIEW_ICON.UNLOCK,
     LockUnlocked01Icon,
   ],
   [
-    CustomViewIcon.PLANE,
+    CUSTOM_VIEW_ICON.PLANE,
     PlaneIcon,
   ],
   [
-    CustomViewIcon.PIN,
+    CUSTOM_VIEW_ICON.PIN,
     Pin01Icon,
   ],
   [
-    CustomViewIcon.PLACEHOLDER,
+    CUSTOM_VIEW_ICON.PLACEHOLDER,
     PlaceholderIcon,
   ],
   [
-    CustomViewIcon.ROUTE,
+    CUSTOM_VIEW_ICON.ROUTE,
     RouteIcon,
   ],
   [
-    CustomViewIcon.STAR,
+    CUSTOM_VIEW_ICON.STAR,
     Star01Icon,
   ],
   [
-    CustomViewIcon.STARS,
+    CUSTOM_VIEW_ICON.STARS,
     Stars01Icon,
   ],
   [
-    CustomViewIcon.TRASH,
+    CUSTOM_VIEW_ICON.TRASH,
     Trash01Icon,
   ],
   [
-    CustomViewIcon.TREND_DOWN,
+    CUSTOM_VIEW_ICON.TREND_DOWN,
     TrendDown01Icon,
   ],
   [
-    CustomViewIcon.TREND_UP,
+    CUSTOM_VIEW_ICON.TREND_UP,
     TrendUp01Icon,
   ],
   [
-    CustomViewIcon.USER,
+    CUSTOM_VIEW_ICON.USER,
     User01Icon,
   ],
   [
-    CustomViewIcon.ZAP,
+    CUSTOM_VIEW_ICON.ZAP,
     ZapIcon,
   ],
 ])

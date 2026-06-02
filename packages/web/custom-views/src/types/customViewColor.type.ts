@@ -1,11 +1,11 @@
-export const CustomViewColor = {
-  DEFAULT: 'default',
-  PURPLE: 'purple',
+export const CUSTOM_VIEW_COLOR = {
   CYAN: 'cyan',
+  DEFAULT: 'default',
   GREEN: 'green',
-  YELLOW: 'yellow',
   PINK: 'pink',
+  PURPLE: 'purple',
   RED: 'red',
+  YELLOW: 'yellow',
 } as const
 
-export type CustomViewColor = (typeof CustomViewColor)[keyof typeof CustomViewColor]
+export type CustomViewColor = (typeof CUSTOM_VIEW_COLOR)[keyof typeof CUSTOM_VIEW_COLOR]

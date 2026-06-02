@@ -7,6 +7,7 @@ import { Trash01Icon } from '@wisemen/vue-core-icons'
 import { useI18n } from 'vue-i18n'
 
 import { useInjectCustomViewManagerContext } from '@/context/customViewManager.context'
+import type { CustomView } from '@/types/customView.type'
 
 export function useCustomViewDeleteViewAction() {
   const i18n = useI18n()
@@ -21,7 +22,7 @@ export function useCustomViewDeleteViewAction() {
         return false
       }
 
-      const customView = ctx.targetedModelOfType('CustomView')
+      const customView = ctx.targetedModelOfType('CustomView') as CustomView | null
 
       if (customView === null) {
         return false
@@ -31,13 +32,15 @@ export function useCustomViewDeleteViewAction() {
     },
     name: () => i18n.t('action.custom_view.delete'),
     execute: (ctx) => {
-      const customView = ctx.targetedModelOfTypeOrThrow('CustomView')
+      const customView = ctx.targetedModelOfTypeOrThrow('CustomView') as unknown as CustomView
 
       confirmDialog.open({
         title: i18n.t('action.custom_view.delete_confirm_title'),
         isDestructive: true,
         confirmLabel: i18n.t('action.custom_view.delete_confirm_label'),
-        description: i18n.t('action.custom_view.delete_confirm_description', { name: customView.name }),
+        description: i18n.t('action.custom_view.delete_confirm_description', {
+          name: customView.name,
+        }),
         onConfirm: () => {
           customViewManagerContext.deleteView(customView.id)
           confirmDialog.close()
