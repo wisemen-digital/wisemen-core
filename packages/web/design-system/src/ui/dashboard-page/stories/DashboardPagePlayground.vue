@@ -224,11 +224,12 @@ const exampleAction = createAction({
         </template>
 
         <DashboardPage
+          :is-detail-pane-open="true"
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
             variant: 'full-height-inline',
             storage: {
-              key: 'dashboard-page-detail-pane-is-open',
+              key: 'detail-pane',
               strategy: 'localStorage',
             },
           }"

@@ -2,7 +2,6 @@
 import {
   computed,
   onUnmounted,
-  ref,
   useSlots,
   watch,
 } from 'vue'
@@ -51,7 +50,10 @@ watch([
   immediate: true,
 })
 
-const isDetailPaneOpen = ref<boolean>(true)
+const isDetailPaneOpen = defineModel<boolean>('isDetailPaneOpen', {
+  default: true,
+  required: false,
+})
 
 const hasDetailPane = computed<boolean>(() => {
   return props.detailPane !== null && slots['detail-pane'] !== undefined
@@ -88,7 +90,11 @@ if (hasDetailPane.value) {
   })
 
   if (mainContentDetailPaneContext != null) {
-    mainContentDetailPaneContext.registerDetailPane(computedIsDetailPaneOpen, toggleIsOpen)
+    mainContentDetailPaneContext.registerDetailPane(
+      computedIsDetailPaneOpen,
+      toggleIsOpen,
+      props.detailPane?.isToggleHidden,
+    )
     onUnmounted(() => mainContentDetailPaneContext.unregisterDetailPane())
   }
 }
