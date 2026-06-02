@@ -1,5 +1,11 @@
 # @wisemen/vue-core-query
 
+## 2.0.1
+
+### Patch Changes
+
+- [#1171](https://github.com/wisemen-digital/wisemen-core/pull/1171) [`cbcc93c`](https://github.com/wisemen-digital/wisemen-core/commit/cbcc93c1735697582e3714cf34330e9a059d2809) Thanks [@Robbe95](https://github.com/Robbe95)! - Added zod as peer
+
 ## 2.0.0
 
 ### Major Changes
