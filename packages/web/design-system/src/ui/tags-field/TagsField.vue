@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import {
-  AnimatePresence,
-  Motion,
-  MotionConfig,
-} from 'motion-v'
-import {
   TagsInputInput as RekaTagsInputInput,
   TagsInputRoot as RekaTagsInputRoot,
 } from 'reka-ui'
@@ -21,8 +16,7 @@ import {
   INPUT_META_DEFAULTS,
   omit,
 } from '@/types/input.type'
-import FieldWrapperIcon from '@/ui/field-wrapper/FieldWrapperIcon.vue'
-import FieldWrapperLoader from '@/ui/field-wrapper/FieldWrapperLoader.vue'
+import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import type { TagsFieldProps } from '@/ui/tags-field/tagsField.props'
 import type { TagsFieldStyle } from '@/ui/tags-field/tagsField.style'
@@ -44,6 +38,11 @@ const props = withDefaults(defineProps<TagsFieldProps>(), {
   max: null,
   size: 'md',
 })
+
+const emit = defineEmits<{
+  blur: [event: FocusEvent]
+  focus: [event: FocusEvent]
+}>()
 
 const modelValue = defineModel<string[]>({
   required: true,
@@ -88,39 +87,24 @@ const {
       <slot name="label-right" />
     </template>
 
-    <div
-      :data-error="isError || undefined"
-      :data-disabled="props.isDisabled || undefined"
-      :data-readonly="props.isReadonly || undefined"
-      :data-interactive="(!props.isDisabled && !props.isReadonly) || undefined"
-      :class="{
-        'py-1.25': props.size === 'md',
-        'py-0.75': props.size === 'sm',
-      }"
-      class="
-        flex flex-wrap items-center gap-xs rounded-md border border-secondary
-        bg-primary px-xs outline outline-transparent duration-100
-        data-disabled:cursor-not-allowed data-disabled:border-disabled-subtle
-        data-disabled:bg-disabled-subtle data-disabled:text-disabled
-        data-error:border-error
-        not-data-error:data-interactive:hover:border-primary
-        [&:has([data-field-wrapper]:focus-visible)]:data-interactive:border-fg-brand-primary
-        [&:has([data-field-wrapper]:focus-visible)]:data-interactive:outline-fg-brand-primary
-        [&:has([data-field-wrapper]:focus-visible)]:data-interactive:data-error:border-error
-        [&:has([data-field-wrapper]:focus-visible)]:data-interactive:data-error:outline-fg-error-primary
-      "
+    <FieldWrapper
+      :is-error="isError"
+      :is-disabled="props.isDisabled"
+      :is-loading="props.isLoading"
+      :is-readonly="props.isReadonly"
+      :icon-left="props.iconLeft"
+      :wrap="true"
+      :size="props.size"
+      gap="xs"
     >
-      <FieldWrapperIcon
-        v-if="props.iconLeft"
-        :icon="props.iconLeft"
-        :input-field-size="props.size"
-      />
-
-      <slot name="left" />
+      <template #left>
+        <slot name="left" />
+      </template>
 
       <RekaTagsInputRoot
         v-model="modelValue"
         :disabled="props.isDisabled"
+        :read-only="props.isReadonly"
         :max="props.max ?? undefined"
         :add-on-paste="props.addOnPaste"
         :delimiter="props.delimiter"
@@ -128,8 +112,8 @@ const {
         class="contents"
       >
         <TagsFieldTag
-          v-for="tag in modelValue"
-          :key="tag"
+          v-for="(tag, index) in modelValue"
+          :key="index"
           :value="tag"
           :is-disabled="props.isDisabled"
           :is-readonly="props.isReadonly"
@@ -147,39 +131,14 @@ const {
           :aria-invalid="ariaInvalid"
           :class="tagsFieldStyle.input()"
           data-field-wrapper
+          @blur="emit('blur', $event)"
+          @focus="emit('focus', $event)"
         />
       </RekaTagsInputRoot>
 
-      <slot name="right" />
-
-      <MotionConfig
-        :transition="{
-          duration: 0.2,
-        }"
-      >
-        <AnimatePresence mode="popLayout">
-          <Motion
-            v-if="props.isLoading"
-            :initial="{
-              opacity: 0,
-              scale: 0.9,
-              filter: 'blur(2px)',
-            }"
-            :animate="{
-              opacity: 1,
-              scale: 1,
-              filter: 'blur(0px)',
-            }"
-            :exit="{
-              opacity: 0,
-              scale: 0.9,
-              filter: 'blur(2px)',
-            }"
-          >
-            <FieldWrapperLoader />
-          </Motion>
-        </AnimatePresence>
-      </MotionConfig>
-    </div>
+      <template #right>
+        <slot name="right" />
+      </template>
+    </FieldWrapper>
   </InputWrapper>
 </template>

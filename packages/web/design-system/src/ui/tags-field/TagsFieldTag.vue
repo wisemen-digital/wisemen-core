@@ -34,10 +34,10 @@ const props = defineProps<{
       v-if="!props.isDisabled && !props.isReadonly"
       aria-label="Remove tag"
       class="
-        flex items-center text-gray-400 outline-none
-        hover:text-gray-600
-        dark:text-gray-500
-        dark:hover:text-gray-300
+        flex items-center text-gray-500 outline-none
+        hover:text-gray-700
+        dark:text-gray-400
+        dark:hover:text-gray-200
       "
     >
       <XCloseIcon class="size-3" />
