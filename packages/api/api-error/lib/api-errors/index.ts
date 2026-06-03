@@ -1,7 +1,7 @@
-export * from './api-error.js'
+export { ApiError } from './api-error.js'
 
-export * from './bad-request.api-error.js'
-export * from './unauthorized.api-error.js'
+export { BadRequestApiError } from './bad-request.api-error.js'
+export { UnauthorizedApiError } from './unauthorized.api-error.js'
 export * from './forbidden.api-error.js'
 export * from './not-found.api-error.js'
 export * from './conflict.api-error.js'
