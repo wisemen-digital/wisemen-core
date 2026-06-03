@@ -11,6 +11,7 @@ interface TableContext {
   isResizingColumn: ComputedRef<boolean>
   isScrolledFromLeft: ComputedRef<boolean>
   isScrolledToEnd: ComputedRef<boolean>
+  isSelectable: ComputedRef<boolean>
   actions: ComputedRef<Action[]>
   activeFilterCountIncludingSearch: ComputedRef<number>
   gridTemplateColumns: ComputedRef<string>

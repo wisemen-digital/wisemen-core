@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import {
-  computed,
   defineComponent,
   h,
   markRaw,
+  ref,
 } from 'vue'
 
-import { useSort } from '@/composables/sort.composable'
 import UITable from '@/ui/table/components/Table.vue'
 import UITableBodyRowCell from '@/ui/table/components/TableBodyRowCell.vue'
 import UITableBodyRowCellText from '@/ui/table/components/TableBodyRowCellText.vue'
-import type { TableColumn } from '@/ui/table/types/table.type'
+import type {
+  TableColumn,
+  TableSelectionState,
+} from '@/ui/table/types/table.type'
 
 interface User {
   id: string
@@ -19,50 +21,6 @@ interface User {
   role: string
   status: 'active' | 'inactive'
 }
-
-const props = withDefaults(defineProps<{
-  variant?: 'contained' | 'full-page'
-}>(), {
-  variant: 'full-page',
-})
-
-const rawData: User[] = Array.from({
-  length: 20,
-}, (_, i) => ({
-  id: String(i + 1),
-  name: `User ${i + 1}`,
-  email: `user${i + 1}@example.com`,
-  // eslint-disable-next-line no-nested-ternary
-  role: i % 3 === 0 ? 'Admin' : (i % 3 === 1 ? 'Editor' : 'Viewer'),
-  status: i % 4 === 0 ? 'inactive' : 'active',
-}))
-
-const sort = useSort({
-  keys: [
-    'name',
-    'email',
-    'role',
-    'status',
-  ],
-})
-
-const data = computed<User[]>(() => {
-  const [
-    activeSort,
-  ] = sort.values.value
-
-  if (activeSort === undefined) {
-    return rawData
-  }
-
-  return rawData.toSorted((a, b) => {
-    const aVal = String(a[activeSort.key])
-    const bVal = String(b[activeSort.key])
-    const comparison = aVal.localeCompare(bVal)
-
-    return activeSort.direction === 'asc' ? comparison : -comparison
-  })
-})
 
 function makeCellComponent(item: User, key: keyof User, isPrimary = false) {
   return markRaw(defineComponent({
@@ -101,10 +59,39 @@ const columns: TableColumn<User>[] = [
     component: (item) => makeCellComponent(item, 'status'),
   },
 ]
+
+const data: User[] = Array.from({
+  length: 20,
+}, (_, i) => ({
+  id: String(i + 1),
+  name: `User ${i + 1}`,
+  email: `user${i + 1}@example.com`,
+  // eslint-disable-next-line no-nested-ternary
+  role: i % 3 === 0 ? 'Admin' : (i % 3 === 1 ? 'Editor' : 'Viewer'),
+
+  status: i % 4 === 0 ? 'inactive' : 'active',
+}))
+
+const selectionState = ref<TableSelectionState<User> | null>(null)
+
+function onSelect(state: TableSelectionState<User>): void {
+  selectionState.value = state
+}
 </script>
 
 <template>
-  <div class="h-150">
+  <div class="flex h-150 flex-col gap-4">
+    <div
+      v-if="selectionState !== null"
+      class="
+        rounded-sm border border-secondary bg-primary px-4 py-2 font-mono
+        text-xs
+      "
+    >
+      <span class="font-semibold">{{ selectionState.type }}:</span>
+      {{ selectionState.items.map(u => u.name).join(', ') || '(none)' }}
+    </div>
+
     <UITable
       :columns="columns"
       :data="data"
@@ -112,8 +99,8 @@ const columns: TableColumn<User>[] = [
       :get-key="(item) => item.id"
       :is-fetching-next-page="false"
       :is-loading="false"
-      :sort="sort"
-      :variant="props.variant"
+      selectable
+      @select="onSelect"
     />
   </div>
 </template>

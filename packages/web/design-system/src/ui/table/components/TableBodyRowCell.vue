@@ -8,7 +8,9 @@ import { useInjectTableGroupContext } from '@/ui/table/context/tableGroup.contex
 import { useInjectTableSubGroupContext } from '@/ui/table/context/tableSubGroup.context'
 
 const {
-  isScrolledFromLeft, variant,
+  isScrolledFromLeft,
+  isSelectable,
+  variant,
 } = useInjectTableContext()
 
 const {
@@ -31,10 +33,18 @@ const {
 
 const firstCellPaddingLeft = computed<string>(() => {
   if (isSubGroup) {
+    if (isSelectable.value) {
+      return 'first-of-type:pl-15'
+    }
+
     return 'first-of-type:pl-15'
   }
 
   if (isGroup) {
+    if (isSelectable.value) {
+      return 'first-of-type:pl-10'
+    }
+
     return 'first-of-type:pl-10'
   }
 

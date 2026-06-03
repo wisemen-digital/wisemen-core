@@ -19,14 +19,19 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import type { TableColumnSize } from '@/ui/table/types/table.type'
-import { TableUtil } from '@/ui/table/utils/table.util'
+import {
+  CHECKBOX_COLUMN_WIDTH,
+  TableUtil,
+} from '@/ui/table/utils/table.util'
 
-function buildManualTemplate(widths: number[], fittingIndex: number | null): string {
+function buildManualTemplate(widths: number[], fittingIndex: number | null, hasCheckboxColumn: boolean): string {
   const columns = widths
     .map((w, i) => (i === fittingIndex ? 'max-content' : `${w}px`))
     .join(' ')
 
-  return `${columns} minmax(min-content, auto) min-content`
+  const base = `${columns} minmax(min-content, auto) min-content`
+
+  return hasCheckboxColumn ? `${CHECKBOX_COLUMN_WIDTH} ${base}` : base
 }
 
 export function useTableColumnWidths(
@@ -35,6 +40,7 @@ export function useTableColumnWidths(
   isInitialized: ComputedRef<boolean>,
   actionGroup: ComputedRef<ActionGroup | null>,
   isColumnResizeDisabled: ComputedRef<boolean>,
+  isSelectable: ComputedRef<boolean>,
 ) {
   const frozenTemplate = ref<string | null>(null)
   const manualWidths = ref<number[] | null>(null)
@@ -47,14 +53,14 @@ export function useTableColumnWidths(
 
   const gridTemplateColumns = computed<string>(() => {
     if (manualWidths.value !== null) {
-      return buildManualTemplate(manualWidths.value, fittingColumnIndex.value)
+      return buildManualTemplate(manualWidths.value, fittingColumnIndex.value, isSelectable.value)
     }
 
     return frozenTemplate.value ?? buildFluidTemplate()
   })
 
   function buildFluidTemplate(): string {
-    return TableUtil.columnSizesToGridTemplateColumns(columnSizes.value, true)
+    return TableUtil.columnSizesToGridTemplateColumns(columnSizes.value, true, isSelectable.value)
   }
 
   watch([
@@ -104,9 +110,10 @@ export function useTableColumnWidths(
 
   function snapshotWidths(cellEl: HTMLElement): number[] {
     const siblings = Array.from(cellEl.parentElement?.children ?? []) as HTMLElement[]
+    const start = isSelectable.value ? 1 : 0
 
     return siblings
-      .slice(0, columnSizes.value.length - 1)
+      .slice(start, start + columnSizes.value.length - 1)
       .map((el) => el.getBoundingClientRect().width)
   }
 
@@ -171,7 +178,7 @@ export function useTableColumnWidths(
 
     const measuredWidths = headerCells.map((cell) => cell.getBoundingClientRect().width)
 
-    el.style.gridTemplateColumns = buildManualTemplate(measuredWidths, null)
+    el.style.gridTemplateColumns = buildManualTemplate(measuredWidths, null, isSelectable.value)
     manualWidths.value = measuredWidths
   }
 
@@ -192,7 +199,9 @@ export function useTableColumnWidths(
       return []
     }
 
-    return Array.from(headerRow.children).slice(0, columnSizes.value.length - 1) as HTMLElement[]
+    const start = isSelectable.value ? 1 : 0
+
+    return Array.from(headerRow.children).slice(start, start + columnSizes.value.length - 1) as HTMLElement[]
   }
 
   const autoFitColumnsAction: Action = createAction({
