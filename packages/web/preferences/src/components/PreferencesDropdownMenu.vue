@@ -12,9 +12,12 @@ import { computed } from 'vue'
 
 import type { PreferencesDropdownMenuOption } from '#types/preferencesDropdownMenuOption.type'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  isDisabled?: boolean
   options: PreferencesDropdownMenuOption<TValue>[]
-}>()
+}>(), {
+  isDisabled: false,
+})
 
 const modelValue = defineModel<TValue>({
   required: true,
@@ -33,7 +36,7 @@ const selectedOption = computed<PreferencesDropdownMenuOption<TValue>>(
     <template #trigger>
       <UIClickableElement>
         <button
-          :disabled="props.options.length <= 1"
+          :disabled="props.options.length <= 1 || props.isDisabled"
           class="
             group flex h-7 items-center gap-x-sm rounded-md border
             border-secondary px-md

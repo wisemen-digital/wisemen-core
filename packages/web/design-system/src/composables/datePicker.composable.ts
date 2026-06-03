@@ -21,11 +21,9 @@ export function useDatePicker({
   minDate,
   modelValue,
 }: UseDatePickerOptions) {
-  const {
-    locale: configLocale,
-  } = useInjectConfigContext()
+  const configContext = useInjectConfigContext()
 
-  const locale = computed<string>(() => configLocale.value ?? navigator.language)
+  const locale = computed<string>(() => configContext.dateLocale.value ?? navigator.language)
 
   const todayDate = Temporal.Now.plainDateISO()
   const calendarPlaceholder = shallowRef<CalendarDate>(

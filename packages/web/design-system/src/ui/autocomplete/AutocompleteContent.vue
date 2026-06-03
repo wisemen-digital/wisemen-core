@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
         sticky="always"
         data-animation="popover-default"
         class="
-          z-40 w-(--reka-combobox-trigger-width)
+          z-50 w-(--reka-combobox-trigger-width)
           origin-(--reka-combobox-content-transform-origin)
           will-change-[transform,opacity]
         "

@@ -9,6 +9,7 @@ export interface DetailPaneStorage {
 
 export interface DetailPaneConfig {
   isResizable?: boolean
+  isToggleHidden?: boolean
   storage?: DetailPaneStorage | null
   variant?: DetailPaneVariant
 }

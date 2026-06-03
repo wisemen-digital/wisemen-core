@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { useTitle } from '@vueuse/core'
 import {
   computed,
   onUnmounted,
-  ref,
   useSlots,
   watch,
 } from 'vue'
 
-import { useInjectConfigContext } from '@/ui/config-provider'
 import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActions.vue'
 import type {
   DashboardPageProps,
@@ -35,9 +32,7 @@ const props = withDefaults(defineProps<DashboardPageProps & {
 
 const mainContentDetailPaneContext = useInjectMainContentDetailPaneContext(null)
 
-const configContext = useInjectConfigContext()
 const slots = useSlots()
-const documentTitle = useTitle()
 
 const {
   setNavigation,
@@ -50,13 +45,15 @@ watch([
   title,
   breadcrumbs,
 ]) => {
-  documentTitle.value = `${title} — ${configContext.projectName.value}`
   setNavigation(title, breadcrumbs)
 }, {
   immediate: true,
 })
 
-const isDetailPaneOpen = ref<boolean>(true)
+const isDetailPaneOpen = defineModel<boolean>('isDetailPaneOpen', {
+  default: true,
+  required: false,
+})
 
 const hasDetailPane = computed<boolean>(() => {
   return props.detailPane !== null && slots['detail-pane'] !== undefined
@@ -93,7 +90,11 @@ if (hasDetailPane.value) {
   })
 
   if (mainContentDetailPaneContext != null) {
-    mainContentDetailPaneContext.registerDetailPane(computedIsDetailPaneOpen, toggleIsOpen)
+    mainContentDetailPaneContext.registerDetailPane(
+      computedIsDetailPaneOpen,
+      toggleIsOpen,
+      props.detailPane?.isToggleHidden,
+    )
     onUnmounted(() => mainContentDetailPaneContext.unregisterDetailPane())
   }
 }
@@ -104,7 +105,14 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
 </script>
 
 <template>
-  <Page class="z-1 flex min-h-0 flex-1 flex-col overflow-hidden bg-primary">
+  <Page
+    :title="title"
+    class="
+      custom-content-shadow z-1 flex min-h-0 flex-1 flex-col overflow-hidden
+      rounded-xl border border-secondary bg-primary
+      dark:shadow-none
+    "
+  >
     <DashboardPageActions v-if="isPageActionsSlotVisible">
       <template #left>
         <slot name="page-actions-left" />
@@ -126,3 +134,11 @@ const isPageActionsSlotVisible = computed<boolean>(() => {
     </div>
   </Page>
 </template>
+
+<style scoped>
+.custom-content-shadow {
+  box-shadow:
+    lch(0 0 0 / 0.02) 0px 3px 6px -2px,
+    lch(0 0 0 / 0.04) 0px 1px 1px;
+}
+</style>

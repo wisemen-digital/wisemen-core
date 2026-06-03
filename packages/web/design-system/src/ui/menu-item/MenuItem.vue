@@ -113,13 +113,13 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
           : 'shrink-0'"
         align="center"
         gap="sm"
-        class="flex-1"
+        class="min-w-0 flex-1"
       >
         <UIRowLayout
           v-if="props.config?.description?.layout === 'inline' && props.config.description != null"
           align="baseline"
           gap="xs"
-          class="min-w-0 overflow-hidden"
+          class="min-w-0 flex-1"
         >
           <UIText
             :text="props.label"
@@ -127,17 +127,18 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
               'text-xs': props.size === 'sm',
               'text-sm': props.size === 'md',
             }"
-            class="shrink-0 text-secondary select-none"
+            class="text-secondary select-none"
           />
           <UIText
             :text="props.config.description.value"
-            class="min-w-0 truncate text-xs text-disabled select-none"
+            class="text-xs text-disabled select-none"
           />
         </UIRowLayout>
 
         <UIColumnLayout
           v-else
           gap="none"
+          class="min-w-0 flex-1"
         >
           <UIText
             :text="props.label"

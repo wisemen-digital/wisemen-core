@@ -10,14 +10,12 @@ const props = withDefaults(defineProps<{
   errorMessage?: SwitchProps['errorMessage']
   hint?: SwitchProps['hint']
   label?: string
-  size?: SwitchProps['size']
 }>(), {
   isDisabled: false,
   isRequired: false,
   errorMessage: undefined,
   hint: undefined,
   label: 'Switch Label',
-  size: 'md',
 })
 
 const modelValue = ref<boolean>(false)
@@ -32,7 +30,6 @@ const modelValue = ref<boolean>(false)
       :is-disabled="props.isDisabled"
       :is-required="props.isRequired"
       :label="props.label"
-      :size="props.size"
     />
   </div>
 </template>

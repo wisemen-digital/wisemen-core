@@ -1,5 +1,11 @@
 # @wisemen/csv
 
+## 0.1.0
+
+### Minor Changes
+
+- [#1020](https://github.com/wisemen-digital/wisemen-core/pull/1020) [`c0a310a`](https://github.com/wisemen-digital/wisemen-core/commit/c0a310a93cdb42e3627e9808b5a7969e96dadb5d) Thanks [@jonasbeckers](https://github.com/jonasbeckers)! - Add CSV streaming support
+
 ## 0.0.6
 
 ### Patch Changes

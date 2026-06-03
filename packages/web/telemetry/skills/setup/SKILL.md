@@ -33,6 +33,8 @@ export const telemetry = new Telemetry({
   traceEndpoint: import.meta.env.VITE_OTEL_TRACE_ENDPOINT,
   metricsEndpoint: import.meta.env.VITE_OTEL_METRICS_ENDPOINT,
   logEndpoint: import.meta.env.VITE_OTEL_LOG_ENDPOINT,
+  tracePropagationUrls: [import.meta.env.VITE_API_BASE_URL],
+  traceSampleRate: 1,
   environment: import.meta.env.VITE_ENVIRONMENT,
   serviceVersion: import.meta.env.VITE_APP_VERSION,
   enabled: import.meta.env.PROD,
@@ -55,6 +57,7 @@ app.mount('#app')
 This automatically:
 - Sets up trace, metrics, and log exporters to your OTLP endpoints
 - Registers Fetch and UserInteraction instrumentations
+- Propagates trace headers only to same-origin requests and configured `tracePropagationUrls`
 - Installs Vue error handler and browser error handlers
 
 ## Examples
@@ -94,8 +97,15 @@ telemetry.setAttributes({ locale: 'en-GB', tenant: 'acme' })
 import { registerAppInstrumentations } from '@wisemen/vue-core-telemetry'
 import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request'
 
-registerAppInstrumentations([new XMLHttpRequestInstrumentation()])
+registerAppInstrumentations({
+  tracePropagationUrls: [import.meta.env.VITE_API_BASE_URL],
+  instrumentations: [new XMLHttpRequestInstrumentation()],
+})
 ```
+
+Cross-origin APIs that receive trace headers must allow `traceparent` and
+`tracestate` in CORS. Pass `tracePropagationUrls: []` to disable cross-origin
+trace header propagation.
 
 ## Source Files
 

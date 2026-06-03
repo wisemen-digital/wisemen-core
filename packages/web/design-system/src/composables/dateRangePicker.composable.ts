@@ -15,6 +15,8 @@ import {
   watch,
 } from 'vue'
 
+import { useInjectConfigContext } from '@/ui/config-provider/config.context'
+
 interface UseDateRangePickerOptions {
   maxDate: Ref<PlainDate | null>
   minDate: Ref<PlainDate | null>
@@ -26,7 +28,9 @@ export function useDateRangePicker({
   minDate,
   modelValue,
 }: UseDateRangePickerOptions) {
-  const locale = navigator.language
+  const configContext = useInjectConfigContext()
+
+  const locale = computed<string>(() => configContext.dateLocale.value ?? navigator.language)
 
   const isInvalidRange = ref<boolean>(false)
 

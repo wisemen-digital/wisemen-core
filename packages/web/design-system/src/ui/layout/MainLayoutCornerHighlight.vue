@@ -5,7 +5,7 @@
     viewBox="0 0 360 585"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    class="absolute -bottom-10 -left-10"
+    class="pointer-events-none absolute bottom-0 left-0"
   >
     <g
       opacity="0.4"

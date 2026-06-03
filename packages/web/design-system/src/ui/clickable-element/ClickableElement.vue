@@ -19,7 +19,6 @@ const props = withDefaults(defineProps<ClickableElementProps>(), {
         focus-visible:outline-fg-brand-primary
         disabled:cursor-not-allowed
       `,
-      !props.isDefaultCursor && 'cursor-pointer',
       props.class,
     )"
   >

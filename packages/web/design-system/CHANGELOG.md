@@ -1,215 +1,93 @@
 # Changelog
 
-## 0.14.1
+## 1.2.0
+
+### Minor Changes
+
+- [#1186](https://github.com/wisemen-digital/wisemen-core/pull/1186) [`6d58de4`](https://github.com/wisemen-digital/wisemen-core/commit/6d58de466d7b06d530f539702392a5f5501368da) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Change dashboard page conent padding to 2xl
+
+## 1.1.1
 
 ### Patch Changes
 
-- Updated dependencies [[`5c26828`](https://github.com/wisemen-digital/wisemen-core/commit/5c268289a865f43c12cbaa5b64e9f0bd70c0858a)]:
-  - @wisemen/vue-core-actions@0.1.3
+- [#1178](https://github.com/wisemen-digital/wisemen-core/pull/1178) [`220b356`](https://github.com/wisemen-digital/wisemen-core/commit/220b356075a19e45cc1b1d1b2f7a5d90a1ed9df7) Thanks [@wouterlms](https://github.com/wouterlms)! - Table: fix column sizing
 
-## 0.14.0
+- Updated dependencies [[`0d85230`](https://github.com/wisemen-digital/wisemen-core/commit/0d852301fc29efbc672479e7aa80f22266d2bfee)]:
+  - @wisemen/vue-core-dates@1.0.1
+
+## 1.1.0
 
 ### Minor Changes
 
-- [#1068](https://github.com/wisemen-digital/wisemen-core/pull/1068) [`38dbe43`](https://github.com/wisemen-digital/wisemen-core/commit/38dbe43b30125dcea8c716aa1019f81461356292) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add missing application components in the application provider
+- [#1179](https://github.com/wisemen-digital/wisemen-core/pull/1179) [`84567be`](https://github.com/wisemen-digital/wisemen-core/commit/84567bec40a3a26f13c115bd299d4cd446e60b7b) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add IsOpen and isToggleHidden to the detail pane config
 
-- [#1065](https://github.com/wisemen-digital/wisemen-core/pull/1065) [`ea37a96`](https://github.com/wisemen-digital/wisemen-core/commit/ea37a96a4c1a475a863bf39bdb9a598f3b390957) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add form field layouts
+- [#1183](https://github.com/wisemen-digital/wisemen-core/pull/1183) [`e2cd65d`](https://github.com/wisemen-digital/wisemen-core/commit/e2cd65d16b03718c86eb06b0139ca9c93555ea56) Thanks [@wouterlms](https://github.com/wouterlms)! - Add immediate flag to useSearch's updateSearch
+
+- [#1180](https://github.com/wisemen-digital/wisemen-core/pull/1180) [`5b5137d`](https://github.com/wisemen-digital/wisemen-core/commit/5b5137d5cd817e4f8426dcc9d1257bcec3582351) Thanks [@wouterlms](https://github.com/wouterlms)! - Add `setState` to `useTableCustomizeColumns`
 
 ### Patch Changes
 
-- [#1070](https://github.com/wisemen-digital/wisemen-core/pull/1070) [`673f352`](https://github.com/wisemen-digital/wisemen-core/commit/673f352d20d563c3e9f4751f08f97ca4d8765e0f) Thanks [@wouterlms](https://github.com/wouterlms)! - Change Button, IconButton, Link foreground colors to white in dark mode
+- [#1176](https://github.com/wisemen-digital/wisemen-core/pull/1176) [`fa82fbe`](https://github.com/wisemen-digital/wisemen-core/commit/fa82fbeae7699c8df2967a43ca0fc4208c47d7e7) Thanks [@wouterlms](https://github.com/wouterlms)! - Export UIInputWrapper
 
-- Updated dependencies [[`2654ffc`](https://github.com/wisemen-digital/wisemen-core/commit/2654ffc638375858b8e7023f4ce0062123131299)]:
-  - @wisemen/vue-core-actions@0.1.2
+- [#1170](https://github.com/wisemen-digital/wisemen-core/pull/1170) [`47adf52`](https://github.com/wisemen-digital/wisemen-core/commit/47adf52605ffecd47de6536393f54629578c2a6d) Thanks [@wouterlms](https://github.com/wouterlms)! - Move `@wisemen/vue-core-design-system` to peer dependencies
 
-## 0.13.1
+- [#1175](https://github.com/wisemen-digital/wisemen-core/pull/1175) [`a4749c7`](https://github.com/wisemen-digital/wisemen-core/commit/a4749c74ceb8606abbe83dd5de5bbf0f1c35f225) Thanks [@wouterlms](https://github.com/wouterlms)! - Table: fix issue where `get-link` would not work
+
+- [#1175](https://github.com/wisemen-digital/wisemen-core/pull/1175) [`f0176d2`](https://github.com/wisemen-digital/wisemen-core/commit/f0176d287a3912fc97478cd305e3e71b13224cfd) Thanks [@wouterlms](https://github.com/wouterlms)! - Remove `cursor-pointer` from non-link elements
+
+- Updated dependencies [[`cbcc93c`](https://github.com/wisemen-digital/wisemen-core/commit/cbcc93c1735697582e3714cf34330e9a059d2809)]:
+  - @wisemen/vue-core-api-utils@2.0.1
+
+## 1.0.0
+
+### Minor Changes
+
+- [#1165](https://github.com/wisemen-digital/wisemen-core/pull/1165) [`b1868dd`](https://github.com/wisemen-digital/wisemen-core/commit/b1868dd96b8200b4fe4ce73ed4acb49c63de9f2f) Thanks [@wouterlms](https://github.com/wouterlms)! - - **Table**: Added `getRowLink` prop to make rows clickable links. When using interactable elements inside a cell
+
+- [#1150](https://github.com/wisemen-digital/wisemen-core/pull/1150) [`2650566`](https://github.com/wisemen-digital/wisemen-core/commit/26505661db96e1a29490ecf685a1e7dc7595b47e) Thanks [@wouterlms](https://github.com/wouterlms)! - Date formatting now uses configContext.dateLocale. The locale is resolved in order: configContext.dateLocale → navigator.language.
 
 ### Patch Changes
 
-- Updated dependencies [[`c79086b`](https://github.com/wisemen-digital/wisemen-core/commit/c79086bff6820bf244c2397a9b236a9b60cc5382)]:
-  - @wisemen/vue-core-actions@0.1.1
-  - @wisemen/vue-core-dates@0.0.2
+- [#1164](https://github.com/wisemen-digital/wisemen-core/pull/1164) [`ba325a4`](https://github.com/wisemen-digital/wisemen-core/commit/ba325a4063568821437efe5aa4c8ce279666f8af) Thanks [@wouterlms](https://github.com/wouterlms)! - - **Table**: Fixed `variant` and `disableColumnResize` props not being forwarded correctly
 
-## 0.13.0
+- [#1169](https://github.com/wisemen-digital/wisemen-core/pull/1169) [`e45daad`](https://github.com/wisemen-digital/wisemen-core/commit/e45daadb624766f5c0f0bae4a9687e12b3ef45c9) Thanks [@wouterlms](https://github.com/wouterlms)! - Use correct z-indexes for components with popovers or dialogs
 
-### Minor Changes
+- [#1152](https://github.com/wisemen-digital/wisemen-core/pull/1152) [`31c3a85`](https://github.com/wisemen-digital/wisemen-core/commit/31c3a85b10f0092550af2adeafc6db20436a1305) Thanks [@wouterlms](https://github.com/wouterlms)! - column visibility state now respects the order defined in `initialState`
 
-- [#985](https://github.com/wisemen-digital/wisemen-core/pull/985) [`ea220f5`](https://github.com/wisemen-digital/wisemen-core/commit/ea220f55b92394093a8768ddb9fa5c5475145ff2) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add empty state component
+- Updated dependencies [[`9137e1d`](https://github.com/wisemen-digital/wisemen-core/commit/9137e1d8afdb91b6fe9fe289f11d977c6ddff8c7)]:
+  - @wisemen/vue-core-dates@1.0.0
 
-- [#1015](https://github.com/wisemen-digital/wisemen-core/pull/1015) [`1e47245`](https://github.com/wisemen-digital/wisemen-core/commit/1e47245cfb6c4361fc9eae658707131a59cee2c4) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add UI prefix to all type exports
-
-- [#1021](https://github.com/wisemen-digital/wisemen-core/pull/1021) [`2963267`](https://github.com/wisemen-digital/wisemen-core/commit/2963267c08e4c4752664ec39f9f0dfb8f1e84e35) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add new top bar component + restructure dashboard page components
-
-- [#1018](https://github.com/wisemen-digital/wisemen-core/pull/1018) [`62a0298`](https://github.com/wisemen-digital/wisemen-core/commit/62a029887da5b4609506729c25baba1ea375820f) Thanks [@wouterlms](https://github.com/wouterlms)! - Implement actions in design system
-
-## 0.12.0
+## 0.17.0
 
 ### Minor Changes
 
-- [#986](https://github.com/wisemen-digital/wisemen-core/pull/986) [`5acef70`](https://github.com/wisemen-digital/wisemen-core/commit/5acef7057bf7de364a3f6b11118f70f50d634331) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add context menu
+- [#1140](https://github.com/wisemen-digital/wisemen-core/pull/1140) [`c6a5357`](https://github.com/wisemen-digital/wisemen-core/commit/c6a5357393ef6d0e9ac5c9192aca60a3a9fe167b) Thanks [@wouterlms](https://github.com/wouterlms)! - Export `UIPage` component
 
-## 0.11.0
-
-### Minor Changes
-
-- [#1002](https://github.com/wisemen-digital/wisemen-core/pull/1002) [`fdc6742`](https://github.com/wisemen-digital/wisemen-core/commit/fdc6742d7d1384353171e1c471402f6dab3f1343) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dropdown menu items with menu items component
-
-- [#1011](https://github.com/wisemen-digital/wisemen-core/pull/1011) [`36f009e`](https://github.com/wisemen-digital/wisemen-core/commit/36f009e8a710eb509122fa73c8e4aa3fcdba91ce) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export context provider
-
-## 0.10.0
+## 0.16.0
 
 ### Minor Changes
 
-- [#928](https://github.com/wisemen-digital/wisemen-core/pull/928) [`fa12b98`](https://github.com/wisemen-digital/wisemen-core/commit/fa12b98e2e2354bfc1db70dacb2b78baf460e460) Thanks [@wouterlms](https://github.com/wouterlms)! - Add detail list components
-
-- [#888](https://github.com/wisemen-digital/wisemen-core/pull/888) [`5919f87`](https://github.com/wisemen-digital/wisemen-core/commit/5919f87ec47de2122fbc09281c46556ba1364c92) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add inline date and date range pickers
-
-- [#910](https://github.com/wisemen-digital/wisemen-core/pull/910) [`6dcd97e`](https://github.com/wisemen-digital/wisemen-core/commit/6dcd97ef2271a5e8fa4e3590723a5253a50acf2f) Thanks [@wouterlms](https://github.com/wouterlms)! - Toast: add toast component
-
-- [#893](https://github.com/wisemen-digital/wisemen-core/pull/893) [`fe6b0f2`](https://github.com/wisemen-digital/wisemen-core/commit/fe6b0f231af773d81ece3c003b5e61807037ccad) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add address autocomplete with adaptors
-
-- [#914](https://github.com/wisemen-digital/wisemen-core/pull/914) [`796e16e`](https://github.com/wisemen-digital/wisemen-core/commit/796e16eb9009ed6fefe527e80d14a8a5a520d103) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add time field component
-
-- [#907](https://github.com/wisemen-digital/wisemen-core/pull/907) [`24fc0b7`](https://github.com/wisemen-digital/wisemen-core/commit/24fc0b7855128da2ed33551a4cb63a11649ca038) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add phonenumber input field
-
-## 0.9.1
+- [#1130](https://github.com/wisemen-digital/wisemen-core/pull/1130) [`3f22d6a`](https://github.com/wisemen-digital/wisemen-core/commit/3f22d6a0f47b98b2b695a2173c1e592be8378910) Thanks [@wouterlms](https://github.com/wouterlms)! - Add table components + useTableCustomizeColumns
 
 ### Patch Changes
 
-- [#915](https://github.com/wisemen-digital/wisemen-core/pull/915) [`10e9dd6`](https://github.com/wisemen-digital/wisemen-core/commit/10e9dd60b3bbf617d285969c01a40279a372d071) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export form and logo
+- [#1133](https://github.com/wisemen-digital/wisemen-core/pull/1133) [`7e45f00`](https://github.com/wisemen-digital/wisemen-core/commit/7e45f006ede671d496cc7e5c2ac48a2528b3ff1c) Thanks [@wouterlms](https://github.com/wouterlms)! - MainLayout: Fixed an issue where the component would overflow
 
-## 0.9.0
+- [#1129](https://github.com/wisemen-digital/wisemen-core/pull/1129) [`78f75cb`](https://github.com/wisemen-digital/wisemen-core/commit/78f75cbfb2ac8ee01d55c6a0a109addf9e6c81f5) Thanks [@wouterlms](https://github.com/wouterlms)! - ConfirmDialog: Fixed an issue where the loading state would not show when confirming
 
-### Minor Changes
-
-- [#903](https://github.com/wisemen-digital/wisemen-core/pull/903) [`3dd0ce5`](https://github.com/wisemen-digital/wisemen-core/commit/3dd0ce543acb75c3dbfbbab17b3666fbb093e0da) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a composable to get the trigger props of the dialog for a11y
-
-- [#836](https://github.com/wisemen-digital/wisemen-core/pull/836) [`06ed4b0`](https://github.com/wisemen-digital/wisemen-core/commit/06ed4b0183daeb72e5d08e8b88b2bdaed048e63a) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add date range picker component with presets
+## 0.15.2
 
 ### Patch Changes
 
-- [#905](https://github.com/wisemen-digital/wisemen-core/pull/905) [`731dc19`](https://github.com/wisemen-digital/wisemen-core/commit/731dc19ab86af4c6292a6fb1f58a5a036971bb2f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Export index.css style file
+- [#1125](https://github.com/wisemen-digital/wisemen-core/pull/1125) [`8778c91`](https://github.com/wisemen-digital/wisemen-core/commit/8778c91448c24c0f7f6708751a9440f033b2e812) Thanks [@wouterlms](https://github.com/wouterlms)! - Fix: Elevate overlay z-index to 50 to render above dialogs
 
-## 0.8.0
-
-### Minor Changes
-
-- [#885](https://github.com/wisemen-digital/wisemen-core/pull/885) [`12bf126`](https://github.com/wisemen-digital/wisemen-core/commit/12bf1266125a6df184589d871d028402f0d4dd20) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add autocomplete component
-
-## 0.7.0
-
-### Minor Changes
-
-- [#890](https://github.com/wisemen-digital/wisemen-core/pull/890) [`d2387b1`](https://github.com/wisemen-digital/wisemen-core/commit/d2387b1dfde8dd81fade83e336f914d3e84e0557) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add config provider with `NumberFormat` prop for controlling thousands/decimal separator formatting in NumberField components
-
-- [#884](https://github.com/wisemen-digital/wisemen-core/pull/884) [`bd0cf2d`](https://github.com/wisemen-digital/wisemen-core/commit/bd0cf2dc9eba210773d91c737136d4c8c1f9206f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add detail pane variants
+## 0.15.1
 
 ### Patch Changes
 
-- [#902](https://github.com/wisemen-digital/wisemen-core/pull/902) [`bb34a61`](https://github.com/wisemen-digital/wisemen-core/commit/bb34a612ff18a5964e63db85405a861846cafd76) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix index exports
+- Updated dependencies [[`0211369`](https://github.com/wisemen-digital/wisemen-core/commit/021136927912bb49db2e16b868845fd3a218102d)]:
+  - @wisemen/vue-core-api-utils@2.0.0
 
-## 0.6.0
+## 0.15.0
 
-### Minor Changes
-
-- [#868](https://github.com/wisemen-digital/wisemen-core/pull/868) [`b1b5a00`](https://github.com/wisemen-digital/wisemen-core/commit/b1b5a00f44f9c493372bcd4f1640af9916545c30) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add select components + menu item
-
-### Patch Changes
-
-- Updated dependencies []:
-  - @wisemen/vue-core-icons@0.0.2
-
-## 0.5.0
-
-### Minor Changes
-
-- [#833](https://github.com/wisemen-digital/wisemen-core/pull/833) [`560b87a`](https://github.com/wisemen-digital/wisemen-core/commit/560b87a22386f657d01cc7e4a2943b401d5aa93d) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add chin functionality to the dialog component
-
-- [#881](https://github.com/wisemen-digital/wisemen-core/pull/881) [`d3136a1`](https://github.com/wisemen-digital/wisemen-core/commit/d3136a17efc508794fde948db149e60e14dc1c6f) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add options for horizontal padding in underline tabs
-
-- [#832](https://github.com/wisemen-digital/wisemen-core/pull/832) [`078cff5`](https://github.com/wisemen-digital/wisemen-core/commit/078cff57e1ae0ff1a81000f25f19a4d7f0fb9c23) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dialog components and composable
-
-## 0.4.0
-
-### Minor Changes
-
-- [#871](https://github.com/wisemen-digital/wisemen-core/pull/871) [`016ce3a`](https://github.com/wisemen-digital/wisemen-core/commit/016ce3aa01c2908ae200d2f767a33e28c29d29d6) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add correct way of exporting translations from the design system
-
-## 0.3.0
-
-### Minor Changes
-
-- [#843](https://github.com/wisemen-digital/wisemen-core/pull/843) [`8c9d805`](https://github.com/wisemen-digital/wisemen-core/commit/8c9d805e65a17e2e550246a24e9af51ce0d7c23c) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add translucent hover state to destructive tertiary button
-
-- [#842](https://github.com/wisemen-digital/wisemen-core/pull/842) [`9616463`](https://github.com/wisemen-digital/wisemen-core/commit/961646359c0d3ad12343bb6755e9e927c9bef1cd) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Change button styling roundess + font weight to match design more
-
-## 0.2.1
-
-### Patch Changes
-
-- [#825](https://github.com/wisemen-digital/wisemen-core/pull/825) [`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - bump dependencies
-
-- Updated dependencies [[`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a)]:
-  - @wisemen/vue-core-icons@0.0.2
-
-## 0.2.0
-
-### Minor Changes
-
-- [#752](https://github.com/wisemen-digital/wisemen-core/pull/752) [`cb21b90`](https://github.com/wisemen-digital/wisemen-core/commit/cb21b90387eac31c8a61e8fe9aa020b14707e8bf) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add help icon with tooltip for input field labels
-
-- [#728](https://github.com/wisemen-digital/wisemen-core/pull/728) [`9cfb2c7`](https://github.com/wisemen-digital/wisemen-core/commit/9cfb2c7da506ce66a85a83757a997f23876dc062) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add disabled reason to exisitng components that can be disabled
-
-- [#774](https://github.com/wisemen-digital/wisemen-core/pull/774) [`0cc4d22`](https://github.com/wisemen-digital/wisemen-core/commit/0cc4d22b728506ceab0aeac52f4129a11a055e82) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add resisable option to dashboard detail pane
-
-- [#729](https://github.com/wisemen-digital/wisemen-core/pull/729) [`a25b658`](https://github.com/wisemen-digital/wisemen-core/commit/a25b658fdb16eb5ac17896efcc356e4a1362dbe3) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add icons only support to breadcrumbs
-
-- [#742](https://github.com/wisemen-digital/wisemen-core/pull/742) [`4b298d0`](https://github.com/wisemen-digital/wisemen-core/commit/4b298d0b42ef3a6b0cb1d4d59b05a231e1573018) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add the timeline component
-
-- [#773](https://github.com/wisemen-digital/wisemen-core/pull/773) [`f9684b1`](https://github.com/wisemen-digital/wisemen-core/commit/f9684b1fc12f21dc6286c60aa822c53f4739afd7) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add side pane to dashboard page
-
-- [#740](https://github.com/wisemen-digital/wisemen-core/pull/740) [`b8fb8cc`](https://github.com/wisemen-digital/wisemen-core/commit/b8fb8ccb0bf64a45d0f151b5e79c1bf41b0b0e0e) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Improve sidebar transitions and sizing
-
-- [#747](https://github.com/wisemen-digital/wisemen-core/pull/747) [`f6e24be`](https://github.com/wisemen-digital/wisemen-core/commit/f6e24be3f748d8334a5b6d80ee232f5bedff3ae5) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dashboard page components
-
-- [#765](https://github.com/wisemen-digital/wisemen-core/pull/765) [`1f8ae74`](https://github.com/wisemen-digital/wisemen-core/commit/1f8ae74bef2ab0c02ef1ca0054e7736fa4eb049b) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add avatar component, add avatar group component with overflow handling and add avatar group add button component.
-
-- [#735](https://github.com/wisemen-digital/wisemen-core/pull/735) [`5f04de0`](https://github.com/wisemen-digital/wisemen-core/commit/5f04de015f53d14a5a842a21f921b41a2eb18c86) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add adaptive tabs with dropdown when tabs are hidden, improve tab sizes
-
-- [#766](https://github.com/wisemen-digital/wisemen-core/pull/766) [`4f2d82f`](https://github.com/wisemen-digital/wisemen-core/commit/4f2d82f26bbfd27dfc48bfc2decef13891d56958) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add badge component
-
-## 0.1.2
-
-### Patch Changes
-
-- [#665](https://github.com/wisemen-digital/wisemen-core/pull/665) [`8f075e2`](https://github.com/wisemen-digital/wisemen-core/commit/8f075e27d9d3c637ea633f5e36f72fb53362287f) Thanks [@Robbe95](https://github.com/Robbe95)! - Updated linter
-
-- Updated dependencies []:
-  - @wisemen/vue-core-icons@0.0.1
-
-## 0.1.1
-
-### Patch Changes
-
-- f5bddce: Ran updated linter
-- fce3eff: Updated linter dependency
-- Updated dependencies [f5bddce]
-- Updated dependencies [fce3eff]
-  - @wisemen/vue-core-icons@0.0.1
-
-## 0.1.0
-
-### Minor Changes
-
-- 217578b: Add radio group component
-
-### Patch Changes
-
-- 95d352d: Add new destructive secondary and minimal color variants to button. Add new disabled reason and tooltip side prop
-- e73257d: Removed disabled prop for link component
-
-## 0.0.1
-
-### Patch Changes
-
-- 696071d: number field component
+Initial release

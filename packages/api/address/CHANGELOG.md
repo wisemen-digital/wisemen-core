@@ -1,5 +1,33 @@
 # @wisemen/address
 
+## 0.4.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/coordinates@0.0.31
+
+## 0.4.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/coordinates@0.0.30
+
+## 0.4.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/coordinates@0.0.29
+
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/coordinates@0.0.28
+
 ## 0.4.1
 
 ### Patch Changes

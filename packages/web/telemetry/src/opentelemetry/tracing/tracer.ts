@@ -3,6 +3,10 @@
 import { ZoneContextManager } from '@opentelemetry/context-zone'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import {
+  ParentBasedSampler,
+  TraceIdRatioBasedSampler,
+} from '@opentelemetry/sdk-trace-base'
+import {
   BatchSpanProcessor,
   WebTracerProvider,
 } from '@opentelemetry/sdk-trace-web'
@@ -12,6 +16,22 @@ import {
   createTelemetryResource,
 } from '@/opentelemetry/shared.ts'
 import type { TelemetryOptions } from '@/types.ts'
+
+const DEFAULT_TRACE_SAMPLE_RATE = 1
+
+function resolveTraceSampleRate(options: TelemetryOptions): number {
+  const traceSampleRate = options.traceSampleRate ?? DEFAULT_TRACE_SAMPLE_RATE
+
+  if (traceSampleRate >= 0 && traceSampleRate <= 1) {
+    return traceSampleRate
+  }
+
+  if (options.debug) {
+    console.warn(`[Telemetry] Invalid traceSampleRate "${traceSampleRate}". Falling back to ${DEFAULT_TRACE_SAMPLE_RATE}.`)
+  }
+
+  return DEFAULT_TRACE_SAMPLE_RATE
+}
 
 export function initOpenTelemetryTracing(
   options: TelemetryOptions,
@@ -41,6 +61,9 @@ export function initOpenTelemetryTracing(
 
   const tracerProvider = new WebTracerProvider({
     resource: createTelemetryResource(options),
+    sampler: new ParentBasedSampler({
+      root: new TraceIdRatioBasedSampler(resolveTraceSampleRate(options)),
+    }),
     spanProcessors: [
       new BatchSpanProcessor(traceExporter),
     ],

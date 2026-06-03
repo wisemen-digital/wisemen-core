@@ -9,6 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
     "strictNullChecks": true,
     "skipLibCheck": true
   },
