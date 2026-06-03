@@ -28,7 +28,7 @@ export interface BadgeProps {
    * An array of actions to display in a dropdown menu. When provided, a 3-dots icon button
    * appears absolutely positioned on the right of the badge.
    */
-  actions?: Action[]
+  actions?: Action[] | null
   /**
    * Accessible label for screen readers. Use when the badge content alone is not descriptive enough.
    */

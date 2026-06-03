@@ -19,7 +19,7 @@ import { UIClickableElement } from '@/ui/clickable-element/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
 
 const props = withDefaults(defineProps<BadgeProps>(), {
-  actions: undefined,
+  actions: null,
   ariaLabel: null,
   avatar: null,
   color: 'gray',
