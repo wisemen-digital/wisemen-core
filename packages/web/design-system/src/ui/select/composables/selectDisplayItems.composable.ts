@@ -100,7 +100,11 @@ export function useSelectDisplayItems<TValue extends SelectValue>(
   }
 
   function createDisplayItemList(items: SelectItem<TValue>[]): void {
-    const nonSelectedItems = getNonSelectedItems(items)
+    const visibleItems = isSearchEmpty.value
+      ? items
+      : items.filter((item) => item.type !== 'separator')
+
+    const nonSelectedItems = getNonSelectedItems(visibleItems)
     const shouldGroup = isSearchEmpty.value
       && isMultiple
       && selectedOptionsWithKey.value.length > 0
@@ -127,7 +131,7 @@ export function useSelectDisplayItems<TValue extends SelectValue>(
     }
     // Otherwise, show all items
     else {
-      relevantItems = items
+      relevantItems = visibleItems
     }
 
     const itemsToDisplay = relevantItems.map((item) => {
