@@ -15,7 +15,7 @@ export function ApiErrorStatus (status: HttpStatus): PropertyDecorator {
 export function getApiErrorStatusMetadata(target: object): HttpStatus {
   const status = Reflect.getMetadata(API_ERROR_STATUS_KEY, target) as HttpStatus | undefined
   if(status === undefined) {
-    throw new Error(`missing ${API_ERROR_STATUS_KEY} metadata on ${target}`)
+    throw new Error(`missing ${API_ERROR_STATUS_KEY} metadata`)
   }
   return status
 }

@@ -17,7 +17,7 @@ export function ApiErrorResponse (
   const statusMap = new Map<HttpStatus, ClassConstructor<ApiError>[]>()
   
   for (const err of errors) {
-    const status = getApiErrorStatusMetadata(err.prototype)
+    const status = getApiErrorStatusMetadata(err.prototype as object)
     const statusErrors = statusMap.get(status) ?? []
     statusErrors.push(err)
     statusMap.set(status, statusErrors)
