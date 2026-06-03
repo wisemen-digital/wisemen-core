@@ -1,5 +1,12 @@
 # @wisemen/coordinates
 
+## 0.0.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/quantity@0.8.4
+
 ## 0.0.30
 
 ### Patch Changes
