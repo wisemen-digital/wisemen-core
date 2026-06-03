@@ -27,7 +27,6 @@ const props = withDefaults(defineProps<DashboardPageProps & {
   actions: () => [],
   breadcrumbs: () => [],
   detailPane: null,
-  tabs: () => [],
 })
 
 const mainContentDetailPaneContext = useInjectMainContentDetailPaneContext(null)
