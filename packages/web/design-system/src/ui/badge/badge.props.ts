@@ -57,11 +57,11 @@ export interface BadgeProps {
   /**
    * Arbitrary metadata passed to the action context.
    */
-  metadata?: RegisteredActionContext['metadata']
+  metadata?: RegisteredActionContext['metadata'] | null
   /**
    * The models passed to the action context.
    */
-  models?: RegisteredActionContext['models']
+  models?: RegisteredActionContext['models'] | null
   /**
    * The border radius of the badge.
    */
