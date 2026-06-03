@@ -19,8 +19,8 @@
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "pnpm run build",
-    "test": "node --env-file=.env --enable-source-maps --experimental-test-isolation=none --test ./**/*.test.js",
+    "pretest": "pnpm clean && pnpm run build",
+    "test": "node --env-file=.env.test --enable-source-maps --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
