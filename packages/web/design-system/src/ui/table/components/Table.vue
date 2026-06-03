@@ -117,6 +117,7 @@ function onClearFiltersAndSearch(): void {
     :action-group="props.actionGroup"
     :disable-column-resize="props.disableColumnResize"
     :variant="props.variant"
+    :sort="props.sort"
     @clear-filters-and-search="onClearFiltersAndSearch"
   >
     <TableScrollContainer :disable-scroll="props.data.length === 0">
@@ -129,6 +130,7 @@ function onClearFiltersAndSearch(): void {
           :label="column.headerLabel"
           :center-content="column.centerHeaderContent ?? false"
           :action-config="column.actionConfig"
+          :column-key="column.key"
         />
       </TableHeader>
 

@@ -3,6 +3,7 @@ import type {
   ActionGroup,
 } from '@wisemen/vue-core-actions'
 
+import type { Sort } from '@/composables/sort.composable'
 import type { TableColumnSize } from '@/ui/table/types/table.type'
 
 export interface TableRootProps {
@@ -43,6 +44,12 @@ export interface TableRootProps {
    * Actions rendered in the table header toolbar (top-right area), independent of row selection.
    */
   headerActions?: Action[]
+  /**
+   * Sort state returned by `useSort`. When provided, column headers with a matching sort key
+   * become clickable and display an ascending/descending indicator. Clicking cycles through
+   * `asc → desc → unsorted`.
+   */
+  sort?: Sort<any> | null
   /**
    * Visual style variant of the table.
    * - `contained` — table has a border and rounded corners, suitable for embedding inside a page.
