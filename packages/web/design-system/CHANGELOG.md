@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- [#1186](https://github.com/wisemen-digital/wisemen-core/pull/1186) [`6d58de4`](https://github.com/wisemen-digital/wisemen-core/commit/6d58de466d7b06d530f539702392a5f5501368da) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Change dashboard page conent padding to 2xl
+
 ## 1.1.1
 
 ### Patch Changes
