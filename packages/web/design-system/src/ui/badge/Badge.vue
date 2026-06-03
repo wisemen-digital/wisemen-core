@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { DotsVerticalIcon } from '@wisemen/vue-core-icons'
 import { computed } from 'vue'
 
 import { toComputedRefs } from '@/composables/context.composable'
+import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu/index'
 import { useProvideBadgeContext } from '@/ui/badge/badge.context'
 import type {
   BadgeColor,
@@ -13,15 +15,19 @@ import BadgeAvatar from '@/ui/badge/BadgeAvatar.vue'
 import BadgeDot from '@/ui/badge/BadgeDot.vue'
 import BadgeIcon from '@/ui/badge/BadgeIcon.vue'
 import BadgeLabel from '@/ui/badge/BadgeLabel.vue'
+import { UIClickableElement } from '@/ui/clickable-element/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
 
 const props = withDefaults(defineProps<BadgeProps>(), {
+  actions: undefined,
   ariaLabel: null,
   avatar: null,
   color: 'gray',
   dot: null,
   icon: null,
   label: null,
+  metadata: undefined,
+  models: undefined,
   rounded: 'default',
   size: 'md',
   variant: 'translucent',
@@ -46,7 +52,7 @@ useProvideBadgeContext({
 
 <template>
   <UIRowLayout
-    :class="variants.base()"
+    :class="[variants.base(), props.actions != null && 'group relative']"
     :aria-label="props.ariaLabel"
     gap="xs"
     role="status"
@@ -68,5 +74,36 @@ useProvideBadgeContext({
         :label="props.label"
       />
     </slot>
+
+    <div
+      v-if="props.actions != null"
+      class="
+        absolute inset-0 flex items-center justify-end bg-linear-to-l
+        from-primary via-primary via-30% opacity-0 transition-opacity
+        duration-100
+        group-focus-within:opacity-100
+        group-hover:opacity-100
+        pointer-coarse:opacity-100
+      "
+    >
+      <UIActionDropdownMenu
+        :actions="props.actions"
+        :models="props.models ?? []"
+        :metadata="props.metadata"
+        :current-context-only="true"
+        popover-side="bottom"
+        popover-align="end"
+      >
+        <UIClickableElement>
+          <button
+            :class="variants.actionsButton()"
+          >
+            <DotsVerticalIcon
+              :class="variants.actionsIcon()"
+            />
+          </button>
+        </UIClickableElement>
+      </UIActionDropdownMenu>
+    </div>
   </UIRowLayout>
 </template>

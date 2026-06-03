@@ -2,6 +2,12 @@ import type {
   Meta,
   StoryObj,
 } from '@storybook/vue3-vite'
+import { createAction } from '@wisemen/vue-core-actions'
+import {
+  Edit01Icon,
+  Settings01Icon,
+  Trash01Icon,
+} from '@wisemen/vue-core-icons'
 import {
   expect,
   within,
@@ -134,5 +140,50 @@ export const Solid: Story = {
       }
     },
     template: '<BadgeVariantPlayground v-bind="args" variant="solid" />',
+  }),
+}
+
+export const WithActions: Story = {
+  args: {
+    color: 'brand',
+    label: 'Status',
+    size: 'md',
+    variant: 'translucent',
+  },
+  render: (args) => ({
+    components: {
+      BadgePlayground,
+    },
+    setup() {
+      const actions = [
+        createAction({
+          id: 'badge-story-edit',
+          name: () => 'Edit',
+          icon: () => Edit01Icon,
+          availableWhenUnauthenticated: true,
+          execute: () => {},
+        }),
+        createAction({
+          id: 'badge-story-settings',
+          name: () => 'Settings',
+          icon: () => Settings01Icon,
+          availableWhenUnauthenticated: true,
+          execute: () => {},
+        }),
+        createAction({
+          id: 'badge-story-delete',
+          name: () => 'Delete',
+          icon: () => Trash01Icon,
+          availableWhenUnauthenticated: true,
+          execute: () => {},
+        }),
+      ]
+
+      return {
+        args,
+        actions,
+      }
+    },
+    template: '<BadgePlayground v-bind="args" />',
   }),
 }

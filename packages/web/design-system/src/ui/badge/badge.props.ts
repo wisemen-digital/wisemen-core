@@ -1,4 +1,7 @@
+import type { Action } from '@wisemen/vue-core-actions'
 import type { Component } from 'vue'
+
+import type { RegisteredActionContext } from '@/register'
 
 export type BadgeColor = 'blue' | 'brand' | 'error' | 'gray' | 'pink' | 'purple' | 'success' | 'warning'
 
@@ -21,6 +24,11 @@ export interface BadgeDotConfig {
 }
 
 export interface BadgeProps {
+  /**
+   * An array of actions to display in a dropdown menu. When provided, a 3-dots icon button
+   * appears absolutely positioned on the right of the badge.
+   */
+  actions?: Action[]
   /**
    * Accessible label for screen readers. Use when the badge content alone is not descriptive enough.
    */
@@ -46,6 +54,14 @@ export interface BadgeProps {
    * The text label displayed inside the badge.
    */
   label?: string | null
+  /**
+   * Arbitrary metadata passed to the action context.
+   */
+  metadata?: RegisteredActionContext['metadata']
+  /**
+   * The models passed to the action context.
+   */
+  models?: RegisteredActionContext['models']
   /**
    * The border radius of the badge.
    */
