@@ -4,11 +4,23 @@ import { ref } from 'vue'
 import TagsField from '@/ui/tags-field/TagsField.vue'
 
 const defaultValue = ref<string[]>([])
-const disabledValue = ref<string[]>(['Vue', 'React'])
-const errorValue = ref<string[]>(['invalid tag'])
-const filledValue = ref<string[]>(['TypeScript', 'Vue', 'Vite'])
+const disabledValue = ref<string[]>([
+  'Vue',
+  'React',
+])
+const errorValue = ref<string[]>([
+  'invalid tag',
+])
+const filledValue = ref<string[]>([
+  'TypeScript',
+  'Vue',
+  'Vite',
+])
 const loadingValue = ref<string[]>([])
-const readonlyValue = ref<string[]>(['Read', 'Only'])
+const readonlyValue = ref<string[]>([
+  'Read',
+  'Only',
+])
 </script>
 
 <template>

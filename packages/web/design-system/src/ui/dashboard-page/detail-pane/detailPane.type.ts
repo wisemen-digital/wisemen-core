@@ -10,9 +10,9 @@ export interface DetailPaneStorage {
 }
 
 export interface DetailPaneConfig {
-  defaultWidth?: RemValue
   isResizable?: boolean
   isToggleHidden?: boolean
+  defaultWidth?: RemValue
   maxWidth?: RemValue
   minWidth?: RemValue
   storage?: DetailPaneStorage | null
