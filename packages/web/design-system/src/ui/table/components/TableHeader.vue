@@ -38,6 +38,7 @@ const {
         label: i18n.t('component.table.settings_label'),
         currentContextOnly: false,
       }"
+      column-key=""
       class="sticky right-0 z-1 h-full"
     />
   </TableSubgrid>

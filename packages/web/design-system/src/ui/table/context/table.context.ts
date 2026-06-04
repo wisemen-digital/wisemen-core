@@ -2,6 +2,7 @@ import type { Action } from '@wisemen/vue-core-actions'
 import type { ComputedRef } from 'vue'
 
 import { useContext } from '@/composables/context.composable'
+import type { Sort } from '@/composables/sort.composable'
 import type { TableRootProps } from '@/ui/table/types/tableRoot.props'
 
 interface TableContext {
@@ -16,6 +17,7 @@ interface TableContext {
   headerActions: ComputedRef<Action[]>
   registerGroup: () => void
   setScrollContainer: (el: HTMLElement) => void
+  sort: Sort | null
   unregisterGroup: () => void
   variant: ComputedRef<NonNullable<TableRootProps['variant']>>
   onClearFiltersAndSearch: () => void
