@@ -25,6 +25,12 @@ export interface TableProps<TData extends TableData<unknown>> extends Omit<Table
    */
   isLoading: boolean
   /**
+   * When `true`, a checkbox column is prepended to the table, enabling row selection.
+   * Listen to the `select` emit to receive the current selection state as either an
+   * `includes` array (individual selections) or an `excludes` array (after select-all).
+   */
+  isSelectable?: boolean
+  /**
    * Column definitions that describe each column's header label, unique key, cell component,
    * optional size constraints, and optional per-column actions.
    */
@@ -64,10 +70,4 @@ export interface TableProps<TData extends TableData<unknown>> extends Omit<Table
    * add custom summary cells (e.g. totals) aligned with the table columns for grouped data.
    */
   groupHeaderCells?: (group: TableGroupedData<InferTableItem<TData>>) => Component[]
-  /**
-   * When `true`, a checkbox column is prepended to the table, enabling row selection.
-   * Listen to the `select` emit to receive the current selection state as either an
-   * `includes` array (individual selections) or an `excludes` array (after select-all).
-   */
-  selectable?: boolean
 }

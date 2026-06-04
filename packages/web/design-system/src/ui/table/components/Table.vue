@@ -37,9 +37,9 @@ import type {
 type TItem = InferTableItem<TTableData>
 
 const props = withDefaults(defineProps<TableProps<TTableData>>(), {
+  isSelectable: false,
   activeFilterCount: 0,
   getLink: null,
-  selectable: false,
 })
 
 const emit = defineEmits<{
@@ -111,8 +111,6 @@ const {
   scrollContainerEl,
 )
 
-const isSelectable = computed<boolean>(() => props.selectable)
-
 const {
   isAllSelected,
   isGroupAllSelected,
@@ -134,7 +132,7 @@ useProvideTableSelectionContext({
   isGroupIndeterminate: (items) => isGroupIndeterminate(items as TItem[]),
   isIndeterminate,
   isItemSelected,
-  isSelectable,
+  isSelectable: computed(() => props.isSelectable),
   toggleAll,
   toggleGroup: (items) => toggleGroup(items as TItem[]),
   toggleItem,
@@ -162,7 +160,7 @@ function onClearFiltersAndSearch(): void {
     :has-active-search="props.hasActiveSearch"
     :on-next-page="props.onNextPage"
     :is-initialized="props.data.length > 0"
-    :is-selectable="props.selectable"
+    :is-selectable="props.isSelectable"
     :header-actions="props.headerActions"
     :action-group="props.actionGroup"
     :disable-column-resize="props.disableColumnResize"
@@ -172,7 +170,7 @@ function onClearFiltersAndSearch(): void {
   >
     <TableScrollContainer :disable-scroll="props.data.length === 0">
       <TableHeader v-if="data.length > 0 || props.isLoading">
-        <TableHeaderCheckboxCell v-if="props.selectable" />
+        <TableHeaderCheckboxCell v-if="props.isSelectable" />
         <TableHeaderCell
           v-for="(column, columnIndex) of props.columns"
           :key="column.key"
@@ -197,10 +195,11 @@ function onClearFiltersAndSearch(): void {
             v-for="row of virtualRows"
             :key="props.getKey(flatItems[row.index]!)"
             :action-model="props.getActionModel?.(flatItems[row.index]!)"
+            :item-key="props.getKey(flatItems[row.index]!)"
             :link="props.getLink?.(flatItems[row.index]!) ?? null"
           >
             <TableBodyRowCheckboxCell
-              v-if="props.selectable"
+              v-if="props.isSelectable"
               :item-key="props.getKey(flatItems[row.index]!)"
             />
             <Component
@@ -228,17 +227,18 @@ function onClearFiltersAndSearch(): void {
               v-for="subGroup of group.subGroups"
               :key="subGroup.key"
               :default-open="subGroup.defaultOpen"
-              :items="props.selectable ? subGroup.items : []"
+              :items="props.isSelectable ? subGroup.items : []"
               :label="subGroup.label"
             >
               <TableBodyRow
                 v-for="item of subGroup.items"
                 :key="props.getKey(item)"
                 :action-model="props.getActionModel?.(item)"
+                :item-key="props.getKey(item)"
                 :link="props.getLink?.(item) ?? null"
               >
                 <TableBodyRowCheckboxCell
-                  v-if="props.selectable"
+                  v-if="props.isSelectable"
                   :item-key="props.getKey(item)"
                 />
                 <Component
@@ -256,7 +256,7 @@ function onClearFiltersAndSearch(): void {
             v-for="group of groupedItems"
             :key="group.key"
             :default-open="group.defaultOpen"
-            :items="props.selectable ? group.items : []"
+            :items="props.isSelectable ? group.items : []"
             :label="group.label"
             :header-cells="props.groupHeaderCells?.(group)"
           >
@@ -264,10 +264,11 @@ function onClearFiltersAndSearch(): void {
               v-for="item of group.items"
               :key="props.getKey(item)"
               :action-model="props.getActionModel?.(item)"
+              :item-key="props.getKey(item)"
               :link="props.getLink?.(item) ?? null"
             >
               <TableBodyRowCheckboxCell
-                v-if="props.selectable"
+                v-if="props.isSelectable"
                 :item-key="props.getKey(item)"
               />
               <Component

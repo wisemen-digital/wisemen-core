@@ -77,6 +77,7 @@
   "component.table.empty_state.no_results.title": "Geen resultaten gevonden",
   "component.table.header_cell.options_label": "Kolomopties",
   "component.table.hidden_results_warning.message": "1 filter actief — sommige resultaten zijn mogelijk verborgen | {count} filters actief — sommige resultaten zijn mogelijk verborgen",
+  "component.table.row.toggle_selection_action.name": "Selectie omschakelen",
   "component.table.row.view_details_label": "Details bekijken",
   "component.table.settings_label": "Tabelinstellingen",
   "component.table_customization.action.name": "Kolommen aanpassen",

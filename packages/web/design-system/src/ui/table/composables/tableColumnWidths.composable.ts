@@ -211,6 +211,10 @@ export function useTableColumnWidths(
     execute: () => fitAllColumnsToContent(getResizableHeaderCells()),
     group: actionGroup.value ?? undefined,
     icon: () => SpacingWidth01Icon,
+    keyboardShortcut: {
+      key: 'A',
+      shift: true,
+    },
   })
 
   useTemporaryActions(autoFitColumnsAction)

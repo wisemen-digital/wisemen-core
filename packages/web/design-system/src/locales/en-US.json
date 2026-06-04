@@ -77,6 +77,7 @@
   "component.table.empty_state.no_results.title": "No results found",
   "component.table.header_cell.options_label": "Column options",
   "component.table.hidden_results_warning.message": "1 filter active — some results may be hidden | {count} filters active — some results may be hidden",
+  "component.table.row.toggle_selection_action.name": "Toggle selection",
   "component.table.row.view_details_label": "View details",
   "component.table.settings_label": "Table settings",
   "component.table_customization.action.name": "Customize columns",
