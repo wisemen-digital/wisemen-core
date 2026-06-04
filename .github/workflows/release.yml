@@ -2,9 +2,9 @@ name: Release
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   workflow_dispatch:
-    
+
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 permissions:
@@ -26,15 +26,12 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
+          registry-url: "https://registry.npmjs.org"
+          cache: "pnpm"
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Create Release Pull Request or Publish
-        uses: changesets/action@v1
-        with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm changeset:release
+      - run: pnpx @varlock/bumpy ci release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+          BUMPY_GH_TOKEN: ${{ secrets.BUMPY_GH_TOKEN }} # PAT so that version PR triggers CI

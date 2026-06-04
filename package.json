@@ -34,12 +34,10 @@
     "@changesets/changelog-github": "^0.6.0",
     "@commitlint/cli": "catalog:tooling",
     "@commitlint/config-conventional": "catalog:tooling",
+    "@varlock/bumpy": "^1.12.0",
     "husky": "catalog:build",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
     "vitest": "catalog:test"
-  },
-  "dependencies": {
-    "@changesets/cli": "catalog:tooling"
   }
 }
