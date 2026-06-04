@@ -5,6 +5,7 @@ import type {
 
 import TableGroupedPlayground from './TableGroupedPlayground.vue'
 import TablePlayground from './TablePlayground.vue'
+import TableSortingPlayground from './TableSortingPlayground.vue'
 
 const meta = {
   title: 'Components/Table',
@@ -87,6 +88,23 @@ export const WithActiveFilters: Story = {
     disableColumnResize: false,
     variant: 'full-page',
   },
+}
+
+export const Sorting: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableSortingPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableSortingPlayground v-bind="args" />',
+  }),
 }
 
 export const Grouped: Story = {

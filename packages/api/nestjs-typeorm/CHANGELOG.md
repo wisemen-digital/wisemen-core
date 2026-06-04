@@ -1,5 +1,11 @@
 # @wisemen/nestjs-typeorm
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1190](https://github.com/wisemen-digital/wisemen-core/pull/1190) [`0bc5b42`](https://github.com/wisemen-digital/wisemen-core/commit/0bc5b42c8a9f15e696e01dc24b6fd228b6657405) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(TBN-1200): add AndOrIgnore FindOperator
+
 ## 1.1.0
 
 ### Minor Changes

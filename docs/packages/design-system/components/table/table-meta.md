@@ -101,6 +101,12 @@ const propsData = [
     "type": "(() => void)"
   },
   {
+    "description": "<p>Sort state returned by <code>useSort</code>. When provided, column headers whose <code>key</code> matches\none of the sortable keys become clickable and display a sort direction indicator.\nClicking a header cycles through <code>asc → desc → unsorted</code>. Pass <code>null</code> or omit to\ndisable sorting entirely.</p>\n",
+    "name": "sort",
+    "required": false,
+    "type": "Sort<string> | null"
+  },
+  {
     "description": "<p>Visual style variant of the table.</p>\n<ul>\n<li><code>contained</code> — table has a border and rounded corners, suitable for embedding inside a page.</li>\n<li><code>full-page</code> — table stretches edge-to-edge, suitable for full-page list views.</li>\n</ul>\n",
     "name": "variant",
     "required": false,

@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<TableRootProps>(), {
   actions: () => [],
   activeFilterCount: 0,
   headerActions: () => [],
+  sort: null,
   variant: 'full-page',
 })
 
@@ -94,6 +95,7 @@ useProvideTableContext({
     scrollContainerEl.value = el
     setScrollContainerScrollState(el)
   },
+  sort: props.sort,
   unregisterGroup,
   variant: computed(() => props.variant),
   onClearFiltersAndSearch,

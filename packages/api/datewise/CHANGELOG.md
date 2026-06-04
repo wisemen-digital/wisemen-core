@@ -1,5 +1,12 @@
 # @wisemen/datewise
 
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/quantity@0.8.4
+
 ## 1.0.9
 
 ### Patch Changes
