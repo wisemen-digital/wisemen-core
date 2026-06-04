@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<MenuItemProps>(), {
   size: 'md',
 })
 
-const slots = useSlots()
+const slots: ReturnType<typeof useSlots> = useSlots()
 
 const isEffectivelyDisabled = computed<boolean>(() =>
   props.isDisabled || props.disabledReason !== null)
