@@ -2,4 +2,4 @@
 "@wisemen/monetary": minor
 ---
 
-monetary add euros implementation
+add monetary utils factory function
