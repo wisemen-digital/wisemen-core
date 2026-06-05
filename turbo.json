@@ -51,6 +51,10 @@
       "persistent": true,
       "cache": false
     },
+    "story:build": {
+      "dependsOn": ["^build"],
+      "outputs": ["storybook-static/**"]
+    },
     "docs:build": {
       "dependsOn": ["^build"],
       "outputs": [".vitepress/dist/**"]

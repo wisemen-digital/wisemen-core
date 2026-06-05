@@ -1,40 +1,44 @@
-import { type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, type FindOperatorType, FindOptionsOrder, FindOptionsSelect, FindOptionsSelectByString, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, Repository, type ValueTransformer } from 'typeorm'
+import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, type FindOperatorType, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, ObjectType, Repository, type ValueTransformer } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
-
-/**
- * TypeORM's And() operator has a bug in transformValue(): when the column has a
- * value transformer, it maps over child FindOperators and calls transformer.to()
- * on them directly (instead of recursively delegating transformValue to each child).
- * This corrupts the children into "[object Object]" strings.
- *
- * This subclass overrides transformValue to properly delegate to each child operator.
- */
-class SafeAndOperator extends FindOperator<unknown> {
-  constructor (children: FindOperator<unknown>[]) {
-    super('and' satisfies FindOperatorType, children as unknown as FindOperator<unknown>, true, true)
-  }
-
-  transformValue (transformer: ValueTransformer | ValueTransformer[]): void {
-    const children = this.value as FindOperator<unknown>[]
-
-    for (const child of children) {
-      if (child instanceof FindOperator) {
-        child.transformValue(transformer)
-      }
-    }
-  }
-}
-
-function SafeAnd (...operators: FindOperator<unknown>[]): FindOperator<unknown> {
-  return new SafeAndOperator(operators)
-}
+import { QueryDeepPartialEntity } from 'typeorm/browser'
 
 export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
   constructor (entity: EntityTarget<T>, manager: EntityManager) {
     const proxy = createTransactionManagerProxy(createReadonlyManagerProxy(manager))
 
     super(entity, proxy)
+  }
+
+  async createAndInsert (entityLike: DeepPartial<T> | T): Promise<T>
+  async createAndInsert (entityLike: Array<DeepPartial<T> | T>): Promise<T[]>
+  async createAndInsert (entityLike: DeepPartial<T> | T | Array<DeepPartial<T> | T>): Promise<T | T[]> {
+    if (Array.isArray(entityLike)) {
+      const EntityClass = this.target as ObjectType<T>
+
+      const entities = entityLike.map(item =>
+        item instanceof EntityClass ? item as T : this.create(item as DeepPartial<T>)
+      )
+
+      await this.insert(entities as QueryDeepPartialEntity<T>[])
+
+      return entities
+    }
+
+    const EntityClass = this.target as ObjectType<T>
+    const isEntity = entityLike instanceof EntityClass
+
+    if (isEntity) {
+      await this.insert(entityLike as QueryDeepPartialEntity<T>)
+
+      return entityLike as T
+    } else {
+      const entity = this.create(entityLike)
+
+      await this.insert(entity as QueryDeepPartialEntity<T>)
+
+      return entity
+    }
   }
 
   async findNextBatch (
@@ -96,9 +100,9 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
   }
 
   private addBatchingToSelect (
-    select: FindOptionsSelect<T> | FindOptionsSelectByString<T> | undefined,
+    select: FindOptionsSelect<T> | undefined,
     order: FindOptionsOrder<T>
-  ): FindOptionsSelect<T> | FindOptionsSelectByString<T> | undefined {
+  ): FindOptionsSelect<T> | undefined {
     if (select === undefined) {
       return select
     }
@@ -106,7 +110,7 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     const keys = Object.keys(order)
 
     if (Array.isArray(select)) {
-      return [...new Set([...select, ...keys])]
+      return Array.from(new Set([...select, ...keys])) as FindOptionsSelect<T>
     }
 
     return {
@@ -144,16 +148,16 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     for (let i = keys.length - 1; i >= 0; i--) {
       const key = keys[i]
       const keyLastEntityValue = keysLastEntityValues[i]
-      const preceedingKeys = keys.slice(0, i)
-      const preceedingKeysLastEntityValues = keysLastEntityValues.slice(0, i)
+      const precedingKeys = keys.slice(0, i)
+      const precedingKeysLastEntityValues = keysLastEntityValues.slice(0, i)
 
-      const preceedingKeysWhere = Object.fromEntries(
-        preceedingKeys.map((k, i) => [k, preceedingKeysLastEntityValues[i]])
+      const precedingKeysWhere = Object.fromEntries(
+        precedingKeys.map((k, i) => [k, precedingKeysLastEntityValues[i]])
       )
 
       const clause = {
         ...where,
-        ...preceedingKeysWhere,
+        ...precedingKeysWhere,
         [key]: this.getKeyCondition(where, order, key, keyLastEntityValue)
       } as FindOptionsWhere<T>
 
@@ -191,9 +195,9 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
     if (existingCondition === undefined) {
       return batchCondition
     } else if (existingCondition instanceof FindOperator) {
-      return SafeAnd(batchCondition, existingCondition)
+      return And(batchCondition, existingCondition)
     } else {
-      return SafeAnd(batchCondition, Equal(existingCondition))
+      return And(batchCondition, Equal(existingCondition))
     }
   }
 }

@@ -191,6 +191,7 @@ export const vueComputedRefGenericsRule = createRule<[], MessageIds>({
           const sourceText = context.sourceCode.getText(node)
 
           // Look for <...> pattern before ()
+          // eslint-disable-next-line e18e/prefer-static-regex
           hasTypeParameterOnCall = /<[^>]+>/.test(sourceText.split('(')[0])
         }
 

@@ -21,7 +21,9 @@ const DISTANCE_MULTIPLIERS: Record<DistanceUnit, number> = {
 }
 
 export class Distance extends Quantity<DistanceUnit, Distance> {
-  protected baseUnit = DistanceUnit.METER
+  protected getBaseUnit () {
+    return DistanceUnit.METER
+  }
 
   protected convertValueToBaseUnit (value: number, fromUnit: DistanceUnit): number {
     return value * DISTANCE_MULTIPLIERS[fromUnit]
@@ -38,4 +40,6 @@ export class Distance extends Quantity<DistanceUnit, Distance> {
   get kilometers (): number {
     return this.asNumber(DistanceUnit.KILOMETER)
   }
+
+  static ZERO = new Distance(0, DistanceUnit.METER)
 }

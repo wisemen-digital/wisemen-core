@@ -1,26 +1,41 @@
 # Instrumentation
 
-OpenTelemetry tracing works best with automatic instrumentations. The helper ships a convenience function so you can opt-in with one call.
+OpenTelemetry tracing works best with automatic instrumentations. `telemetry.init(app)` already registers the default Fetch and User Interaction instrumentations once.
 
-## Register defaults
+Metrics use the same bootstrap path. When `metricsEndpoint` is configured, `telemetry.init(app)` also initializes the global OTEL meter provider so instrumentations or application code can emit metrics through it.
 
-`registerAppInstrumentations()` registers Fetch instrumentation (with trace headers propagated to all CORS URLs) and User Interaction instrumentation for `click`, `change`, and `keydown` events.
+## Defaults
+
+The default setup includes:
+
+- Fetch instrumentation with trace headers propagated only to configured URLs
+- User Interaction instrumentation for `click`, `change`, and `keydown` events
+
+Configure trace propagation through `Telemetry`:
 
 ```typescript
-import { registerAppInstrumentations } from '@wisemen/vue-core-telemetry'
-
-registerAppInstrumentations()
+const telemetry = new Telemetry({
+  accessTokenFn: () => authClient.getAccessToken(),
+  serviceName: 'vue-app',
+  tracePropagationUrls: [
+    import.meta.env.VITE_API_URL,
+    /^https:\/\/api\.example\.com\/v2(?:$|[/?#])/,
+  ],
+})
 ```
 
-## Add custom instrumentations
+String values are treated as URL prefixes. Use regular expressions when you need custom matching. Only include APIs that allow the `traceparent` header in CORS preflight responses.
 
-Pass extra instrumentations for other libraries (e.g. document load, web vitals). They are appended to the defaults.
+## Add extra instrumentations
+
+If you need more instrumentations for other libraries (for example document load or web vitals), pass them to `registerAppInstrumentations()`. The defaults remain registered only once.
 
 ```typescript
 import { registerAppInstrumentations } from '@wisemen/vue-core-telemetry'
 import { DocumentLoadInstrumentation } from '@opentelemetry/instrumentation-document-load'
 
-registerAppInstrumentations([
-  new DocumentLoadInstrumentation(),
-])
+registerAppInstrumentations({
+  tracePropagationUrls: [import.meta.env.VITE_API_URL],
+  instrumentations: [new DocumentLoadInstrumentation()],
+})
 ```

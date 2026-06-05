@@ -1,13 +1,16 @@
 import type { VariantProps } from 'tailwind-variants'
 
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createDialogStyle = tv({
   slots: {
-    body: 'flex-1 overflow-y-auto px-xl py-xs',
+    body: `
+      flex-1 overflow-y-auto px-xl pt-xs pb-xl
+      group-has-data-dialog-footer/dialog:pb-xs
+    `,
     chin: `
       absolute bottom-0 -z-10 w-full rounded-t-[calc(1rem+5px)] rounded-b-none
-      shadow-xl transition-transform duration-200
+      transition-transform duration-200
       sm:top-0 sm:rounded-[calc(1rem+5px)]
     `,
     content: `
@@ -17,7 +20,7 @@ export const createDialogStyle = tv({
       sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
     `,
     contentWrapper: `
-      z-modal fixed inset-x-0 bottom-0 flex w-full flex-col
+      fixed inset-x-0 bottom-0 flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
     `,
@@ -25,8 +28,9 @@ export const createDialogStyle = tv({
     header: 'sticky top-0 z-10 bg-primary',
     innerContent: '',
     overlay: `
-      z-modal fixed inset-0 bg-linear-to-t from-black/50 to-black/25
+      fixed inset-0 z-40 bg-linear-to-t from-black/50 to-black/25
       will-change-[opacity]
+      dark:from-black/80 dark:to-black/50
     `,
   },
   variants: {

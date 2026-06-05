@@ -1,5 +1,68 @@
 # @wisemen/node-doc-processor
 
+## 1.3.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.9
+
+## 1.3.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.8
+
+## 1.3.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.7
+
+## 1.3.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.6
+
+## 1.3.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.5
+
+## 1.3.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.4
+
+## 1.3.7
+
+### Patch Changes
+
+- Updated dependencies [[`c579547`](https://github.com/wisemen-digital/wisemen-core/commit/c579547eb4568b1e57c0edeaa6ec24fd931fd360)]:
+  - @wisemen/pgboss-nestjs-job@4.0.3
+
+## 1.3.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.2
+
+## 1.3.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/pgboss-nestjs-job@4.0.1
+
 ## 1.3.4
 
 ### Patch Changes

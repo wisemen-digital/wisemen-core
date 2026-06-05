@@ -26,8 +26,8 @@ export const tabsVariants = tv({
     `,
     indicatorInner: 'hidden',
     item: `
-      group/tabs-item relative z-10 flex cursor-pointer items-center gap-sm
-      text-sm font-semibold whitespace-nowrap duration-200
+      group/tabs-item relative z-10 flex items-center gap-sm text-sm
+      font-semibold whitespace-nowrap duration-200
       disabled:cursor-not-allowed
       data-[orientation=vertical]:text-left
     `,
@@ -90,7 +90,7 @@ export const tabsVariants = tv({
         `,
         indicatorInner: 'block size-full rounded-sm bg-brand-primary-alt',
         item: `
-          rounded-sm px-lg py-sm outline-2 outline-transparent
+          rounded-sm px-lg py-xs outline-2 outline-transparent
           focus-visible:outline-fg-brand-primary-alt
           disabled:opacity-75
           data-[state=active]:text-brand-secondary

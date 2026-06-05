@@ -12,6 +12,7 @@ import {
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
+import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
 import MainSidebarNavigationLinkProvider from '@/ui/sidebar/components/MainSidebarNavigationLinkProvider.vue'
@@ -20,7 +21,7 @@ import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 export interface Props {
   isActive?: (route: RouteLocationNormalized) => boolean
   icon: Component
-  keyboardShortcut?: string | null
+  keyboardShortcut?: KeyboardShortcut | null
   label: string
   to: RouteLocationRaw
 }
@@ -57,7 +58,7 @@ const isTooltipDisabled = computed<boolean>(() => {
     return true
   }
 
-  if (collapsedVariant.value === 'minified' && isSidebarOpen && props.keyboardShortcut === null) {
+  if (collapsedVariant.value === 'minified' && isSidebarOpen.value && props.keyboardShortcut === null) {
     return true
   }
 
@@ -90,9 +91,8 @@ const isTooltipDisabled = computed<boolean>(() => {
             }"
             class="
               group grid rounded-md duration-100
-              hover:bg-primary-hover
-              data-active:bg-brand-primary
-              dark:data-active:bg-tertiary
+              hover:bg-fg-primary/4
+              data-active:bg-fg-primary/4
             "
           >
             <RowLayout
@@ -127,7 +127,8 @@ const isTooltipDisabled = computed<boolean>(() => {
               >
                 <span
                   class="
-                    truncate text-xs font-medium text-secondary duration-100
+                    truncate text-xs font-medium whitespace-nowrap
+                    text-secondary duration-100
                     group-hover:text-primary
                     group-data-active:text-brand-secondary
                   "

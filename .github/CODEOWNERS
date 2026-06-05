@@ -9,3 +9,6 @@
 
 # Web packages
 /packages/web/ @NickBanken @JeffreyNijs @maltsavkiryl @Blocken-Jordy @JeroenVanC @Robbe95 @wouterlms
+
+# Ignored
+/.changeset

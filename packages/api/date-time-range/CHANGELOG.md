@@ -1,5 +1,22 @@
 # @wisemen/date-time-range
 
+## 1.1.0
+
+### Minor Changes
+
+- [#1083](https://github.com/wisemen-digital/wisemen-core/pull/1083) [`8a6756e`](https://github.com/wisemen-digital/wisemen-core/commit/8a6756eab32e79c873daedff49836207d6f3e43b) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump @wisemen/pagination
+
+### Patch Changes
+
+- Updated dependencies [[`a3e5786`](https://github.com/wisemen-digital/wisemen-core/commit/a3e5786c925125459579925740fcfbf3edf610c3)]:
+  - @wisemen/pagination@1.0.0
+
+## 1.0.23
+
+### Patch Changes
+
+- [#1019](https://github.com/wisemen-digital/wisemen-core/pull/1019) [`46f65c4`](https://github.com/wisemen-digital/wisemen-core/commit/46f65c4a777e18cafd7845d16684f69ccb0022d1) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - rework: `StartsAfter` and `EndsBefore` typeorm operators to work on timestamps / plaindates instead of ranges
+
 ## 1.0.22
 
 ### Patch Changes

@@ -52,14 +52,14 @@ const toClasses = computed<string>(() => {
             :class="{
               'group-hover:text-primary': props.to !== undefined,
             }"
-            class="size-4 shrink-0 text-quaternary"
+            class="size-4 shrink-0 text-tertiary"
           />
         </ActionTooltip>
         <UIText
           v-if="props.label"
           :text="props.label"
           :class="twMerge(
-            'text-xs text-quaternary',
+            'text-xs text-tertiary',
             srOnlyClasses,
             toClasses,
           )"

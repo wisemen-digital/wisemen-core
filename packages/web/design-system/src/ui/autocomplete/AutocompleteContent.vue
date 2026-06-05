@@ -66,16 +66,17 @@ onBeforeUnmount(() => {
   <RekaComboboxPortal to="body">
     <ThemeProvider :as-child="true">
       <RekaComboboxContent
-        :side-offset="props.popoverSideOffset"
-        :collision-padding="props.popoverCollisionPadding"
         :side="props.popoverSide"
         :align="props.popoverAlign"
         :align-offset="props.popoverAlignOffset"
+        :hide-when-empty="true"
+        :side-offset="4"
+        :collision-padding="8"
         position="popper"
         sticky="always"
         data-animation="popover-default"
         class="
-          z-40 w-(--reka-combobox-trigger-width)
+          z-50 w-(--reka-combobox-trigger-width)
           origin-(--reka-combobox-content-transform-origin)
           will-change-[transform,opacity]
         "

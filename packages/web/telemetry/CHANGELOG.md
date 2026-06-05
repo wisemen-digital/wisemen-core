@@ -1,3 +1,41 @@
+## Unreleased
+
+## 2.0.0
+
+### Major Changes
+
+- [#1145](https://github.com/wisemen-digital/wisemen-core/pull/1145) [`6585496`](https://github.com/wisemen-digital/wisemen-core/commit/658549632e5826c0188c1906e4cfaabfe6f1e8e2) Thanks [@maltsavkiryl](https://github.com/maltsavkiryl)! - add sample rate and required tracePropagationUrls
+
+### Major Changes
+
+- Breaking change: require `tracePropagationUrls` in `TelemetryOptions` and `registerAppInstrumentations()` so fetch trace headers are only propagated to explicitly configured cross-origin URLs.
+- Add optional `traceSampleRate` to `TelemetryOptions` for trace-only sampling.
+
+## 1.1.0
+
+### Minor Changes
+
+- [#991](https://github.com/wisemen-digital/wisemen-core/pull/991) [`a191064`](https://github.com/wisemen-digital/wisemen-core/commit/a19106462da14b0fb4644bbcc666cdea48e4032b) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Security updates: resolved npm vulnerabilities via pnpm overrides
+  - Fixed critical protobufjs vulnerabilities (CVE: GHSA-xq3m-2v4x-88gg)
+  - Fixed high severity vite vulnerabilities
+  - Fixed high severity fastify vulnerability (CVE: GHSA-247c-9743-5963)
+  - Fixed moderate follow-redirects vulnerability (CVE: GHSA-r4q5-vmmm-2653)
+  - Fixed moderate fast-xml-parser vulnerability (CVE: GHSA-gh4j-gqv2-49f6)
+  - Fixed moderate uuid vulnerability (CVE: GHSA-w5hq-g745-h8pq)
+
+## 1.0.0
+
+### Major Changes
+
+- [#916](https://github.com/wisemen-digital/wisemen-core/pull/916) [`c36431e`](https://github.com/wisemen-digital/wisemen-core/commit/c36431e1a757f6001ecea6cc2cc32e0bee0e9ef8) Thanks [@maltsavkiryl](https://github.com/maltsavkiryl)! - Removed sentry. Cleanup package and add default configuration.
+- Breaking change: migrate `@wisemen/vue-core-telemetry` to OpenTelemetry-only and remove all Sentry integration.
+- Replace the public API with OTEL-native configuration and helpers:
+  `TelemetryOptions` is now a single OTEL config,
+  `recordException()` replaces `captureException()`,
+  `log()` replaces `captureMessage()`,
+  and `setAttribute()` / `setAttributes()` replace the Sentry tag/extra helpers.
+- Add OTEL metrics support via `metricsEndpoint`, OTEL logging support via `logEndpoint`, OTEL-based Vue/browser runtime error capture, and package tests for the new behavior.
+
 ## 0.0.6
 
 ### Patch Changes

@@ -1,0 +1,216 @@
+import { useResizeObserver } from '@vueuse/core'
+import type {
+  Action,
+  ActionGroup,
+} from '@wisemen/vue-core-actions'
+import {
+  createAction,
+  useTemporaryActions,
+} from '@wisemen/vue-core-actions'
+import { SpacingWidth01Icon } from '@wisemen/vue-core-icons'
+import type { ComputedRef } from 'vue'
+import {
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  watch,
+} from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import type { TableColumnSize } from '@/ui/table/types/table.type'
+import { TableUtil } from '@/ui/table/utils/table.util'
+
+function buildManualTemplate(widths: number[], fittingIndex: number | null): string {
+  const columns = widths
+    .map((w, i) => (i === fittingIndex ? 'max-content' : `${w}px`))
+    .join(' ')
+
+  return `${columns} minmax(min-content, auto) min-content`
+}
+
+export function useTableColumnWidths(
+  columnSizes: ComputedRef<TableColumnSize[]>,
+  gridEl: ComputedRef<HTMLElement | null>,
+  isInitialized: ComputedRef<boolean>,
+  actionGroup: ComputedRef<ActionGroup | null>,
+  isColumnResizeDisabled: ComputedRef<boolean>,
+) {
+  const frozenTemplate = ref<string | null>(null)
+  const manualWidths = ref<number[] | null>(null)
+  const fittingColumnIndex = ref<number | null>(null)
+  const resizingColumnIndex = ref<number | null>(null)
+  const resizeStartX = ref(0)
+  const resizeStartWidth = ref(0)
+
+  const isResizing = computed<boolean>(() => resizingColumnIndex.value !== null)
+
+  const gridTemplateColumns = computed<string>(() => {
+    if (manualWidths.value !== null) {
+      return buildManualTemplate(manualWidths.value, fittingColumnIndex.value)
+    }
+
+    return frozenTemplate.value ?? buildFluidTemplate()
+  })
+
+  function buildFluidTemplate(): string {
+    return TableUtil.columnSizesToGridTemplateColumns(columnSizes.value, true)
+  }
+
+  watch([
+    gridEl,
+    isInitialized,
+    columnSizes,
+  ], ([
+    el,
+    initialized,
+  ]) => {
+    if (el === null || !initialized) {
+      return
+    }
+
+    captureComputedTemplate(el)
+  })
+
+  let lastContainerWidth = 0
+
+  useResizeObserver(gridEl, (entries) => {
+    const width = entries[0]?.borderBoxSize[0]?.inlineSize
+
+    if (width === undefined || width === lastContainerWidth) {
+      return
+    }
+
+    lastContainerWidth = width
+
+    if (manualWidths.value === null && gridEl.value !== null) {
+      captureComputedTemplate(gridEl.value)
+    }
+  }, {
+    box: 'border-box',
+  })
+
+  async function captureComputedTemplate(el: HTMLElement): Promise<void> {
+    frozenTemplate.value = null
+    await nextTick()
+    frozenTemplate.value = getComputedStyle(el).gridTemplateColumns
+  }
+
+  watch(() => columnSizes.value.length, () => {
+    manualWidths.value = null
+    fittingColumnIndex.value = null
+    resizingColumnIndex.value = null
+  })
+
+  function snapshotWidths(cellEl: HTMLElement): number[] {
+    const siblings = Array.from(cellEl.parentElement?.children ?? []) as HTMLElement[]
+
+    return siblings
+      .slice(0, columnSizes.value.length - 1)
+      .map((el) => el.getBoundingClientRect().width)
+  }
+
+  function startColumnResize(columnIndex: number, mouseX: number, cellEl: HTMLElement): void {
+    const widths = snapshotWidths(cellEl)
+
+    manualWidths.value = widths
+    resizingColumnIndex.value = columnIndex
+    resizeStartX.value = mouseX
+    resizeStartWidth.value = widths[columnIndex]!
+  }
+
+  function onMouseMove(e: MouseEvent): void {
+    if (resizingColumnIndex.value === null || manualWidths.value === null) {
+      return
+    }
+
+    const delta = e.clientX - resizeStartX.value
+    const updatedWidth = Math.max(50, resizeStartWidth.value + delta)
+    const updated = [
+      ...manualWidths.value,
+    ]
+
+    updated[resizingColumnIndex.value] = updatedWidth
+    manualWidths.value = updated
+  }
+
+  function stopResize(): void {
+    resizingColumnIndex.value = null
+  }
+
+  async function fitColumnToContent(columnIndex: number, cellEl: HTMLElement): Promise<void> {
+    if (manualWidths.value === null) {
+      manualWidths.value = snapshotWidths(cellEl)
+    }
+
+    fittingColumnIndex.value = columnIndex
+    await nextTick()
+
+    const width = cellEl.getBoundingClientRect().width
+    const updated = [
+      ...manualWidths.value,
+    ]
+
+    updated[columnIndex] = width
+    manualWidths.value = updated
+    fittingColumnIndex.value = null
+  }
+
+  function fitAllColumnsToContent(headerCells: HTMLElement[]): void {
+    const el = gridEl.value
+
+    if (headerCells.length === 0 || el === null) {
+      return
+    }
+
+    const totalCells = headerCells.length + 2
+
+    el.style.gridTemplateColumns = Array.from({
+      length: totalCells,
+    }).fill('max-content').join(' ')
+
+    const measuredWidths = headerCells.map((cell) => cell.getBoundingClientRect().width)
+
+    el.style.gridTemplateColumns = buildManualTemplate(measuredWidths, null)
+    manualWidths.value = measuredWidths
+  }
+
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', stopResize)
+
+  onBeforeUnmount(() => {
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', stopResize)
+  })
+
+  const i18n = useI18n()
+
+  function getResizableHeaderCells(): HTMLElement[] {
+    const headerRow = gridEl.value?.children[0] as HTMLElement | undefined
+
+    if (headerRow === undefined) {
+      return []
+    }
+
+    return Array.from(headerRow.children).slice(0, columnSizes.value.length - 1) as HTMLElement[]
+  }
+
+  const autoFitColumnsAction: Action = createAction({
+    id: 'table-auto-fit-columns',
+    isApplicable: () => !isColumnResizeDisabled.value,
+    name: () => i18n.t('component.table.auto_fit_columns_action.name'),
+    execute: () => fitAllColumnsToContent(getResizableHeaderCells()),
+    group: actionGroup.value ?? undefined,
+    icon: () => SpacingWidth01Icon,
+  })
+
+  useTemporaryActions(autoFitColumnsAction)
+
+  return {
+    isResizing,
+    autoFitColumnsAction,
+    fitColumnToContent,
+    gridTemplateColumns,
+    startColumnResize,
+  }
+}
