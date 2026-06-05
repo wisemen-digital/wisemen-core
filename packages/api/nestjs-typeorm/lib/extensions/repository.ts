@@ -1,7 +1,6 @@
-import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, type FindOperatorType, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, ObjectType, Repository, type ValueTransformer } from 'typeorm'
+import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, ObjectType, QueryDeepPartialEntity, Repository } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
-import { QueryDeepPartialEntity } from 'typeorm/browser'
 
 export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
   constructor (entity: EntityTarget<T>, manager: EntityManager) {
