@@ -3,5 +3,9 @@
   "baseBranch": "main",
   "changelog": "github",
   "access": "restricted",
-  "updateInternalDependencies": "patch"
+  "updateInternalDependencies": "patch",
+  "publish": {
+    "provenance": true
+  }
 }
+
