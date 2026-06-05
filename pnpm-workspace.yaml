@@ -279,6 +279,8 @@ catalogs:
     "@commitlint/cli": "20.5.0"
     "@commitlint/config-conventional": "20.5.0"
     "@tanstack/intent": ^0.0.29
+    "@varlock/bumpy": "1.13.1"
+
   types:
     "@tsconfig/node18": "18.2.4"
     "@types/babel__traverse": "7.28.0"
@@ -348,7 +350,7 @@ catalogs:
   "protobufjs@>=8.0.0 <=8.0.1": "8.0.2"
   "fast-uri": "3.1.2"
   "follow-redirects@<=1.15.11": "1.16.0"
-  '@vitest/browser@>=4.0.17 <4.1.6': ^4.1.6
+  "@vitest/browser@>=4.0.17 <4.1.6": ^4.1.6
   protobufjs@<=7.5.7: ^7.5.8
   protobufjs@>=8.0.0 <8.2.0: ^8.2.0
 
@@ -374,4 +376,4 @@ minimumReleaseAgeExclude:
   - js-cookie@3.0.6
   - qs@6.15.2
   - axios@1.16.0
-  - '@vitest/browser@4.1.6'
+  - "@vitest/browser@4.1.6"
