@@ -46,7 +46,7 @@
 
   --bg-primary: var(--white);
   --bg-primary-alt: var(--white);
-  --bg-primary-hover: var(--gray-100);
+  --bg-primary-hover: var(--gray-50);
   --bg-primary-solid: var(--gray-950);
   --bg-secondary: var(--gray-50);
   --bg-secondary-alt: var(--gray-50);
@@ -86,6 +86,8 @@
   --border-brand-alt: var(--brand-600);
   --border-error: var(--error-500);
   --border-error-subtle: var(--error-300);
+
+  --corner-highlight: var(--brand-300);
 }
 
 .dark {
@@ -137,7 +139,7 @@
 
   --bg-primary: var(--gray-950);
   --bg-primary-alt: var(--bg-secondary);
-  --bg-primary-hover: var(--gray-800);
+  --bg-primary-hover: var(--gray-900);
   --bg-primary-solid: var(--bg-secondary);
   --bg-secondary: var(--gray-900);
   --bg-secondary-alt: var(--bg-primary);
@@ -177,6 +179,8 @@
   --border-brand-alt: var(--gray-700);
   --border-error: var(--error-400);
   --border-error-subtle: var(--error-500);
+
+  --corner-highlight: var(--brand-900);
 }
 
 .system {
@@ -268,6 +272,8 @@
   --border-error: var(--error-500);
   --border-error-subtle: var(--error-300);
 
+  --corner-highlight: var(--brand-300);
+
   @media (prefers-color-scheme: dark) {
     --fg-primary: var(--white);
     --fg-secondary: var(--gray-300);
@@ -317,7 +323,7 @@
 
     --bg-primary: var(--gray-950);
     --bg-primary-alt: var(--bg-secondary);
-    --bg-primary-hover: var(--gray-800);
+    --bg-primary-hover: var(--gray-900);
     --bg-primary-solid: var(--bg-secondary);
     --bg-secondary: var(--gray-900);
     --bg-secondary-alt: var(--bg-primary);
@@ -357,5 +363,7 @@
     --border-brand-alt: var(--gray-700);
     --border-error: var(--error-400);
     --border-error-subtle: var(--error-500);
+
+    --corner-highlight: var(--brand-900);
   }
 }

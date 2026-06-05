@@ -51,7 +51,7 @@ function sortProps(props: PropDef[]): PropDef[] {
     <div
       class="
         border-secondary gap-x-2xl mt-3xl grid max-h-120
-        grid-cols-[1fr_2fr_1fr] overflow-auto rounded-lg border border-solid
+        grid-cols-[1fr_2fr_1.5fr] overflow-auto rounded-lg border border-solid
       "
     >
       <div class="bg-secondary col-span-full grid grid-cols-subgrid">
@@ -62,11 +62,8 @@ function sortProps(props: PropDef[]): PropDef[] {
           Description
         </div>
 
-        <!-- <div class="p-lg text-primary font-semibold text-sm">
-          Type
-        </div> -->
         <div class="p-lg text-primary text-sm font-semibold">
-          Default
+          Type
         </div>
       </div>
 
@@ -88,22 +85,16 @@ function sortProps(props: PropDef[]): PropDef[] {
           v-html="prop.description"
         />
 
-        <!-- <div>
-          <code class="break-words inline-flex whitespace-pre-wrap">
-            <div
-              v-if="!prop.type.startsWith('(') && !prop.type.startsWith('{')"
-              class="break-words whitespace-break-spaces"
-              v-html="formatTypeScriptCode(prop.type)"
-            />
-
-            <div v-else>-</div>
+        <div class="p-lg flex flex-col gap-1">
+          <code class="wrap-break-word whitespace-break-spaces w-fit">
+            {{ prop.type ?? '-' }}
           </code>
-        </div> -->
-
-        <div class="p-lg">
-          <code>
-            {{ prop.default ?? '-' }}
-          </code>
+          <span
+            v-if="prop.default !== undefined"
+            class="text-tertiary wrap-break-word whitespace-break-spaces text-xs"
+          >
+            Default: {{ prop.default }}
+          </span>
         </div>
       </div>
     </div>

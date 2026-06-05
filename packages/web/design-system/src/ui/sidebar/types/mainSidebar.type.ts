@@ -1,9 +1,7 @@
 import type { Component } from 'vue'
-import type {
-  RouteLocationNormalized,
-  RouteLocationRaw,
-} from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 
+import type { RegisteredRouteLocationRaw } from '@/register'
 import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
 
 export type MainSidebarCollapsedVariant = 'hidden' | 'minified'
@@ -27,7 +25,7 @@ export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
   /**
    * Route location to navigate to
    */
-  to: RouteLocationRaw
+  to: RegisteredRouteLocationRaw
 
   /**
    * Optional callback function to execute on click, in addition to navigation

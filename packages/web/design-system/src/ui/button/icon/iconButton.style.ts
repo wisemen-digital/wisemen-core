@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createIconButtonStyle = tv({
   compoundVariants: [
@@ -38,8 +38,8 @@ export const createIconButtonStyle = tv({
     icon: `shrink-0`,
     loader: `mx-auto duration-100 [grid-area:stack]`,
     root: `
-      group/button shrink-0 cursor-pointer items-center justify-center border
-      outline-2 outline-offset-1 outline-transparent duration-100
+      group/button shrink-0 items-center justify-center border outline-2
+      outline-offset-1 outline-transparent duration-100
       not-data-interactive:cursor-not-allowed
     `,
     rowLayout: `
@@ -119,10 +119,12 @@ export const createIconButtonStyle = tv({
         icon: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         loader: `
           text-primary-on-brand
           group-disabled/button:text-disabled
+          dark:text-white
         `,
         root: `
           border-brand-600 bg-brand-solid

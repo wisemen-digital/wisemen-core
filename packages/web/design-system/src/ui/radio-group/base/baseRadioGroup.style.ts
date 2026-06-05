@@ -1,10 +1,10 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createBaseRadioGroupStyle = tv({
   slots: {
     cardRoot: `
-      group/radio-group-item flex cursor-pointer items-center justify-start
-      rounded-md border border-secondary p-lg outline-none
+      group/radio-group-item flex items-center justify-start rounded-md border
+      border-secondary p-lg outline-none
       disabled:cursor-not-allowed
       data-active:border-brand-600
     `,
@@ -31,8 +31,8 @@ export const createBaseRadioGroupStyle = tv({
     `,
     label: `text-xs font-medium text-primary`,
     root: `
-      group/radio-group-item flex cursor-pointer items-center justify-start
-      gap-x-sm outline-none
+      group/radio-group-item flex items-center justify-start gap-x-sm
+      outline-none
       disabled:cursor-not-allowed
     `,
   },

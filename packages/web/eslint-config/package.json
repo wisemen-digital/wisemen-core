@@ -69,8 +69,10 @@
     "globals": "catalog:lint-web"
   },
   "devDependencies": {
+    "@eslint/config-inspector": "catalog:lint-web",
     "tailwindcss": "catalog:style",
     "tsdown": "catalog:build",
+    "typescript": "catalog:build",
     "vitest": "catalog:test"
   }
 }

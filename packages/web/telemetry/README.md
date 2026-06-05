@@ -50,6 +50,7 @@ import { Telemetry } from '@wisemen/vue-core-telemetry'
 import type { App } from 'vue'
 
 import {
+  API_BASE_URL,
   CURRENT_BUILD_COMMIT,
   CURRENT_BUILD_NUMBER,
   CURRENT_BUILD_TIMESTAMP,
@@ -71,6 +72,7 @@ const telemetry = new Telemetry({
   metricsEndpoint: OTEL_METRICS_ENDPOINT,
   serviceName: OTEL_SERVICE_NAME ?? 'vue-template',
   traceEndpoint: OTEL_TRACE_ENDPOINT,
+  tracePropagationUrls: [API_BASE_URL],
 })
 
 export const telemetryPlugin = {
@@ -107,6 +109,8 @@ The `Telemetry` constructor accepts the following options:
 | --- | --- | --- |
 | `accessTokenFn` | `() => Promise<string>` | Must resolve to a valid bearer token for the OTLP endpoint. Called before every batch export. |
 | `traceEndpoint` | `string` | URL of the OTLP/HTTP trace collector. Enables tracing when provided. |
+| `tracePropagationUrls` | `Array<string \| RegExp>` | Required list of trusted cross-origin URLs that may receive trace propagation headers. Pass `[]` to disable cross-origin propagation. |
+| `traceSampleRate` | `number` | Optional trace sampling ratio from `0` to `1`. Defaults to `1` and only affects traces. |
 | `metricsEndpoint` | `string` | URL of the OTLP metric collector. Initializes the OTEL meter provider when provided. |
 | `logEndpoint` | `string` | URL of the OTLP/HTTP log collector. Enables OTEL logs when provided. |
 | `serviceName` | `string` | Telemetry service identifier (e.g. app name). |
@@ -116,15 +120,18 @@ The `Telemetry` constructor accepts the following options:
 
 ## Registering additional instrumentations
 
-`telemetry.init(app)` automatically registers the default Fetch and User Interaction instrumentations once. If your application needs extra instrumentations, use `registerAppInstrumentations` to append them:
+`telemetry.init(app)` automatically registers the default Fetch and User Interaction instrumentations once. Fetch trace headers are only propagated to same-origin requests and the configured `tracePropagationUrls`.
+
+If your application needs extra instrumentations, use `registerAppInstrumentations` to append them:
 
 ```ts
 import { registerAppInstrumentations } from '@wisemen/vue-core-telemetry'
 import { DocumentLoadInstrumentation } from '@opentelemetry/instrumentation-document-load'
 
-registerAppInstrumentations([
-  new DocumentLoadInstrumentation(),
-])
+registerAppInstrumentations({
+  tracePropagationUrls: [API_BASE_URL],
+  instrumentations: [new DocumentLoadInstrumentation()],
+})
 ```
 
 ## API surface
@@ -133,11 +140,12 @@ registerAppInstrumentations([
 - `recordException(error, attributes?)` – records the exception on the active span and emits an OTEL error log when logging is configured.
 - `log(message, options?)` – emits an OTEL log record or falls back to a span event when no logger is configured.
 - `setAttribute(key, value)` / `setAttributes(record)` / `setUser(user)` – enrich subsequent logs and exceptions with shared attributes.
-- `registerAppInstrumentations(instrumentations?)` – helper for adding extra instrumentations beyond the defaults.
+- `registerAppInstrumentations(options)` – helper for adding extra instrumentations beyond the defaults while configuring trusted trace propagation URLs.
 
 ## When To Configure Which Endpoint
 
 - Configure `traceEndpoint` when you want distributed tracing and request/user-interaction visibility.
+- Configure `tracePropagationUrls` with your API base URL(s) when cross-origin APIs should receive `traceparent`/`tracestate`; those APIs must allow those headers in CORS.
 - Configure `metricsEndpoint` when you want OTEL metrics exported from frontend metric instruments or metric-producing instrumentations.
 - Configure `logEndpoint` when you want frontend logs and exception events to be queryable as logs.
 - Configure all three when you want the full package behavior.

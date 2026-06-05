@@ -202,7 +202,7 @@ useProvideDatePickerContext({
           :collision-padding="10"
           data-animation="popover-default"
           class="
-            z-40 origin-(--reka-popover-content-transform-origin)
+            z-50 origin-(--reka-popover-content-transform-origin)
             will-change-[transform,opacity]
           "
           align="end"

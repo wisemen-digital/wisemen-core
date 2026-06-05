@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import {
+  AnimatePresence,
+  Motion,
+} from 'motion-v'
+import {
   computed,
   ref,
 } from 'vue'
@@ -13,6 +17,8 @@ import {
   addressToFormattedAddress,
   formattedAddressToString,
 } from '@/ui/address-autocomplete/addressAutocomplete.util'
+import AddressAutocompleteSelectedCard from '@/ui/address-autocomplete/AddressAutocompleteSelectedCard.vue'
+import AnimateHeight from '@/ui/animate-height/AnimateHeight.vue'
 import { UIAutocomplete } from '@/ui/autocomplete'
 import { createAutocompleteOptions } from '@/ui/autocomplete/autocomplete.type'
 import { useInjectConfigContext } from '@/ui/config-provider'
@@ -55,6 +61,30 @@ const selectedAddress = computed<FormattedAddress | null>(() => {
 
 const displayModelValue = computed<FormattedAddress | null>(() => tempAddress.value ?? selectedAddress.value)
 
+const addressForCard = computed<Address | null>(() => {
+  if (modelValue.value !== null) {
+    return modelValue.value
+  }
+
+  if (tempAddress.value !== null) {
+    return {
+      placeId: tempAddress.value.placeId,
+      bus: '',
+      city: '',
+      coordinates: {
+        lat: null,
+        lng: null,
+      },
+      country: '',
+      postalCode: tempAddress.value.secondaryText,
+      street: tempAddress.value.mainText,
+      streetNumber: '',
+    }
+  }
+
+  return null
+})
+
 const autocompleteItems = computed(() => createAutocompleteOptions(addressResults.value))
 
 async function onSearch(searchTerm: string): Promise<void> {
@@ -92,27 +122,64 @@ async function onUpdateModelValue(value: FormattedAddress | null): Promise<void>
 </script>
 
 <template>
-  <UIAutocomplete
-    v-bind="props"
-    :model-value="displayModelValue"
-    :items="autocompleteItems"
-    :is-loading="isLoading"
-    :display-fn="(fa: FormattedAddress) => formattedAddressToString(fa)"
-    search-mode="remote"
-    @blur="emit('blur')"
-    @update:search="onSearch"
-    @update:model-value="onUpdateModelValue"
-  >
-    <template #label-left>
-      <slot name="label-left" />
-    </template>
+  <AnimateHeight class="max-w-full">
+    <AnimatePresence mode="wait">
+      <Motion
+        :key="addressForCard !== null ? 'card' : 'autocomplete'"
+        :class="props.class"
+        :initial="{
+          filter: 'blur(4px)',
+          opacity: 0,
+        }"
+        :animate="{
+          filter: 'blur(0px)',
+          opacity: 1,
+        }"
+        :exit="{
+          filter: 'blur(4px)',
+          opacity: 0,
+        }"
+        :transition="{
+          duration: 0.2,
+        }"
+        class="max-w-full"
+      >
+        <AddressAutocompleteSelectedCard
+          v-if="addressForCard !== null"
+          :address="addressForCard"
+          :is-disabled="props.isDisabled"
+          :is-loading="tempAddress !== null"
+          :is-readonly="props.isReadonly"
+          @update:model-value="modelValue = $event"
+          @clear="modelValue = null"
+          @error="emit('error', $event)"
+        />
 
-    <template #label-right>
-      <slot name="label-right" />
-    </template>
+        <UIAutocomplete
+          v-else
+          v-bind="props"
+          :model-value="displayModelValue"
+          :items="autocompleteItems"
+          :is-loading="isLoading"
+          :display-fn="(fa: FormattedAddress) => formattedAddressToString(fa)"
+          search-mode="remote"
+          @blur="emit('blur')"
+          @update:search="onSearch"
+          @update:model-value="onUpdateModelValue"
+        >
+          <template #label-left>
+            <slot name="label-left" />
+          </template>
 
-    <template #left>
-      <slot name="left" />
-    </template>
-  </UIAutocomplete>
+          <template #label-right>
+            <slot name="label-right" />
+          </template>
+
+          <template #left>
+            <slot name="left" />
+          </template>
+        </UIAutocomplete>
+      </Motion>
+    </AnimatePresence>
+  </AnimateHeight>
 </template>

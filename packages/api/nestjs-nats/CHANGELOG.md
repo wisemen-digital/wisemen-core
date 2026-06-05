@@ -1,5 +1,41 @@
 # Changelog
 
+## 0.3.6
+
+### Patch Changes
+
+- Updated dependencies [[`25a324e`](https://github.com/wisemen-digital/wisemen-core/commit/25a324e11461b545ead511f2e99a533be8e280d2)]:
+  - @wisemen/opentelemetry@0.2.2
+
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`5266dcc`](https://github.com/wisemen-digital/wisemen-core/commit/5266dcce66c1df54ba1fbccb831186800c8db66b)]:
+  - @wisemen/api-error@1.0.0
+
+## 0.3.4
+
+### Patch Changes
+
+- [#1155](https://github.com/wisemen-digital/wisemen-core/pull/1155) [`c195c82`](https://github.com/wisemen-digital/wisemen-core/commit/c195c82a932ed78db52480d87263edbf5da6370f) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(elt-95): remove data from nats span and add better span names
+
+- Updated dependencies [[`baef816`](https://github.com/wisemen-digital/wisemen-core/commit/baef816c84226d2a17a780e26f844dc12e9c1b2c)]:
+  - @wisemen/opentelemetry@0.2.1
+
+## 0.3.3
+
+### Patch Changes
+
+- [#1110](https://github.com/wisemen-digital/wisemen-core/pull/1110) [`f37658c`](https://github.com/wisemen-digital/wisemen-core/commit/f37658c4c3e9089a98ca565f8631b0beb72d8feb) Thanks [@JonasVannieuwenhuijsen](https://github.com/JonasVannieuwenhuijsen)! - Added optional parameter for forbidNonWhitelisted validation and set default to false
+
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies [[`a191064`](https://github.com/wisemen-digital/wisemen-core/commit/a19106462da14b0fb4644bbcc666cdea48e4032b)]:
+  - @wisemen/opentelemetry@0.2.0
+
 ## 0.3.1
 
 ### Patch Changes

@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<ContextMenuProps>(), {
           :prioritize-position="props.prioritizePosition"
           data-animation="popover-default"
           class="
-            z-40 min-w-48 origin-(--reka-context-menu-content-transform-origin)
+            z-50 min-w-48 origin-(--reka-context-menu-content-transform-origin)
             will-change-[transform,opacity]
           "
         >

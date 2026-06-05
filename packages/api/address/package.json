@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/address",
-  "version": "0.3.7",
+  "version": "0.4.5",
   "publishConfig": {
     "access": "public"
   },
@@ -37,6 +37,9 @@
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "@types/node": "catalog:backend",
     "expect": "catalog:test",
     "typescript": "catalog:peer",
     "pg": "catalog:backend"

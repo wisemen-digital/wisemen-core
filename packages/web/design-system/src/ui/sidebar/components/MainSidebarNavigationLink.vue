@@ -58,7 +58,7 @@ const isTooltipDisabled = computed<boolean>(() => {
     return true
   }
 
-  if (collapsedVariant.value === 'minified' && isSidebarOpen && props.keyboardShortcut === null) {
+  if (collapsedVariant.value === 'minified' && isSidebarOpen.value && props.keyboardShortcut === null) {
     return true
   }
 
@@ -91,8 +91,8 @@ const isTooltipDisabled = computed<boolean>(() => {
             }"
             class="
               group grid rounded-md duration-100
-              hover:bg-secondary-hover
-              data-active:bg-tertiary
+              hover:bg-fg-primary/4
+              data-active:bg-fg-primary/4
             "
           >
             <RowLayout

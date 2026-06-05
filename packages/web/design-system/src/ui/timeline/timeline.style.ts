@@ -4,6 +4,7 @@ export const timelineVariants = tv({
   slots: {
     connector: 'flex-1 bg-quaternary',
     content: 'flex min-w-0 flex-1 flex-col',
+    icon: '',
     indicator: `
       relative z-10 flex shrink-0 items-center justify-center rounded-full
     `,
@@ -14,14 +15,17 @@ export const timelineVariants = tv({
   variants: {
     size: {
       md: {
-        connector: 'w-px',
-        content: 'pb-lg',
+        connector: 'mt-md mb-md w-px',
+        content: 'pb-3xl',
+        icon: 'size-4',
         indicator: 'size-8',
-        item: 'gap-md',
+        item: 'gap-lg',
+
       },
       sm: {
-        connector: 'w-px',
+        connector: 'mt-xs mb-xs w-px',
         content: 'pb-md',
+        icon: 'size-3',
         indicator: 'size-6',
         item: 'gap-sm',
       },

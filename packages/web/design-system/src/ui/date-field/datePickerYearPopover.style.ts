@@ -1,19 +1,19 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const datePickerYearPopoverStyle = tv({
   slots: {
     header: `flex w-full items-center justify-between`,
     heading: `text-sm font-semibold text-primary`,
     headingTrigger: `
-      cursor-pointer rounded-sm px-xxs text-sm font-semibold text-primary
-      transition-colors outline-none
+      rounded-sm px-xxs text-sm font-semibold text-primary transition-colors
+      outline-none
       hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
     `,
     pickerCell: `relative flex-1 p-0 text-center text-xs`,
     pickerCellTrigger: `
       inline-flex h-9 w-full items-center justify-center rounded-lg text-xs
-      font-normal text-secondary transition-colors duration-100 outline-none
+      font-regular text-secondary transition-colors duration-100 outline-none
       hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
       data-disabled:pointer-events-none data-disabled:text-disabled

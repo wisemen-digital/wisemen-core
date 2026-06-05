@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-typeorm",
-  "version": "0.2.1",
+  "version": "1.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -19,8 +19,8 @@
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
     "clean": "rm -rf ./dist",
     "build": "tsc",
-    "pretest": "pnpm run build",
-    "test": "node --env-file=.env --test ./**/*.test.js",
+    "pretest": "pnpm clean && pnpm run build",
+    "test": "node --env-file=.env.test --enable-source-maps --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -36,6 +36,8 @@
   "devDependencies": {
     "@types/node": "catalog:backend",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer",
     "@wisemen/eslint-config-nestjs": "workspace:*"

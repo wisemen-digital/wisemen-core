@@ -38,21 +38,23 @@ const config: StorybookConfig = {
     '../src/**/*.story.@(js|jsx|mjs|ts|tsx)',
   ],
   viteFinal(config) {
-    const pluginName = 'storybook:vue-component-meta'
-    const plugins = config.plugins as any[]
-    const idx = plugins.findIndex((x) => x?.name === pluginName)
+    // Remove dts plugin — it's only needed for library builds, not Storybook
+    const plugins = (config.plugins as any[]).filter((x) => x?.name !== 'vite:dts')
 
-    if (idx !== -1) {
-      const plugin = plugins[idx]
+    const metaPluginName = 'storybook:vue-component-meta'
+    const metaIdx = plugins.findIndex((x) => x?.name === metaPluginName)
 
-      plugins.splice(idx, 1)
+    if (metaIdx !== -1) {
+      const plugin = plugins[metaIdx]
+
+      plugins.splice(metaIdx, 1)
 
       plugins.push(plugin)
     }
 
+    config.plugins = plugins
     config.optimizeDeps = {
       ...config.optimizeDeps,
-      force: true,
     }
 
     return config

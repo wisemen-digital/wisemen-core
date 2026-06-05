@@ -168,7 +168,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
           <BadgeGroupTruncate
             v-if="isMultiple(modelValue)"
             :badges="selectedBadges"
-            class="-ml-xs w-full"
+            class="-ml-[0.3rem] w-full"
             size="sm"
             color="gray"
             variant="translucent"
@@ -218,6 +218,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
       <SelectDropdown
         v-model="modelValue"
         v-bind="props"
+        :content-width-class="props.contentWidthClass"
         @blur="emit('blur')"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"

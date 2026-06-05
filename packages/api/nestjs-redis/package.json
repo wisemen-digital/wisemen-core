@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-redis",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -30,13 +30,16 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend",
     "@nestjs/core": "catalog:backend",
-    "@wisemen/api-error": "workspace:*",
+    "@wisemen/api-error": "workspace:^",
     "redis": "catalog:backend"
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "@wisemen/api-error": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "@types/node": "catalog:backend",
     "typescript": "catalog:peer"
   }
 }
