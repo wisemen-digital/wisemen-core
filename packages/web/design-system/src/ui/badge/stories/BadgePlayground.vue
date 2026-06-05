@@ -10,30 +10,6 @@ import type { BadgeColor } from '@/ui/badge/badge.props'
 import Badge from '@/ui/badge/Badge.vue'
 import BadgeGroup from '@/ui/badge/BadgeGroup.vue'
 
-const actions = [
-  createAction({
-    id: 'badge-edit',
-    name: () => 'Edit',
-    icon: () => Edit01Icon,
-    availableWhenUnauthenticated: true,
-    execute: () => {},
-  }),
-  createAction({
-    id: 'badge-settings',
-    name: () => 'Settings',
-    icon: () => Settings01Icon,
-    availableWhenUnauthenticated: true,
-    execute: () => {},
-  }),
-  createAction({
-    id: 'badge-delete',
-    name: () => 'Delete',
-    icon: () => Trash01Icon,
-    availableWhenUnauthenticated: true,
-    execute: () => {},
-  }),
-]
-
 const props = withDefaults(defineProps<{
   hasDot?: boolean
   color?: BadgeColor
@@ -49,6 +25,30 @@ const props = withDefaults(defineProps<{
   size: 'md',
   variant: 'translucent',
 })
+
+const actions = [
+  createAction({
+    id: 'badge-edit',
+    name: () => 'Edit',
+    availableWhenUnauthenticated: true,
+    execute: () => {},
+    icon: () => Edit01Icon,
+  }),
+  createAction({
+    id: 'badge-settings',
+    name: () => 'Settings',
+    availableWhenUnauthenticated: true,
+    execute: () => {},
+    icon: () => Settings01Icon,
+  }),
+  createAction({
+    id: 'badge-delete',
+    name: () => 'Delete',
+    availableWhenUnauthenticated: true,
+    execute: () => {},
+    icon: () => Trash01Icon,
+  }),
+]
 
 const colors: BadgeColor[] = [
   'gray',

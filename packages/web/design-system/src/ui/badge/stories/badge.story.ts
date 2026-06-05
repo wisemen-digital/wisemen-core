@@ -159,29 +159,29 @@ export const WithActions: Story = {
         createAction({
           id: 'badge-story-edit',
           name: () => 'Edit',
-          icon: () => Edit01Icon,
           availableWhenUnauthenticated: true,
           execute: () => {},
+          icon: () => Edit01Icon,
         }),
         createAction({
           id: 'badge-story-settings',
           name: () => 'Settings',
-          icon: () => Settings01Icon,
           availableWhenUnauthenticated: true,
           execute: () => {},
+          icon: () => Settings01Icon,
         }),
         createAction({
           id: 'badge-story-delete',
           name: () => 'Delete',
-          icon: () => Trash01Icon,
           availableWhenUnauthenticated: true,
           execute: () => {},
+          icon: () => Trash01Icon,
         }),
       ]
 
       return {
-        args,
         actions,
+        args,
       }
     },
     template: '<BadgePlayground v-bind="args" />',
