@@ -1,5 +1,12 @@
 # @wisemen/vue-core-filters
 
+## 9.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`ae96fe9`](https://github.com/wisemen-digital/wisemen-core/commit/ae96fe9ec5eaba283350c2f8132f829bfbec4376), [`ec50aa1`](https://github.com/wisemen-digital/wisemen-core/commit/ec50aa10eb51e14175c1991dd4e42c390bfeb796), [`9bf1d69`](https://github.com/wisemen-digital/wisemen-core/commit/9bf1d692a061cb3f0b4d58dc922f9b0c548b73af)]:
+  - @wisemen/vue-core-design-system@1.3.0
+
 ## 8.0.0
 
 ### Patch Changes
