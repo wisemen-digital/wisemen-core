@@ -22,28 +22,31 @@ Uses the new Flat Config - [Read more about it](https://eslint.org/docs/latest/u
 ## Installation
 
 1. Install the package:
+
 ```bash
 npm i -D @wisemen/eslint-config-vue
 ```
 
 2. Add the config to your `.eslint.config.js` file:
+
 ```ts
-import WisemenEslintConfig from '@wisemen/eslint-config-vue'
+import WisemenEslintConfig from "@wisemen/eslint-config-vue";
 
 export default [
   ...(await WisemenEslintConfig),
   {
     settings: {
-      'vue-i18n': {
-        localeDir: './src/locales/*.json',
-        messageSyntaxVersion: '^9.0.0',
+      "vue-i18n": {
+        localeDir: "./src/locales/*.json",
+        messageSyntaxVersion: "^9.0.0",
       },
     },
   },
-]
+];
 ```
 
 3. Add the following to your `package.json` file:
+
 ```json
 {
   "scripts": {
@@ -53,6 +56,7 @@ export default [
 ```
 
 4. Enable Flatconfig in VSCode
+
 ```json
 "eslint.experimental.useFlatConfig": true
 ```
@@ -107,3 +111,5 @@ If you want to make changes to this package locally, you can use `npm link` to l
 1. Run `npm link @wisemen/eslint-config-vue` in the root of your project.
 2. Run `npm run lint` to lint your project with the local version of this package.
 3. Run `npm unlink @wisemen/eslint-config-vue` in the root of your project to unlink the package.
+
+Test your changes by running `npm run lint` in your project, and make sure that everything is working as expected.
