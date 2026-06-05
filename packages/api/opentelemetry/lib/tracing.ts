@@ -31,7 +31,7 @@ export function configureOpentelemetryTracing (config: OpentelemetryTracingConfi
         scheduledDelayMillis: config.buffer?.scheduledDelayMillis ?? 5000,
         exportTimeoutMillis: config.buffer?.exportTimeoutMillis ?? 30000,
         maxExportBatchSize: config.buffer?.maxExportBatchSize ?? 512
-      })
+      }),
     ],
     resource: resourceFromAttributes({
       'service.name': config.serviceName,

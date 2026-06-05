@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<BaseHeaderProps>(), {
   left: null,
 })
 
-const slots = useSlots()
+const slots: ReturnType<typeof useSlots> = useSlots()
 
 const hasSubtitle = computed<boolean>(() => {
   return slots.subtitle !== undefined

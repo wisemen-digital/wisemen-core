@@ -8,6 +8,7 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import { UIEmptyState } from '@/ui/empty-state/index'
+import { UIErrorState } from '@/ui/error-state/index'
 import TableBody from '@/ui/table/components/TableBody.vue'
 import TableBodyGroup from '@/ui/table/components/TableBodyGroup.vue'
 import TableBodyRow from '@/ui/table/components/TableBodyRow.vue'
@@ -117,6 +118,7 @@ function onClearFiltersAndSearch(): void {
     :action-group="props.actionGroup"
     :disable-column-resize="props.disableColumnResize"
     :variant="props.variant"
+    :sort="props.sort"
     @clear-filters-and-search="onClearFiltersAndSearch"
   >
     <TableScrollContainer :disable-scroll="props.data.length === 0">
@@ -129,6 +131,7 @@ function onClearFiltersAndSearch(): void {
           :label="column.headerLabel"
           :center-content="column.centerHeaderContent ?? false"
           :action-config="column.actionConfig"
+          :column-key="column.key"
         />
       </TableHeader>
 
@@ -223,7 +226,9 @@ function onClearFiltersAndSearch(): void {
       v-if="props.error !== null"
       :error="(props.error as ApiError)"
       name="error"
-    />
+    >
+      <UIErrorState :error="props.error" />
+    </slot>
 
     <template v-else-if="props.data.length === 0 && !props.isLoading">
       <UIEmptyState

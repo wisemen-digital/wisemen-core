@@ -2,35 +2,35 @@ import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger'
 import { applyDecorators, HttpStatus } from '@nestjs/common'
 import type { ClassConstructor } from 'class-transformer'
 import { ApiError } from '../api-errors/api-error.js'
-import { BadRequestApiError } from '../api-errors/bad-request.api-error.js'
-import { ConflictApiError } from '../api-errors/conflict.api-error.js'
-import { NotFoundApiError } from '../api-errors/not-found.api-error.js'
+import { getApiErrorStatusMetadata } from './api-error-status.decorator.js'
 
-export function ApiNotFoundErrorResponse (
-  ...errors: Array<ClassConstructor<NotFoundApiError>>
-): MethodDecorator {
-  return ApiErrorResponse(HttpStatus.NOT_FOUND, errors)
-}
-
-export function ApiBadRequestErrorResponse (
-  ...errors: Array<ClassConstructor<BadRequestApiError>>
-): MethodDecorator {
-  return ApiErrorResponse(HttpStatus.BAD_REQUEST, errors)
-}
-
-export function ApiConflictErrorResponse (
-  ...errors: Array<ClassConstructor<ConflictApiError>>
-): MethodDecorator {
-  return ApiErrorResponse(HttpStatus.CONFLICT, errors)
-}
-
+/**
+ * This decorator defines error response docs for `@nestjs/swagger`.
+ * It adds the errors to `@ApiExtraModels()` and creates a `@ApiResponse()` for each http status code.
+ * 
+ * @param errors must be an array of classes that have the `@ApiStatusCode()` decorator applied x
+ * to any class member.
+ */
 export function ApiErrorResponse (
-  status: HttpStatus,
-  errors: Array<ClassConstructor<ApiError>>
+  ...errors: Array<ClassConstructor<ApiError>>
 ): MethodDecorator {
+  const statusMap = new Map<HttpStatus, ClassConstructor<ApiError>[]>()
+  
+  for (const err of errors) {
+    const status = getApiErrorStatusMetadata(err.prototype as object)
+    const statusErrors = statusMap.get(status) ?? []
+    statusErrors.push(err)
+    statusMap.set(status, statusErrors)
+  }
+
+  const apiResponseDecorators: MethodDecorator[] = []
+  for (const [status, errors] of statusMap.entries()) {
+    apiResponseDecorators.push(createApiResponseDecorator(status, errors))
+  }
+
   return applyDecorators(
     ApiExtraModels(...errors),
-    createApiResponseDecorator(status, errors)
+    ...apiResponseDecorators
   )
 }
 

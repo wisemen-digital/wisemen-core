@@ -16,7 +16,9 @@ import { UIRowLayout } from '@/ui/row-layout/index'
 const props = withDefaults(defineProps<FieldWrapperProps>(), {
   ...INPUT_FIELD_DEFAULTS,
   isError: false,
+  gap: 'none',
   size: 'md',
+  wrap: false,
 })
 </script>
 
@@ -27,10 +29,12 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     :data-readonly="props.isReadonly || undefined"
     :data-interactive="(!props.isDisabled && !props.isReadonly) || undefined"
     :class="{
-      'h-8': props.size === 'md',
-      'h-7': props.size === 'sm',
+      'h-8': !props.wrap && props.size === 'md',
+      'h-7': !props.wrap && props.size === 'sm',
+      'min-h-8 flex-wrap px-xs py-1.25': props.wrap && props.size === 'md',
+      'min-h-7 flex-wrap px-xs py-0.75': props.wrap && props.size === 'sm',
     }"
-    gap="none"
+    :gap="props.gap"
     class="
       group/field-wrapper relative rounded-md border border-secondary bg-primary
       outline outline-transparent duration-100
