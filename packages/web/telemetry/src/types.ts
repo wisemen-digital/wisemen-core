@@ -5,6 +5,7 @@ import type {
 
 export type TelemetryAttributes = Attributes
 export type TelemetryAttributeValue = AttributeValue
+export type TelemetryTracePropagationUrl = string | RegExp
 export type TelemetrySeverity
   = 'debug'
     | 'error'
@@ -36,4 +37,6 @@ export interface TelemetryOptions {
   serviceName: string
   serviceVersion?: string
   traceEndpoint?: string
+  tracePropagationUrls: TelemetryTracePropagationUrl[]
+  traceSampleRate?: number
 }

@@ -1,4 +1,4 @@
-import '../src/styles/index.css'
+import './style.css'
 
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3-vite'

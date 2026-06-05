@@ -1,19 +1,14 @@
 ---
 name: getting-started
 description: >
-  Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, define typed query keys interface, create API composables with error codes.
+  Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, register typed query keys via module augmentation, set up a typed QueryClient wrapper.
 type: lifecycle
 library: vue-core-api-utils
-library_version: "1.0.1"
-sources:
-  - "wisemen-digital/wisemen-core:docs/packages/api-utils/pages/getting-started/installation.md"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/plugin/apiUtilsPlugin.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"
 ---
 
 # @wisemen/vue-core-api-utils — Getting Started
 
-Get `@wisemen/vue-core-api-utils` installed, your Vue Query plugin initialized, query keys defined, and typed composables created.
+Get `@wisemen/vue-core-api-utils` installed, your Vue Query plugin initialized, query keys registered, and a typed QueryClient created.
 
 ## Setup
 
@@ -23,35 +18,37 @@ Get `@wisemen/vue-core-api-utils` installed, your Vue Query plugin initialized, 
 pnpm install @wisemen/vue-core-api-utils @tanstack/vue-query neverthrow vue
 ```
 
-### 2. Define your query keys
+### 2. Register your query keys via module augmentation
 
-Create a TypeScript interface that maps query keys to their response types and parameters:
+Augment the `Register` interface to define your query keys and error codes:
 
 ```typescript
 // src/types/queryKey.type.ts
 
-export interface ProjectQueryKeys {
-  // Single entity query
-  contactDetail: {
-    entity: Contact
-    params: { contactUuid: string }
-  }
-  
-  // List query with offset pagination
-  contactList: {
-    entity: Contact[]
-    params: { page: number; limit: number; search?: string }
-  }
-  
-  // List query with keyset pagination
-  contactListKeyset: {
-    entity: Contact[]
-    params: { limit: number; key?: string }
+import type { Contact } from '@/models'
+
+declare module '@wisemen/vue-core-api-utils' {
+  interface Register {
+    queryKeys: {
+      contactDetail: {
+        entity: Contact
+        params: { contactUuid: string }
+      }
+      contactList: {
+        entity: Contact[]
+        params: { search?: string }
+      }
+      contactListKeyset: {
+        entity: Contact[]
+        params: { search?: string }
+      }
+    }
+    errorCodes: 'NOT_FOUND' | 'UNAUTHORIZED' | 'VALIDATION_ERROR'
   }
 }
 ```
 
-Every key must have both `entity` (response type) and `params` (required parameters).
+Every key must have `entity` (response type) and `params` (filter/identifier parameters). Do not include pagination fields in params — those are handled by the infinite query composables.
 
 ### 3. Initialize the plugin in your main.ts
 
@@ -76,9 +73,9 @@ app.use(apiUtilsPlugin({
 app.mount('#app')
 ```
 
-The `apiUtilsPlugin` function creates a QueryClient with your config and handles @tanstack/vue-query setup internally.
+The `apiUtilsPlugin` creates a QueryClient with your config and handles @tanstack/vue-query setup internally.
 
-### 4. Create your API composables
+### 4. Create your API module
 
 ```typescript
 // src/api/index.ts
@@ -88,30 +85,35 @@ import type {
   KeysetPaginationResult as ApiUtilsKeysetPaginationResult,
   OffsetPaginationResult as ApiUtilsOffsetPaginationResult,
 } from '@wisemen/vue-core-api-utils'
-import { createApiUtils } from '@wisemen/vue-core-api-utils'
-
-import type { ProjectQueryKeys } from '@/types/queryKey.type'
-
-// Define your error codes
-export type ERROR_KEYS = 'NOT_FOUND' | 'UNAUTHORIZED' | 'NETWORK_ERROR' | 'VALIDATION_ERROR'
-
-// Create factory with your types
-export const {
-  useKeysetInfiniteQuery,
+import {
+  QueryClient,
+  getTanstackQueryClient,
+  useQuery,
   useMutation,
   useOffsetInfiniteQuery,
+  useKeysetInfiniteQuery,
+} from '@wisemen/vue-core-api-utils'
+
+// Re-export composables for convenience
+export {
   useQuery,
-  usePrefetchKeysetInfiniteQuery,
-  usePrefetchOffsetInfiniteQuery,
-  usePrefetchQuery,
-  useQueryClient,
-} = createApiUtils<ProjectQueryKeys, ERROR_KEYS>()
+  useMutation,
+  useOffsetInfiniteQuery,
+  useKeysetInfiniteQuery,
+}
+
+// Create a typed QueryClient helper
+export function useQueryClient() {
+  return new QueryClient(getTanstackQueryClient())
+}
 
 // Export typed result types
-export type ApiResult<T> = ApiUtilsApiResult<T, ERROR_KEYS>
-export type OffsetPaginationResult<T> = ApiUtilsOffsetPaginationResult<T, ERROR_KEYS>
-export type KeysetPaginationResult<T> = ApiUtilsKeysetPaginationResult<T, ERROR_KEYS>
+export type ApiResult<T> = ApiUtilsApiResult<T>
+export type OffsetPaginationResult<T> = ApiUtilsOffsetPaginationResult<T>
+export type KeysetPaginationResult<T> = ApiUtilsKeysetPaginationResult<T>
 ```
+
+Composables are imported directly from the package. The `QueryClient` is a type-safe wrapper around the Tanstack QueryClient — its types are inferred from your `Register` augmentation.
 
 ## Core Patterns
 
@@ -145,17 +147,17 @@ import { ContactService } from '@/services'
 
 export function useCreateContact() {
   return useMutation({
-    queryFn: async (options: { body: ContactCreateForm }) => {
-      return await ContactService.create(options.body)
+    queryFn: async ({ body }: { body: ContactCreateForm }) => {
+      return await ContactService.create(body)
     },
     queryKeysToInvalidate: {
-      contactList: {}, // Invalidate all contactList queries after success
+      contactList: {},
     },
   })
 }
 ```
 
-Every mutation should list which queries to invalidate via `queryKeysToInvalidate`.
+Every mutation should list which queries to invalidate via `queryKeysToInvalidate`. An empty object `{}` invalidates all queries with that key.
 
 ### Use composables in components
 
@@ -174,7 +176,7 @@ const { result, refetch } = useContactDetail(props.contactUuid)
       Name: {{ result.getValue().name }}
     </div>
     <div v-else-if="result.isErr()">
-      Error: {{ result.getError().detail }}
+      Error occurred
     </div>
     <button @click="refetch">Retry</button>
   </div>
@@ -183,66 +185,12 @@ const { result, refetch } = useContactDetail(props.contactUuid)
 
 All queries and mutations return `AsyncResult` with three states: loading, ok, and err.
 
-## Common Mistakes
-
-### CRITICAL: Forget to initialize apiUtilsPlugin with QueryClient config
-
-```typescript
-// ❌ Wrong: plugin not initialized
-const app = createApp(App)
-app.mount('#app')
-// Throws: "[api-utils] QueryClient not available..."
-```
-
-```typescript
-// ✅ Correct: plugin initialized with config
-const app = createApp(App)
-app.use(apiUtilsPlugin({
-  defaultOptions: {
-    queries: { staleTime: 1000 * 60 * 5 },
-  },
-}))
-app.mount('#app')
-```
-
-If you skip the plugin, `createApiUtils()` has no QueryClient and throws immediately.
-
-Source: `src/config/config.ts` — `getQueryClient()` assertion
-
-### HIGH: Define query keys interface without strict entity/params structure
-
-```typescript
-// ❌ Wrong: inconsistent structure
-export interface ProjectQueryKeys {
-  contactDetail: { entity: Contact } // Missing params!
-  contactList: Contact[] // Should wrap in { entity, params }
-}
-```
-
-```typescript
-// ✅ Correct: every key has entity and params
-export interface ProjectQueryKeys {
-  contactDetail: {
-    entity: Contact
-    params: { contactUuid: string }
-  }
-  contactList: {
-    entity: Contact[]
-    params: { page: number; limit: number }
-  }
-}
-```
-
-Query keys without proper structure prevent the factory from typing composables correctly and cause runtime errors during query key resolution.
-
-Source: `docs/packages/api-utils/pages/getting-started/installation.md` Section 3
-
 ## You're all set!
 
 You now have:
 - ✅ Plugin initialized with Vue Query
-- ✅ Query keys defined with types
-- ✅ API composables created
+- ✅ Query keys registered via module augmentation
+- ✅ Typed QueryClient wrapper created
 - ✅ Error codes enumerated
 
-Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [handling-asyncresult-types](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.
+Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [asyncresult-handling](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.

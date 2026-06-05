@@ -4,36 +4,37 @@ The `@wisemen/vue-core-api-utils` package provides a set of composables built on
 
 ## Getting Started
 
-Before using any composables, make sure you've completed the [installation steps](../getting-started/installation.md). Your API service layer should export typed composables like this:
+Before using any composables, make sure you've completed the [installation steps](../getting-started/installation.md). Your API module should use module augmentation and re-export composables like this:
 
 ```typescript
 // src/api/index.ts
-
-import type {
-  ApiResult as ApiUtilsApiResult,
-  KeysetPaginationResult as ApiUtilsKeysetPaginationResult,
-  OffsetPaginationResult as ApiUtilsOffsetPaginationResult,
-} from '@wisemen/vue-core-api-utils'
-import { createApiUtils } from '@wisemen/vue-core-api-utils'
 
 import type { ProjectQueryKeys } from '@/types/queryKey.type'
 
 export type ERROR_KEYS = 'NOT_FOUND' | 'UNAUTHORIZED' | 'SERVER_ERROR'
 
-export const {
+declare module '@wisemen/vue-core-api-utils' {
+  interface Register {
+    queryKeys: ProjectQueryKeys
+    errorCodes: ERROR_KEYS
+  }
+}
+
+export {
   useKeysetInfiniteQuery,
   useMutation,
   useOffsetInfiniteQuery,
-  useQueryClient,
   usePrefetchKeysetInfiniteQuery,
   usePrefetchOffsetInfiniteQuery,
   usePrefetchQuery,
   useQuery,
-} = createApiUtils<ProjectQueryKeys, ERROR_KEYS>()
+} from '@wisemen/vue-core-api-utils'
 
-export type ApiResult<T> = ApiUtilsApiResult<T, ERROR_KEYS>
-export type OffsetPaginationResult<T> = ApiUtilsOffsetPaginationResult<T, ERROR_KEYS>
-export type KeysetPaginationResult<T> = ApiUtilsKeysetPaginationResult<T, ERROR_KEYS>
+export type {
+  ApiResult,
+  KeysetPaginationResult,
+  OffsetPaginationResult,
+} from '@wisemen/vue-core-api-utils'
 ```
 
 ## Core Concepts
@@ -79,24 +80,34 @@ result.value.match({
 ### Mutations
 
 - **`useMutation`**: Create, update, or delete resources with automatic cache invalidation
-- **`useQueryClient`**: Type-safe utilities to update the cache before the server responds
+
+### Cache Client
+
+The library does not export a `useQueryClient` composable. Create a typed wrapper in `src/api/queryClient.ts`:
+
+```typescript
+import { QueryClient, getTanstackQueryClient } from '@wisemen/vue-core-api-utils'
+import type { ProjectQueryKeys } from '@/types/queryKey.type'
+
+export function useQueryClient() {
+  return new QueryClient<ProjectQueryKeys>(getTanstackQueryClient())
+}
+```
+
+See [Type-Safe Query Client](./query-client.md) for usage.
 
 ## Return Values
 
 All composables return an object with:
 
 **Queries:**
-- `result`: ComputedRef to an AsyncResult containing the data or error
-- `isFetching`: Whether data is being fetched
+- `result`: `ComputedRef<AsyncResult<T, E>>` — the primary way to read state; use `result.value.isLoading()`, `.isOk()`, `.isErr()`
+- `isFetching`: Whether data is being fetched (including background refetches)
 - `refetch`: Function to manually refetch the data
-- `isLoading`: Whether the query is initially loading
-- `isError`: Whether an error has occurred
-- `isSuccess`: Whether the query succeeded
 
 **Mutations:**
-- `result`: ComputedRef to an AsyncResult containing the response or error
-- `execute`: Function to trigger the mutation
-- `isLoading`: Whether the mutation is in progress
+- `result`: `ComputedRef<AsyncResult<T, E>>` — reactive mutation state
+- `execute`: Function to trigger the mutation; returns `Promise<ApiResult<T, E>>`
 
 ## Quick Examples
 
@@ -208,9 +219,7 @@ import { UserService } from '@/services'
 
 export function useCreateUser() {
   return useMutation({
-    queryFn: async (body: CreateUserRequest) => {
-      return await UserService.create(body)
-    },
+    queryFn: ({ body }: { body: CreateUserRequest }) => UserService.create(body),
     queryKeysToInvalidate: {
       userList: {},
     },
@@ -224,13 +233,13 @@ Usage:
 <script setup lang="ts">
 import { useCreateUser } from '@/composables'
 
-const { execute, isLoading, result } = useCreateUser()
+const { execute, result } = useCreateUser()
 
 async function handleSubmit(form: CreateUserRequest) {
-  await execute(form)
-  
-  if (result.value.isOk()) {
-    console.log('User created:', result.value.getValue())
+  const mutationResult = await execute({ body: form })
+
+  if (mutationResult.isOk()) {
+    console.log('User created:', mutationResult.value)
   }
 }
 </script>
@@ -238,11 +247,11 @@ async function handleSubmit(form: CreateUserRequest) {
 <template>
   <form @submit.prevent="handleSubmit">
     <!-- Form inputs -->
-    <button :disabled="isLoading">
-      {{ isLoading ? 'Creating...' : 'Create User' }}
+    <button :disabled="result.isLoading()">
+      {{ result.isLoading() ? 'Creating...' : 'Create User' }}
     </button>
     <div v-if="result.isErr()" class="error">
-      {{ result.getError().message }}
+      {{ result.getError().errors[0].detail }}
     </div>
   </form>
 </template>
@@ -258,11 +267,9 @@ import { UserService } from '@/services'
 
 export function useUpdateUser(userId: string) {
   return useMutation({
-    queryFn: async (body: UpdateUserRequest) => {
-      return await UserService.update(userId, body)
-    },
+    queryFn: ({ body }: { body: UpdateUserRequest }) => UserService.update(userId, body),
     queryKeysToInvalidate: {
-      userDetail: { userId },
+      userDetail: {},
       userList: {},
     },
   })
@@ -284,47 +291,20 @@ result.value.match({
   ok: (user) => { /* handle success */ },
   err: (error) => {
     // Handle specific error types
-    switch (error.code) {
-      case 'NOT_FOUND':
-        console.log('User not found')
-        break
-      case 'UNAUTHORIZED':
-        console.log('Not authorized to view this user')
-        break
-      default:
-        console.log('Unknown error')
+    if ('errors' in error) {
+      switch (error.errors[0].code) {
+        case 'NOT_FOUND':
+          console.log('User not found')
+          break
+        case 'UNAUTHORIZED':
+          console.log('Not authorized to view this user')
+          break
+        default:
+          console.log('Unknown error')
+      }
     }
   },
 })
-```
-
-
-```vue
-<script setup lang="ts">
-import { useCreateUser } from '@/composables'
-
-const { execute, isLoading, result } = useCreateUser()
-
-async function handleSubmit(form: CreateUserRequest) {
-  await execute(form)
-  
-  if (result.value.isOk()) {
-    console.log('User created:', result.value.getValue())
-  }
-}
-</script>
-
-<template>
-  <form @submit.prevent="handleSubmit">
-    <!-- Form inputs -->
-    <button :disabled="isLoading">
-      {{ isLoading ? 'Creating...' : 'Create User' }}
-    </button>
-    <div v-if="result.isErr()" class="error">
-      {{ result.getError().message }}
-    </div>
-  </form>
-</template>
 ```
 
 ## Services
@@ -408,19 +388,22 @@ if (result.value.isErr()) { ... }
 
 ### 2. Use Pattern Matching for Result Handling
 
-The `match` method is the most elegant way to handle results:
+The `match` method is the most elegant way to handle all three states. All three handlers are required:
 
 ```typescript
-result.value.match(
-  (data) => {
+result.value.match({
+  loading: () => {
+    // Loading state
+  },
+  ok: (data) => {
     // Success - data is fully typed
     console.log(data)
   },
-  (error) => {
+  err: (error) => {
     // Error - error is fully typed
     console.error(error)
-  }
-)
+  },
+})
 ```
 
 Alternatively, you can use `isErr()` / `isOk()` for conditional checks:
@@ -428,12 +411,14 @@ Alternatively, you can use `isErr()` / `isOk()` for conditional checks:
 ```typescript
 if (result.value.isErr()) {
   // Handle error - TypeScript knows this is an Err
-  console.error(result.value.error)
+  console.error(result.value.getError())
   return
 }
 
-// TypeScript knows result.value is Ok here
-console.log(result.value.value)
+if (result.value.isOk()) {
+  // TypeScript knows result.value is Ok here
+  console.log(result.value.getValue())
+}
 ```
 
 **Using `unwrapOr()` in Computed Properties**

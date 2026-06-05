@@ -36,13 +36,13 @@ class NatsMessageDataParameter implements NatsParameter {
 
 /** Injects the data of the message, passing it through the given pipes */
 export function NatsMessageData (
-  ...pipes: ClassConstructor<NatsPipeTransform>[]
+  ...pipes: (ClassConstructor<NatsPipeTransform> | NatsPipeTransform)[]
 ): ParameterDecorator {
   return (target: object, methodName: string | symbol | undefined, index: number): void => {
     assert(methodName !== undefined)
 
     const types = Reflect.getMetadata('design:paramtypes', target, methodName) as Type<unknown>[]
-    const pipeInstances = pipes.map(pipe => new pipe())
+    const pipeInstances = pipes.map(pipe => (typeof pipe === 'function' ? new pipe() : pipe))
 
     addNatsParameter(
       target,

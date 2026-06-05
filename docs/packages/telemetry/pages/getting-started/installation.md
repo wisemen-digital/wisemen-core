@@ -28,6 +28,9 @@ import type { App } from 'vue'
 const telemetry = new Telemetry({
   accessTokenFn: () => authClient.getAccessToken(), // return a bearer token for OTLP exports
   serviceName: 'vue-app',
+  tracePropagationUrls: [
+    import.meta.env.VITE_API_URL,
+  ],
   traceEndpoint: import.meta.env.VITE_OTEL_TRACE_ENDPOINT,
   metricsEndpoint: import.meta.env.VITE_OTEL_METRICS_ENDPOINT,
   logEndpoint: import.meta.env.VITE_OTEL_LOG_ENDPOINT,
@@ -46,6 +49,8 @@ export const telemetryPlugin = {
   },
 }
 ```
+
+`tracePropagationUrls` controls which application requests receive the `traceparent` header. Keep this list limited to APIs that accept tracing headers in CORS preflight responses.
 
 `metricsEndpoint` initializes the global OTEL meter provider. That is required if your app or one of its libraries will create counters, histograms, or other OTEL metrics in the browser.
 

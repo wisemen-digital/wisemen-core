@@ -1,4 +1,4 @@
-import { tv } from '@/styles/tailwindVariants.lib'
+import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createTooltipStyle = tv({
   slots: {
@@ -15,6 +15,9 @@ export const createTooltipStyle = tv({
       },
       'available-width': {
         content: 'w-(--reka-tooltip-content-available-width)',
+      },
+      'content-width': {
+        content: '',
       },
     },
   },

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.13.1",
+  "version": "1.3.1",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -22,8 +22,7 @@
       "types": "./dist/locales.d.ts",
       "import": "./dist/locales.js"
     },
-    "./style.css": "./dist/index.css",
-    "./source.css": "./dist/source.css"
+    "./style.css": "./dist/style.css"
   },
   "style": "./dist/index.css",
   "main": "./dist/index.umd.cjs",
@@ -31,11 +30,11 @@
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
   "files": [
-    "./dist"
+    "./dist",
+    "./skills"
   ],
   "scripts": {
-    "build": "vite build && pnpm build:source",
-    "build:source": "cat src/styles/source.css src/styles/utilities.css > dist/source.css",
+    "build": "vite build",
     "dev": "vite build --watch",
     "pub:release": "pnpm publish --access public",
     "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
@@ -43,6 +42,7 @@
     "cleanup": "rimraf dist/ node_modules/ .turbo/",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "bench": "vitest run --config vitest.bench.config.ts",
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
@@ -53,39 +53,50 @@
     "story:build": "NODE_OPTIONS=--max-old-space-size=8192 storybook build"
   },
   "peerDependencies": {
+    "@internationalized/date": "catalog:date",
+    "@tanstack/vue-virtual": "^3.0.0",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
+    "@wisemen/vue-core-actions": "workspace:^",
+    "@wisemen/vue-core-dates": "workspace:^",
     "formango": "catalog:peer",
     "motion-v": "catalog:peer",
+    "pinia": "catalog:vue",
     "reka-ui": "catalog:peer",
     "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
-    "pinia": "catalog:vue",
+    "vue-draggable-plus": "^0.6.0",
     "vue-i18n": "catalog:peer",
     "vue-router": "catalog:peer",
     "vue-sonner": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:*",
-    "@wisemen/vue-core-dates": "workspace:*"
+    "zod": "catalog:general"
   },
   "dependencies": {
-    "@internationalized/date": "catalog:date",
     "@tailwindcss/vite": "catalog:vite",
+    "@wisemen/vue-core-api-utils": "workspace:*",
     "@wisemen/vue-core-icons": "workspace:*",
+    "@wisemen/vue-core-utils": "workspace:*",
+    "@wisemen/vue-core-dates": "workspace:*",
     "country-flag-icons": "catalog:general",
     "libphonenumber-js": "catalog:general",
+    "vite": "catalog:vite",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
-    "vue-component-meta": "catalog:storybook"
+    "vue-component-meta": "catalog:storybook",
+    "vue-component-type-helpers": "catalog:types",
+    "vue-sonner": "catalog:vue"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "catalog:storybook",
+    "@internationalized/date": "catalog:date",
     "@storybook/addon-a11y": "catalog:storybook",
     "@storybook/addon-docs": "catalog:storybook",
     "@storybook/addon-vitest": "catalog:storybook",
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
     "@tanstack/vue-hotkeys": "catalog:",
+    "@tanstack/vue-virtual": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
     "@vitest/browser-playwright": "catalog:test",
@@ -94,6 +105,7 @@
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-actions": "workspace:*",
     "@wisemen/vue-core-dates": "workspace:*",
+    "@wisemen/vue-core-tailwind-config": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
     "formango": "catalog:peer",
@@ -106,9 +118,11 @@
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",
     "vitest": "catalog:test",
+    "@vue/tsconfig": "catalog:vue",
     "vue": "catalog:vue",
+    "vue-draggable-plus": "catalog:",
     "vue-router": "catalog:peer",
-    "vue-sonner": "catalog:vue",
-    "vue-tsc": "catalog:vue"
+    "vue-tsc": "catalog:vue",
+    "zod": "catalog:general"
   }
 }

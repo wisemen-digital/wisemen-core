@@ -12,7 +12,7 @@ const props = defineProps<{
 
 <template>
   <UIRowLayout
-    gap="xs"
+    gap="sm"
     class="flex max-w-full overflow-hidden whitespace-nowrap"
   >
     <template

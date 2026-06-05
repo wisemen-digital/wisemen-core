@@ -27,17 +27,13 @@ const i18n = useI18n()
 const isLoading = ref<boolean>(false)
 
 async function onConfirmClick(): Promise<void> {
-  const result = props.onConfirm()
+  isLoading.value = true
 
-  if (result instanceof Promise) {
-    isLoading.value = true
-
-    try {
-      await result
-    }
-    finally {
-      isLoading.value = false
-    }
+  try {
+    await props.onConfirm()
+  }
+  finally {
+    isLoading.value = false
   }
 }
 
@@ -70,6 +66,7 @@ function onClose(): void {
       <template #right>
         <DialogFooterCancel
           :label="props.cancelLabel"
+          :is-disabled="isLoading"
           @click="onCancelClick"
         />
 

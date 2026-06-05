@@ -1,4 +1,5 @@
 import type { FieldWrapper } from '@/types/input.type'
+import type { LayoutGap } from '@/ui/column-layout/columnLayout.props'
 
 export interface FieldWrapperProps extends FieldWrapper {
   /**
@@ -7,8 +8,19 @@ export interface FieldWrapperProps extends FieldWrapper {
    */
   isError?: boolean
   /**
+   * Controls the spacing between items inside the wrapper.
+   * @default 'none'
+   */
+  gap?: LayoutGap
+  /**
    * The size of the input field.
    * @default 'md'
    */
   size?: 'md' | 'sm'
+  /**
+   * When true, the wrapper uses min-height instead of a fixed height and allows
+   * its children to wrap onto multiple lines (e.g. for tags inputs).
+   * @default false
+   */
+  wrap?: boolean
 }

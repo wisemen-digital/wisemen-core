@@ -232,8 +232,7 @@ import { UIMenuItem } from '@/ui/menu-item'
           :config="{
             description: {
               layout: 'block',
-              value: 'alice@example.com',
-            },
+              value: 'This is a test' },
             left: {
               name: 'Alice Johnson',
               src: 'https://i.pravatar.cc/150?u=alice',
@@ -244,7 +243,7 @@ import { UIMenuItem } from '@/ui/menu-item'
               text: 'Admin',
             },
           }"
-          label="Alice Johnson"
+          label="Alice Johnson With a long name that should truncate"
         >
           <template #right>
             <Component

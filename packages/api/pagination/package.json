@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pagination",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -39,6 +39,8 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

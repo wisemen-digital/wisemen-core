@@ -2,11 +2,18 @@ import { useInfiniteQuery } from '@tanstack/vue-query'
 import type {
   ComputedRef,
   MaybeRef,
+  MaybeRefOrGetter,
 } from 'vue'
 import { computed } from 'vue'
 
 import { AsyncResult } from '@/async-result/asyncResult'
 import { QUERY_CONFIG } from '@/config/config'
+import type {
+  RegisteredErrorCodes,
+  RegisteredQueryKeyConfig,
+  RegisteredQueryKeyParams,
+  RegisteredQueryKeys,
+} from '@/register'
 import type { ApiError } from '@/types/apiError.type'
 import type {
   KeysetPaginationAsyncResult,
@@ -15,36 +22,47 @@ import type {
   KeysetPaginationResult,
 } from '@/types/pagination.type'
 
-export interface KeysetInfiniteQueryOptions<TData, TErrorCode extends string = string> {
+type NestedMaybeRefOrGetter<T> = {
+  [K in keyof T]: MaybeRefOrGetter<T[K]>
+}
+
+type ArrayItemOf<E> = E extends (infer I)[] ? I : E
+
+type EntityItemOf<TKey extends PropertyKey>
+  = RegisteredQueryKeyConfig<TKey> extends { entity: infer E } ? ArrayItemOf<E> : unknown
+
+type WithParams<TKey extends PropertyKey>
+  = RegisteredQueryKeyParams<TKey> extends undefined
+    ? { params?: undefined }
+    : { params: NestedMaybeRefOrGetter<RegisteredQueryKeyParams<TKey>> }
+
+export type KeysetInfiniteQueryOptions<
+  TKey extends keyof RegisteredQueryKeys,
+  TData,
+  TErrorCode extends string = RegisteredErrorCodes,
+> = {
   /**
    * The time in milliseconds after which the query will be considered stale
-   * After this time, the query will be refetched automatically in the background when it is rendered or accessed
    * @default 0
    */
   staleTime?: number
   /**
    * Whether the query is enabled
-   * If false, the query will not be executed
    * @default true
    */
   isEnabled?: MaybeRef<boolean>
   /**
-   * Maximum number of items to fetch per page, default can be set in config
+   * Maximum number of items to fetch per page
    * @default 20
    */
   limit?: number
   /**
    * Function that will be called when query is executed
-   * @returns Promise with response data
    */
   queryFn: (paginationParams: KeysetPaginationParams) => Promise<KeysetPaginationResult<TData, TErrorCode>>
-  /**
-   * Query key associated with the query
-   */
-  queryKey: Record<string, unknown>
-}
+} & WithParams<TKey>
 
-export interface UseKeysetInfiniteQueryReturnType<TData, TErrorCode extends string = string> {
+export interface UseKeysetInfiniteQueryReturnType<TData, TErrorCode extends string = RegisteredErrorCodes> {
   /**
    * Whether there is a next page available to fetch
    */
@@ -94,20 +112,19 @@ export interface UseKeysetInfiniteQueryReturnType<TData, TErrorCode extends stri
 
 const DEFAULT_LIMIT = QUERY_CONFIG.limit
 
-export function useKeysetInfiniteQuery<TData, TErrorCode extends string = string>(
-  options: KeysetInfiniteQueryOptions<TData, TErrorCode>,
+export function useKeysetInfiniteQuery<
+  TKey extends keyof RegisteredQueryKeys,
+  TData = EntityItemOf<TKey>,
+  TErrorCode extends string = RegisteredErrorCodes,
+>(
+  key: TKey,
+  options: KeysetInfiniteQueryOptions<TKey, TData, TErrorCode>,
 ): UseKeysetInfiniteQueryReturnType<TData, TErrorCode> {
-  function getQueryKey(): unknown[] {
-    const [
-      queryKey,
-      params,
-    ] = Object.entries(options.queryKey)[0]
-
-    return [
-      queryKey,
-      params,
-    ]
-  }
+  const params = (options as { params?: unknown }).params
+  const queryKey = [
+    key,
+    params,
+  ]
 
   const infiniteQuery = useInfiniteQuery({
     staleTime: options.staleTime,
@@ -129,7 +146,7 @@ export function useKeysetInfiniteQuery<TData, TErrorCode extends string = string
         limit: options.limit ?? DEFAULT_LIMIT,
       }))
     },
-    queryKey: getQueryKey(),
+    queryKey,
   })
 
   const hasError = computed<boolean>(() => {

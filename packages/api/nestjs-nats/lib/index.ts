@@ -57,6 +57,7 @@ export { NatsMsgDataJsonPipe } from './parameters/pipes/nats-message-data-json.p
 export { NatsMsgDataCloudEventPipe } from './parameters/pipes/nats-message-cloud-event.pipe.js'
 export { NatsMsgDataCloudEventValidationPipe } from './parameters/pipes/nats-message-cloud-event-validation.pipe.js'
 export { NatsMsgDataValidationPipe } from './parameters/pipes/nats-message-data-validation.pipe.js'
+export type { NatsMsgDataValidationPipeOptions } from './parameters/pipes/nats-message-data-validation.pipe.js'
 export { NatsSubjectParamExistsValidationPipe, NatsSubjectParamMissingError } from './parameters/pipes/nats-subject-param-exists-validation.pipe.js'
 export { NatsSubjectParamUuidValidationPipe, NatsSubjectParamInvalidUuidError } from './parameters/pipes/nats-subject-param-uuid-validation.pipe.js'
 export type { NatsPipeTransform } from './parameters/pipes/nats-pipe-transform.js'

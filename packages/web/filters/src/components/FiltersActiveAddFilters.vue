@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  _UIActionDropdownMenu as UIActionDropdownMenu,
+  UIActionDropdownMenu,
   UIIconButton,
 } from '@wisemen/vue-core-design-system'
 import { PlusIcon } from '@wisemen/vue-core-icons'

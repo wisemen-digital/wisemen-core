@@ -21,6 +21,12 @@ export interface ConfigProviderProps {
    */
   autoCloseToast: ToastAutoClose
   /**
+   * The locale to use for date formatting in date-related components.
+   * When not set, falls back to `navigator.language`.
+   * @default null
+   */
+  dateLocale?: string | null
+  /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null
    */
@@ -52,6 +58,13 @@ export interface ConfigProviderProps {
    */
   projectName: string
   /**
+   * When true, all animations in the design system run instantly.
+   * Useful for accessibility (reduced motion preference) or testing.
+   * Note: this also activates when the user has `prefers-reduced-motion: reduce` set on their OS.
+   * @default false
+   */
+  reducedMotion?: boolean
+  /*
    * Whether to show 'Back' and 'Forward' navigation arrows in the top bar
    * @default false
    */

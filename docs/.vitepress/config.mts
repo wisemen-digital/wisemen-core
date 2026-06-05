@@ -78,7 +78,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@docs': resolve(__dirname, '../'),
-        '@': resolve(__dirname, '../../components/src'),
+        '@': resolve(__dirname, '../../packages/web/design-system/src'),
       },
     },
     server: {

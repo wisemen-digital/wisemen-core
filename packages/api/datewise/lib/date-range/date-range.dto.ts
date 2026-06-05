@@ -4,7 +4,7 @@ import { IsPlainDate } from '../plain-date/index.js'
 import { DateRange } from './date-range.js'
 import { InclusivityString } from '../common/inclusivity.js'
 
-export class DateRangeDto extends FilterQuery {
+export class DateRangeDto implements FilterQuery {
   @ApiProperty({ format: 'date' })
   @IsPlainDate()
   startDate: string

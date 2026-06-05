@@ -1,12 +1,14 @@
-import { useReducedMotion } from 'motion-v'
 import { computed } from 'vue'
 
+import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
+
+const PADDING_INLINE_BORDERED_OFFSET = 10
 
 export function useDetailPanePadding() {
   const detailPaneContext = useInjectDetailPaneContext(null)
 
-  const isReduceMotionEnabledOnDevice = useReducedMotion()
+  const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
   const contentPaddingRight = computed<string>(() => {
     if (detailPaneContext === null) {
@@ -15,6 +17,10 @@ export function useDetailPanePadding() {
 
     if (detailPaneContext.isFloatingDetailPane.value) {
       return '0px'
+    }
+
+    if (detailPaneContext.isOpen.value && detailPaneContext.variant === 'bordered-inline') {
+      return `calc(${detailPaneContext.sidebarWidth.value} + ${PADDING_INLINE_BORDERED_OFFSET}px)`
     }
 
     if (detailPaneContext.isOpen.value) {

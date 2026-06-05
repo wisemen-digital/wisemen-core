@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/api-error",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -18,7 +18,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
-    "test": "node --test",
+    "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },

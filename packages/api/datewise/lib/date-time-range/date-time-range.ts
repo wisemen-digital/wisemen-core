@@ -1,3 +1,4 @@
+import type { ManipulateType } from 'dayjs'
 import { Inclusivity, InclusivityString, mapToInclusivity, isInclusive } from '../common/inclusivity.js'
 import { timestamp } from '../timestamp/index.js'
 import { Timestamp, TimestampInput } from '../timestamp/timestamp.js'
@@ -175,6 +176,15 @@ export class DateTimeRange {
   /** Returns the number of whole milliseconds in the range. */
   get milliseconds (): number {
     return this.upper.diff(this.lower, 'milliseconds')
+  }
+
+  /** 
+   * Get the duration of this DateTimeRange. 
+   * 
+   * The duration is calculated as `from.until(until)`
+   */
+  get duration(): Duration {
+    return this.from.until(this.until)
   }
 
   /** Checks if the given date falls within the range. */
@@ -427,6 +437,24 @@ export class DateTimeRange {
       return this.withUntil(withOther.upper)
     } else {
       throw new Error('cannot merge non adjacent date time ranges')
+    }
+  }
+
+  /**
+   * Creates an iterable for every timestamp in this range starting from the start timestamp
+   * until the end timestamp (exclusive). 
+   * 
+   * By default every day is generated (amount = 1, interval = 'day'). \
+   * Increasing the interval between generated timestamps will always return the start timestamp of this range
+   * even if the next value lies beyond this range.
+   */
+  *iterate(amount: number = 1, interval: ManipulateType = 'day'): Iterable<Timestamp>  {
+    let current = this.lower
+
+    while(current.isBefore(this.upper)) {
+      yield current
+
+      current = current.add(amount, interval)
     }
   }
 }

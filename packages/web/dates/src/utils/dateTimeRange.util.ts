@@ -2,14 +2,14 @@ import { Temporal } from 'temporal-polyfill'
 
 import type { DateTimeInstant } from '#models/dateTimeInstant.model.ts'
 import type {
-  DateTimeRangeInstant,
-  DateTimeRangeInstantWithInfinity,
+  DateTimeInstantRange,
+  DateTimeInstantRangeWithInfinity,
 } from '#models/dateTimeRange.model.ts'
 
 export class DateTimeRangeUtil {
   static getStateInRange(
     date: DateTimeInstant,
-    range: DateTimeRangeInstant | DateTimeRangeInstantWithInfinity,
+    range: DateTimeInstantRange | DateTimeInstantRangeWithInfinity,
   ): 'after' | 'before' | 'in' {
     if (this.isBeforeRange(date, range)) {
       return 'before'
@@ -24,7 +24,7 @@ export class DateTimeRangeUtil {
 
   static isAfterRange(
     value: DateTimeInstant,
-    range: DateTimeRangeInstant | DateTimeRangeInstantWithInfinity,
+    range: DateTimeInstantRange | DateTimeInstantRangeWithInfinity,
   ): boolean {
     const {
       until,
@@ -39,7 +39,7 @@ export class DateTimeRangeUtil {
 
   static isBeforeRange(
     value: DateTimeInstant,
-    range: DateTimeRangeInstant | DateTimeRangeInstantWithInfinity,
+    range: DateTimeInstantRange | DateTimeInstantRangeWithInfinity,
   ): boolean {
     const {
       from,
@@ -54,7 +54,7 @@ export class DateTimeRangeUtil {
 
   static isInRange(
     value: DateTimeInstant,
-    range: DateTimeRangeInstant | DateTimeRangeInstantWithInfinity,
+    range: DateTimeInstantRange | DateTimeInstantRangeWithInfinity,
   ): boolean {
     return !this.isBeforeRange(value, range) && !this.isAfterRange(value, range)
   }

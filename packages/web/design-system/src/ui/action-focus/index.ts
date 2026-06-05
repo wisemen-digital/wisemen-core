@@ -1,1 +1,1 @@
-export { default as _UIActionFocus } from './ActionFocus.vue'
+export { default as UIActionFocus } from './ActionFocus.vue'
