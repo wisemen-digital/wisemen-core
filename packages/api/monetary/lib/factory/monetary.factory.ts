@@ -3,7 +3,7 @@ import { createMonetaryValidator } from "./monetary.validator.factory.js";
 import { createMonetaryApiProperty } from "./monetary.api-property.factory.js";
 import { Currency } from "../currency.enum.js";
 
-export function createMonetaryAmountUtils<C extends Currency> (currency: C, monetaryPrecision: number) {
+export function createMonetaryUtils<C extends Currency> (currency: C, monetaryPrecision: number) {
   return {
     Column: createMonetaryAmountColumn(currency, monetaryPrecision),
     ApiProperty: createMonetaryApiProperty(currency, monetaryPrecision),
