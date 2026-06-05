@@ -3,8 +3,14 @@ import { ref } from 'vue'
 
 import TagsField from '@/ui/tags-field/TagsField.vue'
 
-const mdValue = ref<string[]>(['Vue', 'TypeScript'])
-const smValue = ref<string[]>(['Vue', 'TypeScript'])
+const mdValue = ref<string[]>([
+  'Vue',
+  'TypeScript',
+])
+const smValue = ref<string[]>([
+  'Vue',
+  'TypeScript',
+])
 </script>
 
 <template>

@@ -31,6 +31,18 @@ const meta = {
       control: 'boolean',
       description: 'Whether the input is required',
     },
+    addOnPaste: {
+      control: 'boolean',
+      description: 'Whether to add tags when pasting',
+    },
+    allowDuplicate: {
+      control: 'boolean',
+      description: 'Whether duplicate tags are allowed',
+    },
+    delimiter: {
+      control: 'text',
+      description: 'The delimiter used to split pasted text into tags',
+    },
     errorMessage: {
       control: 'text',
       description: 'The error message to display',
@@ -47,6 +59,10 @@ const meta = {
       control: 'text',
       description: 'The label of the input',
     },
+    max: {
+      control: 'number',
+      description: 'The maximum number of tags allowed (null = unlimited)',
+    },
     placeholder: {
       control: 'text',
       description: 'The placeholder text shown when there are no tags',
@@ -58,22 +74,6 @@ const meta = {
         'sm',
         'md',
       ],
-    },
-    max: {
-      control: 'number',
-      description: 'The maximum number of tags allowed (null = unlimited)',
-    },
-    allowDuplicate: {
-      control: 'boolean',
-      description: 'Whether duplicate tags are allowed',
-    },
-    addOnPaste: {
-      control: 'boolean',
-      description: 'Whether to add tags when pasting',
-    },
-    delimiter: {
-      control: 'text',
-      description: 'The delimiter used to split pasted text into tags',
     },
   },
   tags: [
