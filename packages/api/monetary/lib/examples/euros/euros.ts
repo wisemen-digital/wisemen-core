@@ -4,12 +4,6 @@ import { MonetaryDto, MonetaryDtoBuilder } from "../../monetary.dto.js"
 import { MonetaryObject } from "../../monetary.object.js"
 import { Currency } from "../../currency.enum.js"
 
-export const {
-  Column: EurosColumn,
-  ApiProperty: EurosApiProperty,
-  Validator: IsEuros
-} = createMonetaryUtils(Currency.EUR, 2)
-
 export class Euros extends Monetary<Currency.EUR> {
   constructor (object: MonetaryObject<Currency.EUR>);
   constructor (amount: number, precision: number);
@@ -29,3 +23,9 @@ export class EurosDtoBuilder extends MonetaryDtoBuilder<Currency.EUR> {
     super(Currency.EUR)
   }
 }
+
+export const {
+  Column: EurosColumn,
+  ApiProperty: EurosApiProperty,
+  Validator: IsEuros
+} = createMonetaryUtils(Currency.EUR, 2)
