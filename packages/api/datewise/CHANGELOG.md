@@ -1,5 +1,18 @@
 # @wisemen/datewise
 
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/quantity@0.8.4
+
+## 1.0.9
+
+### Patch Changes
+
+- [#1172](https://github.com/wisemen-digital/wisemen-core/pull/1172) [`58620e8`](https://github.com/wisemen-digital/wisemen-core/commit/58620e893f12e55910b302a78c7443dac89d4fdc) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: rework error message
+
 ## 1.0.8
 
 ### Patch Changes

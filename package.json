@@ -31,15 +31,13 @@
     "build-storybook": "turbo run story:build --filter @wisemen/vue-core-design-system"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.6.0",
     "@commitlint/cli": "catalog:tooling",
     "@commitlint/config-conventional": "catalog:tooling",
+    "@varlock/bumpy": "catalog:tooling",
     "husky": "catalog:build",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
-    "vitest": "catalog:test"
-  },
-  "dependencies": {
-    "@changesets/cli": "catalog:tooling"
+    "vitest": "catalog:test",
+    "typescript": "catalog:build"
   }
 }
