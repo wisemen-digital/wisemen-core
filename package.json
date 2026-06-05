@@ -33,10 +33,11 @@
   "devDependencies": {
     "@commitlint/cli": "catalog:tooling",
     "@commitlint/config-conventional": "catalog:tooling",
-    "@varlock/bumpy": "^1.12.0",
+    "@varlock/bumpy": "catalog:tooling",
     "husky": "catalog:build",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
-    "vitest": "catalog:test"
+    "vitest": "catalog:test",
+    "typescript": "catalog:build"
   }
 }
