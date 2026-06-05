@@ -2,7 +2,6 @@ import { NodeSDK } from '@opentelemetry/sdk-node'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { BatchSpanProcessor, BufferConfig } from '@opentelemetry/sdk-trace-base'
-import { AttributeFilterSpanProcessor } from './attribute-filter.span-processor.js'
 
 export interface OpentelemetryTracingConfig {
   serviceName: string
@@ -27,7 +26,6 @@ export function configureOpentelemetryTracing (config: OpentelemetryTracingConfi
     traceExporter,
     autoDetectResources: false,
     spanProcessors: [
-      new AttributeFilterSpanProcessor(),
       new BatchSpanProcessor(traceExporter, {
         maxQueueSize: config.buffer?.maxQueueSize ?? 2048,
         scheduledDelayMillis: config.buffer?.scheduledDelayMillis ?? 5000,
