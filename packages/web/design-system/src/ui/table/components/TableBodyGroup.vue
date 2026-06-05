@@ -7,6 +7,7 @@ import {
 } from 'reka-ui'
 import type { Component } from 'vue'
 import { onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import { UIRowLayout } from '@/ui/row-layout/index'
@@ -39,6 +40,8 @@ const {
   isGroupIndeterminate,
   toggleGroup,
 } = useInjectTableSelectionContext()
+
+const i18n = useI18n()
 
 useProvideTableGroupContext({
   isGroup: true,
@@ -82,7 +85,7 @@ onBeforeUnmount(() => {
           :model-value="isGroupAllSelected(props.items) || isGroupIndeterminate(props.items)"
           :is-indeterminate="isGroupIndeterminate(props.items) && !isGroupAllSelected(props.items)"
           :is-label-hidden="true"
-          label="TODO"
+          :label="i18n.t('component.table.group.toggle_selection_label')"
           class="mr-sm"
           @update:model-value="() => toggleGroup(props.items)"
         />

@@ -69,6 +69,8 @@
   "component.search_input.placeholder": "Zoeken...",
   "component.skip_to_main_content_link.label": "Ga naar hoofdinhoud",
   "component.table.actions_cell.label": "Rij-acties",
+  "component.table.group.toggle_selection_label": "Groepsselectie omschakelen",
+  "component.table.header.select_all_label": "Alles selecteren",
   "component.table.auto_fit_columns_action.name": "Kolommen automatisch aanpassen",
   "component.table.empty_state.no_data.description": "Er zijn nog geen items om weer te geven.",
   "component.table.empty_state.no_data.title": "Geen gegevens",

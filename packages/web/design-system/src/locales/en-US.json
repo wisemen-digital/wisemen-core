@@ -69,6 +69,8 @@
   "component.search_input.placeholder": "Search...",
   "component.skip_to_main_content_link.label": "Skip to main content",
   "component.table.actions_cell.label": "Row actions",
+  "component.table.group.toggle_selection_label": "Toggle group selection",
+  "component.table.header.select_all_label": "Select all",
   "component.table.auto_fit_columns_action.name": "Auto-fit columns",
   "component.table.empty_state.no_data.description": "There are no items to display yet.",
   "component.table.empty_state.no_data.title": "No data",
