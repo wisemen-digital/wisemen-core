@@ -1,5 +1,4 @@
 import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger"
-import { MonetaryDto } from "./monetary.dto.js"
 import { Currency } from "./currency.enum.js"
 
 export type MonetaryApiPropertyOptions = Omit<Extract<ApiPropertyOptions, { type: 'object' }>, 'type' | 'properties'>
