@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Release with Bumpy
-        run: pnpx @varlock/bumpy ci release
+        run: pnpm bumpy ci release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BUMPY_GH_TOKEN: ${{ secrets.BUMPY_GH_TOKEN }} # PAT so that version PR triggers CI
