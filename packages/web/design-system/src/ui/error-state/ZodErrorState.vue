@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import { UIEmptyState } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { ZodError } from 'zod'
 import { z } from 'zod'
+
+import { UIEmptyState } from '@/ui/empty-state/index'
 
 const props = defineProps<{
   error: ZodError

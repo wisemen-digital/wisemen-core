@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ApiErrorUtil } from '@wisemen/vue-core-api-utils'
-import { UIEmptyState } from '@wisemen/vue-core-design-system'
 import { useI18n } from 'vue-i18n'
 
+import { UIEmptyState } from '@/ui/empty-state/index'
 import ApiErrorState from '@/ui/error-state/ApiErrorState.vue'
 import ZodErrorState from '@/ui/error-state/ZodErrorState.vue'
 
