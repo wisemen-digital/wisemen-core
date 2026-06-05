@@ -7,7 +7,7 @@ export interface DashboardPageProps {
   isTitleHidden?: boolean
   actions?: any[]
   breadcrumbs?: PageBreadcrumb[]
-  tabs?: PageTab[]
+
 }
 
 export interface PageTab extends WithKeyboardShortcut {

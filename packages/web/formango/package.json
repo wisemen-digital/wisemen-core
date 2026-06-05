@@ -57,6 +57,7 @@
     "eslint": "catalog:lint-web",
     "tailwindcss": "catalog:style",
     "tsdown": "catalog:build",
+    "typescript": "catalog:build",
     "vite": "catalog:vite",
     "vitest": "catalog:test",
     "vue": "catalog:vue"

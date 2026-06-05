@@ -37,7 +37,8 @@
     "husky": "catalog:build",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
-    "vitest": "catalog:test"
+    "vitest": "catalog:test",
+    "typescript": "catalog:build"
   },
   "dependencies": {
     "@changesets/cli": "catalog:tooling"

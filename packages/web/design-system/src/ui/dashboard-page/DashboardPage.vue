@@ -27,7 +27,6 @@ const props = withDefaults(defineProps<DashboardPageProps & {
   actions: () => [],
   breadcrumbs: () => [],
   detailPane: null,
-  tabs: () => [],
 })
 
 const mainContentDetailPaneContext = useInjectMainContentDetailPaneContext(null)
@@ -72,6 +71,9 @@ const {
 } = useDetailPane({
   isOpen: isDetailPaneOpen,
   isResizable: props.detailPane?.isResizable ?? true,
+  defaultWidth: props.detailPane?.defaultWidth,
+  maxWidth: props.detailPane?.maxWidth,
+  minWidth: props.detailPane?.minWidth,
   storage: props.detailPane?.storage ?? null,
   variant: props.detailPane?.variant ?? 'full-height-inline',
 })
