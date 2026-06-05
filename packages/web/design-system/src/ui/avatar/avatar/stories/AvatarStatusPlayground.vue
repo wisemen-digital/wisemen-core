@@ -1,82 +1,45 @@
 <script setup lang="ts">
+import type { AvatarProps } from '@/ui/avatar/avatar/avatar.props'
 import Avatar from '@/ui/avatar/avatar/Avatar.vue'
-import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
+
+const props = withDefaults(defineProps<{
+  size?: AvatarProps['size']
+}>(), {
+  size: 'md',
+})
 
 const profileSrc = '../../../../storybook-assets/profile-picture.jpg'
 </script>
 
 <template>
-  <ColumnLayout gap="xl">
-    <RowLayout
-      gap="xl"
-      align="start"
-    >
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="xs"
-        status="online"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="sm"
-        status="online"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="md"
-        status="online"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="lg"
-        status="online"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="xl"
-        status="online"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="2xl"
-        status="online"
-      />
-    </RowLayout>
-    <RowLayout
-      gap="xl"
-      align="start"
-    >
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="md"
-        status="online"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="md"
-        status="away"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="md"
-        status="busy"
-      />
-      <Avatar
-        :src="profileSrc"
-        name="Olivia Roy"
-        size="md"
-        status="offline"
-      />
-    </RowLayout>
-  </ColumnLayout>
+  <RowLayout
+    gap="xl"
+    align="start"
+  >
+    <Avatar
+      :src="profileSrc"
+      :size="props.size"
+      name="Olivia Roy"
+      status="online"
+    />
+    <Avatar
+      :src="profileSrc"
+      :size="props.size"
+      name="Olivia Roy"
+      status="away"
+    />
+    <Avatar
+      :src="profileSrc"
+      :size="props.size"
+      name="Olivia Roy"
+      status="busy"
+    />
+    <Avatar
+      :src="profileSrc"
+      :size="props.size"
+      name="Olivia Roy"
+      status="offline"
+    />
+  </RowLayout>
 </template>
