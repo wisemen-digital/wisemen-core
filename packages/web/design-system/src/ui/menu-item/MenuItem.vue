@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<MenuItemProps>(), {
   size: 'md',
 })
 
-const slots = useSlots()
+const slots: ReturnType<typeof useSlots> = useSlots()
 
 const isEffectivelyDisabled = computed<boolean>(() =>
   props.isDisabled || props.disabledReason !== null)
@@ -57,6 +57,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
     <UIRowLayout
       v-if="props.config === null"
       :class="style.base()"
+      justify="between"
     >
       <UIText
         :text="props.label"
@@ -66,6 +67,7 @@ const style = computed<MenuItemStyle>(() => createMenuItemStyle({
         }"
         class="shrink-0 text-secondary select-none"
       />
+      <slot name="right" />
     </UIRowLayout>
 
     <UIRowLayout

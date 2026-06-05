@@ -16,13 +16,13 @@ import { DateTimeInstantTransformer } from '#transformers/dateTimeInstant.transf
 import { DateUtil } from '#utils/date.util.ts'
 
 interface DateTimeRangeDto {
-  startDate: string
-  endDate: string
+  from: string
+  until: string
 }
 
 interface DateTimeRangeWithInfinityDto {
-  startDate: string | '-infinity' | 'infinity'
-  endDate: string | '-infinity' | 'infinity'
+  from: string | '-infinity' | 'infinity'
+  until: string | '-infinity' | 'infinity'
 }
 
 export class DateTimeInstantRangeTransformer {
@@ -34,10 +34,10 @@ export class DateTimeInstantRangeTransformer {
     }
 
     return {
-      startDate: DateTimeInstantTransformer.toDto(
+      from: DateTimeInstantTransformer.toDto(
         DateUtil.instantFromDateAndTime(field.from.date, field.from.time, timeZone),
       ),
-      endDate: DateTimeInstantTransformer.toDto(
+      until: DateTimeInstantTransformer.toDto(
         DateUtil.instantFromDateAndTime(field.until.date, field.until.time, timeZone),
       ),
     }
@@ -45,8 +45,8 @@ export class DateTimeInstantRangeTransformer {
 
   static fieldWithNullableEndToDto(field: DateTimeInstantRangeWithNullableEndField, timeZone: TimeZone): DateTimeRangeWithInfinityDto {
     return {
-      startDate: DateTimeInstantTransformer.toDto(DateUtil.instantFromDateAndTime(field.from.date, field.from.time, timeZone)),
-      endDate: field.until.date === null || field.until.time === null
+      from: DateTimeInstantTransformer.toDto(DateUtil.instantFromDateAndTime(field.from.date, field.from.time, timeZone)),
+      until: field.until.date === null || field.until.time === null
         ? 'infinity'
         : DateTimeInstantTransformer.toDto(DateUtil.instantFromDateAndTime(field.until.date, field.until.time, timeZone)),
     }
@@ -54,10 +54,10 @@ export class DateTimeInstantRangeTransformer {
 
   static fieldWithNullableStartToDto(field: DateTimeInstantRangeWithNullableStartField, timeZone: TimeZone): DateTimeRangeWithInfinityDto {
     return {
-      startDate: field.from.date === null || field.from.time === null
+      from: field.from.date === null || field.from.time === null
         ? '-infinity'
         : DateTimeInstantTransformer.toDto(DateUtil.instantFromDateAndTime(field.from.date, field.from.time, timeZone)),
-      endDate: DateTimeInstantTransformer.toDto(DateUtil.instantFromDateAndTime(field.until.date, field.until.time, timeZone)),
+      until: DateTimeInstantTransformer.toDto(DateUtil.instantFromDateAndTime(field.until.date, field.until.time, timeZone)),
     }
   }
 
@@ -70,8 +70,8 @@ export class DateTimeInstantRangeTransformer {
     }
 
     return {
-      from: DateUtil.instantFrom(dto.startDate),
-      until: DateUtil.instantFrom(dto.endDate),
+      from: DateUtil.instantFrom(dto.from),
+      until: DateUtil.instantFrom(dto.until),
     }
   }
 
@@ -85,15 +85,15 @@ export class DateTimeInstantRangeTransformer {
       return null
     }
 
-    if (DateTimeInstantRangeTransformer.isInfinity(dto.startDate)) {
-      throw new Error(`fromDtoWithEndInfinity: startDate cannot be infinity, got "${dto.startDate}"`)
+    if (DateTimeInstantRangeTransformer.isInfinity(dto.from)) {
+      throw new Error(`fromDtoWithEndInfinity: from cannot be infinity, got "${dto.from}"`)
     }
 
     return {
-      from: DateUtil.instantFrom(dto.startDate),
-      until: DateTimeInstantRangeTransformer.isInfinity(dto.endDate)
+      from: DateUtil.instantFrom(dto.from),
+      until: DateTimeInstantRangeTransformer.isInfinity(dto.until)
         ? 'infinity'
-        : DateUtil.instantFrom(dto.endDate),
+        : DateUtil.instantFrom(dto.until),
     }
   }
 
@@ -106,12 +106,12 @@ export class DateTimeInstantRangeTransformer {
     }
 
     return {
-      from: DateTimeInstantRangeTransformer.isInfinity(dto.startDate)
+      from: DateTimeInstantRangeTransformer.isInfinity(dto.from)
         ? 'infinity'
-        : DateUtil.instantFrom(dto.startDate),
-      until: DateTimeInstantRangeTransformer.isInfinity(dto.endDate)
+        : DateUtil.instantFrom(dto.from),
+      until: DateTimeInstantRangeTransformer.isInfinity(dto.until)
         ? 'infinity'
-        : DateUtil.instantFrom(dto.endDate),
+        : DateUtil.instantFrom(dto.until),
     }
   }
 
@@ -125,15 +125,15 @@ export class DateTimeInstantRangeTransformer {
       return null
     }
 
-    if (DateTimeInstantRangeTransformer.isInfinity(dto.endDate)) {
-      throw new Error(`fromDtoWithStartInfinity: endDate cannot be infinity, got "${dto.endDate}"`)
+    if (DateTimeInstantRangeTransformer.isInfinity(dto.until)) {
+      throw new Error(`fromDtoWithStartInfinity: until cannot be infinity, got "${dto.until}"`)
     }
 
     return {
-      from: DateTimeInstantRangeTransformer.isInfinity(dto.startDate)
+      from: DateTimeInstantRangeTransformer.isInfinity(dto.from)
         ? 'infinity'
-        : DateUtil.instantFrom(dto.startDate),
-      until: DateUtil.instantFrom(dto.endDate),
+        : DateUtil.instantFrom(dto.from),
+      until: DateUtil.instantFrom(dto.until),
     }
   }
 
@@ -149,8 +149,8 @@ export class DateTimeInstantRangeTransformer {
     }
 
     return {
-      startDate: DateTimeInstantTransformer.toDto(dateTimeRange.from),
-      endDate: DateTimeInstantTransformer.toDto(dateTimeRange.until),
+      from: DateTimeInstantTransformer.toDto(dateTimeRange.from),
+      until: DateTimeInstantTransformer.toDto(dateTimeRange.until),
     }
   }
 
@@ -164,10 +164,10 @@ export class DateTimeInstantRangeTransformer {
     }
 
     return {
-      startDate: dateTimeRange.from === 'infinity'
+      from: dateTimeRange.from === 'infinity'
         ? '-infinity'
         : DateTimeInstantTransformer.toDto(dateTimeRange.from),
-      endDate: dateTimeRange.until === 'infinity'
+      until: dateTimeRange.until === 'infinity'
         ? 'infinity'
         : DateTimeInstantTransformer.toDto(dateTimeRange.until),
     }

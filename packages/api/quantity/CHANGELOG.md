@@ -1,5 +1,12 @@
 # @wisemen/quantity
 
+## 0.8.4
+
+### Patch Changes
+
+- Updated dependencies [[`0bc5b42`](https://github.com/wisemen-digital/wisemen-core/commit/0bc5b42c8a9f15e696e01dc24b6fd228b6657405)]:
+  - @wisemen/nestjs-typeorm@1.1.1
+
 ## 0.8.3
 
 ### Patch Changes

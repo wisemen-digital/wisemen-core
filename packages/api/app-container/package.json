@@ -42,9 +42,9 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "fastify": "^5.8.5",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "fastify": ">=5.8.5",
     "typescript": "catalog:peer"
   },
   "peerDependencies": {

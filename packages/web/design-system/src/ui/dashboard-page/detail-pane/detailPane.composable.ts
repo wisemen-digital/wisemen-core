@@ -12,6 +12,7 @@ import {
 import type {
   DetailPaneStorage,
   DetailPaneVariant,
+  RemValue,
 } from '@/ui/dashboard-page/detail-pane/detailPane.type'
 
 const DEFAULT_WIDTH = '20rem'
@@ -21,6 +22,9 @@ const DEFAULT_MAX_WIDTH = '25rem'
 interface UseDetailPaneOptions {
   isOpen: Ref<boolean>
   isResizable: boolean
+  defaultWidth?: RemValue
+  maxWidth?: RemValue
+  minWidth?: RemValue
   storage: DetailPaneStorage | null
   variant: DetailPaneVariant
 }
@@ -39,9 +43,9 @@ export function useDetailPane(options: UseDetailPaneOptions) {
   const storage = options.storage
   const variant = options.variant
 
-  const width = DEFAULT_WIDTH
-  const minWidth = DEFAULT_MIN_WIDTH
-  const maxWidth = DEFAULT_MAX_WIDTH
+  const width = options.defaultWidth ?? DEFAULT_WIDTH
+  const minWidth = options.minWidth ?? DEFAULT_MIN_WIDTH
+  const maxWidth = options.maxWidth ?? DEFAULT_MAX_WIDTH
 
   const screen = useBreakpoints({
     xl: 960,
