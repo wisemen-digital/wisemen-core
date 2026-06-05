@@ -31,7 +31,7 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend",
     "@nestjs/core": "catalog:backend",
-    "@wisemen/api-error": "workspace:*",
+    "@wisemen/api-error": "workspace:^",
     "redis": "catalog:backend"
   },
   "devDependencies": {

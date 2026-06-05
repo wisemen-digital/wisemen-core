@@ -6,11 +6,6 @@ import type {
 
 export interface TagsFieldProps extends Input, InputWrapper, FieldWrapper {
   /**
-   * The size of the tags field.
-   * @default 'md'
-   */
-  size?: 'md' | 'sm'
-  /**
    * Whether to add tags when pasting.
    * @default true
    */
@@ -30,4 +25,9 @@ export interface TagsFieldProps extends Input, InputWrapper, FieldWrapper {
    * @default null
    */
   max?: number | null
+  /**
+   * The size of the tags field.
+   * @default 'md'
+   */
+  size?: 'md' | 'sm'
 }
