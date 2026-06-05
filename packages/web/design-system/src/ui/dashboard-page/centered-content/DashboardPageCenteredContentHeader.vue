@@ -33,6 +33,12 @@ const slots = useSlots()
       class="relative"
     >
       <template
+        v-if="slots['title-end']"
+        #title-end
+      >
+        <slot name="title-end" />
+      </template>
+      <template
         v-if="slots.subtitle !== undefined"
         #subtitle
       >
