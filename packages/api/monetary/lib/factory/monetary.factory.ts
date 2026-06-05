@@ -6,7 +6,7 @@ import { Currency } from "../currency.enum.js";
 export function createMonetaryAmountUtils<C extends Currency> (currency: C, monetaryPrecision: number) {
   return {
     AmountColumn: createMonetaryAmountColumn(currency, monetaryPrecision),
-    ApiProperty: createMonetaryApiProperty(),
+    ApiProperty: createMonetaryApiProperty(currency, monetaryPrecision),
     Validator: createMonetaryValidator(currency, monetaryPrecision)
   }
 }
