@@ -3,9 +3,10 @@ import type {
   ApiErrorObject,
   ApiExpectedError,
 } from '@wisemen/vue-core-api-utils'
-import { UIEmptyState } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { UIEmptyState } from '@/ui/empty-state/index'
 
 const props = defineProps<{
   error: ApiExpectedError
