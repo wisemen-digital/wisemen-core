@@ -79,7 +79,11 @@ export class NatsApplication {
 
     config.parameters.forEach(param => param.setContext(paramContext))
 
-    const handler = new NatsMessageHandlerFunction(config.parameters, config.callback)
+    const handler = new NatsMessageHandlerFunction(
+      config.parameters, 
+      config.callback,
+      config.consumer.name + '.' + config.callback.name
+    )
 
     if (config.event !== undefined) {
       consumer.addCloudEventHandler(config.event, handler)
@@ -94,7 +98,11 @@ export class NatsApplication {
 
     config.parameters.forEach(param => param.setContext(paramContext))
 
-    const handler = new NatsMessageHandlerFunction(config.parameters, config.callback)
+    const handler = new NatsMessageHandlerFunction(
+      config.parameters,
+      config.callback,
+      config.subscriber.name + '.' + config.callback.name
+    )
 
     if (config.event !== undefined) {
       subscriber.addCloudEventHandler(config.event, handler)

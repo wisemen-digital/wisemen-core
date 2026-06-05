@@ -168,7 +168,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
           <BadgeGroupTruncate
             v-if="isMultiple(modelValue)"
             :badges="selectedBadges"
-            class="-ml-xs w-full"
+            class="-ml-[0.3rem] w-full"
             size="sm"
             color="gray"
             variant="translucent"

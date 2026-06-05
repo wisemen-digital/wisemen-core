@@ -1,5 +1,12 @@
 # @wisemen/vue-core-preferences
 
+## 1.0.0
+
+### Patch Changes
+
+- Updated dependencies [[`9137e1d`](https://github.com/wisemen-digital/wisemen-core/commit/9137e1d8afdb91b6fe9fe289f11d977c6ddff8c7)]:
+  - @wisemen/vue-core-dates@1.0.0
+
 ## 0.1.0
 
 ### Minor Changes

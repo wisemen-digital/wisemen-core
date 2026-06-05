@@ -25,7 +25,11 @@ export class NatsService {
 
     config.parameters.forEach(param => param.setContext(paramContext))
 
-    const handler = new NatsMessageHandlerFunction(config.parameters, config.callback)
+    const handler = new NatsMessageHandlerFunction(
+      config.parameters, 
+      config.callback,
+      config.service.name + '.' + config.callback.name
+    )
 
     if (config.event !== undefined) {
       endpoint.addCloudEventHandler(config.event, handler)

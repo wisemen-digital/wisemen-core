@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<InteractableProps>(), {
     :as-child="true"
     :class="twMerge(
       `
-        cursor-pointer rounded-sm outline-fg-brand-primary
+        rounded-sm outline-fg-brand-primary
         focus-visible:outline-2
         disabled:cursor-not-allowed
       `,

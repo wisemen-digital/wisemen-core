@@ -8,6 +8,7 @@ import type { ConfigProviderProps } from '@/ui/config-provider/config.types'
 
 const props = withDefaults(defineProps<ConfigProviderProps>(), {
   addressAutocompleteAdapter: null,
+  dateLocale: null,
   googleMapsApiKey: null,
   reducedMotion: false,
   showNavigationArrowsInTopBar: false,

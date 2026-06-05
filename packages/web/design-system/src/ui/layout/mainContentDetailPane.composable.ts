@@ -12,6 +12,7 @@ export function useMainContentDetailPane() {
 
   const detailPaneState = shallowRef<{
     isOpen: Ref<boolean>
+    isToggleHidden?: boolean
     toggle: () => void
   } | null>(null)
 
@@ -21,9 +22,10 @@ export function useMainContentDetailPane() {
     detailPaneState.value?.toggle()
   }
 
-  function registerDetailPane(isOpen: Ref<boolean>, toggle: () => void): void {
+  function registerDetailPane(isOpen: Ref<boolean>, toggle: () => void, isToggleHidden?: boolean): void {
     detailPaneState.value = {
       isOpen,
+      isToggleHidden,
       toggle,
     }
     hasDetailPane.value = true
@@ -37,6 +39,7 @@ export function useMainContentDetailPane() {
   useProvideMainContentDetailPaneContext({
     hasDetailPane,
     isOpen: detailPaneIsOpen,
+    isToggleHidden: computed<boolean>(() => detailPaneState.value?.isToggleHidden ?? false),
     registerDetailPane,
     toggle: toggleDetailPane,
     unregisterDetailPane,

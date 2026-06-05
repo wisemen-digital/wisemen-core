@@ -58,7 +58,7 @@ const isTooltipDisabled = computed<boolean>(() => {
     return true
   }
 
-  if (collapsedVariant.value === 'minified' && isSidebarOpen && props.keyboardShortcut === null) {
+  if (collapsedVariant.value === 'minified' && isSidebarOpen.value && props.keyboardShortcut === null) {
     return true
   }
 

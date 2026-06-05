@@ -37,6 +37,8 @@
     "@types/node": "catalog:backend",
     "expect": "catalog:test",
     "typescript": "catalog:peer",
-    "@wisemen/eslint-config-nestjs": "workspace:*"
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api"
   }
 }

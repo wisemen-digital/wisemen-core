@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependencies [[`5266dcc`](https://github.com/wisemen-digital/wisemen-core/commit/5266dcce66c1df54ba1fbccb831186800c8db66b)]:
+  - @wisemen/api-error@1.0.0
+
+## 0.3.4
+
+### Patch Changes
+
+- [#1155](https://github.com/wisemen-digital/wisemen-core/pull/1155) [`c195c82`](https://github.com/wisemen-digital/wisemen-core/commit/c195c82a932ed78db52480d87263edbf5da6370f) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(elt-95): remove data from nats span and add better span names
+
+- Updated dependencies [[`baef816`](https://github.com/wisemen-digital/wisemen-core/commit/baef816c84226d2a17a780e26f844dc12e9c1b2c)]:
+  - @wisemen/opentelemetry@0.2.1
+
 ## 0.3.3
 
 ### Patch Changes
