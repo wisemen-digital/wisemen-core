@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.0
+
+### Minor Changes
+
+- [#1118](https://github.com/wisemen-digital/wisemen-core/pull/1118) [`ae96fe9`](https://github.com/wisemen-digital/wisemen-core/commit/ae96fe9ec5eaba283350c2f8132f829bfbec4376) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add UITagsField component
+
+- [#1193](https://github.com/wisemen-digital/wisemen-core/pull/1193) [`ec50aa1`](https://github.com/wisemen-digital/wisemen-core/commit/ec50aa10eb51e14175c1991dd4e42c390bfeb796) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - - **router-link**: make button brand variant smaller
+
+  - **detail-pane**: add default min and max width
+  - **sidebar**: make tooltip visible in icons-only mode
+  - **dashboard-page**: remove unused tabs prop
+  - **table**: add error state component
+  - **select**: add slot right when no menu item config is passed
+  - **select**: adjust margin left for badges in multiselect container
+  - **select**: remove separators when search is active
+
+- [#1191](https://github.com/wisemen-digital/wisemen-core/pull/1191) [`9bf1d69`](https://github.com/wisemen-digital/wisemen-core/commit/9bf1d692a061cb3f0b4d58dc922f9b0c548b73af) Thanks [@wouterlms](https://github.com/wouterlms)! - Table: add `sort` prop
+
 ## 1.2.0
 
 ### Minor Changes
