@@ -7,10 +7,11 @@ A collection of packages for Wisemen applications.
 ### Making Changes
 
 1. **Create a PR** with your changes
-2. **Add a changeset** to your PR describing the changes using:
+2. **Add a Bumpy** to your PR describing the changes using:
    ```bash
    pnpm bumpy add
    ```
+   If you have a change that doesn't bump a version, do `pnpm bumpy add --empty`
    For more details, see the [Bumpy documentation documentation](https://github.com/dmno-dev/bumpy)
 3. **Merge your PR** – this triggers the `release` workflow
 4. **Review the auto-generated PR** created by Bumpy, which includes:
