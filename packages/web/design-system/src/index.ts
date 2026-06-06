@@ -15,3 +15,4 @@ export {
   type Sort, type SortDirection, type SortValue, useSort,
 } from '@/composables/sort.composable'
 export { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
+export { tv } from '@/libs/tailwindVariants.lib'

@@ -173,18 +173,8 @@ catalogs:
       specifier: ^7.120.4
       version: 7.120.4
     axios:
-<<<<<<< HEAD
-<<<<<<< HEAD
-      specifier: '>=1.14.0'
-      version: 1.16.0
-=======
       specifier: ^1.17.0
       version: 1.17.0
->>>>>>> @{-1}
-=======
-      specifier: ^1.17.0
-      version: 1.17.0
->>>>>>> 7f399142a0eb3477e2cadc7621e8d349a0d49d85
     change-case:
       specifier: ^5.4.4
       version: 5.4.4
@@ -2210,15 +2200,7 @@ importers:
         version: 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       axios:
         specifier: catalog:backend-peer
-<<<<<<< HEAD
-<<<<<<< HEAD
-        version: 1.16.0
-=======
         version: 1.17.0
->>>>>>> @{-1}
-=======
-        version: 1.17.0
->>>>>>> 7f399142a0eb3477e2cadc7621e8d349a0d49d85
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -24043,15 +24025,7 @@ snapshots:
 
   twilio@5.13.1:
     dependencies:
-<<<<<<< HEAD
-<<<<<<< HEAD
-      axios: 1.16.0
-=======
       axios: 1.17.0
->>>>>>> @{-1}
-=======
-      axios: 1.17.0
->>>>>>> 7f399142a0eb3477e2cadc7621e8d349a0d49d85
       dayjs: 1.11.20
       https-proxy-agent: 5.0.1
       jsonwebtoken: 9.0.3

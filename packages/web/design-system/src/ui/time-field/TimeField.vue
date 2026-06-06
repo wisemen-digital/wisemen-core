@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Time as TimeValue } from '@internationalized/date'
+import { LocaleUtil } from '@wisemen/vue-core-dates'
 import {
   TimeFieldInput as RekaTimeFieldInput,
   TimeFieldRoot as RekaTimeFieldRoot,
@@ -43,11 +44,12 @@ const modelValue = defineModel<Temporal.PlainTime | null>({
 })
 
 const {
-  hourCycle, locale,
+  hourCycle,
 } = useInjectConfigContext()
 
 const id = props.id ?? useId()
 
+const deviceLocale = LocaleUtil.getCurrentLocale()
 const attrs = useAttrs()
 
 const {
@@ -109,6 +111,7 @@ const timeValue = computed<TimeValue | undefined>({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-label-hidden="props.isLabelHidden"
   >
     <template #label-left>
       <slot name="label-left" />
@@ -137,7 +140,7 @@ const timeValue = computed<TimeValue | undefined>({
         :disabled="props.isDisabled"
         :hour-cycle="hourCycleValue"
         :is-invalid="isError"
-        :locale="locale"
+        :locale="deviceLocale"
         :readonly="props.isReadonly"
         :required="props.isRequired"
         :step-snapping="props.stepSnapping"
@@ -167,6 +170,10 @@ const timeValue = computed<TimeValue | undefined>({
           </RekaTimeFieldInput>
         </template>
       </RekaTimeFieldRoot>
+
+      <template #right>
+        <slot name="right" />
+      </template>
     </FieldWrapper>
   </InputWrapper>
 </template>
