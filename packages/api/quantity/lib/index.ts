@@ -7,4 +7,5 @@ export * from './quantities/energy/index.js'
 export * from './quantities/power/index.js'
 export * from './quantities/speed/index.js'
 export * from './quantities/voltage/index.js'
-export * from './rate.js'
+export * from './rate/index.js'
+

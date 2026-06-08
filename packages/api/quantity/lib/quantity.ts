@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { Rate } from './rate.js'
+import { Rate } from './rate/rate.js'
 
 export type QuantityConstructor<U extends string, Q extends Quantity<U, Q>> = {
   new (quantityOrValue: Q | number, unit?: U): Q
