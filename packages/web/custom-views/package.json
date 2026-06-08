@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -51,8 +51,8 @@
     "@tanstack/vue-hotkeys": "catalog:",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
-    "@wisemen/vue-core-actions": ">=0.1.3",
-    "@wisemen/vue-core-design-system": ">=0.10.0",
+    "@wisemen/vue-core-actions": ">=0.2.0",
+    "@wisemen/vue-core-design-system": ">=1.4.0",
     "@wisemen/vue-core-filters": ">=5.0.0",
     "@wisemen/vue-core-icons": ">=0.0.2",
     "@wisemen/vue-core-utils": ">=0.1.0",

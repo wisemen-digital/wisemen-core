@@ -17,7 +17,7 @@ const {
   form,
 } = useInjectFormContext()
 
-useHotkey('Meta+Enter', () => {
+useHotkey('Mod+Enter', () => {
   form.submit()
 })
 </script>
@@ -29,7 +29,7 @@ useHotkey('Meta+Enter', () => {
     :is-disabled="props.isDisabled"
     :keyboard-shortcut="{
       key: 'Enter',
-      meta: true,
+      mod: true,
     }"
     :variant="props.isDestructive ? 'destructive-primary' : 'primary'"
     @click="form.submit"
