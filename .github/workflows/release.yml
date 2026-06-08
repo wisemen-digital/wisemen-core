@@ -1,38 +1,100 @@
-name: Release
-
+# .github/workflows/bumpy-release.yml
+name: Bumpy
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches: [main]
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
-
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
-  deployments: write
+concurrency:
+  group: bumpy-release
+  cancel-in-progress: false
 
 jobs:
-  release:
-    name: Release
+  # Detect what `ci release` would do — no write permissions, no publish credentials.
+  # Also resolves bumpy's version once and exposes it as an output for downstream jobs.
+  plan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      mode: ${{ steps.plan.outputs.mode }}
+      packages: ${{ steps.plan.outputs.packages }}
+      bumpy_version: ${{ steps.bumpy-version.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Install pnpm
         uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          registry-url: "https://registry.npmjs.org"
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Release with Bumpy
-        run: pnpm bumpy ci release
+          cache: pnpm
+      # No `pnpm install` — bumpy reads files (package.jsons, bump files) and doesn't need your workspace deps resolved
+      # We just pin its version from package.json and let pnpx fetch it
+      - id: bumpy-version
+        name: Resolve bumpy version
+        run: |
+          VERSION=$(jq -r '.devDependencies["@varlock/bumpy"] // .dependencies["@varlock/bumpy"]' package.json | sed 's/[\^~]//')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "BUMPY_VERSION=$VERSION" >> "$GITHUB_ENV"
+      - id: plan
+        run: pnpx "@varlock/bumpy@$BUMPY_VERSION" ci plan
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BUMPY_GH_TOKEN: ${{ secrets.BUMPY_GH_TOKEN }} # PAT so that version PR triggers CI
-          NPM_CONFIG_PROVENANCE: true
+          GH_TOKEN: ${{ github.token }}
+
+  # Creates/updates the Version Packages PR. No publish credentials.
+  version-pr:
+    needs: plan
+    if: needs.plan.outputs.mode == 'version-pr'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      BUMPY_VERSION: ${{ needs.plan.outputs.bumpy_version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpx "@varlock/bumpy@$BUMPY_VERSION" ci release --expect-mode version-pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUMPY_GH_TOKEN: ${{ secrets.BUMPY_GH_TOKEN }} # so the version PR triggers CI
+
+  # Publishes packages. Scoped to the `publish` environment.
+  publish:
+    needs: plan
+    if: needs.plan.outputs.mode == 'publish'
+    runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      contents: write
+      id-token: write # required for npm trusted publishing (OIDC) and provenance
+    env:
+      BUMPY_VERSION: ${{ needs.plan.outputs.bumpy_version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: npm install -g npm@latest # ensure npm >= 11.15.0 for OIDC/staged publishing
+      - run: pnpm run build
+      - run: pnpx "@varlock/bumpy@$BUMPY_VERSION" ci release --expect-mode publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUMPY_GH_TOKEN: ${{ secrets.BUMPY_GH_TOKEN }} # so `release: published` workflows trigger
