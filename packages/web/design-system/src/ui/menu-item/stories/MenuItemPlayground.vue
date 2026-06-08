@@ -110,7 +110,7 @@ import { UIMenuItem } from '@/ui/menu-item'
             right: {
               keyboardShortcut: {
                 key: 'K',
-                meta: true,
+                mod: true,
               },
               type: 'shortcut',
             },
