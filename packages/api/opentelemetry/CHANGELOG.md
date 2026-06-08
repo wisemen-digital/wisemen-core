@@ -1,5 +1,11 @@
 # @wisemen/opentelemetry
 
+## 0.2.2
+
+### Patch Changes
+
+- [#1156](https://github.com/wisemen-digital/wisemen-core/pull/1156) [`25a324e`](https://github.com/wisemen-digital/wisemen-core/commit/25a324e11461b545ead511f2e99a533be8e280d2) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add attribute filter span processor
+
 ## 0.2.1
 
 ### Patch Changes

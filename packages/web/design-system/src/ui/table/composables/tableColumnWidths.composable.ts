@@ -1,4 +1,7 @@
-import { useResizeObserver } from '@vueuse/core'
+import {
+  useDebounceFn,
+  useResizeObserver,
+} from '@vueuse/core'
 import type {
   Action,
   ActionGroup,
@@ -74,6 +77,10 @@ export function useTableColumnWidths(
 
   let lastContainerWidth = 0
 
+  const debouncedCaptureTemplate = useDebounceFn((el: HTMLElement) => {
+    captureComputedTemplate(el)
+  }, 25)
+
   useResizeObserver(gridEl, (entries) => {
     const width = entries[0]?.borderBoxSize[0]?.inlineSize
 
@@ -84,7 +91,7 @@ export function useTableColumnWidths(
     lastContainerWidth = width
 
     if (manualWidths.value === null && gridEl.value !== null) {
-      captureComputedTemplate(gridEl.value)
+      debouncedCaptureTemplate(gridEl.value)
     }
   }, {
     box: 'border-box',

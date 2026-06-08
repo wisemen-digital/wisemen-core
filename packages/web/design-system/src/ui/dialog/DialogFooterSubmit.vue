@@ -4,9 +4,14 @@ import { useHotkey } from '@tanstack/vue-hotkeys'
 import { UIButton } from '@/ui/button'
 import { useInjectFormContext } from '@/ui/form'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  isDestructive?: boolean
+  isDisabled?: boolean
   label: string
-}>()
+}>(), {
+  isDestructive: false,
+  isDisabled: false,
+})
 
 const {
   form,
@@ -21,11 +26,12 @@ useHotkey('Meta+Enter', () => {
   <UIButton
     :label="props.label"
     :is-loading="form.isSubmitting.value"
+    :is-disabled="props.isDisabled"
     :keyboard-shortcut="{
       key: 'Enter',
       meta: true,
     }"
-    variant="primary"
+    :variant="props.isDestructive ? 'destructive-primary' : 'primary'"
     @click="form.submit"
   />
 </template>

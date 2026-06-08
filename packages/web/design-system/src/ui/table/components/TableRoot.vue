@@ -27,6 +27,7 @@ const emit = defineEmits<{
 const scrollContainerEl = ref<HTMLElement | null>(null)
 
 const {
+  isScrollableVertically,
   isScrolledFromLeft,
   isScrolledToEnd,
   setScrollContainer: setScrollContainerScrollState,
@@ -81,6 +82,7 @@ useProvideTableContext({
   isColumnResizeDisabled: computed(() => props.disableColumnResize),
   isGroupingEnabled: computed(() => isGroupingEnabled.value),
   isResizingColumn: isResizing,
+  isScrollableVertically: computed(() => isScrollableVertically.value),
   isScrolledFromLeft: computed(() => isScrolledFromLeft.value),
   isScrolledToEnd: computed(() => isScrolledToEnd.value),
   actions: computed(() => props.actions),

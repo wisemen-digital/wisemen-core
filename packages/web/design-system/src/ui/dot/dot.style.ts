@@ -8,6 +8,7 @@ export const dotVariants = tv({
       brand: 'bg-brand-500',
       error: 'bg-error-500',
       gray: 'bg-gray-400',
+      moss: 'bg-moss-500',
       pink: 'bg-pink-500',
       purple: 'bg-purple-500',
       success: 'bg-success-500',
