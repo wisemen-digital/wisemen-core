@@ -3,6 +3,7 @@ import { IsNumber, IsEnum } from 'class-validator'
 import { Type } from 'class-transformer'
 import { Rate } from './rate.js'
 import { RateScale, RateScaleApiProperty } from './rate-scale.enum.js'
+import { exhaustiveCheck } from '../exhaustive-check.js'
 
 export class RateDto {
   @ApiProperty({ type: Number })
@@ -38,6 +39,8 @@ export class RateDto {
         return Rate.fromPercent(this.value)
       case RateScale.PERMILLE:
         return Rate.fromPermille(this.value)
+      default:
+        exhaustiveCheck(this.scale)
     }
   }
 }

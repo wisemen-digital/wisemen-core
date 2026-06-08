@@ -1,3 +1,4 @@
+import { exhaustiveCheck } from "../exhaustive-check.js"
 import { RateScale } from "./rate-scale.enum.js"
 
 export class Rate {
@@ -14,6 +15,8 @@ export class Rate {
       case RateScale.PERMILLE:
         this.value = value / 1000
         break
+      default:
+        exhaustiveCheck(scale)
     }
   }
 
