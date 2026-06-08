@@ -45,7 +45,7 @@
     "story:preview": "histoire preview"
   },
   "peerDependencies": {
-    "@wisemen/vue-core-components": "workspace:*",
+    "@wisemen/vue-core-components": "workspace:^",
     "motion-v": "catalog:vue",
     "vue": "catalog:vue",
     "vue-i18n": "catalog:vue"

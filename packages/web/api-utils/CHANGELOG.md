@@ -1,5 +1,11 @@
 # @wisemen/vue-core-query
 
+
+## 2.0.2
+<sub>2026-06-08</sub>
+
+- [#1209](https://github.com/wisemen-digital/wisemen-core/pull/1209)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Convert SortDirection from enum to type
+
 ## 2.0.1
 
 ### Patch Changes

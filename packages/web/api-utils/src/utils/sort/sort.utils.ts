@@ -1,5 +1,7 @@
-import type { Sort } from '@/types/sort.type'
-import { SortDirection } from '@/types/sort.type'
+import type {
+  Sort,
+  SortDirection,
+} from '@/types/sort.type'
 
 export class SortUtil {
   static toDto<SortKey extends string, QueryKey>(
@@ -13,7 +15,7 @@ export class SortUtil {
       .filter((s) => s.direction !== null)
       .map((s) => ({
         key: sortKeyMap[s.key],
-        order: s.direction === SortDirection.ASC ? SortDirection.ASC : SortDirection.DESC,
+        order: s.direction === 'asc' ? 'asc' : 'desc',
       }))
   }
 }

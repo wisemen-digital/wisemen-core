@@ -1,5 +1,17 @@
 # Changelog
 
+
+## 1.3.2
+<sub>2026-06-08</sub>
+
+- [#1196](https://github.com/wisemen-digital/wisemen-core/pull/1196)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Emit `@open` for UIContextMenu and UIActionContextMenu components
+
+## 1.3.1
+
+### Patch Changes
+
+- [#1192](https://github.com/wisemen-digital/wisemen-core/pull/1192) [`aa7ce95`](https://github.com/wisemen-digital/wisemen-core/commit/aa7ce9557073e785894fec3c23493b1445ae3216) Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add more spacing to the timeline component md version
+
 ## 1.3.0
 
 ### Minor Changes
