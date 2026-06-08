@@ -1,3 +1,3 @@
-export function exhaustiveCheck (value: never): never {
+export function exhaustiveCheck (_value: never): never {
   throw new Error(`Unhandled case`)
 }
