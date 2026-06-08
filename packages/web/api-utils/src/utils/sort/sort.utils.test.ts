@@ -5,7 +5,6 @@ import {
 } from 'vitest'
 
 import type { Sort } from '@/types/sort.type'
-import { SortDirection } from '@/types/sort.type'
 
 import { SortUtil } from './sort.utils'
 
@@ -14,11 +13,11 @@ describe('sortUtil', () => {
     it('should convert sort array to DTO format', () => {
       const sort: Sort<'email' | 'name'>[] = [
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'name',
         },
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'email',
         },
       ]
@@ -45,7 +44,7 @@ describe('sortUtil', () => {
     it('should filter out sort items with null direction', () => {
       const sort: Sort<'age' | 'email' | 'name'>[] = [
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'name',
         },
         {
@@ -53,7 +52,7 @@ describe('sortUtil', () => {
           key: 'email',
         },
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'age',
         },
       ]
@@ -69,11 +68,11 @@ describe('sortUtil', () => {
       expect(result).toEqual([
         {
           key: 'fullName',
-          order: SortDirection.ASC,
+          order: 'asc',
         },
         {
           key: 'userAge',
-          order: SortDirection.DESC,
+          order: 'desc',
         },
       ])
     })
@@ -111,10 +110,10 @@ describe('sortUtil', () => {
       expect(result).toEqual([])
     })
 
-    it('should correctly map asc direction to SortDirection.ASC', () => {
+    it('should correctly map asc direction to asc', () => {
       const sort: Sort<'name'>[] = [
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'name',
         },
       ]
@@ -128,15 +127,15 @@ describe('sortUtil', () => {
       expect(result).toEqual([
         {
           key: 'fullName',
-          order: SortDirection.ASC,
+          order: 'asc',
         },
       ])
     })
 
-    it('should correctly map desc direction to SortDirection.DESC', () => {
+    it('should correctly map desc direction to desc', () => {
       const sort: Sort<'name'>[] = [
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'name',
         },
       ]
@@ -150,7 +149,7 @@ describe('sortUtil', () => {
       expect(result).toEqual([
         {
           key: 'fullName',
-          order: SortDirection.DESC,
+          order: 'desc',
         },
       ])
     })
@@ -158,19 +157,19 @@ describe('sortUtil', () => {
     it('should handle multiple sort items with mixed directions', () => {
       const sort: Sort<'createdAt' | 'email' | 'firstName' | 'lastName'>[] = [
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'firstName',
         },
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'lastName',
         },
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'email',
         },
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'createdAt',
         },
       ]
@@ -187,19 +186,19 @@ describe('sortUtil', () => {
       expect(result).toEqual([
         {
           key: 'first_name',
-          order: SortDirection.ASC,
+          order: 'asc',
         },
         {
           key: 'last_name',
-          order: SortDirection.DESC,
+          order: 'desc',
         },
         {
           key: 'email_address',
-          order: SortDirection.ASC,
+          order: 'asc',
         },
         {
           key: 'created_at',
-          order: SortDirection.DESC,
+          order: 'desc',
         },
       ])
     })
@@ -207,15 +206,15 @@ describe('sortUtil', () => {
     it('should preserve the order of sort items', () => {
       const sort: Sort<'date' | 'name' | 'priority'>[] = [
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'priority',
         },
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'name',
         },
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'date',
         },
       ]
@@ -231,26 +230,26 @@ describe('sortUtil', () => {
       // Order should be preserved
       expect(result[0]).toEqual({
         key: 'task_priority',
-        order: SortDirection.DESC,
+        order: 'desc',
       })
       expect(result[1]).toEqual({
         key: 'task_name',
-        order: SortDirection.ASC,
+        order: 'asc',
       })
       expect(result[2]).toEqual({
         key: 'due_date',
-        order: SortDirection.DESC,
+        order: 'desc',
       })
     })
 
     it('should work with different key types', () => {
       const sort: Sort<'id' | 'status'>[] = [
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'id',
         },
         {
-          direction: SortDirection.DESC,
+          direction: 'desc',
           key: 'status',
         },
       ]
@@ -265,11 +264,11 @@ describe('sortUtil', () => {
       expect(result).toEqual([
         {
           key: 123,
-          order: SortDirection.ASC,
+          order: 'asc',
         },
         {
           key: 'item_status',
-          order: SortDirection.DESC,
+          order: 'desc',
         },
       ])
     })
@@ -277,7 +276,7 @@ describe('sortUtil', () => {
     it('should handle single sort item', () => {
       const sort: Sort<'username'>[] = [
         {
-          direction: SortDirection.ASC,
+          direction: 'asc',
           key: 'username',
         },
       ]
@@ -291,7 +290,7 @@ describe('sortUtil', () => {
       expect(result).toEqual([
         {
           key: 'user_name',
-          order: SortDirection.ASC,
+          order: 'asc',
         },
       ])
     })
