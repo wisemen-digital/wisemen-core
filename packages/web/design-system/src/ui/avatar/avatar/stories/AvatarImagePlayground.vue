@@ -14,12 +14,6 @@ const profileSrc = '../../../../storybook-assets/profile-picture.jpg'
       :src="profileSrc"
       image-alt="Olivia Roy's avatar"
       name="Olivia Roy"
-      size="xxs"
-    />
-    <Avatar
-      :src="profileSrc"
-      image-alt="Olivia Roy's avatar"
-      name="Olivia Roy"
       size="xs"
     />
     <Avatar

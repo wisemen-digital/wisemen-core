@@ -63,4 +63,3 @@ For full API details, read the props file. For usage examples, read the playgrou
 
 - [action-tooltip](../action-tooltip/SKILL.md) -- For tooltips with keyboard shortcut badges
 - [popover](../popover/SKILL.md) -- For interactive floating content
-- [storybook](../../storybook/SKILL.md) -- For story and playground conventions when editing `stories/`

@@ -10,7 +10,6 @@ const meta = {
   argTypes: {
     color: {
       control: 'select',
-      description: 'Color palette applied to the number badge',
       options: [
         'gray',
         'brand',
@@ -23,7 +22,6 @@ const meta = {
     },
     size: {
       control: 'select',
-      description: 'Controls the size of the number badge',
       options: [
         'md',
         'lg',
@@ -31,11 +29,9 @@ const meta = {
     },
     value: {
       control: 'number',
-      description: 'Number displayed inside the badge',
     },
     variant: {
       control: 'select',
-      description: 'Visual style applied to the number badge',
       options: [
         'translucent',
         'outline',
@@ -80,7 +76,7 @@ export const Outline: Story = {
   },
 }
 
-export const LargeSize: Story = {
+export const Large: Story = {
   args: {
     color: 'success',
     size: 'lg',

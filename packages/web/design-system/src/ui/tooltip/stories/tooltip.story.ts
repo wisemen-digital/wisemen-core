@@ -13,7 +13,7 @@ import TooltipPlayground from './TooltipPlayground.vue'
 import TooltipSidesPlayground from './TooltipSidesPlayground.vue'
 import TooltipVariantsPlayground from './TooltipVariantsPlayground.vue'
 
-const meta = {
+const meta: Meta<typeof TooltipPlayground> = {
   title: 'Components/Tooltip',
   argTypes: {
     isDisabled: {
@@ -60,7 +60,7 @@ const meta = {
     'autodocs',
   ],
   component: TooltipPlayground,
-} satisfies Meta<typeof TooltipPlayground>
+}
 
 export default meta
 

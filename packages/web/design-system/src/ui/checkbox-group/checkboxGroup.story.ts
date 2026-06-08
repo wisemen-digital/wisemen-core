@@ -1,44 +1,18 @@
-import type {
-  Meta,
-  StoryObj,
-} from '@storybook/vue3-vite'
+import type { StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 
-import CheckboxGroupCheckbox from '@/ui/checkbox-group/CheckboxGroupCheckbox.vue'
-import CheckboxGroupIndeterminateCheckbox from '@/ui/checkbox-group/CheckboxGroupIndeterminateCheckbox.vue'
-import CheckboxGroupPlayground from '@/ui/checkbox-group/CheckboxGroupPlayground.vue'
-import CheckboxGroupRoot from '@/ui/checkbox-group/CheckboxGroupRoot.vue'
+import CheckboxGroupCheckbox from './CheckboxGroupCheckbox.vue'
+import CheckboxGroupIndeterminateCheckbox from './CheckboxGroupIndeterminateCheckbox.vue'
+import CheckboxGroupPlayground from './CheckboxGroupPlayground.vue'
+import CheckboxGroupRoot from './CheckboxGroupRoot.vue'
 
 const meta = {
   title: 'Components/CheckboxGroup',
-  argTypes: {
-    isDisabled: {
-      control: 'boolean',
-      description: 'Disables every checkbox in the group',
-    },
-    disabledReason: {
-      control: 'text',
-      description: 'Tooltip text shown when the checkbox group is disabled',
-    },
-    modelValue: {
-      table: {
-        disable: true,
-      },
-    },
-    orientation: {
-      control: 'select',
-      description: 'Controls whether the checkbox group is laid out horizontally or vertically',
-      options: [
-        'vertical',
-        'horizontal',
-      ],
-    },
-  },
   tags: [
     'autodocs',
   ],
-  component: CheckboxGroupPlayground,
-} satisfies Meta<typeof CheckboxGroupPlayground>
+  component: CheckboxGroupRoot<string>,
+}
 
 export default meta
 
@@ -46,21 +20,18 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    isDisabled: false,
-    disabledReason: null,
     modelValue: [],
-    orientation: 'vertical',
   },
-  render: (args) => ({
+  render: () => ({
     components: {
       CheckboxGroupCheckbox,
+      CheckboxGroupIndeterminateCheckbox,
       CheckboxGroupRoot,
     },
     setup() {
       const modelValue = ref<string[]>([])
 
       return {
-        args,
         modelValue,
       }
     },
@@ -68,20 +39,17 @@ export const Default: Story = {
       <div class="p-xl">
         <CheckboxGroupRoot
           v-model="modelValue"
-          :disabled-reason="args.disabledReason"
-          :is-disabled="args.isDisabled"
-          :orientation="args.orientation"
         >
           <CheckboxGroupCheckbox
-            label="Option 1"
+            label="option 1"
             value="option1"
           />
           <CheckboxGroupCheckbox
-            label="Option 2"
+            label="option 2"
             value="option2"
           />
           <CheckboxGroupCheckbox
-            label="Option 3"
+            label="option 3"
             value="option3"
           />
         </CheckboxGroupRoot>
@@ -92,24 +60,18 @@ export const Default: Story = {
 
 export const Indeterminate: Story = {
   args: {
-    isDisabled: false,
-    disabledReason: null,
     modelValue: [],
-    orientation: 'vertical',
   },
-  render: (args) => ({
+  render: () => ({
     components: {
       CheckboxGroupCheckbox,
       CheckboxGroupIndeterminateCheckbox,
       CheckboxGroupRoot,
     },
     setup() {
-      const modelValue = ref<string[]>([
-        'option1',
-      ])
+      const modelValue = ref<string[]>([])
 
       return {
-        args,
         modelValue,
       }
     },
@@ -117,23 +79,20 @@ export const Indeterminate: Story = {
       <div class="p-xl">
         <CheckboxGroupRoot
           v-model="modelValue"
-          :disabled-reason="args.disabledReason"
-          :is-disabled="args.isDisabled"
-          :orientation="args.orientation"
         >
           <CheckboxGroupIndeterminateCheckbox
             label="Select All"
           />
           <CheckboxGroupCheckbox
-            label="Option 1"
+            label="option 1"
             value="option1"
           />
           <CheckboxGroupCheckbox
-            label="Option 2"
+            label="option 2"
             value="option2"
           />
           <CheckboxGroupCheckbox
-            label="Option 3"
+            label="option 3"
             value="option3"
           />
         </CheckboxGroupRoot>
@@ -144,12 +103,9 @@ export const Indeterminate: Story = {
 
 export const Disabled: Story = {
   args: {
-    isDisabled: true,
-    disabledReason: 'Selections are locked for this example',
     modelValue: [],
-    orientation: 'vertical',
   },
-  render: (args) => ({
+  render: () => ({
     components: {
       CheckboxGroupCheckbox,
       CheckboxGroupIndeterminateCheckbox,
@@ -161,7 +117,6 @@ export const Disabled: Story = {
       ])
 
       return {
-        args,
         modelValue,
       }
     },
@@ -169,25 +124,23 @@ export const Disabled: Story = {
       <div class="p-xl">
         <CheckboxGroupRoot
           v-model="modelValue"
-          :disabled-reason="args.disabledReason"
-          :is-disabled="args.isDisabled"
-          :orientation="args.orientation"
+          is-disabled
         >
           <CheckboxGroupIndeterminateCheckbox
             label="Select All"
           />
-          <CheckboxGroupCheckbox
-            label="Option 1"
-            value="option1"
-          />
-          <CheckboxGroupCheckbox
-            label="Option 2"
-            value="option2"
-          />
-          <CheckboxGroupCheckbox
-            label="Option 3"
-            value="option3"
-          />
+            <CheckboxGroupCheckbox
+              label="option 1"
+              value="option1"
+            />
+            <CheckboxGroupCheckbox
+              label="option 2"
+              value="option2"
+            />
+            <CheckboxGroupCheckbox
+              label="option 3"
+              value="option3"
+            />
         </CheckboxGroupRoot>
       </div>
     `,
@@ -196,12 +149,9 @@ export const Disabled: Story = {
 
 export const HorizontalOrientation: Story = {
   args: {
-    isDisabled: false,
-    disabledReason: null,
     modelValue: [],
-    orientation: 'horizontal',
   },
-  render: (args) => ({
+  render: () => ({
     components: {
       CheckboxGroupCheckbox,
       CheckboxGroupIndeterminateCheckbox,
@@ -211,7 +161,6 @@ export const HorizontalOrientation: Story = {
       const modelValue = ref<string[]>([])
 
       return {
-        args,
         modelValue,
       }
     },
@@ -219,9 +168,7 @@ export const HorizontalOrientation: Story = {
       <div class="p-xl">
         <CheckboxGroupRoot
           v-model="modelValue"
-          :disabled-reason="args.disabledReason"
-          :is-disabled="args.isDisabled"
-          :orientation="args.orientation"
+          orientation="horizontal"
         >
           <div class="flex flex-col items-start gap-lg">
             <CheckboxGroupIndeterminateCheckbox
@@ -229,15 +176,15 @@ export const HorizontalOrientation: Story = {
             />
             <div class="flex items-center gap-lg">
               <CheckboxGroupCheckbox
-                label="Option 1"
+                label="option 1"
                 value="option1"
               />
               <CheckboxGroupCheckbox
-                label="Option 2"
+                label="option 2"
                 value="option2"
               />
               <CheckboxGroupCheckbox
-                label="Option 3"
+                label="option 3"
                 value="option3"
               />
             </div>
@@ -250,12 +197,9 @@ export const HorizontalOrientation: Story = {
 
 export const Playground: Story = {
   args: {
-    isDisabled: false,
-    disabledReason: null,
     modelValue: [],
-    orientation: 'vertical',
   },
-  render: (args) => ({
+  render: () => ({
     components: {
       CheckboxGroupPlayground,
     },
@@ -263,15 +207,11 @@ export const Playground: Story = {
       const modelValue = ref<string[]>([])
 
       return {
-        args,
         modelValue,
       }
     },
     template: `
-      <CheckboxGroupPlayground
-        v-model="modelValue"
-        v-bind="args"
-      />
+      <CheckboxGroupPlayground v-model="modelValue" />
     `,
   }),
 }

@@ -20,11 +20,9 @@ const meta = {
   argTypes: {
     isFullWidth: {
       control: 'boolean',
-      description: 'Makes each tab grow to fill the available horizontal space',
     },
     orientation: {
       control: 'select',
-      description: 'Arranges the tab list horizontally or vertically',
       options: [
         'horizontal',
         'vertical',
@@ -32,7 +30,6 @@ const meta = {
     },
     underlineTabsHorizontalListPadding: {
       control: 'select',
-      description: 'Controls the horizontal padding used by underline tab lists',
       options: [
         'none',
         'sm',
@@ -43,7 +40,6 @@ const meta = {
     },
     variant: {
       control: 'select',
-      description: 'Visual style used for the tab triggers',
       options: [
         'underline',
         'button-border',

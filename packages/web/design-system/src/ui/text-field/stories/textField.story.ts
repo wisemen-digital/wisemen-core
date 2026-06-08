@@ -39,9 +39,6 @@ const meta = {
     hideErrorMessage: {
       control: 'boolean',
       description: 'Whether to hide the error message visually',
-      table: {
-        disable: true,
-      },
     },
     hint: {
       control: 'text',
