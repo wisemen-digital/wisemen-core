@@ -26,7 +26,7 @@ useHotkey('Meta+Enter', () => {
   <UIButton
     :label="props.label"
     :is-loading="form.isSubmitting.value"
-    :is-disabled="props.isDestructive"
+    :is-disabled="props.isDisabled"
     :keyboard-shortcut="{
       key: 'Enter',
       meta: true,
