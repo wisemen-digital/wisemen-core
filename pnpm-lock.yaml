@@ -298,6 +298,9 @@ catalogs:
     libphonenumber-js:
       specifier: 1.12.35
       version: 1.12.35
+    maska:
+      specifier: ^3.0.0
+      version: 3.2.0
     pkce-challenge:
       specifier: 5.0.1
       version: 5.0.1
@@ -2678,6 +2681,9 @@ importers:
       libphonenumber-js:
         specifier: catalog:general
         version: 1.12.35
+      maska:
+        specifier: catalog:general
+        version: 3.2.0
       tailwind-merge:
         specifier: catalog:style
         version: 3.4.0
@@ -10971,6 +10977,9 @@ packages:
 
   markdown-table@3.0.4:
     resolution: {integrity: sha512-wiYz4+JrLyb/DqW2hkFJxP7Vd7JuTDm77fvbM8VfEQdmSMqcImWeeRbHwZjBjIFki/VaMK2BhFi7oUUZeM5bqw==}
+
+  maska@3.2.0:
+    resolution: {integrity: sha512-zSmSgs5/q9vMSmrdZT3rKOv9uLznNWR/niuuAdBZDTvB3SMKOX9vhMtDijFyExz+B4UClu2rvksylUh/ea1bLA==}
 
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
@@ -21950,6 +21959,8 @@ snapshots:
       uc.micro: 2.1.0
 
   markdown-table@3.0.4: {}
+
+  maska@3.2.0: {}
 
   math-intrinsics@1.1.0: {}
 

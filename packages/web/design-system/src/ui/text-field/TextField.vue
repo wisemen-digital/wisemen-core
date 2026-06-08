@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { vMaska } from 'maska/vue'
 import {
   computed,
   useAttrs,
@@ -99,6 +100,7 @@ defineExpose({
       </template>
 
       <input
+        v-maska="props.mask"
         v-bind="attrs"
         :id="id"
         ref="input"

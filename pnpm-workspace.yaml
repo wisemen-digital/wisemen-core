@@ -143,6 +143,7 @@ catalogs:
     "graphemer": "1.4.0"
     "highlight-words": "2.0.0"
     "libphonenumber-js": "1.12.35"
+    "maska": "^3.0.0"
     "neverthrow": "8.2.0"
     "pkce-challenge": "5.0.1"
     "ts-api-utils": "2.4.0"
