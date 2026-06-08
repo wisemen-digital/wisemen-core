@@ -84,7 +84,7 @@ import IconButton from '@/ui/button/icon/IconButton.vue'
           :icon="Settings01Icon"
           :keyboard-shortcut="{
             key: ',',
-            meta: true,
+            mod: true,
           }"
           label="Open Settings"
           tooltip-label="Settings"

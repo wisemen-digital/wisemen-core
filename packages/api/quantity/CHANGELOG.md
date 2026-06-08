@@ -1,5 +1,11 @@
 # @wisemen/quantity
 
+
+## 0.9.0
+<sub>2026-06-08</sub>
+
+- [#1215](https://github.com/wisemen-digital/wisemen-core/pull/1215)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Add column utils for Rate
+
 ## 0.8.4
 
 ### Patch Changes
