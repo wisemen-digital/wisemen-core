@@ -1,5 +1,11 @@
 # @wisemen/vue-core-actions
 
+
+## 0.2.0
+<sub>2026-06-08</sub>
+
+- [#1228](https://github.com/wisemen-digital/wisemen-core/pull/1228)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add bottom slot to ActionContextMenu and ActionDropdownMenu for custom footer content; add settings and application action groups; fix filter input visibility to use sr-only instead of v-if so keyboard-initiated typing is captured immediately
+
 ## 0.1.3
 
 ### Patch Changes
