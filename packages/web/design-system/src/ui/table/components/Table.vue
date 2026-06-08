@@ -5,6 +5,7 @@ import {
   shallowRef,
   watch,
 } from 'vue'
+
 import { useI18n } from 'vue-i18n'
 
 import { UIEmptyState } from '@/ui/empty-state/index'
@@ -91,6 +92,16 @@ const {
   computed(() => (dataMode.value === 'flat' ? flatItems.value.length : 0)),
   scrollContainerEl,
 )
+
+const isInitialized = shallowRef(false)
+
+watch(() => props.isLoading, (isLoading) => {
+  if (!isLoading) {
+    isInitialized.value = true
+  }
+}, {
+  immediate: true,
+})
 
 watch(() => props.data.length, (length, oldLength) => {
   if (length < oldLength) {
@@ -230,7 +241,7 @@ function onClearFiltersAndSearch(): void {
       <UIErrorState :error="props.error" />
     </slot>
 
-    <template v-else-if="props.data.length === 0 && !props.isLoading">
+    <template v-else-if="isInitialized && props.data.length === 0 && !props.isLoading">
       <UIEmptyState
         v-if="props.activeFilterCount > 0 || props.hasActiveSearch"
         :secondary-action="{
