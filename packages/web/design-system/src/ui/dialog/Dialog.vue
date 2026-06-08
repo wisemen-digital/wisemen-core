@@ -80,7 +80,7 @@ function onInteractOutside(event: CustomEvent): void {
 
 const overlay = useOverlay()
 
-const dialogContentZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}`
+const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}`
 </script>
 
 <template>
@@ -91,6 +91,9 @@ const dialogContentZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).
   >
     <RekaDialogOverlay
       :class="style.overlay()"
+      :style="{
+        zIndex: dialogZIndex,
+      }"
       data-animation="dialog"
       data-dialog-overlay
     />
@@ -98,7 +101,7 @@ const dialogContentZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).
     <RekaDialogContent
       :class="style.contentWrapper()"
       :style="{
-        zIndex: dialogContentZIndex,
+        zIndex: dialogZIndex,
       }"
       data-animation="dialog"
       @escape-key-down="onEscapeKeyDown"
