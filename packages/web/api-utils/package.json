@@ -42,7 +42,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest --run",
-    "typecheck": "pnpm tsc"
+    "type-check": "pnpm tsc"
   },
   "peerDependencies": {
     "@tanstack/vue-query": "catalog:peer",
