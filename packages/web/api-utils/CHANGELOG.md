@@ -1,6 +1,12 @@
 # @wisemen/vue-core-query
 
 
+
+## 2.0.4
+<sub>2026-06-08</sub>
+
+- [#1218](https://github.com/wisemen-digital/wisemen-core/pull/1218)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Use correct dto type
+
 ## 2.0.2
 <sub>2026-06-08</sub>
 
