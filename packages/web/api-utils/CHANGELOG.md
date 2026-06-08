@@ -2,6 +2,12 @@
 
 
 
+
+## 2.0.5
+<sub>2026-06-08</sub>
+
+- [#1220](https://github.com/wisemen-digital/wisemen-core/pull/1220)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Change sort direction dto type to any
+
 ## 2.0.4
 <sub>2026-06-08</sub>
 
