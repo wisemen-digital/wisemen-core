@@ -35,7 +35,7 @@ const toggleMainSidebarAction = createAction({
     : FlexAlignLeftIcon,
   keyboardShortcut: {
     key: 'B',
-    meta: true,
+    mod: true,
   },
   keywords: i18n.t('action.global.toggle_main_sidebar.keywords').split(' '),
 })
@@ -54,7 +54,7 @@ function toggleSidebar(): void {
     :label="label"
     :keyboard-shortcut="{
       key: 'B',
-      meta: true,
+      mod: true,
     }"
   >
     <ActionTrigger
