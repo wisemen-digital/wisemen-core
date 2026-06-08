@@ -80,6 +80,7 @@
     "country-flag-icons": "catalog:general",
     "libphonenumber-js": "catalog:general",
     "vite": "catalog:vite",
+    "maska": "catalog:general",
     "tailwind-merge": "catalog:style",
     "tailwind-variants": "catalog:style",
     "tailwindcss": "catalog:style",
