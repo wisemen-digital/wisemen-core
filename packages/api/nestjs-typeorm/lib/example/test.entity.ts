@@ -1,7 +1,7 @@
 import { Column, Entity } from "typeorm"
 import { Default } from "../types/default.type.js"
 import { Embedded } from "../types/embedded.type.js"
-import { EntityInsert } from "../types/insert.type.js"
+import { EntityInsert } from "../types/entity-insert.type.js"
 import { Relation } from "../types/relation.js"
 
 @Entity()
