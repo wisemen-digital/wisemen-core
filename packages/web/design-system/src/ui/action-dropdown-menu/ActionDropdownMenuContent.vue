@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
 import type {
   Action,
   ActionModel,
@@ -7,6 +8,7 @@ import { useActionDropdownMenuContent } from '@wisemen/vue-core-actions'
 import { DropdownMenuFilter } from 'reka-ui'
 import {
   computed,
+  ref,
   toRef,
   useTemplateRef,
 } from 'vue'
@@ -32,6 +34,7 @@ const props = withDefaults(defineProps<{
 })
 
 const i18n = useI18n()
+const userHasTyped = ref<boolean>(false)
 
 const scrollContainerRef = useTemplateRef<HTMLElement>('scrollContainer')
 
@@ -58,12 +61,18 @@ const isFilterVisible = computed<boolean>(
       (a) => a.subActions !== undefined,
     ),
 )
+
+useEventListener('keydown', () => {
+  userHasTyped.value = true
+})
 </script>
 
 <template>
   <div class="group/content flex max-h-[inherit] flex-col overflow-hidden">
     <div
-      v-if="isFilterVisible"
+      :class="{
+        'sr-only': !isFilterVisible && !userHasTyped,
+      }"
       class="p-xs pb-none"
     >
       <DropdownMenuFilter
@@ -133,5 +142,7 @@ const isFilterVisible = computed<boolean>(
         />
       </div>
     </div>
+
+    <slot name="bottom" />
   </div>
 </template>
