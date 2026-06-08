@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 1.3.2
+<sub>2026-06-08</sub>
+
+- [#1196](https://github.com/wisemen-digital/wisemen-core/pull/1196)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Emit `@open` for UIContextMenu and UIActionContextMenu components
+
 ## 1.3.1
 
 ### Patch Changes
