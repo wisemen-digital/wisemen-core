@@ -72,8 +72,9 @@ export type {
   WithSortQuery,
   WithStaticFilterQuery,
 } from './types/queryOptions'
-export type { Sort } from './types/sort.type'
-export { SortDirection } from './types/sort.type'
+export type {
+  Sort, SortDirection,
+} from './types/sort.type'
 export { ApiUtil } from './utils/api/api.util'
 export { ApiErrorUtil } from './utils/api-error/apiError.util'
 export {
