@@ -1,5 +1,5 @@
 # .github/workflows/bumpy-release.yml
-name: Bumpy
+name: Release
 on:
   push:
     branches: [main]
