@@ -10,6 +10,7 @@ catalog:
   "@tanstack/vue-virtual": ^3.13.24
   "@wisemen/eslint-config-nestjs": ^1.1.1
   "@wisemen/vue-core-api-utils": catalog
+  "@wisemen/vue-core-dates": ^0.0.2
   superjson: "2.2.6"
   vue-component-type-helpers: ^0.0.0
   vue-draggable-plus: ^0.6.1

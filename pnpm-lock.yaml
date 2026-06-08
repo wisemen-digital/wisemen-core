@@ -250,6 +250,9 @@ catalogs:
     '@wisemen/eslint-config-nestjs':
       specifier: ^1.1.1
       version: 1.1.1
+    '@wisemen/vue-core-dates':
+      specifier: ^0.0.2
+      version: 0.0.2
     vue-draggable-plus:
       specifier: ^0.6.1
       version: 0.6.1
@@ -2593,6 +2596,99 @@ importers:
       vue-i18n:
         specifier: catalog:vue
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      zod:
+        specifier: catalog:general
+        version: 4.3.5
+
+  packages/web/custom-views:
+    devDependencies:
+      '@tailwindcss/vite':
+        specifier: catalog:vite
+        version: 4.1.18(vite@8.0.14(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3))
+      '@tanstack/vue-hotkeys':
+        specifier: 'catalog:'
+        version: 0.10.0(vue@3.5.27(typescript@5.9.3))
+      '@types/node':
+        specifier: catalog:types
+        version: 24.8.1
+      '@vitejs/plugin-vue':
+        specifier: catalog:vite
+        version: 6.0.3(vite@8.0.14(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
+      '@vue/test-utils':
+        specifier: catalog:test
+        version: 2.4.6
+      '@vue/tsconfig':
+        specifier: catalog:vue
+        version: 0.8.1(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      '@vueuse/core':
+        specifier: catalog:vue
+        version: 14.1.0(vue@3.5.27(typescript@5.9.3))
+      '@vueuse/router':
+        specifier: catalog:vue
+        version: 14.1.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@wisemen/vue-core-actions':
+        specifier: workspace:*
+        version: link:../actions
+      '@wisemen/vue-core-dates':
+        specifier: 'catalog:'
+        version: 0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
+      '@wisemen/vue-core-design-system':
+        specifier: workspace:*
+        version: link:../design-system
+      '@wisemen/vue-core-filters':
+        specifier: workspace:*
+        version: link:../filters
+      '@wisemen/vue-core-icons':
+        specifier: workspace:*
+        version: link:../icons
+      '@wisemen/vue-core-tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind-config
+      '@wisemen/vue-core-utils':
+        specifier: workspace:*
+        version: link:../utils
+      eslint:
+        specifier: catalog:lint-web
+        version: 9.39.4(jiti@2.6.1)
+      formango:
+        specifier: catalog:peer
+        version: 3.2.4(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
+      reka-ui:
+        specifier: catalog:vue
+        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+      tailwindcss:
+        specifier: catalog:style
+        version: 4.1.18
+      temporal-polyfill:
+        specifier: catalog:peer
+        version: 0.3.0
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vite:
+        specifier: catalog:vite
+        version: 8.0.14(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3)
+      vite-plugin-dts:
+        specifier: catalog:vite
+        version: 4.5.4(@types/node@24.8.1)(rollup@4.60.3)(typescript@5.9.3)(vite@8.0.14(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3))
+      vitest:
+        specifier: catalog:test
+        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@24.8.1)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(vite@8.0.14(@types/node@24.8.1)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.97.3)(terser@5.48.0)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
+      vue-draggable-plus:
+        specifier: 'catalog:'
+        version: 0.6.1(@types/sortablejs@1.15.9)
+      vue-i18n:
+        specifier: catalog:peer
+        version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      vue-tsc:
+        specifier: catalog:vue
+        version: 3.2.2(typescript@5.9.3)
       zod:
         specifier: catalog:general
         version: 4.3.5
@@ -8473,6 +8569,14 @@ packages:
       '@typescript-eslint/parser': ^8.46.1
       eslint: '>=10.0.3'
       typescript: '>=4.8.4 <=5.9.3'
+
+  '@wisemen/vue-core-dates@0.0.2':
+    resolution: {integrity: sha512-vlG4Im6Suh5GGa56+pzYD901e4rB3nt5sptfM+OdPe+Dut6ACOQFlQmgBhjf/LHP44a88AiOV+AONYTIEm0cdw==}
+    peerDependencies:
+      temporal-polyfill: '>=0.3.0'
+      vue: '>=3.5.22'
+      vue-i18n: '>=11.1.12'
+      zod: '>=4.3.5'
 
   '@wisemen/vue-core-icons@0.0.2':
     resolution: {integrity: sha512-MAaD9S31riuHyUuHsi3mTFVTi7WV+cKQTHb5lYsEwjVLAkN7mxIn9HWpo7CBmZxM9efKJO819DlCLRee6EhOFw==}
@@ -19189,6 +19293,13 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
+
+  '@wisemen/vue-core-dates@0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)':
+    dependencies:
+      temporal-polyfill: 0.3.0
+      vue: 3.5.27(typescript@5.9.3)
+      vue-i18n: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      zod: 4.3.5
 
   '@wisemen/vue-core-icons@0.0.2(vue@3.5.27(typescript@5.9.3))':
     dependencies:
