@@ -107,6 +107,13 @@ function onCancel(): void {
   isOpen.value = false
 }
 
+const isSameDate = computed<boolean>(
+  () =>
+    modelValue.value.from !== null
+    && modelValue.value.until !== null
+    && modelValue.value.from.equals(modelValue.value.until),
+)
+
 useProvideDateRangeFieldContext({
   isInvalidRange,
   draftValue,
@@ -194,29 +201,31 @@ useProvideDateRangeFieldContext({
             </RekaDateRangePickerInput>
           </template>
 
-          <ArrowNarrowRightIcon :class="dateRangeFieldStyle.separator()" />
+          <template v-if="!isSameDate">
+            <ArrowNarrowRightIcon :class="dateRangeFieldStyle.separator()" />
 
-          <template
-            v-for="{ part, value } in segments.end"
-            :key="`end-${part}`"
-          >
-            <RekaDateRangePickerInput
-              v-if="part !== 'literal'"
-              :part="part"
-              :class="dateRangeFieldStyle.segment()"
-              type="end"
-              data-field-wrapper
+            <template
+              v-for="{ part, value } in segments.end"
+              :key="`end-${part}`"
             >
-              {{ value }}
-            </RekaDateRangePickerInput>
-            <RekaDateRangePickerInput
-              v-else
-              :part="part"
-              :class="dateRangeFieldStyle.literal()"
-              type="end"
-            >
-              {{ value }}
-            </RekaDateRangePickerInput>
+              <RekaDateRangePickerInput
+                v-if="part !== 'literal'"
+                :part="part"
+                :class="dateRangeFieldStyle.segment()"
+                type="end"
+                data-field-wrapper
+              >
+                {{ value }}
+              </RekaDateRangePickerInput>
+              <RekaDateRangePickerInput
+                v-else
+                :part="part"
+                :class="dateRangeFieldStyle.literal()"
+                type="end"
+              >
+                {{ value }}
+              </RekaDateRangePickerInput>
+            </template>
           </template>
         </RekaDateRangePickerField>
 
