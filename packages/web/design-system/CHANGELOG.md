@@ -2,6 +2,12 @@
 
 
 
+
+## 1.4.1
+<sub>2026-06-09</sub>
+
+- [#1237](https://github.com/wisemen-digital/wisemen-core/pull/1237)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - use correct date index to preview selected month
+
 ## 1.4.0
 <sub>2026-06-08</sub>
 
