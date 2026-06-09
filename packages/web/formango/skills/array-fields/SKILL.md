@@ -1,21 +1,6 @@
 ---
 name: array-fields
-description: >
-  Use form.registerArray() to manage dynamic field lists in formango.
-  Covers FieldArray interface: iterate fields with v-for using unique ids
-  as keys, register child fields by index, manipulate with append, remove,
-  insert, prepend, pop, shift, move, empty, setValue. Nested arrays via
-  fieldArray.registerArray(). Load when a form schema contains z.array()
-  or any repeatable field group.
-type: core
-library: formango
-library_version: "3.2.1"
-requires:
-  - form-setup
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts"
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/api/field-array.md"
+description: Manage dynamic, repeatable field lists in a formango form with `form.registerArray()` and the `FieldArray` API — `append`, `remove`, `insert`, `prepend`, `pop`, `shift`, `move`, `empty`, and `setValue` — iterating `fieldArray.fields` (stable ids) as the v-for `:key` and registering item fields by index, including nested arrays via `fieldArray.registerArray()`. Use this whenever a form schema contains `z.array()` or any repeatable group of inputs.
 ---
 
 This skill builds on [form-setup](../form-setup/SKILL.md). Read it first for `useForm`, `register`, and `Field` concepts.
@@ -222,6 +207,13 @@ See also: [form-setup](../form-setup/SKILL.md) — base form creation and field 
 
 See also: [validation-errors](../validation-errors/SKILL.md) — array field errors are scoped per-item
 
-## Version
+## Skill metadata
 
-Targets formango v3.2.1.
+- **Library:** `formango`
+- **Type:** core
+- **Authored against:** v3.2.4
+- **Prerequisites:** [`form-setup`](../form-setup/SKILL.md)
+- **Sources:**
+  - `packages/web/formango/src/lib/useForm.ts`
+  - `packages/web/formango/src/types/form.type.ts`
+  - `docs/packages/formango/api/field-array.md`

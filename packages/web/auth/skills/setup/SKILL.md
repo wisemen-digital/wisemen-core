@@ -1,10 +1,6 @@
 ---
 name: auth-setup
-description: >
-  Minimal setup for @wisemen/vue-core-auth: create an OIDC client, redirect to
-  login, handle the callback, attach access tokens, and logout.
-type: core
-library: vue-core-auth
+description: Set up OIDC/OAuth2 authentication with `@wisemen/vue-core-auth` — construct an `OidcClient` (PKCE), build a login URL with `getLoginUrl()`, complete the redirect with `loginWithCode()`, attach bearer tokens via `getAccessToken()`, guard routes with `isLoggedIn()`, and `logout()` / `getLogoutUrl()`. Use this whenever wiring up login/logout, handling the OAuth callback, protecting routes, or attaching access tokens to API requests.
 ---
 
 # @wisemen/vue-core-auth - Setup
@@ -116,7 +112,11 @@ oAuthClient.logout()
 window.location.replace(oAuthClient.getLogoutUrl())
 ```
 
-## Source Files
+## Skill metadata
 
-- Client: `src/oidcClient.ts`
-- Types: `src/oidc.type.ts`
+- **Library:** `@wisemen/vue-core-auth` (package `vue-core-auth`)
+- **Type:** core
+- **Authored against:** v3.1.3
+- **Sources:**
+  - `packages/web/auth/src/oidcClient.ts`
+  - `packages/web/auth/src/oidc.type.ts`

@@ -1,12 +1,6 @@
 ---
 name: writing-mutations
-description: >
-  Create, update, delete resources using useMutation, typed queryKeysToInvalidate with optional param extractors, AsyncResult error handling, execute function, request shape with body/params separation.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/mutation/mutation.composable.ts"
+description: Create, update, or delete resources with the api-utils `useMutation` composable — a `queryFn` taking `{ body, params }`, typed `queryKeysToInvalidate` (with optional param extractors), an awaitable `execute()` that resolves to a neverthrow `Result`, and a reactive `result` AsyncResult. Use this whenever wiring a create/update/delete call, submitting a form to a backend, or invalidating cached queries after a write — reach for it instead of the raw `@tanstack/vue-query` `useMutation`.
 ---
 
 # @wisemen/vue-core-api-utils — Writing Mutations
@@ -46,10 +40,10 @@ async function handleSubmit(formData: ContactCreateForm) {
   const response = await execute({ body: formData })
   
   if (response.isOk()) {
-    console.log('Created contact:', response.getValue())
+    console.log('Created contact:', response.value)
     // Invalidated queries will refetch automatically
   } else if (response.isErr()) {
-    const error = response.getError()
+    const error = response.error
     if ('errors' in error && error.errors[0].code === 'EMAIL_EXISTS') {
       toast.error('That email is already registered')
     } else {
@@ -59,7 +53,7 @@ async function handleSubmit(formData: ContactCreateForm) {
 }
 ```
 
-Always `await execute()` and check the result state before continuing.
+Always `await execute()` and check the result before continuing. `execute()` resolves to a neverthrow `Result`, so read it with `.value` / `.error` after `isOk()` / `isErr()` — this is distinct from the reactive `result`, which is an `AsyncResult` you read with `.getValue()` / `.getError()`.
 
 ### Update mutation with specific query invalidation using param extractors
 
@@ -263,3 +257,11 @@ Source: `src/composables/mutation/mutation.composable.ts` — `RequestParams` ty
 
 - [Cache Management](../cache-management/SKILL.md) — Understanding which queries to invalidate
 - [Writing Queries](../writing-queries/SKILL.md) — Mutations invalidate queries; understand queries first
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/composables/mutation/mutation.composable.ts`

@@ -1,13 +1,6 @@
 ---
 name: optimistic-uis
-description: >
-  Combining mutations, QueryClient.update() with built-in rollback, and AsyncResult to create responsive UIs with instant feedback; optimistic updates with automatic error reversal.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/mutation/mutation.composable.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/utils/query-client/queryClient.ts"
+description: Build responsive UIs that update instantly by combining `useMutation`'s `execute()` with `QueryClient.update()` and its built-in `rollback()` — patch the cache optimistically, then revert when the mutation's neverthrow `Result` is `isErr()`. Use this whenever a create/update should feel instant, applying an optimistic cache patch before a request resolves, or reverting cache changes after a failed write.
 ---
 
 # @wisemen/vue-core-api-utils — Optimistic UIs
@@ -93,7 +86,7 @@ async function handleSave(formData) {
 
 Users see changes instantly. No perceived latency. If the server rejects the change, `rollback()` restores the previous cache state automatically.
 
-### Error handling with AsyncResult
+### Error handling on the mutation result
 
 ```typescript
 async function handleSave(formData) {
@@ -104,21 +97,16 @@ async function handleSave(formData) {
   
   const result = await execute({ body: formData })
   
-  result.match({
-    ok: () => {
-      // Server confirmed the update
-      // Cache already reflects the change from the optimistic update
-      showSuccessMessage('Contact updated')
-    },
-    err: (error) => {
-      // Revert optimistic update
-      rollback()
-      showErrorMessage(`Failed: ${'errors' in error ? error.errors[0].detail : error.message}`)
-    },
-    loading: () => {
-      // Won't happen after await, but required by match()
-    },
-  })
+  // `execute()` resolves to a neverthrow Result (not an AsyncResult): read it with isOk()/isErr() + .value/.error
+  if (result.isOk()) {
+    // Server confirmed the update; the cache already reflects the optimistic change
+    showSuccessMessage('Contact updated')
+  } else {
+    // Revert the optimistic update
+    rollback()
+    const error = result.error
+    showErrorMessage(`Failed: ${'errors' in error ? error.errors[0].detail : error.message}`)
+  }
 }
 ```
 
@@ -343,3 +331,12 @@ Source: Architectural consideration from query lifecycle patterns
 - [Writing Mutations](../writing-mutations/SKILL.md) — The `execute()` and result handling that pairs with optimistic updates
 - [Cache Management](../cache-management/SKILL.md) — QueryClient methods for reading and updating cache
 - [Writing Queries](../writing-queries/SKILL.md) — Understanding query results and caching behavior
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/composables/mutation/mutation.composable.ts`
+  - `packages/web/api-utils/src/utils/query-client/queryClient.ts`

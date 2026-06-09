@@ -1,14 +1,6 @@
 ---
 name: getting-started
-description: >
-  Install @wisemen/vue-core-api-utils, initialize apiUtilsPlugin with QueryClient config, register typed query keys via module augmentation, re-export composables.
-type: lifecycle
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/plugin/apiUtilsPlugin.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/register.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"
+description: Set up `@wisemen/vue-core-api-utils` end to end — install the package, register the `apiUtilsPlugin` (with your QueryClient config) in `main.ts`, define a `ProjectQueryKeys` interface, wire types via `declare module` augmentation of `Register`, and re-export the typed composables from `@/api`. Use this when first adding api-utils to a project, scaffolding the `@/api` barrel, or wiring up typed query keys and error codes.
 ---
 
 # @wisemen/vue-core-api-utils — Getting Started
@@ -51,7 +43,7 @@ export interface ProjectQueryKeys {
 }
 ```
 
-Every key must have both `entity` (response type) and `params` (required parameters).
+Every key is an object with an `entity` (response type); add `params` when the query takes arguments.
 
 ### 3. Initialize the plugin in your main.ts
 
@@ -185,7 +177,7 @@ const { result, refetch } = useContactDetail(props.contactUuid)
       Name: {{ result.getValue().name }}
     </div>
     <div v-else-if="result.isErr()">
-      Error: {{ result.getError().detail }}
+      Failed to load contact
     </div>
     <button @click="refetch">Retry</button>
   </div>
@@ -220,31 +212,30 @@ Without the plugin, composables have no QueryClient and throw immediately.
 
 Source: `src/config/config.ts` — `getQueryClient()` assertion
 
-### HIGH: Define query keys interface without strict entity/params structure
+### HIGH: Give a query key a bare type instead of the `{ entity, params }` shape
 
 ```typescript
-// ❌ Wrong: inconsistent structure
+// ❌ Wrong: bare array instead of an object exposing `entity`
 export interface ProjectQueryKeys {
-  contactDetail: { entity: Contact } // Missing params!
-  contactList: Contact[] // Should wrap in { entity, params }
+  contactList: Contact[] // should be { entity: Contact[] }
 }
 ```
 
 ```typescript
-// ✅ Correct: every key has entity and params
+// ✅ Correct: each key is an object with `entity`, plus `params` when parameterized
 export interface ProjectQueryKeys {
   contactDetail: {
     entity: Contact
     params: { contactUuid: string }
   }
-  contactList: {
-    entity: Contact[]
-    params: { search?: string }
+  // `params` is optional — omit it for a query that takes no arguments:
+  currentUser: {
+    entity: User
   }
 }
 ```
 
-Query keys without proper structure cause TypeScript errors and prevent correct query key resolution.
+Each key must be an object exposing `entity`; add `params` only when the query is parameterized. A bare type (e.g. `Contact[]`) breaks query-key resolution.
 
 Source: `src/register.ts` — `RegisteredQueryKeyEntity` and `RegisteredQueryKeyParams` type derivation
 
@@ -282,3 +273,13 @@ You now have:
 - ✅ Error codes enumerated
 
 Head to [writing-queries](../writing-queries/SKILL.md) to fetch your first resource, or [asyncresult-handling](../asyncresult-handling/SKILL.md) to understand the three-state AsyncResult type.
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** lifecycle
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/plugin/apiUtilsPlugin.ts`
+  - `packages/web/api-utils/src/register.ts`
+  - `packages/web/api-utils/src/config/config.ts`

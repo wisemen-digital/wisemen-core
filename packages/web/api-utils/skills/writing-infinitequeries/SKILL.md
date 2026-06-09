@@ -1,17 +1,6 @@
 ---
 name: writing-infinitequeries
-description: >
-  Infinite pagination with useOffsetInfiniteQuery and useKeysetInfiniteQuery, offset vs keyset strategies determined by backend API, fetchNextPage, hasNextPage, isFetchingNextPage, data/meta result structure, proper page assembly.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/offsetInfiniteQuery.composable.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/keysetInfiniteQuery.composable.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/types/pagination.type.ts"
-subsystems:
-  - "Offset Pagination"
-  - "Keyset Pagination"
+description: Paginate large lists with the api-utils infinite-query composables — `useOffsetInfiniteQuery` (offset/limit) and `useKeysetInfiniteQuery` (cursor key) — exposing `fetchNextPage`, `hasNextPage`, `isFetchingNextPage`, and a `result` AsyncResult whose pages are assembled into a `{ data, meta }` shape. Use this whenever building "load more" or infinite scroll, choosing offset vs keyset to match a backend endpoint, or wiring a paginated `queryFn` — reach for it instead of the raw `@tanstack/vue-query` `useInfiniteQuery`.
 ---
 
 # @wisemen/vue-core-api-utils — Writing Infinite Queries
@@ -90,7 +79,7 @@ const contacts = computed(() => {
 })
 ```
 
-All pages are automatically concatenated into `data`. Access with `result.getValue().data`.
+All pages are automatically concatenated into one `data` array — read it with `result.value.getValue().data` after an `isOk()` check (as above).
 
 ### Load next page
 
@@ -307,3 +296,14 @@ If your API accepts a cursor `key` parameter, use `useKeysetInfiniteQuery`.
 ## See Also
 
 - [Writing Queries](../writing-queries/SKILL.md) — Infinite queries are queries; all query concepts apply
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Subsystems:** Offset Pagination, Keyset Pagination
+- **Sources:**
+  - `packages/web/api-utils/src/composables/query/offsetInfiniteQuery.composable.ts`
+  - `packages/web/api-utils/src/composables/query/keysetInfiniteQuery.composable.ts`
+  - `packages/web/api-utils/src/types/pagination.type.ts`

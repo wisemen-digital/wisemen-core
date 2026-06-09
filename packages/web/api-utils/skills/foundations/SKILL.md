@@ -1,33 +1,26 @@
 ---
 name: foundations
-description: >
-  neverthrow Result architectural basis; three-state AsyncResult relationship to Result; @tanstack/vue-query lifecycle (staleTime, gcTime, refetch); composition of TanStack Query + neverthrow + Vue 3 reactivity.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/types/apiError.type.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"
+description: Understand the architecture behind api-utils — how the three-state `AsyncResult` (neverthrow's `Result` plus a loading state) relates to `Result`, how `@tanstack/vue-query`'s lifecycle (`staleTime`, `gcTime`, refetch triggers) runs beneath it, and how TanStack Query + neverthrow + Vue 3 reactivity compose into the typed composables. Use this when you need the mental model behind queries and mutations, are reasoning about caching/staleness, or are working out how errors flow through `Result` vs `AsyncResult`.
 ---
 
 # @wisemen/vue-core-api-utils — Foundations
 
-Understand how `AsyncResult` from `neverthrow` and `@tanstack/vue-query` combine to provide structured error handling and reactive query management. This knowledge informs all other skills.
+Understand how api-utils' `AsyncResult`, `neverthrow`, and `@tanstack/vue-query` combine to provide structured error handling and reactive query management. This knowledge informs all other skills.
 
 ## Core Concepts
 
-### AsyncResult: The three-state type system
+### AsyncResult: the three-state type system
 
-`AsyncResult<T, E>` is a Result type from the `neverthrow` library that explicitly models three states:
+`AsyncResult<T, E>` is api-utils' own type (defined in `src/async-result/asyncResult.ts`). It takes neverthrow's two-state `Result` and adds a third **loading** state, so a query is always in exactly one of three states:
 
 ```typescript
-type AsyncResult<T, E> = AsyncResultLoading 
-  | AsyncResultOk<T>
-  | AsyncResultErr<E>
+type AsyncResult<T, E> =
+  | AsyncResultLoading<T, E>
+  | AsyncResultOk<T, E>
+  | AsyncResultErr<T, E>
 ```
 
-The three states replace traditional Vue composition with separate flags:
+It replaces the traditional bag of separate flags:
 
 ```typescript
 // ❌ Old pattern: multiple flags
@@ -37,262 +30,261 @@ const data = ref(null)
 const error = ref(null)
 
 // Which combinations are valid? isLoading + isError? isLoading + data?
-// The state machine is implicit, error-prone
+// The state machine is implicit and error-prone.
 ```
 
 ```typescript
-// ✅ AsyncResult: single discriminated union
-const result = ref<AsyncResult<Contact, ApiError>>(new AsyncResultLoading())
+// ✅ AsyncResult: a single discriminated union
+import { AsyncResult } from '@wisemen/vue-core-api-utils'
 
-// Only three valid states; type system enforces them
-// Pattern matching makes every state explicit
-result.value.match({
-  loading: () => 'Loading...',
+// Construct with the factory — the class constructors are private:
+const result = ref<AsyncResult<Contact, ApiError>>(AsyncResult.loading())
+// AsyncResult.loading() | AsyncResult.ok(value) | AsyncResult.err(error)
+
+// Only three valid states; the type system enforces exhaustive handling.
+const label = result.value.match({
+  loading: () => 'Loading…',
   ok: (contact) => contact.name,
-  err: (error) => error.message,
+  err: (error) => ('errors' in error ? error.errors[0].detail : error.message),
 })
 ```
 
 ### Three-state representation
 
-AsyncResult wraps any promise-based operation:
-
-| State | Setup | Usage | Next |
-|-------|-------|-------|------|
-| **Loading** | Initial state when query starts | Show spinner/skeleton | → Ok or Err |
-| **Ok(T)** | Server returned success with data | Show data with `getValue()` | Stays Ok until refetch |
-| **Err(E)** | Server returned error or network failed | Show error with `getError()` | Query can be retried |
+| State | When | Read with | Next |
+|-------|------|-----------|------|
+| **Loading** | Initial state while the query is in flight | Show spinner/skeleton | → Ok or Err |
+| **Ok(T)** | Server returned success | `isOk()` then `getValue()` | Stays Ok until refetch |
+| **Err(E)** | Server or network error | `isErr()` then `getError()` | Query can be retried |
 
 ```typescript
+import { computed } from 'vue'
 import { useQuery } from '@/api'
 
 const { result } = useQuery('contactDetail', {
+  params: { contactUuid: computed(() => uuid) },
   queryFn: () => ContactService.getDetail(uuid),
 })
 
-// result is computed ref to AsyncResult<Contact, ApiError>
-result.value.match({
-  loading: () => <div>Loading</div>,
-  ok: (contact) => <div>{contact.name}</div>,
-  err: (error) => <div>Error: {error.message}</div>,
+// result is a ComputedRef<AsyncResult<Contact, ApiError>>
+const label = result.value.match({
+  loading: () => 'Loading…',
+  ok: (contact) => contact.name,
+  err: (error) => ('errors' in error ? error.errors[0].detail : error.message),
 })
 ```
 
-### neverthrow Result vs AsyncResult
+### neverthrow `Result` vs `AsyncResult`
 
-neverthrow provides `Result<T, E>` for synchronous operations. `AsyncResult` extends it for async:
+`neverthrow` provides `Result<T, E>` for synchronous success/failure. api-utils builds on it, and the two have **different APIs** — this is the single most common source of mistakes:
+
+- A **service / `queryFn` / `execute()`** returns a neverthrow `Result` (api-utils aliases it as `ApiResult<T>`). Handle it with `isOk()` / `isErr()` and the **`.value`** / **`.error`** properties, or neverthrow's two-argument `match(okFn, errFn)`.
+- A composable's reactive **`result`** is an `AsyncResult`. Handle it with `isLoading()` / `isOk()` / `isErr()` and the **`getValue()`** / **`getError()`** methods, or the object-form `match({ loading, ok, err })`.
 
 ```typescript
-// neverthrow Result: already resolved
-const result: Result<Contact, ApiError> = await contactService.getDetail()
+// neverthrow Result (what a queryFn / execute() resolves to): two-arg match, .value / .error
+const result: ApiResult<Contact> = await ContactService.getDetail(uuid)
 
-result.match({
+result.match(
+  (contact) => console.log(contact.name),
+  (error) => console.error('errors' in error ? error.errors[0].detail : error.message),
+)
+```
+
+```typescript
+// AsyncResult (a composable's reactive result): object-form match with a loading case
+const state: AsyncResult<Contact, ApiError> = AsyncResult.loading()
+
+state.match({
+  loading: () => console.log('Waiting…'),
   ok: (contact) => console.log(contact.name),
-  err: (error) => console.error(error.message),
+  err: (error) => console.error('errors' in error ? error.errors[0].detail : error.message),
 })
 ```
 
-```typescript
-// AsyncResult: waiting for promise
-const result: AsyncResult<Contact, ApiError> = new AsyncResultLoading()
+`AsyncResult` is `Result` plus a loading state. Every composable that fetches data exposes an `AsyncResult`.
 
-result.match({
-  loading: () => console.log('Waiting...'),
-  ok: (contact) => console.log(contact.name),
-  err: (error) => console.error(error.message),
-})
-```
+### Type guards
 
-AsyncResult is Result + loading state. Every composable that fetches data returns AsyncResult.
-
-### Type guards from neverthrow
-
-Safely extract values using type guards:
+`isOk()` / `isErr()` / `isLoading()` are type predicates that narrow the union, making `getValue()` / `getError()` safe:
 
 ```typescript
-const result = new AsyncResultOk(contact)
-
-// Type predicate
+const result = AsyncResult.ok<Contact, ApiError>(contact)
 if (result.isOk()) {
-  const contact = result.getValue() // No type error; TypeScript knows it's Contact
+  const contact = result.getValue() // narrowed to AsyncResultOk → getValue() is available
 }
 
-const errResult = new AsyncResultErr(error)
+const errResult = AsyncResult.err<Contact, ApiError>(error)
 if (errResult.isErr()) {
-  const error = errResult.getError() // No type error; TypeScript knows it's ApiError
-}
-
-if (!result.isLoading()) {
-  // Could be Ok or Err
+  const error = errResult.getError() // narrowed to AsyncResultErr → getError() is available
 }
 ```
 
-## TanStack Query Lifecycle
+> `getValue()` exists only on `AsyncResultOk` and `getError()` only on `AsyncResultErr`. Call them **after** the matching `isOk()` / `isErr()` guard, or use `match()`.
 
-`@tanstack/vue-query` manages the async lifecycle beneath AsyncResult.
+## TanStack Query lifecycle
+
+`@tanstack/vue-query` manages the async lifecycle beneath `AsyncResult`.
 
 ### Query state machine
 
 ```
 [Initial]
-   ↓
-[Fetching] (isLoading)
-   ↓
-[Stale] (cached data exists but flagged for refresh)
-   ↓
-[Inactive] (unused queries auto-cleanup after gcTime)
+   ↓ fetch
+[Fetching]   (isLoading on first load)
+   ↓ success
+[Fresh]  →  [Stale after staleTime]   (cached; refetched on the next trigger)
+   ↓ no observers
+[Inactive]  →  evicted after gcTime
 ```
 
-### Stale time: How long is cached data fresh?
+### staleTime: how long cached data stays fresh
 
 ```typescript
 const { result } = useQuery('contactDetail', {
+  params: { contactUuid: computed(() => uuid) },
   queryFn: () => ContactService.getDetail(uuid),
   staleTime: 5 * 60 * 1000, // 5 minutes
 })
 
-// Timeline:
-// T=0:    First fetch. Result is Ok(contact). freshInterval starts.
-// T=4m59s: Data is still fresh. Returning cached contact instantly.
-// T=5m01s: Data is now stale. Still showing cached contact, but next interaction refetches.
-// T=next-page-view: Fresh fetch triggered automatically.
+// T=0:     First fetch resolves to Ok(contact); the freshness window starts.
+// T=4m59s: Still fresh — cached contact returned instantly, no refetch.
+// T=5m01s: Now stale — cached contact still shown, but the next trigger refetches.
 ```
 
-Stale time is the **grace period** before the cache is considered outdated. While fresh, subsequent requests return cache instantly without refetching.
+`staleTime` is the **grace period** before cached data is considered outdated. While fresh, reads return the cache instantly without refetching. The default is `0` (immediately stale). It is the one TanStack timing option api-utils' `useQuery` exposes per call.
 
-### Garbage collection time: When does cache disappear?
+### gcTime: when unused cache is evicted
+
+`gcTime` controls cache **eviction**; `staleTime` controls **freshness**. After a query has no observers (its component unmounts), its data is kept for `gcTime` and then garbage-collected. api-utils' `useQuery` does not take `gcTime` per call — set it as a TanStack default in your plugin config:
 
 ```typescript
-const gcTime = 5 * 60 * 1000 // 5 minutes
-
-// Query runs, then becomes unused (component unmounts, user navigates away).
-// For gcTime duration, data is kept in memory (but marked as stale).
-// After gcTime, if query hasn't been accessed, it's deleted from cache.
+app.use(apiUtilsPlugin({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // fresh for 5 minutes
+      gcTime: 60 * 60 * 1000,   // retain unused cache for 1 hour
+    },
+  },
+}))
 ```
 
-gcTime is cleanup. If you navigate back before gcTime expires, you get the cached (stale) data. After gcTime, next access refetches fresh.
+Navigate back within `gcTime` → cached (possibly stale) data. After `gcTime` → the next access refetches from scratch.
 
 ### Refetch triggers
 
-Queries refetch when:
+A query refetches when:
 
-1. **Manual trigger** — `refetch()` function
-2. **Mutation invalidation** — `queryKeysToInvalidate` in mutation definition
-3. **Stale time expired** — Next component interaction after staleTime passes
-4. **Focus refetch** — Window regains focus (configurable)
-5. **Component mount** — If cache is beyond gcTime
+1. **Manual** — you call `refetch()`
+2. **Invalidation** — a mutation lists the key in `queryKeysToInvalidate`
+3. **Stale access** — the next interaction after `staleTime` elapses
+4. **Window focus** — on refocus (configurable)
+5. **Remount** — a new observer mounts while data is stale or evicted
 
 ```typescript
 const { result, refetch } = useQuery('contactDetail', {
+  params: { contactUuid: computed(() => uuid) },
   queryFn: () => ContactService.getDetail(uuid),
   staleTime: 5 * 60 * 1000,
 })
 
-// Manual refetch
-async function handleRefresh() {
-  await refetch()
-  // result updates to new Ok or Err
-}
+await refetch() // manual
 
-// Automatic refetch on mutation (via queryKeysToInvalidate)
+// Automatic invalidation from a mutation:
 const { execute } = useMutation({
-  queryFn: (data) => ContactService.update(data),
-  queryKeysToInvalidate: { contactDetail: () => true },
+  queryFn: (options: { body: ContactUpdateForm }) => ContactService.update(options.body),
+  queryKeysToInvalidate: {
+    contactDetail: {}, // {} invalidates every contactDetail query; add param extractors to target one
+  },
 })
-// After execute succeeds, contactDetail is invalidated
-// Next useQuery('contactDetail') refetches fresh data
+// After execute() succeeds, contactDetail refetches.
 ```
 
 ## Composable architecture
 
-Each composable in vue-core-api-utils is built from:
+Each composable in api-utils is built from three layers:
 
-1. **TanStack Query composable** — `useQuery`, `useInfiniteQuery`, `useMutation` from @tanstack/vue-query
-2. **AsyncResult wrapper** — Result from neverthrow with loading state
-3. **Type-safe parameters** — ProjectQueryKeys and error codes from your domain
+1. **TanStack Query composable** — `useQuery` / `useInfiniteQuery` / `useMutation` from `@tanstack/vue-query`
+2. **AsyncResult wrapper** — a neverthrow `Result` lifted into the three-state `AsyncResult`
+3. **Typed surface** — your `RegisteredQueryKeys` and error codes via module augmentation
 
 ```typescript
-// High-level (what you use)
-const { result, isLoading, refetch } = useQuery('contactDetail', {
-  params: computed(() => ({ uuid })),
+// What you use:
+const { result, refetch } = useQuery('contactDetail', {
+  params: { contactUuid: computed(() => uuid) },
   queryFn: () => ContactService.getDetail(uuid),
   staleTime: 5 * 60 * 1000,
 })
 
-// Under the hood:
-// 1. TanStack Query manages the fetch lifecycle
-const query = useQueryRaw(queryKey, queryFn, { staleTime })
-
-// 2. Wrap query state in AsyncResult
+// Illustrative pseudocode — the composable lifts TanStack's state into one AsyncResult:
 const result = computed(() => {
-  if (query.isLoading.value) return new AsyncResultLoading()
-  if (query.isError.value) return new AsyncResultErr(query.error.value)
-  return new AsyncResultOk(query.data.value)
+  if (query.isLoading.value) return AsyncResult.loading()
+  if (query.data.value?.isErr()) return AsyncResult.err(query.data.value.getError())
+  return AsyncResult.ok(query.data.value!.getValue())
 })
-
-// 3. Expose typed composable
-return { result, isLoading: query.isLoading, refetch: query.refetch }
 ```
 
-The composables handle this composition. You just use `result.value.match()`.
+You just consume `result.value.match()` or the type guards.
 
 ## Error handling strategy
 
-Errors are typed and structured using `neverthrow`:
+Errors are typed and structured. `ApiError` is the error half of every `ApiResult` / `AsyncResult`:
 
 ```typescript
-// Error type definition
-interface ApiExpectedError {
-  errors: Array<{
-    code: string
-    message: string
-    details?: unknown
-  }>
+// From src/types/apiError.type.ts
+interface ApiKnownErrorObject<TCode extends string = string> {
+  code: TCode
+  detail: string
+  status: string
+  source?: { pointer: string }
 }
 
-type ApiError = ApiExpectedError | ApiUnexpectedError
+interface ApiExpectedError<TCode extends string = string> {
+  errors: ApiErrorObject<TCode>[]
+}
 
-// In AsyncResult
-const result = new AsyncResultErr(apiError)
+// A structured API error OR a native/unexpected Error:
+type ApiError<TCode extends string = string> = ApiExpectedError<TCode> | Error
+```
 
-result.match({
-  ok: (data) => {}, // not executed
+`ApiExpectedError` is a **type**, not a class, so narrow with the `'errors' in error` check (never `instanceof`):
+
+```typescript
+result.value.match({
+  loading: () => {},
+  ok: (data) => { /* … */ },
   err: (error) => {
-    // error is ApiError
-    if (error instanceof ApiExpectedError) {
-      // Handle known API errors
-      const codes = error.errors.map(e => e.code)
+    if ('errors' in error) {
+      // Structured API error
+      const codes = error.errors.map((e) => e.code)
+      console.error(error.errors[0].detail)
     } else {
-      // Handle network/parsing errors
+      // Native / network Error
       console.error(error.message)
     }
   },
 })
 ```
 
-Error types are defined at library initialization via the generic `TErrorCode`. This ensures type-safe error handling across queries and mutations.
+The error-code type comes from the generic `TErrorCode` you register, so `error.errors[0].code` is typed across queries and mutations.
 
 ## Common Mistakes
 
-### CRITICAL: Confuse Result (neverthrow) with AsyncResult; treat ok/err as boolean
+### CRITICAL: Confuse `Result` (neverthrow) with `AsyncResult`
 
 ```typescript
-// ❌ Wrong: neverthrow Result is not AsyncResult
-const result = new Result(contact, null) // This is not how neverthrow works
-if (result.ok) { // `.ok` doesn't exist
-  console.log(result.value)
-}
-
-// Or even worse: treating AsyncResult like a boolean
-const { result } = useQuery(...)
+// ❌ Wrong: treating AsyncResult like a boolean, or using the wrong match form
+const { result } = useQuery(/* … */)
 if (result.value) {
-  // This is always true; result is always defined (Loading | Ok | Err)
+  // Always truthy — result.value is always a Loading | Ok | Err object
 }
+result.value.match(okFn, errFn) // AsyncResult needs the object form, not two args
 ```
 
 ```typescript
-// ✅ Correct: AsyncResult requires exhaustive pattern matching
+// ✅ Correct: AsyncResult → object-form match / getValue()/getError()
 const { result } = useQuery('contactDetail', {
+  params: { contactUuid: computed(() => uuid) },
   queryFn: () => ContactService.getDetail(uuid),
 })
 
@@ -302,159 +294,110 @@ result.value.match({
   err: (error) => showError(error),
 })
 
-// Or use type guards
+// or, with guards:
 if (result.value.isOk()) {
   console.log(result.value.getValue())
 } else if (result.value.isErr()) {
   console.log(result.value.getError())
-} else {
-  showSpinner()
 }
 ```
 
-AsyncResult requires explicit handling of all three states. The type system won't let you skip a state.
+`queryFn` / `execute()` return a neverthrow `Result` (`.value` / `.error`); a composable's `result` is an `AsyncResult` (`getValue()` / `getError()`). Don't mix the two APIs.
 
-Source: `docs/packages/api-utils/pages/concepts/result-types.md`
+Source: `src/async-result/asyncResult.ts`, `src/types/apiError.type.ts`
 
-### MEDIUM: Misunderstand staleTime; think data refreshes automatically after staleTime
+### MEDIUM: Assume `staleTime` auto-refetches
 
 ```typescript
-// ❌ Wrong: assuming staleTime auto-refetches
-const { result } = useQuery('contactDetail', {
-  queryFn: () => ContactService.getDetail(uuid),
-  staleTime: 5 * 60 * 1000, // Not an auto-refresh interval
-})
-
-// At T=5m, data doesn't automatically refetch.
-// It's just marked stale. Refetch happens on next interaction
-// (component mount, user action, mutation invalidation)
+// ❌ Wrong: expecting a refresh exactly at staleTime
+useQuery('contactDetail', { /* … */, staleTime: 5 * 60 * 1000 })
+// At T=5m nothing happens automatically; the data is just marked stale.
 ```
 
 ```typescript
-// ✅ Correct: staleTime is a grace period, not an interval
-const { result, refetch } = useQuery('contactDetail', {
-  queryFn: () => ContactService.getDetail(uuid),
-  staleTime: 5 * 60 * 1000,
-})
+// ✅ Correct: staleTime is a freshness window, not a timer.
+// Refetch happens on the next trigger (access, focus, invalidation, remount).
+// For polling, drive refetch() yourself:
+import { onScopeDispose } from 'vue'
 
-// Data is fresh for 5 minutes (instant returns)
-// After 5 minutes, next access triggers refetch
-// For auto-refresh, use refetch() in a watchEffect or timer
-
-watchEffect(async () => {
-  // Refetch every 10 seconds
-  const interval = setInterval(() => refetch(), 10 * 1000)
-  onCleanup(() => clearInterval(interval))
-})
+const { refetch } = useQuery('contactDetail', { /* … */, staleTime: 5 * 60 * 1000 })
+const id = setInterval(refetch, 10_000)
+onScopeDispose(() => clearInterval(id))
 ```
 
-Stale time is not an auto-refresh interval. It's the duration the cache is considered fresh without refetching. Refetch happens on next access or when explicitly triggered.
+`staleTime` marks data stale; it does not schedule a refetch.
 
-### HIGH: Misunderstand gcTime and cache eviction; assume cache persists forever
+Source: `src/config/config.ts`
 
-```typescript
-// ❌ Wrong: assuming cache is permanent
-const { result } = useQuery('contactDetail', {
-  queryFn: () => ContactService.getDetail(uuid),
-  gcTime: 5 * 60 * 1000, // Default is 5 minutes
-})
+### HIGH: Assume the cache persists forever (gcTime)
 
-// If component unmounts and user is gone for > 5 minutes,
-// Next access refetches fresh (cache is evicted)
-// This is correct behavior, but if you expected cached data...
-```
+If a query has no observers for longer than `gcTime`, it is evicted and the next access refetches. Raise `gcTime` (in the plugin defaults — not per call) when you want longer-lived cache:
 
 ```typescript
-// ✅ Correct: increase gcTime if you want longer-lived cache
-const { result } = useQuery('contactDetail', {
-  queryFn: () => ContactService.getDetail(uuid),
-  staleTime: 5 * 60 * 1000,    // Fresh for 5 minutes
-  gcTime: 60 * 60 * 1000,       // Keep in memory for 1 hour
-})
-
-// After 5 minutes (stale) but before 1 hour (gc),
-// Returning cached data (but trigger refetch automatically)
-// After 1 hour, cache is deleted; next access refetches fresh
-```
-
-gcTime controls cache eviction. Longer gcTime = cache lives longer. Longer staleTime = more queries use cache without refetching. Both are configurable defaults in the plugin config.
-
-Source: `packages/web/api-utils/src/config/config.ts`
-
-### MEDIUM: Forget that QueryClient is shared; one query invalidation affects all components
-
-```typescript
-// ❌ Wrong: not realizing cache is global
-const { execute } = useMutation({
-  queryFn: () => ContactService.update(data),
-  queryKeysToInvalidate: { contactDetail: () => true },
-})
-
-// Component A: detail view
-// Component B: list view (also uses contactDetail)
-// Even though A only updated one contact,
-// B's cache is invalidated too (because same query key)
-```
-
-```typescript
-// ✅ Correct: QueryClient is intentionally shared
-export function useContactMutation() {
-  const { execute } = useMutation({
-    queryFn: () => ContactService.update(data),
-    queryKeysToInvalidate: { 
-      // Invalidates all components using this key
-      contactDetail: () => true,
-      // Also invalidate lists that show this contact
-      contactList: () => true,
+app.use(apiUtilsPlugin({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // reads stay fresh for 5 min
+      gcTime: 60 * 60 * 1000,   // unused cache retained for 1 hour
     },
-  })
-  
-  return { execute }
-}
-
-// When A updates a contact, both A and B refetch.
-// This is the intended design: shared cache across app.
+  },
+}))
 ```
 
-QueryClient is application-wide (singleton). Invalidating a query invalidates for all components using that key. This is a feature: synchronized cache across the app.
+Longer `gcTime` keeps cache around longer; longer `staleTime` lets more reads skip refetching.
 
-Source: `packages/web/api-utils/src/utils/query-client/queryClient.ts`
+Source: `src/config/config.ts`
+
+### MEDIUM: Forget the QueryClient is shared app-wide
+
+```typescript
+// One invalidation affects every component using that key — by design.
+const { execute } = useMutation({
+  queryFn: (options: { body: ContactUpdateForm }) => ContactService.update(options.body),
+  queryKeysToInvalidate: {
+    contactDetail: {}, // every component reading contactDetail refetches
+    contactList: {},   // lists that include this contact refetch too
+  },
+})
+```
+
+The QueryClient is an application-wide singleton: invalidating a key refetches it everywhere it is used. That shared cache is the intended design.
+
+Source: `src/utils/query-client/queryClient.ts`
 
 ## Integration pattern
-
-The full integration:
 
 ```
 User interaction
     ↓
-useQuery/useMutation composable
+useQuery / useMutation composable     (typed via RegisteredQueryKeys)
     ↓
-@tanstack/vue-query (fetch + cache mgmt)
+@tanstack/vue-query                   (fetch, cache, lifecycle)
     ↓
-Promise from queryFn
+queryFn → neverthrow Result           (.value / .error)
     ↓
-neverthrow Result handling
+AsyncResult  (Loading | Ok | Err)     (getValue() / getError() / match())
     ↓
-AsyncResult (Loading | Ok | Err)
+Vue computed ref                      (reactive)
     ↓
-Vue computed ref (reactive)
-    ↓
-Template pattern matching with result.value.match()
+Template: result.value.match({ … })
 ```
 
-Each layer adds value:
-- **User interaction** triggers the flow
-- **Composable** provides type safety (ProjectQueryKeys)
-- **TanStack Query** handles caching, refetching, lifecycle
-- **neverthrow** enforces error handling at compile time
-- **AsyncResult** makes state explicit in templates
-- **Vue reactivity** keeps UI synchronized
-
-Understanding this stack helps you use each piece correctly.
+Each layer adds value: composables add type safety, TanStack Query handles caching and lifecycle, neverthrow enforces error handling, `AsyncResult` makes state explicit, and Vue reactivity keeps the UI in sync.
 
 ## See Also
 
-- [AsyncResult Handling](../asyncresult-handling/SKILL.md) — Deep dive into pattern matching and type guards
+- [AsyncResult Handling](../asyncresult-handling/SKILL.md) — Pattern matching and type guards in depth
 - [Writing Queries](../writing-queries/SKILL.md) — Applying staleTime and refetch in real queries
-- [Writing Mutations](../writing-mutations/SKILL.md) — How mutations invalidate cache
-- [Cache Management](../cache-management/SKILL.md) — Manual cache operations behind the scenes
+- [Writing Mutations](../writing-mutations/SKILL.md) — How mutations invalidate the cache
+- [Cache Management](../cache-management/SKILL.md) — Manual cache operations
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/async-result/asyncResult.ts`
+  - `packages/web/api-utils/src/types/apiError.type.ts`
+  - `packages/web/api-utils/src/config/config.ts`

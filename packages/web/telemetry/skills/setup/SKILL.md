@@ -1,12 +1,6 @@
 ---
 name: telemetry-setup
-description: >
-  Initialize Telemetry with OpenTelemetry tracing, metrics, and logging.
-  Covers setup with Vue app, error recording, user context, logging,
-  and custom attributes. Auto-captures Vue component errors and browser
-  unhandled errors.
-type: core
-library: vue-core-telemetry
+description: Initialize `@wisemen/vue-core-telemetry` — construct a `Telemetry` instance with OpenTelemetry tracing/metrics/logging options, call `telemetry.init(app)` (which auto-captures Vue component errors and browser unhandled errors), then use `recordException()`, `setUser()`, `log()`, `setAttributes()`, and `registerAppInstrumentations()`. Use this whenever adding observability to a Vue app, reporting errors/metrics/logs to an OTLP backend, or setting user context and custom span attributes.
 ---
 
 # @wisemen/vue-core-telemetry — Setup
@@ -107,12 +101,14 @@ Cross-origin APIs that receive trace headers must allow `traceparent` and
 `tracestate` in CORS. Pass `tracePropagationUrls: []` to disable cross-origin
 trace header propagation.
 
-## Source Files
+## Skill metadata
 
-For full API details, read the source files.
-
-- Telemetry class: `src/index.ts`
-- Types: `src/types.ts`
-- Tracing: `src/opentelemetry/tracing/tracer.ts`
-- Metrics: `src/opentelemetry/metrics/meter.ts`
-- Logging: `src/opentelemetry/logging/logger.ts`
+- **Library:** `@wisemen/vue-core-telemetry` (package `vue-core-telemetry`)
+- **Type:** core
+- **Authored against:** v2.0.0
+- **Sources:** (read these for full API details)
+  - `packages/web/telemetry/src/index.ts` — `Telemetry` class
+  - `packages/web/telemetry/src/types.ts` — options & types
+  - `packages/web/telemetry/src/opentelemetry/tracing/tracer.ts`
+  - `packages/web/telemetry/src/opentelemetry/metrics/meter.ts`
+  - `packages/web/telemetry/src/opentelemetry/logging/logger.ts`

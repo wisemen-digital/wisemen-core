@@ -1,12 +1,6 @@
 ---
 name: writing-queries
-description: >
-  Single resource queries using useQuery, computed ref params, staleTime configuration, queryFn, refetch, isFetching vs isLoading distinctions, automatic cache management.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/composables/query/query.composable.ts"
+description: Fetch a single resource with the api-utils `useQuery` composable — a string key, reactive `params` (computed refs/getters), `staleTime`, `queryFn`, `refetch`, an `isEnabled` guard, the `result` AsyncResult, and the `isFetching` vs `isLoading` distinction. Use this whenever loading one resource by id or params, adding caching to a GET, or choosing between initial-load and background-refetch states — reach for it instead of the raw `@tanstack/vue-query` `useQuery`.
 ---
 
 # @wisemen/vue-core-api-utils — Writing Queries
@@ -215,3 +209,11 @@ Source: `src/composables/query/query.composable.ts` — `UseQueryReturnType`
 
 - [Cache Management](../cache-management/SKILL.md) — Understanding caching strategy informs staleTime choices
 - [Writing Infinite Queries](../writing-infinitequeries/SKILL.md) — Pagination uses the same patterns
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/composables/query/query.composable.ts`

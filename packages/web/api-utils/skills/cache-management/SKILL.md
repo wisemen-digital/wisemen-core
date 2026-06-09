@@ -1,13 +1,6 @@
 ---
 name: cache-management
-description: >
-  Type-safe QueryClient class with get/set/update/invalidate methods, rollback support from update(), predicate-based updates, cascade invalidation strategy, shared cache across components.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/utils/query-client/queryClient.ts"
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/config/config.ts"
+description: Read, write, and invalidate the query cache with the type-safe `QueryClient` class (`new QueryClient<Keys>(getTanstackQueryClient())`) — `get`, `set`, `update` (which returns a `rollback`), and `invalidate`, with predicate-based updates and key-or-`[key, params]` targeting. Use this whenever manually reading or patching cached data, building optimistic updates, invalidating specific queries after a mutation, or reasoning about the shared app-wide cache.
 ---
 
 # @wisemen/vue-core-api-utils — Cache Management
@@ -257,3 +250,12 @@ Use this to your advantage: invalidate a query and all components using it refet
 - [Writing Mutations](../writing-mutations/SKILL.md) — Every mutation needs to know which queries to invalidate
 - [Writing Queries](../writing-queries/SKILL.md) — Understanding caching strategy informs cache management choices
 - [Optimistic UIs](../optimistic-uis/SKILL.md) — Full optimistic update pattern using update() and rollback
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/utils/query-client/queryClient.ts`
+  - `packages/web/api-utils/src/config/config.ts`

@@ -1,24 +1,6 @@
 ---
 name: form-setup
-description: >
-  Create a Standard Schema (Zod, Valibot, ArkType), call useForm with
-  schema/initialState/onSubmit/onSubmitError, register fields with
-  form.register(), build a toFormField mapper for v-bind, compose subforms
-  by passing Field<T> to child components where they call field.register()
-  for nested paths. Covers Form, Field, UseFormOptions types, submit,
-  reset, setValues, blurAll, unregister. Load when building any Vue 3 form
-  with formango.
-type: core
-library: formango
-library_version: "3.2.3"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts"
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/guide/getting-started.md"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/api/useForm.md"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/api/field.md"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/best-practices/custom-input.md"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/examples/subforms.md"
+description: Build a Vue 3 form with formango — create a Standard Schema (Zod, Valibot, or ArkType), call `useForm({ schema, initialState, onSubmit, onSubmitError })` (which returns the `Form` directly), register fields with `form.register()`, map them onto custom inputs with a `toFormField` helper for `v-bind`, and compose subforms by passing a `Field` to child components that call `field.register()`. Use this whenever creating any formango form, binding fields to custom inputs, or splitting a form across child components.
 ---
 
 # Formango — Form Setup & Field Binding
@@ -318,6 +300,16 @@ See also: [array-fields](../array-fields/SKILL.md) — for dynamic lists, use `r
 
 See also: [validation-errors](../validation-errors/SKILL.md) — error display, i18n, server-side errors
 
-## Version
+## Skill metadata
 
-Targets formango v3.2.1.
+- **Library:** `formango`
+- **Type:** core
+- **Authored against:** v3.2.4
+- **Sources:**
+  - `packages/web/formango/src/lib/useForm.ts`
+  - `packages/web/formango/src/types/form.type.ts`
+  - `docs/packages/formango/guide/getting-started.md`
+  - `docs/packages/formango/api/useForm.md`
+  - `docs/packages/formango/api/field.md`
+  - `docs/packages/formango/best-practices/custom-input.md`
+  - `docs/packages/formango/examples/subforms.md`

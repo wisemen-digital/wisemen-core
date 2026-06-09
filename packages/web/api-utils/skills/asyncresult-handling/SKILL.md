@@ -1,12 +1,6 @@
 ---
 name: asyncresult-handling
-description: >
-  Three-state AsyncResult type (Loading, Ok, Err), isLoading/isOk/isErr type predicates, getValue/getError accessors, match() pattern matching, map/mapErr transformations, safe value extraction without undefined.
-type: core
-library: vue-core-api-utils
-library_version: "1.2.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/api-utils/src/async-result/asyncResult.ts"
+description: Work with the three-state `AsyncResult<T, E>` (Loading / Ok / Err) that every api-utils query and mutation `result` returns — narrow with the `isLoading()` / `isOk()` / `isErr()` type predicates, read values via `getValue()` / `getError()`, handle every case with exhaustive `match()`, transform with `map()` / `mapErr()`, and fall back with `unwrapOr()`. Use this whenever rendering query/mutation state, safely extracting a value or error without `undefined`, or pattern-matching loading/ok/err in a component.
 ---
 
 # @wisemen/vue-core-api-utils — Handling AsyncResult Types
@@ -25,9 +19,9 @@ const { result } = useQuery('contactDetail', {
 
 // result is a ComputedRef<AsyncResult<Contact, ApiError>>
 // It's always in one of three states:
-// - AsyncResult.Loading()
-// - AsyncResult.Ok(contact: Contact)
-// - AsyncResult.Err(error: ApiError)
+// - loading → AsyncResult.loading()
+// - ok      → AsyncResult.ok(contact)
+// - err     → AsyncResult.err(error)
 ```
 
 ## Core Patterns
@@ -44,7 +38,7 @@ if (result.value.isLoading()) {
   console.log('Name:', contact.name) // TypeScript knows contact is Contact
 } else if (result.value.isErr()) {
   const error = result.value.getError()
-  console.log('Error:', error.detail)
+  console.log('Error:', 'errors' in error ? error.errors[0].detail : error.message)
 }
 ```
 
@@ -55,10 +49,10 @@ The type predicates `isLoading()`, `isOk()`, and `isErr()` narrow the type so `g
 ```typescript
 const { result } = useQuery('contactDetail', { /* ... */ })
 
-result.value.match({
-  loading: () => <div>Loading...</div>,
-  ok: (contact) => <div>Name: {contact.name}</div>,
-  err: (error) => <div>Error: {error.detail}</div>,
+const label = result.value.match({
+  loading: () => 'Loading…',
+  ok: (contact) => `Name: ${contact.name}`,
+  err: (error) => `Error: ${'errors' in error ? error.errors[0].detail : error.message}`,
 })
 ```
 
@@ -73,16 +67,16 @@ const { result } = useQuery('contactDetail', { /* ... */ })
 const contactName = result.value.map(contact => contact.name)
 
 // Transform the error
-const errorMessage = result.value.mapErr(error => error.detail)
+const errorMessage = result.value.mapErr(error => 'errors' in error ? error.errors[0].detail : error.message)
 
 // Chain transformations
 const displayText = result.value
   .map(contact => `Hello, ${contact.name}`)
-  .mapErr(error => `Failed: ${error.detail}`)
+  .mapErr(error => 'errors' in error ? error.errors[0].detail : error.message)
   .unwrapOr('No data')
 ```
 
-`map()` and `mapErr()` return new AsyncResult values, letting you transform without unwrapping.
+`map()` and `mapErr()` return fresh `AsyncResult` values, letting you transform without unwrapping.
 
 ### Use unwrapOr for fallback values
 
@@ -121,31 +115,31 @@ if (result.value.isOk()) {
 
 Calling `getValue()` without `isOk()` returns null if the result is loading or an error. You get no compile error, and the UI renders nothing or crashes at runtime.
 
-Source: `docs/packages/api-utils/pages/concepts/result-types.md`
+Source: `src/async-result/asyncResult.ts`
 
 ### HIGH: Not handle all three states in match()
 
 ```typescript
 // ❌ Wrong: missing loading handler
 result.value.match({
-  ok: (data) => <div>{data.name}</div>,
-  err: (error) => <div>Error: {error.detail}</div>,
-  // Forgot loading!
+  ok: (data) => data.name,
+  err: (error) => ('errors' in error ? error.errors[0].detail : error.message),
+  // Forgot loading! — TypeScript errors: match() requires all three handlers
 })
 ```
 
 ```typescript
 // ✅ Correct: handle all three states
 result.value.match({
-  loading: () => <div>Loading...</div>,
-  ok: (data) => <div>{data.name}</div>,
-  err: (error) => <div>Error: {error.detail}</div>,
+  loading: () => 'Loading…',
+  ok: (data) => data.name,
+  err: (error) => ('errors' in error ? error.errors[0].detail : error.message),
 })
 ```
 
 If you omit a handler, TypeScript errors and the UI renders nothing during the omitted state. The match is exhaustive by design.
 
-Source: `docs/packages/api-utils/pages/concepts/result-types.md` Pattern Matching Section
+Source: `src/async-result/asyncResult.ts` — `match()`
 
 ### HIGH: Use deprecated state flags (isLoading, isError, isSuccess) instead of AsyncResult state
 
@@ -177,3 +171,11 @@ Source: `src/composables/query/query.composable.ts` — `UseQueryReturnType` dep
 
 - [Writing Queries](../writing-queries/SKILL.md) — Fetch single resources with caching
 - [Handling Mutations](../writing-mutations/SKILL.md) — Create/update/delete with result handling
+
+## Skill metadata
+
+- **Library:** `@wisemen/vue-core-api-utils` (package `vue-core-api-utils`)
+- **Type:** core
+- **Authored against:** v1.2.0
+- **Sources:**
+  - `packages/web/api-utils/src/async-result/asyncResult.ts`

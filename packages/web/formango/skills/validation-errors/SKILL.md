@@ -1,25 +1,6 @@
 ---
 name: validation-errors
-description: >
-  Schema-driven validation in formango: automatic validation on state change,
-  displaying errors with formatErrorsToZodFormattedError, Field.errors,
-  Field.rawErrors, Form.addErrors for server-side errors, isDirty vs
-  isChanged vs isTouched, Form.isValid, Form.hasAttemptedToSubmit,
-  Form.blurAll, Form.reset, onSubmitError callback, Zod refine/superRefine
-  for cross-field validation, Zod custom error map for i18n with vue-i18n.
-  Load when handling form errors, server validation, or i18n error messages.
-type: core
-library: formango
-library_version: "3.2.1"
-requires:
-  - form-setup
-sources:
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/lib/useForm.ts"
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/lib/formatErrors.ts"
-  - "wisemen-digital/wisemen-core:packages/web/formango/src/types/form.type.ts"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/api/useForm.md"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/best-practices/i18n.md"
-  - "wisemen-digital/wisemen-core:docs/packages/formango/examples/external-errors.md"
+description: Handle formango validation and errors — automatic validation on state change, displaying messages via `formatErrorsToZodFormattedError` / `field.errors` / `field.rawErrors`, injecting server-side errors with `form.addErrors` (dot-notation paths), the `isDirty` vs `isChanged` vs `isTouched` distinction, `form.isValid` / `form.hasAttemptedToSubmit` / `form.blurAll` / `form.reset`, the `onSubmitError` callback, Zod `refine`/`superRefine` for cross-field rules, and a Zod 4 custom error map for i18n. Use this whenever showing form errors, wiring up server-side validation, or localizing validation messages.
 ---
 
 This skill builds on [form-setup](../form-setup/SKILL.md). Read it first for `useForm`, `register`, and `Field` concepts.
@@ -97,43 +78,36 @@ const form = useForm({
 })
 ```
 
-### Set up i18n with Zod custom error map
+### Set up i18n with a Zod custom error map
 
-Create a Zod error map that translates validation messages using vue-i18n.
+Register a global error map with `z.config` (Zod 4) that translates validation messages using vue-i18n.
 
 ```ts
 // zod.config.ts
 import { z } from 'zod'
 import i18n from '@/plugins/i18n'
 
-const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
-  const t = i18n.global.t
+z.config({
+  customError: (issue) => {
+    const t = i18n.global.t
 
-  if (issue.code === z.ZodIssueCode.invalid_type)
-    return { message: t('errors.invalid_type') }
-  if (issue.code === z.ZodIssueCode.invalid_string) {
-    if (issue.validation === 'email')
-      return { message: t('errors.invalid_email') }
-    return { message: t('errors.invalid_string') }
-  }
-  if (issue.code === z.ZodIssueCode.too_small) {
-    if (issue.type === 'string')
-      return { message: t('errors.too_small_string', { count: issue.minimum }) }
-    return { message: t('errors.too_small', { count: issue.minimum }) }
-  }
-  if (issue.code === z.ZodIssueCode.too_big) {
-    if (issue.type === 'string')
-      return { message: t('errors.too_big_string', { count: issue.maximum }) }
-    return { message: t('errors.too_big', { count: issue.maximum }) }
-  }
+    // In Zod 4, `issue.code` is a string literal and string formats use 'invalid_format'.
+    if (issue.code === 'invalid_type')
+      return t('errors.invalid_type')
+    if (issue.code === 'invalid_format' && issue.format === 'email')
+      return t('errors.invalid_email')
+    if (issue.code === 'too_small')
+      return t('errors.too_small', { count: Number(issue.minimum) })
+    if (issue.code === 'too_big')
+      return t('errors.too_big', { count: Number(issue.maximum) })
 
-  return { message: ctx.defaultError }
-}
-
-z.setErrorMap(customErrorMap)
+    // Return undefined to fall back to Zod's default message.
+    return undefined
+  },
+})
 ```
 
-Import this file in your app entry point:
+Import this file once in your app entry point:
 
 ```ts
 // main.ts
@@ -268,6 +242,16 @@ See also: [form-setup](../form-setup/SKILL.md) — the `toFormField` mapper brid
 
 See also: [array-fields](../array-fields/SKILL.md) — array field errors are scoped per-item via path matching
 
-## Version
+## Skill metadata
 
-Targets formango v3.2.1.
+- **Library:** `formango`
+- **Type:** core
+- **Authored against:** v3.2.4
+- **Prerequisites:** [`form-setup`](../form-setup/SKILL.md)
+- **Sources:**
+  - `packages/web/formango/src/lib/useForm.ts`
+  - `packages/web/formango/src/lib/formatErrors.ts`
+  - `packages/web/formango/src/types/form.type.ts`
+  - `docs/packages/formango/api/useForm.md`
+  - `docs/packages/formango/best-practices/i18n.md`
+  - `docs/packages/formango/examples/external-errors.md`
