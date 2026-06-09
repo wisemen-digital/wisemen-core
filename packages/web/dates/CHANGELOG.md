@@ -1,5 +1,11 @@
 # @wisemen/vue-core-dates
 
+## 1.0.1
+
+### Patch Changes
+
+- [#1185](https://github.com/wisemen-digital/wisemen-core/pull/1185) [`0d85230`](https://github.com/wisemen-digital/wisemen-core/commit/0d852301fc29efbc672479e7aa80f22266d2bfee) Thanks [@wouterlms](https://github.com/wouterlms)! - Use `from` and `until` instead of `startDate` and `endDate`
+
 ## 1.0.0
 
 ### Major Changes

@@ -28,7 +28,7 @@ const textFieldRef = useTemplateRef('textField')
 const id = useId()
 const i18n = useI18n()
 
-useHotkey('Meta+F', () => {
+useHotkey('Mod+F', () => {
   textFieldRef.value?.input?.focus()
 }, {
   preventDefault: true,

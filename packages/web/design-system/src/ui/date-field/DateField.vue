@@ -83,7 +83,6 @@ const {
 })
 
 const dateFieldStyle = computed(() => createDateFieldStyle({
-  isPickerHidden: props.isPickerHidden,
   size: props.size,
 }))
 
@@ -112,6 +111,7 @@ useProvideDatePickerContext({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-label-hidden="props.isLabelHidden"
   >
     <template #label-left>
       <slot name="label-left" />

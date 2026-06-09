@@ -158,6 +158,7 @@
   --color-purple-900: var(--purple-900);
   --color-purple-950: var(--purple-950);
 
+  --color-moss-25: var(--moss-25);
   --color-moss-50: var(--moss-50);
   --color-moss-100: var(--moss-100);
   --color-moss-200: var(--moss-200);
@@ -166,6 +167,9 @@
   --color-moss-500: var(--moss-500);
   --color-moss-600: var(--moss-600);
   --color-moss-700: var(--moss-700);
+  --color-moss-800: var(--moss-800);
+  --color-moss-900: var(--moss-900);
+  --color-moss-950: var(--moss-950);
 
   --color-fg-primary: var(--fg-primary);
   --color-fg-secondary: var(--fg-secondary);

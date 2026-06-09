@@ -126,6 +126,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
     :label="props.label"
     :class="props.class"
     :style="props.style"
+    :is-label-hidden="props.isLabelHidden"
     :for="id"
     :hide-error-message="props.hideErrorMessage"
   >
@@ -168,7 +169,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
           <BadgeGroupTruncate
             v-if="isMultiple(modelValue)"
             :badges="selectedBadges"
-            class="-ml-xs w-full"
+            class="-ml-[0.3rem] w-full"
             size="sm"
             color="gray"
             variant="translucent"

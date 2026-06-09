@@ -21,10 +21,10 @@ export const createTimeFieldStyle = tv({
   variants: {
     size: {
       md: {
-        field: 'pl-md text-xs',
+        field: 'px-md text-xs',
       },
       sm: {
-        field: 'pl-sm text-xs',
+        field: 'px-sm text-xs',
       },
     },
   },

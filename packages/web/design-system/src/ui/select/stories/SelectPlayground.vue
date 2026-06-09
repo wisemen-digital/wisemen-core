@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 import { UISelect } from '@/ui/select'
+import type { SelectItem } from '@/ui/select/select.type'
 import { createSelectOptions } from '@/ui/select/select.type'
 
 const props = withDefaults(defineProps<{
@@ -30,14 +31,16 @@ const props = withDefaults(defineProps<{
   size: 'md',
 })
 
-const items = createSelectOptions([
-  'Apple',
-  'Banana',
-  'Cherry',
-  'Mango',
-  'Orange',
-  'Strawberry',
-])
+const items: SelectItem<string>[] = [
+  ...createSelectOptions([
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Mango',
+    'Orange',
+    'Strawberry',
+  ]),
+]
 
 const modelValue = ref<string | null>(null)
 

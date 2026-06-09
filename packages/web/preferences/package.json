@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -49,9 +49,9 @@
   },
   "peerDependencies": {
     "@vueuse/core": ">=14.0.0",
-    "@wisemen/vue-core-dates": ">=1.0.0",
-    "@wisemen/vue-core-design-system": "catalog:wisemen",
-    "@wisemen/vue-core-icons": "catalog:wisemen",
+    "@wisemen/vue-core-dates": "workspace:^",
+    "@wisemen/vue-core-design-system": "workspace:^",
+    "@wisemen/vue-core-icons": "workspace:^",
     "reka-ui": "catalog:peer",
     "tailwindcss": "catalog:style",
     "vue": "catalog:peer",

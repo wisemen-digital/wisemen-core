@@ -28,7 +28,8 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "expect": "catalog:test",
     "oxlint": "catalog:lint-api",
-    "oxlint-tsgolint": "catalog:lint-api"
+    "oxlint-tsgolint": "catalog:lint-api",
+    "typescript": "catalog:build"
   },
   "peerDependencies": {
     "@aws-sdk/client-s3": "catalog:backend-peer",

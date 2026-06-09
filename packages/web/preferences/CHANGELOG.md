@@ -1,5 +1,11 @@
 # @wisemen/vue-core-preferences
 
+
+## 1.1.0
+<sub>2026-06-08</sub>
+
+- [#1230](https://github.com/wisemen-digital/wisemen-core/pull/1230)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix typo in colors.css (text-teriary-on-brand → text-tertiary-on-brand), raise Toast z-index to 75, fix sidebar account card to use current-context-only, fix dashboard page to use global context, forward isLabelHidden in Select, export scrollable and text-shimmer UI modules, export tv utility, export PreferencesSection, PreferencesDropdownMenu, and PreferencesDropdownMenuOption from preferences
+
 ## 1.0.0
 
 ### Patch Changes

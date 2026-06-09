@@ -7,6 +7,7 @@ export { default as UIDashboardPageLoadingState } from './content/DashboardPageL
 export * from './dashboardPage.type'
 export { default as UIDashboardPage } from './DashboardPage.vue'
 export { default as UIDashboardPageContainer } from './DashboardPageContainer.vue'
+export { default as UIDashboardPageDetailPaneCloseButton } from './detail-pane/DashboardPageDetailPaneCloseButton.vue'
 export { default as UIDashboardPageDetailPaneToggle } from './detail-pane/DashboardPageDetailPaneToggle.vue'
 export * from './detail-pane/detailPane.context'
 export * from './detail-pane/detailPane.type'

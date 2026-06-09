@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<TableRootProps>(), {
   actions: () => [],
   activeFilterCount: 0,
   headerActions: () => [],
+  sort: null,
   variant: 'full-page',
 })
 
@@ -26,6 +27,7 @@ const emit = defineEmits<{
 const scrollContainerEl = ref<HTMLElement | null>(null)
 
 const {
+  isScrollableVertically,
   isScrolledFromLeft,
   isScrolledToEnd,
   setScrollContainer: setScrollContainerScrollState,
@@ -80,6 +82,7 @@ useProvideTableContext({
   isColumnResizeDisabled: computed(() => props.disableColumnResize),
   isGroupingEnabled: computed(() => isGroupingEnabled.value),
   isResizingColumn: isResizing,
+  isScrollableVertically: computed(() => isScrollableVertically.value),
   isScrolledFromLeft: computed(() => isScrolledFromLeft.value),
   isScrolledToEnd: computed(() => isScrolledToEnd.value),
   actions: computed(() => props.actions),
@@ -94,6 +97,7 @@ useProvideTableContext({
     scrollContainerEl.value = el
     setScrollContainerScrollState(el)
   },
+  sort: props.sort,
   unregisterGroup,
   variant: computed(() => props.variant),
   onClearFiltersAndSearch,

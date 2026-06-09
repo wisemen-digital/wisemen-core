@@ -8,7 +8,8 @@ import { useContext } from '@/composables/context.composable'
 export interface MainContentDetailPaneContext {
   hasDetailPane: Ref<boolean>
   isOpen: ComputedRef<boolean>
-  registerDetailPane: (isOpen: Ref<boolean>, toggle: () => void) => void
+  isToggleHidden: Ref<boolean>
+  registerDetailPane: (isOpen: Ref<boolean>, toggle: () => void, isToggleHidden?: boolean) => void
   toggle: () => void
   unregisterDetailPane: () => void
 }

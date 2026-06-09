@@ -417,6 +417,65 @@ export const badgeVariants = tv({
       variant: 'translucent',
     },
 
+    // moss
+    {
+      class: {
+        base: `
+          border-moss-400
+          dark:border-moss-600
+        `,
+        dot: 'bg-moss-500',
+        icon: `
+          text-moss-700
+          dark:text-moss-300
+        `,
+        label: `
+          text-moss-700
+          dark:text-moss-300
+        `,
+        separator: `
+          bg-moss-400
+          dark:bg-moss-600
+        `,
+      },
+      color: 'moss',
+      variant: 'outline',
+    },
+    {
+      class: {
+        base: 'border-moss-500 bg-moss-500',
+        dot: 'bg-white',
+        icon: 'text-white',
+        label: 'text-white',
+        separator: 'bg-moss-500',
+      },
+      color: 'moss',
+      variant: 'solid',
+    },
+    {
+      class: {
+        base: `
+          border-moss-200 bg-moss-25
+          dark:border-moss-800 dark:bg-moss-950
+        `,
+        dot: 'bg-moss-500',
+        icon: `
+          text-moss-700
+          dark:text-moss-200
+        `,
+        label: `
+          text-moss-700
+          dark:text-moss-200
+        `,
+        separator: `
+          bg-moss-200
+          dark:bg-moss-800
+        `,
+      },
+      color: 'moss',
+      variant: 'translucent',
+    },
+
     // warning
     {
       class: {
@@ -510,6 +569,7 @@ export const badgeVariants = tv({
       brand: {},
       error: {},
       gray: {},
+      moss: {},
       pink: {},
       purple: {},
       success: {},
