@@ -159,17 +159,14 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: `
-          border-gray-200 bg-gray-25
-          dark:border-gray-800 dark:bg-gray-950
-        `,
+        base: `border-fg-primary/5 bg-fg-primary/5`,
         dot: 'bg-gray-500',
         icon: `
           text-gray-500
           dark:text-gray-400
         `,
         label: `
-          text-gray-700
+          text-fg-primary/85
           dark:text-gray-300
         `,
         separator: `
@@ -455,8 +452,9 @@ export const badgeVariants = tv({
     {
       class: {
         base: `
-          border-moss-200 bg-moss-25
+          bg-moss-25
           dark:border-moss-800 dark:bg-moss-950
+          border-moss-200
         `,
         dot: 'bg-moss-500',
         icon: `
@@ -468,8 +466,8 @@ export const badgeVariants = tv({
           dark:text-moss-200
         `,
         separator: `
-          bg-moss-200
           dark:bg-moss-800
+          bg-moss-200
         `,
       },
       color: 'moss',
