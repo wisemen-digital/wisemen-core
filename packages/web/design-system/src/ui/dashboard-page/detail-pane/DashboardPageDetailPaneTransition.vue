@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useScrollState } from '@/composables/scroll.composable'
 import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 import type { DetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
 import { createDetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
+import { useProvideDetailPaneScrollContext } from '@/ui/dashboard-page/detail-pane/detailPaneScroll.context'
 
 const {
   isResizable,
@@ -34,6 +39,11 @@ const {
 const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
   variant,
 }))
+
+useProvideDetailPaneScrollContext({
+  ...useScrollState(),
+  hasTabs: ref<boolean>(false),
+})
 </script>
 
 <template>
@@ -73,6 +83,8 @@ const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
     </div>
     <!-- eslint-enable vuejs-accessibility/no-static-element-interactions -->
 
-    <slot />
+    <div :class="detailPaneStyle.content()">
+      <slot />
+    </div>
   </Motion>
 </template>
