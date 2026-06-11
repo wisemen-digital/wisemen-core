@@ -3044,9 +3044,6 @@ importers:
       '@tanstack/vue-hotkeys':
         specifier: 'catalog:'
         version: 0.10.0(vue@3.5.27(typescript@5.9.3))
-      '@vueuse/router':
-        specifier: catalog:vue
-        version: 14.1.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
       superjson:
         specifier: catalog:vue
         version: 2.2.6
@@ -3105,9 +3102,6 @@ importers:
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
-      temporal-polyfill:
-        specifier: catalog:peer
-        version: 0.3.0
       typescript:
         specifier: catalog:build
         version: 5.9.3
@@ -3126,9 +3120,6 @@ importers:
       vue-i18n:
         specifier: catalog:peer
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
-      vue-router:
-        specifier: catalog:peer
-        version: 4.6.4(vue@3.5.27(typescript@5.9.3))
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)
