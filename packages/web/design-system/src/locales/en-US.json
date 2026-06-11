@@ -62,6 +62,7 @@
   "component.date_range_picker.previous_month": "Previous month",
   "component.dialog.cancel": "Cancel",
   "component.dialog.close": "Close",
+  "component.form_dialog.unsaved_changes": "You have unsaved changes",
   "component.keyboard_shortcut.then": "then",
   "component.number_field.decrement": "Decrement",
   "component.number_field.increment": "Increment",

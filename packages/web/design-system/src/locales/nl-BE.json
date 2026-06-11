@@ -62,6 +62,7 @@
   "component.date_range_picker.previous_month": "Vorige maand",
   "component.dialog.cancel": "Annuleren",
   "component.dialog.close": "Sluiten",
+  "component.form_dialog.unsaved_changes": "Je hebt niet-opgeslagen wijzigingen",
   "component.keyboard_shortcut.then": "dan",
   "component.number_field.decrement": "Aftrekken",
   "component.number_field.increment": "Optellen",

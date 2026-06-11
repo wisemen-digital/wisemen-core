@@ -4,6 +4,11 @@ import type { DialogProps } from '@/ui/dialog/dialog.props'
 
 export interface FormDialogProps extends DialogProps {
   /**
+   * Disables the built-in close-blocking chin. When `true`, dirty form dialogs will close immediately.
+   * @default false
+   */
+  disableUnsavedChangesChin?: boolean
+  /**
    * The formango form instance.
    */
   form: Form<any>
@@ -18,4 +23,9 @@ export interface FormDialogProps extends DialogProps {
    * @default false
    */
   renderOwnFormComponent?: boolean
+  /**
+   * Override text for the built-in invalid-close chin. When `null`, the localized default copy is used.
+   * @default null
+   */
+  unsavedChangesChinText?: string | null
 }

@@ -11,7 +11,6 @@ const {
 
 <template>
   <UIForm
-    v-ele
     :id="formId"
     :form="form"
     :prompt-on-unsaved-changes="promptOnUnsavedChanges"

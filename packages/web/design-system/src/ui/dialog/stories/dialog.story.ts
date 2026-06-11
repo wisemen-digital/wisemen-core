@@ -6,6 +6,7 @@ import type {
 import ConfirmDialogPlayground from './ConfirmDialogPlayground.vue'
 import DialogPlayground from './DialogPlayground.vue'
 import DialogScrollablePlayground from './DialogScrollablePlayground.vue'
+import FormDialogPlayground from './FormDialogPlayground.vue'
 
 const meta = {
   title: 'Components/Dialog',
@@ -85,5 +86,17 @@ export const Scrollable: StoryObj<typeof DialogScrollablePlayground> = {
       args,
     }),
     template: '<DialogScrollablePlayground v-bind="args" />',
+  }),
+}
+
+export const Form: StoryObj<typeof FormDialogPlayground> = {
+  render: (args) => ({
+    components: {
+      FormDialogPlayground,
+    },
+    setup: () => ({
+      args,
+    }),
+    template: '<FormDialogPlayground v-bind="args" />',
   }),
 }
