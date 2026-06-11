@@ -14,6 +14,7 @@ import { VueDraggable } from 'vue-draggable-plus'
 import { useI18n } from 'vue-i18n'
 
 import { useCustomViewCreateViewAction } from '@/actions/customViewCreateView.action'
+import { useCustomViewRevertToSavedViewAction } from '@/actions/customViewRevertToSavedView.action'
 import { useCustomViewSaveToCurrentViewAction } from '@/actions/customViewSaveToCurrentView.action'
 import CustomViewViewsItem from '@/components/views/CustomViewViewsItem.vue'
 import { useInjectCustomViewManagerContext } from '@/context/customViewManager.context'
@@ -22,6 +23,7 @@ import type { CustomView } from '@/types/customView.type'
 const i18n = useI18n()
 const customViewManagerContext = useInjectCustomViewManagerContext()
 const createViewAction = useCustomViewCreateViewAction()
+const revertToSavedViewAction = useCustomViewRevertToSavedViewAction()
 const saveToCurrentViewAction = useCustomViewSaveToCurrentViewAction()
 
 const draggableViews = ref<CustomView[]>([
@@ -68,7 +70,7 @@ function onDragEnd(): void {
 
       <UIActionDropdownMenu
         :current-context-only="false"
-        :actions="[saveToCurrentViewAction, createViewAction]"
+        :actions="[saveToCurrentViewAction, createViewAction, revertToSavedViewAction]"
         popover-side="bottom"
         popover-align="end"
       >
