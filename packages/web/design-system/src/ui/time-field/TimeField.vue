@@ -63,7 +63,7 @@ const timeFieldStyle = computed(() => createTimeFieldStyle({
 }))
 
 const hourCycleValue = computed<12 | 24 | undefined>(() => {
-  if (hourCycle.value == null) {
+  if (hourCycle.value === 'locale-default' || hourCycle.value === null) {
     return
   }
 
