@@ -9,6 +9,7 @@ import { DayjsPlainDate } from '../plain-date/dayjs-plain-date.js'
 import { TimezoneInput } from '../common/timezone.js'
 import { factory } from './timestamp.factory.js'
 import { ILocale, Timestamp, TimestampInput } from './timestamp.js'
+import { mapLocale } from '#src/common/map-locale.js'
 
 export class DayjsTimestamp implements Timestamp {
   private value: dayjs.Dayjs
@@ -28,7 +29,9 @@ export class DayjsTimestamp implements Timestamp {
         'YYYY-MM-DD HH:mm:ss.SSS',
         localeOrTimezone as string
       )
-    } else {
+    } else if (dayjs.isDayjs(date)) {
+      this.value = dayjs(date, formatOrTime as OptionType, localeOrTimezone,)
+    } else  {
       this.value = dayjs(date?.valueOf(), formatOrTime as OptionType, localeOrTimezone, true)
     }
   }
@@ -276,6 +279,10 @@ export class DayjsTimestamp implements Timestamp {
   locale (preset?: string | ILocale, object?: Partial<ILocale>): DayjsTimestamp | string {
     if (preset === undefined) {
       return this.value.locale()
+    }
+
+    if(typeof preset === 'string') {
+      preset = mapLocale(preset)
     }
 
     return new DayjsTimestamp(this.value.locale(preset, object))
