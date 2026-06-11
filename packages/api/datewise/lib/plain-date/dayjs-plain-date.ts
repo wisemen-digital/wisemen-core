@@ -257,6 +257,14 @@ export class DayjsPlainDate implements PlainDate {
     return this.date.day()
   }
 
+  isoWeekday (): number {
+    return this.date.isoWeekday()
+  }
+
+  isoWeek (): number {
+    return this.date.isoWeek()
+  }
+
   isInfinity (): boolean {
     return this.isFutureInfinity() || this.isPastInfinity()
   }
