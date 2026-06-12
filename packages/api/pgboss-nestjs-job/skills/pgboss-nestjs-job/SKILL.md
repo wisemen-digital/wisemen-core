@@ -1,5 +1,5 @@
 ---
-name: getting-started
+name: pgboss-nestjs-job
 description: >
   Set up PgBossWorkerModule and PgBossSchedulerModule, define jobs by extending BaseJob
   with @PgBossJob, create handlers with JobHandler and @PgBossJobHandler, and schedule

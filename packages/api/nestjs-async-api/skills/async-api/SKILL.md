@@ -1,5 +1,5 @@
 ---
-name: getting-started
+name: async-api
 description: >
   Define AsyncAPI channels with createChannel(), annotate message DTOs with @nestjs/swagger
   decorators, and generate AsyncAPI 3.0.0 YAML and HTML documentation.
