@@ -32,7 +32,9 @@ const props = withDefaults(defineProps<TagsFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
+  addOnBlur: false,
   addOnPaste: true,
+  addOnTab: false,
   allowDuplicate: false,
   delimiter: ',',
   max: null,
@@ -106,7 +108,9 @@ const {
         :disabled="props.isDisabled"
         :read-only="props.isReadonly"
         :max="props.max ?? undefined"
+        :add-on-blur="props.addOnBlur"
         :add-on-paste="props.addOnPaste"
+        :add-on-tab="props.addOnTab"
         :delimiter="props.delimiter"
         :allow-duplicate="props.allowDuplicate"
         class="contents"

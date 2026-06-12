@@ -16,9 +16,11 @@ const meta = {
   argTypes: {
     isDisabled: {
       control: 'boolean',
+      description: 'Disables every radio option in the group',
     },
     orientation: {
       control: 'select',
+      description: 'Arranges the radio options horizontally or vertically',
       options: [
         'horizontal',
         'vertical',

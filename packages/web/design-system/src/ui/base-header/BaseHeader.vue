@@ -78,7 +78,7 @@ const hasSubtitle = computed<boolean>(() => {
       class="min-w-0 flex-1 overflow-hidden"
     >
       <UIRowLayout
-        align="baseline"
+        align="center"
         gap="sm"
         class="min-w-0"
       >
