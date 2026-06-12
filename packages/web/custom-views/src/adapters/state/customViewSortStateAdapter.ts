@@ -15,10 +15,12 @@ export function createCustomViewSortStateAdapter<TKey extends string>(sort: Sort
         return true
       }
 
-      return saved.some((s, i) => {
-        const c = currentState[i]
+      return saved.some((sortValue, sortIndex) => {
+        const currentSortState = currentState[sortIndex]
 
-        return c == null || s.key !== c.key || s.direction !== c.direction
+        return currentSortState == null
+          || sortValue.key !== currentSortState.key
+          || sortValue.direction !== currentSortState.direction
       })
     },
     apply: (state) => {
