@@ -3,14 +3,14 @@ import { IsEnum, IsInt } from 'class-validator'
 import { Currency, CurrencyApiProperty } from './currency.enum.js'
 import { Monetary } from './monetary.js'
 
-export class MonetaryDto {
+export class MonetaryDto <C extends Currency> {
   @ApiProperty({ type: 'integer', example: 499 })
   @IsInt()
   amount: number
 
   @CurrencyApiProperty()
   @IsEnum(Currency)
-  currency: Currency
+  currency: C
 
   @ApiProperty({ type: 'integer', example: 2 })
   @IsInt()
@@ -18,34 +18,34 @@ export class MonetaryDto {
 
   static from (monetary: undefined): undefined
   static from (monetary: null): null
-  static from (monetary: Monetary): MonetaryDto
   static from (monetary: undefined | null): undefined | null
-  static from (monetary: Monetary | null): MonetaryDto | null
-  static from (monetary: Monetary | undefined): MonetaryDto | undefined
-  static from (monetary: Monetary | null | undefined): MonetaryDto | null | undefined
-  static from (monetary: Monetary | null | undefined): MonetaryDto | null | undefined {
+  static from <C extends Currency> (monetary: Monetary<C>): MonetaryDto<C>
+  static from <C extends Currency> (monetary: Monetary<C> | null): MonetaryDto<C> | null
+  static from <C extends Currency> (monetary: Monetary<C> | undefined): MonetaryDto<C> | undefined
+  static from <C extends Currency> (monetary: Monetary<C> | null | undefined): MonetaryDto<C> | null | undefined
+  static from <C extends Currency> (monetary: Monetary<C> | null | undefined): MonetaryDto<C> | null | undefined {
     if (monetary === null) return null
     if (monetary === undefined) return undefined
 
-    return new MonetaryDtoBuilder()
+    return new MonetaryDtoBuilder<C>(monetary.currency)
       .withAmount(monetary.amount)
       .withCurrency(monetary.currency)
       .withPrecision(monetary.precision)
       .build()
   }
 
-  parse (): Monetary {
-    return new Monetary(this)
+  parse (): Monetary<C> {
+    return new Monetary<C>(this)
   }
 }
 
-export class MonetaryDtoBuilder {
-  private readonly dto: MonetaryDto
+export class MonetaryDtoBuilder <C extends Currency> {
+  private readonly dto: MonetaryDto<C>
 
-  constructor () {
+  constructor (defaultCurrency: C) {
     this.dto = new MonetaryDto()
     this.dto.amount = 0
-    this.dto.currency = Currency.EUR
+    this.dto.currency = defaultCurrency
     this.dto.precision = 4
   }
 
@@ -55,7 +55,7 @@ export class MonetaryDtoBuilder {
     return this
   }
 
-  withCurrency (currency: Currency): this {
+  withCurrency (currency: C): this {
     this.dto.currency = currency
 
     return this
@@ -67,7 +67,7 @@ export class MonetaryDtoBuilder {
     return this
   }
 
-  build (): MonetaryDto {
+  build (): MonetaryDto<C> {
     return this.dto
   }
 }
