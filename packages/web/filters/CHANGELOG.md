@@ -1,5 +1,14 @@
 # @wisemen/vue-core-filters
 
+
+## 9.0.1
+<sub>2026-06-12</sub>
+
+- [#1251](https://github.com/wisemen-digital/wisemen-core/pull/1251)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Unsaved view state is now persisted in the URL (`?view-state`). Refreshing the page or navigating away and back restores any unsaved adapter changes (filters, search, columns, etc.). State is cleared automatically when switching views, saving, or deleting.
+  Added a "Discard changes" action that resets all adapter state back to the last saved view. Only visible when the view is dirty.
+- [#1252](https://github.com/wisemen-digital/wisemen-core/pull/1252)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `locale-default` to `HourCycle`
+- [#1255](https://github.com/wisemen-digital/wisemen-core/pull/1255)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Change `HourCyclePreference` type to `locale-default` instead of `device-default`
+
 ## 9.0.0
 
 ### Patch Changes
