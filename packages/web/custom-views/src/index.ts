@@ -2,6 +2,7 @@ import './source.css'
 
 export * from './adapters/state/customViewFilterStateAdapter'
 export * from './adapters/state/customViewSearchStateAdapter'
+export * from './adapters/state/customViewSortStateAdapter'
 export * from './adapters/state/customViewTableColumnsStateAdapter'
 export * from './adapters/storage/customViewLocalStorageAdapter'
 export { default as CustomViewColorPicker } from './components/CustomViewColorPicker.vue'
