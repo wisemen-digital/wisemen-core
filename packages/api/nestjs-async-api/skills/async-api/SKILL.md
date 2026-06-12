@@ -1,6 +1,6 @@
 ---
 name: async-api
-description: Create documentation for NATS cloud events. Use this when creating a NATS event that gets broadcasted to a place outside of the API it was created (e.g. integration events, websocket events).
+description: Create documentation for cloud events. Use this when adding a (NATS) integration event.
 ---
 
 Generate AsyncAPI 3.0.0 specification documents from type-safe channel definitions and Swagger-decorated DTOs.
