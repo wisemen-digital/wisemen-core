@@ -13,17 +13,19 @@ import {
   within,
 } from 'storybook/test'
 
+import BadgeAllVariantsPlayground from './BadgeAllVariantsPlayground.vue'
 import BadgePlayground from './BadgePlayground.vue'
-import BadgeVariantPlayground from './BadgeVariantPlayground.vue'
 
 const meta = {
   title: 'Components/Badge',
   argTypes: {
     hasDot: {
       control: 'boolean',
+      description: 'Shows a dot indicator inside the badge',
     },
     color: {
       control: 'select',
+      description: 'Color palette applied to the badge',
       options: [
         'gray',
         'brand',
@@ -37,9 +39,11 @@ const meta = {
     },
     label: {
       control: 'text',
+      description: 'Text displayed inside the badge',
     },
     rounded: {
       control: 'select',
+      description: 'Controls how rounded the badge corners appear',
       options: [
         'default',
         'full',
@@ -47,6 +51,7 @@ const meta = {
     },
     size: {
       control: 'select',
+      description: 'Controls the badge size',
       options: [
         'sm',
         'md',
@@ -55,6 +60,7 @@ const meta = {
     },
     variant: {
       control: 'select',
+      description: 'Visual style applied to the badge',
       options: [
         'translucent',
         'outline',
@@ -92,54 +98,31 @@ export const Default: Story = {
   },
 }
 
-export const Translucent: Story = {
+export const AllVariants: Story = {
   args: {
-    color: 'gray',
+    hasDot: false,
+    label: 'Badge',
+    rounded: 'default',
+    size: 'md',
+  },
+  parameters: {
+    controls: {
+      exclude: [
+        'color',
+        'variant',
+      ],
+    },
   },
   render: (args) => ({
     components: {
-      BadgeVariantPlayground,
+      BadgeAllVariantsPlayground,
     },
     setup() {
       return {
         args,
       }
     },
-    template: '<BadgeVariantPlayground v-bind="args" variant="translucent" />',
-  }),
-}
-
-export const Outline: Story = {
-  args: {
-    color: 'gray',
-  },
-  render: (args) => ({
-    components: {
-      BadgeVariantPlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<BadgeVariantPlayground v-bind="args" variant="outline" />',
-  }),
-}
-
-export const Solid: Story = {
-  args: {
-    color: 'gray',
-  },
-  render: (args) => ({
-    components: {
-      BadgeVariantPlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<BadgeVariantPlayground v-bind="args" variant="solid" />',
+    template: '<BadgeAllVariantsPlayground v-bind="args" />',
   }),
 }
 

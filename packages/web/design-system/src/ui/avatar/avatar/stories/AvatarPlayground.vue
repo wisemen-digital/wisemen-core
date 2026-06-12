@@ -7,11 +7,15 @@ const props = withDefaults(defineProps<{
 }>(), {
   size: 'md',
 })
+
+const profileSrc = '../../../../storybook-assets/profile-picture.jpg'
 </script>
 
 <template>
   <Avatar
+    :src="profileSrc"
     :size="props.size"
+    image-alt="Olivia Roy's avatar"
     name="Olivia Roy"
   />
 </template>

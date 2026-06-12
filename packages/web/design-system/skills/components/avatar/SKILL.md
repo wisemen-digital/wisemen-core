@@ -56,3 +56,4 @@ For full API details, read the props files. For usage examples, read the playgro
 
 - [badge](../badge/SKILL.md) -- For labeled status tags with optional avatar
 - [logo](../logo/SKILL.md) -- For brand/company logos
+- [storybook](../../storybook/SKILL.md) -- For story and playground conventions when editing `stories/`
