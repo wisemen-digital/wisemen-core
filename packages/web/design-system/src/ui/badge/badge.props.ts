@@ -3,7 +3,7 @@ import type { Component } from 'vue'
 
 import type { RegisteredActionContext } from '@/register'
 
-export type BadgeColor = 'blue' | 'brand' | 'error' | 'gray' | 'pink' | 'purple' | 'success' | 'warning'
+export type BadgeColor = 'blue' | 'brand' | 'error' | 'gray' | 'moss' | 'pink' | 'purple' | 'success' | 'warning'
 
 export interface BadgeAvatarConfig {
   /**

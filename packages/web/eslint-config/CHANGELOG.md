@@ -1,4 +1,10 @@
-## [1.7.2] (2025-08-04)
+# Changelog
+
+## 2.1.4
+
+<sub>2026-06-05</sub>
+
+- [#1208](https://github.com/wisemen-digital/wisemen-core/pull/1208) _(patch)_ Thanks [@Robbe95](https://github.com/Robbe95)! - Small readme change
 
 ## 2.1.3
 
@@ -70,179 +76,220 @@
 - 1afc3e2: Allow imports from the /tests folder on root
 - **Project structure:** Allow .props.ts files in components folder to tightly couple it. (I did it wrong previously, so this is a fix for that)
 
-## [1.7.1] (2025-08-04)
+## 1.7.1
 
-- **Project structure:** Allow .props.ts files in models folder to tightly couple it.
+### Patch Changes
 
-## [1.7.0] (2025-06-12)
+- Project structure: Allow .props.ts files in models folder to tightly couple it.
 
-- **Refactor to TS files:** Refactored project to use TS files.
-- **Project structure:** Updated structure rules to be more flexible.
+## 1.7.0
 
-## [1.6.0] (2025-06-12)
+### Minor Changes
 
-- **Project structure:** Enforced project structure.
-- **Module encapsulation:** Enforced module encapsulation.
-- **Path**: Updated path rules package to flat config.
-- **Wisemen:** Made custom rules package. Enabled rule `explicit-function-return-type-with-regex` and made it so composables don't require a return type.
+- Refactor to TS files: Refactored project to use TS files.
+- Project structure: Updated structure rules to be more flexible.
 
-## [1.5.1] (2025-06-05)
+## 1.6.0
 
-- **Tailwindcss:** enforce-consistent-variable-syntax rule ignores classes with custom-.
+### Minor Changes
 
-## [1.5.0] (2025-05-28)
+- Project structure: Enforced project structure.
+- Module encapsulation: Enforced module encapsulation.
+- Path: Updated path rules package to flat config.
+- Wisemen: Made custom rules package. Enabled rule explicit-function-return-type-with-regex and made it so composables do not require a return type.
 
-- **Tailwindcss:** enforce-consistent-variable-syntax rule enabled.
-- **Chore**: Updated all packages to latest versions.
+## 1.5.1
 
-## [1.4.0] (2025-05-28)
+### Patch Changes
 
-- **Tailwindcss:** Updated to eslint-plugin-better-tailwind, enabling conflicted classes and unregistered classes rules.
+- Tailwindcss: enforce-consistent-variable-syntax rule ignores classes with custom-.
 
-## [1.2.0] (2025-04-09)
+## 1.5.0
 
-- **Rules:** Removed all putout rules and refactored them to different ones.
-- **Formatting** Formatting for CSS files.
+### Minor Changes
 
-## [1.1.0] (2025-03-26)
+- Tailwindcss: enforce-consistent-variable-syntax rule enabled.
+- Chore: Updated all packages to latest versions.
 
-- **Readable tailwind:** Added readable tailwind rules.
+## 1.4.0
 
-## [1.0.0] (2025-03-26)
+### Minor Changes
 
-- **Updated packages:** Updated all packages to latest.
-- **A11y rules:** Added a11y rules.
+- Tailwindcss: Updated to eslint-plugin-better-tailwind, enabling conflicted classes and unregistered classes rules.
 
-## [1.0.0-next.1] (2025-03-06)
+## 1.2.0
 
-- **Updated packages:** Updated all packages to latest.
-- **Updated putout:** Uses flat config.
-- **Updated perfectionist:** Uses regex for pattern matching.
-- **Disabled Tailwind:** Disabled Tailwind rules, not updated to 4.0.
-- **Tests:** Added tests for spacing and perfectionist rules.
-- **Unicorn:** Added unicorn rules.
-  - - catch-error-name
-    - consistent-destructuring
-    - consistent-empty-array-spread
-    - consistent-existence-index-check
-    - error-message
-    - expiring-todo-comments
-    - explicit-length-check
-    - no-accessor-recursion
-    - no-anonymous-default-export
-    - no-array-for-each
-    - no-array-method-this-argument
-    - no-array-push-push
-    - no-await-expression-member
-    - no-await-in-promise-methods
-    - no-empty-file
-    - no-for-loop
-    - no-nested-ternary
-    - no-single-promise-in-promise-methods
-    - no-unnecessary-await
-    - no-unreadable-array-destructuring
-    - no-useless-fallback-in-spread
-    - no-useless-length-check
-    - no-useless-switch-case
-    - no-useless-undefined
-    - number-literal-case
-    - numeric-separators-style
-    - prefer-array-find
-    - prefer-array-flat
-    - prefer-array-flat-map
-    - prefer-array-index-of
-    - prefer-array-some
-    - prefer-at
-    - prefer-date-now
-    - prefer-includes
-    - prefer-logical-operator-over-ternary
-    - prefer-math-min-max
-    - prefer-set-has
-    - prefer-set-size
-    - prefer-switch
-    - template-indent
-    - throw-new-error
+### Minor Changes
 
-## [0.2.3] (2024-11-14)
+- Rules: Removed all putout rules and refactored them to different ones.
+- Formatting: Formatting for CSS files.
 
-- **Fix typescript:** Typescript to true in factory.
+## 1.1.0
 
-## [0.2.2] (2024-11-12)
+### Minor Changes
 
-- **Max depth:** Added rule to enforce max depth of 3.
-- **No nested turnary:** Added rule to enforce no nested ternary, which I hope doesn't happen already.
+- Readable tailwind: Added readable tailwind rules.
 
-## [0.2.1] (2024-11-12)
+## 1.0.0
 
-- **Type rules:** Removed type rules, it has performance issues with large projects.
-- **Packages:** Updated packages to latest versions.
-- **Consistent function scoping** Added rule to enforce consistent function scoping.
+### Major Changes
 
-## [0.2.0] (2024-09-05)
+- Updated packages: Updated all packages to latest.
+- A11y rules: Added a11y rules.
 
-- **Updated packages:** Updated packages to latest versions.
-- **Ordening:** Added sorting for unions.
-- **Ordening:** Don't ignore casing for sorting. Example: A, B, a, b instead of A, a, B, b.
-- **Type rules:** Reenabled type rules.
-- **Function scoping:** Added function scoping rule.
-- **Consistent chaining:** Added consistent chaining rule.
-- **Cypress removed:** Removed cypress rules.
-- **Putout removed:** Removed unnecessary putout rules.
-- **Vitest:** Added vitest rules.
+## 1.0.0-next.1
 
-## [0.1.3] (2024-06-13)
+### Patch Changes
 
-- **Tailwind:** Allow classes starting with `custom-` in tailwind.
+- Updated packages: Updated all packages to latest.
+- Updated putout: Uses flat config.
+- Updated perfectionist: Uses regex for pattern matching.
+- Disabled Tailwind: Disabled Tailwind rules, not updated to 4.0.
+- Tests: Added tests for spacing and perfectionist rules.
+- Unicorn: Added unicorn rules.
+  - catch-error-name
+  - consistent-destructuring
+  - consistent-empty-array-spread
+  - consistent-existence-index-check
+  - error-message
+  - expiring-todo-comments
+  - explicit-length-check
+  - no-accessor-recursion
+  - no-anonymous-default-export
+  - no-array-for-each
+  - no-array-method-this-argument
+  - no-array-push-push
+  - no-await-expression-member
+  - no-await-in-promise-methods
+  - no-empty-file
+  - no-for-loop
+  - no-nested-ternary
+  - no-single-promise-in-promise-methods
+  - no-unnecessary-await
+  - no-unreadable-array-destructuring
+  - no-useless-fallback-in-spread
+  - no-useless-length-check
+  - no-useless-switch-case
+  - no-useless-undefined
+  - number-literal-case
+  - numeric-separators-style
+  - prefer-array-find
+  - prefer-array-flat
+  - prefer-array-flat-map
+  - prefer-array-index-of
+  - prefer-array-some
+  - prefer-at
+  - prefer-date-now
+  - prefer-includes
+  - prefer-logical-operator-over-ternary
+  - prefer-math-min-max
+  - prefer-set-has
+  - prefer-set-size
+  - prefer-switch
+  - template-indent
+  - throw-new-error
 
-## [0.1.2] (2024-06-12)
+## 0.2.3
 
-- **Ordening:** Removed ordening from objects named `variants`, as it is of functional significance in style libraries like cva.
-- **Ordening:** Moved name before unknown in object ordering.
-- **Imports:** Disabled rule that requires file extensions in imports it is a doesn't work with .'s in the file name.
+### Patch Changes
 
-## [0.1.1] (2024-05-31)
+- Fix typescript: Typescript to true in factory.
 
-- **Ordening:** Added ordering rules for routes declaration
+## 0.2.2
 
-## [0.1.0] (2024-05-13)
+### Patch Changes
 
-- **Upgrade:** Upgraded to eslint 9.3 and updated dependencies.
-- **Tailwind:** Added eslint-tailwind flat config support.
-- **Chore:** Removed unused eslint-import dependency.
+- Max depth: Added rule to enforce max depth of 3.
+- No nested turnary: Added rule to enforce no nested ternary, which I hope does not happen already.
 
-## [0.0.18] (2024-05-13)
+## 0.2.1
 
-- **Imports:** Added rule that requires file extensions in imports
-- **Parens:** Added rule that requires parens around arrow function arguments
+### Patch Changes
 
-## [0.0.17] (2024-05-01)
+- Type rules: Removed type rules, it has performance issues with large projects.
+- Packages: Updated packages to latest versions.
+- Consistent function scoping: Added rule to enforce consistent function scoping.
 
-- **Ordening:** Added uuid ordering and better date matching
-- **Fix:** Disabled putout rule that was causing problem's
+## 0.2.0
 
-## [0.0.16] (2024-05-01)
+### Minor Changes
 
-- **Refactor:** Split rules in different files
-- **Fix:** Re-added return type
+- Updated packages: Updated packages to latest versions.
+- Ordening: Added sorting for unions.
+- Ordening: Do not ignore casing for sorting. Example: A, B, a, b instead of A, a, B, b.
+- Type rules: Reenabled type rules.
+- Function scoping: Added function scoping rule.
+- Consistent chaining: Added consistent chaining rule.
+- Cypress removed: Removed cypress rules.
+- Putout removed: Removed unnecessary putout rules.
+- Vitest: Added vitest rules.
 
-## [0.0.15] (2024-04-30)
+## 0.1.3
 
-- **Imports:** Require absolute imports for anything about 1 depth
+### Patch Changes
 
-## [0.0.12] (2024-04-10)
+- Tailwind: Allow classes starting with custom- in tailwind.
 
-### Features
+## 0.1.2
 
-- **9.0 upgrade:** Upgraded to eslint 9.0.
-- **I18n:** Vue-i18n to flat config.
+### Patch Changes
 
-## [0.0.11] (2024-04-09)
+- Ordening: Removed ordening from objects named variants, as it is of functional significance in style libraries like cva.
+- Ordening: Moved name before unknown in object ordering.
+- Imports: Disabled rule that requires file extensions in imports as it does not work with dots in the file name.
 
-### Features
+## 0.1.1
 
-- **Sorting:** Better object, interface and type sorting.
-- **Spacing:** Moved some spacing rules from putout to default style linting.
+### Patch Changes
 
-### Improvements
+- Ordening: Added ordering rules for routes declaration.
 
-- **Grouping:** Grouped rules a bit better with flatconfig.
+## 0.1.0
+
+### Minor Changes
+
+- Upgrade: Upgraded to eslint 9.3 and updated dependencies.
+- Tailwind: Added eslint-tailwind flat config support.
+- Chore: Removed unused eslint-import dependency.
+
+## 0.0.18
+
+### Patch Changes
+
+- Imports: Added rule that requires file extensions in imports.
+- Parens: Added rule that requires parens around arrow function arguments.
+
+## 0.0.17
+
+### Patch Changes
+
+- Ordening: Added uuid ordering and better date matching.
+- Fix: Disabled putout rule that was causing problems.
+
+## 0.0.16
+
+### Patch Changes
+
+- Refactor: Split rules in different files.
+- Fix: Re-added return type.
+
+## 0.0.15
+
+### Patch Changes
+
+- Imports: Require absolute imports for anything above 1 depth.
+
+## 0.0.12
+
+### Patch Changes
+
+- 9.0 upgrade: Upgraded to eslint 9.0.
+- I18n: Vue-i18n to flat config.
+
+## 0.0.11
+
+### Patch Changes
+
+- Sorting: Better object, interface and type sorting.
+- Spacing: Moved some spacing rules from putout to default style linting.
+- Grouping: Grouped rules a bit better with flatconfig.

@@ -36,7 +36,7 @@ function onClose(): void {
 
 <template>
   <Dialog
-    :has-close-button="props.showCloseButton"
+    :show-close-button="props.showCloseButton"
     :size="props.size"
     :prevent-click-outside="props.preventClickOutside"
     :prevent-esc="props.preventEsc"

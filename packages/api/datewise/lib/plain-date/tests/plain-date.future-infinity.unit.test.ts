@@ -106,6 +106,24 @@ describe('FutureInfinityDate', () => {
     })
   })
 
+  describe('day', () => {
+    it('throws when accessing the day of the week', () => {
+      expect(() => new FutureInfinityDate().day()).toThrow()
+    })
+  })
+
+  describe('isoWeekday', () => {
+    it('throws when accessing the ISO weekday', () => {
+      expect(() => new FutureInfinityDate().isoWeekday()).toThrow()
+    })
+  })
+
+  describe('isoWeek', () => {
+    it('throws when accessing the ISO week', () => {
+      expect(() => new FutureInfinityDate().isoWeek()).toThrow()
+    })
+  })
+
   describe('addDuration', () => {
     it('remains FutureInfinityDate when adding a duration', () => {
       const date = new FutureInfinityDate()

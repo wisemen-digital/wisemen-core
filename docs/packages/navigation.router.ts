@@ -1,6 +1,7 @@
 import { ACTIONS_NAVIGATION } from './actions/actions.navigation'
 import { API_UTILS_NAVIGATION } from './api-utils/apiUtils.navigation'
 import { CONFIGS_NAVIGATION } from './configs/configs.navigation'
+import { CUSTOM_VIEWS_NAVIGATION } from './custom-views/customViews.navigation'
 import { DATES_NAVIGATION } from './dates/dates.navigation'
 import { DESIGN_SYSTEM_NAVIGATION } from './design-system/designSystem.navigation'
 import { ESLINT_NAVIGATION } from './eslint/eslint.navigation'
@@ -29,6 +30,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
       PREFERENCES_NAVIGATION,
       ACTIONS_NAVIGATION,
       FILTERS_NAVIGATION,
+      CUSTOM_VIEWS_NAVIGATION,
     ],
   },
   {

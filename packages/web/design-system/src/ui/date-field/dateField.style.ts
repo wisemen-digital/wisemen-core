@@ -2,7 +2,7 @@ import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createDateFieldStyle = tv({
   slots: {
-    field: `ml-sm flex h-full flex-1 items-center`,
+    field: `flex h-full flex-1 items-center px-sm`,
     literal: `text-placeholder select-none`,
     segment: `
       rounded-xs px-xxs text-primary tabular-nums caret-transparent outline-none
@@ -14,14 +14,6 @@ export const createDateFieldStyle = tv({
     `,
   },
   variants: {
-    isPickerHidden: {
-      false: {
-        field: 'pl-xxs',
-      },
-      true: {
-        field: 'pl-md',
-      },
-    },
     size: {
       md: {
         field: 'text-xs',

@@ -26,7 +26,7 @@ import Link from '@/ui/button/link/Link.vue'
           :link="{ href: '#' }"
           :keyboard-shortcut="{
             key: 'D',
-            meta: true,
+            mod: true,
           }"
           label="Dashboard"
         />

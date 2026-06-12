@@ -2,6 +2,14 @@
   "$schema": "../node_modules/@varlock/bumpy/config-schema.json",
   "baseBranch": "main",
   "changelog": "github",
-  "access": "restricted",
-  "updateInternalDependencies": "patch"
+  "access": "public",
+  "publish": {
+    "provenance": true
+  },
+  "ignore": [
+    "docs-next",
+    "@wisemen/vue-core-template-vue",
+    "@wisemen/vue-core-template-typescript"
+  ]
 }
+

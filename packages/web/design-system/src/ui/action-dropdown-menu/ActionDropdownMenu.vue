@@ -64,7 +64,11 @@ const hasApplicableActions = computed<boolean>(() => {
         :actions="props.actions ?? []"
         :parent-action="props.parentAction"
         :models="props.models ?? []"
-      />
+      >
+        <template #bottom>
+          <slot name="bottom" />
+        </template>
+      </ActionDropdownMenuContent>
     </template>
   </UIDropdownMenu>
 
