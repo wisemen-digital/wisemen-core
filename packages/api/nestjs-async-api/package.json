@@ -5,6 +5,10 @@
     "access": "public"
   },
   "type": "module",
+  "files": [
+    "dist/",
+    "skills/"
+  ],
   "exports": {
     ".": "./dist/lib/index.js"
   },
