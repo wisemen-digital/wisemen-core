@@ -1,0 +1,19 @@
+import { Controller, Version } from '@nestjs/common'
+import { ApiOAuth2, ApiTags } from '@nestjs/swagger'
+import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.use-case.js'
+
+@ApiTags('{{pascalCase moduleName}}')
+@ApiOAuth2([])
+@Controller()
+export class {{pascalCase useCaseName}}Controller {
+  constructor (
+    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+  ) {}
+
+  @Version('1')
+  @Permissions(Permission.{{constantCase permissionName}})
+  public async {{camelCase useCaseName}} (
+  ): Promise<void> {
+    return this.{{camelCase useCaseName}}UseCase.execute()
+  }
+}

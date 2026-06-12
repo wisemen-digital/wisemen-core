@@ -1,0 +1,12 @@
+import { BaseJob, BaseJobData, PgBossJob } from '@wisemen/pgboss-nestjs-job'
+
+export interface {{ pascalCase name }}JobData extends BaseJobData { }
+
+@PgBossJob(QueueName.{{ constantCase queue }})
+export class {{ pascalCase name }}Job extends BaseJob<{{ pascalCase name }}JobData> {
+  constructor () {
+    super(undefined, {
+      singletonKey: '{{ name }}'
+    })
+  }
+}
