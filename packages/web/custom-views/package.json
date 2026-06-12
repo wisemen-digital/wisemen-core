@@ -61,7 +61,8 @@
     "tailwindcss": "catalog:style",
     "vue": "catalog:peer",
     "vue-draggable-plus": "catalog:",
-    "vue-i18n": "catalog:peer"
+    "vue-i18n": "catalog:peer",
+    "vue-router": "catalog:peer"
   },
   "peerDependenciesMeta": {
     "@wisemen/vue-core-filters": {
@@ -97,6 +98,7 @@
     "vue": "catalog:vue",
     "vue-draggable-plus": "catalog:",
     "vue-i18n": "catalog:peer",
+    "vue-router": "catalog:peer",
     "vue-tsc": "catalog:vue",
     "zod": "catalog:general"
   }

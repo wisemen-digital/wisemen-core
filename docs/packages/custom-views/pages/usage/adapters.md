@@ -47,6 +47,12 @@ Pass `defaultFilterValues` if your filters should reset to a specific non-empty 
 createCustomViewFilterStateAdapter(filters, { status: 'active' })
 ```
 
+> **`persistInUrl` on `useFilters`**: when using filters with custom views, disable `persistInUrl` on the `useFilters` call. Custom views owns the URL state for all adapters via `?view-state`. Running both at the same time causes conflicts.
+>
+> ```typescript
+> const filters = useFilters({ ... }) // no persistInUrl: true
+> ```
+
 > `@wisemen/vue-core-filters` is an optional peer dependency. Install it only when you use this adapter.
 
 ### Search state adapter
