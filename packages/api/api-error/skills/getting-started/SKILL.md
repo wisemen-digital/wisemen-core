@@ -21,7 +21,7 @@ export class UserNotFoundError extends NotFoundApiError {
 # Document errors thrown with @ApiErrorResponse on Controllers (swagger)
 
 ```ts
-import { ApiNotFoundErrorResponse } from "@wisemen/api-error"
+import { ApiErrorResponse } from "@wisemen/api-error"
 
 ...
 export class ViewUserDetailController {
@@ -49,6 +49,7 @@ it("returns 404 for unknown user", async () => {
 import { BadRequestApiError, ApiErrorCode, ApiErrorMeta, } from "@wisemen/api-error"
 
 export class InvalidEmailApiErrorMeta {
+  @ApiProperty({ type: 'string' })
   field: string
 
   constructor(field: string) {
