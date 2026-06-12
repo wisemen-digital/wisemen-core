@@ -8,21 +8,30 @@ Generate AsyncAPI 3.0.0 specification documents from type-safe channel definitio
 # Validate event structure
 - Make sure the properties of the event are decorated using '@nestjs/swagger'. 
 
-eg.
+# Define a channel
+- This happens in the same file as the event definition, at the bottom of the file.
+- Make a separate constant containing the subject of the event.
+  - The subject may contain parameters like 'environment', 'uuid', ... These parameters must be enclosed by curly brackets (`{}`)
+- Create a channel using the `createChannel` method from the '@wisemen/nestjs-async-api' package.
+  - All parameters defined in the subject must be documented in the channel config param of the method.
+  - Define operations for the event. These can be 'send' or 'receive'
+
+
+
 ```ts
-// src/events/user-created.integration.event.ts
 import { ApiProperty } from '@nestjs/swagger'
+import { createChannel } from '@wisemen/nestjs-async-api'
 
 export class UserCreatedEventContent {
   @ApiProperty({ type: String, format: 'uuid' })
   uuid: UserUuid
 
-  @UserTypeApiProperty()
-  type: UserType
+  @ApiProperty({ type: String, format: 'email' })
+  email: string
 
-  constructor (uuid: UserUuid, type: UserType) {
+  constructor (uuid: UserUuid, email: string) {
     this.uuid = uuid
-    this.type = type
+    this.email = email
   }
 }
 
@@ -36,29 +45,14 @@ export class UserCreatedIntegrationEvent extends IntegrationEvent {
   @ApiProperty({ type: UserCreatedEventContent })
   declare data: UserCreatedEventContent
 
-  constructor (uuid: UserUuid, type: UserType) {
+  constructor (uuid: UserUuid, email: string) {
     super({
       type: IntegrationEventType.USER_CREATED,
-      data: new UserCreatedEventContent(uuid, type),
+      data: new UserCreatedEventContent(uuid, email),
       version: '0.0.1'
     })
   }
 }
-```
-
-# Define a channel
-- This happens in the same file as the event definition, at the bottom of the file.
-- Make a separate constant containing the subject of the event.
-  - The subject may contain parameters like 'environment', 'uuid', ... These parameters must be enclosed by curly brackets (`{}`)
-- Create a channel using the `createChannel` method from the '@wisemen/nestjs-async-api' package.
-  - All parameters defined in the subject must be documented in the channel config param of the method.
-  - Define operations for the event. These can be 'send' or 'receive'
-  
-
-eg.
-```ts
-// src/events/user-created.integration.event.ts
-import { createChannel } from '@wisemen/nestjs-async-api'
 
 export const UserCreatedSubject = 'my-application-name.{env}.user.{userUuid}.created'
 export const UserCreatedChannel = createChannel(UserCreatedSubject, {
