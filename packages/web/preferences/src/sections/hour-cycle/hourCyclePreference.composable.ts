@@ -7,12 +7,11 @@ import { useI18n } from 'vue-i18n'
 import { createPreferencesSection } from '#sections/createPreferencesSection'
 import PreferencesHourCycleView from '#sections/hour-cycle/PreferencesHourCycleView.vue'
 
-export type HourCycleStoredValue = '12-hour' | '24-hour' | null
-export type HourCyclePreferenceValue = '12-hour' | '24-hour' | 'device-default'
+export type HourCyclePreference = '12-hour' | '24-hour' | 'locale-default'
 
 export interface HourCyclePreferenceOptions {
-  get: () => HourCycleStoredValue
-  set: (value: HourCycleStoredValue) => void
+  get: () => HourCyclePreference
+  set: (value: HourCyclePreference) => void
 }
 
 export function useHourCyclePreference(options: HourCyclePreferenceOptions) {
@@ -24,9 +23,9 @@ export function useHourCyclePreference(options: HourCyclePreferenceOptions) {
     description: computed(() => i18n.t('module.preferences.time_format.description')),
     tags: [],
     component: () => h(PreferencesHourCycleView, {
-      'modelValue': options.get() ?? 'device-default',
-      'onUpdate:modelValue': (value: HourCyclePreferenceValue) => {
-        options.set(value === 'device-default' ? null : value)
+      'modelValue': options.get() ?? 'locale-default',
+      'onUpdate:modelValue': (value: HourCyclePreference) => {
+        options.set(value)
       },
     }),
   })
