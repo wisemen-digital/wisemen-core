@@ -3,6 +3,12 @@
 
 
 
+
+## 1.4.2
+<sub>2026-06-12</sub>
+
+- [#1252](https://github.com/wisemen-digital/wisemen-core/pull/1252)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `locale-default` to `HourCycle`
+
 ## 1.4.1
 <sub>2026-06-09</sub>
 

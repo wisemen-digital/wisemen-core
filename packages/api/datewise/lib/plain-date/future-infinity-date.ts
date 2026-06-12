@@ -160,6 +160,14 @@ export class FutureInfinityDate implements PlainDate {
     throw new Error('cannot access day of week of +infinity')
   }
 
+  isoWeekday (): number {
+    throw new Error('cannot access ISO weekday of +infinity')
+  }
+
+  isoWeek (): number {
+    throw new Error('cannot access ISO week of +infinity')
+  }
+
   toDate (): Date {
     throw new Error('cannot convert future infinity to a Date')
   }

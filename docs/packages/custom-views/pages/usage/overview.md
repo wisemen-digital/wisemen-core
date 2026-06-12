@@ -104,11 +104,35 @@ const customViews = useContactCustomViews()
 
 **User-created views** are created via the **Save → Save as new view** action. They are always editable and are stored in the storage adapter.
 
-## Active view and URL sync
+## URL sync
 
-The active view ID is stored in the `?viewId` query parameter. When the user navigates to a URL that includes `?viewId=my-view`, that view is activated automatically. Switching views updates the URL without a page reload.
+### Active view
 
-If `?viewId` is absent or points to an unknown ID, the view marked `isDefault: true` is used. If no default exists, the first view is used.
+The active view ID is stored in the `?view` query parameter. Switching views updates the URL without a page reload, so links like `?view=my-view` always land on the right view.
+
+If `?view` is absent or points to an unknown ID, the first view is used.
+
+### Working state
+
+Any unsaved changes to adapter state (filters, search query, column visibility, etc.) are automatically encoded into the `?view-state` query parameter as a base64 JSON string. This means:
+
+- Refreshing the page restores the user's exact unsaved session.
+- Navigating to a detail page and pressing back restores the state.
+- Sharing the URL shares the current working state.
+
+`?view-state` is cleared automatically when the user switches views, saves the current view, or deletes the active view.
+
+## Discarding changes
+
+When the active view is dirty, a **Discard changes** action becomes available. Wire it up next to the Save button using `useCustomViewRevertToSavedViewAction`:
+
+```typescript
+import { useCustomViewRevertToSavedViewAction } from '@wisemen/vue-core-custom-views'
+
+const revertToSavedViewAction = useCustomViewRevertToSavedViewAction()
+```
+
+The action resets all adapter state back to the last saved snapshot for the active view and clears `?view-state` from the URL. It is only applicable (`isApplicable`) when `isDirty` is `true`, so it only appears in the command palette and action menus when there is something to discard.
 
 ## Keyboard shortcuts
 
@@ -116,7 +140,9 @@ Pressing **1–9** (or **Shift+1–9** on azerty keyboards) switches to the corr
 
 ## Dirty detection
 
-`isDirty` is `true` whenever the current state (as reported by each adapter's `getCurrentState`) differs from the snapshot stored in `activeView.state`. Each adapter defines its own equality check via `isDirty(saved, current)`. The composable ANDs all adapters: the view is dirty if *any* adapter reports a difference.
+`isDirty` is `true` whenever the current state (as reported by each adapter's `getCurrentState`) differs from the snapshot stored in `activeView.state`. Each adapter defines its own equality check via `isDirty(saved, current)`. The view is dirty if *any* adapter reports a difference.
+
+When the view is dirty, `?view-state` is present in the URL. When it is clean (either because no changes were made, or after saving or discarding), `?view-state` is absent.
 
 ## File structure
 

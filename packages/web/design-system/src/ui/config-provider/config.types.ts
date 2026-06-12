@@ -33,7 +33,7 @@ export interface ConfigProviderProps {
   googleMapsApiKey?: string | null
   /**
    * The hour cycle to use for time-related components.
-   * Can be either 'h12' or 'h24'. If not provided, the system locale's default will be used.
+   * Can be either 'h12', 'h24' or 'locale-default'. If not provided, the system locale's default will be used.
    * @default null
    */
   hourCycle: HourCycle | null
