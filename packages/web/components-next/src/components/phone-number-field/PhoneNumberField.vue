@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
 import {
   AsYouType,
   formatIncompletePhoneNumber,
@@ -7,7 +7,7 @@ import {
   getCountryCallingCode,
   parsePhoneNumberFromString,
   validatePhoneNumberLength,
-} from 'libphonenumber-js'
+} from 'libphonenumber-js/max'
 import {
   computed,
   nextTick,

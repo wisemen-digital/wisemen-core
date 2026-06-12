@@ -250,9 +250,6 @@ catalogs:
     '@wisemen/eslint-config-nestjs':
       specifier: ^1.1.1
       version: 1.1.1
-    '@wisemen/vue-core-dates':
-      specifier: ^0.0.2
-      version: 0.0.2
     vue-draggable-plus:
       specifier: ^0.6.1
       version: 0.6.1
@@ -299,10 +296,10 @@ catalogs:
       specifier: 2.0.0
       version: 2.0.0
     libphonenumber-js:
-      specifier: 1.12.35
-      version: 1.12.35
+      specifier: 1.13.6
+      version: 1.13.6
     maska:
-      specifier: ^3.0.0
+      specifier: ^3.2.0
       version: 3.2.0
     pkce-challenge:
       specifier: 5.0.1
@@ -2516,7 +2513,7 @@ importers:
         version: 27.4.0
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.6
       sass:
         specifier: catalog:style
         version: 1.97.3
@@ -2636,8 +2633,8 @@ importers:
         specifier: workspace:*
         version: link:../actions
       '@wisemen/vue-core-dates':
-        specifier: 'catalog:'
-        version: 0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
+        specifier: workspace:*
+        version: link:../dates
       '@wisemen/vue-core-design-system':
         specifier: workspace:*
         version: link:../design-system
@@ -2779,7 +2776,7 @@ importers:
         version: 1.5.13
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.6
       maska:
         specifier: catalog:general
         version: 3.2.0
@@ -3706,7 +3703,7 @@ importers:
         version: 9.39.4(jiti@2.6.1)
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.6
       tsdown:
         specifier: catalog:build
         version: 0.18.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
@@ -3724,7 +3721,7 @@ importers:
         version: link:../i18n-factory
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.6
     devDependencies:
       '@types/node':
         specifier: catalog:types
@@ -8579,14 +8576,6 @@ packages:
       eslint: '>=10.0.3'
       typescript: '>=4.8.4 <=5.9.3'
 
-  '@wisemen/vue-core-dates@0.0.2':
-    resolution: {integrity: sha512-vlG4Im6Suh5GGa56+pzYD901e4rB3nt5sptfM+OdPe+Dut6ACOQFlQmgBhjf/LHP44a88AiOV+AONYTIEm0cdw==}
-    peerDependencies:
-      temporal-polyfill: '>=0.3.0'
-      vue: '>=3.5.22'
-      vue-i18n: '>=11.1.12'
-      zod: '>=4.3.5'
-
   '@wisemen/vue-core-icons@0.0.2':
     resolution: {integrity: sha512-MAaD9S31riuHyUuHsi3mTFVTi7WV+cKQTHb5lYsEwjVLAkN7mxIn9HWpo7CBmZxM9efKJO819DlCLRee6EhOFw==}
     peerDependencies:
@@ -10783,6 +10772,9 @@ packages:
 
   libphonenumber-js@1.12.35:
     resolution: {integrity: sha512-T/Cz6iLcsZdb5jDncDcUNhSAJ0VlSC9TnsqtBNdpkaAmy24/R1RhErtNWVWBrcUZKs9hSgaVsBkc7HxYnazIfw==}
+
+  libphonenumber-js@1.13.6:
+    resolution: {integrity: sha512-NdB6O6QvlGMCoG003m0YIKG2+Xw7DjmCZhmc1RH+K6HncADUbRf8TZeLegxBBN1VFyPHcNpPTKpIhYLXzJVy1Q==}
 
   light-my-request@6.6.0:
     resolution: {integrity: sha512-CHYbu8RtboSIoVsHZ6Ye4cj4Aw/yg2oAFimlF7mNvfDV192LR7nDiKtSIfCuLT7KokPSTn/9kfVLm5OGN0A28A==}
@@ -19306,13 +19298,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@wisemen/vue-core-dates@0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)':
-    dependencies:
-      temporal-polyfill: 0.3.0
-      vue: 3.5.27(typescript@5.9.3)
-      vue-i18n: 11.2.8(vue@3.5.27(typescript@5.9.3))
-      zod: 4.3.5
-
   '@wisemen/vue-core-icons@0.0.2(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
@@ -21847,6 +21832,8 @@ snapshots:
       type-check: 0.4.0
 
   libphonenumber-js@1.12.35: {}
+
+  libphonenumber-js@1.13.6: {}
 
   light-my-request@6.6.0:
     dependencies:
