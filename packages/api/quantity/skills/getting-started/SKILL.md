@@ -41,15 +41,16 @@ const circumference = clippedRadius.multiply(2 * Math.PI).round()
 
 ### Quantity in database entities
 
-Use a `<Quantity>Column` decorator in a typeorm entity property to model the field as a database column.
+Use a `<Quantity>Column` decorator in a TypeORM entity property to model the field as a database column.
 It is required to specify in what unit the quantity value will be stored in the database.
+TypeORM's column options like `nullable` are supported.
 
 ```ts
 import { Distance, DistanceUnit, DistanceColumn } from "@wisemen/quantity"
 
 class ExampleEntity {
-  @DistanceColumn(DistanceUnit.METER)
-  distance: Distance
+  @DistanceColumn(DistanceUnit.METER, { nullable: true })
+  distance: Distance | null
 }
 ```
 
