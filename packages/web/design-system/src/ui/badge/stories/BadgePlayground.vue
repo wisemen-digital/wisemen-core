@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { Settings01Icon } from '@wisemen/vue-core-icons'
+import { createAction } from '@wisemen/vue-core-actions'
+import {
+  Edit01Icon,
+  Settings01Icon,
+  Trash01Icon,
+} from '@wisemen/vue-core-icons'
 
 import type { BadgeColor } from '@/ui/badge/badge.props'
 import Badge from '@/ui/badge/Badge.vue'
@@ -20,6 +25,30 @@ const props = withDefaults(defineProps<{
   size: 'md',
   variant: 'translucent',
 })
+
+const actions = [
+  createAction({
+    id: 'badge-edit',
+    name: () => 'Edit',
+    availableWhenUnauthenticated: true,
+    execute: () => {},
+    icon: () => Edit01Icon,
+  }),
+  createAction({
+    id: 'badge-settings',
+    name: () => 'Settings',
+    availableWhenUnauthenticated: true,
+    execute: () => {},
+    icon: () => Settings01Icon,
+  }),
+  createAction({
+    id: 'badge-delete',
+    name: () => 'Delete',
+    availableWhenUnauthenticated: true,
+    execute: () => {},
+    icon: () => Trash01Icon,
+  }),
+]
 
 const colors: BadgeColor[] = [
   'gray',
@@ -169,6 +198,34 @@ const variants: Array<'outline' | 'solid' | 'translucent'> = [
           :label="colorItem"
         />
       </BadgeGroup>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-medium text-secondary">
+        With actions
+      </p>
+      <div class="flex items-center gap-6">
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :actions="actions"
+          label="With actions"
+        />
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :actions="actions"
+          label="Small"
+          size="sm"
+        />
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :actions="actions"
+          label="Large"
+          size="lg"
+        />
+      </div>
     </div>
 
     <div class="flex flex-col gap-4">

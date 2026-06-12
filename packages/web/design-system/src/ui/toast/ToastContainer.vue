@@ -7,7 +7,7 @@ import { Toaster } from 'vue-sonner'
 <template>
   <Toaster
     :style="{
-      zIndex: 41,
+      zIndex: 75,
     }"
     :expand="false"
   />

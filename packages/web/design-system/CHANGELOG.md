@@ -1,5 +1,36 @@
 # Changelog
 
+
+
+
+
+## 1.4.2
+<sub>2026-06-12</sub>
+
+- [#1252](https://github.com/wisemen-digital/wisemen-core/pull/1252)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `locale-default` to `HourCycle`
+
+## 1.4.1
+<sub>2026-06-09</sub>
+
+- [#1237](https://github.com/wisemen-digital/wisemen-core/pull/1237)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - use correct date index to preview selected month
+
+## 1.4.0
+<sub>2026-06-08</sub>
+
+- [#1223](https://github.com/wisemen-digital/wisemen-core/pull/1223)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add moss color variant to badge and dot components
+- [#1224](https://github.com/wisemen-digital/wisemen-core/pull/1224)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve dialog z-index handling (overlay now tracks z-index dynamically), add destructive mode and isDisabled prop to DialogFooterSubmit, fix FormDialog close button prop name, reduce ConfirmDialog size to xxs, and adjust DialogHeader gap
+- [#1225](https://github.com/wisemen-digital/wisemen-core/pull/1225)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Track vertical scroll state in table, hide last row border when table is scrollable or contained, debounce column width resize capture to reduce jank
+- [#1226](https://github.com/wisemen-digital/wisemen-core/pull/1226)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add v-maska directive support to TextField via the new mask prop, enabling declarative input masking
+- [#1228](https://github.com/wisemen-digital/wisemen-core/pull/1228)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add bottom slot to ActionContextMenu and ActionDropdownMenu for custom footer content; add settings and application action groups; fix filter input visibility to use sr-only instead of v-if so keyboard-initiated typing is captured immediately
+- [#1227](https://github.com/wisemen-digital/wisemen-core/pull/1227)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix DateField padding style and remove redundant isPickerHidden style variant, fix TimeField padding, use device locale instead of config locale, add isLabelHidden support, and add right slot passthrough
+- [#1230](https://github.com/wisemen-digital/wisemen-core/pull/1230)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix typo in colors.css (text-teriary-on-brand → text-tertiary-on-brand), raise Toast z-index to 75, fix sidebar account card to use current-context-only, fix dashboard page to use global context, forward isLabelHidden in Select, export scrollable and text-shimmer UI modules, export tv utility, export PreferencesSection, PreferencesDropdownMenu, and PreferencesDropdownMenuOption from preferences
+- [#1236](https://github.com/wisemen-digital/wisemen-core/pull/1236)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Change "meta" to "mod" to support shortcuts on windows
+
+## 1.3.2
+<sub>2026-06-08</sub>
+
+- [#1196](https://github.com/wisemen-digital/wisemen-core/pull/1196)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Emit `@open` for UIContextMenu and UIActionContextMenu components
+
 ## 1.3.1
 
 ### Patch Changes

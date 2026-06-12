@@ -17,6 +17,10 @@ const props = defineProps<{
   parentAction?: Action
 }>()
 
+const emit = defineEmits<{
+  open: []
+}>()
+
 if (!props.currentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
@@ -24,7 +28,7 @@ if (!props.currentContextOnly) {
 </script>
 
 <template>
-  <UIContextMenu>
+  <UIContextMenu @open="emit('open')">
     <template #trigger>
       <slot />
     </template>
@@ -35,7 +39,11 @@ if (!props.currentContextOnly) {
         :actions="props.actions ?? []"
         :parent-action="props.parentAction"
         :models="props.models ?? []"
-      />
+      >
+        <template #bottom>
+          <slot name="bottom" />
+        </template>
+      </ActionContextMenuContent>
     </template>
   </UIContextMenu>
 </template>

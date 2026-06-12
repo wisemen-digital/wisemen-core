@@ -6,11 +6,10 @@ import { useI18n } from 'vue-i18n'
 
 import PreferencesSection from '#components/content/PreferencesSection.vue'
 import PreferencesDropdownMenu from '#components/PreferencesDropdownMenu.vue'
+import type { HourCyclePreference } from '#sections/hour-cycle/hourCyclePreference.composable'
 import type { PreferencesDropdownMenuOption } from '#types/preferencesDropdownMenuOption.type'
 
-type HourCycleValue = '12-hour' | '24-hour' | 'device-default'
-
-const model = defineModel<HourCycleValue>({
+const model = defineModel<HourCyclePreference>({
   required: true,
 })
 
@@ -18,17 +17,16 @@ const i18n = useI18n()
 const now = useNow({
   interval: 1000,
 })
-const deviceLocale = navigator.language
 
-const options = computed<PreferencesDropdownMenuOption<HourCycleValue>[]>(() => [
+const options = computed<PreferencesDropdownMenuOption<HourCyclePreference>[]>(() => [
   {
     hint: new Intl.DateTimeFormat(i18n.locale.value, {
       hour: '2-digit',
-      hour12: TimeUtil.getDefaultHourCycleForLocale(deviceLocale) === '12-hour',
+      hour12: TimeUtil.getDefaultHourCycleForLocale(i18n.locale.value) === '12-hour',
       minute: '2-digit',
     }).format(now.value),
     label: i18n.t('module.preferences.time_format.option.default'),
-    value: 'device-default',
+    value: 'locale-default',
   },
   {
     hint: new Intl.DateTimeFormat(i18n.locale.value, {

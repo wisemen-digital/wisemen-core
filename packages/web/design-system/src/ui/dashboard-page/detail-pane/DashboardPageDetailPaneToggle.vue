@@ -37,7 +37,7 @@ const toggleDetailPaneAction = createAction({
     : FlexAlignRightIcon,
   keyboardShortcut: {
     key: 'I',
-    meta: true,
+    mod: true,
   },
   keywords: i18n.t('action.global.toggle_detail_pane.keywords').split(' '),
 })

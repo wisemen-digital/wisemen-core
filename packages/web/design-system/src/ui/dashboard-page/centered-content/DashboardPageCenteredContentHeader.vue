@@ -51,7 +51,7 @@ const slots = useSlots()
         <ActionDropdownMenu
           v-if="props.actions.length > 0"
           :actions="props.actions"
-          :current-context-only="true"
+          :current-context-only="false"
           popover-side="bottom"
           popover-align="end"
         >
