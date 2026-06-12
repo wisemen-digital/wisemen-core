@@ -1,6 +1,13 @@
 # @wisemen/vue-core-preferences
 
 
+
+## 1.1.1
+<sub>2026-06-12</sub>
+
+- [#1252](https://github.com/wisemen-digital/wisemen-core/pull/1252)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `locale-default` to `HourCycle`
+- [#1255](https://github.com/wisemen-digital/wisemen-core/pull/1255)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Change `HourCyclePreference` type to `locale-default` instead of `device-default`
+
 ## 1.1.0
 <sub>2026-06-08</sub>
 

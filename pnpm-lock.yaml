@@ -2689,6 +2689,9 @@ importers:
       vue-i18n:
         specifier: catalog:peer
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      vue-router:
+        specifier: catalog:peer
+        version: 4.6.4(vue@3.5.27(typescript@5.9.3))
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)

@@ -16,7 +16,7 @@ pnpm install @wisemen/vue-core-custom-views
 
 ::: code-group
 ```bash [pnpm]
-pnpm install @tanstack/vue-hotkeys @vueuse/core @vueuse/router @wisemen/vue-core-actions @wisemen/vue-core-design-system @wisemen/vue-core-icons @wisemen/vue-core-utils formango reka-ui vue
+pnpm install @tanstack/vue-hotkeys @vueuse/core @vueuse/router @wisemen/vue-core-actions @wisemen/vue-core-design-system @wisemen/vue-core-icons @wisemen/vue-core-utils formango reka-ui vue vue-router
 ```
 :::
 

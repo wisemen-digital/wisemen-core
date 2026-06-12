@@ -159,23 +159,11 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: `
-          border-gray-200 bg-gray-25
-          dark:border-gray-800 dark:bg-gray-950
-        `,
-        dot: 'bg-gray-500',
-        icon: `
-          text-gray-500
-          dark:text-gray-400
-        `,
-        label: `
-          text-gray-700
-          dark:text-gray-300
-        `,
-        separator: `
-          bg-gray-200
-          dark:bg-gray-800
-        `,
+        base: `border-fg-primary/5 bg-fg-primary/5`,
+        dot: 'bg-fg-primary/85',
+        icon: `text-fg-primary/85`,
+        label: `text-fg-primary/85`,
+        separator: `bg-fg-primary/85`,
       },
       color: 'gray',
       variant: 'translucent',
@@ -536,7 +524,9 @@ export const badgeVariants = tv({
     },
   ],
   slots: {
-    base: 'inline-flex items-center gap-sm border',
+    actionsButton: '',
+    actionsIcon: '',
+    base: 'group inline-flex items-center gap-sm overflow-hidden border',
     dot: 'rounded-full',
     icon: '',
     label: 'font-medium',
@@ -545,18 +535,24 @@ export const badgeVariants = tv({
   variants: {
     size: {
       lg: {
+        actionsButton: 'mr-xs p-xxs',
+        actionsIcon: 'size-3.5',
         base: 'h-7 px-sm',
         dot: 'size-1.5',
         icon: 'size-4',
         label: 'text-xs',
       },
       md: {
+        actionsButton: 'mr-xs p-xxs',
+        actionsIcon: 'size-3',
         base: 'h-6 px-sm',
         dot: 'size-1.5',
         icon: 'size-3',
         label: 'text-xxs',
       },
       sm: {
+        actionsButton: 'mr-xxs p-xxs',
+        actionsIcon: 'size-2.5',
         base: 'h-5 px-xs',
         dot: 'size-1',
         icon: 'size-3',
