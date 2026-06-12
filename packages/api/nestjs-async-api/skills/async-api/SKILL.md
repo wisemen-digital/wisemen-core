@@ -9,8 +9,8 @@ Generate AsyncAPI 3.0.0 specification documents from type-safe channel definitio
 - Make sure the properties of the event are decorated using '@nestjs/swagger'. 
 
 # Define a channel
-- This happens in the same file as the event definition, at the bottom of the file.
-- Make a separate constant containing the subject of the event.
+- Define the channel at the bottom of the same file as the integration event definition.
+- Create a constant for the subject (i.e. topic) where the event will be sent
   - The subject may contain parameters like 'environment', 'uuid', ... These parameters must be enclosed by curly brackets (`{}`)
 - Create a channel using the `createChannel` method from the '@wisemen/nestjs-async-api' package.
   - All parameters defined in the subject must be documented in the channel config param of the method.
