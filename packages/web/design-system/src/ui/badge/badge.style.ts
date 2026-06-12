@@ -160,9 +160,9 @@ export const badgeVariants = tv({
     {
       class: {
         base: `border-fg-primary/5 bg-fg-primary/5`,
-        dot: 'bg-gray-500',
+        dot: 'bg-fg-primary/85',
         icon: `
-          text-gray-500
+          text-fg-primary/85
           dark:text-gray-400
         `,
         label: `
