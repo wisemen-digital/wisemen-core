@@ -10,7 +10,7 @@ catalog:
   "@tanstack/vue-virtual": ^3.13.24
   "@wisemen/eslint-config-nestjs": ^1.1.1
   "@wisemen/vue-core-api-utils": catalog
-  "@wisemen/vue-core-dates": ^0.0.2
+  "@wisemen/vue-core-dates": ^0.0.0
   superjson: "2.2.6"
   vue-component-type-helpers: ^0.0.0
   vue-draggable-plus: ^0.6.1
@@ -143,8 +143,8 @@ catalogs:
     defu: 6.1.5
     "graphemer": "1.4.0"
     "highlight-words": "2.0.0"
-    "libphonenumber-js": "1.12.35"
-    "maska": "^3.0.0"
+    "libphonenumber-js": "1.13.6"
+    maska: ^0.0.0
     "neverthrow": "8.2.0"
     "pkce-challenge": "5.0.1"
     "ts-api-utils": "2.4.0"
@@ -322,6 +322,14 @@ catalogs:
   wisemen:
     "@wisemen/vue-core-design-system": "0.10.0"
     "@wisemen/vue-core-icons": "0.0.2"
+  "conflicts_@wisemen/vue-core-dates_w:":
+    "@wisemen/vue-core-dates": "w:"
+  "conflicts_@wisemen/vue-core-dates_wo:":
+    "@wisemen/vue-core-dates": "wo:"
+  "conflicts_@wisemen/vue-core-dates_wor:":
+    "@wisemen/vue-core-dates": "wor:"
+  "conflicts_@wisemen/vue-core-dates_work:":
+    "@wisemen/vue-core-dates": "work:"
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"
