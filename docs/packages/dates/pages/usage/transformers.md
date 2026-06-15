@@ -1,6 +1,6 @@
 # Transformers
 
-Transformers convert between API DTOs (ISO strings) and the typed `DateTimeInstant` and `DateTimeRangeInstant` models used throughout the application.
+Transformers convert between API DTOs (ISO strings) and the typed `DateTimeInstant` and `DateTimeInstantRange` models used throughout the application.
 
 ## Import
 
@@ -49,7 +49,7 @@ Handles range ↔ DTO conversion with optional support for open-ended ranges.
 
 ### fromDto / toDto
 
-Converts between `{ startDate: string, endDate: string }` and `DateTimeRangeInstant`.
+Converts between `{ startDate: string, endDate: string }` and `DateTimeInstantRange`.
 
 ```typescript
 const range = DateTimeInstantRangeTransformer.fromDto({
@@ -122,7 +122,7 @@ DateTimeInstantRangeTransformer.fieldWithNullableEndToDto(field, 'Europe/Brussel
 
 ### toField
 
-Converts a `DateTimeRangeInstant` back to a form field value in a given time zone.
+Converts a `DateTimeInstantRange` back to a form field value in a given time zone.
 
 ```typescript
 DateTimeInstantRangeTransformer.toField(range, 'Europe/Brussels')

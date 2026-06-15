@@ -1,12 +1,27 @@
 <script setup lang="ts">
 import type { Action } from '@wisemen/vue-core-actions'
-import { DotsVerticalIcon } from '@wisemen/vue-core-icons'
-import { useTemplateRef } from 'vue'
+import {
+  ArrowNarrowDownIcon,
+  ArrowNarrowUpIcon,
+  DotsVerticalIcon,
+  SwitchVertical01Icon,
+} from '@wisemen/vue-core-icons'
+import {
+  AnimatePresence,
+  Motion,
+} from 'motion-v'
+import type { Component } from 'vue'
+import {
+  computed,
+  useTemplateRef,
+} from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import type { SortDirection } from '@/composables/sort.composable'
 import type { RegisteredActionContext } from '@/register'
 import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu/index'
 import { UIIconButton } from '@/ui/button'
+import { UIClickableElement } from '@/ui/clickable-element'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import { useInjectTableContext } from '@/ui/table/context/table.context'
 import { UIText } from '@/ui/text/index'
@@ -21,6 +36,7 @@ const props = withDefaults(defineProps<{
   } | null
   centerContent?: boolean
   columnIndex: number
+  columnKey: string
   label: string | null
 }>(), {
   isResizable: true,
@@ -35,11 +51,43 @@ const {
   isGroupingEnabled,
   isResizingColumn,
   isScrolledFromLeft,
+  sort,
   onColumnResizeFitToContent,
   onColumnResizeStart,
 } = useInjectTableContext()
 
 const cellEl = useTemplateRef<HTMLElement>('cellEl')
+
+const isSortable = computed<boolean>(() => sort !== null && sort.existsSort(props.columnKey))
+
+const sortDirection = computed<SortDirection | null>(() => {
+  if (!isSortable.value) {
+    return null
+  }
+
+  const value = sort?.getSort(props.columnKey) ?? null
+
+  if (value === null) {
+    return null
+  }
+
+  return value.direction
+})
+
+const sortIcon = computed<Component | null>(() => {
+  if (!isSortable.value) {
+    return null
+  }
+
+  switch (sortDirection.value) {
+    case 'asc':
+      return ArrowNarrowUpIcon
+    case 'desc':
+      return ArrowNarrowDownIcon
+    default:
+      return SwitchVertical01Icon
+  }
+})
 </script>
 
 <template>
@@ -58,11 +106,58 @@ const cellEl = useTemplateRef<HTMLElement>('cellEl')
     "
   >
     <UIRowLayout gap="xs">
-      <UIText
-        v-if="props.label !== null"
-        :text="props.label"
-        class="text-xs font-medium text-primary"
-      />
+      <UIClickableElement v-if="props.label !== null">
+        <button
+          :disabled="!isSortable"
+          type="button"
+          class="
+            -ml-sm flex items-center gap-xs rounded-sm px-sm py-xxs duration-100
+            not-disabled:hover:bg-secondary-hover
+            disabled:cursor-default!
+          "
+          @click="sort?.toggleSort(props.columnKey)"
+        >
+          <UIText
+            :text="props.label"
+            class="text-xs font-medium text-primary"
+          />
+
+          <AnimatePresence mode="popLayout">
+            <Motion
+              :key="sortDirection ?? 'none'"
+              :initial="{
+                opacity: 0,
+                filter: 'blur(2px)',
+                scale: 0.5,
+              }"
+              :animate="{
+                opacity: 1,
+                filter: 'blur(0px)',
+                scale: 1,
+              }"
+              :exit="{
+                opacity: 0,
+                filter: 'blur(2px)',
+                scale: 0.5,
+              }"
+              :transition="{
+                duration: 0.15,
+                type: 'spring',
+                bounce: 0,
+              }"
+            >
+              <Component
+                :is="sortIcon"
+                v-if="sortIcon !== null"
+                :class="[
+                  sortDirection !== null ? `text-primary` : `text-disabled`,
+                ]"
+                class="size-3 duration-150"
+              />
+            </Motion>
+          </AnimatePresence>
+        </button>
+      </UIClickableElement>
 
       <UIActionDropdownMenu
         :actions="props.actionConfig?.actions ?? []"

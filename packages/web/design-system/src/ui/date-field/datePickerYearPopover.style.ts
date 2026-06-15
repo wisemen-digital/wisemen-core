@@ -5,8 +5,8 @@ export const datePickerYearPopoverStyle = tv({
     header: `flex w-full items-center justify-between`,
     heading: `text-sm font-semibold text-primary`,
     headingTrigger: `
-      cursor-pointer rounded-sm px-xxs text-sm font-semibold text-primary
-      transition-colors outline-none
+      rounded-sm px-xxs text-sm font-semibold text-primary transition-colors
+      outline-none
       hover:bg-secondary-hover
       focus-visible:ring-2 focus-visible:ring-fg-brand-primary
     `,

@@ -1,4 +1,4 @@
-export type DotColor = 'blue' | 'brand' | 'error' | 'gray' | 'pink' | 'purple' | 'success' | 'warning'
+export type DotColor = 'blue' | 'brand' | 'error' | 'gray' | 'moss' | 'pink' | 'purple' | 'success' | 'warning'
 
 export type DotSize = 'lg' | 'md' | 'sm'
 

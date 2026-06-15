@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
         'max-w-3xl': !props.isFullWidth,
         'py-4xl': props.hasVerticalPadding,
       }"
-      class="relative mx-auto flex w-full flex-col px-3xl"
+      class="relative mx-auto flex w-full flex-col px-2xl"
     >
       <slot />
     </div>

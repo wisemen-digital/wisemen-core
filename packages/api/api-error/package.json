@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/api-error",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "publishConfig": {
     "access": "public"
   },
@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
@@ -18,7 +19,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
-    "test": "node --test",
+    "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },

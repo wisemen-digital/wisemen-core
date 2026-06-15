@@ -14,10 +14,20 @@ const props = withDefaults(defineProps<ContextMenuProps>(), {
   disableUpdateOnLayoutShift: false,
   prioritizePosition: false,
 })
+
+const emit = defineEmits<{
+  open: []
+}>()
+
+function onUpdateIsOpen(isOpen: boolean): void {
+  if (isOpen) {
+    emit('open')
+  }
+}
 </script>
 
 <template>
-  <RekaContextMenuRoot>
+  <RekaContextMenuRoot @update:open="onUpdateIsOpen">
     <RekaContextMenuTrigger
       :as-child="true"
       data-context-menu-trigger

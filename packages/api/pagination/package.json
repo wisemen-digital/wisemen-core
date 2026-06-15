@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
@@ -39,6 +40,8 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
     "typescript": "catalog:peer"
   },

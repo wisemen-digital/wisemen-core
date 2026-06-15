@@ -21,6 +21,12 @@ export interface ConfigProviderProps {
    * @default 'always'
    */
   autoCloseToast: ToastAutoClose
+  /*
+   * The locale to use for date formatting in date-related components.
+   * When not set, falls back to `navigator.language`.
+   * @default null
+   */
+  dateLocale?: string | null
   /**
    * The adapter to use for the BaseFileUpload component.
    * Provide a getFileInfo() and a confirmUpload() function.
@@ -34,7 +40,7 @@ export interface ConfigProviderProps {
   googleMapsApiKey?: string | null
   /**
    * The hour cycle to use for time-related components.
-   * Can be either 'h12' or 'h24'. If not provided, the system locale's default will be used.
+   * Can be either 'h12', 'h24' or 'locale-default'. If not provided, the system locale's default will be used.
    * @default null
    */
   hourCycle: HourCycle | null

@@ -1,5 +1,17 @@
 # @wisemen/opentelemetry
 
+## 0.2.2
+
+### Patch Changes
+
+- [#1156](https://github.com/wisemen-digital/wisemen-core/pull/1156) [`25a324e`](https://github.com/wisemen-digital/wisemen-core/commit/25a324e11461b545ead511f2e99a533be8e280d2) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add attribute filter span processor
+
+## 0.2.1
+
+### Patch Changes
+
+- [#1153](https://github.com/wisemen-digital/wisemen-core/pull/1153) [`baef816`](https://github.com/wisemen-digital/wisemen-core/commit/baef816c84226d2a17a780e26f844dc12e9c1b2c) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(elt-94): disable auto detect resources on NodeSDK
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @wisemen/vue-core-components
 
+
+## 3.0.2
+<sub>2026-06-09</sub>
+
+- [#1237](https://github.com/wisemen-digital/wisemen-core/pull/1237)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - use correct date index to preview selected month
+
 ## 3.0.1
 
 ### Patch Changes

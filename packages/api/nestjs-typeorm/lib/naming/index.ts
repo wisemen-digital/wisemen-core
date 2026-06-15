@@ -1,1 +1,1 @@
-export * from './snake-case.naming-strategy.js'
+export { SnakeNamingStrategy } from './snake-case.naming-strategy.js'

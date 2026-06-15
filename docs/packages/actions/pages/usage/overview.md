@@ -9,7 +9,7 @@
 │                    Action Registry                   │
 │  Holds all registered actions (static + temporary)   │
 │                                                      │
-│  registry.registerActions(...)  ← AppActionsRegistrar│
+│  registry.registerActions(...)  ← ApplicationActionsRegistrar│
 │  useTemporaryActions(...)        ← component-level   │
 └──────────────────────────────────────────────────────┘
                         │
@@ -41,10 +41,10 @@ The registry (`useActionRegistryStore`) is a Pinia store that holds every action
 
 ### Static actions
 
-Registered once at startup via a dedicated `AppActionsRegistrar` component. These are always in scope — navigation actions, global preferences, sign-out, and any other app-wide commands.
+Registered once at startup via a dedicated `ApplicationActionsRegistrar` component. These are always in scope — navigation actions, global preferences, sign-out, and any other app-wide commands.
 
 ```vue
-<!-- filepath: src/AppActionsRegistrar.vue -->
+<!-- filepath: src/ApplicationActionsRegistrar.vue -->
 
 <script setup lang="ts">
 import { useActionRegistryStore, useActionShortcuts } from '@wisemen/vue-core-actions'
@@ -67,7 +67,7 @@ Mount this once at the root of your app:
 <!-- filepath: src/App.vue -->
 <template>
   <RouterView />
-  <AppActionsRegistrar />
+  <ApplicationActionsRegistrar />
 </template>
 ```
 
@@ -135,7 +135,7 @@ src/
 │           └── userRolesUpdate.action.ts
 ├── types/
 │   └── augmentLibraries.d.ts    # Register augmentation for all libraries
-└── AppActionsRegistrar.vue      # Startup registration + useActionShortcuts
+└── ApplicationActionsRegistrar.vue      # Startup registration + useActionShortcuts
 ```
 
 Each module owns its action models and action composables. The global `actions.type.ts` assembles the full `AppActionModelMap` from all modules.

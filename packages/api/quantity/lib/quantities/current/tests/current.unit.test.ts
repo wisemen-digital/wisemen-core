@@ -2,7 +2,7 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { Current } from '../current.js'
 import { CurrentUnit } from '../current-unit.enum.js'
-import { Rate } from '../../../rate.js'
+import { Rate } from '../../../rate/rate.js'
 
 void describe('Current class', () => {
   void describe('Current calculations', () => {

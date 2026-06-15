@@ -27,7 +27,7 @@ const {
       :label="i18n.t('component.top_bar.navigation.back')"
       :keyboard-shortcut="{
         key: 'ArrowLeft',
-        meta: true,
+        mod: true,
       }"
       variant="tertiary"
       size="sm"
@@ -40,7 +40,7 @@ const {
       :label="i18n.t('component.top_bar.navigation.forward')"
       :keyboard-shortcut="{
         key: 'ArrowRight',
-        meta: true,
+        mod: true,
       }"
       variant="tertiary"
       size="sm"

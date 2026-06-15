@@ -7,17 +7,18 @@ A collection of packages for Wisemen applications.
 ### Making Changes
 
 1. **Create a PR** with your changes
-2. **Add a changeset** to your PR describing the changes using:
+2. **Add a Bumpy** to your PR describing the changes using:
    ```bash
-   pnpm changeset
+   pnpm bumpy add
    ```
-   For more details, see the [Changesets documentation](https://github.com/changesets/changesets/blob/main/README.md)
-3. **Merge your PR** – this triggers the `changeset-release/main` workflow
-4. **Review the auto-generated PR** created by the changeset bot, which includes:
+   If you have a change that doesn't bump a version, do `pnpm bumpy add --empty`
+   For more details, see the [Bumpy documentation documentation](https://github.com/dmno-dev/bumpy)
+3. **Merge your PR** – this triggers the `release` workflow
+4. **Review the auto-generated PR** created by Bumpy, which includes:
    - Updated CHANGELOG files
    - Bumped version numbers
    - Release summary
-5. **Merge the changeset release PR** to automatically publish all changed packages to npm
+5. **Merge the Bumpy release PR** to automatically publish all changed packages to npm
 
 ### New Package Setup
 
@@ -32,7 +33,7 @@ When creating a new package:
    - Add GitHub as a trusted publisher
    - Configure the repository, branch, and environment
 
-After this setup, all future releases will be automatic through the changeset workflow.
+After this setup, all future releases will be automatic through the Bumpy workflow.
 
 ## Packages
 
@@ -82,7 +83,7 @@ After this setup, all future releases will be automatic through the changeset wo
 - **[Validators](./packages/validators)** – Validation utilities and schemas
 - **[VIES](./packages/vies)** – VIES VAT validation
 - **[Wise Date](./packages/wise-date)** – Advanced date utilities
-- ~~**[Zod HTTP Client](./packages/zod-http-client)**~~ *(Deprecated)* – A Zod-based HTTP client for Vue applications
+- ~~**[Zod HTTP Client](./packages/zod-http-client)**~~ _(Deprecated)_ – A Zod-based HTTP client for Vue applications
 
 ## License
 
@@ -91,20 +92,20 @@ This project is licensed under the [PolyForm Strict License 1.0.0](./LICENSE.md)
 **Wisemen Core** is developed primarily for internal use by the Wisemen agency. We make this codebase freely available for non-commercial purposes, allowing the community to learn from and use our tools at no cost. However, commercial use by other agencies or organizations requires explicit permission.
 
 ### What this means (in plain English)
+
 - ✅ **You may freely use** the software for any **non-commercial** purpose  
   (personal projects, research, education, hobby, non-profit, government, internal evaluation, etc.)
 - ❌ **You may not** modify, adapt, or create derivative works
 - ❌ **You may not** redistribute or share the code (or any modified version)
 
 ### Commercial use or enterprise licensing?
+
 We offer flexible commercial licenses, support contracts, and custom arrangements for businesses.  
 Please get in touch at **sales@wisemen.digital** (or your preferred contact) if you'd like to discuss licensing options.
 
-
 For more details about what you can and cannot do with this software, please refer to the [LICENSE](./LICENSE.md) file.
 
-*Thank you for respecting the license and supporting years of development on wisemen-core!*
-
+_Thank you for respecting the license and supporting years of development on wisemen-core!_
 
 ### Repository Stats
 
