@@ -78,7 +78,7 @@ export class AddressCommand {
       .withStreetName(this.streetName)
       .withStreetNumber(this.streetNumber)
       .withUnit(this.unit)
-      .withCoordinates(this.coordinates ? this.coordinates.toCoordinates() : null)
+      .withCoordinates(this.coordinates ? this.coordinates.parse() : null)
       .build()
   }
 }

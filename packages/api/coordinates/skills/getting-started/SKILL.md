@@ -36,12 +36,10 @@ export class Location {
   coordinates: Coordinates | null
 }
 
-const coordinates = dto.coordinates.toCoordinates()
-const center = query.toCoordinates()
+const coordinates = dto.coordinates.parse()
+const center = query.parse()
 
 return {
-  coordinates: location.coordinates != null
-    ? new CoordinatesResponse(location.coordinates)
-    : null,
+  coordinates: CoordinatesResponse.from(location.coordinates),
 }
 ```

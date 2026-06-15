@@ -1,5 +1,5 @@
 ---
-"@wisemen/coordinates": patch
+"@wisemen/coordinates": minor
 ---
 
-add getting started skill for coordinates package
+rename coordinates dto parsing methods and add response factory
