@@ -10,9 +10,14 @@ export type {
   BaseFileUploadItemPending,
   BaseFileUploadItemSuccess,
   BaseFileUploadItemUploading,
+  BaseFileUploadRejectedFile,
   BaseFileUploadAdapter as UIBaseFileUploadAdapter,
 } from '@/ui/base-file-upload/baseFileUpload.type'
+export { BaseFileUploadError } from '@/ui/base-file-upload/baseFileUpload.type'
 export { BaseFileUploadStatus } from '@/ui/base-file-upload/baseFileUpload.type'
+export { default as UIBaseFileUploadClipboard } from '@/ui/base-file-upload/parts/BaseFileUploadClipboard.vue'
+export { default as UIBaseFileUploadClipboardRemove } from '@/ui/base-file-upload/parts/BaseFileUploadClipboardRemove.vue'
+export { default as UIBaseFileUploadClipboardUpload } from '@/ui/base-file-upload/parts/BaseFileUploadClipboardUpload.vue'
 export { default as UIBaseFileUploadDropzone } from '@/ui/base-file-upload/parts/BaseFileUploadDropzone.vue'
 export { default as UIBaseFileUploadItem } from '@/ui/base-file-upload/parts/BaseFileUploadItem.vue'
 export { default as UIBaseFileUploadItemCancel } from '@/ui/base-file-upload/parts/BaseFileUploadItemCancel.vue'

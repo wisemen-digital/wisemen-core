@@ -131,8 +131,12 @@ async function uploadFile(): Promise<void> {
     try {
       processedFile = await preprocess(file)
     }
-    catch {
-      onError(props.item, BaseFileUploadError.PREPROCESSING_FAILED)
+    catch (error) {
+      const errorMessage = error instanceof Error && error.message
+        ? error.message
+        : BaseFileUploadError.PREPROCESSING_FAILED
+
+      onError(props.item, errorMessage)
 
       return
     }
