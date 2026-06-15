@@ -1,6 +1,6 @@
 ---
 name: getting-started
-description: Use when working with street addresses.
+description: Use when working with street addresses in apis.
 ---
 
 # @wisemen/address - Getting Started
