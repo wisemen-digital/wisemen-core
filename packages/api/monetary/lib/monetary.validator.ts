@@ -52,6 +52,7 @@ class IsMonetaryCurrencyValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     return `Monetary currency ${validationArguments?.value.currency} is not allowed`
   }
 }
@@ -70,6 +71,7 @@ class IsMonetaryPrecisionValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     return `Monetary precision ${validationArguments?.value?.precision} must be <= ${this.maxPrecision}`
   }
 }
@@ -90,6 +92,7 @@ class IsMonetaryMinValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const monetary = new Monetary(validationArguments?.value)
     return `Monetary ${monetary.toString()} must be >= ${this.min?.toString()}`
   }
@@ -112,6 +115,7 @@ class IsMonetaryMaxValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const monetary = new Monetary(validationArguments?.value)
     return `Monetary ${monetary.toString()} must be <= ${this.max?.toString()}`
   }
