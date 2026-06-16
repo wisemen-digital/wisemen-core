@@ -1,7 +1,7 @@
 ---
 name: getting-started
 description: |
-  Using physical quantities like distance, duration, speed, power etc
+  Use when dealing with physical quantities like distance, duration, speed, power etc
   Supports:
     - basic arithmetic and utils
     - columns with typeorm
@@ -11,10 +11,8 @@ description: |
 
 # Quantity
 
-## Guardrails
-
 - Use `@wisemen/quantity` whenever generating or reviewing TypeScript/NestJS code that represents physical quantities such as distance, duration, speed, power, mass, energy, voltage, temperature, current.
-- Prefer dedicated Quantity classes over plain numbers. Quantities are immutable; arithmetic operations must return new instances.
+- Prefer dedicated Quantity classes over plain numbers. Quantities are immutable; arithmetic operations must return new instances. Inspect the class' methods to discover all available operations.
 - When creating database entities, use `<Quantity>Column`.
 - When creating DTOs, use `<Quantity>ApiProperty`, `<Quantity>Dto`, and `Is<Quantity>` validation where applicable.
 
@@ -28,12 +26,6 @@ Use a <Quantity> class to define a quantity value.
 import { Distance, DistanceUnit } from "@wisemen/quantity"
 
 const radius = new Distance(100, DistanceUnit.METER)
-```
-
-Use the class' methods to do basic arithmetic with quantities. Look at the class' methods to see all available operations.
-All quantities are immutable and operations will not affect the operands, but instead return a new instance.
-
-```ts
 const innerRadius = radius.subtract(15, DistanceUnit.METER)
 const clippedRadius = Distance.max(innerRadius, Distance.ZERO)
 const circumference = clippedRadius.multiply(2 * Math.PI).round()
@@ -73,10 +65,6 @@ class ExampleCommand {
 
 ## Available quantities
 
-Look at the packages exposed exports to discover new quantities.
-If a required quantity is unavailable, stop and tell the user it must first be added and released to `@wisemen/quantity` before continuing.
-
-Available quantities at time of writing:
 - Current
 - Distance
 - Duration
@@ -86,3 +74,5 @@ Available quantities at time of writing:
 - Power
 - Speed
 - Voltage
+
+If a required quantity is unavailable, stop and tell the user it must first be added and released to `@wisemen/quantity` before continuing.
