@@ -1,13 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import axios, { type AxiosInstance } from 'axios'
-import {
-  type Api2PdfHtmlToPdfOptions,
-  type Api2PdfHtmlToPdfRequestOptions,
-  type Api2PdfStorageOptions,
-  type Api2PdfUrlToPdfOptions,
-  type Api2PdfUrlToPdfRequestOptions
-} from './options.js'
 import { Api2PdfModuleOptions } from '#src/module-options.js'
+import { Api2PdfHtmlToPdfOptions, Api2PdfHtmlToPdfRequestOptions, Api2PdfUrlToPdfOptions, Api2PdfUrlToPdfRequestOptions, Api2PdfStorageOptions } from '#src/options.js'
 
 
 
