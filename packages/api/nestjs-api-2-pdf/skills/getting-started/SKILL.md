@@ -79,6 +79,7 @@ await this.pdfClient.generatePdfFromUrl({
 `generatePdfFromHtml()` and `generatePdfFromUrl()` support:
 
 - `fileName`
+- `uploadUrl` url location where the resulting pdf will be uploaded (with a PUT method)
 - `inline`
 - `options` for layout settings like `landscape`, `printBackground`, `marginTop`, `marginLeft`, `marginRight`
 - `storage.extraHTTPHeaders` for headers sent with the upload request
