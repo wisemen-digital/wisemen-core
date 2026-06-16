@@ -12,12 +12,7 @@ discriminator and variant-specific `meta`.
 
 ```ts
 import { ApiProperty } from '@nestjs/swagger'
-import {
-  OneOfMeta,
-  OneOfMetaApiProperty,
-  OneOfResponse,
-  OneOfTypeApiProperty,
-} from '@wisemen/one-of'
+import { OneOfMeta, OneOfMetaApiProperty, OneOfResponse, OneOfTypeApiProperty } from '@wisemen/one-of'
 
 enum NotificationType {
   DRIVER_CREATED = 'driver.created',
