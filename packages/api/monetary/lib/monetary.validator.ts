@@ -53,7 +53,7 @@ class IsMonetaryCurrencyValidator implements ValidatorConstraintInterface {
 
   defaultMessage (validationArguments?: ValidationArguments): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    return `Monetary currency ${validationArguments?.value.currency} is not allowed`
+    return `Monetary currency ${validationArguments?.value?.currency} is not allowed`
   }
 }
 
