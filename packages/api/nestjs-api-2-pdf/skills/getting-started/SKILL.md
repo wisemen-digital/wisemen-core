@@ -80,7 +80,7 @@ await this.pdfClient.generatePdfFromUrl({
 
 - `fileName`
 - `uploadUrl` url location where the resulting pdf will be uploaded (with a PUT method)
-- `inline`
+- `inline`: true to open in the browser, false to trigger download behavior.
 - `options` for layout settings like `landscape`, `printBackground`, `marginTop`, `marginLeft`, `marginRight`
 - `storage.extraHTTPHeaders` for headers sent with the upload request
 
