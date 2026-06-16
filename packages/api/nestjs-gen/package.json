@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/ngen",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "A code generator for NestJS projects. Scaffold modules, controllers, use-cases, builders, and more with customizable templates.",
   "type": "module",
   "imports": {

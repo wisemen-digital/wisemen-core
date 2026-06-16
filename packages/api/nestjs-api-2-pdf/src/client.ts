@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import axios, { type AxiosInstance } from 'axios'
-import { Api2PdfHtmlToPdfOptions, Api2PdfHtmlToPdfRequestOptions, Api2PdfUrlToPdfOptions, Api2PdfUrlToPdfRequestOptions } from './options.js'
 import { Api2PdfModuleOptions } from '#src/module-options.js'
+import { Api2PdfHtmlToPdfOptions, Api2PdfHtmlToPdfRequestOptions, Api2PdfUrlToPdfOptions, Api2PdfUrlToPdfRequestOptions, Api2PdfStorageOptions } from '#src/options.js'
+
+
 
 @Injectable()
 export class Api2PdfClient {
@@ -19,15 +21,12 @@ export class Api2PdfClient {
       html: options.html,
       inline: options.inline,
       fileName: options.fileName,
+      options: options.options,
       useCustomStorage: true,
-      storage: {
-        method: 'PUT',
-        url: options.uploadUrl,
-        extraHTTPHeaders: options.storage?.extraHTTPHeaders
-      }
+      storage: this.createStorageOptions(options.uploadUrl, options.storage?.extraHTTPHeaders)
     }
 
-    await this.axios.post('/chrome/html', requestOptions)
+    await this.axios.post('/chrome/pdf/html' , requestOptions)
   }
 
   async generatePdfFromUrl (options: Api2PdfUrlToPdfOptions): Promise<void> {
@@ -35,14 +34,27 @@ export class Api2PdfClient {
       url: options.url,
       inline: options.inline,
       fileName: options.fileName,
+      extraHTTPHeaders: options.extraHTTPHeaders,
+      options: {
+        puppeteerWaitForMethod: 'WaitForNavigation',
+        puppeteerWaitForValue: 'networkidle0',
+        ...options.options
+      },
       useCustomStorage: true,
-      storage: {
-        method: 'PUT',
-        url: options.uploadUrl,
-        extraHTTPHeaders: options.storage?.extraHTTPHeaders
-      }
+      storage: this.createStorageOptions(options.uploadUrl, options.storage?.extraHTTPHeaders)
     }
 
-    await this.axios.post('/chrome/url', requestOptions)
+    await this.axios.post('/chrome/pdf/url', requestOptions)
+  }
+
+  private createStorageOptions (
+    uploadUrl: string,
+    extraHTTPHeaders?: Record<string, string>
+  ): Api2PdfStorageOptions {
+    return {
+      method: 'PUT',
+      url: uploadUrl,
+      extraHTTPHeaders
+    }
   }
 }
