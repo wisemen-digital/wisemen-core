@@ -20,7 +20,7 @@ import {
   CoordinatesResponse,
 } from '@wisemen/coordinates'
 
-export class UpdateLocationDto {
+export class UpdateLocationCommand {
   @ApiProperty({ type: CoordinatesCommand })
   coordinates: CoordinatesCommand
 }
