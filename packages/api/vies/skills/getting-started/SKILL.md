@@ -16,28 +16,28 @@ import { ViesModule } from '@wisemen/vies'
 
 @Module({
   imports: [ViesModule],
-  exports: [ViesModule],
+  ...
 })
-export class VatValidationModule {}
+export class CreateBusinessModule {}
 ```
 
 ## Inject `ViesClient`
 
 ```ts
 import { Injectable } from '@nestjs/common'
-import {
-  CountryCode,
-  ViesCheckVatNumberCommandBuilder,
-  ViesClient,
-} from '@wisemen/vies'
+import { CountryCode, ViesCheckVatNumberCommandBuilder, ViesClient } from '@wisemen/vies'
 
 @Injectable()
-export class VatValidationService {
-  constructor(private readonly viesClient: ViesClient) {}
+export class CreateBusinessUseCase {
+  constructor(
+    private viesClient: ViesClient
+  ) {}
 
-  async validateBelgianVat(vatNumber: string) {
+  ...
+
+  private async validateVat(vatNumber: string, cc: CountryCode) {
     const command = new ViesCheckVatNumberCommandBuilder()
-      .withCountryCode(CountryCode.BELGIUM)
+      .withCountryCode(cc)
       .withVatNumber(vatNumber)
       .build()
 
