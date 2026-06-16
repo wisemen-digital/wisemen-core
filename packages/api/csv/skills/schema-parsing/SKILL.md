@@ -57,7 +57,7 @@ const employeeSchema = new CSVSchema({
 })
 ```
 
-The object key (`firstName`) is the parsed output property. `name` is the CSV
+The object key (`firstName`) is the parsed output property. `Voornaam` is the CSV
 header to read from the raw record.
 
 ## Parse And Handle Failures
