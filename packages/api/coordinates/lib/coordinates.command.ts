@@ -19,7 +19,7 @@ export class CoordinatesCommand {
   @IsLatitude()
   latitude: number
 
-  toCoordinates (): Coordinates {
+  parse (): Coordinates {
     return new Coordinates(this.latitude, this.longitude)
   }
 }
