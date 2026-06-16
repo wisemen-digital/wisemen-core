@@ -12,16 +12,10 @@ languages, and `@LocalizedStringColumn()` to persist the value as `jsonb`.
 ```ts
 import { ApiProperty } from '@nestjs/swagger'
 import { Entity, PrimaryGeneratedColumn } from 'typeorm'
-import {
-  IsLocalizedString,
-  LocalizedString,
-  LocalizedStringColumn,
-  LocalizedStringCommand,
-  initLocalizedString,
-} from '@wisemen/localized-string'
+import { IsLocalizedString, LocalizedString, LocalizedStringColumn, LocalizedStringCommand, initLocalizedString } from '@wisemen/localized-string'
 
 initLocalizedString({
-  currentLocale: () => 'en',
+  currentLocale: () => 'en', // Replace with your own context-dependent locale resolver.
   missingTranslationBehavior: 'empty'
 })
 
@@ -49,8 +43,3 @@ const label = product.name.translate('nl', {
   fallbackLocales: ['en']
 })
 ```
-
-Use `forbidNonRequiredLanguages: true` in `@IsLocalizedString(...)` when a DTO
-must reject any locale outside the required set. Call `initLocalizedString(...)`
-once during application startup before using `LocalizedString.translate()`
-without an explicit locale.
