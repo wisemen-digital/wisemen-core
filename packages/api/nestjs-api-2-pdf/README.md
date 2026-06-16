@@ -111,6 +111,7 @@ export class InvoicePdfService {
 - `uploadUrl: string`
 - `inline?: boolean`
 - `fileName?: string`
+- `options?: Api2PdfLayoutOptions`
 - `storage?: { extraHTTPHeaders?: Record<string, string> }`
 
 ### `Api2PdfUrlToPdfOptions`
@@ -119,6 +120,8 @@ export class InvoicePdfService {
 - `uploadUrl: string`
 - `inline?: boolean`
 - `fileName?: string`
+- `options?: Api2PdfLayoutOptions`
+- `extraHTTPHeaders?: Record<string, string>`
 - `storage?: { extraHTTPHeaders?: Record<string, string> }`
 
 ## Notes
