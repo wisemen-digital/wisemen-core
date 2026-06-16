@@ -26,6 +26,8 @@ Configure and export dedicated monetary utils and types with a specific currency
 ```ts
 import { createMonetaryUtils, Currency } from "@wisemen/monetary"
 
+const EUROS_PRECISION = 2
+
 export const {
   Column: EurosColumn,
   ApiProperty: EurosApiProperty,
@@ -33,7 +35,7 @@ export const {
   Class: Euros,
   Dto: EurosDto,
   DtoBuilder: EurosDtoBuilder
-} = createMonetaryUtils(Currency.EUR, 2, 'Euros')
+} = createMonetaryUtils(Currency.EUR, EUROS_PRECISION, 'Euros')
 
 export type Euros = InstanceType<typeof Euros>
 export type EurosDto = InstanceType<typeof EurosDto>
