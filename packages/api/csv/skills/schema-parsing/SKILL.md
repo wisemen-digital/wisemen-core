@@ -1,18 +1,8 @@
 ---
 name: schema-parsing
-description: >
-  Define typed `CSVSchema` and `CSVField` mappings, normalize incoming values
-  with `Translator`, add row or cross-row `Refinement` checks, and catch
-  `CSVSchemaParseError` when importing CSV records.
+description: Use when parsing CSVs in APIs.
 type: core
 library: csv
-library_version: ">=0.1.0"
-sources:
-  - "wisemen-digital/wisemen-core:packages/api/csv/lib/csv.schema.ts"
-  - "wisemen-digital/wisemen-core:packages/api/csv/lib/csv.field.ts"
-  - "wisemen-digital/wisemen-core:packages/api/csv/lib/translator.ts"
-  - "wisemen-digital/wisemen-core:packages/api/csv/lib/refinement.ts"
-  - "wisemen-digital/wisemen-core:packages/api/csv/lib/infer.ts"
 ---
 
 # @wisemen/csv - Schema Parsing
@@ -26,13 +16,7 @@ centered around `CSVField` and `CSVSchema`: map source headers with
 ## Define The Schema
 
 ```ts
-import {
-  CSVField,
-  CSVSchema,
-  CSVSchemaParseError,
-  Refinement,
-  Translator,
-} from '@wisemen/csv'
+import { CSVField, CSVSchema, CSVSchemaParseError, Refinement, Translator } from '@wisemen/csv'
 
 enum Status {
   ACTIVE = 'active',
