@@ -1,0 +1,23 @@
+import { ApiProperty } from '@nestjs/swagger'
+import { OneOfMeta } from '@wisemen/one-of'
+
+@OneOfMeta(DomainEventLog, DomainEventType.{{ eventType }})
+export class {{ contentClassName }} {
+  @ApiProperty({ format: 'uuid' })
+  readonly {{ propertyName }}: string
+
+  constructor ({{ propertyName }}: string) {
+    this.{{ propertyName }} = {{ propertyName }}
+  }
+}
+
+@RegisterDomainEvent(DomainEventType.{{ eventType }}, 1)
+export class {{ className }}
+  extends {{ baseEventClassName }}<{{ contentClassName }}> {
+  constructor ({{ propertyName }}: string) {
+    super({
+      {{ propertyName}},
+      content: new {{ contentClassName }}({{ propertyName}})
+    })
+  }
+}

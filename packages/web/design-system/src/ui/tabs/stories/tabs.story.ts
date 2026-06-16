@@ -10,7 +10,6 @@ import {
 
 import TabsOverflowPlayground from './TabsOverflowPlayground.vue'
 import TabsPlayground from './TabsPlayground.vue'
-import TabsRouterLinkAdaptivePlayground from './TabsRouterLinkAdaptivePlayground.vue'
 import TabsRouterLinkPlayground from './TabsRouterLinkPlayground.vue'
 
 const DISABLED_REGEX = /Disabled/i
@@ -136,40 +135,6 @@ export const HorizontalOverflow: Story = {
       }
     },
     template: '<TabsOverflowPlayground v-bind="args" />',
-  }),
-}
-
-export const AdaptiveOverflow: Story = {
-  args: {
-    variant: 'button-border',
-  },
-  render: (args) => ({
-    components: {
-      TabsOverflowPlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<TabsOverflowPlayground v-bind="args" is-adaptive />',
-  }),
-}
-
-export const AdaptiveRouterLink: Story = {
-  args: {
-    variant: 'underline',
-  },
-  render: (args) => ({
-    components: {
-      TabsRouterLinkAdaptivePlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<TabsRouterLinkAdaptivePlayground v-bind="args" />',
   }),
 }
 

@@ -77,14 +77,14 @@ describe('CoordinatesQuery', () => {
     })
   })
 
-  describe('toCoordinates', () => {
+  describe('parse', () => {
     it('should return coordinates when both latitude and longitude are set', () => {
       const query = new CoordinatesQuery()
 
       query.latitude = '50.894565'
       query.longitude = '5.420593'
 
-      const coordinates = query.toCoordinates()
+      const coordinates = query.parse()
 
       expect(coordinates).not.toBeNull()
       expect(coordinates?.latitude).toBe(50.894565)

@@ -1,0 +1,27 @@
+import { Equals, IsString, ValidateNested } from 'class-validator'
+import { IsUndefinable } from '@wisemen/validators'
+import { ApiProperty } from '@nestjs/swagger'
+import { FilterQuery, PaginatedOffsetSearchQuery } from '@wisemen/pagination'
+import { Type } from 'class-transformer'
+
+export class {{pascalCase useCaseName}}FilterQuery extends FilterQuery {
+  @ApiProperty({ type: String, required: false })
+  @IsString()
+  @IsUndefinable()
+  isActive?: string
+}
+
+export class {{pascalCase useCaseName}}Query extends PaginatedOffsetSearchQuery {
+  @Equals(undefined)
+  sort: never
+
+  @ApiProperty({ type: {{pascalCase useCaseName}}FilterQuery, required: false })
+  @Type(() => {{pascalCase useCaseName}}FilterQuery)
+  @ValidateNested()
+  @IsUndefinable()
+  filter?: {{pascalCase useCaseName}}FilterQuery
+
+  @ApiProperty({ type: String, required: false })
+  @IsUndefinable()
+  search?: string
+}

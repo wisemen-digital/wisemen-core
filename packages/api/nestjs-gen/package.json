@@ -1,0 +1,47 @@
+{
+  "name": "@wisemen/ngen",
+  "version": "0.8.2",
+  "description": "A code generator for NestJS projects. Scaffold modules, controllers, use-cases, builders, and more with customizable templates.",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/src/*",
+    "#test/*": "./dist/test/*"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "tsc && shx cp -r templates dist/templates",
+    "plop": "cross-env NODE_OPTIONS='--import=tsx' plop --plopfile=src/plopfile.ts",
+    "test": "pnpm build && pnpm node dist/src/main.js",
+    "release": "pnpx release-it",
+    "lint": "eslint --cache"
+  },
+  "bin": "dist/src/main.js",
+  "dependencies": {
+    "change-case": "catalog:generator",
+    "minimist": "catalog:generator",
+    "plop": "catalog:generator",
+    "pluralize": "catalog:generator",
+    "ts-morph": "catalog:generator",
+    "typescript": "catalog:build"
+  },
+  "devDependencies": {
+    "@release-it/keep-a-changelog": "catalog:tooling",
+    "@types/minimist": "catalog:types",
+    "@types/node": "catalog:types",
+    "@types/pluralize": "catalog:types",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "cross-env": "catalog:build",
+    "eslint": "catalog:lint-api",
+    "eslint-plugin-import-typescript": "catalog:lint-api",
+    "release-it": "catalog:tooling",
+    "rimraf": "catalog:build",
+    "shx": "catalog:build",
+    "tsx": "catalog:build"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/nestjs-file-storage"
+  }
+}

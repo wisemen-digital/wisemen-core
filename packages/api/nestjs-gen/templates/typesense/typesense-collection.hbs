@@ -1,0 +1,8 @@
+@RegisterTypesenseCollection(TypesenseCollectionName.{{ constantCase name }})
+export class {{ pascalCase name }}TypesenseCollection extends TypesenseCollection {
+  readonly name = TypesenseCollectionName.{{ constantCase name }}
+
+  readonly searchableFields = [] as const
+  readonly filterableFields = [] as const
+  readonly referenceFields = [] as const
+}

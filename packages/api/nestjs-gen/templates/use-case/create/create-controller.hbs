@@ -1,0 +1,24 @@
+import { Body, Controller, Post, Version } from '@nestjs/common'
+import { ApiCreatedResponse, ApiOAuth2, ApiTags } from '@nestjs/swagger'
+import { {{pascalCase useCaseName}}Command } from './{{dashCase useCaseName}}.command.js'
+import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.response.js'
+import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.use-case.js'
+
+@ApiTags('{{pascalCase moduleName}}')
+@ApiOAuth2([])
+@Controller()
+export class {{pascalCase useCaseName}}Controller {
+  constructor (
+    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+  ) {}
+
+  @Post('{{dashCase moduleNamePlural}}')
+  @Version('1')
+  @Permissions(Permission.{{constantCase permissionName}})
+  @ApiCreatedResponse({ type: {{pascalCase useCaseName}}Response })
+  public async {{camelCase useCaseName}} (
+    @Body() {{camelCase useCaseName}}Command: {{pascalCase useCaseName}}Command
+  ): Promise<{{pascalCase useCaseName}}Response> {
+    return this.{{camelCase useCaseName}}UseCase.execute({{camelCase useCaseName}}Command)
+  }
+}

@@ -1,0 +1,8 @@
+import { Module } from '@nestjs/common'
+import { PgBossSchedulerModule } from '@wisemen/pgboss-nestjs-job'
+
+@Module({
+  imports: [PgBossSchedulerModule],
+  providers: [{{ pascalCase name }}TypesenseSubscriber]
+})
+export class {{ pascalCase name }}TypesenseSubscriberModule {}

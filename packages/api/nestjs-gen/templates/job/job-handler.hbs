@@ -1,0 +1,15 @@
+import { Injectable } from '@nestjs/common'
+import { JobHandler, PgBossJobHandler } from '@wisemen/pgboss-nestjs-job'
+import { {{ pascalCase name }}Job, {{ pascalCase name }}JobData } from './{{ kebabCase name }}.job.js'
+
+@Injectable()
+@PgBossJobHandler({{ pascalCase name }}Job)
+export class {{ pascalCase name }}Handler extends JobHandler<{{ pascalCase name }}Job> {
+  constructor () {
+    super()
+  }
+
+  async run (data: {{ pascalCase name }}JobData): Promise<void> {
+    return Promise.resolve()
+  }
+}
