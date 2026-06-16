@@ -7,24 +7,21 @@ import { {{pascalCase useCaseName}}Command } from './{{dashCase useCaseName}}.co
 @Injectable()
 export class {{pascalCase useCaseName}}UseCase {
   constructor (
-    private readonly dataSource: DataSource,
+    private dataSource: DataSource,
     @InjectRepository({{pascalCase entityName}})
-    private readonly {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>,
-    private readonly emitter: DomainEventEmitter
+    private repository: Repository<{{pascalCase entityName}}>,
+    private emitter: DomainEventEmitter
   ) {}
 
-  public async execute (
-    uuid: string,
-    command: {{pascalCase useCaseName}}Command
-  ): Promise<void> {
-    const exists = await this.{{camelCase entityName}}Repository.existsBy({ uuid })
+  async execute ( uuid: string, command: {{pascalCase useCaseName}}Command): Promise<void> {
+    const exists = await this.repository.existsBy({ uuid })
 
     if (!exists) {
       throw new {{notFoundError}}(uuid)
     }
 
     await transaction(this.dataSource, async () => {
-      await this.{{camelCase entityName}}Repository.update({ uuid }, { name: command.name })
+      await this.repository.update({ uuid }, { name: command.name })
       await this.emitter.emitOne(new {{ eventClassName }}(uuid))
     })
   }
