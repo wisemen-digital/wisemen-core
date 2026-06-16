@@ -21,7 +21,9 @@ export class {{pascalCase useCaseName}}UseCase {
     }
 
     await transaction(this.dataSource, async () => {
-      await this.repository.update({ uuid }, { name: command.name })
+      await this.repository.update({ uuid }, { 
+
+      })
       await this.emitter.emitOne(new {{ eventClassName }}(uuid))
     })
   }

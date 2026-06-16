@@ -4,8 +4,8 @@ export class {{ contentClassName }} {
   ) {}
 }
 
-export class {{ className }}
-  extends {{ baseEventClassName }}<{{ contentClassName }}> {
+@RegisterDomainEvent(DomainEventType.{{ eventType }}, 1)
+export class {{ className }} extends {{ baseEventClassName }}<{{ contentClassName }}> {
   constructor ({{ propertyName }}: string) {
     super({
       {{ propertyName}},
