@@ -1,5 +1,3 @@
-import { Currency } from "../../currency.enum.js";
-import { Monetary } from "../../monetary.js";
 import { Euros, EurosApiProperty, EurosDto, IsEuros } from "./euros.js";
 
 // Example usage of EurosApiProperty, IsEuros and EurosDto
