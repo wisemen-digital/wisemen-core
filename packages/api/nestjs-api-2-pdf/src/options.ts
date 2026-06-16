@@ -1,19 +1,12 @@
 type HttpHeaders = Record<string, string>
 
-export enum Api2PdfRequestMethod {
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  POST = 'POST',
-  GET = 'GET'
-}
-
 export interface Api2PdfStorageHeadersOptions {
   extraHTTPHeaders?: HttpHeaders
 }
 
 export interface Api2PdfStorageOptions extends Api2PdfStorageHeadersOptions {
   url: string
-  method: Api2PdfRequestMethod.PUT
+  method: 'PUT'
 }
 
 export interface Api2PdfLayoutOptions {
@@ -24,9 +17,11 @@ export interface Api2PdfLayoutOptions {
   footerTemplate?: string
   printBackground?: boolean
   landscape?: boolean
-  pwidth?: string
+  pageRanges?: string
+  width?: string
   height?: string
   marginTop?: string
+  marginBottom?: string
   marginLeft?: string
   marginRight?: string
   preferCSSPageSize?: boolean
@@ -59,7 +54,7 @@ export interface Api2PdfUrlToPdfOptions extends Api2PdfBasePdfOptions {
   url: string
   uploadUrl: string
   storage?: Api2PdfStorageHeadersOptions
-  extraHttpHeaders?: HttpHeaders
+  extraHTTPHeaders?: HttpHeaders
 }
 
 export interface Api2PdfUrlToPdfRequestOptions extends Omit<Api2PdfUrlToPdfOptions, 'uploadUrl' | 'storage'> {

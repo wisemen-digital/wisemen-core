@@ -121,7 +121,7 @@ export class InvoicePdfService {
 - `inline?: boolean`
 - `fileName?: string`
 - `options?: Api2PdfLayoutOptions`
-- `extraHttpHeaders?: Record<string, string>`
+- `extraHTTPHeaders?: Record<string, string>`
 - `storage?: { extraHTTPHeaders?: Record<string, string> }`
 
 ## Notes

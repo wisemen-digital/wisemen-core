@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import axios, { type AxiosInstance } from 'axios'
 import {
-  Api2PdfRequestMethod,
   type Api2PdfHtmlToPdfOptions,
   type Api2PdfHtmlToPdfRequestOptions,
   type Api2PdfStorageOptions,
@@ -41,7 +40,7 @@ export class Api2PdfClient {
       url: options.url,
       inline: options.inline,
       fileName: options.fileName,
-      extraHttpHeaders: options.extraHttpHeaders,
+      extraHTTPHeaders: options.extraHTTPHeaders,
       options: {
         puppeteerWaitForMethod: 'WaitForNavigation',
         puppeteerWaitForValue: 'networkidle0',
@@ -59,7 +58,7 @@ export class Api2PdfClient {
     extraHTTPHeaders?: Record<string, string>
   ): Api2PdfStorageOptions {
     return {
-      method: Api2PdfRequestMethod.PUT,
+      method: 'PUT',
       url: uploadUrl,
       extraHTTPHeaders
     }

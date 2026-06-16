@@ -63,7 +63,7 @@ await this.pdfClient.generatePdfFromUrl({
   uploadUrl,
   fileName: 'invoice.pdf',
   inline: false,
-  extraHttpHeaders: {
+  extraHTTPHeaders: {
     'Accept-Language': locale
   }
 })
