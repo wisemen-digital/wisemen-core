@@ -5,6 +5,14 @@
 
 
 
+
+## 1.5.1
+<sub>2026-06-16</sub>
+
+- [#1267](https://github.com/wisemen-digital/wisemen-core/pull/1267)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Remove enter and exit animation from dropdown menu sub content and context menu sub content
+- [#1269](https://github.com/wisemen-digital/wisemen-core/pull/1269)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove the broken adaptive overflow behavior from Tabs and RouterLinkTabs, keeping tabs scrollable instead.
+- [#1262](https://github.com/wisemen-digital/wisemen-core/pull/1262)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: move @wisemen/ngen to wisemen-core repo
+
 ## 1.5.0
 <sub>2026-06-12</sub>
 
