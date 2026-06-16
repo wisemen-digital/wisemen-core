@@ -26,7 +26,7 @@ import { TwilioModule } from '@wisemen/twilio'
   })],
   exports: [TwilioModule]
 })
-export class NotificationsModule {}
+export class DefaultTwilioModule {}
 ```
 
 Use `TwilioModule.forRoot(...)` instead when the credentials are already
@@ -40,13 +40,12 @@ import { Twilio } from '@wisemen/twilio'
 
 @Injectable()
 export class NotificationService {
-  constructor (private readonly twilio: Twilio) {}
+  constructor (
+    private twilio: Twilio
+  ) {}
 
   async sendVerificationCode(to: string, code: string) {
-    return await this.twilio.createMessage(
-      to,
-      `Your verification code is ${code}.`
-    )
+    return await this.twilio.createMessage(to, `Your verification code is ${code}.`)
   }
 
   async sendReminderCall(to: string, message: string) {
