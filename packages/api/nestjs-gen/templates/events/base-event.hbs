@@ -1,0 +1,10 @@
+
+export class {{ className}}<Content extends object> extends DomainEvent<Content> {
+  constructor (options: SubjectedEventOptions<Content, { {{ subjectPropertyName }}: string }>) {
+    super({
+      ...options,
+      subjectId: options.{{ subjectPropertyName }},
+      subjectType: DomainEventSubjectType.{{ subjectType }}
+    })
+  }
+}
