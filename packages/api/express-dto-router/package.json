@@ -7,7 +7,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
