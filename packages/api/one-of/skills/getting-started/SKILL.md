@@ -19,7 +19,7 @@ enum NotificationType {
   DRIVER_UPDATED = 'driver.updated',
 }
 
-class Notification {}
+class Notification {} // example class that anchors the type and meta
 
 @OneOfResponse(Notification)
 class NotificationResponse {
@@ -37,12 +37,18 @@ class NotificationResponse {
 class DriverCreatedNotificationMeta {
   @ApiProperty({ type: String, format: 'uuid' })
   driverUuid: string
+
+  @ApiProperty({type: String, format: 'date-time'})
+  createdAt: Date
 }
 
 @OneOfMeta(Notification, NotificationType.DRIVER_UPDATED)
 class DriverUpdatedNotificationMeta {
   @ApiProperty({ type: String, format: 'uuid' })
   driverUuid: string
+
+  @ApiProperty({type: String, format: 'date-time'})
+  updatedAt: Date
 }
 ```
 
