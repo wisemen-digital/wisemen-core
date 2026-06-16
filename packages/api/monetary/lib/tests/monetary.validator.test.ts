@@ -5,6 +5,7 @@ import { plainToInstance } from 'class-transformer'
 import { MonetaryDto, MonetaryDtoBuilder } from '#src/monetary.dto.js'
 import { IsMonetary } from '#src/monetary.validator.js'
 import { Currency } from '#src/currency.enum.js'
+import { Monetary } from '../monetary.js'
 
 describe('Monetary validator tests', () => {
   class Test {
@@ -82,13 +83,13 @@ describe('Monetary validator tests', () => {
   })
 
   describe('IsMonetaryMinAmountValidator', () => {
-    const MIN_AMOUNT = 10
+    const MIN_AMOUNT = new Monetary(10, Currency.EUR, 0)
 
     class MinTest {
       @IsMonetary({
         maxPrecision: 4,
         allowedCurrencies: new Set<Currency>([Currency.EUR]),
-        minAmount: MIN_AMOUNT
+        min: MIN_AMOUNT
       })
       foo: MonetaryDto<Currency.EUR>
     }
@@ -97,7 +98,8 @@ describe('Monetary validator tests', () => {
       const dto = new MinTest()
 
       dto.foo = new MonetaryDtoBuilder(Currency.EUR)
-        .withAmount(MIN_AMOUNT - 1)
+        .withAmount(MIN_AMOUNT.toPrecision(4).amount - 1)
+        .withPrecision(4)
         .build()
 
       const errors = await validate(dto, {
@@ -112,7 +114,8 @@ describe('Monetary validator tests', () => {
       const dto = new MinTest()
 
       dto.foo = new MonetaryDtoBuilder(Currency.EUR)
-        .withAmount(MIN_AMOUNT)
+        .withAmount(MIN_AMOUNT.toPrecision(4).amount)
+        .withPrecision(4)
         .build()
 
       const errors = await validate(dto, {
@@ -127,7 +130,8 @@ describe('Monetary validator tests', () => {
       const dto = new MinTest()
 
       dto.foo = new MonetaryDtoBuilder(Currency.EUR)
-        .withAmount(MIN_AMOUNT + 1)
+        .withAmount(MIN_AMOUNT.toPrecision(4).amount + 1)
+        .withPrecision(4)
         .build()
 
       const errors = await validate(dto, {
@@ -140,13 +144,13 @@ describe('Monetary validator tests', () => {
   })
 
   describe('IsMonetaryMaxAmountValidator', () => {
-    const MAX_AMOUNT = 100
+    const MAX_AMOUNT = new Monetary(100, Currency.EUR, 0)
 
     class MaxTest {
       @IsMonetary({
         maxPrecision: 4,
         allowedCurrencies: new Set<Currency>([Currency.EUR]),
-        maxAmount: MAX_AMOUNT
+        max: MAX_AMOUNT
       })
       foo: MonetaryDto<Currency.EUR>
     }
@@ -155,7 +159,8 @@ describe('Monetary validator tests', () => {
       const dto = new MaxTest()
 
       dto.foo = new MonetaryDtoBuilder(Currency.EUR)
-        .withAmount(MAX_AMOUNT + 1)
+        .withAmount(MAX_AMOUNT.toPrecision(4).amount + 1)
+        .withPrecision(4)
         .build()
 
       const errors = await validate(dto, {
@@ -170,7 +175,8 @@ describe('Monetary validator tests', () => {
       const dto = new MaxTest()
 
       dto.foo = new MonetaryDtoBuilder(Currency.EUR)
-        .withAmount(MAX_AMOUNT)
+        .withAmount(MAX_AMOUNT.toPrecision(4).amount)
+        .withPrecision(4)
         .build()
 
       const errors = await validate(dto, {
@@ -185,7 +191,8 @@ describe('Monetary validator tests', () => {
       const dto = new MaxTest()
 
       dto.foo = new MonetaryDtoBuilder(Currency.EUR)
-        .withAmount(MAX_AMOUNT - 1)
+        .withAmount(MAX_AMOUNT.toPrecision(4).amount - 1)
+        .withPrecision(4)
         .build()
 
       const errors = await validate(dto, {
