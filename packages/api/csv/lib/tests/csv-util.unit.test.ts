@@ -39,6 +39,21 @@ describe('CSV util', () => {
       ])
     })
 
+    it('decodes a csv stream with a multi-character delimiter', async () => {
+      const rawText = `name||age\nJohn Doe||30\nJane Doe||25`
+      const stream = Readable.from(rawText)
+
+      const rows: CSVRow<'name' | 'age'>[] = []
+      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'age'], delimiter: '||' })) {
+        rows.push(row)
+      }
+
+      expect(rows).toEqual([
+        { line: 2, data: { name: 'John Doe', age: '30' } },
+        { line: 3, data: { name: 'Jane Doe', age: '25' } }
+      ])
+    })
+
     it('throws an error if required columns are missing in stream', async () => {
       const rawText = `name;age\nJohn Doe;30\nJane Doe;25`
       const stream = Readable.from(rawText)
@@ -127,6 +142,16 @@ describe('CSV util', () => {
     it('decodes a csv string with custom delimiter', () => {
       const csv = `name,age\nJohn Doe,30\nJane Doe,25`
       const result = CSV.decode(csv, { columns: ['name', 'age'], delimiter: ',' })
+
+      expect(result).toEqual([
+        { name: 'John Doe', age: '30' },
+        { name: 'Jane Doe', age: '25' }
+      ])
+    })
+
+    it('decodes a csv string with a multi-character delimiter', () => {
+      const csv = `name||age\nJohn Doe||30\nJane Doe||25`
+      const result = CSV.decode(csv, { columns: ['name', 'age'], delimiter: '||' })
 
       expect(result).toEqual([
         { name: 'John Doe', age: '30' },
@@ -364,6 +389,18 @@ describe('CSV util', () => {
 
       const csv = CSV.encode(original, { columns: ['name', 'note'] })
       const result = CSV.decode(csv, { columns: ['name', 'note'] })
+
+      expect(result).toEqual(original)
+    })
+
+    it('round-trips rows with a multi-character delimiter', () => {
+      const original = [
+        { name: 'John Doe', age: '30' },
+        { name: 'Jane Doe', age: '25' }
+      ]
+
+      const csv = CSV.encode(original, { columns: ['name', 'age'], delimiter: '||' })
+      const result = CSV.decode(csv, { columns: ['name', 'age'], delimiter: '||' })
 
       expect(result).toEqual(original)
     })

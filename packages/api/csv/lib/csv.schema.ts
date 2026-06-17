@@ -1,13 +1,42 @@
+import { Readable } from 'node:stream'
+import { CSV } from './csv.util.js'
 import { CSVField } from './csv.field.js'
 import { CSVFieldParseError } from './errors/csv-field-parse.error.js'
 import { CSVSchemaParseError } from './errors/csv-schema-parse.error.js'
 import { InferRow } from './infer.js'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface CsvParseOptions {
+   delimiter?: string 
+} 
+
+// oxlint-disable-next-line typescript/no-explicit-any
 export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, any> }> {
   constructor (private fields: S) { }
 
-  async parse (records: Record<string, string>[]): Promise<InferRow<S>[]> {
+  parseString (csv: string, options?: CsvParseOptions): Promise<InferRow<S>[]> {
+    const decoded = CSV.decode(csv, {
+      columns: this.getRequiredColumns(),
+      delimiter: options?.delimiter
+    })
+
+    return this.parse(decoded)
+  }
+
+  async parseStream ( stream: Readable, options?: CsvParseOptions): Promise<InferRow<S>[]> {
+    const records: Record<string, string>[] = []
+    const rows = CSV.decodeStream(stream, {
+      columns: this.getRequiredColumns(),
+      delimiter: options?.delimiter,
+    })
+
+    for await (const row of rows) {
+      records.push(row.data)
+    }
+
+    return this.parse(records)
+  }
+
+  private async parse (records: Record<string, string>[]): Promise<InferRow<S>[]> {
     const result: InferRow<S>[] = []
     const errors: CSVFieldParseError[] = []
 
@@ -18,7 +47,7 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
         try {
           const field = this.fields[column]
 
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+           
           row[column] = field.parse(record[field.name], rowIndex)
         } catch (error) {
           if (error instanceof CSVFieldParseError) {
@@ -47,5 +76,17 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
     }
 
     return result
+  }
+
+  private getRequiredColumns (): string[] {
+    const columns: string[] = []
+
+    for (const column in this.fields) {
+      if (this.fields[column].isRequired()) {
+        columns.push(this.fields[column].name)
+      }
+    }
+
+    return columns
   }
 }

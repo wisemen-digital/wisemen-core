@@ -10,7 +10,7 @@ const DEFAULT_DELIMITER = ';'
 const DEFAULT_BATCH_SIZE = 100
 const DEFAULT_MAX_CHUNK_BYTES = 64 * 1024
 
-function escapeField(value: string, delimiter: string): string {
+function escapeField (value: string, delimiter: string): string {
   if (
     value.includes(delimiter) ||
     value.includes('"') ||
@@ -22,7 +22,7 @@ function escapeField(value: string, delimiter: string): string {
   return value
 }
 
-function countChar(text: string, ch: string): number {
+function countChar (text: string, ch: string): number {
   let n = 0
   for (let i = 0; i < text.length; i++) {
     if (text[i] === ch) n++
@@ -30,92 +30,29 @@ function countChar(text: string, ch: string): number {
   return n
 }
 
-function findRecordEnd(buf: string): number {
-  let inQuotes = false
-  for (let i = 0; i < buf.length; i++) {
-    const ch = buf[i]
-    if (ch === '"') {
-      if (inQuotes && buf[i + 1] === '"') {
-        i++
-      } else {
-        inQuotes = !inQuotes
-      }
-    } else if (ch === '\n' && !inQuotes) {
-      return i
-    }
-  }
-  return -1
-}
-
-function parseFields(text: string, delimiter: string): string[] {
-  const fields: string[] = []
-  let field = ''
-  let inQuotes = false
-
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i]
-    if (inQuotes) {
-      if (ch === '"') {
-        if (text[i + 1] === '"') {
-          field += '"'
-          i++
-        } else {
-          inQuotes = false
-        }
-      } else {
-        field += ch
-      }
-    } else if (ch === '"' && field === '') {
-      inQuotes = true
-    } else if (ch === delimiter) {
-      fields.push(field)
-      field = ''
-    } else if (ch !== '\r') {
-      field += ch
-    }
-  }
-
-  fields.push(field)
-  return fields
-}
-
-function assertColumns<K extends string>(
-  headerKeys: string[],
-  columns: readonly K[] | undefined
-): void {
-  const missing = columns?.filter(column => !headerKeys.includes(column)) ?? []
-  if (missing.length > 0) {
-    throw new CSVMissingColumnError(missing)
-  }
-}
-
-function mapRecord<K extends string>(keys: readonly K[], values: string[]): Record<K, string> {
-  const data = {} as Record<K, string>
-  keys.forEach((key, index) => {
-    data[key] = values[index] ?? ''
-  })
-  return data
+interface DecodeCSVOptions<K extends string> {
+  columns?: readonly K[]
+  delimiter?: string
 }
 
 export class CSV {
-  static decode<K extends string>(
+  static decode<K extends string> (
     csv: string,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-    }
+    options?: DecodeCSVOptions<K>
   ): Array<Record<K, string>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
     const records: string[][] = []
     let buffer = csv
     let end: number
-    while ((end = findRecordEnd(buffer)) !== -1) {
-      records.push(parseFields(buffer.slice(0, end), delimiter))
+
+    while ((end = this.findRecordEnd(buffer)) !== -1) {
+      records.push(this.parseRecord(buffer.slice(0, end), delimiter))
       buffer = buffer.slice(end + 1)
     }
+
     if (buffer.length > 0) {
-      records.push(parseFields(buffer, delimiter))
+      records.push(this.parseRecord(buffer, delimiter))
     }
 
     if (records.length === 0) {
@@ -125,19 +62,12 @@ export class CSV {
     const [header, ...rows] = records
     const headerKeys = header.map(v => v.trim())
 
-    assertColumns(headerKeys, options?.columns)
-
-    return rows.map(values => mapRecord(headerKeys as K[], values))
+    return rows.map(values => this.mapRecord(headerKeys as K[], values))
   }
 
-  static async* decodeStream<K extends string>(
+  static async* decodeStream<K extends string> (
     stream: Readable,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-      /** @deprecated No longer used — kept for back-compat. */
-      crlfDelay?: number
-    }
+    options?: DecodeCSVOptions<K>
   ): AsyncGenerator<CSVRow<K>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
@@ -145,9 +75,9 @@ export class CSV {
     let lineNumber = 0
     let keys: K[] | null = null
 
-    function* emit(text: string): Generator<CSVRow<K>> {
+    function* emit (text: string): Generator<CSVRow<K>> {
       lineNumber += countChar(text, '\n') + 1
-      const values = parseFields(text, delimiter)
+      const values = this.parseFields(text, delimiter)
 
       if (keys === null) {
         const headerKeys = values.map(v => v.trim())
@@ -156,13 +86,13 @@ export class CSV {
         return
       }
 
-      yield { line: lineNumber, data: mapRecord(keys, values) }
+      yield { line: lineNumber, data: this.mapRecord(keys, values) }
     }
 
     for await (const chunk of stream) {
       buffer += String(chunk)
       let end: number
-      while ((end = findRecordEnd(buffer)) !== -1) {
+      while ((end = this.findRecordEnd(buffer)) !== -1) {
         yield* emit(buffer.slice(0, end))
         buffer = buffer.slice(end + 1)
       }
@@ -173,7 +103,7 @@ export class CSV {
     }
   }
 
-  static encode<K extends string>(
+  static encode<K extends string> (
     data: Array<Record<K, string | null | undefined>>,
     options?: {
       columns?: readonly K[]
@@ -191,7 +121,7 @@ export class CSV {
     ].join('\n')
   }
 
-  static encodeStream<K extends string>(
+  static encodeStream<K extends string> (
     data: Iterable<Record<K, string | null | undefined>> | AsyncIterable<Record<K, string | null | undefined>>,
     options?: {
       columns?: readonly K[]
@@ -212,7 +142,7 @@ export class CSV {
       let chunkBytes = 0
       let chunks: string[] = []
 
-      function writeHeader(headerKeys: readonly K[]): void {
+      function writeHeader (headerKeys: readonly K[]): void {
         const header = headerKeys.map(k => escapeField(k, delimiter)).join(delimiter) + '\n'
         chunks.push(header)
         chunkBytes += Buffer.byteLength(header)
@@ -257,5 +187,84 @@ export class CSV {
     })()
 
     return Readable.from(iterator)
+  }
+
+  private static findRecordEnd (buf: string): number {
+    let inQuotes = false
+    for (let i = 0; i < buf.length; i++) {
+      const ch = buf[i]
+      if (ch === '"') {
+        if (inQuotes && buf[i + 1] === '"') {
+          i++
+        } else {
+          inQuotes = !inQuotes
+        }
+      } else if (ch === '\n' && !inQuotes) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  private validateColumnsExist<K extends string> (
+    headerKeys: string[],
+    columns: readonly K[] | undefined
+  ): void {
+    if (columns === undefined) {
+      return
+    }
+
+    const unknownColumn = columns.some(column => !headerKeys.includes(column))
+    if (unknownColumn) {
+      throw new CSVMissingColumnError(unknownColumn)
+    }
+  }
+
+  private static parseRecord (text: string, delimiter: string): string[] {
+    const fields: string[] = []
+    let field = ''
+    let inQuotes = false
+    const delimiterLength = delimiter.length
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i]
+      if (inQuotes) {
+        if (ch === '"') {
+          if (text[i + 1] === '"') {
+            field += '"'
+            i++
+          } else {
+            inQuotes = false
+          }
+        } else {
+          field += ch
+        }
+      } else if (ch === '"' && field === '') {
+        inQuotes = true
+      } else if (
+        delimiterLength > 0 &&
+        text.startsWith(delimiter, i)
+      ) {
+        fields.push(field)
+        field = ''
+        i += delimiterLength - 1
+      } else if (ch !== '\r') {
+        field += ch
+      }
+    }
+
+    fields.push(field)
+    return fields
+  }
+
+  private static mapRecord<K extends string> (
+    keys: readonly K[], 
+    values: string[]
+  ): Record<K, string> {
+    const data = {} as Record<K, string>
+
+    keys.forEach((key, index) => { data[key] = values[index] ?? '' })
+
+    return data
   }
 }
