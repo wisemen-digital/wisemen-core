@@ -2868,6 +2868,9 @@ importers:
       '@wisemen/vue-core-utils':
         specifier: workspace:*
         version: link:../utils
+      blurhash:
+        specifier: catalog:general
+        version: 2.0.5
       country-flag-icons:
         specifier: catalog:general
         version: 1.5.13
@@ -5201,8 +5204,8 @@ packages:
   '@googlemaps/js-api-loader@1.16.8':
     resolution: {integrity: sha512-CROqqwfKotdO6EBjZO/gQGVTbeDps5V7Mt9+8+5Q+jTg5CRMi3Ii/L9PmV3USROrt2uWxtGzJHORmByxyo9pSQ==}
 
-  '@grpc/grpc-js@1.14.4':
-    resolution: {integrity: sha512-k9Dj3DV/itK9D06Y8f190Qgop7/Ui+D0njFV3LHMPwPT75DpXLQohE9Wmz0QElrJnzsjB7KPWiKJbOl7IPDArQ==}
+  '@grpc/grpc-js@1.14.3':
+    resolution: {integrity: sha512-Iq8QQQ/7X3Sac15oB6p0FmUg/klxQvXLeileoqrTRGJYLV+/9tubbr9ipz0GKHjmXVsgFPo/+W+2cA8eNcR+XA==}
     engines: {node: '>=12.10.0'}
 
   '@grpc/proto-loader@0.8.0':
@@ -8167,8 +8170,8 @@ packages:
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
 
-  '@types/inquirer@9.0.9':
-    resolution: {integrity: sha512-/mWx5136gts2Z2e5izdoRCo46lPp5TMs9R15GTSsgg/XnZyxDWVqoVU3R9lWnccKpqwsJLvRoxbCjoJtZB7DSw==}
+  '@types/inquirer@9.0.10':
+    resolution: {integrity: sha512-vFW2WbXwO9eZpRT5GJGFJ/shgyMNnYozmnjakt9jCQSS1lvqX8pZEQMjJ9RdDPct/YxwciQ8+V8OYn9euIrZDA==}
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
@@ -12973,11 +12976,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  semver@7.8.4:
-    resolution: {integrity: sha512-rUCObTnP32Q08R2uuIrt7r9PlEonuTmtuXYcW6s5kjdlj3xbnwe+21yXptAUYcMAABLkYYTtnmzb3w3EDZfueA==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   send@1.2.1:
     resolution: {integrity: sha512-1gnZf7DFcoIcajTjTwjwuDjzuz4PPcY2StKPlsGAQ1+YH20IRVrBaXSWmdjowTJ6u8Rc01PoYOGHXfP1mYcZNQ==}
     engines: {node: '>= 18'}
@@ -13037,8 +13035,8 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  shell-quote@1.8.4:
-    resolution: {integrity: sha512-VsC6n6vz1ihYYyZZwX7YZSF5l5x36ca17OC+a69h94YqB7X6XLwf+5MOgynYir2SLFUbl8gIYvBo8K8RoNQ6bQ==}
+  shell-quote@1.8.3:
+    resolution: {integrity: sha512-ObmnIF4hXNg1BqhnHmgbDETF8dLPCggZWBjkQfhZpbszZnYur5DUljTcCHii5LC3J5E0yeO/1LIMyH+UvHQgyw==}
     engines: {node: '>= 0.4'}
 
   shelljs@0.9.2:
@@ -13058,10 +13056,6 @@ packages:
     resolution: {integrity: sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==}
     engines: {node: '>= 0.4'}
 
-  side-channel-list@1.0.1:
-    resolution: {integrity: sha512-mjn/0bi/oUURjc5Xl7IaWi/OJJJumuoJFQJfDDyO46+hBWsfaVM65TBHq2eoZBhzl9EchxOijpkbRC8SVBQU0w==}
-    engines: {node: '>= 0.4'}
-
   side-channel-map@1.0.1:
     resolution: {integrity: sha512-VCjCNfgMsby3tTdo02nbjtM/ewra6jPHmpThenkTYh8pG9ucZ/1P8So4u4FGBek/BjpOVsDCMoLA/iuBKIFXRA==}
     engines: {node: '>= 0.4'}
@@ -13072,10 +13066,6 @@ packages:
 
   side-channel@1.1.0:
     resolution: {integrity: sha512-ZX99e6tRweoUXqR+VBrslhda51Nh5MTQwou5tnUDgbtyM0dBgmhEDtWGP/xbKn6hqfPRHujUNwz5fy/wbbhnpw==}
-    engines: {node: '>= 0.4'}
-
-  side-channel@1.1.1:
-    resolution: {integrity: sha512-6x6dK6zJdpTzF4sQeNYxwtvBzf6Eg4GtlesS94HOvTudUeyK2WXAaIfmDgsyslYrRBeFIlsi54AYsFGUuhmvrQ==}
     engines: {node: '>= 0.4'}
 
   siginfo@2.0.0:
@@ -13238,12 +13228,12 @@ packages:
     resolution: {integrity: sha512-6CC9uyBL+/48dYizRf7H7VAYCMCNTBeM78x/VTUe9bFEaxBepPJDa1Ow99LqI/1yF7kuy7Q3cQsYMrcjGUcskA==}
     engines: {node: '>= 0.4'}
 
-  string.prototype.trim@1.2.11:
-    resolution: {integrity: sha512-PwvK7BU+CMTJGYQCTZb5RWXIML92lftJLhQz1tBzgKiqGxJaMlBAa48POXaNAC2s4y8jr3EFqrkF9+44neS46w==}
+  string.prototype.trim@1.2.10:
+    resolution: {integrity: sha512-Rs66F0P/1kedk5lyYyH9uBzuiI/kNRmwJAR9quK6VOtIpZ2G+hMZd+HQbbv25MgCA6gEffoMZYxlTod4WcdrKA==}
     engines: {node: '>= 0.4'}
 
-  string.prototype.trimend@1.0.10:
-    resolution: {integrity: sha512-2+3aDAOmPTmuFwjDnmJG2ctEkQKVki7vOSqaxkv42Mowj1V6PnvuwFCRrR5lChUux1TBskPjfkeTOhqczDMxTw==}
+  string.prototype.trimend@1.0.9:
+    resolution: {integrity: sha512-G7Ok5C6E/j4SGfyLCloXTrngQIQU3PWtXGst3yM7Bea9FRURf1S42ZHlZZtsNque2FN2PoUhfZXYLNWwEr4dLQ==}
     engines: {node: '>= 0.4'}
 
   string.prototype.trimstart@1.0.8:
@@ -13786,8 +13776,8 @@ packages:
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
-  undici@6.26.0:
-    resolution: {integrity: sha512-4yqz8a3n5HmGTlsbADNtr/dJlhkh/55Rq798G6ibiULcXbDtaLpTl1pvdqcbFfeoj3iSi52lePFM7h9H21cw/A==}
+  undici@6.27.0:
+    resolution: {integrity: sha512-YmfV3YnEDzXRC5lZ2jWtWWHKGUm1zIt8AhesR1tens+HTNv+YZlN/dp6G727LOvMJ8xjP9Be7Y2Sdr96LDm+pg==}
     engines: {node: '>=18.17'}
 
   unicode-canonical-property-names-ecmascript@2.0.1:
@@ -14112,8 +14102,8 @@ packages:
   vue-component-type-helpers@3.3.0:
     resolution: {integrity: sha512-vwR8DDsBysI9NWXa0okPFpCcW+BUC3sPTuLBNo1faMzw4QWMFd+3/lFYFu29ZN0q+8UReXWJHEYesC9dcXYCLg==}
 
-  vue-component-type-helpers@3.3.4:
-    resolution: {integrity: sha512-joip1uZTaQR0nD23N400gIdJ7xY+WiiiMA/BCKz842gvGBknqDQAzklUvDEhqFvvrhQY8S2ZANBMu4X70VMFGw==}
+  vue-component-type-helpers@3.3.5:
+    resolution: {integrity: sha512-Fe1jyPJoUGpJOYKOri44jduR7My4yYINOMJISuMAbmrs+L5LbIDUc8NTWZYY3EJLK0yPLuCmcd5zoCsE4k2/KA==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -14241,10 +14231,6 @@ packages:
 
   which-typed-array@1.1.21:
     resolution: {integrity: sha512-zbRA8cVm6io/d5W8uIe2hblzN76/Wm3v/yiythQvr+dpBWeqhPSWIDNj4zOyHi4zKbMK6DN34Xsr9jPHJERAEw==}
-    engines: {node: '>= 0.4'}
-
-  which-typed-array@1.1.22:
-    resolution: {integrity: sha512-fvO4ExWMFsqyhG3AiPAObMuY1lxaqgYcxbc49CNdWDDECOJNgQyvsOWVwbZc+qf3rzRtxojBK+CMEv0Ld5CYpw==}
     engines: {node: '>= 0.4'}
 
   which@1.3.1:
@@ -16409,7 +16395,7 @@ snapshots:
 
   '@googlemaps/js-api-loader@1.16.8': {}
 
-  '@grpc/grpc-js@1.14.4':
+  '@grpc/grpc-js@1.14.3':
     dependencies:
       '@grpc/proto-loader': 0.8.0
       '@js-sdsl/ordered-map': 4.4.2
@@ -17206,7 +17192,7 @@ snapshots:
 
   '@opentelemetry/exporter-logs-otlp-grpc@0.217.0(@opentelemetry/api@1.9.1)':
     dependencies:
-      '@grpc/grpc-js': 1.14.4
+      '@grpc/grpc-js': 1.14.3
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/otlp-exporter-base': 0.217.0(@opentelemetry/api@1.9.1)
@@ -17245,7 +17231,7 @@ snapshots:
 
   '@opentelemetry/exporter-metrics-otlp-grpc@0.217.0(@opentelemetry/api@1.9.1)':
     dependencies:
-      '@grpc/grpc-js': 1.14.4
+      '@grpc/grpc-js': 1.14.3
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/exporter-metrics-otlp-http': 0.217.0(@opentelemetry/api@1.9.1)
@@ -17303,7 +17289,7 @@ snapshots:
 
   '@opentelemetry/exporter-trace-otlp-grpc@0.217.0(@opentelemetry/api@1.9.1)':
     dependencies:
-      '@grpc/grpc-js': 1.14.4
+      '@grpc/grpc-js': 1.14.3
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/otlp-exporter-base': 0.217.0(@opentelemetry/api@1.9.1)
@@ -17644,7 +17630,7 @@ snapshots:
 
   '@opentelemetry/otlp-grpc-exporter-base@0.217.0(@opentelemetry/api@1.9.1)':
     dependencies:
-      '@grpc/grpc-js': 1.14.4
+      '@grpc/grpc-js': 1.14.3
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/otlp-exporter-base': 0.217.0(@opentelemetry/api@1.9.1)
@@ -19117,7 +19103,7 @@ snapshots:
       storybook: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       type-fest: 2.19.0
       vue: 3.5.27(typescript@5.9.3)
-      vue-component-type-helpers: 3.3.4
+      vue-component-type-helpers: 3.3.5
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.2.1(jiti@2.6.1))':
     dependencies:
@@ -19423,7 +19409,7 @@ snapshots:
 
   '@types/http-errors@2.0.5': {}
 
-  '@types/inquirer@9.0.9':
+  '@types/inquirer@9.0.10':
     dependencies:
       '@types/through': 0.0.33
       rxjs: 7.8.2
@@ -19670,7 +19656,7 @@ snapshots:
       eslint: 9.39.4(jiti@2.6.1)
       json-stable-stringify-without-jsonify: 1.0.1
       lodash.merge: 4.6.2
-      semver: 7.8.4
+      semver: 7.8.1
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -19793,7 +19779,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.58.0
       debug: 4.4.3
       minimatch: 10.2.5
-      semver: 7.8.4
+      semver: 7.8.1
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@5.9.3)
       typescript: 5.9.3
@@ -21441,15 +21427,15 @@ snapshots:
       safe-regex-test: 1.1.0
       set-proto: 1.0.0
       stop-iteration-iterator: 1.1.0
-      string.prototype.trim: 1.2.11
-      string.prototype.trimend: 1.0.10
+      string.prototype.trim: 1.2.10
+      string.prototype.trimend: 1.0.9
       string.prototype.trimstart: 1.0.8
       typed-array-buffer: 1.0.3
       typed-array-byte-length: 1.0.3
       typed-array-byte-offset: 1.0.4
       typed-array-length: 1.0.8
       unbox-primitive: 1.1.0
-      which-typed-array: 1.1.22
+      which-typed-array: 1.1.21
 
   es-define-property@1.0.1: {}
 
@@ -22885,7 +22871,7 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
       hasown: 2.0.4
-      side-channel: 1.1.1
+      side-channel: 1.1.0
 
   interpret@1.4.0: {}
 
@@ -23329,7 +23315,7 @@ snapshots:
   launch-editor@2.11.0:
     dependencies:
       picocolors: 1.1.1
-      shell-quote: 1.8.4
+      shell-quote: 1.8.3
 
   leven@3.1.0: {}
 
@@ -24095,7 +24081,7 @@ snapshots:
 
   node-plop@0.32.3(@types/node@24.8.1):
     dependencies:
-      '@types/inquirer': 9.0.9
+      '@types/inquirer': 9.0.10
       '@types/picomatch': 4.0.3
       change-case: 5.4.4
       dlv: 1.1.3
@@ -24982,7 +24968,7 @@ snapshots:
       proxy-agent: 6.5.0
       semver: 7.7.2
       tinyglobby: 0.2.14
-      undici: 6.26.0
+      undici: 6.27.0
       url-join: 5.0.0
       wildcard-match: 5.1.4
       yargs-parser: 21.1.1
@@ -25265,8 +25251,6 @@ snapshots:
 
   semver@7.8.1: {}
 
-  semver@7.8.4: {}
-
   send@1.2.1:
     dependencies:
       debug: 4.4.3
@@ -25347,7 +25331,7 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  shell-quote@1.8.4: {}
+  shell-quote@1.8.3: {}
 
   shelljs@0.9.2:
     dependencies:
@@ -25377,11 +25361,6 @@ snapshots:
       es-errors: 1.3.0
       object-inspect: 1.13.4
 
-  side-channel-list@1.0.1:
-    dependencies:
-      es-errors: 1.3.0
-      object-inspect: 1.13.4
-
   side-channel-map@1.0.1:
     dependencies:
       call-bound: 1.0.4
@@ -25402,14 +25381,6 @@ snapshots:
       es-errors: 1.3.0
       object-inspect: 1.13.4
       side-channel-list: 1.0.0
-      side-channel-map: 1.0.1
-      side-channel-weakmap: 1.0.2
-
-  side-channel@1.1.1:
-    dependencies:
-      es-errors: 1.3.0
-      object-inspect: 1.13.4
-      side-channel-list: 1.0.1
       side-channel-map: 1.0.1
       side-channel-weakmap: 1.0.2
 
@@ -25573,9 +25544,9 @@ snapshots:
       internal-slot: 1.1.0
       regexp.prototype.flags: 1.5.4
       set-function-name: 2.0.2
-      side-channel: 1.1.1
+      side-channel: 1.1.0
 
-  string.prototype.trim@1.2.11:
+  string.prototype.trim@1.2.10:
     dependencies:
       call-bind: 1.0.9
       call-bound: 1.0.4
@@ -25584,9 +25555,8 @@ snapshots:
       es-abstract: 1.24.2
       es-object-atoms: 1.1.2
       has-property-descriptors: 1.0.2
-      safe-regex-test: 1.1.0
 
-  string.prototype.trimend@1.0.10:
+  string.prototype.trimend@1.0.9:
     dependencies:
       call-bind: 1.0.9
       call-bound: 1.0.4
@@ -26060,7 +26030,7 @@ snapshots:
 
   undici-types@7.18.2: {}
 
-  undici@6.26.0: {}
+  undici@6.27.0: {}
 
   unicode-canonical-property-names-ecmascript@2.0.1: {}
 
@@ -26492,7 +26462,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.0: {}
 
-  vue-component-type-helpers@3.3.4: {}
+  vue-component-type-helpers@3.3.5: {}
 
   vue-demi@0.14.10(vue@3.5.27(typescript@5.9.3)):
     dependencies:
@@ -26628,7 +26598,7 @@ snapshots:
       isarray: 2.0.5
       which-boxed-primitive: 1.1.1
       which-collection: 1.0.2
-      which-typed-array: 1.1.22
+      which-typed-array: 1.1.21
 
   which-collection@1.0.2:
     dependencies:
@@ -26638,16 +26608,6 @@ snapshots:
       is-weakset: 2.0.4
 
   which-typed-array@1.1.21:
-    dependencies:
-      available-typed-arrays: 1.0.7
-      call-bind: 1.0.9
-      call-bound: 1.0.4
-      for-each: 0.3.5
-      get-proto: 1.0.1
-      gopd: 1.2.0
-      has-tostringtag: 1.0.2
-
-  which-typed-array@1.1.22:
     dependencies:
       available-typed-arrays: 1.0.7
       call-bind: 1.0.9
