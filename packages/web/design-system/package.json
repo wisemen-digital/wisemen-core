@@ -25,7 +25,7 @@
     "./style.css": "./dist/style.css"
   },
   "style": "./dist/index.css",
-  "main": "./dist/index.umd.cjs",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "typings": "./dist/index.d.ts",
