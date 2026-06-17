@@ -77,6 +77,28 @@ useCustomViewManager({
 
 The adapter stores the search string under the `'search'` key in `view.state`.
 
+### Sort state adapter
+
+Connects a `Sort` object returned by `useSort` from `@wisemen/vue-core-design-system`.
+
+```typescript
+import {
+  createCustomViewSortStateAdapter,
+  useCustomViewManager,
+} from '@wisemen/vue-core-custom-views'
+
+const sort = useSort<'name' | 'createdAt'>()
+
+useCustomViewManager({
+  state: [
+    createCustomViewSortStateAdapter(sort),
+  ],
+  // ...
+})
+```
+
+The adapter stores the active sort values under the `'sort'` key in `view.state`. When a stored view has no `sort` snapshot, the adapter resets to an empty sort state (no active sort).
+
 ### Table columns state adapter
 
 Connects a `useTableCustomizeColumns` instance from `@wisemen/vue-core-design-system`.
@@ -135,6 +157,7 @@ useCustomViewManager({
   state: [
     createCustomViewFilterStateAdapter(filters),
     createCustomViewSearchStateAdapter(search),
+    createCustomViewSortStateAdapter(sort),
     createCustomViewTableColumnsStateAdapter(customizeColumns),
   ],
   // ...
@@ -148,6 +171,7 @@ The resulting `view.state` shape is derived from the adapters:
 {
   filters: FilterValues<TFilters>
   search: string
+  sort: SortValue<TKey>[]
   columns: string[]
 }
 ```

@@ -1,6 +1,12 @@
 # Changelog
 
 
+
+## 0.3.0
+<sub>2026-06-12</sub>
+
+- [#1259](https://github.com/wisemen-digital/wisemen-core/pull/1259)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `createCustomViewSortStateAdapter`
+
 ## 0.2.0
 <sub>2026-06-12</sub>
 

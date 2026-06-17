@@ -1,0 +1,68 @@
+import { before, describe, it } from 'node:test'
+import { assert, createStubInstance } from 'sinon'
+import { expect } from 'expect'
+import { Repository } from 'typeorm'
+
+describe('{{ testDescriptionName }}', () => {
+  before(() => {
+    TestBench.setupUnitTest()
+  })
+
+  it('{{ testCaseNameNotFoundError }}', async () => {
+    const repository = createStubInstance({{{ repositoryName }}})
+
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      repository,
+      createStubInstance(DomainEventEmitter)
+    )
+
+    const command = new {{ commandBuilderName }}().build()
+    const uuid = generateUuid<{{ entityUuidName }}>()
+
+    repository.existsBy.resolves(false)
+
+    await expect(useCase.execute(uuid, command))
+      .rejects.toThrow(new {{ notFoundErrorName }}(uuid))
+  })
+
+  it('the use case calls the repository once', async () => {
+    const repository = createStubInstance({{{ repositoryName }}})
+
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      repository,
+      createStubInstance(DomainEventEmitter)
+    )
+
+    const command = new {{ commandBuilderName }}().build()
+    const uuid = generateUuid<{{ entityUuidName }}>()
+
+    repository.existsBy.resolves(true)
+
+    await useCase.execute(uuid, command)
+
+    assert.calledOnce(repository.existsBy)
+    assert.calledOnce(repository.update)
+  })
+
+  it('{{ testCaseNameEmitEvent }}', async () => {
+    const repository = createStubInstance({{{ repositoryName }}})
+    const eventEmitter = createStubInstance(DomainEventEmitter)
+
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      repository,
+      eventEmitter
+    )
+
+    const command = new {{ commandBuilderName }}().build()
+    const uuid = generateUuid<{{ entityUuidName }}>()
+
+    repository.existsBy.resolves(true)
+
+    await useCase.execute(uuid, command)
+
+    expect(eventEmitter).toHaveEmitted(new {{ eventName }}(uuid))
+  })
+})

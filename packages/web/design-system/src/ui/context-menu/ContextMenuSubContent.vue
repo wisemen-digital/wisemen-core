@@ -14,7 +14,6 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
         :side-offset="8"
         :align-offset="-4"
         :collision-padding="5"
-        data-animation="popover-default"
         class="
           z-50 max-w-64 min-w-52
           origin-(--reka-context-menu-content-transform-origin)

@@ -4,6 +4,26 @@
 
 
 
+
+
+## 1.5.1
+<sub>2026-06-16</sub>
+
+- [#1267](https://github.com/wisemen-digital/wisemen-core/pull/1267)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Remove enter and exit animation from dropdown menu sub content and context menu sub content
+- [#1269](https://github.com/wisemen-digital/wisemen-core/pull/1269)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove the broken adaptive overflow behavior from Tabs and RouterLinkTabs, keeping tabs scrollable instead.
+- [#1262](https://github.com/wisemen-digital/wisemen-core/pull/1262)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: move @wisemen/ngen to wisemen-core repo
+
+## 1.5.0
+<sub>2026-06-12</sub>
+
+- [#1189](https://github.com/wisemen-digital/wisemen-core/pull/1189)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add actions to badges
+- [#1258](https://github.com/wisemen-digital/wisemen-core/pull/1258)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `shift+A` keyboard shortcut to auto-fit table columns
+- [#1200](https://github.com/wisemen-digital/wisemen-core/pull/1200)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add slot for UIDashboardCenteredPageContentHeader
+- [#1243](https://github.com/wisemen-digital/wisemen-core/pull/1243)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix editing address in popover
+- [#1242](https://github.com/wisemen-digital/wisemen-core/pull/1242)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix dark mode issues in DateRangeField, Dialog, and Tabs
+- [#1239](https://github.com/wisemen-digital/wisemen-core/pull/1239)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add transparent gray badge variant
+- [#1244](https://github.com/wisemen-digital/wisemen-core/pull/1244)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add onBlur and onTab props to TagsField
+
 ## 1.4.2
 <sub>2026-06-12</sub>
 

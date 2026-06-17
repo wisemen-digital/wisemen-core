@@ -11,7 +11,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
