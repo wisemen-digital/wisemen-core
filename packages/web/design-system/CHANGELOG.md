@@ -6,6 +6,13 @@
 
 
 
+
+## 1.6.0
+<sub>2026-06-17</sub>
+
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add UIFormFileUpload with shared file-reference DTOs and transformers, Storybook coverage, translations, and improved base file-upload adapter/disabled handling.
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add new BaseFileUpload component
+
 ## 1.5.1
 <sub>2026-06-16</sub>
 
