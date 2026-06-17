@@ -11,9 +11,14 @@ import type {
   BaseFileInfo,
   BaseFileUploadItem,
   BaseFileUploadItemSuccess,
+  BaseFileUploadRejectedFile,
 } from '@/ui/base-file-upload/baseFileUpload.type'
-import { BaseFileUploadStatus } from '@/ui/base-file-upload/baseFileUpload.type'
 import {
+  BaseFileUploadError,
+  BaseFileUploadStatus,
+} from '@/ui/base-file-upload/baseFileUpload.type'
+import {
+  isValidMimeType,
   mapFileInfoToBaseFileUploadItem,
   mapFileToBaseUploadItem,
 } from '@/ui/base-file-upload/baseFileUpload.util'
@@ -27,7 +32,7 @@ const props = withDefaults(defineProps<BaseFileUploadProps>(), {
 })
 
 const emit = defineEmits<{
-  filesRejected: [files: File[]]
+  filesRejected: [files: BaseFileUploadRejectedFile[]]
 }>()
 
 const modelValue = defineModel<BaseFileInfo[] | (BaseFileInfo | null)>({
@@ -110,39 +115,38 @@ const sortedItems = computed<BaseFileUploadItem[]>(() => {
     .slice(isMultiple.value ? undefined : -1)
 })
 
-function isValidFile(file: File, allowedTypes: string[]): boolean {
-  return allowedTypes.some((type) => {
-    if (type === '*/*') {
-      return true
-    }
-
-    if (type.endsWith('/*')) {
-      const [
-        mainType,
-      ] = type.split('/')
-
-      return file.type.startsWith(`${mainType}/`)
-    }
-
-    return file.type === type
-  })
-}
-
 function onFilesSelected(files: File[]): void {
-  let validFiles = files
+  const rejectedFiles: BaseFileUploadRejectedFile[] = []
+  const validFiles: File[] = []
 
-  validFiles = validFiles.filter((file) => isValidFile(file, props.accept))
+  for (const file of files) {
+    if (!isValidMimeType(file, props.accept)) {
+      rejectedFiles.push({
+        error: BaseFileUploadError.INVALID_MIME_TYPE,
+        file,
+      })
 
-  validFiles = props.isValidFile === null
-    ? validFiles
-    : files.filter((file) => props.isValidFile!(file))
+      continue
+    }
 
-  validFiles = validFiles.slice(0, isMultiple.value ? undefined : 1)
+    if (props.isValidFile !== null) {
+      const validationResult = props.isValidFile(file)
 
-  const invalidFiles = files.filter((file) => !validFiles.includes(file))
+      if (validationResult !== true) {
+        rejectedFiles.push({
+          error: validationResult,
+          file,
+        })
 
-  if (invalidFiles.length > 0) {
-    emit('filesRejected', invalidFiles)
+        continue
+      }
+    }
+
+    validFiles.push(file)
+  }
+
+  if (rejectedFiles.length > 0) {
+    emit('filesRejected', rejectedFiles)
   }
 
   if (isMultiple.value) {
@@ -219,14 +223,21 @@ function onSuccess(item: BaseFileUploadItem): void {
   }
 }
 
-function onError(item: BaseFileUploadItem, errorMessage: string): void {
+function onError(item: BaseFileUploadItem, error: string | BaseFileUploadError): void {
   updateInternalItem(item.key, {
-    errorMessage,
+    error,
     status: BaseFileUploadStatus.ERROR,
   })
 }
 
+function revokeBlobUrl(url: string | null | undefined): void {
+  if (url?.startsWith('blob:')) {
+    URL.revokeObjectURL(url)
+  }
+}
+
 function onRemoveFileUploadItem(item: BaseFileUploadItem): void {
+  revokeBlobUrl(item.url)
   internalFiles.value = internalFiles.value.filter((file) => file.key !== item.key)
   delegatedModelValue.value = delegatedModelValue.value.filter(
     (file) => file.uuid !== item.uuid,
@@ -239,6 +250,7 @@ function onReplaceFileUploadItem(item: BaseFileUploadItem, file: File): void {
   const fileExistsInInternalFiles = internalFiles.value.some((file) => file.key === item.key)
 
   if (fileExistsInInternalFiles) {
+    revokeBlobUrl(item.url)
     updateInternalItem(item.key, mapFileToBaseUploadItem(file, item.order))
   }
   else {

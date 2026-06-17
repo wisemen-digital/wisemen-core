@@ -21,7 +21,7 @@ export interface ConfigProviderProps {
    * @default 'always'
    */
   autoCloseToast: ToastAutoClose
-  /**
+  /*
    * The locale to use for date formatting in date-related components.
    * When not set, falls back to `navigator.language`.
    * @default null

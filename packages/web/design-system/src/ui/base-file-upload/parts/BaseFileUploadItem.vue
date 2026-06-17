@@ -52,17 +52,22 @@ async function getFileInfoData(): Promise<BaseFileUploadInfo | null> {
     return await adapter.getFileInfo(name, mimeType)
   }
   catch {
-    onError(props.item, BaseFileUploadError.UPLOAD_FAILED)
+    onError(props.item, BaseFileUploadError.GET_FILE_INFO_FAILED)
   }
 
   return null
 }
+
+let currentXhr: XMLHttpRequest | null = null
 
 function uploadToS3(uuid: string, url: string, file: File): Promise<void> {
   onStartUpload(props.item, uuid)
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
+
+    currentXhr = xhr
+
     const blob = new Blob([
       file,
     ])
@@ -77,7 +82,6 @@ function uploadToS3(uuid: string, url: string, file: File): Promise<void> {
 
     xhr.onload = (): void => {
       if (xhr.status >= 200 && xhr.status < 300) {
-        onSuccess(props.item)
         resolve()
       }
       else {
@@ -127,8 +131,12 @@ async function uploadFile(): Promise<void> {
     try {
       processedFile = await preprocess(file)
     }
-    catch {
-      onError(props.item, BaseFileUploadError.PREPROCESSING_FAILED)
+    catch (error) {
+      const errorMessage = error instanceof Error && error.message
+        ? error.message
+        : BaseFileUploadError.PREPROCESSING_FAILED
+
+      onError(props.item, errorMessage)
 
       return
     }
@@ -138,14 +146,26 @@ async function uploadFile(): Promise<void> {
 
   try {
     await uploadToS3(uuid, uploadUrl, processedFile)
-    await adapter.confirmUpload(uuid, blurHash)
   }
   catch {
     // onError was already called inside uploadToS3 on failure
+    return
+  }
+
+  try {
+    await adapter.confirmUpload(uuid, blurHash)
+    onSuccess(props.item)
+  }
+  catch {
+    onError(props.item, BaseFileUploadError.CONFIRM_UPLOAD_FAILED)
   }
 }
 
-function onCancel(): void {}
+function onCancel(): void {
+  currentXhr?.abort()
+  currentXhr = null
+  onRemoveFileUploadItem(props.item)
+}
 
 if (props.item.status === BaseFileUploadStatus.PENDING) {
   void uploadFile()
