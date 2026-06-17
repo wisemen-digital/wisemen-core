@@ -21,7 +21,7 @@
     "codegen"
   ],
   "bin": {
-    "wisemen-skills": "./dist/index.mjs"
+    "skills-cli": "./dist/index.mjs"
   },
   "exports": {
     ".": {
