@@ -32,6 +32,10 @@ fileDialog.onChange((fileList) => {
 })
 
 function openFileDialog(): void {
+  if (isDisabled.value) {
+    return
+  }
+
   fileDialog.open({
     accept: accept.value.join(', '),
     multiple: false,

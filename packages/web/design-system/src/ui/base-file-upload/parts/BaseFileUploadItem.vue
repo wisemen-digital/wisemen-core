@@ -6,6 +6,7 @@ import type {
   BaseFileUploadInfo,
   BaseFileUploadItem,
   BaseFileUploadItemPending,
+  BaseFileUploadUploadOptions,
 } from '@/ui/base-file-upload/baseFileUpload.type'
 import {
   BaseFileUploadError,
@@ -60,9 +61,7 @@ async function getFileInfoData(): Promise<BaseFileUploadInfo | null> {
 
 let currentXhr: XMLHttpRequest | null = null
 
-function uploadToS3(uuid: string, url: string, file: File): Promise<void> {
-  onStartUpload(props.item, uuid)
-
+function uploadToS3(url: string, file: File): Promise<void> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
 
@@ -85,13 +84,11 @@ function uploadToS3(uuid: string, url: string, file: File): Promise<void> {
         resolve()
       }
       else {
-        onError(props.item, BaseFileUploadError.UPLOAD_FAILED)
         reject(new Error(`Upload failed with status ${xhr.status}`))
       }
     }
 
     xhr.onerror = (): void => {
-      onError(props.item, BaseFileUploadError.UPLOAD_FAILED)
       reject(new Error('Upload failed due to a network error'))
     }
 
@@ -110,7 +107,24 @@ function uploadToS3(uuid: string, url: string, file: File): Promise<void> {
   })
 }
 
-async function uploadFile(): Promise<void> {
+async function uploadFile(uuid: string, url: string, file: File): Promise<void> {
+  const uploadOptions: BaseFileUploadUploadOptions = {
+    isPublic: isPublic.value,
+    onProgress: (progress) => onUpdateProgress(props.item, progress),
+  }
+
+  onStartUpload(props.item, uuid)
+
+  if (adapter.uploadFile !== undefined) {
+    await adapter.uploadFile(url, file, uploadOptions)
+
+    return
+  }
+
+  await uploadToS3(url, file)
+}
+
+async function startUpload(): Promise<void> {
   const fileInfo = await getFileInfoData()
 
   if (fileInfo === null) {
@@ -145,10 +159,11 @@ async function uploadFile(): Promise<void> {
   const blurHash = await BlurhashUtil.encode(processedFile)
 
   try {
-    await uploadToS3(uuid, uploadUrl, processedFile)
+    await uploadFile(uuid, uploadUrl, processedFile)
   }
   catch {
-    // onError was already called inside uploadToS3 on failure
+    onError(props.item, BaseFileUploadError.UPLOAD_FAILED)
+
     return
   }
 
@@ -168,7 +183,7 @@ function onCancel(): void {
 }
 
 if (props.item.status === BaseFileUploadStatus.PENDING) {
-  void uploadFile()
+  void startUpload()
 }
 
 useProvideBaseFileUploadItemContext({

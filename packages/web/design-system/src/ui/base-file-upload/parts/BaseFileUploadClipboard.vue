@@ -181,7 +181,7 @@ async function handlePaste(event: ClipboardEvent): Promise<void> {
 
   const foundEntries: ClipboardEntry[] = []
 
-  for (const file of pastedFiles) {
+  for (const file of Array.from(pastedFiles)) {
     if (!isValidMimeType({
       type: file.type,
     }, accept.value)) {

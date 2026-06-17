@@ -4,6 +4,8 @@ import type {
 } from '@/ui/base-file-upload/baseFileUpload.type'
 import { BaseFileUploadStatus } from '@/ui/base-file-upload/baseFileUpload.type'
 
+const FILE_PATH_SPLIT_REGEX = /[/\\]/
+
 export function mapFileToBaseUploadItem(
   file: File,
   order: number,
@@ -71,8 +73,9 @@ export async function getFileNameFromClipboardItem(
   if (clipboardItem.types.includes('text/plain')) {
     try {
       const textBlob = await clipboardItem.getType('text/plain')
-      const text = (await textBlob.text()).trim()
-      const fileName = text.split(/[/\\]/).pop()
+      const textContent = await textBlob.text()
+      const text = textContent.trim()
+      const fileName = text.split(FILE_PATH_SPLIT_REGEX).pop()
 
       if (fileName !== undefined && fileName.includes('.')) {
         return fileName

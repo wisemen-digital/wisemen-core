@@ -25,6 +25,11 @@ export interface BaseFileUploadInfo {
   uploadUrl: string
 }
 
+export interface BaseFileUploadUploadOptions {
+  isPublic: boolean
+  onProgress: (progress: number) => void
+}
+
 export interface BaseFileUploadAdapter {
   /**
    * Confirms the upload of a file. In the case of an image, a blur hash can be provided to
@@ -47,6 +52,17 @@ export interface BaseFileUploadAdapter {
    * @returns A promise that resolves to a `BaseFileUploadInfo` object containing upload metadata.
    */
   getFileInfo: (name: string, mimeType: string) => Promise<BaseFileUploadInfo>
+  /**
+   * Optional custom upload implementation.
+   *
+   * When omitted, the design system falls back to its built-in `XMLHttpRequest` upload flow.
+   * This is useful for Storybook, tests, or applications that want to fully control upload behavior.
+   */
+  uploadFile?: (
+    uploadUrl: string,
+    file: File,
+    options: BaseFileUploadUploadOptions,
+  ) => Promise<void>
 }
 
 export enum BaseFileUploadStatus {

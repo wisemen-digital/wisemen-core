@@ -22,6 +22,10 @@ fileDialog.onChange((fileList) => {
 })
 
 function openFileDialog(): void {
+  if (isDisabled.value) {
+    return
+  }
+
   fileDialog.open({
     accept: accept.value.join(', '),
     multiple: isMultiple.value,
@@ -32,6 +36,7 @@ function openFileDialog(): void {
 <template>
   <Primitive
     :as-child="true"
+    :disabled="isDisabled"
     @click="openFileDialog"
   >
     <slot :is-disabled="isDisabled" />

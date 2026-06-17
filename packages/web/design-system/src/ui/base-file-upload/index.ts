@@ -11,6 +11,7 @@ export type {
   BaseFileUploadItemSuccess,
   BaseFileUploadItemUploading,
   BaseFileUploadRejectedFile,
+  BaseFileUploadUploadOptions,
   BaseFileUploadAdapter as UIBaseFileUploadAdapter,
 } from '@/ui/base-file-upload/baseFileUpload.type'
 export { BaseFileUploadError } from '@/ui/base-file-upload/baseFileUpload.type'

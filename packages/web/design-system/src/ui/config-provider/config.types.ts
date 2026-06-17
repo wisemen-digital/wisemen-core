@@ -30,6 +30,7 @@ export interface ConfigProviderProps {
   /**
    * The adapter to use for the BaseFileUpload component.
    * Provide a getFileInfo() and a confirmUpload() function.
+   * Optionally provide uploadFile() to override the built-in upload request implementation.
    * @default null
    */
   fileUploadAdapter?: BaseFileUploadAdapter | null

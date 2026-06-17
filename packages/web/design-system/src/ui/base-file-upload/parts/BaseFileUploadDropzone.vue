@@ -14,7 +14,9 @@ import { useInjectBaseFileUploadContext } from '@/ui/base-file-upload/baseFileUp
 const isOverPage = ref<boolean>(false)
 
 const {
-  isMultiple, onFilesSelected,
+  isDisabled,
+  isMultiple,
+  onFilesSelected,
 } = useInjectBaseFileUploadContext()
 
 const dropzoneRef = ref<InstanceType<any> | null>(null)
@@ -25,6 +27,10 @@ const {
 } = useDropZone(dropzoneEl, {
   multiple: isMultiple.value,
   onDrop: (files) => {
+    if (isDisabled.value) {
+      return
+    }
+
     if (files !== null && files.length > 0) {
       onFilesSelected(files)
     }
@@ -34,6 +40,13 @@ const {
 let counter = 0
 
 function handleDragEvent(event: DragEvent, eventType: 'drop' | 'enter' | 'leave' | 'over'): void {
+  if (isDisabled.value) {
+    counter = 0
+    isOverPage.value = false
+
+    return
+  }
+
   event.preventDefault()
 
   if (event.dataTransfer) {
@@ -74,7 +87,7 @@ useEventListener<DragEvent>(document.body, 'drop', (event) => handleDragEvent(ev
     :as-child="true"
   >
     <slot
-      :is-hovering-over-dropzone="isOverDropZone"
+      :is-hovering-over-dropzone="isDisabled ? false : isOverDropZone"
       :is-hovering-over-page="isOverPage"
     />
   </Primitive>

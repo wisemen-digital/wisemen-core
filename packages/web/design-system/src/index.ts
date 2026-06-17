@@ -2,6 +2,7 @@ import './source.css'
 import './utilities.css'
 
 export * from './locales'
+export * from './models'
 export type { Register } from './register'
 export { type HourCycle } from './types/hourCycle.type'
 export {
