@@ -10,15 +10,20 @@ import {
 } from '@wisemen/vue-core-icons'
 import { ref } from 'vue'
 
-import type { TabsVariant } from '@/ui/tabs/tabs.props'
+import type {
+  TabsOverflowBehavior,
+  TabsVariant,
+} from '@/ui/tabs/tabs.props'
 import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsContent from '@/ui/tabs/TabsContent.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 
 const props = withDefaults(defineProps<{
+  overflowBehavior?: TabsOverflowBehavior
   variant?: TabsVariant
 }>(), {
+  overflowBehavior: 'responsive-dropdown',
   variant: 'underline',
 })
 
@@ -27,6 +32,7 @@ const selectedTab = ref<string>('tab1')
 
 <template>
   <div
+    data-testid="tabs-overflow-container"
     class="
       flex w-80 resize-x flex-col gap-4 overflow-auto rounded-md border
       border-dashed border-tertiary p-2
@@ -34,6 +40,7 @@ const selectedTab = ref<string>('tab1')
   >
     <Tabs
       v-model="selectedTab"
+      :overflow-behavior="props.overflowBehavior"
       :variant="props.variant"
     >
       <TabsList>

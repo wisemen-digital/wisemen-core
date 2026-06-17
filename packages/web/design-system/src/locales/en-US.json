@@ -85,6 +85,8 @@
   "component.table_customization.dialog.description": "Drag to reorder columns or toggle their visibility.",
   "component.table_customization.dialog.done": "Done",
   "component.table_customization.dialog.title": "Customize columns",
+  "component.tabs.overflow_label": "More",
+  "component.tabs.overflow_menu": "Open hidden tabs",
   "component.tabs.scroll_left": "Scroll left",
   "component.tabs.scroll_right": "Scroll right",
   "component.toast.close.label": "Close",

@@ -85,6 +85,8 @@
   "component.table_customization.dialog.description": "Sleep om kolommen te herordenen of schakel hun zichtbaarheid in/uit.",
   "component.table_customization.dialog.done": "Klaar",
   "component.table_customization.dialog.title": "Kolommen aanpassen",
+  "component.tabs.overflow_label": "Meer",
+  "component.tabs.overflow_menu": "Verborgen tabbladen openen",
   "component.tabs.scroll_left": "Naar links scrollen",
   "component.tabs.scroll_right": "Naar rechts scrollen",
   "component.toast.close.label": "Sluiten",

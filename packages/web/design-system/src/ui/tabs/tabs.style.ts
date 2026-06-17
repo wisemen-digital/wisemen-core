@@ -14,7 +14,7 @@ export const tabsVariants = tv({
     base: 'relative isolate overflow-hidden',
     content: 'outline-none',
     dropdownIndicator: 'absolute transition-opacity duration-200',
-    dropdownTrigger: 'relative flex items-center justify-center',
+    dropdownTrigger: 'relative flex shrink-0 items-center justify-center gap-sm',
     indicator: `
       absolute duration-200
       group-data-[orientation=horizontal]:bottom-0
@@ -35,6 +35,7 @@ export const tabsVariants = tv({
       group relative flex
       data-[orientation=vertical]:flex-col
     `,
+    responsiveContainer: '',
     scrollContainer: 'no-scrollbar overflow-x-auto scroll-smooth',
   },
   variants: {
@@ -123,6 +124,11 @@ export const tabsVariants = tv({
         list: `
           gap-lg
           data-[orientation=vertical]:gap-sm
+        `,
+        responsiveContainer: `
+          border-secondary
+          data-[orientation=horizontal]:border-b
+          data-[orientation=vertical]:border-l
         `,
         scrollContainer: `
           border-secondary
