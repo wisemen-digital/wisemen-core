@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/twilio",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publishConfig": {
     "access": "public"
   },
@@ -33,7 +33,10 @@
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
+    "@types/node": "catalog:backend",
     "typescript": "catalog:peer"
   },
   "author": "Kobe Kwanten",

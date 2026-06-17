@@ -55,8 +55,17 @@ export function useSearch(options?: Options) {
     immediate: true,
   })
 
-  function updateSearch(value: string): void {
+  function updateSearch(value: string, immediate = false): void {
     search.value = value
+
+    if (immediate) {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout)
+      }
+
+      debouncedSearch.value = value
+      isDebouncing.value = false
+    }
   }
 
   return {

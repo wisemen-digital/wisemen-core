@@ -2,7 +2,6 @@
 import {
   computed,
   onUnmounted,
-  ref,
   useSlots,
   watch,
 } from 'vue'
@@ -28,7 +27,6 @@ const props = withDefaults(defineProps<DashboardPageProps & {
   actions: () => [],
   breadcrumbs: () => [],
   detailPane: null,
-  tabs: () => [],
 })
 
 const mainContentDetailPaneContext = useInjectMainContentDetailPaneContext(null)
@@ -51,7 +49,10 @@ watch([
   immediate: true,
 })
 
-const isDetailPaneOpen = ref<boolean>(true)
+const isDetailPaneOpen = defineModel<boolean>('isDetailPaneOpen', {
+  default: true,
+  required: false,
+})
 
 const hasDetailPane = computed<boolean>(() => {
   return props.detailPane !== null && slots['detail-pane'] !== undefined
@@ -70,6 +71,9 @@ const {
 } = useDetailPane({
   isOpen: isDetailPaneOpen,
   isResizable: props.detailPane?.isResizable ?? true,
+  defaultWidth: props.detailPane?.defaultWidth,
+  maxWidth: props.detailPane?.maxWidth,
+  minWidth: props.detailPane?.minWidth,
   storage: props.detailPane?.storage ?? null,
   variant: props.detailPane?.variant ?? 'full-height-inline',
 })
@@ -88,7 +92,11 @@ if (hasDetailPane.value) {
   })
 
   if (mainContentDetailPaneContext != null) {
-    mainContentDetailPaneContext.registerDetailPane(computedIsDetailPaneOpen, toggleIsOpen)
+    mainContentDetailPaneContext.registerDetailPane(
+      computedIsDetailPaneOpen,
+      toggleIsOpen,
+      props.detailPane?.isToggleHidden,
+    )
     onUnmounted(() => mainContentDetailPaneContext.unregisterDetailPane())
   }
 }

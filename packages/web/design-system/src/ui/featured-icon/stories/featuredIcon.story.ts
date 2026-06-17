@@ -3,6 +3,7 @@ import type {
   StoryObj,
 } from '@storybook/vue3-vite'
 
+import FeaturedIconAllVariantsPlayground from './FeaturedIconAllVariantsPlayground.vue'
 import FeaturedIconPlayground from './FeaturedIconPlayground.vue'
 
 const meta = {
@@ -10,6 +11,7 @@ const meta = {
   argTypes: {
     color: {
       control: 'select',
+      description: 'Color palette applied to the featured icon',
       options: [
         'gray',
         'brand',
@@ -23,6 +25,7 @@ const meta = {
     },
     size: {
       control: 'select',
+      description: 'Controls the overall size of the featured icon',
       options: [
         'sm',
         'md',
@@ -33,6 +36,7 @@ const meta = {
     },
     variant: {
       control: 'select',
+      description: 'Visual style applied to the featured icon',
       options: [
         'translucent',
         'outline',
@@ -57,16 +61,27 @@ export const Default: Story = {
   },
 }
 
-export const Translucent: Story = {
+export const AllVariants: Story = {
   args: {
-    color: 'gray',
-    variant: 'translucent',
+    size: 'md',
   },
-}
-
-export const Outline: Story = {
-  args: {
-    color: 'gray',
-    variant: 'outline',
+  parameters: {
+    controls: {
+      exclude: [
+        'color',
+        'variant',
+      ],
+    },
   },
+  render: (args) => ({
+    components: {
+      FeaturedIconAllVariantsPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<FeaturedIconAllVariantsPlayground v-bind="args" />',
+  }),
 }

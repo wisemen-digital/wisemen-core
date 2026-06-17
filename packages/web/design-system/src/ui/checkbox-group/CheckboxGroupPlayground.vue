@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import type { CheckboxGroupProps } from '@/ui/checkbox-group/checkboxGroup.props'
 import CheckboxGroupCheckbox from '@/ui/checkbox-group/CheckboxGroupCheckbox.vue'
 import CheckboxGroupIndeterminateCheckbox from '@/ui/checkbox-group/CheckboxGroupIndeterminateCheckbox.vue'
 import CheckboxGroupRoot from '@/ui/checkbox-group/CheckboxGroupRoot.vue'
 import ColumnLayout from '@/ui/column-layout/ColumnLayout.vue'
 import { UIText } from '@/ui/text/index'
+
+const props = withDefaults(defineProps<CheckboxGroupProps>(), {
+  isDisabled: false,
+  disabledReason: null,
+  orientation: 'vertical',
+})
 
 const modelValue = defineModel<string[]>({
   required: true,
@@ -32,6 +39,9 @@ const options = [
   <div class="p-xl">
     <CheckboxGroupRoot
       v-model="modelValue"
+      :disabled-reason="props.disabledReason"
+      :is-disabled="props.isDisabled"
+      :orientation="props.orientation"
     >
       <CheckboxGroupIndeterminateCheckbox
         label="Check them all!"
@@ -46,11 +56,14 @@ const options = [
         >
           <div
             class="
-              flex w-xl items-center justify-between rounded-md border
+              flex w-full items-center justify-between gap-lg rounded-md border
               border-secondary p-md px-lg
             "
           >
-            <ColumnLayout gap="none">
+            <ColumnLayout
+              gap="none"
+              class="min-w-0 flex-1"
+            >
               <UIText
                 :text="option.title"
                 class="text-xs"

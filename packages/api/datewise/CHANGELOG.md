@@ -1,5 +1,40 @@
 # @wisemen/datewise
 
+
+## 1.0.11
+<sub>2026-06-11</sub>
+
+- [#1246](https://github.com/wisemen-digital/wisemen-core/pull/1246)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: add overloads on timestamp.locale to better indicate the returned type
+- [#1248](https://github.com/wisemen-digital/wisemen-core/pull/1248)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added isoWeekday and isoWeek to the package.
+- [#1250](https://github.com/wisemen-digital/wisemen-core/pull/1250)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: support localization in datewise timestamps
+
+## 1.0.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/quantity@0.8.4
+
+## 1.0.9
+
+### Patch Changes
+
+- [#1172](https://github.com/wisemen-digital/wisemen-core/pull/1172) [`58620e8`](https://github.com/wisemen-digital/wisemen-core/commit/58620e893f12e55910b302a78c7443dac89d4fdc) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: rework error message
+
+## 1.0.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/quantity@0.8.3
+
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wisemen/quantity@0.8.2
+
 ## 1.0.6
 
 ### Patch Changes

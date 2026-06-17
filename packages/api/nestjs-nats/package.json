@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-nats",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "publishConfig": {
     "access": "public"
   },
@@ -52,6 +52,8 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
   "author": "Wisemen",

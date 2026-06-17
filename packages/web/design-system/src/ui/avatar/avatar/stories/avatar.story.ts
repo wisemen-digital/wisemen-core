@@ -4,47 +4,98 @@ import type {
 } from '@storybook/vue3-vite'
 
 import AvatarFallbackPlayground from '@/ui/avatar/avatar/stories/AvatarFallbackPlayground.vue'
-import AvatarImagePlayground from '@/ui/avatar/avatar/stories/AvatarImagePlayground.vue'
 import AvatarLogoPlayground from '@/ui/avatar/avatar/stories/AvatarLogoPlayground.vue'
+import AvatarPlayground from '@/ui/avatar/avatar/stories/AvatarPlayground.vue'
+import AvatarSizesPlayground from '@/ui/avatar/avatar/stories/AvatarSizesPlayground.vue'
 import AvatarStatusPlayground from '@/ui/avatar/avatar/stories/AvatarStatusPlayground.vue'
 
 const meta = {
   title: 'Components/Avatar',
+  argTypes: {
+    size: {
+      control: 'select',
+      description: 'Controls the size of the avatar',
+      options: [
+        'xxs',
+        'xs',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl',
+      ],
+    },
+  },
   tags: [
     'autodocs',
   ],
-  component: AvatarImagePlayground,
-} satisfies Meta<typeof AvatarImagePlayground>
+  component: AvatarPlayground,
+} satisfies Meta<typeof AvatarPlayground>
 
 export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
+export const Default: Story = {
+  args: {
+    size: 'md',
+  },
+}
+
+export const AllSizes: Story = {
+  parameters: {
+    controls: {
+      exclude: [
+        'size',
+      ],
+    },
+  },
+  render: () => ({
+    components: {
+      AvatarSizesPlayground,
+    },
+    template: '<AvatarSizesPlayground />',
+  }),
+}
 
 export const Fallback: Story = {
-  render: () => ({
+  render: (args) => ({
     components: {
       AvatarFallbackPlayground,
     },
-    template: '<AvatarFallbackPlayground />',
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<AvatarFallbackPlayground v-bind="args" />',
   }),
 }
 
 export const Status: Story = {
-  render: () => ({
+  render: (args) => ({
     components: {
       AvatarStatusPlayground,
     },
-    template: '<AvatarStatusPlayground />',
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<AvatarStatusPlayground v-bind="args" />',
   }),
 }
 
 export const WithLogo: Story = {
-  render: () => ({
+  render: (args) => ({
     components: {
       AvatarLogoPlayground,
     },
-    template: '<AvatarLogoPlayground />',
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<AvatarLogoPlayground v-bind="args" />',
   }),
 }

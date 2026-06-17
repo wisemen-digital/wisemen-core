@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -49,7 +49,11 @@
   "peerDependencies": {
     "vue": "catalog:peer",
     "pinia": "catalog:vue",
-    "vue-i18n": "catalog:peer"
+    "vue-i18n": "catalog:peer",
+    "vue-router": "catalog:peer"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "catalog:vite"
   },
   "devDependencies": {
     "@tanstack/vue-hotkeys": "catalog:",

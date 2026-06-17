@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import Loader from '@/ui/loader/Loader.vue'
+
+const props = withDefaults(defineProps<{
+  size?: 'lg' | 'md' | 'sm'
+}>(), {
+  size: 'md',
+})
+
+const sizeClasses = {
+  lg: 'size-8',
+  md: 'size-6',
+  sm: 'size-4',
+} as const
 </script>
 
 <template>
-  <div class="flex flex-col gap-4">
-    <p class="text-sm font-medium text-secondary">
-      Sizes
-    </p>
-    <div class="flex items-center gap-8">
-      <Loader class="size-4 text-primary" />
-      <Loader class="size-6 text-primary" />
-      <Loader class="size-8 text-primary" />
-    </div>
-  </div>
+  <Loader
+    :class="sizeClasses[props.size]"
+    class="text-primary"
+  />
 </template>

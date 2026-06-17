@@ -1,5 +1,17 @@
 # @wisemen/vue-core-tailwind-config
 
+
+## 0.0.5
+<sub>2026-06-08</sub>
+
+- [#1223](https://github.com/wisemen-digital/wisemen-core/pull/1223)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add moss color variant to badge and dot components
+
+## 0.0.4
+
+### Patch Changes
+
+- [#1182](https://github.com/wisemen-digital/wisemen-core/pull/1182) [`26cbf86`](https://github.com/wisemen-digital/wisemen-core/commit/26cbf8667670a50e95e2cc2698eab3b9d93eb604) Thanks [@wouterlms](https://github.com/wouterlms)! - Reduce hover state contrast
+
 ## 0.0.3
 
 ### Patch Changes

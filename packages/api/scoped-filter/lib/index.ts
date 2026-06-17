@@ -1,4 +1,4 @@
-export { buildScopedFilter } from "#src/scoped-filter.js"
+export { buildScopedFilter, ScopedFilter} from "#src/scoped-filter.js"
 export { buildScopedEnumFilter } from "#src/scoped-enum-filter.js"
 export { ScopedUuidFilter } from "#src/scoped-uuid-filter.js"
 export { Scope } from "#src/scope.js"

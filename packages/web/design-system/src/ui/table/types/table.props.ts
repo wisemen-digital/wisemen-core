@@ -1,7 +1,10 @@
 import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Component } from 'vue'
 
-import type { RegisteredActionContext } from '@/register'
+import type {
+  RegisteredActionContext,
+  RegisteredRouteLocationRaw,
+} from '@/register'
 import type {
   InferTableItem,
   TableColumn,
@@ -49,6 +52,13 @@ export interface TableProps<TData extends TableData<unknown>> extends Omit<Table
    * across re-renders — must be unique per item within the data set.
    */
   getKey: (item: InferTableItem<TData>) => string
+  /**
+   * Maps a row item to a route location, making the entire row a clickable link.
+   * Return `null` to disable linking for a specific row.
+   * When using other interactable elements inside a cell, wrap them with `UITableCellInteractiveElement`
+   * to prevent click events from triggering the row link.
+   */
+  getLink?: ((item: InferTableItem<TData>) => RegisteredRouteLocationRaw | null) | null
   /**
    * Returns an array of Vue components to render inside a group's header row. Use this to
    * add custom summary cells (e.g. totals) aligned with the table columns for grouped data.

@@ -1,5 +1,29 @@
 # @wisemen/vue-core-query
 
+
+
+
+## 2.0.5
+<sub>2026-06-08</sub>
+
+- [#1220](https://github.com/wisemen-digital/wisemen-core/pull/1220)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Change sort direction dto type to any
+
+## 2.0.4
+<sub>2026-06-08</sub>
+
+- [#1218](https://github.com/wisemen-digital/wisemen-core/pull/1218)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Use correct dto type
+
+## 2.0.2
+<sub>2026-06-08</sub>
+
+- [#1209](https://github.com/wisemen-digital/wisemen-core/pull/1209)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Convert SortDirection from enum to type
+
+## 2.0.1
+
+### Patch Changes
+
+- [#1171](https://github.com/wisemen-digital/wisemen-core/pull/1171) [`cbcc93c`](https://github.com/wisemen-digital/wisemen-core/commit/cbcc93c1735697582e3714cf34330e9a059d2809) Thanks [@Robbe95](https://github.com/Robbe95)! - Added zod as peer
+
 ## 2.0.0
 
 ### Major Changes

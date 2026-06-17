@@ -1,5 +1,32 @@
 # @wisemen/quantity
 
+
+## 0.9.0
+<sub>2026-06-08</sub>
+
+- [#1215](https://github.com/wisemen-digital/wisemen-core/pull/1215)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Add column utils for Rate
+
+## 0.8.4
+
+### Patch Changes
+
+- Updated dependencies [[`0bc5b42`](https://github.com/wisemen-digital/wisemen-core/commit/0bc5b42c8a9f15e696e01dc24b6fd228b6657405)]:
+  - @wisemen/nestjs-typeorm@1.1.1
+
+## 0.8.3
+
+### Patch Changes
+
+- Updated dependencies [[`23b823f`](https://github.com/wisemen-digital/wisemen-core/commit/23b823fd570e61b7d368b782e5330f9fd372e15d)]:
+  - @wisemen/nestjs-typeorm@1.1.0
+
+## 0.8.2
+
+### Patch Changes
+
+- Updated dependencies [[`0c248c2`](https://github.com/wisemen-digital/wisemen-core/commit/0c248c2b889d75496817e0fd5c8c5f217c1f9deb)]:
+  - @wisemen/nestjs-typeorm@1.0.2
+
 ## 0.8.1
 
 ### Patch Changes

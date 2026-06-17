@@ -170,7 +170,7 @@ function onUpdateIsOpen(value: boolean): void {
         navigated: hasNavigated,
       }"
       class="
-        absolute top-28 left-1/2 z-40 w-full max-w-180 -translate-x-1/2
+        absolute top-28 left-1/2 z-99 w-full max-w-180 -translate-x-1/2
         rounded-xl border border-transparent bg-primary shadow-lg duration-200
         outline-none
         dark:border-secondary

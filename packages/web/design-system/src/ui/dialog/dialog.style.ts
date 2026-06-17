@@ -28,7 +28,7 @@ export const createDialogStyle = tv({
     header: 'sticky top-0 z-10 bg-primary',
     innerContent: '',
     overlay: `
-      fixed inset-0 z-40 bg-linear-to-t from-black/50 to-black/25
+      fixed inset-0 bg-linear-to-t from-black/50 to-black/25
       will-change-[opacity]
       dark:from-black/80 dark:to-black/50
     `,

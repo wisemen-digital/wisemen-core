@@ -51,7 +51,7 @@ function onClose(): void {
     :has-close-button="false"
     :prevent-click-outside="props.preventClickOutside"
     :prevent-esc="props.preventEsc"
-    size="xs"
+    size="xxs"
     @close="onClose"
   >
     <DialogHeader

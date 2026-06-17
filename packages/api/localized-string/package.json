@@ -36,7 +36,10 @@
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "@types/node": "catalog:backend"
   },
   "author": "Wisemen",
   "contributors": [],

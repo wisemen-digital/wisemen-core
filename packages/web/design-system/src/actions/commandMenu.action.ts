@@ -27,8 +27,8 @@ export function useCommandMenuAction() {
     },
     keyboardShortcut: {
       key: 'K',
+      mod: true,
       runWithInputFocus: true,
-      meta: true,
     },
   })
 }

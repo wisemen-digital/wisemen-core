@@ -30,7 +30,7 @@ const itemVariants = computed<TimelineVariants>(() => timelineVariants({
           <component
             :is="props.icon"
             v-if="props.icon != null"
-            class="size-4"
+            :class="itemVariants.icon()"
           />
         </slot>
       </div>

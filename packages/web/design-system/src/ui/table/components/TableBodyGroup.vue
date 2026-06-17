@@ -64,8 +64,7 @@ onBeforeUnmount(() => {
             'border-r border-secondary': isScrolledFromLeft,
           }"
           class="
-            sticky left-0 z-1 size-full cursor-pointer bg-primary px-2xl
-            outline-none
+            sticky left-0 z-1 size-full bg-primary px-2xl outline-none
             group-hover/group:bg-secondary
             group-has-focus-visible/group:bg-tertiary
             group-data-[state=open]/collapsible:bg-secondary

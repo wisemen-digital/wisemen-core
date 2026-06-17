@@ -11,4 +11,8 @@ export * from './ui'
 export { createComponent } from './utils/createComponent.util'
 export { toFormField } from './utils/toFormField.util'
 export { useNumberFormat } from '@/composables/numberFormat.composable'
+export {
+  type Sort, type SortDirection, type SortValue, useSort,
+} from '@/composables/sort.composable'
 export { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
+export { tv } from '@/libs/tailwindVariants.lib'
