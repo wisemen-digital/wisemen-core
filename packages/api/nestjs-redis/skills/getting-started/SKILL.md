@@ -1,9 +1,15 @@
 ---
 name: getting-started
-description: Redis client for NestJS. Use when caching in NestJS applications.
+description: Use when configuring Redis caching in NestJS APIs.
 ---
 
-### Register the module
+# @wisemen/nestjs-redis - Getting Started
+
+Use `RedisModule.forRootAsync(...)` to register a shared Redis client, then
+extend `RedisCache` for scoped keys and inject `RedisClient` for reads and
+writes.
+
+## Register The Module
 
 ```ts
 import { Module } from '@nestjs/common'
@@ -28,11 +34,11 @@ import { RedisModule } from '@wisemen/nestjs-redis'
 export class DefaultRedisModule {}
 ```
 
-### Use RedisClient directly
+## Create A Cache Service
 
 ```ts
 import { Injectable } from '@nestjs/common'
-import { RedisClient } from '@wisemen/nestjs-redis'
+import { RedisCache, RedisClient } from '@wisemen/nestjs-redis'
 
 @Injectable()
 export class ExampleCache extends RedisCache {
@@ -41,11 +47,14 @@ export class ExampleCache extends RedisCache {
   constructor(private readonly redis: RedisClient) {}
 
   async getCachedUser(uuid: UserUuid): Promise<User | null> {
-    return this.redis.getCachedValue<User>(uuid)
+    return this.redis.getCachedValue<User>(this.buildCacheKey(uuid))
   }
 
   async cacheUser(user: User): Promise<void> {
-    await this.redis.putCachedValue(user.uuid, user, 3600)
+    await this.redis.putCachedValue(this.buildCacheKey(user.uuid), user, 3600)
   }
 }
 ```
+
+Use `RedisClient.client` only when you need raw Redis commands that the cache
+helpers do not cover.

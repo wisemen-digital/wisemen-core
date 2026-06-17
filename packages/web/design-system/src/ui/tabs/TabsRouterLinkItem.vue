@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import { TabsTrigger as RekaTabsTrigger } from 'reka-ui'
-import {
-  computed,
-  onBeforeUnmount,
-} from 'vue'
+import { computed } from 'vue'
 import {
   RouterLink,
   useRouter,
 } from 'vue-router'
 
 import { UIActionTooltip } from '@/ui/action-tooltip/index'
-import { UIAdaptiveContentBlock } from '@/ui/adaptive-content/index'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
 import { UINumberBadge } from '@/ui/number-badge/index'
 import { useInjectTabsContext } from '@/ui/tabs/tabs.context'
@@ -25,9 +21,6 @@ const props = withDefaults(defineProps<TabsRouterLinkItemProps>(), {
 })
 
 const {
-  isTouchDevice,
-  registerTab,
-  unregisterTab,
   variants,
 } = useInjectTabsContext()
 
@@ -38,17 +31,6 @@ const routeName = computed<string>(() => {
 
   return resolved.name as string
 })
-
-const priority = registerTab({
-  ...props,
-  isDisabled: props.isDisabled,
-  icon: props.icon,
-  value: routeName.value,
-})
-
-onBeforeUnmount(() => {
-  unregisterTab(routeName.value)
-})
 </script>
 
 <template>
@@ -56,10 +38,7 @@ onBeforeUnmount(() => {
     :is-disabled="props.disabledReason == null"
     :label="props.disabledReason"
   >
-    <Component
-      :is="isTouchDevice ? 'div' : UIAdaptiveContentBlock"
-      :priority="priority"
-    >
+    <div>
       <ClickableElement>
         <RekaTabsTrigger
           :value="routeName"
@@ -91,6 +70,6 @@ onBeforeUnmount(() => {
           </RouterLink>
         </RekaTabsTrigger>
       </ClickableElement>
-    </Component>
+    </div>
   </UIActionTooltip>
 </template>
