@@ -7,6 +7,12 @@
 
 
 
+
+## 1.6.1
+<sub>2026-06-18</sub>
+
+- [#1292](https://github.com/wisemen-digital/wisemen-core/pull/1292)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for keyboard shortcut type
+
 ## 1.6.0
 <sub>2026-06-17</sub>
 
