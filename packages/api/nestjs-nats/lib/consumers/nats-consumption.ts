@@ -16,7 +16,8 @@ export class NatsConsumption {
 
   constructor (
     private readonly consumerInfo: ConsumerInfo,
-    private readonly consumer: Consumer
+    private readonly consumer: Consumer,
+    private readonly nakBackoff?: number
   ) {}
 
   addCloudEventHandler (
@@ -90,7 +91,7 @@ export class NatsConsumption {
         `NATS consumer ${this.consumerInfo.name}`
       )
       captureException(error)
-      message.nak()
+      message.nak(this.nakBackoff)
     }
   }
 
