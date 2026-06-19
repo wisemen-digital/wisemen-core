@@ -41,7 +41,7 @@
     "@commitlint/cli": "catalog:tooling",
     "@commitlint/config-conventional": "catalog:tooling",
     "@varlock/bumpy": "catalog:tooling",
-    "fledgling": "^1.0.0",
+    "fledgling": "catalog:build",
     "husky": "catalog:build",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
