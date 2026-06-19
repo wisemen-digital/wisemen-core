@@ -27,12 +27,9 @@ When creating a new package, use [fledgling](https://github.com/dmno-dev/fledgli
 1. **Create the package in the workspace** – Add the new package under `packages/<group>/<package>` and make sure its `package.json` has the correct `name`.
 2. **Claim the name with fledgling** – Run fledgling from the repo root so it can discover the new workspace package:
    ```bash
-   pnpm fledgling add <package-name> --new --yes
+   pnpm fledgling
    ```
-   or sync the repo with
-   ```bash
-   pnpm fledgling sync
-   ```
+   will open an interactive window, which will guide you through claiming the package name and configuring trusted publishing.
 3. **Keep exclusions in sync** – If a public package should not be managed by fledgling, add its name or glob to the `fledgling.ignore` list in the root `package.json`.
 4. **Release through Bumpy** – Once the package is claimed and trusted publishing is configured, normal releases continue through the Bumpy workflow.
 
