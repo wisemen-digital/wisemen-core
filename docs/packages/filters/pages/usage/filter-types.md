@@ -31,8 +31,8 @@ export function useContactOverviewFilters() {
 | `action` | `Action` | The "Add filters" action — pass to `UIFiltersDropdownMenu` or a command menu |
 | `actionGroup` | `ActionGroup` | The action group that was passed in, re-exported for convenience |
 | `activeFilters` | `ComputedRef<FilterWithAction<Filter>[]>` | Filters that currently have a non-default value |
-| `clearAll` | `() => void` | Resets all filters to their default values |
-| `clearFilter` | `(key, onlyIfEmpty?, onlyIfNotStatic?) => void` | Resets a single filter by key |
+| `clearAll` | `() => void` | Resets all non-persistent filters to their default values |
+| `clearFilter` | `(key, onlyIfEmpty?) => void` | Resets a single filter by key; no-ops on persistent filters |
 | `setOpenFilter` | `(key \| null) => void` | Marks a filter as "open" so it stays in `activeFilters` while being edited |
 | `values` | `Ref<FilterValues<TFilters>>` | Reactive map of filter keys to their current values, fully typed |
 
@@ -63,7 +63,7 @@ createMultiSelectFilter({
 | `displayFn` | `(value: TValue) => string` | ✓ | Converts a value to the string shown in the badge and picker |
 | `defaultValue` | `TValue[]` | | Initial value. Defaults to `[]` |
 | `icon` | `Component` | | Icon shown in the action picker |
-| `isStatic` | `boolean` | | When `true`, `clearFilter` with `onlyIfNotStatic` skips this filter |
+| `isPersistent` | `boolean` | | When `true`, the filter is always shown in `activeFilters`, cannot be removed by `clearFilter` or `clearAll`, and its badge appears before non-persistent filters |
 
 ---
 
@@ -117,7 +117,7 @@ createMultiAutocompleteFilter({
 | `displayFn` | `(value: TValue) => string` | ✓ | Converts a value to a display string |
 | `defaultValue` | `TValue[]` | | Defaults to `[]` |
 | `icon` | `Component` | | Icon shown in the action picker |
-| `isStatic` | `boolean` | | See multi-select |
+| `isPersistent` | `boolean` | | See multi-select |
 
 ---
 
@@ -153,7 +153,7 @@ When `canBeToggled` is `true`, the active-filter badge shows a toggle so the use
 | `badgeLabel` | `string` | | Overrides the label shown in the active-filter badge |
 | `defaultValue` | `boolean \| null` | | Defaults to `null` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
-| `isStatic` | `boolean` | | See multi-select |
+| `isPersistent` | `boolean` | | See multi-select |
 
 ---
 
@@ -188,7 +188,34 @@ createNumberFilter({
 | `customUnit` | `string` | | Unit suffix for cases not covered by `Intl.NumberFormat` (e.g. `"px"`) |
 | `defaultValue` | `number \| null` | | Defaults to `null` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
-| `isStatic` | `boolean` | | See multi-select |
+| `isPersistent` | `boolean` | | See multi-select |
+
+---
+
+## Date
+
+Opens a date picker dialog. The value is a `Temporal.PlainDate` (or `null` when unset).
+
+```typescript
+import { createDateFilter } from '@wisemen/vue-core-filters'
+
+createDateFilter({
+  key: 'date',
+  label: 'Date',
+})
+```
+
+When `isPersistent` is `true`, the badge shows prev/next navigation arrows and a "Today" shortcut. The navigation step is determined automatically: a single-day value navigates by day; a full calendar week navigates by week; a full calendar month navigates by month; a full calendar year navigates by year; anything else navigates by the same number of days as the selected range.
+
+**Options:**
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `key` | `string` | ✓ | Unique identifier |
+| `label` | `string` | ✓ | Display name |
+| `defaultValue` | `PlainDate \| null` | | Defaults to `null` (inactive) |
+| `icon` | `Component` | | Icon shown in the action picker |
+| `isPersistent` | `boolean` | | See multi-select |
 
 ---
 
@@ -205,6 +232,8 @@ createDateRangeFilter({
 })
 ```
 
+When `isPersistent` is `true`, the badge shows prev/next navigation arrows (same smart step logic as the date filter). If `from` and `until` are the same day, only a single date is shown in the badge.
+
 **Options:**
 
 | Option | Type | Required | Description |
@@ -213,4 +242,4 @@ createDateRangeFilter({
 | `label` | `string` | ✓ | Display name |
 | `defaultValue` | `PlainDateRange` | | Defaults to `{ from: null, until: null }` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
-| `isStatic` | `boolean` | | See multi-select |
+| `isPersistent` | `boolean` | | See multi-select |

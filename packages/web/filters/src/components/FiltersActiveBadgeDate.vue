@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  PlainDate,
-  PlainDateRange,
-} from '@wisemen/vue-core-dates'
+import type { PlainDate } from '@wisemen/vue-core-dates'
 import { useDateTimeFormat } from '@wisemen/vue-core-dates'
 import { UIText } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
@@ -14,13 +11,13 @@ import FiltersActiveBadgeDialogTrigger from '@/components/FiltersActiveBadgeDial
 import FiltersActiveBadgePartSeparator from '@/components/FiltersActiveBadgePartSeparator.vue'
 import FiltersActiveBadgeValueEmptyState from '@/components/FiltersActiveBadgeValueEmptyState.vue'
 import type {
-  DateRangeFilter,
+  DateFilter,
   FilterWithAction,
 } from '@/composables'
 import { useInjectFiltersContext } from '@/context/filters.context'
 
 const props = defineProps<{
-  filter: FilterWithAction<DateRangeFilter>
+  filter: FilterWithAction<DateFilter>
 }>()
 
 const {
@@ -29,26 +26,7 @@ const {
 
 const dateTimeFormat = useDateTimeFormat()
 
-const value = computed<PlainDateRange>(() => values.value[props.filter.key] as PlainDateRange)
-
-const hasValidRange = computed<boolean>(
-  () => value.value.from !== null && value.value.until !== null,
-)
-
-const showNavigation = computed<boolean>(
-  () => (props.filter.isPersistent ?? false) && hasValidRange.value,
-)
-
-const isSameDay = computed<boolean>(
-  () => hasValidRange.value && value.value.from!.equals(value.value.until!),
-)
-
-function onNavigate(from: PlainDate, until: PlainDate): void {
-  values.value[props.filter.key] = {
-    from,
-    until,
-  }
-}
+const value = computed<PlainDate | null>(() => values.value[props.filter.key] as PlainDate | null)
 </script>
 
 <template>
@@ -60,25 +38,21 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
 
     <FiltersActiveBadgePartSeparator />
 
-    <template v-if="showNavigation">
+    <template v-if="props.filter.isPersistent ?? false">
       <FiltersActiveBadgeDateNavigation
         :filter-id="props.filter.key"
-        :from="value.from"
-        :until="value.until"
-        @navigate="onNavigate"
+        :from="value"
+        :until="value"
+        @navigate="(from) => (values.value as any)[props.filter.key] = from"
       >
         <FiltersActiveBadgeDialogTrigger :filter="props.filter">
           <FiltersActiveBadgeBasePart :is-interactive="true">
-            <UIText
-              v-if="isSameDay"
-              :text="dateTimeFormat.formatPlainDate(value.from!)"
-              class="text-xs text-primary tabular-nums"
-            />
+            <FiltersActiveBadgeValueEmptyState v-if="value === null" />
 
             <UIText
               v-else
-              :text="dateTimeFormat.formatPlainDateRange(value)"
-              class="text-xs text-primary"
+              :text="dateTimeFormat.formatPlainDate(value)"
+              class="text-xs text-primary tabular-nums"
             />
           </FiltersActiveBadgeBasePart>
         </FiltersActiveBadgeDialogTrigger>
@@ -88,12 +62,12 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
     <template v-else>
       <FiltersActiveBadgeDialogTrigger :filter="props.filter">
         <FiltersActiveBadgeBasePart :is-interactive="true">
-          <FiltersActiveBadgeValueEmptyState v-if="value.from === null || value.until === null" />
+          <FiltersActiveBadgeValueEmptyState v-if="value === null" />
 
           <UIText
             v-else
-            :text="dateTimeFormat.formatPlainDateRange(value)"
-            class="text-xs text-primary"
+            :text="dateTimeFormat.formatPlainDate(value)"
+            class="text-xs text-primary tabular-nums"
           />
         </FiltersActiveBadgeBasePart>
       </FiltersActiveBadgeDialogTrigger>
