@@ -39,10 +39,6 @@ const showNavigation = computed<boolean>(
   () => (props.filter.isPersistent ?? false) && hasValidRange.value,
 )
 
-const isSameDay = computed<boolean>(
-  () => hasValidRange.value && value.value.from!.equals(value.value.until!),
-)
-
 function onNavigate(from: PlainDate, until: PlainDate): void {
   values.value[props.filter.key] = {
     from,
@@ -70,13 +66,6 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
         <FiltersActiveBadgeDialogTrigger :filter="props.filter">
           <FiltersActiveBadgeBasePart :is-interactive="true">
             <UIText
-              v-if="isSameDay"
-              :text="dateTimeFormat.formatPlainDate(value.from!)"
-              class="text-xs text-primary tabular-nums"
-            />
-
-            <UIText
-              v-else
               :text="dateTimeFormat.formatPlainDateRange(value)"
               class="text-xs text-primary"
             />
