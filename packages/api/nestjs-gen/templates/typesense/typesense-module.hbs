@@ -1,0 +1,13 @@
+import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@wisemen/nestjs-typeorm'
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([{{ pascalCase name }}])
+  ],
+  providers: [
+    {{ pascalCase name }}TypesenseCollector,
+    {{ pascalCase name }}TypesenseCollection
+  ]
+})
+export class Typesense{{ pascalCase name }}Module {}

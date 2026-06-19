@@ -1,5 +1,11 @@
 # @wisemen/skills-cli
 
+
+## 0.1.1
+<sub>2026-06-17</sub>
+
+- [#1286](https://github.com/wisemen-digital/wisemen-core/pull/1286)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: change skills-clie name to what pnpm in docker files expects
+
 ## 0.1.0
 
 ### Minor Changes

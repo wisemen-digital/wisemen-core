@@ -1,0 +1,41 @@
+import { before, describe, it } from 'node:test'
+import { assert, createStubInstance } from 'sinon'
+import { expect } from 'expect'
+import { Repository } from 'typeorm'
+
+describe('{{ testDescriptionName }}', () => {
+  before(() => {
+    TestBench.setupUnitTest()
+  })
+
+  it('the use cases calls the repository once', async () => {
+    const repository = createStubInstance({{{ repositoryName }}})
+
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      repository,
+      createStubInstance(DomainEventEmitter)
+    )
+    
+    const command = new {{ commandBuilderName }}().build()
+
+    await useCase.execute(command)
+
+    assert.calledOnce(repository.insert)
+  })
+
+  it('{{ testCaseNameEmitEvent }}', async () => {
+    const eventEmitter = createStubInstance(DomainEventEmitter)
+   
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      createStubInstance({{{ repositoryName }}}),
+      eventEmitter
+    )
+
+    const command = new {{ commandBuilderName }}().build()
+    const response = await useCase.execute(command)
+
+    expect(eventEmitter).toHaveEmitted(new {{ eventName }}(response.uuid))
+  })
+})

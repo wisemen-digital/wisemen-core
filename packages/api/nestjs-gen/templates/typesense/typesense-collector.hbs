@@ -1,0 +1,42 @@
+import { MoreThanOrEqual } from 'typeorm'
+import { AnyOrIgnore, InjectRepository, TypeOrmRepository } from '@wisemen/nestjs-typeorm'
+
+@RegisterTypesenseCollector(TypesenseCollectionName.{{ constantCase name }})
+export class {{ pascalCase name }}TypesenseCollector implements TypesenseCollector {
+  static readonly BATCH_SIZE = 500
+
+  constructor (
+    @InjectRepository({{ pascalCase name }})
+    private readonly {{ camelCase name }}Repository: TypeOrmRepository<{{ pascalCase name }}>
+  ) {}
+
+  transform ({{ camelCase pluralName }}: {{ pascalCase name }}[]): Typesense{{ pascalCase name }}[] {
+    return {{ camelCase pluralName }}.map({{ camelCase name }} => new Typesense{{ pascalCase name }}({{ camelCase name }}))
+  }
+
+  fetch (uuids?: {{ pascalCase name }}Uuid[]): AsyncGenerator<{{ pascalCase name }}[], void, void> {
+   return this.{{ camelCase name }}Repository.findByInBatches({
+      uuid: AnyOrIgnore(uuids)
+    }, {{ pascalCase name }}TypesenseCollector.BATCH_SIZE)
+  }
+
+  fetchChanged (since: Date): AsyncGenerator<{{ pascalCase name }}[], void, void> {
+    return this.{{ camelCase name }}Repository.findByInBatches({
+      updatedAt: MoreThanOrEqual(since)
+    }, {{ pascalCase name }}TypesenseCollector.BATCH_SIZE)
+  }
+  {{#if hasDeletedAt }}
+
+  async* fetchRemoved (since: Date): AsyncGenerator<string[], void, void> {
+    const generator = this.{{ camelCase name }}Repository.findInBatches({
+      select: { uuid: true },
+      where: { deletedAt: MoreThanOrEqual(since) },
+      withDeleted: true
+    }, {{ pascalCase name }}TypesenseCollector.BATCH_SIZE)
+
+    for await (const {{ camelCase name }} of generator) {
+      yield {{ camelCase name }}.map({{ camelCase name }} => {{ camelCase name }}.uuid)
+    }
+  }
+  {{/if}}
+}

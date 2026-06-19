@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 0.4.0
+<sub>2026-06-18</sub>
+
+- [#1222](https://github.com/wisemen-digital/wisemen-core/pull/1222)  *(minor)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add nakBackoff option to @Consumer
+
 ## 0.3.6
 
 ### Patch Changes
