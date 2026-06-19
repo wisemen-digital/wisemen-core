@@ -3,9 +3,23 @@
 <script lang="ts">
 const propsData = [
   {
+    "default": "false",
+    "description": "<p>Whether to add a tag when the input loses focus.</p>\n",
+    "name": "addOnBlur",
+    "required": false,
+    "type": "boolean"
+  },
+  {
     "default": "true",
     "description": "<p>Whether to add tags when pasting.</p>\n",
     "name": "addOnPaste",
+    "required": false,
+    "type": "boolean"
+  },
+  {
+    "default": "false",
+    "description": "<p>Whether to add a tag when the Tab key is pressed.</p>\n",
+    "name": "addOnTab",
     "required": false,
     "type": "boolean"
   },
