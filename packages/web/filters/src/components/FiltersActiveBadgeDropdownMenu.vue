@@ -25,7 +25,7 @@ function onUpdateIsOpen(isOpen: boolean): void {
   else {
     setOpenFilter(null)
 
-    if (props.filter.isStatic !== true) {
+    if (props.filter.isPersistent !== true) {
       clearFilter(props.filter.key, true)
     }
   }
