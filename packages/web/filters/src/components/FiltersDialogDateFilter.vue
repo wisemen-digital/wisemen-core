@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PlainDate } from '@wisemen/vue-core-dates'
 import {
   UIDatePicker,
   UIDialog,
@@ -13,23 +12,29 @@ import {
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { DateFilter } from '@/composables'
+import type {
+  DateFilter,
+  DateFilterValue,
+} from '@/composables'
 
 const props = defineProps<{
   filter: DateFilter
-  initialValue: PlainDate | null
+  initialValue: DateFilterValue
 }>()
 
 const emit = defineEmits<{
-  submit: [value: PlainDate | null]
+  submit: [value: DateFilterValue]
 }>()
 
 const i18n = useI18n()
 
-const value = ref<PlainDate | null>(props.initialValue)
+const value = ref(props.initialValue.value)
 
 function setFilter(): void {
-  emit('submit', value.value ?? null)
+  emit('submit', {
+    operator: props.initialValue.operator,
+    value: value.value ?? null,
+  })
 }
 
 function onClear(): void {
@@ -46,7 +51,10 @@ function onClear(): void {
     />
 
     <UIDialogBody>
-      <UIDatePicker v-model="value" />
+      <UIDatePicker
+        v-model="value"
+        class="p-none!"
+      />
     </UIDialogBody>
 
     <UIDialogFooter>

@@ -6,22 +6,33 @@ import type {
 import { useDateTimeFormat } from '@wisemen/vue-core-dates'
 import { UIText } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import FiltersActiveBadgeBase from '@/components/FiltersActiveBadgeBase.vue'
 import FiltersActiveBadgeBasePart from '@/components/FiltersActiveBadgeBasePart.vue'
 import FiltersActiveBadgeDateNavigation from '@/components/FiltersActiveBadgeDateNavigation.vue'
 import FiltersActiveBadgeDialogTrigger from '@/components/FiltersActiveBadgeDialogTrigger.vue'
+import FiltersActiveBadgeOperatorDropdown from '@/components/FiltersActiveBadgeOperatorDropdown.vue'
 import FiltersActiveBadgePartSeparator from '@/components/FiltersActiveBadgePartSeparator.vue'
 import FiltersActiveBadgeValueEmptyState from '@/components/FiltersActiveBadgeValueEmptyState.vue'
 import type {
   DateRangeFilter,
+  DateRangeFilterValue,
   FilterWithAction,
 } from '@/composables'
+import { DateRangeFilterOperator } from '@/composables'
 import { useInjectFiltersContext } from '@/context/filters.context'
+
+interface OperatorOption {
+  label: string
+  value: string
+}
 
 const props = defineProps<{
   filter: FilterWithAction<DateRangeFilter>
 }>()
+
+const i18n = useI18n()
 
 const {
   values,
@@ -29,7 +40,8 @@ const {
 
 const dateTimeFormat = useDateTimeFormat()
 
-const value = computed<PlainDateRange>(() => values.value[props.filter.key] as PlainDateRange)
+const filterValue = computed<DateRangeFilterValue>(() => values.value[props.filter.key] as DateRangeFilterValue)
+const value = computed<PlainDateRange>(() => filterValue.value.value)
 
 const hasValidRange = computed<boolean>(
   () => value.value.from !== null && value.value.until !== null,
@@ -39,10 +51,31 @@ const showNavigation = computed<boolean>(
   () => (props.filter.isPersistent ?? false) && hasValidRange.value,
 )
 
+const operatorOptions = computed<OperatorOption[]>(() => [
+  {
+    label: i18n.t('component.filters.operator.is_between'),
+    value: DateRangeFilterOperator.IS_BETWEEN,
+  },
+  {
+    label: i18n.t('component.filters.operator.is_not_between'),
+    value: DateRangeFilterOperator.IS_NOT_BETWEEN,
+  },
+])
+
+function onOperatorChange(operator: string): void {
+  values.value[props.filter.key] = {
+    ...filterValue.value,
+    operator: operator as DateRangeFilterOperator,
+  }
+}
+
 function onNavigate(from: PlainDate, until: PlainDate): void {
   values.value[props.filter.key] = {
-    from,
-    until,
+    ...filterValue.value,
+    value: {
+      from,
+      until,
+    },
   }
 }
 </script>
@@ -55,6 +88,16 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
     />
 
     <FiltersActiveBadgePartSeparator />
+
+    <template v-if="!(props.filter.disableOperators ?? false)">
+      <FiltersActiveBadgeOperatorDropdown
+        :model-value="filterValue.operator"
+        :options="operatorOptions"
+        @update:model-value="onOperatorChange"
+      />
+
+      <FiltersActiveBadgePartSeparator />
+    </template>
 
     <template v-if="showNavigation">
       <FiltersActiveBadgeDateNavigation

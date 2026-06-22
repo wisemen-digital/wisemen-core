@@ -36,8 +36,57 @@ import { useProvideFiltersContext } from '@/context/filters.context'
 
 export type SelectFilterValue = number | string | Record<string, any>
 
+export enum MultiSelectFilterOperator {
+  EXCLUDES = 'excludes',
+  INCLUDES = 'includes',
+}
+
+export enum DateFilterOperator {
+  AFTER = 'after',
+  BEFORE = 'before',
+  IS = 'is',
+  IS_NOT = 'is_not',
+}
+
+export enum DateRangeFilterOperator {
+  IS_BETWEEN = 'is_between',
+  IS_NOT_BETWEEN = 'is_not_between',
+}
+
+export enum NumberFilterOperator {
+  EQUALS = 'equals',
+  GREATER_THAN_OR_EQUALS = 'greater_than_or_equals',
+  LESS_THAN_OR_EQUALS = 'less_than_or_equals',
+  NOT_EQUALS = 'not_equals',
+}
+
+export interface MultiSelectFilterValue<TValue = SelectFilterValue> {
+  operator: MultiSelectFilterOperator
+  values: TValue[]
+}
+
+export interface DateFilterValue {
+  operator: DateFilterOperator
+  value: PlainDate | null
+}
+
+export interface DateRangeFilterValue {
+  operator: DateRangeFilterOperator
+  value: PlainDateRange
+}
+
+export interface NumberFilterValue {
+  operator: NumberFilterOperator
+  value: number | null
+}
+
 interface BaseFilter<TKey extends string> {
   isPersistent?: boolean
+  /**
+   * Hides the operator dropdown in the active filter badge.
+   * Use when the backend only supports a single operator.
+   */
+  disableOperators?: boolean
   icon?: Component
   key: TKey
   label: string
@@ -76,7 +125,12 @@ export interface MultiSelectFilter<
   TKey extends string = string,
   TValue extends SelectFilterValue = SelectFilterValue,
 > extends BaseFilter<TKey>, BaseSelectFilter<TValue> {
-  defaultValue?: TValue[]
+  defaultValue?: MultiSelectFilterValue<TValue>
+  /**
+   * Plural label for the selected item type, shown when 2+ values are selected.
+   * E.g. "users" → "3 users". When omitted, falls back to "3 selected".
+   */
+  itemLabel?: string
   type: FilterType.MULTI_SELECT
 }
 
@@ -84,20 +138,32 @@ export interface MultiAutocompleteFilter<
   TKey extends string = string,
   TValue extends SelectFilterValue = SelectFilterValue,
 > extends BaseFilter<TKey>, BaseAutocompleteFilter<TValue> {
-  defaultValue?: TValue[]
+  defaultValue?: MultiSelectFilterValue<TValue>
+  /**
+   * Plural label for the selected item type, shown when 2+ values are selected.
+   * E.g. "users" → "3 users". When omitted, falls back to "3 selected".
+   */
+  itemLabel?: string
   type: FilterType.MULTI_AUTOCOMPLETE
 }
 
 export interface BooleanFilter<TKey extends string = string> extends BaseFilter<TKey> {
-  badgeLabel?: string
   canBeToggled: boolean
   defaultValue?: boolean | null
   /**
-   * Used to show e.g. "User is disabled" or "Project is active"
+   * The state label shown after the operator, e.g. "active" → "User is active" / "User is not active".
    */
   entityLabel: string
-  falseLabel: string
-  trueLabel: string
+  /**
+   * Label for the `false` state operator. Defaults to "is not".
+   * Override when "is not" reads unnaturally, e.g. `"has no"` → "Parking spot has no charger".
+   */
+  falseOperatorLabel?: string
+  /**
+   * Label for the `true` state operator. Defaults to "is".
+   * Override when "is" reads unnaturally, e.g. `"has"` → "Parking spot has charger".
+   */
+  trueOperatorLabel?: string
   type: FilterType.BOOLEAN
 }
 
@@ -106,7 +172,7 @@ export interface NumberFilter<TKey extends string = string> extends BaseFilter<T
    * Unit to be used when not supported by Intl.NumberFormat
    */
   customUnit?: string
-  defaultValue?: number | null
+  defaultValue?: NumberFilterValue
   formatOptions?: Intl.NumberFormatOptions
   max?: number
   min?: number
@@ -116,12 +182,12 @@ export interface NumberFilter<TKey extends string = string> extends BaseFilter<T
 }
 
 export interface DateFilter<TKey extends string = string> extends BaseFilter<TKey> {
-  defaultValue?: PlainDate | null
+  defaultValue?: DateFilterValue
   type: FilterType.DATE
 }
 
 export interface DateRangeFilter<TKey extends string = string> extends BaseFilter<TKey> {
-  defaultValue?: PlainDateRange
+  defaultValue?: DateRangeFilterValue
   type: FilterType.DATE_RANGE
 }
 
@@ -274,7 +340,8 @@ export function useFilters<TFilters extends Filter[]>(
                 ? maybeOptions.items
                 : maybeOptions) as any[]
 
-              const selectedValues = values.value[filter.key] as SelectFilterValue[]
+              const filterValue = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
+              const selectedValues = filterValue.values
               const isFirstPage = ctx.getPaginationOffsetForSubActionId(filter.key) === null
               const uniqueOptions = isFirstPage
                 ? [
@@ -291,33 +358,38 @@ export function useFilters<TFilters extends Filter[]>(
                 id: SuperJSON.stringify(option),
                 name: filter.displayFn(option),
                 execute: () => {
-                  const filterValues = values.value[filter.key] as SelectFilterValue[]
+                  const current = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
+                  const currentValues = current.values
 
-                  const isOptionSelected = filterValues.some(
+                  const isOptionSelected = currentValues.some(
                     (selectedOption) => SuperJSON.stringify(selectedOption) === SuperJSON.stringify(option),
                   )
 
                   if (isOptionSelected) {
-                    values.value[filter.key] = filterValues.filter(
-                      (selectedOption) => SuperJSON.stringify(selectedOption) !== SuperJSON.stringify(option),
-                    )
+                    values.value[filter.key] = {
+                      ...current,
+                      values: currentValues.filter(
+                        (selectedOption) => SuperJSON.stringify(selectedOption) !== SuperJSON.stringify(option),
+                      ),
+                    }
                   }
                   else {
-                    values.value[filter.key] = [
-                      ...filterValues,
-                      option,
-                    ]
+                    values.value[filter.key] = {
+                      ...current,
+                      values: [
+                        ...currentValues,
+                        option,
+                      ],
+                    }
                   }
                 },
                 parentScoreInfluence: 'direct',
                 selected: () => {
-                  const filterValues = values.value[filter.key] as SelectFilterValue[]
+                  const current = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
 
-                  const isOptionSelected = filterValues.some(
+                  return current.values.some(
                     (selectedOption) => SuperJSON.stringify(selectedOption) === SuperJSON.stringify(option),
                   )
-
-                  return isOptionSelected
                 },
                 skipFilterScoring: filter.type === FilterType.MULTI_AUTOCOMPLETE && !selectedValues.some((value) => (
                   SuperJSON.stringify(value) === SuperJSON.stringify(option)
@@ -385,7 +457,7 @@ export function useFilters<TFilters extends Filter[]>(
             execute: () => {
               dateFilterDialog.open({
                 filter,
-                initialValue: values.value[filter.key],
+                initialValue: values.value[filter.key] as DateFilterValue,
                 onSubmit: (value) => {
                   values.value[filter.key] = value
                   dateFilterDialog.close()
@@ -406,7 +478,7 @@ export function useFilters<TFilters extends Filter[]>(
             execute: () => {
               dateRangeFilterDialog.open({
                 filter,
-                initialValue: values.value[filter.key],
+                initialValue: values.value[filter.key] as DateRangeFilterValue,
                 onSubmit: (value) => {
                   values.value[filter.key] = value
                   dateRangeFilterDialog.close()
@@ -536,15 +608,18 @@ export function useFilters<TFilters extends Filter[]>(
     switch (filter.type) {
       case FilterType.MULTI_SELECT:
       case FilterType.MULTI_AUTOCOMPLETE:
-        return value.length === 0
+        return (value as MultiSelectFilterValue).values.length === 0
       case FilterType.BOOLEAN:
         return value === null
       case FilterType.DATE:
-        return value === null
+        return (value as DateFilterValue).value === null
       case FilterType.NUMBER:
-        return value === null
-      case FilterType.DATE_RANGE:
-        return value.from === null || value.until === null
+        return (value as NumberFilterValue).value === null
+      case FilterType.DATE_RANGE: {
+        const rangeValue = (value as DateRangeFilterValue).value
+
+        return rangeValue.from === null || rangeValue.until === null
+      }
     }
   }
 
@@ -567,18 +642,30 @@ export function useFilters<TFilters extends Filter[]>(
     switch (filter.type) {
       case FilterType.MULTI_SELECT:
       case FilterType.MULTI_AUTOCOMPLETE:
-        return []
+        return {
+          operator: MultiSelectFilterOperator.INCLUDES,
+          values: [],
+        } satisfies MultiSelectFilterValue
       case FilterType.BOOLEAN:
         return null
-      case FilterType.DATE:
-        return null
       case FilterType.NUMBER:
-        return null
+        return {
+          operator: NumberFilterOperator.EQUALS,
+          value: null,
+        } satisfies NumberFilterValue
+      case FilterType.DATE:
+        return {
+          operator: DateFilterOperator.IS,
+          value: null,
+        } satisfies DateFilterValue
       case FilterType.DATE_RANGE:
         return {
-          from: null,
-          until: null,
-        }
+          operator: DateRangeFilterOperator.IS_BETWEEN,
+          value: {
+            from: null,
+            until: null,
+          },
+        } satisfies DateRangeFilterValue
     }
   }
 

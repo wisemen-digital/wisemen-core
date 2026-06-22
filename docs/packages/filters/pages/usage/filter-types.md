@@ -64,6 +64,7 @@ createMultiSelectFilter({
 | `defaultValue` | `TValue[]` | | Initial value. Defaults to `[]` |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | When `true`, the filter is always shown in `activeFilters`, cannot be removed by `clearFilter` or `clearAll`, and its badge appears before non-persistent filters |
+| `disableOperators` | `boolean` | | Hides the operator dropdown in the active filter badge. Use when the backend only supports a single operator |
 
 ---
 
@@ -118,6 +119,7 @@ createMultiAutocompleteFilter({
 | `defaultValue` | `TValue[]` | | Defaults to `[]` |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
+| `disableOperators` | `boolean` | | See multi-select |
 
 ---
 
@@ -154,12 +156,24 @@ When `canBeToggled` is `true`, the active-filter badge shows a toggle so the use
 | `defaultValue` | `boolean \| null` | | Defaults to `null` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
+| `disableOperators` | `boolean` | | See multi-select |
+| `trueOperatorLabel` | `string` | | Overrides "is" in the badge and dropdown. Use when "is" reads unnaturally, e.g. `"has"` → "Parking spot has charger" |
+| `falseOperatorLabel` | `string` | | Overrides "is not" in the badge and dropdown. E.g. `"has no"` → "Parking spot has no charger" |
 
 ---
 
 ## Number
 
 Opens a dialog where the user enters a numeric value. Supports unit display and `Intl.NumberFormat` formatting.
+
+The active-filter badge shows an operator dropdown with four options: `=`, `≠`, `≥`, `≤`. The current value is a `NumberFilterValue` object:
+
+```typescript
+interface NumberFilterValue {
+  operator: NumberFilterOperator // 'equals' | 'not_equals' | 'greater_than_or_equals' | 'less_than_or_equals'
+  value: number | null
+}
+```
 
 ```typescript
 import { createNumberFilter } from '@wisemen/vue-core-filters'
@@ -186,9 +200,10 @@ createNumberFilter({
 | `placeholder` | `string` | | Input placeholder text |
 | `formatOptions` | `Intl.NumberFormatOptions` | | Formatting applied to the value in the badge |
 | `customUnit` | `string` | | Unit suffix for cases not covered by `Intl.NumberFormat` (e.g. `"px"`) |
-| `defaultValue` | `number \| null` | | Defaults to `null` (inactive) |
+| `defaultValue` | `NumberFilterValue` | | Defaults to `{ operator: 'equals', value: null }` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
+| `disableOperators` | `boolean` | | See multi-select |
 
 ---
 
@@ -216,6 +231,7 @@ When `isPersistent` is `true`, the badge shows prev/next navigation arrows and a
 | `defaultValue` | `PlainDate \| null` | | Defaults to `null` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
+| `disableOperators` | `boolean` | | See multi-select |
 
 ---
 
@@ -243,3 +259,4 @@ When `isPersistent` is `true`, the badge shows prev/next navigation arrows (same
 | `defaultValue` | `PlainDateRange` | | Defaults to `{ from: null, until: null }` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
+| `disableOperators` | `boolean` | | See multi-select |

@@ -3,22 +3,33 @@ import type { PlainDate } from '@wisemen/vue-core-dates'
 import { useDateTimeFormat } from '@wisemen/vue-core-dates'
 import { UIText } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import FiltersActiveBadgeBase from '@/components/FiltersActiveBadgeBase.vue'
 import FiltersActiveBadgeBasePart from '@/components/FiltersActiveBadgeBasePart.vue'
 import FiltersActiveBadgeDateNavigation from '@/components/FiltersActiveBadgeDateNavigation.vue'
 import FiltersActiveBadgeDialogTrigger from '@/components/FiltersActiveBadgeDialogTrigger.vue'
+import FiltersActiveBadgeOperatorDropdown from '@/components/FiltersActiveBadgeOperatorDropdown.vue'
 import FiltersActiveBadgePartSeparator from '@/components/FiltersActiveBadgePartSeparator.vue'
 import FiltersActiveBadgeValueEmptyState from '@/components/FiltersActiveBadgeValueEmptyState.vue'
 import type {
   DateFilter,
+  DateFilterValue,
   FilterWithAction,
 } from '@/composables'
+import { DateFilterOperator } from '@/composables'
 import { useInjectFiltersContext } from '@/context/filters.context'
+
+interface OperatorOption {
+  label: string
+  value: string
+}
 
 const props = defineProps<{
   filter: FilterWithAction<DateFilter>
 }>()
+
+const i18n = useI18n()
 
 const {
   values,
@@ -26,7 +37,41 @@ const {
 
 const dateTimeFormat = useDateTimeFormat()
 
-const value = computed<PlainDate | null>(() => values.value[props.filter.key] as PlainDate | null)
+const filterValue = computed<DateFilterValue>(() => values.value[props.filter.key] as DateFilterValue)
+const value = computed<PlainDate | null>(() => filterValue.value.value)
+
+const operatorOptions = computed<OperatorOption[]>(() => [
+  {
+    label: i18n.t('component.filters.operator.is'),
+    value: DateFilterOperator.IS,
+  },
+  {
+    label: i18n.t('component.filters.operator.is_not'),
+    value: DateFilterOperator.IS_NOT,
+  },
+  {
+    label: i18n.t('component.filters.operator.before'),
+    value: DateFilterOperator.BEFORE,
+  },
+  {
+    label: i18n.t('component.filters.operator.after'),
+    value: DateFilterOperator.AFTER,
+  },
+])
+
+function onOperatorChange(operator: string): void {
+  values.value[props.filter.key] = {
+    ...filterValue.value,
+    operator: operator as DateFilterOperator,
+  }
+}
+
+function onNavigate(from: PlainDate): void {
+  values.value[props.filter.key] = {
+    ...filterValue.value,
+    value: from,
+  }
+}
 </script>
 
 <template>
@@ -38,12 +83,22 @@ const value = computed<PlainDate | null>(() => values.value[props.filter.key] as
 
     <FiltersActiveBadgePartSeparator />
 
+    <template v-if="!(props.filter.disableOperators ?? false)">
+      <FiltersActiveBadgeOperatorDropdown
+        :model-value="filterValue.operator"
+        :options="operatorOptions"
+        @update:model-value="onOperatorChange"
+      />
+
+      <FiltersActiveBadgePartSeparator />
+    </template>
+
     <template v-if="props.filter.isPersistent ?? false">
       <FiltersActiveBadgeDateNavigation
         :filter-id="props.filter.key"
         :from="value"
         :until="value"
-        @navigate="(from) => (values.value as any)[props.filter.key] = from"
+        @navigate="(from) => onNavigate(from)"
       >
         <FiltersActiveBadgeDialogTrigger :filter="props.filter">
           <FiltersActiveBadgeBasePart :is-interactive="true">
