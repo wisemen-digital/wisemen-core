@@ -163,12 +163,13 @@ const shouldPulse = computed<boolean>(() => props.chin?.pulseKey != null && !isR
                 <RowLayout class="min-w-0 flex-1 gap-sm">
                   <Component
                     :is="props.chin?.icon"
-                    v-if="chin?.icon"
+                    v-if="props.chin?.icon ?? false"
                     :class="iconColor"
                     class="size-4 shrink-0"
                   />
                   <UIText
-                    :text="props.chin?.text ?? ''"
+                    v-if="props.chin !== null && props.chin.text"
+                    :text="props.chin.text"
                     :truncate="2"
                     class="min-w-0 flex-1 text-xs font-medium"
                   />

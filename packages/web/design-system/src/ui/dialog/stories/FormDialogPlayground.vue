@@ -5,13 +5,13 @@ import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import ExampleFormDialog from './ExampleFormDialog.vue'
 
 const props = withDefaults(defineProps<{
-  disableUnsavedChangesChin?: boolean
+  promptOnUnsavedChanges?: boolean
   showExternalChin?: boolean
-  unsavedChangesChinText?: string | null
+  unsavedChangesText?: string | null
 }>(), {
-  disableUnsavedChangesChin: false,
+  promptOnUnsavedChanges: true,
   showExternalChin: false,
-  unsavedChangesChinText: null,
+  unsavedChangesText: null,
 })
 
 const overlay = useOverlay()
@@ -23,9 +23,9 @@ const dialog = overlay.create(ExampleFormDialog)
     <Button
       label="Open form dialog"
       @click="dialog.open({
-        disableUnsavedChangesChin: props.disableUnsavedChangesChin,
+        promptOnUnsavedChanges: props.promptOnUnsavedChanges,
         showExternalChin: props.showExternalChin,
-        unsavedChangesChinText: props.unsavedChangesChinText,
+        unsavedChangesText: props.unsavedChangesText,
       })"
     />
   </div>

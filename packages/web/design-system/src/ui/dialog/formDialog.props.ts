@@ -4,17 +4,13 @@ import type { DialogProps } from '@/ui/dialog/dialog.props'
 
 export interface FormDialogProps extends DialogProps {
   /**
-   * Disables the built-in close-blocking chin. When `true`, dirty form dialogs will close immediately.
-   * @default false
-   */
-  disableUnsavedChangesChin?: boolean
-  /**
    * The formango form instance.
    */
   form: Form<any>
   /**
-   * Whether to prompt the user when there are unsaved changes.
-   * @default false
+   * Whether to show the built-in close-blocking prompt when there are unsaved changes.
+   * When `false`, dirty form dialogs will close immediately.
+   * @default true
    */
   promptOnUnsavedChanges?: boolean
   /**
@@ -24,8 +20,8 @@ export interface FormDialogProps extends DialogProps {
    */
   renderOwnFormComponent?: boolean
   /**
-   * Override text for the built-in invalid-close chin. When `null`, the localized default copy is used.
+   * Override text for the built-in unsaved-changes prompt. When `null`, the localized default copy is used.
    * @default null
    */
-  unsavedChangesChinText?: string | null
+  unsavedChangesText?: string | null
 }

@@ -2,21 +2,17 @@
 import { useInjectFormDialogContext } from '@/ui/dialog/formDialog.context'
 import { UIForm } from '@/ui/form'
 
-const {
-  formId,
-  form,
-  promptOnUnsavedChanges,
-} = useInjectFormDialogContext()
+const formDialogContext = useInjectFormDialogContext()
 </script>
 
 <template>
   <UIForm
-    :id="formId"
-    :form="form"
-    :prompt-on-unsaved-changes="promptOnUnsavedChanges"
+    :id="formDialogContext.formId"
+    :form="formDialogContext.form"
+    :prompt-on-unsaved-changes="false"
   >
     <slot
-      :form-id="formId"
+      :form-id="formDialogContext.formId"
     />
   </UIForm>
 </template>

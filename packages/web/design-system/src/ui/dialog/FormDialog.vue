@@ -15,13 +15,12 @@ import type { FormDialogProps } from '@/ui/dialog/formDialog.props'
 import Form from '@/ui/form/Form.vue'
 
 const props = withDefaults(defineProps<FormDialogProps>(), {
-  disableUnsavedChangesChin: false,
   preventClickOutside: false,
   preventEsc: false,
-  promptOnUnsavedChanges: false,
+  promptOnUnsavedChanges: true,
   showCloseButton: true,
   size: 'md',
-  unsavedChangesChinText: null,
+  unsavedChangesText: null,
 })
 
 const emit = defineEmits<{
@@ -40,7 +39,6 @@ let chinPulseKey = 0
 useProvideFormDialogContext({
   formId: id,
   form: props.form,
-  promptOnUnsavedChanges: computed<boolean>(() => props.promptOnUnsavedChanges ?? false),
 })
 
 const resolvedChin = computed<ChinConfig | null>(() => dialogChin.chin.value ?? props.chin ?? null)
@@ -54,7 +52,7 @@ const dialogOpenState = computed<boolean>({
       return
     }
 
-    if (!props.disableUnsavedChangesChin && props.form.isDirty.value) {
+    if (props.promptOnUnsavedChanges && props.form.isDirty.value) {
       openInvalidCloseChin()
 
       return
@@ -80,7 +78,7 @@ function createInvalidCloseChinConfig(pulseKey?: number | string | null): ChinCo
   return {
     icon: AlertTriangleIcon,
     pulseKey,
-    text: props.unsavedChangesChinText ?? i18n.t('component.form_dialog.unsaved_changes'),
+    text: props.unsavedChangesText ?? i18n.t('component.form_dialog.unsaved_changes'),
     variant: 'error',
   }
 }
