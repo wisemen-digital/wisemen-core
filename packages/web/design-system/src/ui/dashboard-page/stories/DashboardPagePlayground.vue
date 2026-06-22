@@ -13,6 +13,7 @@ import {
   Rows01Icon,
   Settings01Icon,
   Trash01Icon,
+  User01Icon,
 } from '@wisemen/vue-core-icons'
 import type { Component } from 'vue'
 import {
@@ -30,6 +31,12 @@ import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActio
 import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
 import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
+import DashboardPageDetailPaneCloseButton from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneCloseButton.vue'
+import DashboardPageDetailPaneFooter from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneFooter.vue'
+import DashboardPageDetailPaneHeader from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneHeader.vue'
+import DashboardPageDetailPaneTabs from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabs.vue'
+import DashboardPageDetailPaneTabsContent from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabsContent.vue'
+import DashboardPageDetailPaneTabsList from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabsList.vue'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
 import { UIRowLayout } from '@/ui/row-layout'
@@ -42,6 +49,7 @@ import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHea
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
+import { UITabsItem } from '@/ui/tabs'
 import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
@@ -137,6 +145,7 @@ const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
 ]))
 
 const tabsModelValue = ref<string>('tab1')
+const detailPaneTab = ref<string>('info')
 
 const exampleAction = createAction({
   id: 'example',
@@ -321,15 +330,67 @@ const exampleAction = createAction({
           </DashboardPageContent>
 
           <template #detail-pane>
-            <div class="flex h-full flex-col gap-lg p-lg">
-              <h2 class="text-sm font-medium text-primary">
-                Detail Pane
-              </h2>
+            <DashboardPageDetailPaneHeader
+              :left="{
+                icon: User01Icon,
+                type: 'featured-icon',
+              }"
+              title="Detail Pane"
+            >
+              <template #actions>
+                <DashboardPageDetailPaneCloseButton />
+              </template>
+              <template #subtitle>
+                <UIText
+                  text="What a nice pane"
+                  class="text-xs text-tertiary"
+                />
+              </template>
+            </DashboardPageDetailPaneHeader>
 
-              <p class="text-sm text-secondary">
-                This is the detail pane content. It slides in from the right.
-              </p>
-            </div>
+            <DashboardPageDetailPaneTabs v-model="detailPaneTab">
+              <DashboardPageDetailPaneTabsList>
+                <UITabsItem
+                  label="Info"
+                  value="info"
+                />
+                <UITabsItem
+                  label="History"
+                  value="history"
+                />
+              </DashboardPageDetailPaneTabsList>
+
+              <DashboardPageDetailPaneTabsContent value="info">
+                <ColumnLayout class="p-lg">
+                  <div
+                    v-for="n in 20"
+                    :key="n"
+                    class="rounded-lg border border-secondary p-lg"
+                  >
+                    <p class="text-sm text-secondary">
+                      Info item {{ n }}
+                    </p>
+                  </div>
+                </ColumnLayout>
+              </DashboardPageDetailPaneTabsContent>
+
+              <DashboardPageDetailPaneTabsContent value="history">
+                <ColumnLayout class="p-lg">
+                  <p class="text-sm text-secondary">
+                    History content
+                  </p>
+                </ColumnLayout>
+              </DashboardPageDetailPaneTabsContent>
+            </DashboardPageDetailPaneTabs>
+
+            <DashboardPageDetailPaneFooter>
+              <UIRowLayout justify="end">
+                <UIButton
+                  label="Save"
+                  size="md"
+                />
+              </UIRowLayout>
+            </DashboardPageDetailPaneFooter>
           </template>
         </DashboardPage>
       </MainContent>
