@@ -163,25 +163,31 @@ async function onSave(): Promise<void> {
 
     const results = await adapter.searchAddresses(searchTerm)
 
+    const manualAddress: Address = {
+      placeId: null,
+      bus: busField.modelValue.value ?? '',
+      city: cityField.modelValue.value ?? '',
+      coordinates: {
+        lat: null,
+        lng: null,
+      },
+      country: countryField.modelValue.value ?? '',
+      postalCode: postalCodeField.modelValue.value ?? '',
+      street: streetField.modelValue.value ?? '',
+      streetNumber: streetNumberField.modelValue.value ?? '',
+    }
+
     if (results.length > 0) {
       const resolved = await adapter.getAddressByPlaceId(results[0]!.placeId)
 
-      emit('update:modelValue', resolved)
+      emit('update:modelValue', {
+        ...manualAddress,
+        placeId: resolved.placeId,
+        coordinates: resolved.coordinates,
+      })
     }
     else {
-      emit('update:modelValue', {
-        placeId: null,
-        bus: busField.modelValue.value ?? '',
-        city: cityField.modelValue.value ?? '',
-        coordinates: {
-          lat: null,
-          lng: null,
-        },
-        country: countryField.modelValue.value ?? '',
-        postalCode: postalCodeField.modelValue.value ?? '',
-        street: streetField.modelValue.value ?? '',
-        streetNumber: streetNumberField.modelValue.value ?? '',
-      })
+      emit('update:modelValue', manualAddress)
     }
 
     isEditOpen.value = false

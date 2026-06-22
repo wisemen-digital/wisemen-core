@@ -49,3 +49,4 @@ For full API details, read the props file. For usage examples, read the playgrou
 
 - [number-badge](../number-badge/SKILL.md)
 - [dot](../dot/SKILL.md)
+- [storybook](../../storybook/SKILL.md) -- For story and playground conventions when editing `stories/`

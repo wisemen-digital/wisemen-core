@@ -106,6 +106,24 @@ describe('PastInfinityDate', () => {
     })
   })
 
+  describe('day', () => {
+    it('throws when accessing the day of the week', () => {
+      expect(() => new PastInfinityDate().day()).toThrow()
+    })
+  })
+
+  describe('isoWeekday', () => {
+    it('throws when accessing the ISO weekday', () => {
+      expect(() => new PastInfinityDate().isoWeekday()).toThrow()
+    })
+  })
+
+  describe('isoWeek', () => {
+    it('throws when accessing the ISO week', () => {
+      expect(() => new PastInfinityDate().isoWeek()).toThrow()
+    })
+  })
+
   describe('addDuration', () => {
     it('remains PastInfinityDate when adding a duration', () => {
       const date = new PastInfinityDate()

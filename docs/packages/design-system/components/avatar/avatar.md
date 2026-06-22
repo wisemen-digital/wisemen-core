@@ -1,6 +1,5 @@
-<!-- This file was automatically generated. Do not edit it manually -->
 <script setup lang="ts">
-import Preview from '@/ui/avatar/avatar/stories/AvatarImagePlayground.vue'
+import Preview from '@/ui/avatar/avatar/stories/AvatarPlayground.vue'
 
 </script>
 

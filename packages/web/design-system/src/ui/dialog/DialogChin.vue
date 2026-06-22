@@ -54,11 +54,13 @@ watch(chinContentRef, (el, _oldEl, onCleanup) => {
 })
 
 const variantFromColor: Record<NonNullable<ChinConfig['variant']>, string> = {
-  default: 'from-white/60 dark:from-black/10',
-  error: 'from-error-secondary',
+  default: 'from-white/60 dark:from-white/15',
+  error: 'from-error-secondary dark:from-error-secondary/20',
 }
 
-const overlayFromColor = computed<string>(() => props.chin?.variant != null ? variantFromColor[props.chin.variant] : 'from-white/60 dark:from-black/10')
+const overlayFromColor = computed<string>(
+  () => variantFromColor[props.chin?.variant ?? 'default'],
+)
 
 const buttonVariantMap = {
   brand: 'minimal-color',
@@ -95,7 +97,7 @@ const shouldPulse = computed<boolean>(() => props.chin?.pulseKey != null && !isR
     :class="style.chin()"
     class="
       bg-white/20
-      dark:bg-black/40
+      dark:bg-white/10
     "
     as="div"
   >

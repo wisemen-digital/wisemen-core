@@ -99,6 +99,10 @@ export const DESIGN_SYSTEM_NAVIGATION: PackageDocNavigation = {
           link: 'components/switch/switch',
         },
         {
+          text: 'Tags Field',
+          link: 'components/tags-field/tags-field',
+        },
+        {
           text: 'Text Field',
           link: 'components/text-field/text-field',
         },
@@ -163,6 +167,10 @@ export const DESIGN_SYSTEM_NAVIGATION: PackageDocNavigation = {
         {
           text: 'Detail List',
           link: 'components/detail-list/detail-list',
+        },
+        {
+          text: 'Featured Icon',
+          link: 'components/featured-icon/featured-icon',
         },
         {
           text: 'Number Badge',

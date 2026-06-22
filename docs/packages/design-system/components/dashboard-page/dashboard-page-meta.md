@@ -24,6 +24,13 @@ const propsData = [
     "type": "DetailPaneConfig | null"
   },
   {
+    "default": "true",
+    "description": "",
+    "name": "isDetailPaneOpen",
+    "required": false,
+    "type": "boolean"
+  },
+  {
     "default": "false",
     "description": "",
     "name": "isTitleHidden",
@@ -31,17 +38,18 @@ const propsData = [
     "type": "boolean"
   },
   {
-    "default": "[]",
-    "description": "",
-    "name": "tabs",
-    "required": false,
-    "type": "PageTab[]"
-  },
-  {
     "description": "",
     "name": "title",
     "required": true,
     "type": "string"
+  }
+]
+
+const eventsData = [
+  {
+    "description": "",
+    "name": "update:isDetailPaneOpen",
+    "type": "[value: boolean]"
   }
 ]
 
@@ -68,6 +76,7 @@ export default {
   setup() {
     return {
       propsData,
+      eventsData,
       slotsData,
     }
   },
@@ -75,5 +84,7 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
+
+<EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />

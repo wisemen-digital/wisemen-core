@@ -1,0 +1,25 @@
+import { Controller, Delete, HttpCode, HttpStatus, Version } from '@nestjs/common'
+import { ApiNoContentResponse, ApiOAuth2, ApiTags } from '@nestjs/swagger'
+import { UuidParam } from '@wisemen/decorators'
+import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.use-case.js'
+
+@ApiTags('{{pascalCase moduleName}}')
+@ApiOAuth2([])
+@Controller()
+export class {{pascalCase useCaseName}}Controller {
+  constructor (
+    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+  ) {}
+
+  @Delete('{{dashCase moduleNamePlural}}/:uuid')
+  @Version('1')
+  @Permissions(Permission.{{constantCase permissionName}})
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiNoContentResponse()
+  @ApiNotFoundErrorResponse({{notFoundError}})
+  public async {{camelCase useCaseName}} (
+    @UuidParam('uuid') uuid: string
+  ): Promise<void> {
+    await this.{{camelCase useCaseName}}UseCase.execute(uuid)
+  }
+}

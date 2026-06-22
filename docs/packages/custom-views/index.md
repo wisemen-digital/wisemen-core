@@ -15,8 +15,8 @@ hero:
       link: /packages/custom-views/pages/usage/adapters
 
 features:
-  - title: URL-synced active view
-    details: The active view ID is stored in the URL query string (?viewId=...) via @vueuse/router, so deep links always land on the right view.
+  - title: URL-synced state
+    details: The active view ID (?view) and any unsaved adapter changes (?view-state) are stored in the URL. Deep links land on the right view, and refreshing the page restores the user's exact working state.
     icon: 🔗
   - title: Keyboard shortcuts
     details: Press 1–9 (with or without shift for azerty/qwerty) to instantly switch between the first nine views.

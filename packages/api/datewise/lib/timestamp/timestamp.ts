@@ -96,7 +96,8 @@ export interface Timestamp {
   isSame(other: TimestampInput, unit?: OpUnitType): boolean
   isSameOrAfter(other: TimestampInput, unit?: OpUnitType): boolean
   isSameOrBefore(other: TimestampInput, unit?: OpUnitType): boolean
-  locale(preset?: string | ILocale, object?: Partial<ILocale>): Timestamp | string
+  locale (): string
+  locale (preset: string | ILocale, object?: Partial<ILocale>): Timestamp
   /** returns with a plain date based on the current timezone of the timestamp */
   toPlainDate(): PlainDate
   /** returns with a plain time based on the current timezone of the timestamp */

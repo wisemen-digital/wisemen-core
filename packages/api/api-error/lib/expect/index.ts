@@ -1,1 +1,1 @@
-export * from './expect-api-error.js'
+export { toHaveApiError } from './expect-api-error.js'
