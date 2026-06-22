@@ -62,9 +62,7 @@
   "component.date_range_picker.previous_month": "Vorige maand",
   "component.dialog.cancel": "Annuleren",
   "component.dialog.close": "Sluiten",
-<<<<<<< HEAD
   "component.form_dialog.unsaved_changes": "Je hebt niet-opgeslagen wijzigingen",
-=======
   "component.form_file_upload.action.add_files": "Bestanden toevoegen",
   "component.form_file_upload.action.delete": "Verwijderen",
   "component.form_file_upload.action.hide_clipboard_suggestion": "Suggestie verbergen",
@@ -78,7 +76,6 @@
   "component.form_file_upload.error.upload_failed": "Uploaden mislukt",
   "component.form_file_upload.preview.dialog_title": "Afbeelding",
   "component.form_file_upload.preview.open_image": "Afbeelding openen",
->>>>>>> main
   "component.keyboard_shortcut.then": "dan",
   "component.number_field.decrement": "Aftrekken",
   "component.number_field.increment": "Optellen",
