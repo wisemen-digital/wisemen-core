@@ -1,26 +1,9 @@
 <script setup lang="ts">
-import { onBeforeUnmount } from 'vue'
-
-import { useInjectDetailPaneScrollContext } from '@/ui/dashboard-page/detail-pane/detailPaneScroll.context'
-
-const {
-  bodyRef,
-} = useInjectDetailPaneScrollContext()
-
-function setBodyRef(el: unknown): void {
-  bodyRef.value = (el as HTMLElement | null) ?? null
-}
-
-onBeforeUnmount(() => {
-  bodyRef.value = null
-})
+import { UIScrollable } from '@/ui/scrollable'
 </script>
 
 <template>
-  <div
-    :ref="setBodyRef"
-    class="flex-1 overflow-y-auto"
-  >
+  <UIScrollable class="flex-1">
     <slot />
-  </div>
+  </UIScrollable>
 </template>

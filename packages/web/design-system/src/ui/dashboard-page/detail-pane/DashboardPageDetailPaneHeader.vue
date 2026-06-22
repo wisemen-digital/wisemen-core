@@ -44,10 +44,6 @@ const scrollContext = useInjectDetailPaneScrollContext(null)
 
     <UISeparator
       v-if="props.showSeparator && !(scrollContext?.hasTabs.value)"
-      :class="scrollContext !== null && scrollContext.isScrolledToTop.value ? `
-        opacity-0
-      ` : `opacity-100`"
-      class="transition-opacity duration-150"
     />
   </div>
 </template>

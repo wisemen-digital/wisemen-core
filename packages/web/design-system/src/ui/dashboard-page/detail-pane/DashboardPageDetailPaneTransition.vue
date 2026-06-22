@@ -6,7 +6,6 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useScrollState } from '@/composables/scroll.composable'
 import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useInjectDetailPaneContext } from '@/ui/dashboard-page/detail-pane/detailPane.context'
 import type { DetailPaneStyle } from '@/ui/dashboard-page/detail-pane/detailPane.style'
@@ -41,7 +40,6 @@ const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
 }))
 
 useProvideDetailPaneScrollContext({
-  ...useScrollState(),
   hasTabs: ref<boolean>(false),
 })
 </script>
