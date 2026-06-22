@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm'
+import { FilterConditionsTest } from './filter-conditions-test.entity.js'
 import { ScopedFilterTest } from './scoped-filter-test.entity.js'
 
 export const dataSource = new DataSource({
@@ -9,7 +10,7 @@ export const dataSource = new DataSource({
   logging: false,
   synchronize: false,
   migrationsRun: true,
-  entities: [ScopedFilterTest],
+  entities: [ScopedFilterTest, FilterConditionsTest],
   invalidWhereValuesBehavior: {
     null: 'throw',
     undefined: 'ignore',
