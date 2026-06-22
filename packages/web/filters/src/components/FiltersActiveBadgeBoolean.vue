@@ -50,51 +50,55 @@ function onSelect(value: string): void {
 
     <FiltersActiveBadgePartSeparator />
 
-    <template v-if="!(props.filter.disableOperators ?? false)">
-      <UIDropdownMenu
-        popover-side="bottom"
-        popover-align="start"
-        width-classes="w-32"
-      >
-        <template #trigger>
-          <UIClickableElement>
-            <button
-              :disabled="!props.filter.canBeToggled"
-              type="button"
-              class="
-                size-full
-                disabled:cursor-not-allowed
-              "
-            >
-              <FiltersActiveBadgeBasePart
-                :is-interactive="props.filter.canBeToggled"
-                :label="operatorLabel"
-              />
-            </button>
-          </UIClickableElement>
-        </template>
+    <UIDropdownMenu
+      v-if="!(props.filter.disableOperators ?? false)"
+      popover-side="bottom"
+      popover-align="start"
+      width-classes="w-32"
+    >
+      <template #trigger>
+        <UIClickableElement>
+          <button
+            :disabled="!props.filter.canBeToggled"
+            type="button"
+            class="
+              size-full
+              disabled:cursor-not-allowed
+            "
+          >
+            <FiltersActiveBadgeBasePart
+              :is-interactive="props.filter.canBeToggled"
+              :label="operatorLabel"
+            />
+          </button>
+        </UIClickableElement>
+      </template>
 
-        <template #content>
-          <UIDropdownMenuGroup>
-            <UIDropdownMenuRadioGroup
-              :model-value="radioValue"
-              @update:model-value="onSelect"
-            >
-              <UIDropdownMenuRadioItem
-                :label="props.filter.trueOperatorLabel ?? i18n.t('component.filters.operator.is')"
-                value="true"
-              />
-              <UIDropdownMenuRadioItem
-                :label="props.filter.falseOperatorLabel ?? i18n.t('component.filters.operator.is_not')"
-                value="false"
-              />
-            </UIDropdownMenuRadioGroup>
-          </UIDropdownMenuGroup>
-        </template>
-      </UIDropdownMenu>
+      <template #content>
+        <UIDropdownMenuGroup>
+          <UIDropdownMenuRadioGroup
+            :model-value="radioValue"
+            @update:model-value="onSelect"
+          >
+            <UIDropdownMenuRadioItem
+              :label="props.filter.trueOperatorLabel ?? i18n.t('component.filters.operator.is')"
+              value="true"
+            />
+            <UIDropdownMenuRadioItem
+              :label="props.filter.falseOperatorLabel ?? i18n.t('component.filters.operator.is_not')"
+              value="false"
+            />
+          </UIDropdownMenuRadioGroup>
+        </UIDropdownMenuGroup>
+      </template>
+    </UIDropdownMenu>
 
-      <FiltersActiveBadgePartSeparator />
-    </template>
+    <FiltersActiveBadgeBasePart
+      v-else
+      :label="operatorLabel"
+    />
+
+    <FiltersActiveBadgePartSeparator />
 
     <FiltersActiveBadgeBasePart
       :label="props.filter.entityLabel"

@@ -86,16 +86,20 @@ function onOperatorChange(operator: string): void {
 
     <FiltersActiveBadgePartSeparator />
 
-    <template v-if="!(props.filter.disableOperators ?? false)">
-      <FiltersActiveBadgeOperatorDropdown
-        :label="operatorLabel"
-        :model-value="filterValue.operator"
-        :options="operatorOptions"
-        @update:model-value="onOperatorChange"
-      />
+    <FiltersActiveBadgeOperatorDropdown
+      v-if="!(props.filter.disableOperators ?? false)"
+      :label="operatorLabel"
+      :model-value="filterValue.operator"
+      :options="operatorOptions"
+      @update:model-value="onOperatorChange"
+    />
 
-      <FiltersActiveBadgePartSeparator />
-    </template>
+    <FiltersActiveBadgeBasePart
+      v-else
+      :label="operatorLabel"
+    />
+
+    <FiltersActiveBadgePartSeparator />
 
     <FiltersActiveBadgeDropdownMenu :filter="props.filter">
       <FiltersActiveBadgeBasePart :is-interactive="true">

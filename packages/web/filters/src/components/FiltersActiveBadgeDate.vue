@@ -59,6 +59,10 @@ const operatorOptions = computed<OperatorOption[]>(() => [
   },
 ])
 
+const operatorLabel = computed<string>(
+  () => operatorOptions.value.find((o) => o.value === filterValue.value.operator)?.label ?? filterValue.value.operator,
+)
+
 function onOperatorChange(operator: string): void {
   values.value[props.filter.key] = {
     ...filterValue.value,
@@ -83,15 +87,19 @@ function onNavigate(from: PlainDate): void {
 
     <FiltersActiveBadgePartSeparator />
 
-    <template v-if="!(props.filter.disableOperators ?? false)">
-      <FiltersActiveBadgeOperatorDropdown
-        :model-value="filterValue.operator"
-        :options="operatorOptions"
-        @update:model-value="onOperatorChange"
-      />
+    <FiltersActiveBadgeOperatorDropdown
+      v-if="!(props.filter.disableOperators ?? false)"
+      :model-value="filterValue.operator"
+      :options="operatorOptions"
+      @update:model-value="onOperatorChange"
+    />
 
-      <FiltersActiveBadgePartSeparator />
-    </template>
+    <FiltersActiveBadgeBasePart
+      v-else
+      :label="operatorLabel"
+    />
+
+    <FiltersActiveBadgePartSeparator />
 
     <template v-if="props.filter.isPersistent ?? false">
       <FiltersActiveBadgeDateNavigation

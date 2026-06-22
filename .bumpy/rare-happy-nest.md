@@ -8,5 +8,5 @@
   - Date: `PlainDate | null` → `DateFilterValue` (`{ operator: DateFilterOperator, value: PlainDate | null }`)
   - Date range: `PlainDateRange` → `DateRangeFilterValue` (`{ operator: DateRangeFilterOperator, value: PlainDateRange }`)
   - Boolean: unchanged (`boolean | null`)
-- **`disableOperators`** — new property on all filter types. When `true`, the operator dropdown is hidden from the active badge.
+- **`disableOperators`** — new property on all filter types. When `true`, the operator is shown as a static label in the active badge instead of an interactive dropdown.
 - **Boolean filter** — new `trueOperatorLabel` and `falseOperatorLabel` properties to override the default "is" / "is not" text in the badge and dropdown.

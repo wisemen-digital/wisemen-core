@@ -64,7 +64,7 @@ createMultiSelectFilter({
 | `defaultValue` | `TValue[]` | | Initial value. Defaults to `[]` |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | When `true`, the filter is always shown in `activeFilters`, cannot be removed by `clearFilter` or `clearAll`, and its badge appears before non-persistent filters |
-| `disableOperators` | `boolean` | | Hides the operator dropdown in the active filter badge. Use when the backend only supports a single operator |
+| `disableOperators` | `boolean` | | Renders the operator as a static label instead of an interactive dropdown. Use when the backend only supports a single operator |
 
 ---
 
@@ -156,7 +156,7 @@ When `canBeToggled` is `true`, the active-filter badge shows a toggle so the use
 | `defaultValue` | `boolean \| null` | | Defaults to `null` (inactive) |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
-| `disableOperators` | `boolean` | | See multi-select |
+| `disableOperators` | `boolean` | | Renders the operator as a static label instead of an interactive dropdown. Use when the backend only supports a single operator |
 | `trueOperatorLabel` | `string` | | Overrides "is" in the badge and dropdown. Use when "is" reads unnaturally, e.g. `"has"` → "Parking spot has charger" |
 | `falseOperatorLabel` | `string` | | Overrides "is not" in the badge and dropdown. E.g. `"has no"` → "Parking spot has no charger" |
 

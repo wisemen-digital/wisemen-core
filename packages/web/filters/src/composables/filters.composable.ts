@@ -83,7 +83,7 @@ export interface NumberFilterValue {
 interface BaseFilter<TKey extends string> {
   isPersistent?: boolean
   /**
-   * Hides the operator dropdown in the active filter badge.
+   * Renders the operator as a static label instead of an interactive dropdown.
    * Use when the backend only supports a single operator.
    */
   disableOperators?: boolean
