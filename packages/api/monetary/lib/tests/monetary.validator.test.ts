@@ -9,13 +9,13 @@ import { Currency } from '#src/currency.enum.js'
 describe('Monetary validator tests', () => {
   class Test {
     @IsMonetary({ maxPrecision: 4, allowedCurrencies: new Set<Currency>([Currency.EUR]) })
-    foo: MonetaryDto
+    foo: MonetaryDto<Currency.EUR>
   }
 
   it('does not have errors for a valid object', async () => {
     const dto = new Test()
 
-    dto.foo = new MonetaryDtoBuilder().build()
+    dto.foo = new MonetaryDtoBuilder(Currency.EUR).build()
 
     const errors = await validate(dto, {
       whitelist: true,
@@ -90,13 +90,13 @@ describe('Monetary validator tests', () => {
         allowedCurrencies: new Set<Currency>([Currency.EUR]),
         minAmount: MIN_AMOUNT
       })
-      foo: MonetaryDto
+      foo: MonetaryDto<Currency.EUR>
     }
 
     it('has errors if amount is lower than min amount', async () => {
       const dto = new MinTest()
 
-      dto.foo = new MonetaryDtoBuilder()
+      dto.foo = new MonetaryDtoBuilder(Currency.EUR)
         .withAmount(MIN_AMOUNT - 1)
         .build()
 
@@ -111,7 +111,7 @@ describe('Monetary validator tests', () => {
     it('has no errors if amount is equal to min amount', async () => {
       const dto = new MinTest()
 
-      dto.foo = new MonetaryDtoBuilder()
+      dto.foo = new MonetaryDtoBuilder(Currency.EUR)
         .withAmount(MIN_AMOUNT)
         .build()
 
@@ -126,7 +126,7 @@ describe('Monetary validator tests', () => {
     it('has no errors if amount is higher than min amount', async () => {
       const dto = new MinTest()
 
-      dto.foo = new MonetaryDtoBuilder()
+      dto.foo = new MonetaryDtoBuilder(Currency.EUR)
         .withAmount(MIN_AMOUNT + 1)
         .build()
 
@@ -148,13 +148,13 @@ describe('Monetary validator tests', () => {
         allowedCurrencies: new Set<Currency>([Currency.EUR]),
         maxAmount: MAX_AMOUNT
       })
-      foo: MonetaryDto
+      foo: MonetaryDto<Currency.EUR>
     }
 
     it('has errors if amount is higher than max amount', async () => {
       const dto = new MaxTest()
 
-      dto.foo = new MonetaryDtoBuilder()
+      dto.foo = new MonetaryDtoBuilder(Currency.EUR)
         .withAmount(MAX_AMOUNT + 1)
         .build()
 
@@ -169,7 +169,7 @@ describe('Monetary validator tests', () => {
     it('has no errors if amount is equal to max amount', async () => {
       const dto = new MaxTest()
 
-      dto.foo = new MonetaryDtoBuilder()
+      dto.foo = new MonetaryDtoBuilder(Currency.EUR)
         .withAmount(MAX_AMOUNT)
         .build()
 
@@ -184,7 +184,7 @@ describe('Monetary validator tests', () => {
     it('has no errors if amount is lower than max amount', async () => {
       const dto = new MaxTest()
 
-      dto.foo = new MonetaryDtoBuilder()
+      dto.foo = new MonetaryDtoBuilder(Currency.EUR)
         .withAmount(MAX_AMOUNT - 1)
         .build()
 

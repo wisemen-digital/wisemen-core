@@ -2,22 +2,30 @@ import type {
   Meta,
   StoryObj,
 } from '@storybook/vue3-vite'
+import { createAction } from '@wisemen/vue-core-actions'
+import {
+  Edit01Icon,
+  Settings01Icon,
+  Trash01Icon,
+} from '@wisemen/vue-core-icons'
 import {
   expect,
   within,
 } from 'storybook/test'
 
+import BadgeAllVariantsPlayground from './BadgeAllVariantsPlayground.vue'
 import BadgePlayground from './BadgePlayground.vue'
-import BadgeVariantPlayground from './BadgeVariantPlayground.vue'
 
 const meta = {
   title: 'Components/Badge',
   argTypes: {
     hasDot: {
       control: 'boolean',
+      description: 'Shows a dot indicator inside the badge',
     },
     color: {
       control: 'select',
+      description: 'Color palette applied to the badge',
       options: [
         'gray',
         'brand',
@@ -31,9 +39,11 @@ const meta = {
     },
     label: {
       control: 'text',
+      description: 'Text displayed inside the badge',
     },
     rounded: {
       control: 'select',
+      description: 'Controls how rounded the badge corners appear',
       options: [
         'default',
         'full',
@@ -41,6 +51,7 @@ const meta = {
     },
     size: {
       control: 'select',
+      description: 'Controls the badge size',
       options: [
         'sm',
         'md',
@@ -49,6 +60,7 @@ const meta = {
     },
     variant: {
       control: 'select',
+      description: 'Visual style applied to the badge',
       options: [
         'translucent',
         'outline',
@@ -86,53 +98,75 @@ export const Default: Story = {
   },
 }
 
-export const Translucent: Story = {
+export const AllVariants: Story = {
   args: {
-    color: 'gray',
+    hasDot: false,
+    label: 'Badge',
+    rounded: 'default',
+    size: 'md',
+  },
+  parameters: {
+    controls: {
+      exclude: [
+        'color',
+        'variant',
+      ],
+    },
   },
   render: (args) => ({
     components: {
-      BadgeVariantPlayground,
+      BadgeAllVariantsPlayground,
     },
     setup() {
       return {
         args,
       }
     },
-    template: '<BadgeVariantPlayground v-bind="args" variant="translucent" />',
+    template: '<BadgeAllVariantsPlayground v-bind="args" />',
   }),
 }
 
-export const Outline: Story = {
+export const WithActions: Story = {
   args: {
-    color: 'gray',
+    color: 'brand',
+    label: 'Status',
+    size: 'md',
+    variant: 'translucent',
   },
   render: (args) => ({
     components: {
-      BadgeVariantPlayground,
+      BadgePlayground,
     },
     setup() {
-      return {
-        args,
-      }
-    },
-    template: '<BadgeVariantPlayground v-bind="args" variant="outline" />',
-  }),
-}
+      const actions = [
+        createAction({
+          id: 'badge-story-edit',
+          name: () => 'Edit',
+          availableWhenUnauthenticated: true,
+          execute: () => {},
+          icon: () => Edit01Icon,
+        }),
+        createAction({
+          id: 'badge-story-settings',
+          name: () => 'Settings',
+          availableWhenUnauthenticated: true,
+          execute: () => {},
+          icon: () => Settings01Icon,
+        }),
+        createAction({
+          id: 'badge-story-delete',
+          name: () => 'Delete',
+          availableWhenUnauthenticated: true,
+          execute: () => {},
+          icon: () => Trash01Icon,
+        }),
+      ]
 
-export const Solid: Story = {
-  args: {
-    color: 'gray',
-  },
-  render: (args) => ({
-    components: {
-      BadgeVariantPlayground,
-    },
-    setup() {
       return {
+        actions,
         args,
       }
     },
-    template: '<BadgeVariantPlayground v-bind="args" variant="solid" />',
+    template: '<BadgePlayground v-bind="args" />',
   }),
 }

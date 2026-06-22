@@ -17,10 +17,8 @@ import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 
 const props = withDefaults(defineProps<{
-  isAdaptive?: boolean
   variant?: TabsVariant
 }>(), {
-  isAdaptive: false,
   variant: 'underline',
 })
 
@@ -29,12 +27,13 @@ const selectedTab = ref<string>('tab1')
 
 <template>
   <div
-    :class="{ 'resize-x rounded-md border border-dashed border-tertiary p-2': props.isAdaptive }"
-    class="flex w-80 flex-col gap-4 overflow-auto"
+    class="
+      flex w-80 resize-x flex-col gap-4 overflow-auto rounded-md border
+      border-dashed border-tertiary p-2
+    "
   >
     <Tabs
       v-model="selectedTab"
-      :is-adaptive="props.isAdaptive"
       :variant="props.variant"
     >
       <TabsList>

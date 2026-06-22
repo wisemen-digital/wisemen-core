@@ -1,0 +1,35 @@
+import { ApiProperty } from '@nestjs/swagger'
+import { PaginatedOffsetResponse } from '@wisemen/pagination'
+import { {{pascalCase entityName}} } from '{{entityImportPath}}'
+
+class {{pascalCase entityName}}Response {
+  @ApiProperty({ type: String, format: 'uuid' })
+  uuid: string
+
+  @ApiProperty({ type: String, format: 'date-time' })
+  createdAt: string
+
+  @ApiProperty({ type: String, format: 'date-time' })
+  updatedAt: string
+
+  @ApiProperty({ type: String, example: 'John' })
+  name: string
+
+  constructor ({{camelCase entityName}}: {{pascalCase entityName}}) {
+    this.uuid = {{camelCase entityName}}.uuid
+    this.createdAt = {{camelCase entityName}}.createdAt.toISOString()
+    this.updatedAt = {{camelCase entityName}}.updatedAt.toISOString()
+    this.name = {{camelCase entityName}}.name
+  }
+}
+
+export class {{pascalCase useCaseName}}Response extends PaginatedOffsetResponse<{{pascalCase entityName}}Response> {
+  @ApiProperty({ type: {{pascalCase entityName}}Response, isArray: true })
+  declare items: {{pascalCase entityName}}Response[]
+
+  constructor (items: {{pascalCase entityName}}[], total: number, limit: number, offset: number) {
+    const result = items.map({{camelCase entityName}} => new {{pascalCase entityName}}Response({{camelCase entityName}}))
+
+    super(result, total, limit, offset)
+  }
+}

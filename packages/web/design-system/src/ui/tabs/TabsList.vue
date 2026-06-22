@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import {
-  TabsIndicator as RekaTabsIndicator,
-  TabsList as RekaTabsList,
-} from 'reka-ui'
+import { TabsList as RekaTabsList } from 'reka-ui'
 import {
   onMounted,
   ref,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { UIAdaptiveContent } from '@/ui/adaptive-content/index'
 import { useInjectTabsContext } from '@/ui/tabs/tabs.context'
-import TabsAdaptiveContentDropdown from '@/ui/tabs/TabsAdaptiveContentDropdown.vue'
 import TabsIndicator from '@/ui/tabs/TabsIndicator.vue'
 
 const i18n = useI18n()
@@ -26,7 +21,6 @@ const {
   scrollToLeft,
   scrollToRight,
   setScrollContainerRef,
-  tabs,
   variants,
 } = useInjectTabsContext()
 
@@ -80,37 +74,12 @@ onMounted(() => {
       :class="variants.scrollContainer()"
       :data-orientation="orientation"
     >
-      <UIAdaptiveContent v-if="!isTouchDevice">
-        <template #default="{ hiddenBlockCount }">
-          <div class="h-full">
-            <RekaTabsList
-              :class="variants.list()"
-            >
-              <slot />
-
-              <TabsIndicator
-                :hidden-tabs-count="hiddenBlockCount"
-                :tabs="tabs"
-              />
-              <TabsAdaptiveContentDropdown
-                v-if="hiddenBlockCount > 0"
-                :hidden-tabs-count="hiddenBlockCount"
-                :tabs="tabs"
-              />
-            </RekaTabsList>
-          </div>
-        </template>
-      </UIAdaptiveContent>
-
       <RekaTabsList
-        v-else
         :class="variants.list()"
       >
         <slot />
 
-        <RekaTabsIndicator :class="variants.indicator()">
-          <div :class="variants.indicatorInner()" />
-        </RekaTabsIndicator>
+        <TabsIndicator />
       </RekaTabsList>
     </div>
 

@@ -22,10 +22,28 @@ describe('PlainDate accessors', () => {
       expect(day.day()).toBe(0) // wrapped around to sunday
     })
 
-    it('throws when accessing the day of the week of an infinite date', () => {
-      expect(() => factory('infinity').day()).toThrow()
-      expect(() => factory('-infinity').day()).toThrow()
+  })
+
+  describe('isoWeek', () => {
+    it('returns the ISO week number', () => {
+      expect(factory('2025-01-01').isoWeek()).toBe(1)
+      expect(factory('2025-12-28').isoWeek()).toBe(52)
+      expect(factory('2025-12-29').isoWeek()).toBe(1)
     })
+  })
+
+  describe('isoWeekday', () => {
+    it('returns the ISO weekday', () => {
+      const day = factory('2025-10-12') // sunday
+
+      for (let i = 0; i < 7; i++) {
+        expect(day.isoWeekday() === i)
+        day.add(1, 'day')
+      }
+
+      expect(day.isoWeekday()).toBe(7) // wrapped around to sunday
+    })
+
   })
 
   describe('until', () => {

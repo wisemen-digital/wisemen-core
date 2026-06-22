@@ -5,8 +5,17 @@ export {
   getDataSourceToken
 } from '@nestjs/typeorm'
 
-export * from './extensions/index.js'
-export * from './operators/index.js'
-export * from './naming/index.js'
-export * from './helpers/index.js'
-export * from './types/index.js'
+export {
+  createTypeOrmProviders,
+  NestjsTypeOrmModuleAsyncOptions,
+  TypeOrmModule,
+  TypeOrmRepository,
+  transaction,
+  createTransactionManagerProxy,
+  readonly,
+  createReadonlyManagerProxy
+} from './extensions/index.js'
+export { AnyOrIgnore, AndOrIgnore } from './operators/index.js'
+export { SnakeNamingStrategy } from './naming/index.js'
+export { migrate, sslHelper } from './helpers/index.js'
+export { Default, Insert } from './types/index.js'

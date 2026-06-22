@@ -3,6 +3,7 @@ import type {
   StoryObj,
 } from '@storybook/vue3-vite'
 
+import TimelineAllVariantsPlayground from './TimelineAllVariantsPlayground.vue'
 import TimelinePlayground from './TimelinePlayground.vue'
 
 const meta = {
@@ -10,6 +11,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'select',
+      description: 'Controls the size of the timeline indicators and spacing',
       options: [
         'sm',
         'md',
@@ -17,6 +19,7 @@ const meta = {
     },
     variant: {
       control: 'select',
+      description: 'Visual style applied to the timeline indicators',
       options: [
         'outline',
         'solid',
@@ -34,30 +37,26 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Solid: Story = {
+export const Default: Story = {
   args: {
     size: 'md',
     variant: 'solid',
   },
 }
 
-export const Outline: Story = {
-  args: {
-    size: 'md',
-    variant: 'outline',
+export const AllVariants: Story = {
+  parameters: {
+    controls: {
+      exclude: [
+        'size',
+        'variant',
+      ],
+    },
   },
-}
-
-export const Subtle: Story = {
-  args: {
-    size: 'md',
-    variant: 'subtle',
-  },
-}
-
-export const Small: Story = {
-  args: {
-    size: 'sm',
-    variant: 'solid',
-  },
+  render: () => ({
+    components: {
+      TimelineAllVariantsPlayground,
+    },
+    template: '<TimelineAllVariantsPlayground />',
+  }),
 }

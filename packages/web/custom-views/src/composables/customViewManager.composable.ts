@@ -1,6 +1,5 @@
 // oxlint-disable unicorn/consistent-function-scoping
 import { useHotkey } from '@tanstack/vue-hotkeys'
-import { useRouteQuery } from '@vueuse/router'
 import type { ActionGroup } from '@wisemen/vue-core-actions'
 import { GroupPriority } from '@wisemen/vue-core-actions'
 import {
@@ -13,6 +12,10 @@ import {
   watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
+import {
+  useRoute,
+  useRouter,
+} from 'vue-router'
 
 import { useProvideCustomViewManagerContext } from '@/context/customViewManager.context'
 import type {
@@ -40,12 +43,15 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
   type TState = AdaptersToState<TAdapters>
 
   const i18n = useI18n()
+  const route = useRoute()
+  const router = useRouter()
 
   const views = shallowRef<CustomView<TState>[]>(loadAndMergeViews())
 
   assert(views.value.length > 0, 'At least 1 view is required')
 
-  const activeViewId = useRouteQuery<string | null>('view', null)
+  const activeViewId = computed<string | null>(() => route.query.view as string | null ?? null)
+  const workingState = computed<string | null>(() => route.query['view-state'] as string | null ?? null)
 
   const actionGroup: ActionGroup = {
     name: () => i18n.t('action.custom_view.group_name'),
@@ -55,6 +61,12 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
   const activeView = computed<CustomView<TState>>(() => {
     return views.value.find((view) => view.id === activeViewId.value) ?? views.value[0]!
   })
+
+  const currentAdapterState = computed<Record<string, unknown>>(() =>
+    Object.fromEntries(state.map((a) => [
+      a.key,
+      a.getCurrentState(),
+    ])))
 
   const isDirty = computed<boolean>(
     () => state.some((stateAdapter) => {
@@ -70,6 +82,37 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
       )
     }),
   )
+
+  function updateQuery(updates: Partial<Record<'view' | 'view-state', string | null>>): void {
+    const query = {
+      ...route.query,
+    }
+
+    let changed = false
+
+    for (const [
+      key,
+      value,
+    ] of Object.entries(updates)) {
+      if (value == null) {
+        if (key in query) {
+          delete query[key]
+          changed = true
+        }
+      }
+      else if (query[key] !== value) {
+        query[key] = value
+        changed = true
+      }
+    }
+
+    if (changed) {
+      router.replace({
+        ...route,
+        query,
+      })
+    }
+  }
 
   function viewAlreadyExists(view: CustomView, views: CustomView[]): boolean {
     return views.some((v) => v.id === view.id)
@@ -127,11 +170,17 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
       : view)
 
     persist()
+    updateQuery({
+      'view-state': null,
+    })
   }
 
   function deleteView(viewId: string): void {
     if (activeViewId.value === viewId) {
-      activeViewId.value = null
+      updateQuery({
+        'view': null,
+        'view-state': null,
+      })
     }
 
     views.value = views.value.filter((view) => view.id !== viewId)
@@ -139,7 +188,10 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
   }
 
   function setActiveView(viewId: string): void {
-    activeViewId.value = viewId
+    updateQuery({
+      'view': viewId,
+      'view-state': null,
+    })
   }
 
   function updateViewMeta(viewId: string, meta: UpdateCustomViewMeta): void {
@@ -151,6 +203,20 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
       : v)
 
     persist()
+  }
+
+  function revertToSavedView(): void {
+    updateQuery({
+      'view-state': null,
+    })
+
+    const view = activeView.value
+
+    for (const stateAdapter of state) {
+      const raw = (view.state as Record<string, unknown>)[stateAdapter.key]
+
+      stateAdapter.apply(raw != null ? stateAdapter.deserialize(raw) : null)
+    }
   }
 
   function reorderViews(orderedViews: CustomView<TState>[]): void {
@@ -188,10 +254,36 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
 
       stateAdapter.apply(activeViewState)
     }
+
+    if (workingState.value) {
+      try {
+        const rawWorking = JSON.parse(atob(workingState.value)) as Record<string, unknown>
+
+        for (const stateAdapter of state) {
+          // eslint-disable-next-line max-depth
+          if (rawWorking[stateAdapter.key] !== undefined) {
+            stateAdapter.apply(stateAdapter.deserialize(rawWorking[stateAdapter.key]))
+          }
+        }
+      }
+      catch {
+        updateQuery({
+          'view-state': null,
+        })
+      }
+    }
   }
 
   watch(activeView, onActiveViewChange, {
     immediate: true,
+  })
+
+  watch(currentAdapterState, () => {
+    updateQuery({
+      'view-state': isDirty.value ? btoa(JSON.stringify(captureState())) : null,
+    })
+  }, {
+    deep: true,
   })
 
   for (let i = 0; i < 9; i += 1) {
@@ -230,6 +322,7 @@ export function useCustomViewManager<TAdapters extends CustomViewStateAdapter<st
     createView,
     deleteView,
     reorderViews,
+    revertToSavedView,
     saveToCurrentView,
     setActiveView,
     updateViewMeta,

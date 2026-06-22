@@ -10,7 +10,6 @@ import {
 
 import TabsOverflowPlayground from './TabsOverflowPlayground.vue'
 import TabsPlayground from './TabsPlayground.vue'
-import TabsRouterLinkAdaptivePlayground from './TabsRouterLinkAdaptivePlayground.vue'
 import TabsRouterLinkPlayground from './TabsRouterLinkPlayground.vue'
 
 const DISABLED_REGEX = /Disabled/i
@@ -20,9 +19,11 @@ const meta = {
   argTypes: {
     isFullWidth: {
       control: 'boolean',
+      description: 'Makes each tab grow to fill the available horizontal space',
     },
     orientation: {
       control: 'select',
+      description: 'Arranges the tab list horizontally or vertically',
       options: [
         'horizontal',
         'vertical',
@@ -30,6 +31,7 @@ const meta = {
     },
     underlineTabsHorizontalListPadding: {
       control: 'select',
+      description: 'Controls the horizontal padding used by underline tab lists',
       options: [
         'none',
         'sm',
@@ -40,6 +42,7 @@ const meta = {
     },
     variant: {
       control: 'select',
+      description: 'Visual style used for the tab triggers',
       options: [
         'underline',
         'button-border',
@@ -132,40 +135,6 @@ export const HorizontalOverflow: Story = {
       }
     },
     template: '<TabsOverflowPlayground v-bind="args" />',
-  }),
-}
-
-export const AdaptiveOverflow: Story = {
-  args: {
-    variant: 'button-border',
-  },
-  render: (args) => ({
-    components: {
-      TabsOverflowPlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<TabsOverflowPlayground v-bind="args" is-adaptive />',
-  }),
-}
-
-export const AdaptiveRouterLink: Story = {
-  args: {
-    variant: 'underline',
-  },
-  render: (args) => ({
-    components: {
-      TabsRouterLinkAdaptivePlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<TabsRouterLinkAdaptivePlayground v-bind="args" />',
   }),
 }
 
