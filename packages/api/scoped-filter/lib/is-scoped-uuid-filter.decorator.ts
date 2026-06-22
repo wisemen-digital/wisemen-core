@@ -1,6 +1,4 @@
-import { applyDecorators } from '@nestjs/common'
-import { IsObject, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import { IsFilter } from '#src/is-filter.decorator.js'
 import { ScopedUuidFilter } from '#src/scoped-uuid-filter.js'
 
 export interface IsScopedUuidFilterValidationOptions {
@@ -23,9 +21,5 @@ export interface IsScopedUuidFilterValidationOptions {
 export function IsScopedUuidFilter (
   options?: IsScopedUuidFilterValidationOptions
 ): PropertyDecorator {
-  return applyDecorators(
-    Type(() => ScopedUuidFilter),
-    ValidateNested({ each: options?.each }),
-    IsObject()
-  )
+  return IsFilter(ScopedUuidFilter, options)
 }

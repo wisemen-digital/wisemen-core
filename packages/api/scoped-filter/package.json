@@ -25,6 +25,9 @@
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
+  "dependencies": {
+    "@wisemen/datewise": "workspace:*"
+  },
   "peerDependencies": {
     "@nestjs/swagger": "catalog:backend-peer",
     "class-transformer": "catalog:backend-peer",
