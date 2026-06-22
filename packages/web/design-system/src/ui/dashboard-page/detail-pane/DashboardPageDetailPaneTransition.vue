@@ -21,6 +21,10 @@ const {
   onResizeStart,
 } = useInjectDetailPaneContext()
 
+useProvideDetailPaneScrollContext({
+  hasTabs: ref<boolean>(false),
+})
+
 const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
 const duration = computed<number>(() => {
@@ -38,10 +42,6 @@ const {
 const detailPaneStyle = computed<DetailPaneStyle>(() => createDetailPaneStyle({
   variant,
 }))
-
-useProvideDetailPaneScrollContext({
-  hasTabs: ref<boolean>(false),
-})
 </script>
 
 <template>
