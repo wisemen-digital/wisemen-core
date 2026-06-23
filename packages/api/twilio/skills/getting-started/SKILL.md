@@ -1,12 +1,11 @@
 ---
 name: getting-started
-description: Use when configuring Twilio SMS or voice calls in NestJS apis.
+description: Use when sending SMS or voice calls in NestJS apis.
 ---
 
 # @wisemen/twilio - Getting Started
 
-Register `TwilioModule` once with your account credentials, then inject
-`Twilio` anywhere you need to send SMS messages or trigger phone calls.
+Register `TwilioModule` once with your account credentials, then inject `Twilio` anywhere you need to send SMS messages or trigger phone calls.  
 
 ## Register The Module
 
@@ -29,8 +28,7 @@ import { TwilioModule } from '@wisemen/twilio'
 export class DefaultTwilioModule {}
 ```
 
-Use `TwilioModule.forRoot(...)` instead when the credentials are already
-available as static values.
+Use `TwilioModule.forRoot(...)` instead when the credentials are already available as static values.  
 
 ## Send Messages And Calls
 
@@ -54,5 +52,4 @@ export class NotificationService {
 }
 ```
 
-Pass the already-formatted E.164 destination number as `to`; the package uses
-the configured `phoneNumber` as the sender automatically.
+Pass the already-formatted E.164 destination number as `to`; the package uses the configured `phoneNumber` as the sender automatically.  
