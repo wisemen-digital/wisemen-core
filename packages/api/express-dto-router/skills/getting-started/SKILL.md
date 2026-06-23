@@ -69,6 +69,4 @@ app.use((err, req, res, _next) => {
 })
 ```
 
-Use `groups` inside `dtos` when the same DTO class needs different validation
-rules per route. Return `ApiResponse` instead of plain JSON when the route must
-control headers or status handling explicitly.
+Use `groups` inside `dtos` when the same DTO class needs different validation rules per route. Return `ApiResponse` instead of plain JSON when the route must control headers or status handling explicitly.
