@@ -105,6 +105,12 @@ const propsData = [
     "type": "string | null"
   },
   {
+    "description": "<p>Optional v-maska configuration for input masking.</p>\n",
+    "name": "mask",
+    "required": false,
+    "type": "string | MaskInputOptions"
+  },
+  {
     "description": "",
     "name": "modelValue",
     "required": true,
