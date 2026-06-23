@@ -5,9 +5,7 @@ description: Use when building Express routes with validated body and query DTOs
 
 # @appwise/express-dto-router - Getting Started
 
-Use `DtoRouter` when an Express route should validate request DTOs before it
-reaches the controller. Extend `Dto` for request models, register them in
-`dtos`, and throw `CustomError` for client-facing failures.
+Use `DtoRouter` when an Express route should validate request DTOs before it reaches the controller. Extend `Dto` for request models, register them in `dtos`, and throw `CustomError` for client-facing failures.
 
 ```ts
 import { IsOptional, IsString } from 'class-validator'
