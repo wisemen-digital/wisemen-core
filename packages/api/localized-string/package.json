@@ -11,7 +11,8 @@
     "#src/*": "./dist/*"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "prebuild": "rm -rf ./dist",
