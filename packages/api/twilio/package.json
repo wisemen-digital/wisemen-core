@@ -6,11 +6,16 @@
   },
   "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./skills/*": "./skills/*"
   },
   "imports": {
     "#*": "./lib/*"
   },
+  "files": [
+    "dist/",
+    "skills/"
+  ],
   "scripts": {
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",

@@ -22,18 +22,18 @@ A collection of packages for Wisemen applications.
 
 ### New Package Setup
 
-When creating a new package:
+When creating a new package, use [fledgling](https://github.com/dmno-dev/fledgling) to claim the npm name and configure trusted publishing before the first release:
 
-1. **Manual first release** – The first version must be published manually since the package doesn't exist on npm yet:
+1. **Create the package in the workspace** – Add the new package under `packages/<group>/<package>` and make sure its `package.json` has the correct `name`.
+2. **Claim the name with fledgling** – Run fledgling from the repo root so it can discover the new workspace package:
    ```bash
-   pnpm publish
+   pnpm fledgling
    ```
-2. **Setup OIDC Trusted Publishers** – Configure your npm package with GitHub OIDC so future releases are automated:
-   - Go to your npm package settings
-   - Add GitHub as a trusted publisher
-   - Configure the repository, branch, and environment
+   will open an interactive window, which will guide you through claiming the package name and configuring trusted publishing.
+3. **Keep exclusions in sync** – If a public package should not be managed by fledgling, add its name or glob to the `fledgling.ignore` list in the root `package.json`.
+4. **Release through Bumpy** – Once the package is claimed and trusted publishing is configured, normal releases continue through the Bumpy workflow.
 
-After this setup, all future releases will be automatic through the Bumpy workflow.
+`fledgling` reads the workspace manifests defined in `package.json` and `pnpm-workspace.yaml`, so the repo only needs to expose the actual workspace packages. In this repo that means `docs` plus `packages/*/*`.
 
 ## Packages
 

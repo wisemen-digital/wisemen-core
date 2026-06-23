@@ -8,6 +8,7 @@ export type ReachablePlainDateUnit
   = 'week'
     | 'month'
     | 'year'
+    | 'isoWeek'
 
 export type GetPlainDateUnit
   = 'day of month' | 'day'
