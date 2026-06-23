@@ -26,7 +26,8 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
-    "@wisemen/datewise": "workspace:*"
+    "@wisemen/datewise": "workspace:*",
+    "@wisemen/validators": "workspace:*"
   },
   "peerDependencies": {
     "@nestjs/swagger": "catalog:backend-peer",
@@ -42,7 +43,8 @@
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "pg": "catalog:backend"
   },
   "author": "Wisemen",
   "contributors": [],

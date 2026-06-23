@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { ColumnType, DataSource } from 'typeorm'
 import { FilterConditionsTest } from './filter-conditions-test.entity.js'
 import { ScopedFilterTest } from './scoped-filter-test.entity.js'
 
@@ -16,3 +16,6 @@ export const dataSource = new DataSource({
     undefined: 'ignore',
   }
 })
+
+dataSource.driver.supportedDataTypes.push('tstzrange3' as ColumnType)
+dataSource.driver.supportedDataTypes.push('tstzmultirange3' as ColumnType)
