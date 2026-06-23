@@ -5,9 +5,7 @@ description: Use when storing and validating multilingual text in NestJS apis wi
 
 # @wisemen/localized-string - Getting Started
 
-Use `LocalizedString` when a field needs multiple translations. Use
-`LocalizedStringCommand` in DTOs, `@IsLocalizedString(...)` to validate
-languages, and `@LocalizedStringColumn()` to persist the value as `jsonb`.
+Use `LocalizedString` when a field needs multiple translations. Use `LocalizedStringCommand` in DTOs, `@IsLocalizedString(...)` to validate languages, and `@LocalizedStringColumn()` to persist the value as `jsonb`.
 
 ```ts
 import { ApiProperty } from '@nestjs/swagger'
