@@ -6,10 +6,9 @@ import { IsNullWhen } from './is-null-when.validator.js'
 class TestClass {
   @IsNullWhen((obj: TestClass) => obj.reference !== null)
    
-  value: unknown | null
+  value: unknown
 
-   
-  reference: unknown | null
+  reference: unknown
 }
 
 describe('IsNullWhen decorator test', () => {
