@@ -1,0 +1,51 @@
+{
+  "name": "@wisemen/nestjs-feature-flags",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/",
+    "skills/"
+  ],
+  "scripts": {
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+   "@nestjs/common": "catalog:backend-peer",
+   "typeorm": "catalog:backend-peer",
+   "@wisemen/nestjs-typeorm": "workspace:*"
+  },
+  "dependencies": {
+    "@openfeature/go-feature-flag-provider": "1.3.1",
+    "@openfeature/nestjs-sdk": "0.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "expect": "catalog:test",
+    "eslint": "catalog:lint-api",
+    "typescript": "catalog:peer",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api"
+  },
+  "author": "Kobe Kwanten",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-feature-flags"
+  }
+}
