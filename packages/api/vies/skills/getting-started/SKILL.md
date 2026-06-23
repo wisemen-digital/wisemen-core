@@ -4,9 +4,8 @@ description: Use when validating EU VAT numbers from NestJS APIs.
 ---
 
 # @wisemen/vies - Getting Started
+Use `@wisemen/vies` when a NestJS service needs to validate a VAT number against the VIES REST API.  
 
-Use `@wisemen/vies` when a NestJS service needs to validate a VAT number
-against the VIES REST API.
 
 ## Register The Module
 
@@ -46,8 +45,30 @@ export class CreateBusinessUseCase {
 }
 ```
 
-`checkVatNumber(...)` returns `ViesCheckVatNumberResponse` and throws
-`ViesUnavailableError` when the VIES service is temporarily unavailable.
+`checkVatNumber(...)` returns `ViesCheckVatNumberResponse` and throws `ViesUnavailableError` when the VIES service is temporarily unavailable.  
+
+The response format is
+```
+export interface ViesCheckVatNumberResponse {
+  countryCode: CountryCode
+  vatNumber: string
+  requestDate: string
+  valid: boolean
+  requestIdentifier: string
+  name: string
+  address: string
+  traderName: string
+  traderStreet: string
+  traderPostalCode: string
+  traderCity: string
+  traderCompanyType: string
+  traderNameMatch: string
+  traderStreetMatch: string
+  traderPostalCodeMatch: string
+  traderCityMatch: string
+  traderCompanyTypeMatch: string
+}
+```
 
 ## Add Requester Details When Needed
 
@@ -60,5 +81,5 @@ const command = new ViesCheckVatNumberCommandBuilder()
   .build()
 ```
 
-Use requester fields only when you need the extra VIES validation context. For
-basic VAT checks, `countryCode` and `vatNumber` are enough.
+Use requester fields only when you need the extra VIES validation context. For basic VAT checks, `countryCode` and `vatNumber` are enough.  
+
