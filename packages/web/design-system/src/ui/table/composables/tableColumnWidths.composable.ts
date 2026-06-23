@@ -38,6 +38,8 @@ export function useTableColumnWidths(
   isInitialized: ComputedRef<boolean>,
   actionGroup: ComputedRef<ActionGroup | null>,
   isColumnResizeDisabled: ComputedRef<boolean>,
+  hasActiveSearch: ComputedRef<boolean>,
+  activeFilterCount: ComputedRef<number>,
 ) {
   const frozenTemplate = ref<string | null>(null)
   const manualWidths = ref<number[] | null>(null)
@@ -72,7 +74,36 @@ export function useTableColumnWidths(
       return
     }
 
-    captureComputedTemplate(el)
+    // Immediately apply max-content so the first render uses header widths instead
+    // of the narrow fluid template, preventing the "truncated → expands" flash.
+    const headerCells = getResizableHeaderCells()
+
+    if (headerCells.length > 0) {
+      const totalCells = headerCells.length + 2
+
+      frozenTemplate.value = Array.from({
+        length: totalCells,
+      }).fill('max-content').join(' ')
+    }
+
+    // Defer the final measurement to the next macrotask so the virtual scroller's
+    // ResizeObserver has time to measure the container and render visible rows.
+    // The frozenTemplate above ensures no truncation during this brief wait.
+    setTimeout(() => {
+      if (isInitialized.value && gridEl.value !== null) {
+        fitAllColumnsToContent(getResizableHeaderCells())
+      }
+    }, 0)
+  }, {
+    flush: 'post',
+  })
+
+  watch([
+    hasActiveSearch,
+    activeFilterCount,
+  ], () => {
+    manualWidths.value = null
+    frozenTemplate.value = null
   })
 
   let lastContainerWidth = 0
