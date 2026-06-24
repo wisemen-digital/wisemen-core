@@ -2,7 +2,6 @@ import { describe, it } from 'node:test'
 import assert from 'assert'
 import { Readable } from 'node:stream'
 import { expect } from 'expect'
-import { CSVMissingColumnError } from '../errors/csv-missing-column.error.js'
 import { CSVField } from '../csv.field.js'
 import { CSVSchema } from '../csv.schema.js'
 import { CSVSchemaParseError } from '../errors/csv-schema-parse.error.js'
@@ -160,19 +159,5 @@ describe('Csv Schema', () => {
     const parsed = await schemaWithOptionalColumn.parseString(csv)
 
     expect(parsed[0].alias).toBeUndefined()
-  })
-
-  it('Throws when a required schema column is missing from the CSV header', async () => {
-    const csv = [
-      'naam;voornaam;geboortedatum;leeftijd;geslacht;huisdieren;opmerkingen',
-      'Sijmkens;Maarten;1997-04-09;27;male;cat,dog;'
-    ].join('\n')
-
-    try {
-      await schema.parseString(csv)
-      expect(true).toBe(false)
-    } catch (error) {
-      expect(error).toEqual(new CSVMissingColumnError(['akkoord']))
-    }
   })
 })

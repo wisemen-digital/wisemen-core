@@ -6,8 +6,8 @@ import { CSVSchemaParseError } from './errors/csv-schema-parse.error.js'
 import { InferRow } from './infer.js'
 
 export interface CsvParseOptions {
-   delimiter?: string 
-} 
+  delimiter?: string
+}
 
 // oxlint-disable-next-line typescript/no-explicit-any
 export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, any> }> {
@@ -22,7 +22,7 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
     return this.parse(decoded)
   }
 
-  async parseStream ( stream: Readable, options?: CsvParseOptions): Promise<InferRow<S>[]> {
+  async parseStream (stream: Readable, options?: CsvParseOptions): Promise<InferRow<S>[]> {
     const records: Record<string, string>[] = []
     const rows = CSV.decodeStream(stream, {
       columns: this.getRequiredColumns(),
@@ -36,7 +36,7 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
     return this.parse(records)
   }
 
-  private async parse (records: Record<string, string>[]): Promise<InferRow<S>[]> {
+  async parse (records: Record<string, string>[]): Promise<InferRow<S>[]> {
     const result: InferRow<S>[] = []
     const errors: CSVFieldParseError[] = []
 
@@ -47,7 +47,7 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
         try {
           const field = this.fields[column]
 
-           
+
           row[column] = field.parse(record[field.name], rowIndex)
         } catch (error) {
           if (error instanceof CSVFieldParseError) {

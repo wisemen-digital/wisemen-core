@@ -1,8 +1,6 @@
 ---
 name: schema-parsing
 description: Use when parsing CSVs in APIs.
-type: core
-library: csv
 ---
 
 # @wisemen/csv - Schema Parsing

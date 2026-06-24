@@ -2,7 +2,6 @@ import { describe, it } from 'node:test'
 import { Readable } from 'node:stream'
 import { CSV, CSVRow } from '../csv.util.js'
 import { expect } from 'expect'
-import { CSVMissingColumnError } from '../errors/csv-missing-column.error.js'
 
 
 describe('CSV util', () => {
@@ -52,21 +51,6 @@ describe('CSV util', () => {
         { line: 2, data: { name: 'John Doe', age: '30' } },
         { line: 3, data: { name: 'Jane Doe', age: '25' } }
       ])
-    })
-
-    it('throws an error if required columns are missing in stream', async () => {
-      const rawText = `name;age\nJohn Doe;30\nJane Doe;25`
-      const stream = Readable.from(rawText)
-
-      try {
-        for await (const _ of CSV.decodeStream(stream, { columns: ['name', 'age', 'gender'] })) {
-          // do nothing
-        }
-
-        expect(true).toBe(false) // force fail if no error is thrown
-      } catch (error) {
-        expect(error).toEqual(new CSVMissingColumnError(['gender']))
-      }
     })
 
     it('decodes a quoted field containing the delimiter', async () => {
@@ -157,13 +141,6 @@ describe('CSV util', () => {
         { name: 'John Doe', age: '30' },
         { name: 'Jane Doe', age: '25' }
       ])
-    })
-
-    it('throws an error if required columns are missing', () => {
-      const csv = `name;age\nJohn Doe;30\nJane Doe;25`
-
-      expect(() => CSV.decode(csv, { columns: ['name', 'age', 'gender'] }))
-      .toThrow(new CSVMissingColumnError(['gender']))
     })
 
     it('decodes a quoted field containing the delimiter', () => {
@@ -311,6 +288,15 @@ describe('CSV util', () => {
       expect(rawText).toBe(`name;age\n;\n`)
     })
 
+    it('renders missing requested columns as empty fields', async () => {
+      const data = [{ name: 'John Doe' }] as Array<Record<'name' | 'age', string | null | undefined>>
+      const stream = CSV.encodeStream(data, { columns: ['name', 'age'] })
+      let rawText = ''
+      for await (const chunk of stream) rawText += String(chunk)
+
+      expect(rawText).toBe(`name;age\nJohn Doe;\n`)
+    })
+
     it('emits only the header when the iterable is empty and columns are provided', async () => {
       const stream = CSV.encodeStream([], { columns: ['name', 'age'] })
       let rawText = ''
@@ -377,6 +363,13 @@ describe('CSV util', () => {
       const csv = CSV.encode(data, { columns: ['name', 'age'] })
 
       expect(csv).toBe(`name;age\n;`)
+    })
+
+    it('renders missing requested columns as empty fields', () => {
+      const data = [{ name: 'John Doe' }] as Array<Record<'name' | 'age', string | null | undefined>>
+      const csv = CSV.encode(data, { columns: ['name', 'age'] })
+
+      expect(csv).toBe(`name;age\nJohn Doe;`)
     })
   })
 

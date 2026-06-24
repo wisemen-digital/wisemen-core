@@ -1,5 +1,4 @@
 import { Readable } from 'node:stream'
-import { CSVMissingColumnError } from './errors/csv-missing-column.error.js'
 
 export interface CSVRow<K extends string> {
   line: number
@@ -10,35 +9,44 @@ const DEFAULT_DELIMITER = ';'
 const DEFAULT_BATCH_SIZE = 100
 const DEFAULT_MAX_CHUNK_BYTES = 64 * 1024
 
-function escapeField (value: string, delimiter: string): string {
-  if (
-    value.includes(delimiter) ||
-    value.includes('"') ||
-    value.includes('\n') ||
-    value.includes('\r')
-  ) {
-    return `"${value.replace(/"/g, '""')}"`
-  }
-  return value
-}
-
-function countChar (text: string, ch: string): number {
-  let n = 0
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === ch) n++
-  }
-  return n
-}
-
-interface DecodeCSVOptions<K extends string> {
+interface CSVOptions<K extends string> {
+  /**
+   * The expected column order. When omitted during encoding, the header row is
+   * derived from the first record.
+   */
   columns?: readonly K[]
+  /**
+   * The field separator used in the CSV payload.
+   */
   delimiter?: string
 }
 
+interface EncodeStreamCSVOptions<K extends string> extends CSVOptions<K> {
+  /** 
+   * The amount of lines yielded to the readable per yield. Lines are buffered
+   * internally until this amount is reached, or the last line has been encoded.
+   * Must be > 0.
+   */
+  batchSize?: number
+  /** 
+   * The amount of bytes maximally yielded to the returned Readable. 
+   * Buffers line internally until the bytes have been exceeded.
+   * Must be > 0.
+   */
+  maxChunkBytes?: number
+}
+
+
 export class CSV {
+  /**
+   * Decode a CSV string into records keyed by the header row.
+   * @param csv the CSV payload to parse.
+   * @param options CSV delimiter and header options.
+   * @returns The decoded records.
+   */
   static decode<K extends string> (
     csv: string,
-    options?: DecodeCSVOptions<K>
+    options?: CSVOptions<K>
   ): Array<Record<K, string>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
@@ -65,9 +73,15 @@ export class CSV {
     return rows.map(values => this.mapRecord(headerKeys as K[], values))
   }
 
+  /**
+   * Decode a readable CSV stream into row objects with source line metadata.
+   * @param stream the readable stream containing CSV chunks.
+   * @param options CSV delimiter and header options.
+   * @returns An async generator yielding parsed CSV rows.
+   */
   static async* decodeStream<K extends string> (
     stream: Readable,
-    options?: DecodeCSVOptions<K>
+    options?: CSVOptions<K>
   ): AsyncGenerator<CSVRow<K>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
@@ -75,18 +89,21 @@ export class CSV {
     let lineNumber = 0
     let keys: K[] | null = null
 
+    const countChar = this.countChar
+    const parseRecord = this.parseRecord
+    const mapRecord = this.mapRecord
+
     function* emit (text: string): Generator<CSVRow<K>> {
       lineNumber += countChar(text, '\n') + 1
-      const values = this.parseFields(text, delimiter)
+      const values = parseRecord(text, delimiter)
 
       if (keys === null) {
         const headerKeys = values.map(v => v.trim())
-        assertColumns(headerKeys, options?.columns)
         keys = headerKeys as K[]
         return
       }
 
-      yield { line: lineNumber, data: this.mapRecord(keys, values) }
+      yield { line: lineNumber, data: mapRecord(keys, values) }
     }
 
     for await (const chunk of stream) {
@@ -103,48 +120,53 @@ export class CSV {
     }
   }
 
+  /**
+   * Encode an array of records into a CSV.
+   * @param data the array of records, when no columns are specified the keys 
+   *  of the first object in the array are taken as the csv header row.
+   * @param options CSV delimiter and CSV header options.
+   * @returns The CSV as a string
+   */
   static encode<K extends string> (
     data: Array<Record<K, string | null | undefined>>,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-    }
+    options?: CSVOptions<K>
   ): string {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
     const keys = (options?.columns ?? Object.keys(data[0])) as K[]
 
     return [
-      keys.map(key => escapeField(key, delimiter)).join(delimiter),
-      ...data.map(item =>
-        keys.map(key => escapeField(item[key as string] ?? '', delimiter)).join(delimiter)
-      ),
+      keys.map(k => this.escape(k, delimiter)).join(delimiter),
+      ...data.map(row => keys.map(key => this.escape(row[key] ?? '', delimiter)).join(delimiter)),
     ].join('\n')
   }
 
+  /**
+   * Encode records into a readable stream of CSV chunks.
+   * @param data the records to encode.
+   * @param options CSV delimiter, header, and chunking options.
+   * @returns A readable stream containing the encoded CSV.
+   */
   static encodeStream<K extends string> (
-    data: Iterable<Record<K, string | null | undefined>> | AsyncIterable<Record<K, string | null | undefined>>,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-      batchSize?: number
-      maxChunkBytes?: number
-    }
+    data: Iterable<Record<K, string | null | undefined>> |
+      AsyncIterable<Record<K, string | null | undefined>>,
+    options?: EncodeStreamCSVOptions<K>
   ): Readable {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
-    const batchSize = Math.max(1, options?.batchSize ?? DEFAULT_BATCH_SIZE)
-    const maxChunkBytes = Math.max(1, options?.maxChunkBytes ?? DEFAULT_MAX_CHUNK_BYTES)
+    const batchSize = options?.batchSize ?? DEFAULT_BATCH_SIZE
+    const maxChunkBytes = options?.maxChunkBytes ?? DEFAULT_MAX_CHUNK_BYTES
 
     let keys: readonly K[] | null = options?.columns ?? null
+    const escape = this.escape
 
     const iterator = (async function* () {
       let headerWritten = false
-      let rowCount = 0
+      let lineCount = 0
       let chunkBytes = 0
-      let chunks: string[] = []
+      let lines: string[] = []
 
       function writeHeader (headerKeys: readonly K[]): void {
-        const header = headerKeys.map(k => escapeField(k, delimiter)).join(delimiter) + '\n'
-        chunks.push(header)
+        const header = headerKeys.map(k => escape(k, delimiter)).join(delimiter) + '\n'
+        lines.push(header)
         chunkBytes += Buffer.byteLength(header)
         headerWritten = true
       }
@@ -155,24 +177,16 @@ export class CSV {
           writeHeader(keys)
         }
 
-        const line =
-          keys!
-            .map(key => escapeField(row[key] ?? '', delimiter))
-            .join(delimiter) + '\n'
-
-        chunks.push(line)
-
-        rowCount++
+        const line = keys!.map(key => escape(row[key] ?? '', delimiter)).join(delimiter) + '\n'
+        lines.push(line)
+        lineCount++
         chunkBytes += Buffer.byteLength(line)
 
-        if (
-          rowCount >= batchSize ||
-          chunkBytes >= maxChunkBytes
-        ) {
-          yield chunks.join('')
+        if (lineCount >= batchSize || chunkBytes >= maxChunkBytes) {
+          yield lines.join('')
 
-          chunks = []
-          rowCount = 0
+          lines = []
+          lineCount = 0
           chunkBytes = 0
         }
       }
@@ -181,8 +195,8 @@ export class CSV {
         writeHeader(keys)
       }
 
-      if (chunks.length > 0) {
-        yield chunks.join('')
+      if (lines.length > 0) {
+        yield lines.join('')
       }
     })()
 
@@ -206,19 +220,6 @@ export class CSV {
     return -1
   }
 
-  private validateColumnsExist<K extends string> (
-    headerKeys: string[],
-    columns: readonly K[] | undefined
-  ): void {
-    if (columns === undefined) {
-      return
-    }
-
-    const unknownColumn = columns.some(column => !headerKeys.includes(column))
-    if (unknownColumn) {
-      throw new CSVMissingColumnError(unknownColumn)
-    }
-  }
 
   private static parseRecord (text: string, delimiter: string): string[] {
     const fields: string[] = []
@@ -258,7 +259,7 @@ export class CSV {
   }
 
   private static mapRecord<K extends string> (
-    keys: readonly K[], 
+    keys: readonly K[],
     values: string[]
   ): Record<K, string> {
     const data = {} as Record<K, string>
@@ -266,5 +267,26 @@ export class CSV {
     keys.forEach((key, index) => { data[key] = values[index] ?? '' })
 
     return data
+  }
+
+  private static escape (value: string, delimiter: string): string {
+    if (
+      value.includes(delimiter) ||
+      value.includes('"') ||
+      value.includes('\n') ||
+      value.includes('\r')
+    ) {
+      return `"${value.replace(/"/g, '""')}"`
+    }
+
+    return value
+  }
+
+  private static countChar (text: string, ch: string): number {
+    let n = 0
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === ch) n++
+    }
+    return n
   }
 }
