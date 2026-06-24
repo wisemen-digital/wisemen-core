@@ -50,7 +50,6 @@ const dialogChin = useDialogChin()
   >
     <DialogHeader
       :icon="CheckCircleIcon"
-      :hide-description="true"
       title="Modal title"
       description="This is an example dialog with some content. "
     />
