@@ -28,7 +28,7 @@ export type InferField<F> = F extends CSVField<infer T, infer E, infer N, infer 
   ? InferValue<T, E, N, R, A>
   : never
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line @typescript-eslint/no-explicit-any
 export type InferRow<R> = R extends { [key: string]: CSVField<any, any, any, any, any> }
   ? { [K in keyof R]: InferField<R[K]> }
   : never

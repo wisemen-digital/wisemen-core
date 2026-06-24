@@ -47,7 +47,7 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
         try {
           const field = this.fields[column]
 
-
+          // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment
           row[column] = field.parse(record[field.name], rowIndex)
         } catch (error) {
           if (error instanceof CSVFieldParseError) {
