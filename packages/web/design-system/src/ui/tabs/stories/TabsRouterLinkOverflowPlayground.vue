@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<{
   overflowBehavior?: TabsOverflowBehavior
   variant?: TabsVariant
 }>(), {
-  overflowBehavior: 'responsive-dropdown',
+  overflowBehavior: 'scroll',
   variant: 'underline',
 })
 

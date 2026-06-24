@@ -44,7 +44,7 @@ const meta = {
       control: 'select',
       description: 'Controls whether overflowing tabs collapse into a dropdown or remain scrollable',
       options: [
-        'responsive-dropdown',
+        'scroll',
         'scroll',
       ],
     },
@@ -142,7 +142,7 @@ export const FullWidth: Story = {
 
 export const ResponsiveOverflow: Story = {
   args: {
-    overflowBehavior: 'responsive-dropdown',
+    overflowBehavior: 'scroll',
     variant: 'underline',
   },
   play: async ({
@@ -239,7 +239,7 @@ export const RouterLink: Story = {
 
 export const RouterLinkOverflow: Story = {
   args: {
-    overflowBehavior: 'responsive-dropdown',
+    overflowBehavior: 'scroll',
     variant: 'underline',
   },
   play: async ({

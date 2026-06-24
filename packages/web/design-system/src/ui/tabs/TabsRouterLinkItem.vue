@@ -1,12 +1,6 @@
 <script setup lang="ts">
 import { TabsTrigger as RekaTabsTrigger } from 'reka-ui'
-import {
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  useId,
-  watch,
-} from 'vue'
+import { computed } from 'vue'
 import {
   RouterLink,
   useRouter,
@@ -28,10 +22,6 @@ const props = withDefaults(defineProps<TabsRouterLinkItemProps>(), {
 
 const tabsContext = useInjectTabsContext()
 const variants = tabsContext.variants
-const tabId = useId()
-
-type TabsRegistration = Parameters<typeof tabsContext.registerTab>[0]
-
 const router = useRouter()
 
 const routeName = computed<string>(() => {
@@ -39,49 +29,10 @@ const routeName = computed<string>(() => {
 
   return resolved.name as string
 })
-
-const shouldRenderTrigger = computed<boolean>(() =>
-  !tabsContext.isResponsiveOverflowEnabled.value || tabsContext.isTabVisible(tabId))
-
-function getTabData(): TabsRegistration {
-  return {
-    id: tabId,
-    isDisabled: props.isDisabled,
-    isLabelHidden: props.isLabelHidden,
-    count: props.count,
-    disabledReason: props.disabledReason,
-    icon: props.icon,
-    label: props.label,
-    value: routeName.value,
-  }
-}
-
-function syncTabData(): void {
-  tabsContext.updateTab(getTabData())
-}
-
-onMounted(() => {
-  tabsContext.registerTab(getTabData())
-})
-
-onBeforeUnmount(() => {
-  tabsContext.unregisterTab(tabId)
-})
-
-watch(() => [
-  props.count,
-  props.disabledReason,
-  props.icon,
-  props.isDisabled,
-  props.isLabelHidden,
-  props.label,
-  routeName.value,
-], syncTabData)
 </script>
 
 <template>
   <UIActionTooltip
-    v-if="shouldRenderTrigger"
     :is-disabled="props.disabledReason == null"
     :label="props.disabledReason"
   >

@@ -5,7 +5,7 @@ import type { DisabledWithReason } from '@/types/disabledWithReason.type'
 
 export type TabsVariant = 'button-border' | 'button-brand' | 'underline'
 export type TabsHorizontalListPadding = 'lg' | 'md' | 'none' | 'sm' | 'xl'
-export type TabsOverflowBehavior = 'responsive-dropdown' | 'scroll'
+export type TabsOverflowBehavior = 'scroll'
 
 export interface TabsProps {
   /**

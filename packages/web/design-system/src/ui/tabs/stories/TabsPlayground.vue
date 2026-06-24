@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   isFullWidth: false,
   orientation: 'horizontal',
-  overflowBehavior: 'responsive-dropdown',
+  overflowBehavior: 'scroll',
   underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })

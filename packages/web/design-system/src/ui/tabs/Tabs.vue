@@ -11,13 +11,11 @@ import { useProvideTabsContext } from '@/ui/tabs/tabs.context'
 import type { TabsProps } from '@/ui/tabs/tabs.props'
 import type { TabsVariants } from '@/ui/tabs/tabs.style'
 import { tabsVariants } from '@/ui/tabs/tabs.style'
-import { useTabsOverflow } from '@/ui/tabs/tabsOverflow.composable'
-import { isTouchDevice } from '@/utils/isTouchDevice.util'
 
 const props = withDefaults(defineProps<TabsProps>(), {
   isFullWidth: false,
   orientation: 'horizontal',
-  overflowBehavior: 'responsive-dropdown',
+  overflowBehavior: 'scroll',
   underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })
@@ -26,18 +24,11 @@ if (props.underlineTabsHorizontalListPadding !== 'none' && props.variant !== 'un
   console.warn('[Tabs] `underlineTabsHorizontalListPadding` only applies to the `underline` variant.')
 }
 
-const isTouch = isTouchDevice()
-
 const modelValue = defineModel<string>({
   required: true,
 })
 
 const activeValue = computed<string>(() => modelValue.value)
-const isResponsiveOverflowEnabled = computed<boolean>(() =>
-  props.overflowBehavior === 'responsive-dropdown'
-  && props.orientation === 'horizontal'
-  && !props.isFullWidth
-  && !isTouch)
 
 const {
   hasHorizontalOverflow,
@@ -48,22 +39,6 @@ const {
   scrollToRight,
   setScrollContainerRef,
 } = useTabs({
-  activeValue,
-})
-
-const {
-  isTabVisible,
-  overflowTabs,
-  registeredTabs,
-  registerTab,
-  setOverflowContainerRef,
-  setOverflowMeasurementDropdownTriggerRef,
-  setOverflowMeasurementListRef,
-  setOverflowMeasurementTabRef,
-  unregisterTab,
-  updateTab,
-} = useTabsOverflow({
-  isEnabled: isResponsiveOverflowEnabled,
   activeValue,
 })
 
@@ -82,22 +57,10 @@ useProvideTabsContext({
   ...toComputedRefs(props),
   hasHorizontalOverflow,
   hasReachedHorizontalEnd,
-  isResponsiveOverflowEnabled,
   isScrolledHorizontally,
-  isTabVisible,
-  isTouchDevice: isTouch,
-  overflowTabs,
-  registeredTabs,
-  registerTab,
   scrollToLeft,
   scrollToRight,
-  setOverflowContainerRef,
-  setOverflowMeasurementDropdownTriggerRef,
-  setOverflowMeasurementListRef,
-  setOverflowMeasurementTabRef,
   setScrollContainerRef,
-  unregisterTab,
-  updateTab,
   variants,
 })
 </script>

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@wisemen/vue-core-icons'
 import { TabsList as RekaTabsList } from 'reka-ui'
 import {
   onMounted,
@@ -8,8 +12,6 @@ import { useI18n } from 'vue-i18n'
 
 import { useInjectTabsContext } from '@/ui/tabs/tabs.context'
 import TabsIndicator from '@/ui/tabs/TabsIndicator.vue'
-import TabsOverflowDropdown from '@/ui/tabs/TabsOverflowDropdown.vue'
-import TabsOverflowMeasurements from '@/ui/tabs/TabsOverflowMeasurements.vue'
 
 const i18n = useI18n()
 const scrollContainerRef = ref<HTMLElement | null>(null)
@@ -17,23 +19,15 @@ const scrollContainerRef = ref<HTMLElement | null>(null)
 const {
   hasHorizontalOverflow,
   hasReachedHorizontalEnd,
-  isResponsiveOverflowEnabled,
   isScrolledHorizontally,
-  isTouchDevice,
   orientation,
-  overflowTabs,
   scrollToLeft,
   scrollToRight,
-  setOverflowContainerRef,
   setScrollContainerRef,
   variants,
 } = useInjectTabsContext()
 
 onMounted(() => {
-  if (isResponsiveOverflowEnabled.value) {
-    return
-  }
-
   if (scrollContainerRef.value === null) {
     throw new Error('scrollContainerRef is null')
   }
@@ -45,105 +39,47 @@ onMounted(() => {
 <template>
   <div :class="variants.base()">
     <div
-      v-if="isResponsiveOverflowEnabled"
-      :ref="(el) => setOverflowContainerRef(el as HTMLElement | null)"
-      :class="variants.responsiveContainer()"
+      v-if="isScrolledHorizontally && hasHorizontalOverflow && orientation === 'horizontal'"
+      :class="variants.scrollEdge()"
+      class="left-0 justify-start bg-linear-to-r from-50%"
+    >
+      <button
+        :aria-label="i18n.t('component.tabs.scroll_left')"
+        :class="variants.scrollButton()"
+        tabindex="-1"
+        type="button"
+        @click="scrollToLeft"
+      >
+        <ChevronLeftIcon class="size-3" />
+      </button>
+    </div>
+
+    <div
+      ref="scrollContainerRef"
+      :class="variants.scrollContainer()"
       :data-orientation="orientation"
-      class="relative w-full overflow-hidden"
     >
       <RekaTabsList :class="variants.list()">
         <slot />
 
-        <TabsOverflowDropdown v-if="overflowTabs.length > 0" />
-
         <TabsIndicator />
       </RekaTabsList>
-
-      <TabsOverflowMeasurements />
     </div>
 
-    <template v-else>
-      <div
-        v-if="isTouchDevice && isScrolledHorizontally && hasHorizontalOverflow && orientation === 'horizontal'"
-        class="
-          absolute top-0 left-0 z-20 flex h-full items-center bg-linear-to-r
-          from-primary to-transparent
-        "
+    <div
+      v-if="!hasReachedHorizontalEnd && hasHorizontalOverflow && orientation === 'horizontal'"
+      :class="variants.scrollEdge()"
+      class="right-0 justify-end bg-linear-to-l from-50%"
+    >
+      <button
+        :aria-label="i18n.t('component.tabs.scroll_right')"
+        :class="variants.scrollButton()"
+        tabindex="-1"
+        type="button"
+        @click="scrollToRight"
       >
-        <button
-          :aria-label="i18n.t('component.tabs.scroll_left')"
-          class="
-            flex size-7 items-center justify-center rounded-md bg-primary
-            text-secondary
-            hover:bg-primary-hover
-          "
-          tabindex="-1"
-          type="button"
-          @click="scrollToLeft"
-        >
-          <svg
-            aria-hidden="true"
-            class="size-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-        </button>
-      </div>
-
-      <div
-        ref="scrollContainerRef"
-        :class="variants.scrollContainer()"
-        :data-orientation="orientation"
-      >
-        <RekaTabsList
-          :class="variants.list()"
-        >
-          <slot />
-
-          <TabsIndicator />
-        </RekaTabsList>
-      </div>
-
-      <div
-        v-if="isTouchDevice && !hasReachedHorizontalEnd && hasHorizontalOverflow && orientation === 'horizontal'"
-        class="
-          absolute top-0 right-0 z-20 flex h-full items-center bg-linear-to-l
-          from-primary to-transparent
-        "
-      >
-        <button
-          :aria-label="i18n.t('component.tabs.scroll_right')"
-          class="
-            flex size-7 items-center justify-center rounded-md bg-primary
-            text-secondary
-            hover:bg-primary-hover
-          "
-          tabindex="-1"
-          type="button"
-          @click="scrollToRight"
-        >
-          <svg
-            aria-hidden="true"
-            class="size-4"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m9 18 6-6-6-6" />
-          </svg>
-        </button>
-      </div>
-    </template>
+        <ChevronRightIcon class="size-3" />
+      </button>
+    </div>
   </div>
 </template>
