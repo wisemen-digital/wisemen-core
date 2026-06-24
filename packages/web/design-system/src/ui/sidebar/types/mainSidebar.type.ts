@@ -6,6 +6,17 @@ import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
 
 export type MainSidebarCollapsedVariant = 'hidden' | 'minified'
 
+export interface DashboardSidebarNavSubItem {
+  /**
+   * Text label for the sub-item
+   */
+  label: string
+  /**
+   * Route location to navigate to
+   */
+  to: RegisteredRouteLocationRaw
+}
+
 export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
   /**
    * Optional function to determine if the link is active based on the current route
@@ -23,14 +34,21 @@ export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
   label: string
 
   /**
-   * Route location to navigate to
+   * Route location to navigate to. Required when subItems is absent.
+   * When subItems is provided, the parent navigates to subItems[0].to.
    */
-  to: RegisteredRouteLocationRaw
+  to?: RegisteredRouteLocationRaw
 
   /**
    * Optional callback function to execute on click, in addition to navigation
    */
   onClick?: () => void
+
+  /**
+   * Optional 1-level-deep sub-items. When ≤3, rendered inline in expanded sidebar.
+   * When >3 or sidebar is minified/floating, rendered in a popover.
+   */
+  subItems?: DashboardSidebarNavSubItem[]
 }
 
 export interface DashboardSidebarGroup {

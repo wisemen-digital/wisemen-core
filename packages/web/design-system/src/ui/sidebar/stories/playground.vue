@@ -56,10 +56,15 @@ export interface NavigationGroup {
   label: string
   links: NavigationItem[]
 }
+export interface NavigationSubItem {
+  label: string
+  to: any
+}
 export interface NavigationItem {
   name: string
   icon: Component
-  to: any
+  subItems?: NavigationSubItem[]
+  to?: any
 }
 
 const navigation = computed<NavigationGroup[]>(() => ([
@@ -79,6 +84,60 @@ const navigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/projects',
         },
+      },
+      {
+        name: 'Reports',
+        icon: File05Icon,
+        subItems: [
+          {
+            label: 'Overview',
+            to: {
+              path: '/reports',
+            },
+          },
+          {
+            label: 'Analytics',
+            to: {
+              path: '/reports/analytics',
+            },
+          },
+          {
+            label: 'Export',
+            to: {
+              path: '/reports/export',
+            },
+          },
+        ],
+      },
+      {
+        name: 'Archive',
+        icon: CalendarIcon,
+        subItems: [
+          {
+            label: 'All time',
+            to: {
+              path: '/archive',
+            },
+          },
+          {
+            label: 'This year',
+            to: {
+              path: '/archive/year',
+            },
+          },
+          {
+            label: 'This month',
+            to: {
+              path: '/archive/month',
+            },
+          },
+          {
+            label: 'This week',
+            to: {
+              path: '/archive/week',
+            },
+          },
+        ],
       },
     ],
   },
@@ -159,6 +218,7 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
             :to="link.to"
             :icon="link.icon"
             :label="link.name"
+            :sub-items="link.subItems"
           >
             <template #right>
               <MainSidebarNavigationLinkBadge
