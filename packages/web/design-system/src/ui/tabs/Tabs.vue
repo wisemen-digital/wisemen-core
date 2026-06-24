@@ -15,7 +15,6 @@ import { tabsVariants } from '@/ui/tabs/tabs.style'
 const props = withDefaults(defineProps<TabsProps>(), {
   isFullWidth: false,
   orientation: 'horizontal',
-  overflowBehavior: 'scroll',
   underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })

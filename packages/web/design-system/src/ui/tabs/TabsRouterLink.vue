@@ -21,7 +21,6 @@ import TabsList from './TabsList.vue'
 const props = withDefaults(defineProps<TabsProps>(), {
   isFullWidth: false,
   orientation: 'horizontal',
-  overflowBehavior: 'scroll',
   underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })

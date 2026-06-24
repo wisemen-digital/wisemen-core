@@ -7,10 +7,7 @@ import {
 import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type {
-  TabsOverflowBehavior,
-  TabsVariant,
-} from '@/ui/tabs/tabs.props'
+import type { TabsVariant } from '@/ui/tabs/tabs.props'
 import TabsRouterLink from '@/ui/tabs/TabsRouterLink.vue'
 import TabsRouterLinkContent from '@/ui/tabs/TabsRouterLinkContent.vue'
 import TabsRouterLinkItem from '@/ui/tabs/TabsRouterLinkItem.vue'
@@ -18,12 +15,10 @@ import TabsRouterLinkItem from '@/ui/tabs/TabsRouterLinkItem.vue'
 const props = withDefaults(defineProps<{
   isFullWidth?: boolean
   orientation?: 'horizontal' | 'vertical'
-  overflowBehavior?: TabsOverflowBehavior
   variant?: TabsVariant
 }>(), {
   isFullWidth: false,
   orientation: 'horizontal',
-  overflowBehavior: 'scroll',
   variant: 'underline',
 })
 
@@ -70,7 +65,6 @@ onBeforeMount(() => {
   <div class="flex w-3xl flex-col gap-4">
     <TabsRouterLink
       :is-full-width="props.isFullWidth"
-      :overflow-behavior="props.overflowBehavior"
       :variant="props.variant"
       :orientation="props.orientation"
     >

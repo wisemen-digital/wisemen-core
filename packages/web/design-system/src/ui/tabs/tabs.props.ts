@@ -5,7 +5,6 @@ import type { DisabledWithReason } from '@/types/disabledWithReason.type'
 
 export type TabsVariant = 'button-border' | 'button-brand' | 'underline'
 export type TabsHorizontalListPadding = 'lg' | 'md' | 'none' | 'sm' | 'xl'
-export type TabsOverflowBehavior = 'scroll'
 
 export interface TabsProps {
   /**
@@ -18,12 +17,6 @@ export interface TabsProps {
    * @default 'horizontal'
    */
   orientation?: 'horizontal' | 'vertical'
-  /**
-   * Controls how horizontal overflow is handled.
-   * @default 'responsive-dropdown'
-   */
-  overflowBehavior?: TabsOverflowBehavior
-
   /**
    * Controls the horizontal padding of the scroll container. Only applies to the `underline` variant.
    */

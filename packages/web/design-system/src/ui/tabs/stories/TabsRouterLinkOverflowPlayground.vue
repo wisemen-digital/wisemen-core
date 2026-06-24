@@ -11,19 +11,14 @@ import {
 import { onBeforeMount } from 'vue'
 import { useRouter } from 'vue-router'
 
-import type {
-  TabsOverflowBehavior,
-  TabsVariant,
-} from '@/ui/tabs/tabs.props'
+import type { TabsVariant } from '@/ui/tabs/tabs.props'
 import TabsRouterLink from '@/ui/tabs/TabsRouterLink.vue'
 import TabsRouterLinkContent from '@/ui/tabs/TabsRouterLinkContent.vue'
 import TabsRouterLinkItem from '@/ui/tabs/TabsRouterLinkItem.vue'
 
 const props = withDefaults(defineProps<{
-  overflowBehavior?: TabsOverflowBehavior
   variant?: TabsVariant
 }>(), {
-  overflowBehavior: 'scroll',
   variant: 'underline',
 })
 
@@ -103,7 +98,6 @@ onBeforeMount(() => {
     "
   >
     <TabsRouterLink
-      :overflow-behavior="props.overflowBehavior"
       :variant="props.variant"
     >
       <TabsRouterLinkItem

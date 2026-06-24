@@ -8,7 +8,6 @@ import { ref } from 'vue'
 
 import type {
   TabsHorizontalListPadding,
-  TabsOverflowBehavior,
   TabsVariant,
 } from '@/ui/tabs/tabs.props'
 import Tabs from '@/ui/tabs/Tabs.vue'
@@ -19,13 +18,11 @@ import TabsList from '@/ui/tabs/TabsList.vue'
 const props = withDefaults(defineProps<{
   isFullWidth?: boolean
   orientation?: 'horizontal' | 'vertical'
-  overflowBehavior?: TabsOverflowBehavior
   underlineTabsHorizontalListPadding?: TabsHorizontalListPadding
   variant?: TabsVariant
 }>(), {
   isFullWidth: false,
   orientation: 'horizontal',
-  overflowBehavior: 'scroll',
   underlineTabsHorizontalListPadding: 'none',
   variant: 'underline',
 })
@@ -38,7 +35,6 @@ const selectedTab = ref<string>('tab1')
     <Tabs
       v-model="selectedTab"
       :is-full-width="props.isFullWidth"
-      :overflow-behavior="props.overflowBehavior"
       :orientation="props.orientation"
       :underline-tabs-horizontal-list-padding="props.underlineTabsHorizontalListPadding"
       :variant="props.variant"

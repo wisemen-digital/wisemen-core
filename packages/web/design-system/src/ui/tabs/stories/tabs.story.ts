@@ -14,16 +14,6 @@ import TabsRouterLinkOverflowPlayground from './TabsRouterLinkOverflowPlayground
 import TabsRouterLinkPlayground from './TabsRouterLinkPlayground.vue'
 
 const DISABLED_REGEX = /Disabled/i
-const CALENDAR_REGEX = /calendar/i
-const HIDDEN_TABS_BUTTON_REGEX = /open hidden tabs/i
-const SETTINGS_REGEX = /settings/i
-const SUPPORT_REGEX = /support/i
-
-async function waitForOverflowLayout(): Promise<void> {
-  await new Promise((resolve) => {
-    window.setTimeout(resolve, 100)
-  })
-}
 
 const meta = {
   title: 'Components/Tabs',
@@ -38,14 +28,6 @@ const meta = {
       options: [
         'horizontal',
         'vertical',
-      ],
-    },
-    overflowBehavior: {
-      control: 'select',
-      description: 'Controls whether overflowing tabs collapse into a dropdown or remain scrollable',
-      options: [
-        'scroll',
-        'scroll',
       ],
     },
     underlineTabsHorizontalListPadding: {
@@ -140,70 +122,8 @@ export const FullWidth: Story = {
   },
 }
 
-export const ResponsiveOverflow: Story = {
+export const Overflow: Story = {
   args: {
-    overflowBehavior: 'scroll',
-    variant: 'underline',
-  },
-  play: async ({
-    canvasElement,
-  }) => {
-    const canvas = within(canvasElement)
-    const body = within(canvasElement.ownerDocument.body)
-    const container = canvasElement.querySelector('[data-testid="tabs-overflow-container"]') as HTMLElement | null
-
-    if (container === null) {
-      throw new Error('Overflow container not found')
-    }
-
-    container.style.width = '20rem'
-    await waitForOverflowLayout()
-
-    await expect(canvas.getByRole('button', {
-      name: HIDDEN_TABS_BUTTON_REGEX,
-    })).toBeVisible()
-    await expect(canvas.queryByRole('tab', {
-      name: SETTINGS_REGEX,
-    })).not.toBeInTheDocument()
-
-    await userEvent.click(canvas.getByRole('button', {
-      name: HIDDEN_TABS_BUTTON_REGEX,
-    }))
-    await userEvent.click(await body.findByRole('menuitem', {
-      name: SETTINGS_REGEX,
-    }))
-
-    await expect(canvas.getByText('Settings content goes here.')).toBeVisible()
-    await expect(canvas.getByRole('tab', {
-      name: SETTINGS_REGEX,
-    })).toBeVisible()
-
-    container.style.width = '72rem'
-    await waitForOverflowLayout()
-
-    await expect(canvas.queryByRole('button', {
-      name: HIDDEN_TABS_BUTTON_REGEX,
-    })).not.toBeInTheDocument()
-    await expect(canvas.getByRole('tab', {
-      name: SUPPORT_REGEX,
-    })).toBeVisible()
-  },
-  render: (args) => ({
-    components: {
-      TabsOverflowPlayground,
-    },
-    setup() {
-      return {
-        args,
-      }
-    },
-    template: '<TabsOverflowPlayground v-bind="args" />',
-  }),
-}
-
-export const ScrollOverflow: Story = {
-  args: {
-    overflowBehavior: 'scroll',
     variant: 'underline',
   },
   render: (args) => ({
@@ -239,51 +159,7 @@ export const RouterLink: Story = {
 
 export const RouterLinkOverflow: Story = {
   args: {
-    overflowBehavior: 'scroll',
     variant: 'underline',
-  },
-  play: async ({
-    canvasElement,
-  }) => {
-    const canvas = within(canvasElement)
-    const body = within(canvasElement.ownerDocument.body)
-    const container = canvasElement.querySelector('[data-testid="tabs-router-overflow-container"]') as HTMLElement | null
-
-    if (container === null) {
-      throw new Error('Router overflow container not found')
-    }
-
-    container.style.width = '20rem'
-    await waitForOverflowLayout()
-
-    await expect(canvas.getByRole('button', {
-      name: HIDDEN_TABS_BUTTON_REGEX,
-    })).toBeVisible()
-    await expect(canvas.queryByRole('tab', {
-      name: CALENDAR_REGEX,
-    })).not.toBeInTheDocument()
-
-    await userEvent.click(canvas.getByRole('button', {
-      name: HIDDEN_TABS_BUTTON_REGEX,
-    }))
-    await userEvent.click(await body.findByRole('menuitem', {
-      name: CALENDAR_REGEX,
-    }))
-
-    await expect(canvas.getByText('Calendar content goes here.')).toBeVisible()
-    await expect(canvas.getByRole('tab', {
-      name: CALENDAR_REGEX,
-    })).toBeVisible()
-
-    container.style.width = '72rem'
-    await waitForOverflowLayout()
-
-    await expect(canvas.queryByRole('button', {
-      name: HIDDEN_TABS_BUTTON_REGEX,
-    })).not.toBeInTheDocument()
-    await expect(canvas.getByRole('tab', {
-      name: SUPPORT_REGEX,
-    })).toBeVisible()
   },
   render: (args) => ({
     components: {
