@@ -1,6 +1,6 @@
 export enum IsoWeekParity {
-  ODD = 'ODD',
-  EVEN = 'EVEN',
+  ODD = 'odd',
+  EVEN = 'even',
 }
 
 export function getIsoWeekParity (weekNumber: number): IsoWeekParity {
