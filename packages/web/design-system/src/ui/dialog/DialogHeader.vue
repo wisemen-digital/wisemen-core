@@ -59,7 +59,7 @@ const dialogContext = useInjectDialogContext(null)
     gap="none"
   >
     <RowLayout
-      align="start"
+      :align="props.hideDescription ? 'center' : 'start'"
       gap="xl"
       class="
         p-xl pb-0
@@ -78,7 +78,7 @@ const dialogContext = useInjectDialogContext(null)
         />
       </div>
 
-      <div class="flex min-w-0 flex-1 flex-col gap-md">
+      <div class="flex min-w-0 flex-1 flex-col gap-none">
         <RekaDialogTitle
           as="h2"
           class="text-sm font-semibold text-primary"
