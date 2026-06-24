@@ -38,6 +38,8 @@ const props = defineProps<{
       <UIBadge
         v-bind="props.badge"
         size="sm"
+        variant="outline"
+        class="shrink-0"
       />
     </Motion>
   </AnimatePresence>
