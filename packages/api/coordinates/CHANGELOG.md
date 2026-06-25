@@ -1,6 +1,12 @@
 # @wisemen/coordinates
 
 
+
+## 0.1.1
+<sub>2026-06-25</sub>
+
+- [#1276](https://github.com/wisemen-digital/wisemen-core/pull/1276)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: reformat imports in skill
+
 ## 0.1.0
 <sub>2026-06-16</sub>
 

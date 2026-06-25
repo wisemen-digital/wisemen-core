@@ -124,6 +124,12 @@ describe('FutureInfinityDate', () => {
     })
   })
 
+  describe('isoWeekParity', () => {
+    it('throws when accessing the ISO week parity', () => {
+      expect(() => new FutureInfinityDate().isoWeekParity()).toThrow()
+    })
+  })
+
   describe('addDuration', () => {
     it('remains FutureInfinityDate when adding a duration', () => {
       const date = new FutureInfinityDate()
