@@ -1,5 +1,5 @@
 ---
-"@wisemen/nestjs-nats": minor
+"@wisemen/nestjs-nats": major
 ---
 
 feat: self healing nats client
