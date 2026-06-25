@@ -162,6 +162,10 @@ const slotsData = [
   {
     "name": "label-right",
     "type": "-"
+  },
+  {
+    "name": "right",
+    "type": "-"
   }
 ]
 

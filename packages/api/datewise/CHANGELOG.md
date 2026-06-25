@@ -1,6 +1,18 @@
 # @wisemen/datewise
 
 
+
+
+## 1.0.13
+<sub>2026-06-25</sub>
+
+- [#1310](https://github.com/wisemen-digital/wisemen-core/pull/1310)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added isoWeekParity
+
+## 1.0.12
+<sub>2026-06-23</sub>
+
+- [#1287](https://github.com/wisemen-digital/wisemen-core/pull/1287)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add isoWeek support for startOf() and endOf() on PlainDate
+
 ## 1.0.11
 <sub>2026-06-11</sub>
 

@@ -1,5 +1,11 @@
 # @appwise/express-dto-router
 
+
+## 1.1.20
+<sub>2026-06-25</sub>
+
+- [#1285](https://github.com/wisemen-digital/wisemen-core/pull/1285)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1132): add express-dto-router agent skill
+
 ## 1.1.19
 
 ### Patch Changes
