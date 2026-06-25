@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+
+## 0.8.3
+<sub>2026-06-25</sub>
+
+- [#1280](https://github.com/wisemen-digital/wisemen-core/pull/1280)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: unresolved entity
+
 ## 0.8.2
 <sub>2026-06-16</sub>
 
