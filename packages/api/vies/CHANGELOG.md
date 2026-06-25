@@ -1,5 +1,11 @@
 # @wisemen/vies
 
+
+## 0.0.16
+<sub>2026-06-25</sub>
+
+- [#1276](https://github.com/wisemen-digital/wisemen-core/pull/1276)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1152): add vies agent skill
+
 ## 0.0.15
 
 ### Patch Changes
