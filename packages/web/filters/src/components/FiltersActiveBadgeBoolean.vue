@@ -51,7 +51,6 @@ function onSelect(value: string): void {
     <FiltersActiveBadgePartSeparator />
 
     <UIDropdownMenu
-      v-if="!(props.filter.disableOperators ?? false)"
       popover-side="bottom"
       popover-align="start"
       width-classes="w-32"
@@ -59,7 +58,7 @@ function onSelect(value: string): void {
       <template #trigger>
         <UIClickableElement>
           <button
-            :disabled="!props.filter.canBeToggled"
+            :disabled="props.filter.disableOperators ?? false"
             type="button"
             class="
               size-full
@@ -67,7 +66,7 @@ function onSelect(value: string): void {
             "
           >
             <FiltersActiveBadgeBasePart
-              :is-interactive="props.filter.canBeToggled"
+              :is-interactive="!(props.filter.disableOperators ?? false)"
               :label="operatorLabel"
             />
           </button>
@@ -92,11 +91,6 @@ function onSelect(value: string): void {
         </UIDropdownMenuGroup>
       </template>
     </UIDropdownMenu>
-
-    <FiltersActiveBadgeBasePart
-      v-else
-      :label="operatorLabel"
-    />
 
     <FiltersActiveBadgePartSeparator />
 

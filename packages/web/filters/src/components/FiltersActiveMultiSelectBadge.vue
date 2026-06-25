@@ -87,16 +87,11 @@ function onOperatorChange(operator: string): void {
     <FiltersActiveBadgePartSeparator />
 
     <FiltersActiveBadgeOperatorDropdown
-      v-if="!(props.filter.disableOperators ?? false)"
+      :disabled="props.filter.disableOperators ?? false"
       :label="operatorLabel"
       :model-value="filterValue.operator"
       :options="operatorOptions"
       @update:model-value="onOperatorChange"
-    />
-
-    <FiltersActiveBadgeBasePart
-      v-else
-      :label="operatorLabel"
     />
 
     <FiltersActiveBadgePartSeparator />

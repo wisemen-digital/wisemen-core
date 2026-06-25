@@ -59,10 +59,6 @@ const operatorOptions = computed<OperatorOption[]>(() => [
   },
 ])
 
-const operatorLabel = computed<string>(
-  () => operatorOptions.value.find((o) => o.value === filterValue.value.operator)?.label ?? filterValue.value.operator,
-)
-
 const formattedNumber = computed<string | null>(() => {
   if (value.value === null) {
     return null
@@ -93,15 +89,10 @@ function onOperatorChange(operator: string): void {
     <FiltersActiveBadgePartSeparator />
 
     <FiltersActiveBadgeOperatorDropdown
-      v-if="!(props.filter.disableOperators ?? false)"
+      :disabled="props.filter.disableOperators ?? false"
       :model-value="filterValue.operator"
       :options="operatorOptions"
       @update:model-value="onOperatorChange"
-    />
-
-    <FiltersActiveBadgeBasePart
-      v-else
-      :label="operatorLabel"
     />
 
     <FiltersActiveBadgePartSeparator />

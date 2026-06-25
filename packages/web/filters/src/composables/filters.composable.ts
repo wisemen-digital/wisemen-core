@@ -148,7 +148,6 @@ export interface MultiAutocompleteFilter<
 }
 
 export interface BooleanFilter<TKey extends string = string> extends BaseFilter<TKey> {
-  canBeToggled: boolean
   defaultValue?: boolean | null
   /**
    * The state label shown after the operator, e.g. "active" → "User is active" / "User is not active".
@@ -414,7 +413,7 @@ export function useFilters<TFilters extends Filter[]>(
         return {
           action: createAction({
             id: filter.key,
-            name: filter.label,
+            name: filter.entityLabel,
             disabledReason: () => values.value[filter.key] === null ? null : i18n.t('component.filters.boolean_filter_already_active'),
             execute: () => {
               values.value[filter.key] = true

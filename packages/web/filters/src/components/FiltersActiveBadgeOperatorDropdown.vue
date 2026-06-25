@@ -15,6 +15,7 @@ interface OperatorOption {
 }
 
 const props = defineProps<{
+  disabled?: boolean
   label?: string
   modelValue: string
   options: OperatorOption[]
@@ -38,11 +39,12 @@ function currentLabel(): string {
     <template #trigger>
       <UIClickableElement>
         <button
+          :disabled="props.disabled"
           type="button"
           class="size-full"
         >
           <FiltersActiveBadgeBasePart
-            :is-interactive="true"
+            :is-interactive="!(props.disabled ?? false)"
             :label="currentLabel()"
           />
         </button>

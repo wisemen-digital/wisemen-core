@@ -94,15 +94,10 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
     <FiltersActiveBadgePartSeparator />
 
     <FiltersActiveBadgeOperatorDropdown
-      v-if="!(props.filter.disableOperators ?? false)"
+      :disabled="props.filter.disableOperators ?? false"
       :model-value="filterValue.operator"
       :options="operatorOptions"
       @update:model-value="onOperatorChange"
-    />
-
-    <FiltersActiveBadgeBasePart
-      v-else
-      :label="operatorLabel"
     />
 
     <FiltersActiveBadgePartSeparator />
