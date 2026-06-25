@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>()
 
 const {
-  closeIfFloatingSidebar,
+  closeIfFloatingSidebar, sidebarIconCellSize,
 } = useMainSidebar()
 
 function onClick(): void {
@@ -36,10 +36,12 @@ function onClick(): void {
       <div
         :data-active="isActive || undefined"
         :style="{
-          paddingLeft: props.noIndent ? undefined : '1.25rem',
+          paddingLeft: props.noIndent
+            ? undefined
+            : `calc(${sidebarIconCellSize} / 2 - 0.25rem - 1px)`,
           height: '1.5rem',
         }"
-        :class="props.noIndent ? 'px-sm' : 'ml-sm pr-md'"
+        :class="props.noIndent ? 'px-sm' : 'pr-md'"
         class="
           group flex items-center rounded-md duration-100
           hover:bg-fg-primary/4
