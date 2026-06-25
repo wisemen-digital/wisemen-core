@@ -19,6 +19,10 @@ const {
   closeIfFloatingSidebar, sidebarIconCellSize,
 } = useMainSidebar()
 
+const VERTICAL_LINE_WIDTH = '1px'
+const VERTICAL_LINE_GAP = '0.25rem' // pl-xs on the container
+const subItemPaddingLeft = `calc(${sidebarIconCellSize} / 2 - ${VERTICAL_LINE_GAP} - ${VERTICAL_LINE_WIDTH})`
+
 function onClick(): void {
   closeIfFloatingSidebar()
   emit('click')
@@ -36,9 +40,7 @@ function onClick(): void {
       <div
         :data-active="isActive || undefined"
         :style="{
-          paddingLeft: props.noIndent
-            ? undefined
-            : `calc(${sidebarIconCellSize} / 2 - 0.25rem - 1px)`,
+          paddingLeft: props.noIndent ? undefined : subItemPaddingLeft,
           height: '1.5rem',
         }"
         :class="props.noIndent ? 'px-sm' : 'pr-md'"
