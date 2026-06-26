@@ -16,6 +16,6 @@ export {
   type FeatureFlagModuleOptions
 } from "./feature-flag.module.js"
 export { FeatureFlagContext } from "./feature-flag.context.js"
-export { RequireFlags as RequireFlag } from "./require-flags.decorator.js"
+export { RequireFlags } from "./require-flags.decorator.js"
 export { FeatureFlagEntity } from './typeorm/feature-flag.entity.js'
 export { FeatureFlagsStub } from './feature-flags.stub.js'
