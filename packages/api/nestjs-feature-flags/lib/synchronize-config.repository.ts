@@ -1,12 +1,11 @@
-import { In, Not, Repository } from 'typeorm'
-import { DataSource } from 'typeorm/browser'
+import { EntityManager, In, Not, Repository } from 'typeorm'
 import { GoFeatureFlagConfig } from './go-feature-flag.config.js'
 import { FeatureFlagEntity } from './typeorm/feature-flag.entity.js'
 
 export class SynchronizeConfigRepository {
   private repo: Repository<FeatureFlagEntity>
-  constructor (dataSource: DataSource) {
-    this.repo = dataSource.getRepository(FeatureFlagEntity)
+  constructor (entityManager: EntityManager) {
+    this.repo = entityManager.getRepository(FeatureFlagEntity)
   }
 
   async getExistingFeatureFlags (): Promise<Map<string, GoFeatureFlagConfig>> {

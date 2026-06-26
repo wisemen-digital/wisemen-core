@@ -1,7 +1,7 @@
-import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
-import { FeatureFlag, isFlag } from "./feature-flag.js";
-import { globSync } from "fs";
-import { pathToFileURL, resolve } from "url";
+import { Inject, Injectable, OnModuleInit } from "@nestjs/common"
+import { FeatureFlag, isFlag } from "./feature-flag.js"
+import { globSync } from "fs"
+import { resolve } from "node:path"
 
 export const FEATURE_FLAG_REGISTRY_TOKEN = 'wisemen.nestjs-feature-flag-registry.options'
 
@@ -21,7 +21,7 @@ export class FeatureFlagRegistry implements OnModuleInit {
     const files = globSync(this.options.flagsGlob)
 
     for (const file of files) {
-      const absolutePath = pathToFileURL(resolve(process.cwd(), file)).href
+      const absolutePath = resolve(process.cwd(), file)
       const moduleExports = await import(absolutePath) as Record<string, object>
 
       for (const exportedKey in moduleExports) {

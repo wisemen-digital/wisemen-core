@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { Client, EvaluationContext, FlagEvaluationOptions, JsonValue, OpenFeatureClient } from "@openfeature/nestjs-sdk";
+import { Injectable } from "@nestjs/common"
+import { Client, EvaluationContext, FlagEvaluationOptions, JsonValue, OpenFeatureClient } from "@openfeature/nestjs-sdk"
 import {
   BooleanFeatureFlag,
   EnumFeatureFlag,
@@ -7,14 +7,14 @@ import {
   NumberFeatureFlag,
   ObjectFeatureFlag,
   StringFeatureFlag,
-} from "./feature-flag.js";
-import { FeatureFlagEntity as FlagEntity } from './typeorm/feature-flag.entity.js';
-import { DataSource } from "typeorm";
-import { FeatureFlagRegistry } from "./feature-flag.registry.js";
-import { GoFeatureFlagConfig } from "./go-feature-flag.config.js";
-import { FeatureFlagBuilder } from "./typeorm/feature-flag.entity.builder.js";
-import { SynchronizeConfigRepository } from "./synchronize-config.repository.js";
-import { transaction } from "@wisemen/nestjs-typeorm";
+} from "./feature-flag.js"
+import { FeatureFlagEntity as FlagEntity } from './typeorm/feature-flag.entity.js'
+import { DataSource } from "typeorm"
+import { FeatureFlagRegistry } from "./feature-flag.registry.js"
+import { GoFeatureFlagConfig } from "./go-feature-flag.config.js"
+import { FeatureFlagBuilder } from "./typeorm/feature-flag.entity.builder.js"
+import { SynchronizeConfigRepository } from "./synchronize-config.repository.js"
+import { transaction } from "@wisemen/nestjs-typeorm"
 
 export interface SynchronizeConfigOptions {
   deleteUnknownFlags?: boolean
@@ -100,7 +100,7 @@ export class FeatureFlags {
     dataSource: DataSource,
     options?: SynchronizeConfigOptions
   ): Promise<void> {
-    const repo = new SynchronizeConfigRepository(dataSource)
+    const repo = new SynchronizeConfigRepository(dataSource.manager)
     const existingFeatureFlags = await repo.getExistingFeatureFlags()
     const featureFlags: FlagEntity[] = []
 
@@ -122,7 +122,8 @@ export class FeatureFlags {
       )
     }
 
-    await transaction(dataSource, async () => {
+    await transaction(dataSource, async (entityManager) => {
+      const repo = new SynchronizeConfigRepository(entityManager)
       await repo.upsert(featureFlags)
 
       if (options?.deleteUnknownFlags === true) {
