@@ -9,19 +9,22 @@ const DEFAULT_DELIMITER = ';'
 const DEFAULT_BATCH_SIZE = 100
 const DEFAULT_MAX_CHUNK_BYTES = 64 * 1024
 
-interface CSVOptions<K extends string> {
-  /**
-   * The expected column order. When omitted during encoding, the header row is
-   * derived from the first record.
-   */
-  columns?: readonly K[]
+interface CSVOptions {
   /**
    * The field separator used in the CSV payload.
    */
   delimiter?: string
 }
 
-interface EncodeStreamCSVOptions<K extends string> extends CSVOptions<K> {
+interface EncodeCsvOptions<K extends string> extends CSVOptions {
+  /**
+    * The expected column order. When omitted during encoding, the header row is
+    * derived from the first record.
+    */
+  columns?: readonly K[]
+}
+
+interface EncodeStreamCSVOptions<K extends string> extends EncodeCsvOptions<K> {
   /** 
    * The amount of lines yielded to the readable per yield. Lines are buffered
    * internally until this amount is reached, or the last line has been encoded.
@@ -46,7 +49,7 @@ export class CSV {
    */
   static decode<K extends string> (
     csv: string,
-    options?: CSVOptions<K>
+    options?: CSVOptions
   ): Array<Record<K, string>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
@@ -81,7 +84,7 @@ export class CSV {
    */
   static async* decodeStream<K extends string> (
     stream: Readable,
-    options?: CSVOptions<K>
+    options?: CSVOptions
   ): AsyncGenerator<CSVRow<K>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
@@ -126,7 +129,7 @@ export class CSV {
    */
   static encode<K extends string> (
     data: Array<Record<K, string | null | undefined>>,
-    options?: CSVOptions<K>
+    options?: EncodeCsvOptions<K>
   ): string {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
     const keys = (options?.columns ?? Object.keys(data[0])) as K[]

@@ -13,27 +13,33 @@ export interface CsvParseOptions {
 export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, any> }> {
   constructor (private fields: S) { }
 
+  /** 
+   * Parse a csv string which includes a header row to objects.  
+   */
   parseString (csv: string, options?: CsvParseOptions): Promise<InferRow<S>[]> {
     const decoded = CSV.decode(csv, {
-      columns: this.getRequiredColumns(),
       delimiter: options?.delimiter
     })
 
     return this.parse(decoded)
   }
 
-  async parseStream (stream: Readable, options?: CsvParseOptions): Promise<InferRow<S>[]> {
-    const records: Record<string, string>[] = []
+  /** 
+   * Parse a csv string stream which includes a header row to objects.  
+   */
+  async * parseStream (stream: Readable, options?: CsvParseOptions): AsyncGenerator<InferRow<S>> {
     const rows = CSV.decodeStream(stream, {
-      columns: this.getRequiredColumns(),
       delimiter: options?.delimiter,
     })
 
     for await (const row of rows) {
-      records.push(row.data)
-    }
+      const [record, errors] = this.parseRow(row.data, row.line)
+      if(errors.length > 0) {
+        throw new CSVSchemaParseError(errors) 
+      }
 
-    return this.parse(records)
+      yield record
+    }
   }
 
   async parse (records: Record<string, string>[]): Promise<InferRow<S>[]> {
@@ -41,22 +47,9 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
     const errors: CSVFieldParseError[] = []
 
     for (const [rowIndex, record] of records.entries()) {
-      const row: Partial<InferRow<S>> = {}
-
-      for (const column in this.fields) {
-        try {
-          const field = this.fields[column]
-
-          // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          row[column] = field.parse(record[field.name], rowIndex)
-        } catch (error) {
-          if (error instanceof CSVFieldParseError) {
-            errors.push(error)
-          }
-        }
-      }
-
-      result.push(row as InferRow<S>)
+      const [row, err]  = this.parseRow(record, rowIndex)
+      result.push(row)
+      errors.push(...err)
     }
 
     for (const [rowIndex, row] of result.entries()) {
@@ -78,15 +71,26 @@ export class CSVSchema<S extends { [key: string]: CSVField<any, any, any, any, a
     return result
   }
 
-  private getRequiredColumns (): string[] {
-    const columns: string[] = []
+  private parseRow (
+    record: Record<string, string>, 
+    rowIndex: number, 
+  ): [InferRow<S>, CSVFieldParseError[]] {
+    const row: Partial<InferRow<S>> = {}
+    const errors: CSVFieldParseError[] = []
 
     for (const column in this.fields) {
-      if (this.fields[column].isRequired()) {
-        columns.push(this.fields[column].name)
+      try {
+        const field = this.fields[column]
+
+        // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        row[column] = field.parse(record[field.name], rowIndex)
+      } catch (error) {
+        if (error instanceof CSVFieldParseError) {
+          errors.push(error)
+        }
       }
     }
 
-    return columns
+    return [row as InferRow<S>, errors]
   }
 }
