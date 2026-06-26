@@ -6,15 +6,13 @@ import { {{pascalCase entityName}} } from '{{entityImportPath}}'
 @Injectable()
 export class {{pascalCase useCaseName}}UseCase {
   constructor (
-    private readonly dataSource: DataSource,
+    private dataSource: DataSource,
     @InjectRepository({{pascalCase entityName}})
-    private readonly {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>,
-    private readonly emitter: DomainEventEmitter
+    private {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>,
+    private emitter: DomainEventEmitter
   ) {}
 
-  public async execute (
-    uuid: string
-  ): Promise<void> {
+  async execute (uuid: string): Promise<void> {
     const exists = await this.{{camelCase entityName}}Repository.existsBy({ uuid })
 
     if (!exists) {
