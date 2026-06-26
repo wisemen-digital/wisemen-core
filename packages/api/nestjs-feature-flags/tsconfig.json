@@ -8,7 +8,8 @@
     "module": "NodeNext",
     "types": [
       "node",
-    ],
+    ], 
+    "strictFunctionTypes": false,
     "moduleResolution": "nodenext",
     "sourceMap": true,
     "esModuleInterop": true,

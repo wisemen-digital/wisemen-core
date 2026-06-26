@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Col
 import type { FeatureFlagUuid } from './feature-flag.uuid.js'
 import { GoFeatureFlagConfig } from '../go-feature-flag.config.js'
 
-@Entity({name: 'feature_flag'})
+@Entity({ name: 'feature_flag' })
 @Unique(['name', 'set'])
 export class FeatureFlagEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -14,8 +14,7 @@ export class FeatureFlagEntity {
   @UpdateDateColumn({ precision: 3 })
   updatedAt: Date
 
-  @Index()
-  @Column({ type: 'varchar', length: 255, name: 'flag_name' })
+  @Column({ type: 'varchar', length: 255, name: 'flag_name', unique: true })
   name: string
 
   @Index()

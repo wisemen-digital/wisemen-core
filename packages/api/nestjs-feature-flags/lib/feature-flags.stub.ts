@@ -1,6 +1,7 @@
+// oxlint-disable typescript-eslint(unbound-method)
 import { after } from 'node:test'
 import { FeatureFlags } from './feature-flags.js'
-import { Client, JsonValue } from '@openfeature/nestjs-sdk'
+import { Client, EvaluationContext, FlagEvaluationOptions, JsonValue } from '@openfeature/nestjs-sdk'
 import { BooleanFeatureFlag, EnumFeatureFlag, StringFeatureFlag, NumberFeatureFlag, ObjectFeatureFlag, FeatureFlag } from './feature-flag.js'
 
 type EnumType = Record<string, string>
@@ -20,7 +21,7 @@ export class FeatureFlagsStub {
     const client = Reflect.get(flags, 'client') as Client
 
     this.clientPrototype = Object.getPrototypeOf(client) as Client
-    this.originalGet = flags.get.bind(flags) as FeatureFlags['get']
+    this.originalGet = flags.get.bind(flags)
     this.originalClientMethods = this.getClientMethods(this.clientPrototype)
     this.overrides = new Map()
 
@@ -40,11 +41,11 @@ export class FeatureFlagsStub {
   }
 
   mockFlag (flag: BooleanFeatureFlag, value: boolean): void
-  mockFlag<TEnum extends EnumType>(flag: EnumFeatureFlag<TEnum>, value: TEnum[keyof TEnum]): void
+  mockFlag<TEnum extends EnumType> (flag: EnumFeatureFlag<TEnum>, value: TEnum[keyof TEnum]): void
   mockFlag (flag: StringFeatureFlag, value: string): void
   mockFlag (flag: NumberFeatureFlag, value: number): void
-  mockFlag<T extends JsonValue>(flag: ObjectFeatureFlag<T>, value: T): void
-  mockFlag<TEnum extends Record<string, string>, T extends JsonValue>(
+  mockFlag<T extends JsonValue> (flag: ObjectFeatureFlag<T>, value: T): void
+  mockFlag<TEnum extends Record<string, string>, T extends JsonValue> (
     flag: FeatureFlag<TEnum, T>,
     value: boolean | string | number | T
   ): void {
@@ -76,10 +77,10 @@ export class FeatureFlagsStub {
 
     client.getBooleanValue = function (
       this: Client,
-      flagKey,
-      defaultValue,
-      context,
-      options
+      flagKey: string,
+      defaultValue: boolean,
+      context?: EvaluationContext,
+      options?: FlagEvaluationOptions
     ): Promise<boolean> {
       if (overrides.has(flagKey)) {
         return Promise.resolve(overrides.get(flagKey) as boolean)
@@ -96,10 +97,10 @@ export class FeatureFlagsStub {
 
     client.getStringValue = function (
       this: Client,
-      flagKey,
-      defaultValue,
-      context,
-      options
+      flagKey: string,
+      defaultValue: string,
+      context?: EvaluationContext,
+      options?: FlagEvaluationOptions
     ): Promise<string> {
       if (overrides.has(flagKey)) {
         return Promise.resolve(overrides.get(flagKey) as string)
@@ -116,10 +117,10 @@ export class FeatureFlagsStub {
 
     client.getNumberValue = function (
       this: Client,
-      flagKey,
-      defaultValue,
-      context,
-      options
+      flagKey: string,
+      defaultValue: number,
+      context?: EvaluationContext,
+      options?: FlagEvaluationOptions
     ): Promise<number> {
       if (overrides.has(flagKey)) {
         return Promise.resolve(overrides.get(flagKey) as number)
@@ -138,8 +139,8 @@ export class FeatureFlagsStub {
       this: Client,
       flagKey: string,
       defaultValue: T,
-      context?: unknown,
-      options?: unknown
+      context?: EvaluationContext,
+      options?: FlagEvaluationOptions
     ): Promise<T> {
       if (overrides.has(flagKey)) {
         return Promise.resolve(overrides.get(flagKey) as T)
@@ -151,7 +152,7 @@ export class FeatureFlagsStub {
         [flagKey, defaultValue, context, options]
       )
 
-      return result
+      return result as Promise<T>
     }
 
     return client
