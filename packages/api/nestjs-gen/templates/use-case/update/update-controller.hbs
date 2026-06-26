@@ -9,7 +9,7 @@ import { {{pascalCase useCaseName}}Command } from './{{dashCase useCaseName}}.co
 @Controller()
 export class {{pascalCase useCaseName}}Controller {
   constructor (
-    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+    private useCase: {{pascalCase useCaseName}}UseCase
   ) {}
 
   @Put('{{dashCase moduleNamePlural}}/:uuid')
@@ -18,10 +18,10 @@ export class {{pascalCase useCaseName}}Controller {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse()
   @ApiNotFoundErrorResponse({{notFoundError}})
-  public async {{camelCase useCaseName}} (
+  async update (
     @UuidParam('uuid') uuid: string,
     @Body() command: {{pascalCase useCaseName}}Command
   ): Promise<void> {
-    await this.{{camelCase useCaseName}}UseCase.execute(uuid, command)
+    await this.useCase.execute(uuid, command)
   }
 }

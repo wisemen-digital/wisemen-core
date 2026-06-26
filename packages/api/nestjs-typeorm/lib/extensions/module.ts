@@ -33,9 +33,9 @@ export class TypeOrmModule extends TM {
   static forRootAsync (options: NestjsTypeOrmModuleAsyncOptions): DynamicModule {
     options.dataSourceFactory = async (dataSourceOptions: DataSourceOptions) => {
       const source =  new DataSource(dataSourceOptions)
-      await source.initialize()
-
       source.driver.supportedDataTypes.push(...(options.customDataTypes ?? []) as ColumnType[])
+
+      await source.initialize()
 
       return source
     }

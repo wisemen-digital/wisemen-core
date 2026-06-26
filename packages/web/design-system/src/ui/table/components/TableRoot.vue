@@ -52,6 +52,8 @@ const {
   computed(() => props.isInitialized),
   computed(() => props.actionGroup),
   computed(() => props.disableColumnResize),
+  computed(() => props.hasActiveSearch ?? false),
+  computed(() => props.activeFilterCount ?? 0),
 )
 
 const activeFilterCountIncludingSearch = computed<number>(

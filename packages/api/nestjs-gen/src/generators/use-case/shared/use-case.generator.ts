@@ -22,7 +22,7 @@ export function addUseCase (
   const useCasePath = path.join(dir, subdir, `${kebabCase(module)}/use-cases/${kebabCase(useCaseName)}/${kebabCase(useCaseName)}.use-case.ts`)
   const notFoundErrorName = `${pascalCase(module)}NotFoundError`
 
-  const entityPath = builder.getPathOrThrow(`${module}-entity`)
+  const entityPath = builder.resolveEntityPathOrThrow(module)
   const entityImportPath = getRelativePath(useCasePath, entityPath)
 
   builder.addFile(`${useCaseName}-use-case`, {

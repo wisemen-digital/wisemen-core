@@ -1,6 +1,12 @@
 # @wisemen/quantity
 
 
+
+## 0.9.1
+<sub>2026-06-17</sub>
+
+- [#1265](https://github.com/wisemen-digital/wisemen-core/pull/1265)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - quantity add skill.md for ai agents
+
 ## 0.9.0
 <sub>2026-06-08</sub>
 

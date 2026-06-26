@@ -10,15 +10,15 @@ import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.r
 export class {{pascalCase useCaseName}}UseCase {
   constructor (
     @InjectRepository({{pascalCase entityName}})
-    private {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>
+    private repository: Repository<{{pascalCase entityName}}>
   ) {}
 
-  public async execute (
+  async execute (
     query: {{pascalCase useCaseName}}Query
   ): Promise<{{pascalCase useCaseName}}Response> {
     const pagination = typeormPagination(query.pagination)
 
-    const [items, count] = await this.{{camelCase entityName}}Repository.findAndCount({
+    const [items, count] = await this.repository.findAndCount({
       take: pagination.take,
       skip: pagination.skip,
       order: { uuid: 'ASC' }

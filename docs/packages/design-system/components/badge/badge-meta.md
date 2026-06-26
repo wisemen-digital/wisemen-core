@@ -4,6 +4,13 @@
 const propsData = [
   {
     "default": "null",
+    "description": "<p>An array of actions to display in a dropdown menu. When provided, a 3-dots icon button\nappears absolutely positioned on the right of the badge.</p>\n",
+    "name": "actions",
+    "required": false,
+    "type": "Action<any>[] | null"
+  },
+  {
+    "default": "null",
     "description": "<p>Accessible label for screen readers. Use when the badge content alone is not descriptive enough.</p>\n",
     "name": "ariaLabel",
     "required": false,
@@ -43,6 +50,20 @@ const propsData = [
     "name": "label",
     "required": false,
     "type": "string | null"
+  },
+  {
+    "default": "null",
+    "description": "<p>Arbitrary metadata passed to the action context.</p>\n",
+    "name": "metadata",
+    "required": false,
+    "type": "any"
+  },
+  {
+    "default": "null",
+    "description": "<p>The models passed to the action context.</p>\n",
+    "name": "models",
+    "required": false,
+    "type": "ActionModel[] | null"
   },
   {
     "default": "\"default\"",

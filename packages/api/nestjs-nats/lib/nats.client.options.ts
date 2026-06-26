@@ -1,13 +1,17 @@
-export interface NatsClientModuleOptions {
-  /** The NATS server endpoint, e.g. `nats://localhost:4222` */
-  endpoint: string
+// oxlint-disable typescript/no-explicit-any
+import { NodeConnectionOptions } from "@nats-io/transport-node"
+
+export type NatsClientModuleOptions = {
   /** Optional base64-encoded NATS credentials (NKey seed + creds) */
   nkey?: string
+  /** Options passed directly to the underlying NATS client */
+  client: Omit<NodeConnectionOptions, 'authenticator'>
+} | {
+  /** Options passed directly to the underlying NATS client */
+  client: NodeConnectionOptions
 }
 
 export interface NatsClientModuleAsyncOptions {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inject?: any[]
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useFactory: (...args: any[]) => NatsClientModuleOptions | Promise<NatsClientModuleOptions>
 }
