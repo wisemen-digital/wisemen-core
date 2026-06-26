@@ -6,6 +6,7 @@ import type { Context } from '@opentelemetry/api'
 import { propagation, context, trace, SpanStatusCode } from '@opentelemetry/api'
 import { getOtelTracer, type TraceContextCarrier } from '@wisemen/opentelemetry'
 import type { NatsParameter } from '#src/parameters/nats-parameter.js'
+import type { ResolvedNatsExceptionFilter } from '#src/exception-filters/nats-exception-filter.js'
 
 export class NatsMessageHandlerFunction {
   /**
@@ -16,8 +17,17 @@ export class NatsMessageHandlerFunction {
   constructor (
     private parameters: NatsParameter[],
     private handler: (...args: unknown[]) => unknown,
-    private context?: string
+    private context?: string,
+    private readonly exceptionFilters: ResolvedNatsExceptionFilter[] = []
   ) {}
+
+  get handlerContext (): string | undefined {
+    return this.context
+  }
+
+  get filters (): ResolvedNatsExceptionFilter[] {
+    return Array.from(this.exceptionFilters)
+  }
 
   async handle (message: Msg | JsMsg): Promise<unknown> {
     const traceContext: TraceContextCarrier = {

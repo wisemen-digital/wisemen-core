@@ -6,17 +6,31 @@ import type { ServiceMsg } from '@nats-io/services'
 import type { NatsMessageHandlerFunction } from '#src/message-handler/nats-message-handler.js'
 import type { CloudEventHandlerOptions } from '#src/message-handler/on-nats-message.decorator.js'
 import { CloudEvent } from '#src/cloud-event/cloud-event.js'
+import { NatsExceptionHandler } from '#src/exception-filters/nats-exception-handler.js'
+import type { ResolvedNatsExceptionFilter } from '#src/exception-filters/nats-exception-filter.js'
 
 type CloudEventKey = string
 
 export class NatsServiceEndpoint {
   private fallbackHandler: NatsMessageHandlerFunction | undefined
   private cloudEventHandlers: Map<CloudEventKey, NatsMessageHandlerFunction> = new Map()
+  private readonly exceptionFilters: ResolvedNatsExceptionFilter[] = []
+  private readonly exceptionHandler = new NatsExceptionHandler()
 
   constructor (
     private name: string,
     private stream: QueuedIterator<ServiceMsg>
   ) {}
+
+  addExceptionFilters (filters: ResolvedNatsExceptionFilter[]): void {
+    for (const filter of filters) {
+      if (this.exceptionFilters.some(existing => existing.filter === filter.filter)) {
+        continue
+      }
+
+      this.exceptionFilters.push(filter)
+    }
+  }
 
   addCloudEventHandler (
     eventOptions: CloudEventHandlerOptions,
@@ -63,8 +77,10 @@ export class NatsServiceEndpoint {
   }
 
   private async handleMessage (message: ServiceMsg): Promise<void> {
+    let handler: NatsMessageHandlerFunction | undefined
+
     try {
-      const handler = await this.getHandler(message)
+      handler = await this.getHandler(message)
       const response = await handler.handle(message)
 
       if (response instanceof Uint8Array) {
@@ -73,11 +89,30 @@ export class NatsServiceEndpoint {
         message.respond(new TextEncoder().encode(JSON.stringify(response)))
       }
     } catch (e) {
-      message.respondError(
-        HttpStatus.INTERNAL_SERVER_ERROR,
-        (e as Error).message,
-        JSON.stringify(e)
-      )
+      const result = await this.exceptionHandler.handle(e, {
+        captureMessage: 'unable to handle service request message',
+        filters: handler?.filters ?? this.exceptionFilters,
+        handlerName: handler?.handlerContext,
+        logContext: `NATS endpoint ${this.name}`,
+        message
+      })
+
+      if (result.response !== undefined) {
+        message.respondError(
+          result.response.code,
+          result.response.description,
+          result.response.data
+        )
+        return
+      }
+
+      if (!result.responded) {
+        message.respondError(
+          HttpStatus.INTERNAL_SERVER_ERROR,
+          e instanceof Error ? e.message : 'unknown cause',
+          JSON.stringify(e)
+        )
+      }
     }
   }
 

@@ -9,6 +9,8 @@ export { NatsClient } from './nats.client.js'
 
 // Errors
 export { NatsUnavailableError } from './errors/nats-unavailable.error.js'
+export type { NatsArgumentsHost } from './exception-filters/nats-arguments-host.js'
+export type { NatsExceptionFilter, NatsServiceErrorResponse } from './exception-filters/nats-exception-filter.js'
 
 // Utility
 export { natsSubject } from './nats-subject.js'

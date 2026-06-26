@@ -42,4 +42,10 @@ export class ProvidersExplorer {
 
     return Array.from(this._providers)
   }
+
+  getProviderInstance<T> (providerClass: Type<T>): T | undefined {
+    const provider = this.providers.find(p => p.providerClass === providerClass)
+
+    return provider?.providerInstance as T | undefined
+  }
 }

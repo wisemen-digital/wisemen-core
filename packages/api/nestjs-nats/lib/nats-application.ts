@@ -12,6 +12,7 @@ import { NatsConsumerManager } from './consumers/nats-consumer.manager.js'
 import { NatsMessageHandlerFunction } from './message-handler/nats-message-handler.js'
 import { NatsStreamManager } from './streams/nats-stream.manager.js'
 import type { NatsParameter, NatsParameterContext } from './parameters/nats-parameter.js'
+import type { ResolvedNatsExceptionFilter } from './exception-filters/nats-exception-filter.js'
 
 export type CreateStreamConfig = Parameters<StreamAPI['add']>['0'] & {
   connectionOptions: NamedConnectionOptions
@@ -22,22 +23,28 @@ export interface CreateServiceConfig extends ServiceConfig {
 }
 
 export interface CreateServiceEndpointConfig extends EndpointOptions {
+  classExceptionFilters: ResolvedNatsExceptionFilter[]
   name: string
   event?: CloudEventHandlerOptions
+  exceptionFilters: ResolvedNatsExceptionFilter[]
   service: CreateServiceConfig
   parameters: NatsParameter[]
   callback: (...args: unknown[]) => Promise<unknown>
 }
 
 export interface CreateConsumerHandlerConfig {
+  classExceptionFilters: ResolvedNatsExceptionFilter[]
   event?: CloudEventHandlerOptions
   consumer: NatsConsumerConfig
+  exceptionFilters: ResolvedNatsExceptionFilter[]
   parameters: NatsParameter[]
   callback: (...args: unknown[]) => Promise<unknown>
 }
 
 export interface CreateSubscriberHandlerConfig {
+  classExceptionFilters: ResolvedNatsExceptionFilter[]
   event?: CloudEventHandlerOptions
+  exceptionFilters: ResolvedNatsExceptionFilter[]
   subscriber: NatsSubscriberConfig
   parameters: NatsParameter[]
   callback: (...args: unknown[]) => Promise<unknown>
@@ -82,8 +89,11 @@ export class NatsApplication {
     const handler = new NatsMessageHandlerFunction(
       config.parameters, 
       config.callback,
-      config.consumer.name + '.' + config.callback.name
+      config.consumer.name + '.' + config.callback.name,
+      config.exceptionFilters
     )
+
+    consumer.addExceptionFilters(config.classExceptionFilters)
 
     if (config.event !== undefined) {
       consumer.addCloudEventHandler(config.event, handler)
@@ -101,8 +111,11 @@ export class NatsApplication {
     const handler = new NatsMessageHandlerFunction(
       config.parameters,
       config.callback,
-      config.subscriber.name + '.' + config.callback.name
+      config.subscriber.name + '.' + config.callback.name,
+      config.exceptionFilters
     )
+
+    subscriber.addExceptionFilters(config.classExceptionFilters)
 
     if (config.event !== undefined) {
       subscriber.addCloudEventHandler(config.event, handler)

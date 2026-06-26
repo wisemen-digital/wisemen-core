@@ -1,20 +1,32 @@
 import type { Msg, Subscription } from '@nats-io/transport-node'
 import { Logger } from '@nestjs/common'
-import { captureException } from '@wisemen/opentelemetry'
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
-import { JsonApiError } from '@wisemen/api-error'
 import type { NatsMessageHandlerFunction } from '#src/message-handler/nats-message-handler.js'
 import type { CloudEventHandlerOptions } from '#src/message-handler/on-nats-message.decorator.js'
 import { CloudEvent } from '#src/cloud-event/cloud-event.js'
+import { NatsExceptionHandler } from '#src/exception-filters/nats-exception-handler.js'
+import type { ResolvedNatsExceptionFilter } from '#src/exception-filters/nats-exception-filter.js'
 
 type CloudEventKey = string
 
 export class NatsSubscription {
   private fallbackHandler: NatsMessageHandlerFunction | undefined
   private cloudEventHandlers: Map<CloudEventKey, NatsMessageHandlerFunction> = new Map()
+  private readonly exceptionFilters: ResolvedNatsExceptionFilter[] = []
+  private readonly exceptionHandler = new NatsExceptionHandler()
 
   constructor (private subscription: Subscription) {}
+
+  addExceptionFilters (filters: ResolvedNatsExceptionFilter[]): void {
+    for (const filter of filters) {
+      if (this.exceptionFilters.some(existing => existing.filter === filter.filter)) {
+        continue
+      }
+
+      this.exceptionFilters.push(filter)
+    }
+  }
 
   addCloudEventHandler (
     eventOptions: CloudEventHandlerOptions,
@@ -72,26 +84,20 @@ export class NatsSubscription {
   }
 
   private async handleMessage (message: Msg): Promise<void> {
+    let handler: NatsMessageHandlerFunction | undefined
+
     try {
-      const handler = await this.getHandler(message)
+      handler = await this.getHandler(message)
 
       await handler.handle(message)
     } catch (e) {
-      let msg: string = 'unknown cause'
-
-      if (e instanceof JsonApiError) {
-        msg = `[${e.status}]: ${JSON.stringify(e.errors)}`
-      } else if (e instanceof Error) {
-        msg = e.message ?? 'unknown cause'
-      }
-
-      const error = new Error(`unable to handle subscription message: ${msg}`, { cause: e })
-
-      Logger.error(
-        `Nats message handler threw error ${msg}`,
-        `NATS Subscriber ${this.subscription.getSubject()}`
-      )
-      captureException(error)
+      await this.exceptionHandler.handle(e, {
+        captureMessage: 'unable to handle subscription message',
+        filters: handler?.filters ?? this.exceptionFilters,
+        handlerName: handler?.handlerContext,
+        logContext: `NATS Subscriber ${this.subscription.getSubject()}`,
+        message
+      })
     }
   }
 

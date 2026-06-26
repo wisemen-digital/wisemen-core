@@ -16,7 +16,7 @@ type ConfigFunction = (config: ConfigService) => NatsServiceEndpointDecoratorOpt
 
 export type NatsServiceEndpointDecoratorConfig = Omit<
   CreateServiceEndpointConfig,
-  'parameters' | 'callback' | 'event'
+  'parameters' | 'callback' | 'event' | 'classExceptionFilters' | 'exceptionFilters'
 >
 
 export function NatsServiceEndpoint (configFn: ConfigFunction): ClassDecorator {

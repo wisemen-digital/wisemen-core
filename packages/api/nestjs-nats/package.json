@@ -23,7 +23,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",
-    "test": "node --test ./dist/lib/**/*.test.js",
+    "test": "node --test ./test/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },

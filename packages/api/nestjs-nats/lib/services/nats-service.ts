@@ -21,6 +21,8 @@ export class NatsService {
       this.endpoints.set(config.name, endpoint)
     }
 
+    endpoint.addExceptionFilters(config.classExceptionFilters)
+
     const paramContext: NatsParameterContext = { subject: config.subject ?? '' }
 
     config.parameters.forEach(param => param.setContext(paramContext))
@@ -28,7 +30,8 @@ export class NatsService {
     const handler = new NatsMessageHandlerFunction(
       config.parameters, 
       config.callback,
-      config.service.name + '.' + config.callback.name
+      config.service.name + '.' + config.callback.name,
+      config.exceptionFilters
     )
 
     if (config.event !== undefined) {

@@ -11,6 +11,7 @@ import { isNatsServiceEndpoint, getNatsServiceEndpointConfig } from './services/
 import { NATS_STREAMS_TOKEN } from './tokens.js'
 import type { NestjsProvider } from './providers/providers-explorer.js'
 import { ProvidersExplorer } from './providers/providers-explorer.js'
+import { getNatsExceptionFilters } from './exception-filters/get-nats-exception-filters.js'
 
 @Injectable()
 export class NatsApplicationFactory {
@@ -57,34 +58,66 @@ export class NatsApplicationFactory {
   async addSubscriberHandler (app: NatsApplication, provider: NestjsProvider): Promise<void> {
     const handlers = getNatsMessageHandlerConfig(provider.providerClass)
     const subscriber = getNatsSubscriberHandlerConfig(provider.providerClass, this.config)
+    const classExceptionFilters = getNatsExceptionFilters(this.providerExplorer, provider.providerClass)
 
     for (const handler of handlers) {
       const parameters = getNatsParameters(provider.providerClass, handler.methodName)
       const callback = this.bind(provider.providerInstance, handler.methodName)
+      const exceptionFilters = getNatsExceptionFilters(
+        this.providerExplorer,
+        provider.providerClass,
+        handler.methodName
+      )
 
-      await app.addSubscriberHandler({ parameters, subscriber, callback, event: handler.event })
+      await app.addSubscriberHandler({
+        parameters,
+        subscriber,
+        callback,
+        event: handler.event,
+        classExceptionFilters,
+        exceptionFilters
+      })
     }
   }
 
   async addConsumerHandler (app: NatsApplication, provider: NestjsProvider): Promise<void> {
     const handlers = getNatsMessageHandlerConfig(provider.providerClass)
     const consumer = getNatsConsumerHandlerConfig(provider.providerClass, this.config)
+    const classExceptionFilters = getNatsExceptionFilters(this.providerExplorer, provider.providerClass)
 
     for (const handler of handlers) {
       const parameters = getNatsParameters(provider.providerClass, handler.methodName)
       const callback = this.bind(provider.providerInstance, handler.methodName)
+      const exceptionFilters = getNatsExceptionFilters(
+        this.providerExplorer,
+        provider.providerClass,
+        handler.methodName
+      )
 
-      await app.addConsumerHandler({ parameters, consumer, callback, event: handler.event })
+      await app.addConsumerHandler({
+        parameters,
+        consumer,
+        callback,
+        event: handler.event,
+        classExceptionFilters,
+        exceptionFilters
+      })
     }
   }
 
   async addServiceEndpoint (app: NatsApplication, provider: NestjsProvider): Promise<void> {
     const handlers = getNatsMessageHandlerConfig(provider.providerClass)
     const endpoint = getNatsServiceEndpointConfig(provider.providerClass, this.config)
+    const classExceptionFilters = getNatsExceptionFilters(this.providerExplorer, provider.providerClass)
 
     for (const handler of handlers) {
       const parameters = getNatsParameters(provider.providerClass, handler.methodName)
       const callback = this.bind(provider.providerInstance, handler.methodName)
+      const exceptionFilters = getNatsExceptionFilters(
+        this.providerExplorer,
+        provider.providerClass,
+        handler.methodName
+      )
 
       await app.addServiceEndpoint({
         name: endpoint.name,
@@ -95,7 +128,9 @@ export class NatsApplicationFactory {
         subject: endpoint.subject,
         parameters,
         callback,
-        event: handler.event
+        event: handler.event,
+        classExceptionFilters,
+        exceptionFilters
       })
     }
   }
