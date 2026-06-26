@@ -62,9 +62,19 @@ const operatorOptions = computed<OperatorOption[]>(() => [
   },
 ])
 
-const operatorLabel = computed<string>(
-  () => operatorOptions.value.find((o) => o.value === filterValue.value.operator)?.label ?? filterValue.value.operator,
+const isSingleDate = computed<boolean>(
+  () => value.value.from !== null && value.value.until !== null && value.value.from.equals(value.value.until),
 )
+
+const operatorLabel = computed<string>(() => {
+  if (isSingleDate.value) {
+    return filterValue.value.operator === DateRangeFilterOperator.IS_BETWEEN
+      ? i18n.t('component.filters.operator.is')
+      : i18n.t('component.filters.operator.is_not')
+  }
+
+  return operatorOptions.value.find((o) => o.value === filterValue.value.operator)?.label ?? filterValue.value.operator
+})
 
 function onOperatorChange(operator: string): void {
   values.value[props.filter.key] = {
@@ -95,6 +105,7 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
 
     <FiltersActiveBadgeOperatorDropdown
       :disabled="props.filter.disableOperators ?? false"
+      :label="isSingleDate ? operatorLabel : undefined"
       :model-value="filterValue.operator"
       :options="operatorOptions"
       @update:model-value="onOperatorChange"
@@ -113,7 +124,7 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
           <FiltersActiveBadgeBasePart :is-interactive="true">
             <UIText
               :text="dateTimeFormat.formatPlainDateRange(value)"
-              class="text-xs text-primary"
+              class="text-xs text-primary tabular-nums"
             />
           </FiltersActiveBadgeBasePart>
         </FiltersActiveBadgeDialogTrigger>

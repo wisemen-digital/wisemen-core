@@ -61,7 +61,7 @@ createMultiSelectFilter({
 | `label` | `string` | ✓ | Display name in the filter picker |
 | `options` | `(search: string) => TValue[]` | ✓ | Returns the list of selectable items, optionally filtered by the search input |
 | `displayFn` | `(value: TValue) => string` | ✓ | Converts a value to the string shown in the badge and picker |
-| `defaultValue` | `TValue[]` | | Initial value. Defaults to `[]` |
+| `defaultValue` | `MultiSelectFilterValue<TValue>` | | Initial value. Defaults to `{ operator: 'includes', value: [] }` |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | When `true`, the filter is always shown in `activeFilters`, cannot be removed by `clearFilter` or `clearAll`, and its badge appears before non-persistent filters |
 | `disableOperators` | `boolean` | | Renders the operator as a static label instead of an interactive dropdown. Use when the backend only supports a single operator |
@@ -116,7 +116,7 @@ createMultiAutocompleteFilter({
 | `label` | `string` | ✓ | Display name |
 | `options` | `(searchInput, getPaginationOffsetForSubActionId) => Promise<TValue[] \| { items, pagination }>` | ✓ | Async function returning items. Return the paginated form to enable infinite scroll in the picker |
 | `displayFn` | `(value: TValue) => string` | ✓ | Converts a value to a display string |
-| `defaultValue` | `TValue[]` | | Defaults to `[]` |
+| `defaultValue` | `MultiSelectFilterValue<TValue>` | | Defaults to `{ operator: 'includes', value: [] }` |
 | `icon` | `Component` | | Icon shown in the action picker |
 | `isPersistent` | `boolean` | | See multi-select |
 | `disableOperators` | `boolean` | | See multi-select |

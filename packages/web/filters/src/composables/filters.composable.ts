@@ -62,7 +62,7 @@ export enum NumberFilterOperator {
 
 export interface MultiSelectFilterValue<TValue = SelectFilterValue> {
   operator: MultiSelectFilterOperator
-  values: TValue[]
+  value: TValue[]
 }
 
 export interface DateFilterValue {
@@ -340,7 +340,7 @@ export function useFilters<TFilters extends Filter[]>(
                 : maybeOptions) as any[]
 
               const filterValue = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
-              const selectedValues = filterValue.values
+              const selectedValues = filterValue.value
               const isFirstPage = ctx.getPaginationOffsetForSubActionId(filter.key) === null
               const uniqueOptions = isFirstPage
                 ? [
@@ -358,7 +358,7 @@ export function useFilters<TFilters extends Filter[]>(
                 name: filter.displayFn(option),
                 execute: () => {
                   const current = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
-                  const currentValues = current.values
+                  const currentValues = current.value
 
                   const isOptionSelected = currentValues.some(
                     (selectedOption) => SuperJSON.stringify(selectedOption) === SuperJSON.stringify(option),
@@ -367,7 +367,7 @@ export function useFilters<TFilters extends Filter[]>(
                   if (isOptionSelected) {
                     values.value[filter.key] = {
                       ...current,
-                      values: currentValues.filter(
+                      value: currentValues.filter(
                         (selectedOption) => SuperJSON.stringify(selectedOption) !== SuperJSON.stringify(option),
                       ),
                     }
@@ -375,7 +375,7 @@ export function useFilters<TFilters extends Filter[]>(
                   else {
                     values.value[filter.key] = {
                       ...current,
-                      values: [
+                      value: [
                         ...currentValues,
                         option,
                       ],
@@ -386,7 +386,7 @@ export function useFilters<TFilters extends Filter[]>(
                 selected: () => {
                   const current = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
 
-                  return current.values.some(
+                  return current.value.some(
                     (selectedOption) => SuperJSON.stringify(selectedOption) === SuperJSON.stringify(option),
                   )
                 },
@@ -607,7 +607,7 @@ export function useFilters<TFilters extends Filter[]>(
     switch (filter.type) {
       case FilterType.MULTI_SELECT:
       case FilterType.MULTI_AUTOCOMPLETE:
-        return (value as MultiSelectFilterValue).values.length === 0
+        return (value as MultiSelectFilterValue).value.length === 0
       case FilterType.BOOLEAN:
         return value === null
       case FilterType.DATE:
@@ -643,7 +643,7 @@ export function useFilters<TFilters extends Filter[]>(
       case FilterType.MULTI_AUTOCOMPLETE:
         return {
           operator: MultiSelectFilterOperator.INCLUDES,
-          values: [],
+          value: [],
         } satisfies MultiSelectFilterValue
       case FilterType.BOOLEAN:
         return null

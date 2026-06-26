@@ -42,7 +42,7 @@ const filterValue = computed<MultiSelectFilterValue<SelectFilterValue>>(
   () => values.value[props.filter.key] as MultiSelectFilterValue<SelectFilterValue>,
 )
 
-const filterValues = computed<SelectFilterValue[]>(() => filterValue.value.values)
+const filterValues = computed<SelectFilterValue[]>(() => filterValue.value.value)
 
 const numberFormat = useNumberFormat()
 
