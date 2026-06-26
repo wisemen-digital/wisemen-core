@@ -1,5 +1,11 @@
 # @wisemen/one-of
 
+
+## 0.0.16
+<sub>2026-06-17</sub>
+
+- [#1275](https://github.com/wisemen-digital/wisemen-core/pull/1275)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1142): add one-of agent skill
+
 ## 0.0.15
 
 ### Patch Changes

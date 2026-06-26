@@ -1,17 +1,6 @@
 import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common'
 import { captureException } from '@wisemen/opentelemetry'
-import { type KV, Kvm } from '@nats-io/kv'
-import {
-  type NatsConnection,
-  type Authenticator,
-  credsAuthenticator,
-  type SubscriptionOptions,
-  type Payload,
-  connect,
-  type Subscription,
-  headers
-} from '@nats-io/transport-node'
-import { jetstream } from '@nats-io/jetstream'
+import { type NatsConnection, type Authenticator, credsAuthenticator, type SubscriptionOptions, type Payload, connect, type Subscription, headers } from '@nats-io/transport-node'
 import { propagation, context, type Context } from '@opentelemetry/api'
 import type { TraceContextCarrier } from '@wisemen/opentelemetry'
 import { NatsUnavailableError } from './errors/nats-unavailable.error.js'
@@ -24,44 +13,29 @@ interface SubscribeOptions {
 
 @Injectable()
 export class NatsClient implements OnModuleInit, OnModuleDestroy {
+  private static DEFAULT_RECONNECT_DELAY = 5_000 // ms
   private _client?: NatsConnection
-  private _cache?: KV
+  private connected = false
+  private lastConnectionAttempt: Date | null = null
 
   constructor (
     @Inject(NATS_CLIENT_OPTIONS_TOKEN)
     private readonly options: NatsClientModuleOptions
   ) {}
 
-  public get client (): NatsConnection {
-    if (this._client == null) {
-      throw new NatsUnavailableError('The NATS client is not configured')
-    } else {
-      return this._client
+  async client (): Promise<NatsConnection> {
+    if (this._client === undefined) {
+      const connected = await this.connect()
+      if (!connected || !this.hasUsableClient()) {
+        throw new NatsUnavailableError('The NATS client is not configured')
+      }
     }
-  }
 
-  public get cache (): KV {
-    if (this._cache == null) {
-      throw new NatsUnavailableError('The NATS cache is not configured')
-    } else {
-      return this._cache
-    }
+    return this._client!
   }
 
   async onModuleInit (): Promise<void> {
-    try {
-      this._client = await connect({
-        servers: this.options.endpoint,
-        authenticator: this.getAuthenticator(),
-        timeout: 3000
-      })
-
-      const js = jetstream(this.client)
-
-      this._cache = await new Kvm(js).create('cache')
-    } catch (error) {
-      captureException(error)
-    }
+    await this.connect()
   }
 
   async onModuleDestroy (): Promise<void> {
@@ -70,23 +44,15 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
     }
   }
 
-  private getAuthenticator (): Authenticator | undefined {
-    if (this.options.nkey == null) {
-      return undefined
-    } else {
-      return credsAuthenticator(new TextEncoder().encode(Buffer.from(this.options.nkey, 'base64').toString()))
-    }
-  }
-
-  subscribe (subject: string, options?: SubscribeOptions): Subscription {
+  async subscribe (subject: string, options?: SubscribeOptions): Promise<Subscription> {
     const opts: SubscriptionOptions = {}
 
     opts.queue = options?.queueName
 
-    return this.client.subscribe(subject, opts)
+    return (await this.client()).subscribe(subject, opts)
   }
 
-  publish (subject: string, message: Payload | undefined): void {
+  async publish (subject: string, message: Payload | undefined): Promise<void> {
     const natsHeaders = headers()
     const currentContext: Context = context.active()
     const traceContext: TraceContextCarrier = {}
@@ -100,24 +66,107 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
       )
     }
 
-    this.client.publish(subject, message, { headers: natsHeaders })
+    (await this.client()).publish(subject, message, { headers: natsHeaders })
   }
 
-  async getValue (key: string): Promise<string | null> {
-    const result = await this.cache.get(key)
+  isConnected (): boolean {
+    return this.hasUsableClient() && this.connected
+  }
 
-    if (result != null && result.operation === 'PUT') {
-      return String(result.value)
+  /** 
+   * Attempts to create a connection to the server.
+   * When this client has already connected to the server before, this method does not attempt
+   * to create a new connection, instead it returns false and relies on the auto reconnect 
+   * mechanisms of @nats-io/transport-node
+   */
+  async reconnect(): Promise<boolean> {
+    if(this._client === undefined) {
+      return this.connect()
+    } else {
+      return false
+    }
+  }
+
+  async ping (): Promise<boolean> {
+    try {
+      await (await this.client()).flush()
+      return true
+    } catch (error) {
+      captureException(error)
+      return false
+    }
+  }
+
+  private async connect (): Promise<boolean> {
+    const reconnectDelay = this.options.client.reconnectTimeWait ?? NatsClient.DEFAULT_RECONNECT_DELAY
+    const isReconnectDelayActive = this.lastConnectionAttempt != null
+      && Date.now() - this.lastConnectionAttempt.getTime() < reconnectDelay
+
+    if (isReconnectDelayActive) {
+      return false
     }
 
-    return null
+    try {
+      this.lastConnectionAttempt = new Date()
+
+      let authenticator: Authenticator | Authenticator[] | undefined
+      if ('nkey' in this.options && this.options.nkey !== undefined) {
+        const decodedNkey = Buffer.from(this.options.nkey, 'base64').toString()
+        authenticator = credsAuthenticator(new TextEncoder().encode(decodedNkey))
+      } else if ('authenticator' in this.options.client) {
+        authenticator = this.options.client.authenticator
+      }
+
+      this._client = await connect({
+        ...this.options.client,
+        authenticator: authenticator,
+      })
+
+      this.connected = true
+      this.monitorConnection(this._client)
+  
+      return true
+    } catch (error) {
+      this.connected = false
+      captureException(error)
+      return false
+    }
   }
 
-  async putValue (key: string, value: string): Promise<void> {
-    await this.cache.put(key, value)
+  private hasUsableClient (): boolean {
+    return this._client !== undefined
+      && !this._client.isClosed()
+      && !this._client.isDraining()
   }
 
-  async deleteValue (key: string): Promise<void> {
-    await this.cache.delete(key)
+  private monitorConnection (client: NatsConnection): void {
+    void this.watchConnectionStatus(client)
+    void client.closed().then((error) => {
+      this.connected = false
+
+      if (error != null) {
+        captureException(error)
+      }
+    })
+  }
+
+  private async watchConnectionStatus (client: NatsConnection): Promise<void> {
+    try {
+      for await (const status of client.status()) {
+        switch (status.type) {
+          case 'disconnect':
+          case 'reconnecting':
+          case 'staleConnection':
+          case 'close':
+            this.connected = false
+            break
+          case 'reconnect':
+            this.connected = true
+            break
+        }
+      }
+    } catch (error) {
+      captureException(error)
+    }
   }
 }
