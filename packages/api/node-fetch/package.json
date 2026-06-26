@@ -1,0 +1,38 @@
+{
+  "name": "@wisemen/node-fetch",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm run clean && pnpm run build",
+    "test": "node --test dist/lib/tests/**/*.test.js",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm run lint:eslint",
+    "prerelease": "pnpm run build",
+    "release": "pnpx release-it"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
+    "typescript": "catalog:peer"
+  },
+  "author": "Wisemen",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/fetch"
+  }
+}
