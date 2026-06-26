@@ -6,6 +6,7 @@ import type {
   FormattedAddress,
 } from '@/ui/address-autocomplete/addressAutocomplete.type'
 import ApplicationProvider from '@/ui/application-provider/ApplicationProvider.vue'
+import type { BaseFileUploadAdapter } from '@/ui/base-file-upload'
 import ConfigProvider from '@/ui/config-provider/ConfigProvider.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
@@ -86,6 +87,40 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     ]
   },
 }
+
+const mockFileUploadAdapter: BaseFileUploadAdapter = {
+  async confirmUpload(): Promise<void> {
+    await new Promise((resolve) => setTimeout(resolve, 100))
+  },
+
+  async getFileInfo(name: string): Promise<{
+    uuid: string
+    uploadUrl: string
+  }> {
+    await new Promise((resolve) => setTimeout(resolve, 150))
+
+    return {
+      uuid: crypto.randomUUID(),
+      uploadUrl: `mock://upload/${encodeURIComponent(name)}`,
+    }
+  },
+
+  async uploadFile(uploadUrl, file, options): Promise<void> {
+    void uploadUrl
+    void file
+
+    for (const progress of [
+      10,
+      35,
+      60,
+      85,
+      100,
+    ]) {
+      await new Promise((resolve) => setTimeout(resolve, 80))
+      options.onProgress(progress)
+    }
+  },
+}
 </script>
 
 <template>
@@ -94,6 +129,7 @@ const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
     :locale="locale ?? 'en-US'"
     :hour-cycle="hourCycle ?? '24-hour'"
     :address-autocomplete-adapter="mockAddressAutocompleteAdapter"
+    :file-upload-adapter="mockFileUploadAdapter"
     :reduced-motion="false"
     number-format="system"
     project-name="story-book"
