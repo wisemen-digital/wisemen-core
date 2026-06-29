@@ -12,13 +12,7 @@ responses.
 
 ```ts
 import { ApiProperty } from '@nestjs/swagger'
-import {
-  Coordinates,
-  CoordinatesColumn,
-  CoordinatesCommand,
-  CoordinatesQuery,
-  CoordinatesResponse,
-} from '@wisemen/coordinates'
+import { Coordinates, CoordinatesColumn, CoordinatesCommand, CoordinatesQuery, CoordinatesResponse } from '@wisemen/coordinates'
 
 export class UpdateLocationCommand {
   @ApiProperty({ type: CoordinatesCommand })
