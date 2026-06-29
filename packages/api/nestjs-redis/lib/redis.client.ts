@@ -1,4 +1,5 @@
 import assert from 'assert'
+import { randomUUID } from 'node:crypto'
 import { Inject, Injectable, Logger, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common'
 import type { RedisClientType } from 'redis'
 import { createClient } from 'redis'
@@ -11,6 +12,14 @@ import type { RedisModuleOptions } from './redis.module-options.js'
 export class RedisClient implements OnModuleInit, OnModuleDestroy {
   private _client?: RedisClientType
   readonly ttl: number
+
+  private readonly RELEASE_LOCK_SCRIPT = `
+    if redis.call("get", KEYS[1]) == ARGV[1] then
+      return redis.call("del", KEYS[1])
+    else
+      return 0
+    end
+  `
 
   constructor (
     @Inject(MODULE_OPTIONS_TOKEN) private readonly config: RedisModuleOptions
@@ -96,6 +105,36 @@ export class RedisClient implements OnModuleInit, OnModuleDestroy {
 
       return pipeline.exec()
     })
+  }
+
+  // https://redis.io/docs/latest/commands/set/#patterns
+  async setLock (key: string, ttl: number): Promise<{ success: boolean, token: string| null }> {
+    const token = randomUUID()
+
+    const result = await this.perform<string | null>(() =>
+      this.client.set(key, token, {
+        EX: ttl,
+        condition: 'NX'
+      })
+    )
+
+    if (result === 'OK') {
+      return { success: true, token };
+    }
+
+    return { success: false, token: null };
+  }
+
+  // https://redis.io/docs/latest/commands/set/#patterns
+  async releaseLock (key: string, token: string): Promise<boolean> {
+    const result = await this.perform(() =>
+      this.client.eval(this.RELEASE_LOCK_SCRIPT, {
+        keys: [key],
+        arguments: [token]
+      })
+    )
+
+    return Number(result) === 1
   }
 
   async deleteCachedValue (key: string): Promise<void> {
