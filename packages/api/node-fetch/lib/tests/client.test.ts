@@ -10,11 +10,11 @@ describe('createClient', () => {
   let captured: Request[]
   let queued: Response[]
 
-  const mockFetch = async (req: Request): Promise<Response> => {
+  const mockFetch = (req: Request): Promise<Response> => {
     captured.push(req)
     const res = queued.shift()
-    if (!res) throw new Error('No response queued')
-    return res
+    if (res == null) return Promise.reject(new Error('No response queued'))
+    return Promise.resolve(res)
   }
 
   beforeEach(() => {
@@ -232,7 +232,7 @@ describe('createClient', () => {
       const networkError = new TypeError('Failed to fetch')
       let seen: unknown
       const c = createClient({
-        fetch: async () => { throw networkError },
+        fetch: () => { throw networkError },
       })
       c.interceptors.error.use((err) => { seen = err; return err })
       await expect(c.get('https://api.example.com/offline')).rejects.toBeInstanceOf(TypeError)
@@ -241,7 +241,7 @@ describe('createClient', () => {
 
     it('can replace the thrown error', async () => {
       const c = createClient({
-        fetch: async () => { throw new Error('original') },
+        fetch: () => { throw new Error('original') },
       })
       c.interceptors.error.use(() => new Error('replaced'))
       await expect(c.get('https://api.example.com/fail')).rejects.toMatchObject({ message: 'replaced' })

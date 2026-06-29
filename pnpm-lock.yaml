@@ -1853,6 +1853,12 @@ importers:
       expect:
         specifier: catalog:test
         version: 30.2.0
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3

@@ -1,4 +1,4 @@
-import { createInterceptors, Interceptors } from './interceptors.js'
+import { createInterceptors } from './interceptors.js'
 import type { Middleware } from './interceptors.js'
 
 export interface ClientConfig {
@@ -35,7 +35,7 @@ const mergeHeaders = (...sources: Array<HeadersInit | undefined>): Headers => {
 const resolveUrl = (baseUrl: string | undefined, input: string | URL | Request): string => {
   if (input instanceof Request) return input.url
   const str = input.toString()
-  if (!baseUrl || str.startsWith('http://') || str.startsWith('https://')) return str
+  if (baseUrl === undefined || str.startsWith('http://') || str.startsWith('https://')) return str
   return baseUrl.replace(/\/$/, '') + (str.startsWith('/') ? str : `/${str}`)
 }
 
@@ -61,7 +61,7 @@ export const createClient = (config: ClientConfig = {}): FetchClient => {
     catch (error) {
       let finalError: unknown = error
       for (const fn of interceptors.error.fns) {
-        if (fn) finalError = await fn(error, undefined as any, request, request)
+        if (fn) finalError = await fn(error, undefined as unknown as Response, request, request)
       }
       throw finalError
     }

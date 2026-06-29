@@ -28,16 +28,16 @@ export class Interceptors<Interceptor> {
 
   eject(id: number | Interceptor): void {
     const index = this._indexOf(id)
-    if (this.fns[index]) this.fns[index] = null
+    if (this.fns[index] != null) this.fns[index] = null
   }
 
   exists(id: number | Interceptor): boolean {
-    return Boolean(this.fns[this._indexOf(id)])
+    return this.fns[this._indexOf(id)] != null
   }
 
   update(id: number | Interceptor, fn: Interceptor): number | Interceptor | false {
     const index = this._indexOf(id)
-    if (this.fns[index]) { this.fns[index] = fn; return id }
+    if (this.fns[index] != null) { this.fns[index] = fn; return id }
     return false
   }
 
@@ -47,7 +47,7 @@ export class Interceptors<Interceptor> {
   }
 
   private _indexOf(id: number | Interceptor): number {
-    if (typeof id === 'number') return this.fns[id] ? id : -1
+    if (typeof id === 'number') return this.fns[id] != null ? id : -1
     return this.fns.indexOf(id)
   }
 }
