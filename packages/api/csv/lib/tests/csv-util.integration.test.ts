@@ -32,8 +32,6 @@ describe('CSV util integration', () => {
       note: 'line1\nline2'
     })
 
-    type CsvRecord = Record<'name' | 'age' | 'note', string | null>
-
     const queryBuilder = dataSource.manager
       .createQueryBuilder(CsvEncodeStreamTest, 'row')
       .select([
