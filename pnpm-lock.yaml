@@ -111,6 +111,9 @@ catalogs:
     pg-boss:
       specifier: 12.15.0
       version: 12.15.0
+    pg-query-stream:
+      specifier: 4.16.0
+      version: 4.16.0
     redis:
       specifier: 5.11.0
       version: 5.11.0
@@ -917,7 +920,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1040,7 +1043,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       wkx:
         specifier: catalog:backend
         version: 0.5.0
@@ -1087,6 +1090,15 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      pg:
+        specifier: catalog:backend
+        version: 8.20.0
+      pg-query-stream:
+        specifier: catalog:backend
+        version: 4.16.0(pg@8.20.0)
+      typeorm:
+        specifier: catalog:backend
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -1116,7 +1128,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -1168,7 +1180,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1214,7 +1226,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -1391,7 +1403,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1431,7 +1443,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend
-        version: 0.3.28(pg@8.20.0)(redis@5.11.0)
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1474,7 +1486,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1573,7 +1585,7 @@ importers:
         version: link:../nestjs-typeorm
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1818,7 +1830,7 @@ importers:
         version: 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       '@nestjs/typeorm':
         specifier: catalog:backend-peer
-        version: 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.20.0)(redis@5.11.0))
+        version: 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
       change-case:
         specifier: catalog:backend-peer
         version: 5.4.4
@@ -1830,7 +1842,7 @@ importers:
         version: 8.20.0
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1898,7 +1910,7 @@ importers:
         version: 0.2.2
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2072,7 +2084,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2143,7 +2155,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2180,7 +2192,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -2239,7 +2251,7 @@ importers:
         version: 0.20.0
       typeorm:
         specifier: catalog:backend
-        version: 0.3.28(pg@8.20.0)(redis@5.11.0)
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -2377,7 +2389,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -10765,6 +10777,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-up@8.1.1:
@@ -12482,6 +12495,11 @@ packages:
   pg-connection-string@2.12.0:
     resolution: {integrity: sha512-U7qg+bpswf3Cs5xLzRqbXbQl85ng0mfSV/J0nnA31MCLgvEaAo7CIhmeyrmJpOr7o+zm0rXK+hNnT5l9RHkCkQ==}
 
+  pg-cursor@2.21.0:
+    resolution: {integrity: sha512-IYvk/j+Suhtbo/C3uOf4JLsLK/gWxOTUOmYbDsbKnLaVJDq+KwhwK6ngpRfiCk8eDMS3AmGQABZCv0cREEzHQw==}
+    peerDependencies:
+      pg: ^8
+
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
@@ -12493,6 +12511,11 @@ packages:
 
   pg-protocol@1.13.0:
     resolution: {integrity: sha512-zzdvXfS6v89r6v7OcFCHfHlyG/wvry1ALxZo4LqgUoy7W9xhBDMaqOuMiF3qEV45VqsN6rdlcehHrfDtlCPc8w==}
+
+  pg-query-stream@4.16.0:
+    resolution: {integrity: sha512-vyqxAG4YVax43BCSfqcKxHSbh8YQshhVR0CjLNdo7MIM2UOqI+XsIYk0bVZJ0aKjQfjJQcGiGo9xK3hz0JcFyg==}
+    peerDependencies:
+      pg: ^8
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
@@ -17174,13 +17197,13 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.15.1
 
-  '@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.20.0)(redis@5.11.0))':
+  '@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
     dependencies:
       '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 1.0.0(pg@8.20.0)(redis@5.11.0)
+      typeorm: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
 
   '@nodable/entities@2.1.0': {}
 
@@ -24682,6 +24705,10 @@ snapshots:
 
   pg-connection-string@2.12.0: {}
 
+  pg-cursor@2.21.0(pg@8.20.0):
+    dependencies:
+      pg: 8.20.0
+
   pg-int8@1.0.1: {}
 
   pg-pool@3.13.0(pg@8.20.0):
@@ -24689,6 +24716,11 @@ snapshots:
       pg: 8.20.0
 
   pg-protocol@1.13.0: {}
+
+  pg-query-stream@4.16.0(pg@8.20.0):
+    dependencies:
+      pg: 8.20.0
+      pg-cursor: 2.21.0(pg@8.20.0)
 
   pg-types@2.2.0:
     dependencies:
@@ -26123,7 +26155,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.28(pg@8.20.0)(redis@5.11.0):
+  typeorm@0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.2.0
@@ -26142,12 +26174,13 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       pg: 8.20.0
+      pg-query-stream: 4.16.0(pg@8.20.0)
       redis: 5.11.0
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
 
-  typeorm@1.0.0(pg@8.20.0)(redis@5.11.0):
+  typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.2.0
@@ -26161,6 +26194,7 @@ snapshots:
       yargs: 18.0.0
     optionalDependencies:
       pg: 8.20.0
+      pg-query-stream: 4.16.0(pg@8.20.0)
       redis: 5.11.0
     transitivePeerDependencies:
       - babel-plugin-macros
