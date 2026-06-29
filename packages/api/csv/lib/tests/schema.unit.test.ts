@@ -144,10 +144,11 @@ describe('Csv Schema', () => {
       'Sijmkens;Maarten;1997-04-09;27;male;true;cat,dog;'
     ].join('\n')
 
-    const parsed = await schema.parseStream(Readable.from(csv))
+    const [parsed] = await Array.fromAsync(schema.parseStream(Readable.from(csv)))
+   
 
-    expect(parsed[0].name).toEqual('Sijmkens')
-    expect(parsed[0].pets).toEqual([Pet.CAT, Pet.DOG])
+    expect(parsed.name).toEqual('Sijmkens')
+    expect(parsed.pets).toEqual([Pet.CAT, Pet.DOG])
   })
 
   it('Does not require optional schema columns to exist in the CSV header', async () => {

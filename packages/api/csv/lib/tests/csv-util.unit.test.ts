@@ -11,7 +11,7 @@ describe('CSV util', () => {
       const stream = Readable.from(rawText)
 
       const rows: CSVRow<'name'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name'] })) {
+      for await (const row of CSV.decodeStream(stream)) {
         rows.push(row)
       }
 
@@ -27,7 +27,7 @@ describe('CSV util', () => {
       const stream = Readable.from(rawText)
 
       const rows: CSVRow<'name' | 'age'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'age'], delimiter: ',' })) {
+      for await (const row of CSV.decodeStream(stream, { delimiter: ',' })) {
         rows.push(row)
       }
 
@@ -43,7 +43,7 @@ describe('CSV util', () => {
       const stream = Readable.from(rawText)
 
       const rows: CSVRow<'name' | 'age'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'age'], delimiter: '||' })) {
+      for await (const row of CSV.decodeStream(stream,{ delimiter: '||' })) {
         rows.push(row)
       }
 
@@ -58,7 +58,7 @@ describe('CSV util', () => {
       const stream = Readable.from(rawText)
 
       const rows: CSVRow<'name' | 'note'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'note'] })) {
+      for await (const row of CSV.decodeStream(stream)) {
         rows.push(row)
       }
 
@@ -72,7 +72,7 @@ describe('CSV util', () => {
       const stream = Readable.from(rawText)
 
       const rows: CSVRow<'name' | 'note'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'note'] })) {
+      for await (const row of CSV.decodeStream(stream)) {
         rows.push(row)
       }
 
@@ -86,7 +86,7 @@ describe('CSV util', () => {
       const stream = Readable.from(rawText)
 
       const rows: CSVRow<'name' | 'note'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'note'] })) {
+      for await (const row of CSV.decodeStream(stream)) {
         rows.push(row)
       }
 
@@ -102,7 +102,7 @@ describe('CSV util', () => {
       const stream = Readable.from(['name;note\n"va"', '"l";30\n'])
 
       const rows: CSVRow<'name' | 'note'>[] = []
-      for await (const row of CSV.decodeStream(stream, { columns: ['name', 'note'] })) {
+      for await (const row of CSV.decodeStream(stream)) {
         rows.push(row)
       }
 
@@ -115,7 +115,7 @@ describe('CSV util', () => {
   describe('decode', () => {
     it('decode a csv string', () => {
       const csv = `name;age\nJohn Doe;30\nJane Doe;25`
-      const result = CSV.decode(csv, { columns: ['name', 'age'] })
+      const result = CSV.decode(csv,)
 
       expect(result).toEqual([
         { name: 'John Doe', age: '30' },
@@ -125,7 +125,7 @@ describe('CSV util', () => {
 
     it('decodes a csv string with custom delimiter', () => {
       const csv = `name,age\nJohn Doe,30\nJane Doe,25`
-      const result = CSV.decode(csv, { columns: ['name', 'age'], delimiter: ',' })
+      const result = CSV.decode(csv, { delimiter: ',' })
 
       expect(result).toEqual([
         { name: 'John Doe', age: '30' },
@@ -135,7 +135,7 @@ describe('CSV util', () => {
 
     it('decodes a csv string with a multi-character delimiter', () => {
       const csv = `name||age\nJohn Doe||30\nJane Doe||25`
-      const result = CSV.decode(csv, { columns: ['name', 'age'], delimiter: '||' })
+      const result = CSV.decode(csv, { delimiter: '||' })
 
       expect(result).toEqual([
         { name: 'John Doe', age: '30' },
@@ -145,7 +145,7 @@ describe('CSV util', () => {
 
     it('decodes a quoted field containing the delimiter', () => {
       const csv = `name;note\n"Smith;Jones";hello`
-      const result = CSV.decode(csv, { columns: ['name', 'note'] })
+      const result = CSV.decode(csv)
 
       expect(result).toEqual([
         { name: 'Smith;Jones', note: 'hello' }
@@ -154,7 +154,7 @@ describe('CSV util', () => {
 
     it('decodes a field with an escaped double-quote (RFC 4180 "")', () => {
       const csv = `name;note\nJohn;"says ""hello"""`
-      const result = CSV.decode(csv, { columns: ['name', 'note'] })
+      const result = CSV.decode(csv)
 
       expect(result).toEqual([
         { name: 'John', note: 'says "hello"' }
@@ -163,7 +163,7 @@ describe('CSV util', () => {
 
     it('decodes a quoted field with an embedded newline', () => {
       const csv = `name;note\nJohn;"line1\nline2"`
-      const result = CSV.decode(csv, { columns: ['name', 'note'] })
+      const result = CSV.decode(csv)
 
       expect(result).toEqual([
         { name: 'John', note: 'line1\nline2' }
@@ -380,8 +380,8 @@ describe('CSV util', () => {
         { name: 'Jane\nDoe', note: 'line1\nline2' },
       ]
 
-      const csv = CSV.encode(original, { columns: ['name', 'note'] })
-      const result = CSV.decode(csv, { columns: ['name', 'note'] })
+      const csv = CSV.encode(original)
+      const result = CSV.decode(csv)
 
       expect(result).toEqual(original)
     })
@@ -392,8 +392,8 @@ describe('CSV util', () => {
         { name: 'Jane Doe', age: '25' }
       ]
 
-      const csv = CSV.encode(original, { columns: ['name', 'age'], delimiter: '||' })
-      const result = CSV.decode(csv, { columns: ['name', 'age'], delimiter: '||' })
+      const csv = CSV.encode(original, { delimiter: '||' })
+      const result = CSV.decode(csv, { delimiter: '||' })
 
       expect(result).toEqual(original)
     })
@@ -406,7 +406,7 @@ describe('CSV util', () => {
 
       const encoded = CSV.encodeStream(original, { columns: ['name', 'note'] })
       const rows: CSVRow<'name' | 'note'>[] = []
-      for await (const row of CSV.decodeStream(encoded, { columns: ['name', 'note'] })) {
+      for await (const row of CSV.decodeStream(encoded)) {
         rows.push(row)
       }
 
