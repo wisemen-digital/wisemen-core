@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+
+## 0.8.4
+<sub>2026-06-26</sub>
+
+- [#1282](https://github.com/wisemen-digital/wisemen-core/pull/1282)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: improve ngen templates
+
 ## 0.8.3
 <sub>2026-06-25</sub>
 
