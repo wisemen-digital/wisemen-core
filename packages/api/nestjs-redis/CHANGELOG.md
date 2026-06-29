@@ -1,6 +1,12 @@
 # @wisemen/nestjs-redis
 
 
+
+## 1.0.2
+<sub>2026-06-29</sub>
+
+- [#1312](https://github.com/wisemen-digital/wisemen-core/pull/1312)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Add Redis distributed locking with setLock and releaseLock
+
 ## 1.0.1
 <sub>2026-06-16</sub>
 
