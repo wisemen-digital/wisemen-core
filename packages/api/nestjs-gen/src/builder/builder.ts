@@ -1,5 +1,6 @@
 import { ActionType, AddActionConfig, CustomActionFunction } from 'plop'
 import { ActionPart, ActionPartFile } from './builder.type.js'
+import { resolveEntityImport } from '#src/registry/generic.registry.js'
 
 export class Builder {
   private actions: ActionPart[] = []
@@ -35,6 +36,22 @@ export class Builder {
     }
 
     return path
+  }
+
+  public resolveEntityPathOrThrow (module: string): string {
+    const pendingEntityPath = this.getPath(`${module}-entity`)
+
+    if (pendingEntityPath != null) {
+      return pendingEntityPath
+    }
+
+    const existingEntityImport = resolveEntityImport(module)
+
+    if (existingEntityImport != null) {
+      return existingEntityImport.path
+    }
+
+    throw new Error(`File with name "${module}-entity" not found`)
   }
 
   public getPath (name: string): string | null {

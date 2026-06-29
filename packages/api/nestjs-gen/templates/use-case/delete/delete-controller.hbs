@@ -8,7 +8,7 @@ import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.us
 @Controller()
 export class {{pascalCase useCaseName}}Controller {
   constructor (
-    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+    private useCase: {{pascalCase useCaseName}}UseCase
   ) {}
 
   @Delete('{{dashCase moduleNamePlural}}/:uuid')
@@ -17,9 +17,9 @@ export class {{pascalCase useCaseName}}Controller {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse()
   @ApiNotFoundErrorResponse({{notFoundError}})
-  public async {{camelCase useCaseName}} (
+  async delete (
     @UuidParam('uuid') uuid: string
   ): Promise<void> {
-    await this.{{camelCase useCaseName}}UseCase.execute(uuid)
+    await this.useCase.execute(uuid)
   }
 }
