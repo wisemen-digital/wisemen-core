@@ -1,6 +1,12 @@
 # @wisemen/vue-core-components
 
 
+
+## 3.0.3
+<sub>2026-06-30</sub>
+
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+
 ## 3.0.2
 <sub>2026-06-09</sub>
 

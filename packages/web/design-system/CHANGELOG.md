@@ -10,6 +10,15 @@
 
 
 
+
+## 1.8.0
+<sub>2026-06-30</sub>
+
+- [#1249](https://github.com/wisemen-digital/wisemen-core/pull/1249)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a built in unsaved changes pop-up in the form dialogs using the dialog chin
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+- [#1311](https://github.com/wisemen-digital/wisemen-core/pull/1311)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add horizontal scroll to tabs when overflowing
+- [#1327](https://github.com/wisemen-digital/wisemen-core/pull/1327)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for the `useDialogChin`
+
 ## 1.7.1
 <sub>2026-06-25</sub>
 
