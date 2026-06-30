@@ -62,6 +62,7 @@
   "component.date_range_picker.previous_month": "Vorige maand",
   "component.dialog.cancel": "Annuleren",
   "component.dialog.close": "Sluiten",
+  "component.form_dialog.unsaved_changes": "Je hebt niet-opgeslagen wijzigingen",
   "component.form_file_upload.action.add_files": "Bestanden toevoegen",
   "component.form_file_upload.action.delete": "Verwijderen",
   "component.form_file_upload.action.hide_clipboard_suggestion": "Suggestie verbergen",
