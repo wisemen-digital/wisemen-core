@@ -6,12 +6,10 @@ import { HttpStatus } from '@nestjs/common'
 describe('{{ testDescriptionName }}', () => {
   let setup: TestSetup
   let user: TestUser
-  let userWithoutPermission: TestUser
 
   before(async () => {
     setup = await TestBench.setupEndToEndTest()
     user = await setup.authContext.getUser([Permission.{{ permissionEnumValue }}])
-    userWithoutPermission = await setup.authContext.getUser([])
   })
 
   after(async () => {
@@ -33,6 +31,8 @@ describe('{{ testDescriptionName }}', () => {
   })
 
   it('returns 403 when user does not have permission', async () => {
+
+    const userWithoutPermission = await setup.authContext.getUser([])
     const command = new {{ commandBuilderName }}().build()
 
     const response = await request(setup.httpServer)

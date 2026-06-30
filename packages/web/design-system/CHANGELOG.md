@@ -9,6 +9,12 @@
 
 
 
+
+## 1.7.1
+<sub>2026-06-25</sub>
+
+- [#1309](https://github.com/wisemen-digital/wisemen-core/pull/1309)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Badge: improve gray outline and translucent styling
+
 ## 1.7.0
 <sub>2026-06-23</sub>
 
