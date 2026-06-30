@@ -1,7 +1,5 @@
-import {
-  format,
-  parsePhoneNumberWithError,
-} from 'libphonenumber-js'
+import { format } from 'libphonenumber-js'
+import { parsePhoneNumberWithError } from 'libphonenumber-js/max'
 
 export class PhoneNumberUtil {
   /**
