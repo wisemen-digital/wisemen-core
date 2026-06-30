@@ -11,6 +11,13 @@
 
 
 
+
+## 1.9.0
+<sub>2026-06-30</sub>
+
+- [#1324](https://github.com/wisemen-digital/wisemen-core/pull/1324)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - DropdownMenu: add `fixedContentPosition` prop
+- [#1329](https://github.com/wisemen-digital/wisemen-core/pull/1329)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add exports for chin types
+
 ## 1.8.0
 <sub>2026-06-30</sub>
 
