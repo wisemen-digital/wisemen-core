@@ -2,6 +2,12 @@
 
 
 
+
+## 0.3.1
+<sub>2026-06-30</sub>
+
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Fixed peer dependency versioning
+
 ## 0.3.0
 <sub>2026-06-12</sub>
 

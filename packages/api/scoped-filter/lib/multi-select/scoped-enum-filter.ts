@@ -1,4 +1,4 @@
-import { buildScopedFilter, ScopedFilterConstructor } from "#src/scoped-filter.js"
+import { buildMultiSelectFilter, MultiSelectFilterConstructor } from "#src/multi-select/multi-select-filter.js"
 import { ApiProperty } from "@nestjs/swagger"
 import { IsEnum } from "class-validator"
 
@@ -11,8 +11,8 @@ import { IsEnum } from "class-validator"
  * 
  * @example const ScopedUserRoleFilter = buildScopedEnumFilter(UserRole, 'UserRole')
  */
-export function buildScopedEnumFilter<E extends object>(e: E, enumName: string): ScopedFilterConstructor<E[keyof E]> {
-    return buildScopedFilter<E[keyof E]>(
+export function buildMultiSelectEnumFilter<E extends object>(e: E, enumName: string): MultiSelectFilterConstructor<E[keyof E]> {
+    return buildMultiSelectFilter<E[keyof E]>(
         `Scoped${enumName}Filter`,
         ApiProperty({enum: e, enumName, isArray: true}),
         IsEnum(e, {each: true})

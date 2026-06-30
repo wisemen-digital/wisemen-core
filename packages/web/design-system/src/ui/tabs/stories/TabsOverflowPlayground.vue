@@ -27,6 +27,7 @@ const selectedTab = ref<string>('tab1')
 
 <template>
   <div
+    data-testid="tabs-overflow-container"
     class="
       flex w-80 resize-x flex-col gap-4 overflow-auto rounded-md border
       border-dashed border-tertiary p-2
