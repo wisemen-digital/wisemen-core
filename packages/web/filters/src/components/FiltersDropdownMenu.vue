@@ -29,7 +29,6 @@ useHotkey('F', () => {
     :parent-action="action"
     :popover-collision-padding="10"
     :current-context-only="false"
-    :fixed-content-position="true"
     popover-align="start"
     popover-side="bottom"
   >
