@@ -1,5 +1,11 @@
 # @wisemen/opentelemetry
 
+
+## 0.2.3
+<sub>2026-06-30</sub>
+
+- [#1332](https://github.com/wisemen-digital/wisemen-core/pull/1332)  *(patch)* Thanks [@sander-coemans](https://github.com/sander-coemans)! - Added UniciInstrumentation for requests using fetch api
+
 ## 0.2.2
 
 ### Patch Changes
