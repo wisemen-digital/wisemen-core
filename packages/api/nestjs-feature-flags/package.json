@@ -26,7 +26,7 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",
-    "@wisemen/nestjs-typeorm": "workspace:*"
+    "@wisemen/nestjs-typeorm": "workspace:^"
   },
   "dependencies": {
     "@openfeature/go-feature-flag-provider": "1.3.1",
