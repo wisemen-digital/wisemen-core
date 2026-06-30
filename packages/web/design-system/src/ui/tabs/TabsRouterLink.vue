@@ -15,7 +15,6 @@ import { useProvideTabsContext } from '@/ui/tabs/tabs.context'
 import type { TabsProps } from '@/ui/tabs/tabs.props'
 import type { TabsVariants } from '@/ui/tabs/tabs.style'
 import { tabsVariants } from '@/ui/tabs/tabs.style'
-import { isTouchDevice } from '@/utils/isTouchDevice.util'
 
 import TabsList from './TabsList.vue'
 
@@ -32,10 +31,7 @@ if (props.underlineTabsHorizontalListPadding !== 'none' && props.variant !== 'un
 
 const route = useRoute()
 const router = useRouter()
-const activeRouteName = computed<string>(() =>
-  route.name as string)
-
-const isTouch = isTouchDevice()
+const activeRouteName = computed<string>(() => route.name as string)
 
 function onUpdateModelValue(value: string): void {
   if (value !== activeRouteName.value) {
@@ -68,7 +64,7 @@ onMounted(() => {
 })
 
 useProvideTabsContext({
-  isTouchDevice: isTouch,
+  activeValue: activeRouteName,
   ...toComputedRefs(props),
   hasHorizontalOverflow,
   hasReachedHorizontalEnd,

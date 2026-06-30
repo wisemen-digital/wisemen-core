@@ -9,8 +9,6 @@ catalog:
   "@tanstack/vue-hotkeys": ^0.10.0
   "@tanstack/vue-virtual": ^3.13.24
   "@wisemen/eslint-config-nestjs": ^1.1.1
-  "@wisemen/vue-core-api-utils": catalog
-  "@wisemen/vue-core-dates": ^0.0.2
   superjson: "2.2.6"
   vue-component-type-helpers: ^0.0.0
   vue-draggable-plus: ^0.6.1
@@ -76,6 +74,7 @@ catalogs:
     "moment": "^2.30.1"
     "pg": "8.20.0"
     "pg-boss": "12.15.0"
+    "pg-query-stream": "4.16.0"
     "qs": ">=6.15.2"
     "redis": "5.11.0"
     "reflect-metadata": "0.2.2"
@@ -147,7 +146,7 @@ catalogs:
     defu: 6.1.5
     "graphemer": "1.4.0"
     "highlight-words": "2.0.0"
-    "libphonenumber-js": "1.12.35"
+    "libphonenumber-js": "1.13.7"
     "maska": "^3.2.0"
     "neverthrow": "8.2.0"
     "pkce-challenge": "5.0.1"

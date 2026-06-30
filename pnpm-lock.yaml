@@ -111,6 +111,9 @@ catalogs:
     pg-boss:
       specifier: 12.15.0
       version: 12.15.0
+    pg-query-stream:
+      specifier: 4.16.0
+      version: 4.16.0
     redis:
       specifier: 5.11.0
       version: 5.11.0
@@ -262,9 +265,6 @@ catalogs:
     '@wisemen/eslint-config-nestjs':
       specifier: ^1.1.1
       version: 1.1.1
-    '@wisemen/vue-core-dates':
-      specifier: ^0.0.2
-      version: 0.0.2
     vue-draggable-plus:
       specifier: ^0.6.1
       version: 0.6.1
@@ -311,8 +311,8 @@ catalogs:
       specifier: 2.0.0
       version: 2.0.0
     libphonenumber-js:
-      specifier: 1.12.35
-      version: 1.12.35
+      specifier: 1.13.7
+      version: 1.13.7
     maska:
       specifier: ^3.2.0
       version: 3.2.0
@@ -917,7 +917,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1040,7 +1040,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       wkx:
         specifier: catalog:backend
         version: 0.5.0
@@ -1087,6 +1087,15 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      pg:
+        specifier: catalog:backend
+        version: 8.20.0
+      pg-query-stream:
+        specifier: catalog:backend
+        version: 4.16.0(pg@8.20.0)
+      typeorm:
+        specifier: catalog:backend
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -1116,7 +1125,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -1168,7 +1177,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1214,7 +1223,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -1391,7 +1400,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1431,7 +1440,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend
-        version: 0.3.28(pg@8.20.0)(redis@5.11.0)
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1474,7 +1483,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1547,6 +1556,46 @@ importers:
       eslint:
         specifier: catalog:lint-api
         version: 10.2.1(jiti@2.6.1)
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
+  packages/api/nestjs-feature-flags:
+    dependencies:
+      '@nestjs/common':
+        specifier: catalog:backend-peer
+        version: 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@openfeature/go-feature-flag-provider':
+        specifier: 1.3.1
+        version: 1.3.1(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
+      '@openfeature/nestjs-sdk':
+        specifier: 0.2.7
+        version: 0.2.7(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))(rxjs@7.8.2)
+      '@wisemen/nestjs-typeorm':
+        specifier: workspace:*
+        version: link:../nestjs-typeorm
+      typeorm:
+        specifier: catalog:backend-peer
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.6.1)
+      expect:
+        specifier: catalog:test
+        version: 30.2.0
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
@@ -1778,7 +1827,7 @@ importers:
         version: 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       '@nestjs/typeorm':
         specifier: catalog:backend-peer
-        version: 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.20.0)(redis@5.11.0))
+        version: 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
       change-case:
         specifier: catalog:backend-peer
         version: 5.4.4
@@ -1790,7 +1839,7 @@ importers:
         version: 8.20.0
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1858,7 +1907,7 @@ importers:
         version: 0.2.2
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2032,7 +2081,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2103,7 +2152,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2140,7 +2189,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -2199,7 +2248,7 @@ importers:
         version: 0.20.0
       typeorm:
         specifier: catalog:backend
-        version: 0.3.28(pg@8.20.0)(redis@5.11.0)
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -2337,7 +2386,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2616,7 +2665,7 @@ importers:
         version: 27.4.0
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.7
       sass:
         specifier: catalog:style
         version: 1.97.3
@@ -2736,8 +2785,8 @@ importers:
         specifier: workspace:*
         version: link:../actions
       '@wisemen/vue-core-dates':
-        specifier: 'catalog:'
-        version: 0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)
+        specifier: workspace:*
+        version: link:../dates
       '@wisemen/vue-core-design-system':
         specifier: workspace:*
         version: link:../design-system
@@ -2882,7 +2931,7 @@ importers:
         version: 1.5.13
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.7
       maska:
         specifier: catalog:general
         version: 3.2.0
@@ -3809,7 +3858,7 @@ importers:
         version: 9.39.4(jiti@2.6.1)
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.7
       tsdown:
         specifier: catalog:build
         version: 0.18.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
@@ -3827,7 +3876,7 @@ importers:
         version: link:../i18n-factory
       libphonenumber-js:
         specifier: catalog:general
-        version: 1.12.35
+        version: 1.13.7
     devDependencies:
       '@types/node':
         specifier: catalog:types
@@ -4716,15 +4765,9 @@ packages:
     peerDependencies:
       storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0 || ^10.4.0-0
 
-  '@clack/core@1.2.0':
-    resolution: {integrity: sha512-qfxof/3T3t9DPU/Rj3OmcFyZInceqj/NVtO9rwIuJqCUgh32gwPjpFQQp/ben07qKlhpwq7GzfWpST4qdJ5Drg==}
-
   '@clack/core@1.4.1':
     resolution: {integrity: sha512-FILJa1gGKEFTGZAJE9RpVhrjKz3c3h4ar60dSv6cGuDqufQ84YEIS3GAGvZiN+H6yaLbbvTFNejjCC4tXpZEuw==}
     engines: {node: '>= 20.12.0'}
-
-  '@clack/prompts@1.2.0':
-    resolution: {integrity: sha512-4jmztR9fMqPMjz6H/UZXj0zEmE43ha1euENwkckKKel4XpSfokExPo5AiVStdHSAlHekz4d0CA/r45Ok1E4D3w==}
 
   '@clack/prompts@1.5.1':
     resolution: {integrity: sha512-zccHj2z2oCCO4yrDiRSlFOxWerGqRiysP7a5jPK6uoI9URKAquwY42Dd/iUP8JWHxEzdRe4TlbvZCo8z1/mhrw==}
@@ -5796,6 +5839,40 @@ packages:
 
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
+
+  '@openfeature/core@1.11.0':
+    resolution: {integrity: sha512-P0u3/ht/oZCQT89fOed+laLk0kZR529a825cS02uPDglxXbE97irWYpDAeRGGVETIzKfuy+H2g8c3Ccv/tXJNQ==}
+
+  '@openfeature/go-feature-flag-provider@1.3.1':
+    resolution: {integrity: sha512-9aAJ0nta5ASj+z/suBRn1gpiPDYOOFh2h00fgIM7wwFzlqFBKWjIaDh9gHByYgkDeW9QFh8+G5O9zuDDZnb3kA==}
+    peerDependencies:
+      '@openfeature/core': ^1.9.1
+      '@openfeature/ofrep-provider': 0.2.4
+      '@openfeature/server-sdk': ^1.19.0
+
+  '@openfeature/nestjs-sdk@0.2.7':
+    resolution: {integrity: sha512-4A17BEN5f3lrapDdo5gF4YQNdAjH+lT/BgoaPwBs5XbrMYqrWzrxNdu5uXJ/LLy1QLXKdZvVqRbComR9y7w2Bg==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      '@openfeature/server-sdk': ^1.22.0
+      rxjs: ^7.0.0 || ^8.0.0
+
+  '@openfeature/ofrep-core@2.2.0':
+    resolution: {integrity: sha512-YbeT8mYS4Ggo/JFcYY1IzN0O0UvsCx7RPk1m40TFc4ip0gJdFVpYc5a8WDwZC2v/YqxreJ7NWBDxHxP5SOevsA==}
+    peerDependencies:
+      '@openfeature/core': ^1.6.0
+
+  '@openfeature/ofrep-provider@0.2.4':
+    resolution: {integrity: sha512-MMvlCwaNe/M9hX9rW7Drl4A+iWjarJR0xkdFv/99CWgzRfmKlBTq9tSMYhcfLHPQzyW5QGTgNR69IA9LrfHBUg==}
+    peerDependencies:
+      '@openfeature/server-sdk': ^1.6.0
+
+  '@openfeature/server-sdk@1.22.0':
+    resolution: {integrity: sha512-YBrf6SQkn0FNB/dRAtLEs41dvFMUE8CrQTwI+iLaMFUIqWlqGNJfGnulKSneEKS+2OgKTAC6DdmKcZ6tK7kBcg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@openfeature/core': ^1.11.0
 
   '@opentelemetry/api-logs@0.207.0':
     resolution: {integrity: sha512-lAb0jQRVyleQQGiuuvCOTDVspc14nx6XJjP4FspJ1sNARo3Regq4ZZbrc3rN4b1TYSuUCvgH+UXUPug4SLOqEQ==}
@@ -8944,14 +9021,6 @@ packages:
       eslint: '>=10.0.3'
       typescript: '>=4.8.4 <=5.9.3'
 
-  '@wisemen/vue-core-dates@0.0.2':
-    resolution: {integrity: sha512-vlG4Im6Suh5GGa56+pzYD901e4rB3nt5sptfM+OdPe+Dut6ACOQFlQmgBhjf/LHP44a88AiOV+AONYTIEm0cdw==}
-    peerDependencies:
-      temporal-polyfill: '>=0.3.0'
-      vue: '>=3.5.22'
-      vue-i18n: '>=11.1.12'
-      zod: '>=4.3.5'
-
   '@wisemen/vue-core-icons@0.0.2':
     resolution: {integrity: sha512-MAaD9S31riuHyUuHsi3mTFVTi7WV+cKQTHb5lYsEwjVLAkN7mxIn9HWpo7CBmZxM9efKJO819DlCLRee6EhOFw==}
     peerDependencies:
@@ -10427,23 +10496,14 @@ packages:
   fast-safe-stringify@2.1.1:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
 
-  fast-string-truncated-width@1.2.1:
-    resolution: {integrity: sha512-Q9acT/+Uu3GwGj+5w/zsGuQjh9O1TyywhIwAxHudtWrgF09nHOPrvTLhQevPbttcxjr/SNN7mJmfOw/B1bXgow==}
-
   fast-string-truncated-width@3.0.3:
     resolution: {integrity: sha512-0jjjIEL6+0jag3l2XWWizO64/aZVtpiGE3t0Zgqxv0DPuxiMjvB3M24fCyhZUO4KomJQPj3LTSUnDP3GpdwC0g==}
-
-  fast-string-width@1.1.0:
-    resolution: {integrity: sha512-O3fwIVIH5gKB38QNbdg+3760ZmGz0SZMgvwJbA1b2TGXceKE6A2cOlfogh1iw8lr049zPyd7YADHy+B7U4W9bQ==}
 
   fast-string-width@3.0.2:
     resolution: {integrity: sha512-gX8LrtNEI5hq8DVUfRQMbr5lpaS4nMIWV+7XEbXk2b8kiQIizgnlr12B4dA3ZEx3308ze0O4Q1R+cHts8kyUJg==}
 
   fast-uri@3.1.2:
     resolution: {integrity: sha512-rVjf7ArG3LTk+FS6Yw81V1DLuZl1bRbNrev6Tmd/9RaroeeRRJhAt7jg/6YFxbvAQXUCavSoZhPPj6oOx+5KjQ==}
-
-  fast-wrap-ansi@0.1.6:
-    resolution: {integrity: sha512-HlUwET7a5gqjURj70D5jl7aC3Zmy4weA1SHUfM0JFI0Ptq987NH2TwbBFLoERhfwk+E+eaq4EK3jXoT+R3yp3w==}
 
   fast-wrap-ansi@0.2.2:
     resolution: {integrity: sha512-7F2Fl+TjRSenLqlU3UjSH0iyqopqoZIu7eZVpEirP2g1GtWa2G/ecEmBdgz31+Mxr+ELclgg6sokpSFIQiZ02Q==}
@@ -10691,6 +10751,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-up@8.1.1:
@@ -11431,8 +11492,11 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
-  libphonenumber-js@1.12.35:
-    resolution: {integrity: sha512-T/Cz6iLcsZdb5jDncDcUNhSAJ0VlSC9TnsqtBNdpkaAmy24/R1RhErtNWVWBrcUZKs9hSgaVsBkc7HxYnazIfw==}
+  libphonenumber-js@1.13.6:
+    resolution: {integrity: sha512-NdB6O6QvlGMCoG003m0YIKG2+Xw7DjmCZhmc1RH+K6HncADUbRf8TZeLegxBBN1VFyPHcNpPTKpIhYLXzJVy1Q==}
+
+  libphonenumber-js@1.13.7:
+    resolution: {integrity: sha512-rvr3HIMdOgzhz1RFGjftji+wjoAFlzhqCNqJOU/MKTZQ8d9NZxAR/tI+0weDicyoucqVR0U1GCniqHJ0f8aM2A==}
 
   liftoff@5.0.1:
     resolution: {integrity: sha512-wwLXMbuxSF8gMvubFcFRp56lkFV69twvbU5vDPbaw+Q+/rF8j0HKjGbIdlSi+LuJm9jf7k9PB+nTxnsLMPcv2Q==}
@@ -12408,6 +12472,11 @@ packages:
   pg-connection-string@2.12.0:
     resolution: {integrity: sha512-U7qg+bpswf3Cs5xLzRqbXbQl85ng0mfSV/J0nnA31MCLgvEaAo7CIhmeyrmJpOr7o+zm0rXK+hNnT5l9RHkCkQ==}
 
+  pg-cursor@2.21.0:
+    resolution: {integrity: sha512-IYvk/j+Suhtbo/C3uOf4JLsLK/gWxOTUOmYbDsbKnLaVJDq+KwhwK6ngpRfiCk8eDMS3AmGQABZCv0cREEzHQw==}
+    peerDependencies:
+      pg: ^8
+
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
@@ -12419,6 +12488,11 @@ packages:
 
   pg-protocol@1.13.0:
     resolution: {integrity: sha512-zzdvXfS6v89r6v7OcFCHfHlyG/wvry1ALxZo4LqgUoy7W9xhBDMaqOuMiF3qEV45VqsN6rdlcehHrfDtlCPc8w==}
+
+  pg-query-stream@4.16.0:
+    resolution: {integrity: sha512-vyqxAG4YVax43BCSfqcKxHSbh8YQshhVR0CjLNdo7MIM2UOqI+XsIYk0bVZJ0aKjQfjJQcGiGo9xK3hz0JcFyg==}
+    peerDependencies:
+      pg: ^8
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
@@ -14491,7 +14565,7 @@ snapshots:
   '@antfu/eslint-config@7.7.0(@typescript-eslint/rule-tester@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(@typescript-eslint/typescript-estree@8.59.0(typescript@5.9.3))(@typescript-eslint/utils@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(@vue/compiler-sfc@3.5.27)(eslint-plugin-format@1.3.1(eslint@9.39.4(jiti@2.6.1)))(eslint-plugin-vuejs-accessibility@2.4.1(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(oxlint@1.59.0(oxlint-tsgolint@0.20.0))(typescript@5.9.3)(vitest@4.1.0)':
     dependencies:
       '@antfu/install-pkg': 1.1.0
-      '@clack/prompts': 1.2.0
+      '@clack/prompts': 1.5.1
       '@e18e/eslint-plugin': 0.2.0(eslint@9.39.4(jiti@2.6.1))(oxlint@1.59.0(oxlint-tsgolint@0.20.0))
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.1(eslint@9.39.4(jiti@2.6.1))
       '@eslint/markdown': 7.5.1
@@ -14544,7 +14618,7 @@ snapshots:
   '@antfu/eslint-config@7.7.0(@typescript-eslint/utils@8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint-plugin-format@1.3.1(eslint@9.39.4(jiti@2.6.1)))(eslint-plugin-vuejs-accessibility@2.4.1(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(oxlint@1.59.0(oxlint-tsgolint@0.20.0))(typescript@5.9.3)(vitest@4.1.0)':
     dependencies:
       '@antfu/install-pkg': 1.1.0
-      '@clack/prompts': 1.2.0
+      '@clack/prompts': 1.5.1
       '@e18e/eslint-plugin': 0.2.0(eslint@9.39.4(jiti@2.6.1))(oxlint@1.59.0(oxlint-tsgolint@0.20.0))
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.1(eslint@9.39.4(jiti@2.6.1))
       '@eslint/markdown': 7.5.1
@@ -15901,21 +15975,9 @@ snapshots:
       - '@chromatic-com/cypress'
       - '@chromatic-com/playwright'
 
-  '@clack/core@1.2.0':
-    dependencies:
-      fast-wrap-ansi: 0.1.6
-      sisteransi: 1.0.5
-
   '@clack/core@1.4.1':
     dependencies:
       fast-wrap-ansi: 0.2.2
-      sisteransi: 1.0.5
-
-  '@clack/prompts@1.2.0':
-    dependencies:
-      '@clack/core': 1.2.0
-      fast-string-width: 1.1.0
-      fast-wrap-ansi: 0.1.6
       sisteransi: 1.0.5
 
   '@clack/prompts@1.5.1':
@@ -17100,13 +17162,13 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.15.1
 
-  '@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.20.0)(redis@5.11.0))':
+  '@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
     dependencies:
       '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 1.0.0(pg@8.20.0)(redis@5.11.0)
+      typeorm: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
 
   '@nodable/entities@2.1.0': {}
 
@@ -17199,6 +17261,36 @@ snapshots:
       '@octokit/openapi-types': 25.1.0
 
   '@one-ini/wasm@0.1.1': {}
+
+  '@openfeature/core@1.11.0': {}
+
+  '@openfeature/go-feature-flag-provider@1.3.1(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))':
+    dependencies:
+      '@openfeature/core': 1.11.0
+      '@openfeature/ofrep-provider': 0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
+      '@openfeature/server-sdk': 1.22.0(@openfeature/core@1.11.0)
+
+  '@openfeature/nestjs-sdk@0.2.7(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))(rxjs@7.8.2)':
+    dependencies:
+      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core': 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@openfeature/server-sdk': 1.22.0(@openfeature/core@1.11.0)
+      rxjs: 7.8.2
+
+  '@openfeature/ofrep-core@2.2.0(@openfeature/core@1.11.0)':
+    dependencies:
+      '@openfeature/core': 1.11.0
+
+  '@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))':
+    dependencies:
+      '@openfeature/ofrep-core': 2.2.0(@openfeature/core@1.11.0)
+      '@openfeature/server-sdk': 1.22.0(@openfeature/core@1.11.0)
+    transitivePeerDependencies:
+      - '@openfeature/core'
+
+  '@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)':
+    dependencies:
+      '@openfeature/core': 1.11.0
 
   '@opentelemetry/api-logs@0.207.0':
     dependencies:
@@ -20559,13 +20651,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@wisemen/vue-core-dates@0.0.2(temporal-polyfill@0.3.0)(vue-i18n@11.2.8(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))(zod@4.3.5)':
-    dependencies:
-      temporal-polyfill: 0.3.0
-      vue: 3.5.27(typescript@5.9.3)
-      vue-i18n: 11.2.8(vue@3.5.27(typescript@5.9.3))
-      zod: 4.3.5
-
   '@wisemen/vue-core-icons@0.0.2(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
@@ -21021,7 +21106,7 @@ snapshots:
   class-validator@0.15.1:
     dependencies:
       '@types/validator': 13.15.10
-      libphonenumber-js: 1.12.35
+      libphonenumber-js: 1.13.6
       validator: 13.15.26
 
   clean-regexp@1.0.0:
@@ -22236,23 +22321,13 @@ snapshots:
 
   fast-safe-stringify@2.1.1: {}
 
-  fast-string-truncated-width@1.2.1: {}
-
   fast-string-truncated-width@3.0.3: {}
-
-  fast-string-width@1.1.0:
-    dependencies:
-      fast-string-truncated-width: 1.2.1
 
   fast-string-width@3.0.2:
     dependencies:
       fast-string-truncated-width: 3.0.3
 
   fast-uri@3.1.2: {}
-
-  fast-wrap-ansi@0.1.6:
-    dependencies:
-      fast-string-width: 1.1.0
 
   fast-wrap-ansi@0.2.2:
     dependencies:
@@ -23412,7 +23487,9 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  libphonenumber-js@1.12.35: {}
+  libphonenumber-js@1.13.6: {}
+
+  libphonenumber-js@1.13.7: {}
 
   liftoff@5.0.1:
     dependencies:
@@ -24578,6 +24655,10 @@ snapshots:
 
   pg-connection-string@2.12.0: {}
 
+  pg-cursor@2.21.0(pg@8.20.0):
+    dependencies:
+      pg: 8.20.0
+
   pg-int8@1.0.1: {}
 
   pg-pool@3.13.0(pg@8.20.0):
@@ -24585,6 +24666,11 @@ snapshots:
       pg: 8.20.0
 
   pg-protocol@1.13.0: {}
+
+  pg-query-stream@4.16.0(pg@8.20.0):
+    dependencies:
+      pg: 8.20.0
+      pg-cursor: 2.21.0(pg@8.20.0)
 
   pg-types@2.2.0:
     dependencies:
@@ -26019,7 +26105,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.28(pg@8.20.0)(redis@5.11.0):
+  typeorm@0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.2.0
@@ -26038,12 +26124,13 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       pg: 8.20.0
+      pg-query-stream: 4.16.0(pg@8.20.0)
       redis: 5.11.0
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
 
-  typeorm@1.0.0(pg@8.20.0)(redis@5.11.0):
+  typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.2.0
@@ -26057,6 +26144,7 @@ snapshots:
       yargs: 18.0.0
     optionalDependencies:
       pg: 8.20.0
+      pg-query-stream: 4.16.0(pg@8.20.0)
       redis: 5.11.0
     transitivePeerDependencies:
       - babel-plugin-macros

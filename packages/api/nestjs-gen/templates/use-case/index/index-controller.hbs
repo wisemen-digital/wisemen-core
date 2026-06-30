@@ -9,16 +9,16 @@ import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.us
 @Controller()
 export class {{pascalCase useCaseName}}Controller {
   constructor (
-    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+    private useCase: {{pascalCase useCaseName}}UseCase
   ) {}
 
   @Get('{{dashCase moduleNamePlural}}')
   @Version('1')
   @Permissions(Permission.{{constantCase permissionName}})
   @ApiOkResponse({ type: {{pascalCase useCaseName}}Response })
-  public async {{camelCase useCaseName}} (
+  async view (
     @Query() query: {{pascalCase useCaseName}}Query
   ): Promise<{{pascalCase useCaseName}}Response> {
-    return this.{{camelCase useCaseName}}UseCase.execute(query)
+    return this.useCase.execute(query)
   }
 }

@@ -8,8 +8,9 @@ export interface FormDialogProps extends DialogProps {
    */
   form: Form<any>
   /**
-   * Whether to prompt the user when there are unsaved changes.
-   * @default false
+   * Whether to show the built-in close-blocking prompt when there are unsaved changes.
+   * When `false`, dirty form dialogs will close immediately.
+   * @default true
    */
   promptOnUnsavedChanges?: boolean
   /**
@@ -18,4 +19,9 @@ export interface FormDialogProps extends DialogProps {
    * @default false
    */
   renderOwnFormComponent?: boolean
+  /**
+   * Override text for the built-in unsaved-changes prompt. When `null`, the localized default copy is used.
+   * @default null
+   */
+  unsavedChangesText?: string | null
 }

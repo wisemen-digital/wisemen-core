@@ -1,4 +1,4 @@
-import type { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
 
 export function getCountryFlagUrl(countryCode: CountryCode): string | null {
   return `https://purecatamphetamine.github.io/country-flag-icons/3x2/${countryCode}.svg`
