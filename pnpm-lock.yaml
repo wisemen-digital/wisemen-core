@@ -66,6 +66,9 @@ catalogs:
     '@opentelemetry/instrumentation-redis':
       specifier: 0.62.0
       version: 0.62.0
+    '@opentelemetry/instrumentation-undici':
+      specifier: 0.24.0
+      version: 0.24.0
     '@opentelemetry/resources':
       specifier: 2.6.1
       version: 2.6.1
@@ -1583,7 +1586,7 @@ importers:
         specifier: 0.2.7
         version: 0.2.7(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))(rxjs@7.8.2)
       '@wisemen/nestjs-typeorm':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../nestjs-typeorm
       typeorm:
         specifier: catalog:backend-peer
@@ -1974,6 +1977,9 @@ importers:
       '@opentelemetry/instrumentation-redis':
         specifier: catalog:backend
         version: 0.62.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/instrumentation-undici':
+        specifier: catalog:backend
+        version: 0.24.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/resources':
         specifier: catalog:backend
         version: 2.6.1(@opentelemetry/api@1.9.1)
