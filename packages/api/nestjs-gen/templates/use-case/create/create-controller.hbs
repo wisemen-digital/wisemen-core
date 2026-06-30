@@ -9,16 +9,16 @@ import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.us
 @Controller()
 export class {{pascalCase useCaseName}}Controller {
   constructor (
-    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+    private useCase: {{pascalCase useCaseName}}UseCase
   ) {}
 
   @Post('{{dashCase moduleNamePlural}}')
   @Version('1')
   @Permissions(Permission.{{constantCase permissionName}})
   @ApiCreatedResponse({ type: {{pascalCase useCaseName}}Response })
-  public async {{camelCase useCaseName}} (
-    @Body() {{camelCase useCaseName}}Command: {{pascalCase useCaseName}}Command
+  async create (
+    @Body() command: {{pascalCase useCaseName}}Command
   ): Promise<{{pascalCase useCaseName}}Response> {
-    return this.{{camelCase useCaseName}}UseCase.execute({{camelCase useCaseName}}Command)
+    return this.useCase.execute(command)
   }
 }

@@ -12,7 +12,7 @@ export function addIndexResponse (
 ): void {
   const responsePath = path.join(dir, subdir, `${kebabCase(module)}/use-cases/${kebabCase(useCaseName)}/${kebabCase(useCaseName)}.response.ts`)
 
-  const entityPath = builder.getPathOrThrow(`${module}-entity`)
+  const entityPath = builder.resolveEntityPathOrThrow(module)
   const entityImportPath = getRelativePath(responsePath, entityPath)
 
   builder.addFile(`${module}-index-response`, {

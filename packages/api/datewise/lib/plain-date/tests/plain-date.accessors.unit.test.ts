@@ -6,6 +6,7 @@ import { DayjsPlainDate } from '../dayjs-plain-date.js'
 import { FutureInfinityDate } from '../future-infinity-date.js'
 import { PastInfinityDate } from '../past-infinity-date.js'
 import { plainDate } from '../plain-date.fn.js'
+import { IsoWeekParity } from '../iso-week-parity.js'
 
 describe('PlainDate accessors', () => {
   before(() => initDayjs())
@@ -30,6 +31,20 @@ describe('PlainDate accessors', () => {
       expect(factory('2025-12-28').isoWeek()).toBe(52)
       expect(factory('2025-12-29').isoWeek()).toBe(1)
     })
+
+  })
+
+  describe('isoWeekParity', () => {
+    it('returns ODD for an odd ISO week number', () => {
+      expect(factory('2025-01-01').isoWeekParity()).toBe(IsoWeekParity.ODD) // week 1
+      expect(factory('2025-01-13').isoWeekParity()).toBe(IsoWeekParity.ODD) // week 3
+    })
+
+    it('returns EVEN for an even ISO week number', () => {
+      expect(factory('2025-01-06').isoWeekParity()).toBe(IsoWeekParity.EVEN) // week 2
+      expect(factory('2025-01-20').isoWeekParity()).toBe(IsoWeekParity.EVEN) // week 4
+    })
+
   })
 
   describe('isoWeekday', () => {

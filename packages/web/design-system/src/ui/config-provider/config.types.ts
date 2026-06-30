@@ -1,6 +1,7 @@
 import type { HourCycle } from '@/types/hourCycle.type'
 import type { NumberFormat } from '@/types/numberFormat.type'
 import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete/addressAutocomplete.type'
+import type { BaseFileUploadAdapter } from '@/ui/base-file-upload/baseFileUpload.type'
 import type { ToastAutoClose } from '@/ui/toast/toast.type'
 
 export interface ConfigProviderProps {
@@ -20,12 +21,19 @@ export interface ConfigProviderProps {
    * @default 'always'
    */
   autoCloseToast: ToastAutoClose
-  /**
+  /*
    * The locale to use for date formatting in date-related components.
    * When not set, falls back to `navigator.language`.
    * @default null
    */
   dateLocale?: string | null
+  /**
+   * The adapter to use for the BaseFileUpload component.
+   * Provide a getFileInfo() and a confirmUpload() function.
+   * Optionally provide uploadFile() to override the built-in upload request implementation.
+   * @default null
+   */
+  fileUploadAdapter?: BaseFileUploadAdapter | null
   /**
    * The Google Maps API key (used for example to validate addresses using the AddressAutocomplete component).
    * @default null

@@ -8,17 +8,16 @@ import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.r
 @Injectable()
 export class {{pascalCase useCaseName}}UseCase {
   constructor (
-    private readonly dataSource: DataSource,
+    private dataSource: DataSource,
     @InjectRepository({{pascalCase entityName}})
-    private readonly {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>,
-    private readonly emitter: DomainEventEmitter
+    private {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>,
+    private emitter: DomainEventEmitter
   ) {}
 
-  public async execute (
+  async execute (
     command: {{pascalCase useCaseName}}Command
   ): Promise<{{pascalCase useCaseName}}Response> {
     const {{camelCase entityName}} = this.{{camelCase entityName}}Repository.create({
-      name: command.name
     })
 
     await transaction(this.dataSource, async () => {
