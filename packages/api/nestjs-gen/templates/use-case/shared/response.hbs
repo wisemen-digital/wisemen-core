@@ -1,0 +1,23 @@
+import { ApiProperty } from '@nestjs/swagger'
+import { {{pascalCase entityName}} } from '{{entityImportPath}}'
+
+export class {{pascalCase useCaseName}}Response {
+  @ApiProperty({ type: String, format: 'uuid' })
+  uuid: string
+
+  @ApiProperty({ type: String, format: 'date-time' })
+  createdAt: string
+
+  @ApiProperty({ type: String, format: 'date-time' })
+  updatedAt: string
+
+  @ApiProperty({ type: String, example: 'John' })
+  name: string
+
+  constructor ({{camelCase entityName}}: {{pascalCase entityName}}) {
+    this.uuid = {{camelCase entityName}}.uuid
+    this.createdAt = {{camelCase entityName}}.createdAt.toISOString()
+    this.updatedAt = {{camelCase entityName}}.updatedAt.toISOString()
+    this.name = {{camelCase entityName}}.name
+  }
+}

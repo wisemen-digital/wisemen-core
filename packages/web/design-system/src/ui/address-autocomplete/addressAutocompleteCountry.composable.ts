@@ -1,6 +1,6 @@
 import type { Field } from 'formango'
-import type { CountryCode } from 'libphonenumber-js'
-import { getCountries } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
+import { getCountries } from 'libphonenumber-js/max'
 import { useFilter } from 'reka-ui'
 import {
   computed,

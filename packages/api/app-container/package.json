@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/app-container",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -20,7 +20,8 @@
     }
   },
   "files": [
-    "dist/"
+    "dist/",
+    "skills"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",

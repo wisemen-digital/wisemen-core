@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'assert'
+import { Readable } from 'node:stream'
 import { expect } from 'expect'
 import { CSVField } from '../csv.field.js'
 import { CSVSchema } from '../csv.schema.js'
@@ -56,6 +57,15 @@ const fields = {
 
 const schema = new CSVSchema(fields)
 
+const schemaWithOptionalColumn = new CSVSchema({
+  ...fields,
+  alias: new CSVField({
+    name: 'roepnaam',
+    type: 'string',
+    required: false
+  })
+})
+
 describe('Csv Schema', () => {
   let error: Error | undefined
 
@@ -106,5 +116,49 @@ describe('Csv Schema', () => {
     expect(parsed[0].agreed).toEqual(true)
     expect(parsed[0].pets).toEqual([Pet.CAT, Pet.DOG])
     expect(parsed[0].remarks).toEqual(null)
+  })
+
+  it('Parses a CSV string via the schema', async () => {
+    const csv = [
+      'naam;voornaam;geboortedatum;leeftijd;geslacht;akkoord;huisdieren;opmerkingen',
+      'Sijmkens;Maarten;1997-04-09;27;male;true;cat,dog;'
+    ].join('\n')
+
+    const parsed = await schema.parseString(csv)
+
+    expect(parsed).toEqual([{
+      name: 'Sijmkens',
+      firstName: 'Maarten',
+      birthdate: '1997-04-09',
+      age: 27,
+      gender: Gender.MALE,
+      agreed: true,
+      pets: [Pet.CAT, Pet.DOG],
+      remarks: null
+    }])
+  })
+
+  it('Parses a CSV stream via the schema', async () => {
+    const csv = [
+      'naam;voornaam;geboortedatum;leeftijd;geslacht;akkoord;huisdieren;opmerkingen',
+      'Sijmkens;Maarten;1997-04-09;27;male;true;cat,dog;'
+    ].join('\n')
+
+    const [parsed] = await Array.fromAsync(schema.parseStream(Readable.from(csv)))
+   
+
+    expect(parsed.name).toEqual('Sijmkens')
+    expect(parsed.pets).toEqual([Pet.CAT, Pet.DOG])
+  })
+
+  it('Does not require optional schema columns to exist in the CSV header', async () => {
+    const csv = [
+      'naam;voornaam;geboortedatum;leeftijd;geslacht;akkoord;huisdieren;opmerkingen',
+      'Sijmkens;Maarten;1997-04-09;27;male;true;cat,dog;'
+    ].join('\n')
+
+    const parsed = await schemaWithOptionalColumn.parseString(csv)
+
+    expect(parsed[0].alias).toBeUndefined()
   })
 })

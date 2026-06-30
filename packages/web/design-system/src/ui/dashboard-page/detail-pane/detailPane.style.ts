@@ -2,6 +2,8 @@ import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createDetailPaneStyle = tv({
   slots: {
+    body: 'flex-1 overflow-y-auto',
+    content: 'flex h-full flex-col overflow-hidden',
     pane: 'absolute z-4 max-w-full bg-primary',
     resizeHandle: `
       group absolute -left-2 z-10 flex w-4 cursor-col-resize items-center

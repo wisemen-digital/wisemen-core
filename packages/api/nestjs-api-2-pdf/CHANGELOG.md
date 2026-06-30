@@ -1,5 +1,11 @@
 # @wisemen/nestjs-api-2-pdf
 
+
+## 0.2.1
+<sub>2026-06-16</sub>
+
+- [#1274](https://github.com/wisemen-digital/wisemen-core/pull/1274)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add more options for client, set default values to wait for network idle when generating from a url'
+
 ## 0.2.0
 
 ### Minor Changes

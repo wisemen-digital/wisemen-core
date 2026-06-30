@@ -1,0 +1,33 @@
+{{#each entities}}
+export class {{entityType}}Builder {
+  private {{entityName}}: {{entityType}}
+
+  constructor () {
+    {{#if isInterface}}
+    this.{{entityName}} = {}
+    {{else}}
+    this.{{entityName}} = new {{entityType}}()
+    {{/if}}
+    return this
+  }
+  {{#unless properties}}
+  
+  {{/unless}}
+  {{#each properties}}
+  {{#if @first}}
+
+  {{/if}}
+  with{{pascalCase name}} ({{#if isUndefined}}{{name}}?{{else}}{{name}}{{/if}}: {{type}}{{#if isNullable}} | null{{/if}}): this {
+    this.{{../entityName}}.{{name}} = {{name}}
+    return this
+  }
+
+  {{/each}}
+  build (): {{entityType}} {
+    return this.{{entityName}}
+  }
+}
+{{#unless @last }}
+
+{{/unless}}
+{{/each}}

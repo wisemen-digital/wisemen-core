@@ -1,0 +1,27 @@
+import { Injectable } from '@nestjs/common'
+import { InjectRepository, transaction } from '@wisemen/nestjs-typeorm'
+import { DataSource, Repository } from 'typeorm'
+import { {{pascalCase entityName}} } from '{{entityImportPath}}'
+
+@Injectable()
+export class {{pascalCase useCaseName}}UseCase {
+  constructor (
+    private dataSource: DataSource,
+    @InjectRepository({{pascalCase entityName}})
+    private {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>,
+    private emitter: DomainEventEmitter
+  ) {}
+
+  async execute (uuid: string): Promise<void> {
+    const exists = await this.{{camelCase entityName}}Repository.existsBy({ uuid })
+
+    if (!exists) {
+      throw new {{notFoundError}}(uuid)
+    }
+
+    await transaction(this.dataSource, async () => {
+      await this.{{camelCase entityName}}Repository.delete({ uuid })
+      await this.emitter.emitOne(new {{ eventClassName }}(uuid))
+    })
+  }
+}

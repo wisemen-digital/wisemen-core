@@ -1,5 +1,5 @@
 import * as allFlags from 'country-flag-icons/string/3x2'
-import type { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
 
 export function getCountryFlagSvgUrl(countryCode: CountryCode): string | null {
   const svgString = allFlags[countryCode] ?? null

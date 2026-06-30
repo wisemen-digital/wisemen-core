@@ -1,0 +1,18 @@
+import { Repository } from 'typeorm'
+import { InjectRepository } from '@wisemen/nestjs-typeorm'
+import { Injectable } from '@nestjs/common'
+import { {{pascalCase entityName}} } from '{{entityImportPath}}'
+
+@Injectable()
+export class {{pascalCase useCaseName}}UseCase {
+  constructor (
+    @InjectRepository({{pascalCase entityName}})
+    private repository: Repository<{{pascalCase entityName}}>
+  ) {}
+
+  async execute (): Promise<void> {
+    await this.repository.findOne({})
+
+    throw new Error('To be implemented')
+  }
+}

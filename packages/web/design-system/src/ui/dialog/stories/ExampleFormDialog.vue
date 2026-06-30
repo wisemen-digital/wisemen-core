@@ -15,14 +15,14 @@ import { toFormField } from '@/utils/toFormField.util'
 
 const props = withDefaults(defineProps<{
   isOpen?: boolean
-  disableUnsavedChangesChin?: boolean
+  promptOnUnsavedChanges?: boolean
   showExternalChin?: boolean
-  unsavedChangesChinText?: string | null
+  unsavedChangesText?: string | null
 }>(), {
   isOpen: false,
-  disableUnsavedChangesChin: false,
+  promptOnUnsavedChanges: true,
   showExternalChin: false,
-  unsavedChangesChinText: null,
+  unsavedChangesText: null,
 })
 
 const emit = defineEmits<{
@@ -56,9 +56,9 @@ const chin = computed<ChinConfig | null>(() => {
   <FormDialog
     :is-open="props.isOpen"
     :chin="chin"
-    :disable-unsaved-changes-chin="props.disableUnsavedChangesChin"
     :form="form"
-    :unsaved-changes-chin-text="props.unsavedChangesChinText"
+    :prompt-on-unsaved-changes="props.promptOnUnsavedChanges"
+    :unsaved-changes-text="props.unsavedChangesText"
     size="xs"
     @close="emit('close')"
   >

@@ -6,6 +6,7 @@ import { Month } from '../common/month.js'
 import { Timestamp } from '../timestamp/timestamp.js'
 import { PlainDateObject } from './plain-date-object.js'
 import { PlainDateUnit, ReachablePlainDateUnit, DiffPlainDateUnit } from './plain-date.units.js'
+import { IsoWeekParity } from './iso-week-parity.js'
 
 export type PlainDateInput
   = Dayjs
@@ -98,6 +99,8 @@ export interface PlainDate {
   isoWeekday(): number
   /** @returns Returns the ISO week number (1–53). */
   isoWeek(): number
+  /** @returns Returns whether the ISO week number is odd or even. */
+  isoWeekParity(): IsoWeekParity
   isInfinity(): boolean
   valueOf(): string
 }

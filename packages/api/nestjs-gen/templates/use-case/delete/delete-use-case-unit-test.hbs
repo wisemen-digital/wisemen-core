@@ -1,0 +1,46 @@
+import { before, describe, it } from 'node:test'
+import { createStubInstance } from 'sinon'
+import { expect } from 'expect'
+import { Repository } from 'typeorm'
+
+describe('{{ testDescriptionName }}', () => {
+  before(() => {
+    TestBench.setupUnitTest()
+  })
+
+  it('{{ testCaseNameNotFoundError }}', async () => {
+    const repository = createStubInstance({{{ repositoryName }}})
+
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      repository,
+      createStubInstance(DomainEventEmitter)
+    )
+
+    const uuid = generateUuid<{{ entityUuidName }}>()
+
+    repository.existsBy.resolves(false)
+
+    await expect(useCase.execute(uuid))
+      .rejects.toThrow(new {{ notFoundErrorName }}(uuid))
+  })
+
+  it('{{ testCaseNameEmitEvent }}', async () => {
+    const repository = createStubInstance({{{ repositoryName }}})
+    const eventEmitter = createStubInstance(DomainEventEmitter)
+
+    const useCase = new {{ useCaseName }}(
+      stubDataSource(),
+      repository,
+      eventEmitter
+    )
+
+    const uuid = generateUuid<{{ entityUuidName }}>()
+
+    repository.existsBy.resolves(true)
+
+    await useCase.execute(uuid)
+
+    expect(eventEmitter).toHaveEmitted(new {{ eventName }}(uuid))
+  })
+})

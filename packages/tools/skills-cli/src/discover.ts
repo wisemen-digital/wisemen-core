@@ -25,11 +25,7 @@ function shortNameFromPackage(name: string): string {
   return name.startsWith(SCOPE_PREFIX) ? name.slice(SCOPE_PREFIX.length) : name
 }
 
-function packageAllowed(
-  name: string,
-  allow: string[] | null,
-  deny: string[],
-): boolean {
+function packageAllowed( name: string, allow: string[] | null, deny: string[],): boolean {
   if (deny.includes(name)) {
     return false
   }

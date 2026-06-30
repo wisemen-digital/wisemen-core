@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { CountryCode } from 'libphonenumber-js'
-import { getCountryCallingCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
+import { getCountryCallingCode } from 'libphonenumber-js/max'
 import { computed } from 'vue'
 
 import { useInjectConfigContext } from '@/components/config-provider/config.context'
