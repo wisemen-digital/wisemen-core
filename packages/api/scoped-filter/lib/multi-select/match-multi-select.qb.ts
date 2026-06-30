@@ -1,5 +1,6 @@
-import { Scope } from "#src/scope.js"
-import { ScopedFilter } from "#src/scoped-filter.js"
+import { exhaustiveCheck } from "#src/exhaustive-check.js"
+import { MultiSelectFilter } from "#src/multi-select/multi-select-filter.js"
+import { MultiSelectOperation } from "#src/multi-select/multi-select-operation.js"
 import { randomUUID } from "crypto"
 import { ObjectLiteral, SelectQueryBuilder } from "typeorm"
 
@@ -15,20 +16,20 @@ import { ObjectLiteral, SelectQueryBuilder } from "typeorm"
  * 
  * @example qb.where(matches("user.uuid", query.filter.uuid))
  */
-export function matches<T extends ObjectLiteral, V> (
+export function matchMultiSelect<T extends ObjectLiteral, V> (
   column: string,
-  filter: ScopedFilter<V>
+  filter: MultiSelectFilter<V>
 ): (qb: SelectQueryBuilder<T>) => string {
   return (qb: SelectQueryBuilder<T>) => {
     const paramName = randomUUID().replaceAll('-', '')
     qb.setParameter(paramName, filter.values)
 
-    if (filter.scope === Scope.INCLUDE) {
+    if (filter.operation === MultiSelectOperation.INCLUDE) {
       return `${column} = ANY(:${paramName})`
-    } else if (filter.scope === Scope.EXCLUDE) {
+    } else if (filter.operation === MultiSelectOperation.EXCLUDE) {
       return `${column} != ALL(:${paramName})`
     } else {
-      throw new Error(`unexpected scope ${filter.scope as unknown as string}`)
+      return exhaustiveCheck(filter.operation)
     }
   }
 }
