@@ -1,5 +1,11 @@
 # @wisemen/vue-core-zod-validation
 
+
+## 0.0.4
+<sub>2026-06-30</sub>
+
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+
 ## 0.0.3
 
 ### Patch Changes
