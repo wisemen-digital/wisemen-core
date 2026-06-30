@@ -39,6 +39,7 @@
     "@opentelemetry/instrumentation-nestjs-core": "catalog:backend",
     "@opentelemetry/instrumentation-pg": "catalog:backend",
     "@opentelemetry/instrumentation-redis": "catalog:backend",
+    "@opentelemetry/instrumentation-undici": "catalog:backend",
     "@opentelemetry/resources": "catalog:backend",
     "@opentelemetry/sdk-logs": "catalog:backend",
     "@opentelemetry/sdk-metrics": "catalog:backend",
