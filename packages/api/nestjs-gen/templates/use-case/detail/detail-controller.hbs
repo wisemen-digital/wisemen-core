@@ -9,7 +9,7 @@ import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.r
 @Controller()
 export class {{pascalCase useCaseName}}Controller {
   constructor (
-    private readonly {{camelCase useCaseName}}UseCase: {{pascalCase useCaseName}}UseCase
+    private useCase: {{pascalCase useCaseName}}UseCase
   ) {}
 
   @Get('{{dashCase moduleNamePlural}}/:uuid')
@@ -17,9 +17,9 @@ export class {{pascalCase useCaseName}}Controller {
   @Permissions(Permission.{{constantCase permissionName}})
   @ApiOkResponse({ type: {{pascalCase useCaseName}}Response })
   @ApiNotFoundErrorResponse({{notFoundError}})
-  public async {{camelCase useCaseName}} (
+  async view (
     @UuidParam('uuid') uuid: string
   ): Promise<{{pascalCase useCaseName}}Response> {
-    return this.{{camelCase useCaseName}}UseCase.execute(uuid)
+    return this.useCase.execute(uuid)
   }
 }

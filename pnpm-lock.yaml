@@ -111,6 +111,9 @@ catalogs:
     pg-boss:
       specifier: 12.15.0
       version: 12.15.0
+    pg-query-stream:
+      specifier: 4.16.0
+      version: 4.16.0
     redis:
       specifier: 5.11.0
       version: 5.11.0
@@ -917,7 +920,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1040,7 +1043,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       wkx:
         specifier: catalog:backend
         version: 0.5.0
@@ -1087,6 +1090,15 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      pg:
+        specifier: catalog:backend
+        version: 8.20.0
+      pg-query-stream:
+        specifier: catalog:backend
+        version: 4.16.0(pg@8.20.0)
+      typeorm:
+        specifier: catalog:backend
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -1116,7 +1128,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -1168,7 +1180,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1214,7 +1226,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -1391,7 +1403,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1431,7 +1443,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend
-        version: 0.3.28(pg@8.20.0)(redis@5.11.0)
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1474,7 +1486,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1547,6 +1559,46 @@ importers:
       eslint:
         specifier: catalog:lint-api
         version: 10.2.1(jiti@2.6.1)
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
+  packages/api/nestjs-feature-flags:
+    dependencies:
+      '@nestjs/common':
+        specifier: catalog:backend-peer
+        version: 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@openfeature/go-feature-flag-provider':
+        specifier: 1.3.1
+        version: 1.3.1(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
+      '@openfeature/nestjs-sdk':
+        specifier: 0.2.7
+        version: 0.2.7(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))(rxjs@7.8.2)
+      '@wisemen/nestjs-typeorm':
+        specifier: workspace:*
+        version: link:../nestjs-typeorm
+      typeorm:
+        specifier: catalog:backend-peer
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.6.1)
+      expect:
+        specifier: catalog:test
+        version: 30.2.0
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
@@ -1778,7 +1830,7 @@ importers:
         version: 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
       '@nestjs/typeorm':
         specifier: catalog:backend-peer
-        version: 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.20.0)(redis@5.11.0))
+        version: 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
       change-case:
         specifier: catalog:backend-peer
         version: 5.4.4
@@ -1790,7 +1842,7 @@ importers:
         version: 8.20.0
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -1858,7 +1910,7 @@ importers:
         version: 0.2.2
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2032,7 +2084,7 @@ importers:
         version: 7.8.2
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2103,7 +2155,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2140,7 +2192,7 @@ importers:
         version: 0.15.1
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@nestjs/common':
         specifier: catalog:backend
@@ -2199,7 +2251,7 @@ importers:
         version: 0.20.0
       typeorm:
         specifier: catalog:backend
-        version: 0.3.28(pg@8.20.0)(redis@5.11.0)
+        version: 0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -2337,7 +2389,7 @@ importers:
         version: 1.11.20
       typeorm:
         specifier: catalog:backend-peer
-        version: 1.0.0(pg@8.20.0)(redis@5.11.0)
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -5796,6 +5848,40 @@ packages:
 
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
+
+  '@openfeature/core@1.11.0':
+    resolution: {integrity: sha512-P0u3/ht/oZCQT89fOed+laLk0kZR529a825cS02uPDglxXbE97irWYpDAeRGGVETIzKfuy+H2g8c3Ccv/tXJNQ==}
+
+  '@openfeature/go-feature-flag-provider@1.3.1':
+    resolution: {integrity: sha512-9aAJ0nta5ASj+z/suBRn1gpiPDYOOFh2h00fgIM7wwFzlqFBKWjIaDh9gHByYgkDeW9QFh8+G5O9zuDDZnb3kA==}
+    peerDependencies:
+      '@openfeature/core': ^1.9.1
+      '@openfeature/ofrep-provider': 0.2.4
+      '@openfeature/server-sdk': ^1.19.0
+
+  '@openfeature/nestjs-sdk@0.2.7':
+    resolution: {integrity: sha512-4A17BEN5f3lrapDdo5gF4YQNdAjH+lT/BgoaPwBs5XbrMYqrWzrxNdu5uXJ/LLy1QLXKdZvVqRbComR9y7w2Bg==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      '@nestjs/core': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
+      '@openfeature/server-sdk': ^1.22.0
+      rxjs: ^7.0.0 || ^8.0.0
+
+  '@openfeature/ofrep-core@2.2.0':
+    resolution: {integrity: sha512-YbeT8mYS4Ggo/JFcYY1IzN0O0UvsCx7RPk1m40TFc4ip0gJdFVpYc5a8WDwZC2v/YqxreJ7NWBDxHxP5SOevsA==}
+    peerDependencies:
+      '@openfeature/core': ^1.6.0
+
+  '@openfeature/ofrep-provider@0.2.4':
+    resolution: {integrity: sha512-MMvlCwaNe/M9hX9rW7Drl4A+iWjarJR0xkdFv/99CWgzRfmKlBTq9tSMYhcfLHPQzyW5QGTgNR69IA9LrfHBUg==}
+    peerDependencies:
+      '@openfeature/server-sdk': ^1.6.0
+
+  '@openfeature/server-sdk@1.22.0':
+    resolution: {integrity: sha512-YBrf6SQkn0FNB/dRAtLEs41dvFMUE8CrQTwI+iLaMFUIqWlqGNJfGnulKSneEKS+2OgKTAC6DdmKcZ6tK7kBcg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@openfeature/core': ^1.11.0
 
   '@opentelemetry/api-logs@0.207.0':
     resolution: {integrity: sha512-lAb0jQRVyleQQGiuuvCOTDVspc14nx6XJjP4FspJ1sNARo3Regq4ZZbrc3rN4b1TYSuUCvgH+UXUPug4SLOqEQ==}
@@ -10691,6 +10777,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   git-up@8.1.1:
@@ -12408,6 +12495,11 @@ packages:
   pg-connection-string@2.12.0:
     resolution: {integrity: sha512-U7qg+bpswf3Cs5xLzRqbXbQl85ng0mfSV/J0nnA31MCLgvEaAo7CIhmeyrmJpOr7o+zm0rXK+hNnT5l9RHkCkQ==}
 
+  pg-cursor@2.21.0:
+    resolution: {integrity: sha512-IYvk/j+Suhtbo/C3uOf4JLsLK/gWxOTUOmYbDsbKnLaVJDq+KwhwK6ngpRfiCk8eDMS3AmGQABZCv0cREEzHQw==}
+    peerDependencies:
+      pg: ^8
+
   pg-int8@1.0.1:
     resolution: {integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==}
     engines: {node: '>=4.0.0'}
@@ -12419,6 +12511,11 @@ packages:
 
   pg-protocol@1.13.0:
     resolution: {integrity: sha512-zzdvXfS6v89r6v7OcFCHfHlyG/wvry1ALxZo4LqgUoy7W9xhBDMaqOuMiF3qEV45VqsN6rdlcehHrfDtlCPc8w==}
+
+  pg-query-stream@4.16.0:
+    resolution: {integrity: sha512-vyqxAG4YVax43BCSfqcKxHSbh8YQshhVR0CjLNdo7MIM2UOqI+XsIYk0bVZJ0aKjQfjJQcGiGo9xK3hz0JcFyg==}
+    peerDependencies:
+      pg: ^8
 
   pg-types@2.2.0:
     resolution: {integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==}
@@ -17100,13 +17197,13 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.15.1
 
-  '@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg@8.20.0)(redis@5.11.0))':
+  '@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
     dependencies:
       '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 1.0.0(pg@8.20.0)(redis@5.11.0)
+      typeorm: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
 
   '@nodable/entities@2.1.0': {}
 
@@ -17199,6 +17296,36 @@ snapshots:
       '@octokit/openapi-types': 25.1.0
 
   '@one-ini/wasm@0.1.1': {}
+
+  '@openfeature/core@1.11.0': {}
+
+  '@openfeature/go-feature-flag-provider@1.3.1(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))':
+    dependencies:
+      '@openfeature/core': 1.11.0
+      '@openfeature/ofrep-provider': 0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
+      '@openfeature/server-sdk': 1.22.0(@openfeature/core@1.11.0)
+
+  '@openfeature/nestjs-sdk@0.2.7(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))(rxjs@7.8.2)':
+    dependencies:
+      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core': 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@openfeature/server-sdk': 1.22.0(@openfeature/core@1.11.0)
+      rxjs: 7.8.2
+
+  '@openfeature/ofrep-core@2.2.0(@openfeature/core@1.11.0)':
+    dependencies:
+      '@openfeature/core': 1.11.0
+
+  '@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))':
+    dependencies:
+      '@openfeature/ofrep-core': 2.2.0(@openfeature/core@1.11.0)
+      '@openfeature/server-sdk': 1.22.0(@openfeature/core@1.11.0)
+    transitivePeerDependencies:
+      - '@openfeature/core'
+
+  '@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)':
+    dependencies:
+      '@openfeature/core': 1.11.0
 
   '@opentelemetry/api-logs@0.207.0':
     dependencies:
@@ -24578,6 +24705,10 @@ snapshots:
 
   pg-connection-string@2.12.0: {}
 
+  pg-cursor@2.21.0(pg@8.20.0):
+    dependencies:
+      pg: 8.20.0
+
   pg-int8@1.0.1: {}
 
   pg-pool@3.13.0(pg@8.20.0):
@@ -24585,6 +24716,11 @@ snapshots:
       pg: 8.20.0
 
   pg-protocol@1.13.0: {}
+
+  pg-query-stream@4.16.0(pg@8.20.0):
+    dependencies:
+      pg: 8.20.0
+      pg-cursor: 2.21.0(pg@8.20.0)
 
   pg-types@2.2.0:
     dependencies:
@@ -26019,7 +26155,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.28(pg@8.20.0)(redis@5.11.0):
+  typeorm@0.3.28(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.2.0
@@ -26038,12 +26174,13 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       pg: 8.20.0
+      pg-query-stream: 4.16.0(pg@8.20.0)
       redis: 5.11.0
     transitivePeerDependencies:
       - babel-plugin-macros
       - supports-color
 
-  typeorm@1.0.0(pg@8.20.0)(redis@5.11.0):
+  typeorm@1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0):
     dependencies:
       '@sqltools/formatter': 1.2.5
       ansis: 4.2.0
@@ -26057,6 +26194,7 @@ snapshots:
       yargs: 18.0.0
     optionalDependencies:
       pg: 8.20.0
+      pg-query-stream: 4.16.0(pg@8.20.0)
       redis: 5.11.0
     transitivePeerDependencies:
       - babel-plugin-macros
