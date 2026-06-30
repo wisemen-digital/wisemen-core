@@ -28,7 +28,7 @@ catalogs:
     "@nestjs/common": "11.1.19"
     "@nestjs/config": "4.0.3"
     "@nestjs/core": "11.1.19"
-    "@nestjs/platform-fastify": "11.1.19"
+    "@nestjs/platform-fastify": "11.1.27"
     "@nestjs/swagger": "11.4.2"
     "@nestjs/typeorm": "11.0.1"
     "@opentelemetry/api": "1.9.1"
@@ -80,7 +80,7 @@ catalogs:
     "reflect-metadata": "0.2.2"
     "rxjs": "7.8.2"
     "twilio": "5.13.1"
-    "typeorm": "0.3.28"
+    "typeorm": "^0.3.30"
     "wkx": "0.5.0"
     "yaml": "2.8.3"
   backend-peer:
@@ -130,7 +130,7 @@ catalogs:
   date:
     "@internationalized/date": "3.10.1"
   docs:
-    "markdown-it": "14.1.1"
+    "markdown-it": "14.2.0"
     oxc-minify: "0.117.0"
     "vitepress": "2.0.0-alpha.16"
     "vue-component-meta": "3.2.2"
@@ -262,7 +262,7 @@ catalogs:
     "@opentelemetry/api": "1.9.1"
     "@opentelemetry/api-logs": "0.218.0"
     "@opentelemetry/context-zone": "2.7.1"
-    "@opentelemetry/core": "2.7.1"
+    "@opentelemetry/core": "2.8.0"
     "@opentelemetry/exporter-logs-otlp-http": "0.218.0"
     "@opentelemetry/exporter-metrics-otlp-proto": "0.218.0"
     "@opentelemetry/exporter-trace-otlp-http": "0.218.0"
@@ -308,7 +308,7 @@ catalogs:
     "@import-meta-env/unplugin": "0.4.2"
     "@tailwindcss/vite": "4.1.18"
     "@vitejs/plugin-vue": "6.0.3"
-    "vite": "8.0.14"
+    "vite": "^8.1.0"
     "vite-plugin-compression": "0.5.1"
     "vite-plugin-dts": "4.5.4"
     "vite-plugin-pwa": "0.20.2"
@@ -369,6 +369,11 @@ catalogs:
   undici@<6.23.0: ^6.23.0
   undici@<6.24.0: ^6.24.0
   undici@>=6.0.0 <6.24.0: ^6.24.0
+  '@opentelemetry/core@<2.8.0': ^2.8.0
+  esbuild@>=0.27.3 <0.28.1: ^0.28.1
+  js-yaml@<=4.1.1: ^4.1.2
+  multer@>=1.0.0 <2.2.0: ^2.2.0
+  multer@>=2.0.0-alpha.1 <2.2.0: ^2.2.0
 
 "packageExtensions":
   "eslint-plugin-vuejs-accessibility":
@@ -384,16 +389,3 @@ allowBuilds:
   unrs-resolver: true
   vue-demi: true
 
-minimumReleaseAgeExclude:
-  - brace-expansion@5.0.6
-  - ws@8.20.1
-  - protobufjs@8.2.0
-  - protobufjs@7.5.8
-  - js-cookie@3.0.6
-  - qs@6.15.2
-  - axios@1.16.0
-  - "@vitest/browser@4.1.6"
-  - undici@6.23.0
-  - undici@6.24.0
-  - shell-quote@1.8.4
-  - "@grpc/grpc-js@1.14.4"
