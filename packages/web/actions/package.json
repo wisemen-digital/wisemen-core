@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -63,7 +63,7 @@
     "@vue/test-utils": "catalog:test",
     "@vue/tsconfig": "catalog:vue",
     "@wisemen/eslint-config-vue": "workspace:*",
-    "@wisemen/vue-core-icons": "catalog:wisemen",
+    "@wisemen/vue-core-icons": "catalog:^0.0.3",
     "eslint": "catalog:lint-web",
     "pinia": "catalog:vue",
     "husky": "catalog:build",
