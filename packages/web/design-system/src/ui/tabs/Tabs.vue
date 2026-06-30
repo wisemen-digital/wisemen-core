@@ -11,7 +11,6 @@ import { useProvideTabsContext } from '@/ui/tabs/tabs.context'
 import type { TabsProps } from '@/ui/tabs/tabs.props'
 import type { TabsVariants } from '@/ui/tabs/tabs.style'
 import { tabsVariants } from '@/ui/tabs/tabs.style'
-import { isTouchDevice } from '@/utils/isTouchDevice.util'
 
 const props = withDefaults(defineProps<TabsProps>(), {
   isFullWidth: false,
@@ -24,11 +23,11 @@ if (props.underlineTabsHorizontalListPadding !== 'none' && props.variant !== 'un
   console.warn('[Tabs] `underlineTabsHorizontalListPadding` only applies to the `underline` variant.')
 }
 
-const isTouch = isTouchDevice()
-
 const modelValue = defineModel<string>({
   required: true,
 })
+
+const activeValue = computed<string>(() => modelValue.value)
 
 const {
   hasHorizontalOverflow,
@@ -39,7 +38,7 @@ const {
   scrollToRight,
   setScrollContainerRef,
 } = useTabs({
-  activeValue: computed<string>(() => modelValue.value),
+  activeValue,
 })
 
 const variants = computed<TabsVariants>(() => tabsVariants({
@@ -53,11 +52,11 @@ onMounted(() => {
 })
 
 useProvideTabsContext({
+  activeValue,
   ...toComputedRefs(props),
   hasHorizontalOverflow,
   hasReachedHorizontalEnd,
   isScrolledHorizontally,
-  isTouchDevice: isTouch,
   scrollToLeft,
   scrollToRight,
   setScrollContainerRef,

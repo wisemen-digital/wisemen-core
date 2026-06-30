@@ -2,6 +2,12 @@
 
 
 
+
+## 1.1.2
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
 ## 1.1.1
 <sub>2026-06-12</sub>
 

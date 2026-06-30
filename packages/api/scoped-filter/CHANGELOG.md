@@ -1,6 +1,13 @@
 # @wisemen/scoped-filter
 
 
+
+## 1.0.0
+<sub>2026-06-30</sub>
+
+- [#1301](https://github.com/wisemen-digital/wisemen-core/pull/1301)  *(major)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: rework how scoped filters work, add support for numbers, plain-date and timestamps
+- [#1301](https://github.com/wisemen-digital/wisemen-core/pull/1301)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add new ValidateWhen which validates decorators based on callback result
+
 ## 0.0.5
 <sub>2026-06-05</sub>
 

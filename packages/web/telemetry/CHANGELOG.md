@@ -1,63 +1,6 @@
-## Unreleased
+# Changelog
 
-## 2.0.0
+## 2.0.1
+<sub>2026-06-30</sub>
 
-### Major Changes
-
-- [#1145](https://github.com/wisemen-digital/wisemen-core/pull/1145) [`6585496`](https://github.com/wisemen-digital/wisemen-core/commit/658549632e5826c0188c1906e4cfaabfe6f1e8e2) Thanks [@maltsavkiryl](https://github.com/maltsavkiryl)! - add sample rate and required tracePropagationUrls
-
-### Major Changes
-
-- Breaking change: require `tracePropagationUrls` in `TelemetryOptions` and `registerAppInstrumentations()` so fetch trace headers are only propagated to explicitly configured cross-origin URLs.
-- Add optional `traceSampleRate` to `TelemetryOptions` for trace-only sampling.
-
-## 1.1.0
-
-### Minor Changes
-
-- [#991](https://github.com/wisemen-digital/wisemen-core/pull/991) [`a191064`](https://github.com/wisemen-digital/wisemen-core/commit/a19106462da14b0fb4644bbcc666cdea48e4032b) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Security updates: resolved npm vulnerabilities via pnpm overrides
-  - Fixed critical protobufjs vulnerabilities (CVE: GHSA-xq3m-2v4x-88gg)
-  - Fixed high severity vite vulnerabilities
-  - Fixed high severity fastify vulnerability (CVE: GHSA-247c-9743-5963)
-  - Fixed moderate follow-redirects vulnerability (CVE: GHSA-r4q5-vmmm-2653)
-  - Fixed moderate fast-xml-parser vulnerability (CVE: GHSA-gh4j-gqv2-49f6)
-  - Fixed moderate uuid vulnerability (CVE: GHSA-w5hq-g745-h8pq)
-
-## 1.0.0
-
-### Major Changes
-
-- [#916](https://github.com/wisemen-digital/wisemen-core/pull/916) [`c36431e`](https://github.com/wisemen-digital/wisemen-core/commit/c36431e1a757f6001ecea6cc2cc32e0bee0e9ef8) Thanks [@maltsavkiryl](https://github.com/maltsavkiryl)! - Removed sentry. Cleanup package and add default configuration.
-- Breaking change: migrate `@wisemen/vue-core-telemetry` to OpenTelemetry-only and remove all Sentry integration.
-- Replace the public API with OTEL-native configuration and helpers:
-  `TelemetryOptions` is now a single OTEL config,
-  `recordException()` replaces `captureException()`,
-  `log()` replaces `captureMessage()`,
-  and `setAttribute()` / `setAttributes()` replace the Sentry tag/extra helpers.
-- Add OTEL metrics support via `metricsEndpoint`, OTEL logging support via `logEndpoint`, OTEL-based Vue/browser runtime error capture, and package tests for the new behavior.
-
-## 0.0.6
-
-### Patch Changes
-
-- [#825](https://github.com/wisemen-digital/wisemen-core/pull/825) [`9701b57`](https://github.com/wisemen-digital/wisemen-core/commit/9701b572e17fe10813d592bb80d9440b0159540a) Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - bump dependencies
-
-## 0.0.5
-
-### Patch Changes
-
-- [#665](https://github.com/wisemen-digital/wisemen-core/pull/665) [`8f075e2`](https://github.com/wisemen-digital/wisemen-core/commit/8f075e27d9d3c637ea633f5e36f72fb53362287f) Thanks [@Robbe95](https://github.com/Robbe95)! - Updated linter
-
-## 1.0.0
-
-## 0.0.4
-
-### Patch Changes
-
-- 347cf1a: Bumped dependency versions
-
-## 0.0.2
-
-### Patch Changes
-
-- f96edd5: feat(telemetry): add package for telemetry configuration
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities

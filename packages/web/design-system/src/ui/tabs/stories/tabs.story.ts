@@ -10,6 +10,7 @@ import {
 
 import TabsOverflowPlayground from './TabsOverflowPlayground.vue'
 import TabsPlayground from './TabsPlayground.vue'
+import TabsRouterLinkOverflowPlayground from './TabsRouterLinkOverflowPlayground.vue'
 import TabsRouterLinkPlayground from './TabsRouterLinkPlayground.vue'
 
 const DISABLED_REGEX = /Disabled/i
@@ -121,7 +122,7 @@ export const FullWidth: Story = {
   },
 }
 
-export const HorizontalOverflow: Story = {
+export const Overflow: Story = {
   args: {
     variant: 'underline',
   },
@@ -153,5 +154,22 @@ export const RouterLink: Story = {
       }
     },
     template: '<TabsRouterLinkPlayground v-bind="args" />',
+  }),
+}
+
+export const RouterLinkOverflow: Story = {
+  args: {
+    variant: 'underline',
+  },
+  render: (args) => ({
+    components: {
+      TabsRouterLinkOverflowPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TabsRouterLinkOverflowPlayground v-bind="args" />',
   }),
 }

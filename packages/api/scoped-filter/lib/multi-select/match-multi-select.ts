@@ -1,5 +1,5 @@
-import { Scope } from '#src/scope.js'
-import { ScopedFilter } from '#src/scoped-filter.js'
+import { MultiSelectOperation } from '#src/multi-select/multi-select-operation.js'
+import { MultiSelectFilter } from '#src/multi-select/multi-select-filter.js'
 import { Any, FindOperator, Not } from 'typeorm'
 
 /**  
@@ -11,14 +11,14 @@ import { Any, FindOperator, Not } from 'typeorm'
  * @param filter the scope to match.
  * @example repo.findOneBy({uuid: Matches(query.filter.uuid)})
  */
-export function Matches<T > (
-    filter: ScopedFilter<T> | undefined
+export function MatchMultiSelect<T> (
+    filter: MultiSelectFilter<T> | undefined
 ): FindOperator<T> | undefined {
   if (filter === undefined) {
     return undefined
-  } else if (filter.scope === Scope.INCLUDE) {
+  } else if (filter.operation === MultiSelectOperation.INCLUDE) {
     return Any(filter.values)
-  } else if (filter.scope === Scope.EXCLUDE) {
+  } else if (filter.operation === MultiSelectOperation.EXCLUDE) {
     return Not(Any(filter.values))
   }
 }
