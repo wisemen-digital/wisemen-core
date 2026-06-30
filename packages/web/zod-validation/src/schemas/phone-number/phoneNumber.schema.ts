@@ -1,4 +1,4 @@
-import { parsePhoneNumberWithError } from 'libphonenumber-js'
+import { parsePhoneNumberWithError } from 'libphonenumber-js/max'
 import { z } from 'zod'
 
 import { getZodValidationConfig } from '#/config/config.ts'
