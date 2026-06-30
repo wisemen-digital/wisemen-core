@@ -42,7 +42,7 @@
     "typecheck": "pnpm tsc --noEmit"
   },
   "dependencies": {
-    "@wisemen/eslint-config-nestjs": "catalog:",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
     "chalk": "5.6.2",
     "commander": "14.0.2",
     "fast-glob": "3.3.2",
