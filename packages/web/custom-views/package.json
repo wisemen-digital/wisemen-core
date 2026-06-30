@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "private": false,
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -56,7 +56,7 @@
     "@wisemen/vue-core-filters": "workspace:^",
     "@wisemen/vue-core-icons": "workspace:^",
     "@wisemen/vue-core-utils": "workspace:^",
-    "formango": "catalog:peer",
+    "formango": "catalog:^3.2.5",
     "reka-ui": "catalog:peer",
     "tailwindcss": "catalog:style",
     "vue": "catalog:peer",
@@ -87,7 +87,7 @@
     "@wisemen/vue-core-tailwind-config": "workspace:*",
     "@wisemen/vue-core-utils": "workspace:*",
     "eslint": "catalog:lint-web",
-    "formango": "catalog:peer",
+    "formango": "catalog:^3.2.5",
     "reka-ui": "catalog:vue",
     "tailwindcss": "catalog:style",
     "temporal-polyfill": "catalog:peer",
