@@ -12,3 +12,4 @@ jobs:
     if: github.event.pull_request.draft == false && github.head_ref != 'changeset-release/main'
     with:
       test-timeout: 10
+    secrets: inherit

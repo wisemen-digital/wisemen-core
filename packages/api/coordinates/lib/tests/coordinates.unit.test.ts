@@ -2,6 +2,7 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { Point } from 'typeorm'
 import { Coordinates } from '#src/coordinates.js'
+import { CoordinatesResponse } from '#src/coordinates.response.js'
 
 describe('Coordinates', () => {
   it('throws an error when -Infinity latitude is provided to the constructor', () => {
@@ -132,6 +133,21 @@ describe('Coordinates', () => {
 
       expect(coordinates.latitude).toBeCloseTo(40.641333333333336)
       expect(coordinates.longitude).toBeCloseTo(-73.77733333333333)
+    })
+  })
+
+  describe('CoordinatesResponse.from', () => {
+    it('returns null when coordinates are null', () => {
+      expect(CoordinatesResponse.from(null)).toBeNull()
+    })
+
+    it('returns a response when coordinates are provided', () => {
+      const coordinates = new Coordinates(50.894565509367055, 5.420593668305642)
+
+      expect(CoordinatesResponse.from(coordinates)).toStrictEqual({
+        latitude: 50.894565509367055,
+        longitude: 5.420593668305642
+      })
     })
   })
 })

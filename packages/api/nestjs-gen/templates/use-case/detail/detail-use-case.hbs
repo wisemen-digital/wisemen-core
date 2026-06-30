@@ -1,0 +1,23 @@
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@wisemen/nestjs-typeorm'
+import { Repository } from 'typeorm'
+import { {{pascalCase entityName}} } from '{{entityImportPath}}'
+import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.response.js'
+
+@Injectable()
+export class {{pascalCase useCaseName}}UseCase {
+  constructor (
+    @InjectRepository({{pascalCase entityName}})
+    private repository: Repository<{{pascalCase entityName}}>
+  ) {}
+
+  async execute (uuid: string): Promise<{{pascalCase useCaseName}}Response> {
+    const {{camelCase entityName}} = await this.repository.findOneBy({ uuid })
+
+    if ({{ camelCase entityName }} === null) {
+      throw new {{notFoundError}}(uuid)
+    }
+
+    return new {{pascalCase useCaseName}}Response({{camelCase entityName}})
+  }
+}

@@ -25,6 +25,14 @@ const propsData = [
   }
 ]
 
+const eventsData = [
+  {
+    "description": "",
+    "name": "open",
+    "type": "[]"
+  }
+]
+
 const slotsData = [
   {
     "name": "content",
@@ -40,6 +48,7 @@ export default {
   setup() {
     return {
       propsData,
+      eventsData,
       slotsData,
     }
   },
@@ -47,5 +56,7 @@ export default {
 </script>
 
 <PropsTable :data="propsData" />
+
+<EmitsTable :data="eventsData" />
 
 <SlotsTable :data="slotsData" />

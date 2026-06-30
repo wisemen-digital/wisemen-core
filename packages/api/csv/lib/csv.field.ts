@@ -65,6 +65,10 @@ export class CSVField<
     return this.parseValue(value, rowIndex) as InferValue<T, E, N, R, A>
   }
 
+  isRequired (): boolean {
+    return this.required ?? true
+  }
+
   async refine (
     value: InferValue<T, E, N, R, A>,
     row: InferRow<{ [key: string]: CSVField<T, E, N, R> }>,

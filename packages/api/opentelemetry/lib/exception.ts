@@ -12,7 +12,7 @@ function setExceptionAttributes (span: Span, exception: unknown): void {
     const prototype = Object.getPrototypeOf(exception) as { constructor: { name: string } }
     const className = prototype.constructor.name as string | undefined
 
-    span.setAttribute('exception.type', className ?? exception.name)
+    span.setAttribute('exception.type', className ?? exception.name ?? 'unknown')
   }
 }
 

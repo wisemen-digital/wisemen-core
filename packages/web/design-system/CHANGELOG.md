@@ -4,6 +4,61 @@
 
 
 
+
+
+
+
+
+
+## 1.7.1
+<sub>2026-06-25</sub>
+
+- [#1309](https://github.com/wisemen-digital/wisemen-core/pull/1309)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Badge: improve gray outline and translucent styling
+
+## 1.7.0
+<sub>2026-06-23</sub>
+
+- [#1245](https://github.com/wisemen-digital/wisemen-core/pull/1245)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add sticky header, footer, body and tabs components for `DashboardPageDetailPane`
+  New components:
+  - `UIDashboardPageDetailPaneHeader` — sticky header built on `UIBaseHeader`, separator fades when scrolled to top, auto-hides separator when tabs are present
+  - `UIDashboardPageDetailPaneFooter` — sticky footer with a default slot, separator fades when scrolled to bottom
+  - `UIDashboardPageDetailPaneBody` — scrollable body, connects scroll tracking to header/footer separators
+  - `UIDashboardPageDetailPaneTabs` — compound tabs root (`underline` variant, full-width, with padding by default)
+  - `UIDashboardPageDetailPaneTabsList` — sticky tabs list bar
+  - `UIDashboardPageDetailPaneTabsContent` — scrollable tab content panel, connects scroll tracking per active tab
+- [#1303](https://github.com/wisemen-digital/wisemen-core/pull/1303)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix issues where table columns are truncated
+- [#1304](https://github.com/wisemen-digital/wisemen-core/pull/1304)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: Hide empty state illustration for contained variant
+- [#1305](https://github.com/wisemen-digital/wisemen-core/pull/1305)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: fix issue where for the contained variant a 1px border would be visual when empty
+
+## 1.6.1
+<sub>2026-06-18</sub>
+
+- [#1292](https://github.com/wisemen-digital/wisemen-core/pull/1292)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for keyboard shortcut type
+
+## 1.6.0
+<sub>2026-06-17</sub>
+
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add UIFormFileUpload with shared file-reference DTOs and transformers, Storybook coverage, translations, and improved base file-upload adapter/disabled handling.
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add new BaseFileUpload component
+
+## 1.5.1
+<sub>2026-06-16</sub>
+
+- [#1267](https://github.com/wisemen-digital/wisemen-core/pull/1267)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Remove enter and exit animation from dropdown menu sub content and context menu sub content
+- [#1269](https://github.com/wisemen-digital/wisemen-core/pull/1269)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove the broken adaptive overflow behavior from Tabs and RouterLinkTabs, keeping tabs scrollable instead.
+- [#1262](https://github.com/wisemen-digital/wisemen-core/pull/1262)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: move @wisemen/ngen to wisemen-core repo
+
+## 1.5.0
+<sub>2026-06-12</sub>
+
+- [#1189](https://github.com/wisemen-digital/wisemen-core/pull/1189)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add actions to badges
+- [#1258](https://github.com/wisemen-digital/wisemen-core/pull/1258)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `shift+A` keyboard shortcut to auto-fit table columns
+- [#1200](https://github.com/wisemen-digital/wisemen-core/pull/1200)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add slot for UIDashboardCenteredPageContentHeader
+- [#1243](https://github.com/wisemen-digital/wisemen-core/pull/1243)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix editing address in popover
+- [#1242](https://github.com/wisemen-digital/wisemen-core/pull/1242)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix dark mode issues in DateRangeField, Dialog, and Tabs
+- [#1239](https://github.com/wisemen-digital/wisemen-core/pull/1239)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add transparent gray badge variant
+- [#1244](https://github.com/wisemen-digital/wisemen-core/pull/1244)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add onBlur and onTab props to TagsField
+
 ## 1.4.2
 <sub>2026-06-12</sub>
 

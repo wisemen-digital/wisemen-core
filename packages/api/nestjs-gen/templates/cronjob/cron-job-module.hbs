@@ -1,0 +1,16 @@
+import { Module, OnApplicationBootstrap } from '@nestjs/common'
+import { Trace } from '@wisemen/opentelemetry'
+import { {{ pascalCase name }}CronjobUseCase } from './{{ kebabCase name }}.cron-job.use-case.js'
+
+@Module({
+  providers: [{{ pascalCase name }}CronjobUseCase],
+  exports: [{{ pascalCase name }}CronjobUseCase]
+})
+export class {{ pascalCase name }}CronjobModule implements OnApplicationBootstrap {
+  constructor (private useCase: {{ pascalCase name }}CronjobUseCase) {}
+
+  @Trace()
+  async onApplicationBootstrap (): Promise<void> {
+    await this.useCase.execute()
+  }
+}

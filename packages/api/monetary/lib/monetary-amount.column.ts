@@ -4,15 +4,15 @@ import { Currency } from './currency.enum.js'
 import { PrecisionLossError } from './precision-loss-error.js'
 import { UnsupportedCurrencyError } from './unsupported-currency-error.js'
 
-export type MonetaryAmountColumnOptions = {
-  currency: Currency
+export type MonetaryAmountColumnOptions<C extends Currency> = {
+  currency: C
   monetaryPrecision: number
   type?: 'int' | 'int2' | 'int4' | 'int8' | 'integer' | 'tinyint' | 'smallint' | 'mediumint' | 'bigint'
-  default?: Monetary
+  default?: Monetary<C> | null
 } & Omit<ColumnOptions, 'type' | 'transformer' | 'default'>
 
 /** Stores the amount as an int */
-export function MonetaryAmountColumn (options: MonetaryAmountColumnOptions): PropertyDecorator {
+export function MonetaryAmountColumn<C extends Currency> (options: MonetaryAmountColumnOptions<C>): PropertyDecorator {
   const transformer = new MoneyTypeOrmAmountTransformer(options.currency, options.monetaryPrecision)
 
   return Column({
