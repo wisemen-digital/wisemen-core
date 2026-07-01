@@ -1,21 +1,18 @@
-import type { DefaultTheme } from 'vitepress'
+import type { PackageDocNavigation } from '@docs/navigation/navigation.utils'
 
-export const EXAMPLE_NAVIGATION: DefaultTheme.NavItemWithChildren = {
-  text: 'Packages',
-  items: [
+export const EXAMPLE_NAVIGATION: PackageDocNavigation = {
+  link: '/api/packages/example',
+  title: 'Example',
+  path: 'example',
+  sidebar: [
     {
-      text: 'Overview',
-      link: '/api/packages/example',
-    },
-  ],
-}
-
-export const EXAMPLE_SIDEBAR: DefaultTheme.SidebarItem = {
-  text: 'API Packages',
-  items: [
-    {
-      text: 'Overview',
-      link: '/api/packages/example',
+      text: 'Getting started',
+      items: [
+        {
+          text: 'Installation',
+          link: '/api/packages/example/pages/installation',
+        },
+      ],
     },
   ],
 }
