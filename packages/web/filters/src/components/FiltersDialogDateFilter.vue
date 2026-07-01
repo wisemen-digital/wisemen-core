@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { PlainDateRange } from '@wisemen/vue-core-dates'
 import {
-  UIDateRangePicker,
+  UIDatePicker,
   UIDialog,
   UIDialogBody,
   UIDialogFooter,
@@ -14,43 +13,37 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import type {
-  DateRangeFilter,
-  DateRangeFilterValue,
+  DateFilter,
+  DateFilterValue,
 } from '@/composables'
 
 const props = defineProps<{
-  filter: DateRangeFilter
-  initialValue: DateRangeFilterValue
+  filter: DateFilter
+  initialValue: DateFilterValue
 }>()
 
 const emit = defineEmits<{
-  submit: [value: DateRangeFilterValue]
+  submit: [value: DateFilterValue]
 }>()
 
 const i18n = useI18n()
 
-const value = ref<PlainDateRange>(props.initialValue.value)
+const value = ref(props.initialValue.value)
 
 function setFilter(): void {
   emit('submit', {
     operator: props.initialValue.operator,
-    value: value.value ?? {
-      from: null,
-      until: null,
-    },
+    value: value.value ?? null,
   })
 }
 
 function onClear(): void {
-  value.value = {
-    from: null,
-    until: null,
-  }
+  value.value = null
 }
 </script>
 
 <template>
-  <UIDialog size="lg">
+  <UIDialog size="xxs">
     <UIDialogHeader
       :title="props.filter.label"
       :hide-description="true"
@@ -58,27 +51,27 @@ function onClear(): void {
     />
 
     <UIDialogBody>
-      <UIDateRangePicker
+      <UIDatePicker
         v-model="value"
-        :show-presets="false"
+        class="p-none!"
       />
     </UIDialogBody>
 
     <UIDialogFooter>
       <template #left>
         <UIDialogFooterSecondary
-          :label="i18n.t('component.filters_date_range_dialog.clear')"
-          :is-disabled="value.from === null || value.until === null"
+          :label="i18n.t('component.filters_date_dialog.clear')"
+          :is-disabled="value === null"
           class="mr-auto"
           @click="onClear"
         />
       </template>
 
       <template #right>
-        <UIDialogFooterCancel :label="i18n.t('component.filters_date_range_dialog.cancel')" />
+        <UIDialogFooterCancel :label="i18n.t('component.filters_date_dialog.cancel')" />
 
         <UIDialogFooterPrimary
-          :label="i18n.t('component.filters_date_range_dialog.set_filter')"
+          :label="i18n.t('component.filters_date_dialog.set_filter')"
           @click="setFilter"
         />
       </template>

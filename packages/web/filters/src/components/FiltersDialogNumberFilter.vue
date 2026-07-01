@@ -17,15 +17,18 @@ import { useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 import z from 'zod'
 
-import type { NumberFilter } from '@/composables'
+import type {
+  NumberFilter,
+  NumberFilterValue,
+} from '@/composables'
 
 const props = defineProps<{
   filter: NumberFilter
-  initialValue: number | null
+  initialValue: NumberFilterValue
 }>()
 
 const emit = defineEmits<{
-  submit: [value: number | null]
+  submit: [value: NumberFilterValue]
 }>()
 
 const i18n = useI18n()
@@ -39,11 +42,14 @@ const form = useForm({
       .nullable(),
   }),
   onSubmit: (values) => {
-    emit('submit', values.value)
+    emit('submit', {
+      operator: props.initialValue.operator,
+      value: values.value,
+    })
   },
 })
 
-const valueField = form.register('value', props.initialValue)
+const valueField = form.register('value', props.initialValue.value)
 </script>
 
 <template>

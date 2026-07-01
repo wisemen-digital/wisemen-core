@@ -3,6 +3,12 @@
 
 
 
+
+## 1.2.0
+<sub>2026-07-01</sub>
+
+- [#1336](https://github.com/wisemen-digital/wisemen-core/pull/1336)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add date format preference
+
 ## 1.1.2
 <sub>2026-06-30</sub>
 

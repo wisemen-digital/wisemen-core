@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  PlainDate,
-  PlainDateRange,
-} from '@wisemen/vue-core-dates'
+import type { PlainDate } from '@wisemen/vue-core-dates'
 import { useDateTimeFormat } from '@wisemen/vue-core-dates'
 import { UIText } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
@@ -16,11 +13,11 @@ import FiltersActiveBadgeOperatorDropdown from '@/components/FiltersActiveBadgeO
 import FiltersActiveBadgePartSeparator from '@/components/FiltersActiveBadgePartSeparator.vue'
 import FiltersActiveBadgeValueEmptyState from '@/components/FiltersActiveBadgeValueEmptyState.vue'
 import type {
-  DateRangeFilter,
-  DateRangeFilterValue,
+  DateFilter,
+  DateFilterValue,
   FilterWithAction,
 } from '@/composables'
-import { DateRangeFilterOperator } from '@/composables'
+import { DateFilterOperator } from '@/composables'
 import { useInjectFiltersContext } from '@/context/filters.context'
 
 interface OperatorOption {
@@ -29,7 +26,7 @@ interface OperatorOption {
 }
 
 const props = defineProps<{
-  filter: FilterWithAction<DateRangeFilter>
+  filter: FilterWithAction<DateFilter>
 }>()
 
 const i18n = useI18n()
@@ -40,56 +37,39 @@ const {
 
 const dateTimeFormat = useDateTimeFormat()
 
-const filterValue = computed<DateRangeFilterValue>(() => values.value[props.filter.key] as DateRangeFilterValue)
-const value = computed<PlainDateRange>(() => filterValue.value.value)
-
-const hasValidRange = computed<boolean>(
-  () => value.value.from !== null && value.value.until !== null,
-)
-
-const showNavigation = computed<boolean>(
-  () => (props.filter.isPersistent ?? false) && hasValidRange.value,
-)
+const filterValue = computed<DateFilterValue>(() => values.value[props.filter.key] as DateFilterValue)
+const value = computed<PlainDate | null>(() => filterValue.value.value)
 
 const operatorOptions = computed<OperatorOption[]>(() => [
   {
-    label: i18n.t('component.filters.operator.is_between'),
-    value: DateRangeFilterOperator.IS_BETWEEN,
+    label: i18n.t('component.filters.operator.is'),
+    value: DateFilterOperator.IS,
   },
   {
-    label: i18n.t('component.filters.operator.is_not_between'),
-    value: DateRangeFilterOperator.IS_NOT_BETWEEN,
+    label: i18n.t('component.filters.operator.is_not'),
+    value: DateFilterOperator.IS_NOT,
+  },
+  {
+    label: i18n.t('component.filters.operator.before'),
+    value: DateFilterOperator.BEFORE,
+  },
+  {
+    label: i18n.t('component.filters.operator.after'),
+    value: DateFilterOperator.AFTER,
   },
 ])
-
-const isSingleDate = computed<boolean>(
-  () => value.value.from !== null && value.value.until !== null && value.value.from.equals(value.value.until),
-)
-
-const operatorLabel = computed<string>(() => {
-  if (isSingleDate.value) {
-    return filterValue.value.operator === DateRangeFilterOperator.IS_BETWEEN
-      ? i18n.t('component.filters.operator.is')
-      : i18n.t('component.filters.operator.is_not')
-  }
-
-  return operatorOptions.value.find((o) => o.value === filterValue.value.operator)?.label ?? filterValue.value.operator
-})
 
 function onOperatorChange(operator: string): void {
   values.value[props.filter.key] = {
     ...filterValue.value,
-    operator: operator as DateRangeFilterOperator,
+    operator: operator as DateFilterOperator,
   }
 }
 
-function onNavigate(from: PlainDate, until: PlainDate): void {
+function onNavigate(from: PlainDate): void {
   values.value[props.filter.key] = {
     ...filterValue.value,
-    value: {
-      from,
-      until,
-    },
+    value: from,
   }
 }
 </script>
@@ -105,7 +85,6 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
 
     <FiltersActiveBadgeOperatorDropdown
       :disabled="props.filter.disableOperators ?? false"
-      :label="isSingleDate ? operatorLabel : undefined"
       :model-value="filterValue.operator"
       :options="operatorOptions"
       @update:model-value="onOperatorChange"
@@ -113,17 +92,20 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
 
     <FiltersActiveBadgePartSeparator />
 
-    <template v-if="showNavigation">
+    <template v-if="props.filter.isPersistent ?? false">
       <FiltersActiveBadgeDateNavigation
         :filter-id="props.filter.key"
-        :from="value.from"
-        :until="value.until"
-        @navigate="onNavigate"
+        :from="value"
+        :until="value"
+        @navigate="(from) => onNavigate(from)"
       >
         <FiltersActiveBadgeDialogTrigger :filter="props.filter">
           <FiltersActiveBadgeBasePart :is-interactive="true">
+            <FiltersActiveBadgeValueEmptyState v-if="value === null" />
+
             <UIText
-              :text="dateTimeFormat.formatPlainDateRange(value)"
+              v-else
+              :text="dateTimeFormat.formatPlainDate(value)"
               class="text-xs text-primary tabular-nums"
             />
           </FiltersActiveBadgeBasePart>
@@ -134,12 +116,12 @@ function onNavigate(from: PlainDate, until: PlainDate): void {
     <template v-else>
       <FiltersActiveBadgeDialogTrigger :filter="props.filter">
         <FiltersActiveBadgeBasePart :is-interactive="true">
-          <FiltersActiveBadgeValueEmptyState v-if="value.from === null || value.until === null" />
+          <FiltersActiveBadgeValueEmptyState v-if="value === null" />
 
           <UIText
             v-else
-            :text="dateTimeFormat.formatPlainDateRange(value)"
-            class="text-xs text-primary"
+            :text="dateTimeFormat.formatPlainDate(value)"
+            class="text-xs text-primary tabular-nums"
           />
         </FiltersActiveBadgeBasePart>
       </FiltersActiveBadgeDialogTrigger>

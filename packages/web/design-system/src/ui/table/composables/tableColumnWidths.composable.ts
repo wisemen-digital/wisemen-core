@@ -27,6 +27,18 @@ import {
   TableUtil,
 } from '@/ui/table/utils/table.util'
 
+function sizeToPixels(size: TableColumnSize['max'] | TableColumnSize['min'], role: 'max' | 'min'): number {
+  if (size === 'min-content' || size === 'auto') {
+    return role === 'min' ? 0 : Infinity
+  }
+
+  if (size.endsWith('rem')) {
+    return Number.parseFloat(size) * Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+  }
+
+  return role === 'min' ? 0 : Infinity
+}
+
 function buildManualTemplate(widths: number[], fittingIndex: number | null, hasCheckboxColumn: boolean): string {
   const columns = widths
     .map((w, i) => (i === fittingIndex ? 'max-content' : `${w}px`))
@@ -146,6 +158,19 @@ export function useTableColumnWidths(
     resizingColumnIndex.value = null
   })
 
+  function clampWidth(columnIndex: number, width: number): number {
+    const size = columnSizes.value[columnIndex]
+
+    if (size === undefined) {
+      return width
+    }
+
+    const min = sizeToPixels(size.min, 'min')
+    const max = sizeToPixels(size.max, 'max')
+
+    return Math.min(max, Math.max(min, width))
+  }
+
   function snapshotWidths(cellEl: HTMLElement): number[] {
     const siblings = Array.from(cellEl.parentElement?.children ?? []) as HTMLElement[]
     const start = isSelectable.value ? 1 : 0
@@ -170,7 +195,7 @@ export function useTableColumnWidths(
     }
 
     const delta = e.clientX - resizeStartX.value
-    const updatedWidth = Math.max(50, resizeStartWidth.value + delta)
+    const updatedWidth = clampWidth(resizingColumnIndex.value, resizeStartWidth.value + delta)
     const updated = [
       ...manualWidths.value,
     ]
@@ -196,7 +221,7 @@ export function useTableColumnWidths(
       ...manualWidths.value,
     ]
 
-    updated[columnIndex] = width
+    updated[columnIndex] = clampWidth(columnIndex, width)
     manualWidths.value = updated
     fittingColumnIndex.value = null
   }
@@ -214,7 +239,7 @@ export function useTableColumnWidths(
       length: totalCells,
     }).fill('max-content').join(' ')
 
-    const measuredWidths = headerCells.map((cell) => cell.getBoundingClientRect().width)
+    const measuredWidths = headerCells.map((cell, i) => clampWidth(i, cell.getBoundingClientRect().width))
 
     el.style.gridTemplateColumns = buildManualTemplate(measuredWidths, null, isSelectable.value)
     manualWidths.value = measuredWidths

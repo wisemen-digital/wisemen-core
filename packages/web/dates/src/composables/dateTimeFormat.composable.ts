@@ -1,4 +1,5 @@
 import { Temporal } from 'temporal-polyfill'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useDateTimeConfig } from '#composables/config.composable.ts'
@@ -24,16 +25,17 @@ export function useDateTimeFormat() {
   const i18n = useI18n()
   const {
     appLanguage,
+    dateFormat,
     hourCycle,
     locale,
     timeZone,
   } = useDateTimeConfig()
 
-  /**
-   *
-   */
+  const effectiveDateLocale = computed<string>(() =>
+    dateFormat.value === 'locale-default' ? locale.value : dateFormat.value)
+
   function formatPlainDate(date: PlainDate): string {
-    return Temporal.PlainDate.from(date).toLocaleString(locale.value, DEFAULT_DATE_FORMAT_OPTIONS)
+    return Temporal.PlainDate.from(date).toLocaleString(effectiveDateLocale.value, DEFAULT_DATE_FORMAT_OPTIONS)
   }
 
   function formatPlainDateRange(range: PlainDateRange): string {
@@ -200,14 +202,12 @@ export function useDateTimeFormat() {
    * @returns The formatted date string.
    */
   function toDate(instant: DateTimeInstant): string {
-    const formatter = new Intl.DateTimeFormat(locale.value, {
-      ...DEFAULT_DATE_FORMAT_OPTIONS,
-      timeZone: timeZone.value,
-    })
-
     const zonedDateTime = DateUtil.instantToZonedDateTime(instant, timeZone.value)
 
-    return formatter.format(zonedDateTime.epochMilliseconds)
+    return new Intl.DateTimeFormat(effectiveDateLocale.value, {
+      ...DEFAULT_DATE_FORMAT_OPTIONS,
+      timeZone: timeZone.value,
+    }).format(zonedDateTime.epochMilliseconds)
   }
 
   /**
@@ -217,18 +217,20 @@ export function useDateTimeFormat() {
    * @returns The formatted date-time string.
    */
   function toDateTime(instant: DateTimeInstant, withSeconds = false): string {
-    const formatter = new Intl.DateTimeFormat(
+    const zonedDateTime = DateUtil.instantToZonedDateTime(instant, timeZone.value)
+
+    if (dateFormat.value !== 'locale-default') {
+      return `${toDate(instant)}, ${toTime(instant, withSeconds)}`
+    }
+
+    return new Intl.DateTimeFormat(
       locale.value,
       {
         ...DEFAULT_DATE_FORMAT_OPTIONS,
         ...TimeUtil.getTimeFormatOptions(hourCycle.value, timeZone.value, withSeconds),
         timeZone: timeZone.value,
       },
-    )
-
-    const zonedDateTime = DateUtil.instantToZonedDateTime(instant, timeZone.value)
-
-    return formatter.format(zonedDateTime.epochMilliseconds)
+    ).format(zonedDateTime.epochMilliseconds)
   }
 
   /**

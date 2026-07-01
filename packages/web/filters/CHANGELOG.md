@@ -2,6 +2,22 @@
 
 
 
+
+## 10.0.0
+<sub>2026-07-01</sub>
+
+- [#1302](https://github.com/wisemen-digital/wisemen-core/pull/1302)  *(major)* Thanks [@wouterlms](https://github.com/wouterlms)! - - **Breaking: all filter value types now include an operator.** Every filter's value in `useFilters().values` is now a typed `{ operator, value }` object — consumers must update their read/write access accordingly:
+    - Multi-select / multi-autocomplete: `TValue[]` → `MultiSelectFilterValue<TValue>` (`{ operator: MultiSelectFilterOperator, values: TValue[] }`)
+    - Number: `number | null` → `NumberFilterValue` (`{ operator: NumberFilterOperator, value: number | null }`)
+    - Date: `PlainDate | null` → `DateFilterValue` (`{ operator: DateFilterOperator, value: PlainDate | null }`)
+    - Date range: `PlainDateRange` → `DateRangeFilterValue` (`{ operator: DateRangeFilterOperator, value: PlainDateRange }`)
+    - Boolean: unchanged (`boolean | null`)
+  - **`disableOperators`** — new property on all filter types. When `true`, the operator is shown as a static label in the active badge instead of an interactive dropdown.
+  - **Boolean filter** — new `trueOperatorLabel` and `falseOperatorLabel` properties to override the default "is" / "is not" text in the badge and dropdown.
+- [#1295](https://github.com/wisemen-digital/wisemen-core/pull/1295)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - - Add `DATE` filter type — use `createDateFilter` to let users pick a single `Temporal.PlainDate` via a dialog.
+  - Rename `isStatic` to `isPersistent` on all filter types. Persistent filters are always shown in `activeFilters`, cannot be removed by `clearFilter` or `clearAll`, and are sorted before non-persistent filters with a visual separator.
+  - Persistent `date` and `date-range` badges now show prev/next navigation arrows and a "Today" action (keyboard shortcuts `←`, `→`, `T`). The navigation step is inferred from the selected range (day / week / month / year / custom).
+
 ## 9.0.2
 <sub>2026-06-30</sub>
 
