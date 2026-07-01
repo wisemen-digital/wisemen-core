@@ -20,6 +20,10 @@ export const useIsReducedMotion = createSharedComposable((reducedMotion?: Comput
   )
 
   watch(isReducedMotion, (value) => {
+    if (typeof document === 'undefined') {
+      return
+    }
+
     document.body.classList.toggle('reduced-motion', value)
   }, {
     immediate: true,
