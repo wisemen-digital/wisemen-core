@@ -1,0 +1,36 @@
+{
+  "name": "@repo/payload-translate",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "imports": {
+    "#*": "./src/*"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./server": "./src/server.ts"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "lint:fix": "eslint --fix"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": "catalog:payload",
+    "payload": "catalog:payload",
+    "react": "catalog:payload"
+
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "catalog:payload",
+    "payload": "catalog:payload",
+    "react": "catalog:payload",
+    "@types/react": "catalog:payload",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "typescript": "catalog:build"
+  }
+}
