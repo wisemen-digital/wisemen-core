@@ -6,6 +6,7 @@ import { useContext } from '@/composables/context.composable'
 export type MainLayoutVariant = 'branded' | 'default'
 
 interface MainLayoutContext {
+  isBrandedActive: ComputedRef<boolean>
   variant: ComputedRef<MainLayoutVariant>
 }
 
@@ -18,6 +19,7 @@ export { useProvideMainLayoutContext }
 
 export function useInjectMainLayoutContext(): MainLayoutContext {
   return useInjectMainLayoutContextBase(null) ?? {
+    isBrandedActive: computed<boolean>(() => false),
     variant: computed<MainLayoutVariant>(() => 'default'),
   }
 }

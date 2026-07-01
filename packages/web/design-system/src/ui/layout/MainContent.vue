@@ -20,10 +20,8 @@ const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 useMainContentDetailPane()
 
 const {
-  variant,
+  isBrandedActive: isBranded,
 } = useInjectMainLayoutContext()
-
-const isBranded = computed<boolean>(() => variant.value === 'branded')
 
 const contentPaddingLeft = computed<string>(() => {
   if (isFloatingSidebar.value) {

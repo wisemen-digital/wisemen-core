@@ -35,10 +35,10 @@ const i18n = useI18n()
 const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
 const {
-  variant,
+  isBrandedActive,
 } = useInjectMainLayoutContext()
 
-const brandedClass = computed<string[] | null>(() => variant.value === 'branded'
+const brandedClass = computed<string[] | null>(() => isBrandedActive.value
   ? [
       'default',
       'branded',
