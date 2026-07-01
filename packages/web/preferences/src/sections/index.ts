@@ -1,5 +1,6 @@
 export * from './appearance/appearancePreference.composable'
 export { createPreferencesSection } from './createPreferencesSection'
+export * from './date-format/dateFormatPreference.composable'
 export * from './display-zoom/displayZoomPreference.composable'
 export * from './high-contrast/highContrastPreference.composable'
 export * from './hour-cycle/hourCyclePreference.composable'
