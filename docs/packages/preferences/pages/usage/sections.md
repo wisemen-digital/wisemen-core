@@ -158,6 +158,26 @@ const numberFormat = useNumberFormatPreference({
 })
 ```
 
+## Date Format
+
+Controls the order and separator used when displaying dates. Wraps the `dateFormat` option in `useDateTimeConfig` from `@wisemen/vue-core-dates`.
+
+**Type:** `'locale-default' | 'en-GB' | 'en-US' | 'de-DE' | 'nl-NL' | 'sv-SE' | 'ja-JP'`
+
+```typescript
+import { useDateFormatPreference } from '@wisemen/vue-core-preferences'
+import { useDateTimeConfig } from '@wisemen/vue-core-dates'
+
+const { update } = useDateTimeConfig()
+
+const dateFormat = useDateFormatPreference({
+  get: () => store.dateFormat,
+  set: (value) => {
+    store.dateFormat = value
+  },
+})
+```
+
 ## Hour Cycle
 
 Switches between 12-hour and 24-hour time display. Pass `null` to follow the locale default.

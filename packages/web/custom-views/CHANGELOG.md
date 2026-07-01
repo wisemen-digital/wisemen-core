@@ -2,6 +2,24 @@
 
 
 
+
+
+
+## 1.0.0
+<sub>2026-07-01</sub>
+
+- *(major)* Updated dependency `@wisemen/vue-core-filters` v10.0.0
+
+## 0.3.2
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
+## 0.3.1
+<sub>2026-06-30</sub>
+
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Fixed peer dependency versioning
+
 ## 0.3.0
 <sub>2026-06-12</sub>
 

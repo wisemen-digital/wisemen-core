@@ -35,7 +35,7 @@ const clearFilterAction = createAction({
   id: `clear-filter-${props.filter.key}`,
   name: () => i18n.t('component.filters.remove_filter'),
   execute: () => {
-    clearFilter(props.filter.key, false, true)
+    clearFilter(props.filter.key)
   },
   group: {
     name: () => props.filter.label,
@@ -58,7 +58,7 @@ const clearFilterAction = createAction({
     >
       <slot />
 
-      <template v-if="props.filter.isStatic !== true">
+      <template v-if="props.filter.isPersistent !== true">
         <UISeparator orientation="vertical" />
 
         <UIActionTrigger

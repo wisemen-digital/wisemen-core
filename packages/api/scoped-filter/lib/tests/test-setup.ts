@@ -1,3 +1,4 @@
+import { getMigrationQuery } from '@wisemen/datewise'
 import { EntityManager, QueryRunner } from 'typeorm'
 import { dataSource } from './sql/datasource.js'
 
@@ -13,6 +14,7 @@ export class IntegrationTestSetup {
     await dataSource.query('SELECT pg_advisory_lock(12345)')
 
     try {
+      await dataSource.query(getMigrationQuery())
       await dataSource.synchronize(true)
     } finally {
       await dataSource.query('SELECT pg_advisory_unlock(12345)')

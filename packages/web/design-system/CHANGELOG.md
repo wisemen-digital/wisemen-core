@@ -10,6 +10,37 @@
 
 
 
+
+
+
+
+## 1.10.0
+<sub>2026-07-01</sub>
+
+- [#1194](https://github.com/wisemen-digital/wisemen-core/pull/1194)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: add `is-selectable` prop to select one, more or all rows
+- [#1181](https://github.com/wisemen-digital/wisemen-core/pull/1181)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix Button and IconButton styling inconsistencies
+- [#1339](https://github.com/wisemen-digital/wisemen-core/pull/1339)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Align tooltip border radius with other radii
+- [#1341](https://github.com/wisemen-digital/wisemen-core/pull/1341)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix min and max table column width
+
+## 1.9.1
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
+## 1.9.0
+<sub>2026-06-30</sub>
+
+- [#1324](https://github.com/wisemen-digital/wisemen-core/pull/1324)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - DropdownMenu: add `fixedContentPosition` prop
+- [#1329](https://github.com/wisemen-digital/wisemen-core/pull/1329)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add exports for chin types
+
+## 1.8.0
+<sub>2026-06-30</sub>
+
+- [#1249](https://github.com/wisemen-digital/wisemen-core/pull/1249)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a built in unsaved changes pop-up in the form dialogs using the dialog chin
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+- [#1311](https://github.com/wisemen-digital/wisemen-core/pull/1311)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add horizontal scroll to tabs when overflowing
+- [#1327](https://github.com/wisemen-digital/wisemen-core/pull/1327)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for the `useDialogChin`
+
 ## 1.7.1
 <sub>2026-06-25</sub>
 

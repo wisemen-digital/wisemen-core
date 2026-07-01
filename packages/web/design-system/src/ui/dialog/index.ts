@@ -4,6 +4,14 @@ export type { DialogProps as UIDialogProps } from '@/ui/dialog/dialog.props'
 export type { DialogTriggerProps as UIDialogTriggerProps } from '@/ui/dialog/dialog.type'
 export { default as UIDialog } from '@/ui/dialog/Dialog.vue'
 export { default as UIDialogBody } from '@/ui/dialog/DialogBody.vue'
+export type {
+  ChinAction as UIChinAction,
+  ChinButtonAction as UIChinButtonAction,
+  ChinConfig as UIChinConfig,
+  ChinIconButtonAction as UIChinIconButtonAction,
+  ChinLinkAction as UIChinLinkAction,
+} from '@/ui/dialog/dialogChin.composable'
+export { useDialogChin } from '@/ui/dialog/dialogChin.composable'
 export { default as UIDialogContainer } from '@/ui/dialog/DialogContainer.vue'
 export { default as UIDialogFooter } from '@/ui/dialog/DialogFooter.vue'
 export type { DialogFooterButtonProps as UIDialogFooterButtonProps } from '@/ui/dialog/dialogFooterButton.props'
