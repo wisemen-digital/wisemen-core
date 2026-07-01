@@ -10,9 +10,11 @@ import {
   DialogRoot,
   DialogTitle,
 } from 'reka-ui'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
+import { useInjectMainLayoutContext } from '@/ui/layout/mainLayout.context'
 import MainSidebarContent from '@/ui/sidebar/components/MainSidebarContent.vue'
 import MainSidebarTransition from '@/ui/sidebar/components/MainSidebarTransition.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
@@ -32,6 +34,17 @@ const {
 const i18n = useI18n()
 const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
+const {
+  variant,
+} = useInjectMainLayoutContext()
+
+const brandedClass = computed<string[] | null>(() => variant.value === 'branded'
+  ? [
+      'default',
+      'branded',
+    ]
+  : null)
+
 setCollapsedVariant(props.collapsedVariant)
 </script>
 
@@ -50,6 +63,7 @@ setCollapsedVariant(props.collapsedVariant)
           class="absolute z-6 h-full w-64 p-md outline-none"
         >
           <div
+            :class="brandedClass"
             class="
               size-full rounded-xl border border-secondary bg-secondary py-md
               shadow-lg/5
@@ -114,20 +128,25 @@ setCollapsedVariant(props.collapsedVariant)
       }"
       class="absolute h-full pt-md"
     >
-      <MainSidebarContent>
-        <template #header>
-          <slot name="header" />
-        </template>
-        <template #navigation>
-          <slot name="navigation" />
-        </template>
-        <template #bottom-navigation>
-          <slot name="bottom-navigation" />
-        </template>
-        <template #footer>
-          <slot name="footer" />
-        </template>
-      </MainSidebarContent>
+      <div
+        :class="brandedClass"
+        class="size-full"
+      >
+        <MainSidebarContent>
+          <template #header>
+            <slot name="header" />
+          </template>
+          <template #navigation>
+            <slot name="navigation" />
+          </template>
+          <template #bottom-navigation>
+            <slot name="bottom-navigation" />
+          </template>
+          <template #footer>
+            <slot name="footer" />
+          </template>
+        </MainSidebarContent>
+      </div>
     </MainSidebarTransition>
   </AnimatePresence>
   <Motion
@@ -142,19 +161,24 @@ setCollapsedVariant(props.collapsedVariant)
     :style="{ width: sidebarWidth }"
     class="absolute z-1 h-full overflow-hidden pt-[0.475rem]"
   >
-    <MainSidebarContent>
-      <template #header>
-        <slot name="header" />
-      </template>
-      <template #navigation>
-        <slot name="navigation" />
-      </template>
-      <template #bottom-navigation>
-        <slot name="bottom-navigation" />
-      </template>
-      <template #footer>
-        <slot name="footer" />
-      </template>
-    </MainSidebarContent>
+    <div
+      :class="brandedClass"
+      class="size-full"
+    >
+      <MainSidebarContent>
+        <template #header>
+          <slot name="header" />
+        </template>
+        <template #navigation>
+          <slot name="navigation" />
+        </template>
+        <template #bottom-navigation>
+          <slot name="bottom-navigation" />
+        </template>
+        <template #footer>
+          <slot name="footer" />
+        </template>
+      </MainSidebarContent>
+    </div>
   </Motion>
 </template>

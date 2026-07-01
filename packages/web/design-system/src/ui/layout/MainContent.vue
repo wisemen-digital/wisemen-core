@@ -4,6 +4,7 @@ import { computed } from 'vue'
 
 import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import { useMainContentDetailPane } from '@/ui/layout/mainContentDetailPane.composable'
+import { useInjectMainLayoutContext } from '@/ui/layout/mainLayout.context'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import TopBar from '@/ui/top-bar/TopBar.vue'
 
@@ -17,6 +18,12 @@ const {
 const isReduceMotionEnabledOnDevice = useIsReducedMotion()
 
 useMainContentDetailPane()
+
+const {
+  variant,
+} = useInjectMainLayoutContext()
+
+const isBranded = computed<boolean>(() => variant.value === 'branded')
 
 const contentPaddingLeft = computed<string>(() => {
   if (isFloatingSidebar.value) {
@@ -48,13 +55,16 @@ const contentPaddingLeft = computed<string>(() => {
       type: 'spring',
       bounce: 0,
     }"
-    class="flex size-full flex-col overflow-hidden bg-secondary p-md"
+    :class="isBranded ? null : 'bg-secondary'"
+    class="flex size-full flex-col overflow-hidden p-md"
   >
-    <TopBar>
-      <template #actions>
-        <slot name="top-bar-actions" />
-      </template>
-    </TopBar>
+    <div :class="isBranded ? ['default', 'branded'] : null">
+      <TopBar>
+        <template #actions>
+          <slot name="top-bar-actions" />
+        </template>
+      </TopBar>
+    </div>
     <slot />
   </Motion>
 </template>

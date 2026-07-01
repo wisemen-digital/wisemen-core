@@ -37,6 +37,7 @@ import DashboardPageDetailPaneHeader from '@/ui/dashboard-page/detail-pane/Dashb
 import DashboardPageDetailPaneTabs from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabs.vue'
 import DashboardPageDetailPaneTabsContent from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabsContent.vue'
 import DashboardPageDetailPaneTabsList from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabsList.vue'
+import type { MainLayoutVariant } from '@/ui/layout/index'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
 import { UIRowLayout } from '@/ui/row-layout'
@@ -54,6 +55,12 @@ import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 import { UIText } from '@/ui/text/index'
+
+const props = withDefaults(defineProps<{
+  variant?: MainLayoutVariant
+}>(), {
+  variant: 'default',
+})
 
 interface NavigationGroup {
   label: string
@@ -162,6 +169,7 @@ const exampleAction = createAction({
     "
   >
     <MainLayout
+      :variant="props.variant"
       class="h-[80dvh]!"
     >
       <MainSidebar
