@@ -22,6 +22,7 @@ export interface TableColumn<TElement, TKey extends string = string> {
     metadata?: RegisteredActionContext['metadata']
   }
   centerHeaderContent?: boolean
+  headerDescription?: string
   headerLabel: string
   key: TKey
   size?: TableColumnSize
