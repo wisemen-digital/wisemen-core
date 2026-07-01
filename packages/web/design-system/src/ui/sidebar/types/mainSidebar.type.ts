@@ -41,7 +41,7 @@ export interface SidebarNavLeafItem extends DashboardSidebarNavLinkBase {
    * Route location to navigate to
    */
   to: RegisteredRouteLocationRaw
-  type: 'leaf'
+  type: 'link'
 
 }
 
@@ -51,7 +51,7 @@ export interface SidebarNavParentItem extends DashboardSidebarNavLinkBase {
    * When >3 or sidebar is minified/floating, rendered in a popover.
    */
   subItems: DashboardSidebarNavSubItem[]
-  type: 'parent'
+  type: 'sub-items'
 }
 
 export type DashboardSidebarNavLink = SidebarNavLeafItem | SidebarNavParentItem

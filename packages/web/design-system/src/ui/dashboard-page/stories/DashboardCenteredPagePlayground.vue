@@ -44,7 +44,7 @@ const navigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/',
         },
-        type: 'leaf',
+        type: 'link',
       },
       {
         icon: Rows01Icon,
@@ -52,7 +52,7 @@ const navigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/projects',
         },
-        type: 'leaf',
+        type: 'link',
       },
     ],
   },
@@ -65,7 +65,7 @@ const navigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/documents',
         },
-        type: 'leaf',
+        type: 'link',
       },
       {
         icon: CalendarIcon,
@@ -73,7 +73,7 @@ const navigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/calendar',
         },
-        type: 'leaf',
+        type: 'link',
       },
     ],
   },
@@ -89,7 +89,7 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/support',
         },
-        type: 'leaf',
+        type: 'link',
       },
       {
         icon: Settings01Icon,
@@ -97,7 +97,7 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
         to: {
           path: '/settings',
         },
-        type: 'leaf',
+        type: 'link',
       },
     ],
   },
