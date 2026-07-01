@@ -95,6 +95,13 @@ const propsData = [
     "type": "boolean"
   },
   {
+    "default": "false",
+    "description": "<p>When <code>true</code>, a checkbox column is prepended to the table, enabling row selection.\nListen to the <code>select</code> emit to receive the current selection state as either an\n<code>includes</code> array (individual selections) or an <code>excludes</code> array (after select-all).</p>\n",
+    "name": "isSelectable",
+    "required": false,
+    "type": "boolean"
+  },
+  {
     "description": "<p>Called when the user scrolls to the bottom of the table. Implement to fetch the next\npage of data for infinite-scroll pagination. Omit when all data is loaded at once.</p>\n",
     "name": "onNextPage",
     "required": false,
@@ -124,6 +131,11 @@ const eventsData = [
     "description": "",
     "name": "clearSearch",
     "type": "[]"
+  },
+  {
+    "description": "",
+    "name": "select",
+    "type": "[state: TableSelectionState<InferTableItem<TTableData>>]"
   }
 ]
 

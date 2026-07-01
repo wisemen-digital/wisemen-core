@@ -273,7 +273,7 @@ ${groupLines.join('\n')}
 for (const component of designSystemComponents) {
   const componentSourceFolder = resolve(__dirname, '../../packages/web/design-system/src/ui', component.sourceFolder)
   const meta = parseDesignSystemMeta(designSystemChecker.getComponentMeta(componentSourceFolder))
-  const metaDirPath = resolve(__dirname, '../web/packages/design-system/components/', component.targetFolder)
+  const metaDirPath = resolve(__dirname, '../stacks/web/packages/design-system/components/', component.targetFolder)
 
   if (!existsSync(metaDirPath)) {
     mkdirSync(metaDirPath, {
@@ -291,6 +291,6 @@ for (const component of designSystemComponents) {
 }
 
 writeFileSync(
-  resolve(__dirname, '../web/packages/design-system/designSystem.navigation.ts'),
+  resolve(__dirname, '../stacks/web/packages/design-system/designSystem.navigation.ts'),
   renderDesignSystemNavigation(),
 )

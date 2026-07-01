@@ -9,6 +9,12 @@ const propsData = [
     "type": "boolean"
   },
   {
+    "description": "<p>When enabled, snapshots the trigger's position the moment the dropdown opens\nand anchors the content there for the duration it is open. Prevents the\ndropdown from jumping when the trigger moves</p>\n",
+    "name": "fixedContentPosition",
+    "required": false,
+    "type": "boolean"
+  },
+  {
     "default": "false",
     "description": "",
     "name": "isOpen",
