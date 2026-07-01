@@ -20,7 +20,7 @@ const dialog = overlay.create(ExampleDialog)
 </script>
 
 <template>
-  <div>
+  <div class="h-dvh">
     <Button
       label="Open dialog"
       @click="dialog.open({

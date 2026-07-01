@@ -1,5 +1,113 @@
 # Changelog
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 1.9.1
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
+## 1.9.0
+<sub>2026-06-30</sub>
+
+- [#1324](https://github.com/wisemen-digital/wisemen-core/pull/1324)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - DropdownMenu: add `fixedContentPosition` prop
+- [#1329](https://github.com/wisemen-digital/wisemen-core/pull/1329)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add exports for chin types
+
+## 1.8.0
+<sub>2026-06-30</sub>
+
+- [#1249](https://github.com/wisemen-digital/wisemen-core/pull/1249)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a built in unsaved changes pop-up in the form dialogs using the dialog chin
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+- [#1311](https://github.com/wisemen-digital/wisemen-core/pull/1311)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add horizontal scroll to tabs when overflowing
+- [#1327](https://github.com/wisemen-digital/wisemen-core/pull/1327)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for the `useDialogChin`
+
+## 1.7.1
+<sub>2026-06-25</sub>
+
+- [#1309](https://github.com/wisemen-digital/wisemen-core/pull/1309)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Badge: improve gray outline and translucent styling
+
+## 1.7.0
+<sub>2026-06-23</sub>
+
+- [#1245](https://github.com/wisemen-digital/wisemen-core/pull/1245)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add sticky header, footer, body and tabs components for `DashboardPageDetailPane`
+  New components:
+  - `UIDashboardPageDetailPaneHeader` — sticky header built on `UIBaseHeader`, separator fades when scrolled to top, auto-hides separator when tabs are present
+  - `UIDashboardPageDetailPaneFooter` — sticky footer with a default slot, separator fades when scrolled to bottom
+  - `UIDashboardPageDetailPaneBody` — scrollable body, connects scroll tracking to header/footer separators
+  - `UIDashboardPageDetailPaneTabs` — compound tabs root (`underline` variant, full-width, with padding by default)
+  - `UIDashboardPageDetailPaneTabsList` — sticky tabs list bar
+  - `UIDashboardPageDetailPaneTabsContent` — scrollable tab content panel, connects scroll tracking per active tab
+- [#1303](https://github.com/wisemen-digital/wisemen-core/pull/1303)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix issues where table columns are truncated
+- [#1304](https://github.com/wisemen-digital/wisemen-core/pull/1304)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: Hide empty state illustration for contained variant
+- [#1305](https://github.com/wisemen-digital/wisemen-core/pull/1305)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: fix issue where for the contained variant a 1px border would be visual when empty
+
+## 1.6.1
+<sub>2026-06-18</sub>
+
+- [#1292](https://github.com/wisemen-digital/wisemen-core/pull/1292)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for keyboard shortcut type
+
+## 1.6.0
+<sub>2026-06-17</sub>
+
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add UIFormFileUpload with shared file-reference DTOs and transformers, Storybook coverage, translations, and improved base file-upload adapter/disabled handling.
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add new BaseFileUpload component
+
+## 1.5.1
+<sub>2026-06-16</sub>
+
+- [#1267](https://github.com/wisemen-digital/wisemen-core/pull/1267)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Remove enter and exit animation from dropdown menu sub content and context menu sub content
+- [#1269](https://github.com/wisemen-digital/wisemen-core/pull/1269)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove the broken adaptive overflow behavior from Tabs and RouterLinkTabs, keeping tabs scrollable instead.
+- [#1262](https://github.com/wisemen-digital/wisemen-core/pull/1262)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: move @wisemen/ngen to wisemen-core repo
+
+## 1.5.0
+<sub>2026-06-12</sub>
+
+- [#1189](https://github.com/wisemen-digital/wisemen-core/pull/1189)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add actions to badges
+- [#1258](https://github.com/wisemen-digital/wisemen-core/pull/1258)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `shift+A` keyboard shortcut to auto-fit table columns
+- [#1200](https://github.com/wisemen-digital/wisemen-core/pull/1200)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add slot for UIDashboardCenteredPageContentHeader
+- [#1243](https://github.com/wisemen-digital/wisemen-core/pull/1243)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix editing address in popover
+- [#1242](https://github.com/wisemen-digital/wisemen-core/pull/1242)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix dark mode issues in DateRangeField, Dialog, and Tabs
+- [#1239](https://github.com/wisemen-digital/wisemen-core/pull/1239)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add transparent gray badge variant
+- [#1244](https://github.com/wisemen-digital/wisemen-core/pull/1244)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add onBlur and onTab props to TagsField
+
+## 1.4.2
+<sub>2026-06-12</sub>
+
+- [#1252](https://github.com/wisemen-digital/wisemen-core/pull/1252)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add `locale-default` to `HourCycle`
+
+## 1.4.1
+<sub>2026-06-09</sub>
+
+- [#1237](https://github.com/wisemen-digital/wisemen-core/pull/1237)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - use correct date index to preview selected month
+
+## 1.4.0
+<sub>2026-06-08</sub>
+
+- [#1223](https://github.com/wisemen-digital/wisemen-core/pull/1223)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add moss color variant to badge and dot components
+- [#1224](https://github.com/wisemen-digital/wisemen-core/pull/1224)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve dialog z-index handling (overlay now tracks z-index dynamically), add destructive mode and isDisabled prop to DialogFooterSubmit, fix FormDialog close button prop name, reduce ConfirmDialog size to xxs, and adjust DialogHeader gap
+- [#1225](https://github.com/wisemen-digital/wisemen-core/pull/1225)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Track vertical scroll state in table, hide last row border when table is scrollable or contained, debounce column width resize capture to reduce jank
+- [#1226](https://github.com/wisemen-digital/wisemen-core/pull/1226)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add v-maska directive support to TextField via the new mask prop, enabling declarative input masking
+- [#1228](https://github.com/wisemen-digital/wisemen-core/pull/1228)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add bottom slot to ActionContextMenu and ActionDropdownMenu for custom footer content; add settings and application action groups; fix filter input visibility to use sr-only instead of v-if so keyboard-initiated typing is captured immediately
+- [#1227](https://github.com/wisemen-digital/wisemen-core/pull/1227)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix DateField padding style and remove redundant isPickerHidden style variant, fix TimeField padding, use device locale instead of config locale, add isLabelHidden support, and add right slot passthrough
+- [#1230](https://github.com/wisemen-digital/wisemen-core/pull/1230)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix typo in colors.css (text-teriary-on-brand → text-tertiary-on-brand), raise Toast z-index to 75, fix sidebar account card to use current-context-only, fix dashboard page to use global context, forward isLabelHidden in Select, export scrollable and text-shimmer UI modules, export tv utility, export PreferencesSection, PreferencesDropdownMenu, and PreferencesDropdownMenuOption from preferences
+- [#1236](https://github.com/wisemen-digital/wisemen-core/pull/1236)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Change "meta" to "mod" to support shortcuts on windows
+
+## 1.3.2
+<sub>2026-06-08</sub>
+
+- [#1196](https://github.com/wisemen-digital/wisemen-core/pull/1196)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Emit `@open` for UIContextMenu and UIActionContextMenu components
+
 ## 1.3.1
 
 ### Patch Changes

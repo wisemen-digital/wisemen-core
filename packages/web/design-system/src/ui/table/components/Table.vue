@@ -306,7 +306,7 @@ function onClearFiltersAndSearch(): void {
         }"
         :title="i18n.t('component.table.empty_state.no_results.title')"
         :description="i18n.t('component.table.empty_state.no_results.description')"
-        illustration="cloud-search"
+        :illustration="props.variant === 'contained' ? null : 'cloud-search'"
         class="mx-auto h-full max-w-96 py-xl"
       />
 
@@ -314,7 +314,7 @@ function onClearFiltersAndSearch(): void {
         v-else
         :title="i18n.t('component.table.empty_state.no_data.title')"
         :description="i18n.t('component.table.empty_state.no_data.description')"
-        illustration="cloud-search"
+        :illustration="props.variant === 'contained' ? null : 'cloud-search'"
         class="mx-auto h-full max-w-96 py-xl"
       />
     </template>

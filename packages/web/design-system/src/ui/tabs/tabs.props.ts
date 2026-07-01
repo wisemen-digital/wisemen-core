@@ -17,7 +17,6 @@ export interface TabsProps {
    * @default 'horizontal'
    */
   orientation?: 'horizontal' | 'vertical'
-
   /**
    * Controls the horizontal padding of the scroll container. Only applies to the `underline` variant.
    */
@@ -60,6 +59,11 @@ export interface TabsItemProps extends DisabledWithReason {
 }
 
 export interface TabsContentProps {
+  /**
+   * Whether the rendered content should adopt its single child as the actual DOM element.
+   * @default false
+   */
+  asChild?: boolean
   /**
    * The value corresponding to a specific tab item.
    * It determines which content is displayed when a tab is selected.

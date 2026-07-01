@@ -1,0 +1,9 @@
+import { Injectable } from '@nestjs/common'
+import { PgBossScheduler } from '@wisemen/pgboss-nestjs-job'
+
+@Injectable()
+export class {{ pascalCase name }}TypesenseSubscriber {
+  constructor (
+    private readonly jobScheduler: PgBossScheduler
+  ) {}
+}

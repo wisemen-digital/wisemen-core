@@ -28,6 +28,7 @@ const emit = defineEmits<{
 const scrollContainerEl = ref<HTMLElement | null>(null)
 
 const {
+  isScrollableVertically,
   isScrolledFromLeft,
   isScrolledToEnd,
   setScrollContainer: setScrollContainerScrollState,
@@ -53,6 +54,8 @@ const {
   computed(() => props.actionGroup),
   computed(() => props.disableColumnResize),
   computed(() => props.isSelectable),
+  computed(() => props.hasActiveSearch ?? false),
+  computed(() => props.activeFilterCount ?? 0),
 )
 
 const activeFilterCountIncludingSearch = computed<number>(
@@ -83,6 +86,7 @@ useProvideTableContext({
   isColumnResizeDisabled: computed(() => props.disableColumnResize),
   isGroupingEnabled: computed(() => isGroupingEnabled.value),
   isResizingColumn: isResizing,
+  isScrollableVertically: computed(() => isScrollableVertically.value),
   isScrolledFromLeft: computed(() => isScrolledFromLeft.value),
   isScrolledToEnd: computed(() => isScrolledToEnd.value),
   isSelectable: computed(() => props.isSelectable),

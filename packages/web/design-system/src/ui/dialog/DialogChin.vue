@@ -54,11 +54,13 @@ watch(chinContentRef, (el, _oldEl, onCleanup) => {
 })
 
 const variantFromColor: Record<NonNullable<ChinConfig['variant']>, string> = {
-  default: 'from-white/60 dark:from-black/10',
-  error: 'from-error-secondary',
+  default: 'from-white/60 dark:from-white/15',
+  error: 'from-error-secondary dark:from-error-secondary/20',
 }
 
-const overlayFromColor = computed<string>(() => props.chin?.variant != null ? variantFromColor[props.chin.variant] : 'from-white/60 dark:from-black/10')
+const overlayFromColor = computed<string>(
+  () => variantFromColor[props.chin?.variant ?? 'default'],
+)
 
 const buttonVariantMap = {
   brand: 'minimal-color',
@@ -78,6 +80,9 @@ const {
 } = useInjectDialogContext()
 
 const isReducedMotion = useIsReducedMotion()
+
+const pulseAnimationKey = computed<number | string>(() => props.chin?.pulseKey ?? 'rest')
+const shouldPulse = computed<boolean>(() => props.chin?.pulseKey != null && !isReducedMotion.value)
 </script>
 
 <template>
@@ -92,7 +97,7 @@ const isReducedMotion = useIsReducedMotion()
     :class="style.chin()"
     class="
       bg-white/20
-      dark:bg-black/40
+      dark:bg-white/10
     "
     as="div"
   >
@@ -103,109 +108,138 @@ const isReducedMotion = useIsReducedMotion()
         :animate="{ opacity: 1 }"
         :exit="{ opacity: 0 }"
         :transition="{
-          duration: 0.3,
+          duration: isReducedMotion ? 0 : 0.3,
           type: 'spring',
           bounce: 0,
         }"
-        :class="overlayFromColor"
-        class="
-          h-full rounded-t-[calc(1rem+5px)] rounded-b-none bg-linear-to-b
-          to-transparent
-          sm:rounded-[calc(1rem+5px)] sm:bg-linear-to-t
-        "
         as="div"
+        class="h-full"
       >
-        <ColumnLayout
+        <Motion
+          :key="pulseAnimationKey"
+          :initial="{
+            opacity: 1,
+            scale: 1,
+          }"
+          :animate="shouldPulse
+            ? {
+              opacity: 1,
+              scale: [1, 1, 1],
+              y: [0, 3, 0],
+            }
+            : {
+              opacity: 1,
+              scale: 1,
+            }"
+          :transition="{
+            duration: isReducedMotion ? 0 : 0.2,
+            ease: 'easeInOut',
+            times: shouldPulse ? [0, 0.45, 1] : undefined,
+            type: 'tween',
+          }"
+          :class="overlayFromColor"
           class="
-            h-full justify-start p-lg px-xl
-            sm:justify-end
+            h-full rounded-t-[calc(1rem+5px)] rounded-b-none bg-linear-to-b
+            to-transparent
+            sm:rounded-[calc(1rem+5px)] sm:bg-linear-to-t
           "
+          as="div"
         >
-          <div
-            ref="chinContent"
-            class="w-full"
+          <ColumnLayout
+            class="
+              h-full justify-start p-lg px-xl
+              sm:justify-end
+            "
           >
-            <RowLayout
-              align="center"
-              justify="between"
+            <div
+              ref="chinContent"
+              class="w-full"
             >
-              <RowLayout>
-                <Component
-                  :is="props.chin?.icon"
-                  v-if="chin?.icon"
-                  :class="iconColor"
-                  class="size-4 shrink-0"
-                />
-                <UIText
-                  :text="props.chin?.text ?? ''"
-                  :truncate="2"
-                  class="text-xs font-medium"
-                />
-              </RowLayout>
               <RowLayout
-                items="center"
-                gap="none"
+                align="center"
+                justify="between"
+                class="min-w-0 gap-md"
               >
-                <template v-if="props.chin?.secondaryAction">
-                  <UIButton
-                    v-if="props.chin.secondaryAction.type === 'button'"
-                    :label="props.chin.secondaryAction.label"
-                    :is-loading="props.chin.secondaryAction.isLoading"
-                    :is-disabled="props.chin.secondaryAction.isDisabled"
-                    :disabled-reason="props.chin.secondaryAction.disabledReason"
-                    :variant="buttonVariantMap[props.chin.secondaryAction.variant ?? 'default']"
-                    @click="props.chin.secondaryAction.action"
+                <RowLayout class="min-w-0 flex-1 gap-sm">
+                  <Component
+                    :is="props.chin?.icon"
+                    v-if="props.chin?.icon ?? false"
+                    :class="iconColor"
+                    class="size-4 shrink-0"
                   />
-                  <UILink
-                    v-else-if="props.chin.secondaryAction.type === 'link'"
-                    :label="props.chin.secondaryAction.label"
-                    :to="props.chin.secondaryAction.to"
-                    :link="props.chin.secondaryAction.link"
-                    :variant="linkVariantMap[props.chin.secondaryAction.variant ?? 'default']"
+                  <UIText
+                    v-if="props.chin !== null && props.chin.text"
+                    :text="props.chin.text"
+                    :truncate="2"
+                    class="min-w-0 flex-1 text-xs font-medium"
                   />
-                  <UIIconButton
-                    v-else-if="props.chin.secondaryAction.type === 'icon-button'"
-                    :icon="props.chin.secondaryAction.icon"
-                    :label="props.chin.secondaryAction.label"
-                    :is-loading="props.chin.secondaryAction.isLoading"
-                    :is-disabled="props.chin.secondaryAction.isDisabled"
-                    :disabled-reason="props.chin.secondaryAction.disabledReason"
-                    :variant="linkVariantMap[props.chin.secondaryAction.variant ?? 'default']"
-                    @click="props.chin.secondaryAction.action"
-                  />
-                </template>
-                <template v-if="props.chin?.primaryAction">
-                  <UIButton
-                    v-if="props.chin.primaryAction.type === 'button'"
-                    :label="props.chin.primaryAction.label"
-                    :is-loading="props.chin.primaryAction.isLoading"
-                    :is-disabled="props.chin.primaryAction.isDisabled"
-                    :disabled-reason="props.chin.primaryAction.disabledReason"
-                    :variant="buttonVariantMap[props.chin.primaryAction.variant ?? 'brand']"
-                    @click="props.chin.primaryAction.action"
-                  />
-                  <UILink
-                    v-else-if="props.chin.primaryAction.type === 'link'"
-                    :label="props.chin.primaryAction.label"
-                    :to="props.chin.primaryAction.to"
-                    :link="props.chin.primaryAction.link"
-                    :variant="linkVariantMap[props.chin.primaryAction.variant ?? 'brand']"
-                  />
-                  <UIIconButton
-                    v-else-if="props.chin.primaryAction.type === 'icon-button'"
-                    :icon="props.chin.primaryAction.icon"
-                    :label="props.chin.primaryAction.label"
-                    :is-loading="props.chin.primaryAction.isLoading"
-                    :is-disabled="props.chin.primaryAction.isDisabled"
-                    :disabled-reason="props.chin.primaryAction.disabledReason"
-                    :variant="linkVariantMap[props.chin.primaryAction.variant ?? 'brand']"
-                    @click="props.chin.primaryAction.action"
-                  />
-                </template>
+                </RowLayout>
+                <RowLayout
+                  items="center"
+                  gap="none"
+                  class="shrink-0"
+                >
+                  <template v-if="props.chin?.secondaryAction">
+                    <UIButton
+                      v-if="props.chin.secondaryAction.type === 'button'"
+                      :label="props.chin.secondaryAction.label"
+                      :is-loading="props.chin.secondaryAction.isLoading"
+                      :is-disabled="props.chin.secondaryAction.isDisabled"
+                      :disabled-reason="props.chin.secondaryAction.disabledReason"
+                      :variant="buttonVariantMap[props.chin.secondaryAction.variant ?? 'default']"
+                      @click="props.chin.secondaryAction.action"
+                    />
+                    <UILink
+                      v-else-if="props.chin.secondaryAction.type === 'link'"
+                      :label="props.chin.secondaryAction.label"
+                      :to="props.chin.secondaryAction.to"
+                      :link="props.chin.secondaryAction.link"
+                      :variant="linkVariantMap[props.chin.secondaryAction.variant ?? 'default']"
+                    />
+                    <UIIconButton
+                      v-else-if="props.chin.secondaryAction.type === 'icon-button'"
+                      :icon="props.chin.secondaryAction.icon"
+                      :label="props.chin.secondaryAction.label"
+                      :is-loading="props.chin.secondaryAction.isLoading"
+                      :is-disabled="props.chin.secondaryAction.isDisabled"
+                      :disabled-reason="props.chin.secondaryAction.disabledReason"
+                      :variant="linkVariantMap[props.chin.secondaryAction.variant ?? 'default']"
+                      @click="props.chin.secondaryAction.action"
+                    />
+                  </template>
+                  <template v-if="props.chin?.primaryAction">
+                    <UIButton
+                      v-if="props.chin.primaryAction.type === 'button'"
+                      :label="props.chin.primaryAction.label"
+                      :is-loading="props.chin.primaryAction.isLoading"
+                      :is-disabled="props.chin.primaryAction.isDisabled"
+                      :disabled-reason="props.chin.primaryAction.disabledReason"
+                      :variant="buttonVariantMap[props.chin.primaryAction.variant ?? 'brand']"
+                      @click="props.chin.primaryAction.action"
+                    />
+                    <UILink
+                      v-else-if="props.chin.primaryAction.type === 'link'"
+                      :label="props.chin.primaryAction.label"
+                      :to="props.chin.primaryAction.to"
+                      :link="props.chin.primaryAction.link"
+                      :variant="linkVariantMap[props.chin.primaryAction.variant ?? 'brand']"
+                    />
+                    <UIIconButton
+                      v-else-if="props.chin.primaryAction.type === 'icon-button'"
+                      :icon="props.chin.primaryAction.icon"
+                      :label="props.chin.primaryAction.label"
+                      :is-loading="props.chin.primaryAction.isLoading"
+                      :is-disabled="props.chin.primaryAction.isDisabled"
+                      :disabled-reason="props.chin.primaryAction.disabledReason"
+                      :variant="linkVariantMap[props.chin.primaryAction.variant ?? 'brand']"
+                      @click="props.chin.primaryAction.action"
+                    />
+                  </template>
+                </RowLayout>
               </RowLayout>
-            </RowLayout>
-          </div>
-        </ColumnLayout>
+            </div>
+          </ColumnLayout>
+        </Motion>
       </Motion>
     </AnimatePresence>
   </Motion>

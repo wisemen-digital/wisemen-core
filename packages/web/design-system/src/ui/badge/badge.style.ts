@@ -126,8 +126,8 @@ export const badgeVariants = tv({
     {
       class: {
         base: `
-          border-gray-400
-          dark:border-gray-600
+          border-gray-200
+          dark:border-gray-800
         `,
         dot: 'bg-gray-500',
         icon: `
@@ -139,8 +139,8 @@ export const badgeVariants = tv({
           dark:text-gray-300
         `,
         separator: `
-          bg-gray-400
-          dark:bg-gray-600
+          bg-gray-200
+          dark:bg-gray-800
         `,
       },
       color: 'gray',
@@ -160,21 +160,15 @@ export const badgeVariants = tv({
     {
       class: {
         base: `
-          border-gray-200 bg-gray-25
-          dark:border-gray-800 dark:bg-gray-950
+          border-fg-secondary/4 bg-fg-secondary/4
+          dark:border-fg-secondary/5 dark:bg-fg-secondary/5
         `,
-        dot: 'bg-gray-500',
-        icon: `
-          text-gray-500
-          dark:text-gray-400
-        `,
-        label: `
-          text-gray-700
-          dark:text-gray-300
-        `,
+        dot: 'bg-fg-secondary/85',
+        icon: `text-fg-secondary/85`,
+        label: `text-fg-secondary/85`,
         separator: `
-          bg-gray-200
-          dark:bg-gray-800
+          bg-fg-secondary/4
+          dark:bg-fg-secondary/5
         `,
       },
       color: 'gray',
@@ -417,6 +411,65 @@ export const badgeVariants = tv({
       variant: 'translucent',
     },
 
+    // moss
+    {
+      class: {
+        base: `
+          border-moss-400
+          dark:border-moss-600
+        `,
+        dot: 'bg-moss-500',
+        icon: `
+          text-moss-700
+          dark:text-moss-300
+        `,
+        label: `
+          text-moss-700
+          dark:text-moss-300
+        `,
+        separator: `
+          bg-moss-400
+          dark:bg-moss-600
+        `,
+      },
+      color: 'moss',
+      variant: 'outline',
+    },
+    {
+      class: {
+        base: 'border-moss-500 bg-moss-500',
+        dot: 'bg-white',
+        icon: 'text-white',
+        label: 'text-white',
+        separator: 'bg-moss-500',
+      },
+      color: 'moss',
+      variant: 'solid',
+    },
+    {
+      class: {
+        base: `
+          border-moss-200 bg-moss-25
+          dark:border-moss-800 dark:bg-moss-950
+        `,
+        dot: 'bg-moss-500',
+        icon: `
+          text-moss-700
+          dark:text-moss-200
+        `,
+        label: `
+          text-moss-700
+          dark:text-moss-200
+        `,
+        separator: `
+          bg-moss-200
+          dark:bg-moss-800
+        `,
+      },
+      color: 'moss',
+      variant: 'translucent',
+    },
+
     // warning
     {
       class: {
@@ -477,7 +530,9 @@ export const badgeVariants = tv({
     },
   ],
   slots: {
-    base: 'inline-flex items-center gap-sm border',
+    actionsButton: '',
+    actionsIcon: '',
+    base: 'group inline-flex items-center gap-sm overflow-hidden border',
     dot: 'rounded-full',
     icon: '',
     label: 'font-medium',
@@ -486,18 +541,24 @@ export const badgeVariants = tv({
   variants: {
     size: {
       lg: {
+        actionsButton: 'mr-xs p-xxs',
+        actionsIcon: 'size-3.5',
         base: 'h-7 px-sm',
         dot: 'size-1.5',
         icon: 'size-4',
         label: 'text-xs',
       },
       md: {
+        actionsButton: 'mr-xs p-xxs',
+        actionsIcon: 'size-3',
         base: 'h-6 px-sm',
         dot: 'size-1.5',
         icon: 'size-3',
         label: 'text-xxs',
       },
       sm: {
+        actionsButton: 'mr-xxs p-xxs',
+        actionsIcon: 'size-2.5',
         base: 'h-5 px-xs',
         dot: 'size-1',
         icon: 'size-3',
@@ -510,6 +571,7 @@ export const badgeVariants = tv({
       brand: {},
       error: {},
       gray: {},
+      moss: {},
       pink: {},
       purple: {},
       success: {},

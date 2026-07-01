@@ -1,5 +1,17 @@
 # @wisemen/csv
 
+
+
+## 0.2.0
+<sub>2026-06-29</sub>
+
+- [#1256](https://github.com/wisemen-digital/wisemen-core/pull/1256)  *(minor)* Thanks [@G0maa](https://github.com/G0maa)! - feat: RFC escaping of values
+
+## 0.1.1
+<sub>2026-06-16</sub>
+
+- [#1272](https://github.com/wisemen-digital/wisemen-core/pull/1272)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1128): add CSV agent skill
+
 ## 0.1.0
 
 ### Minor Changes

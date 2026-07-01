@@ -55,7 +55,7 @@ import Button from '@/ui/button/button/Button.vue'
         <Button
           :keyboard-shortcut="{
             key: 'S',
-            meta: true,
+            mod: true,
           }"
           label="Save"
         />

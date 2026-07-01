@@ -1,5 +1,17 @@
 # @wisemen/monetary
 
+
+
+## 0.5.1
+<sub>2026-06-17</sub>
+
+- [#1279](https://github.com/wisemen-digital/wisemen-core/pull/1279)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Monetary add SKILL.md for AI agents
+
+## 0.5.0
+<sub>2026-06-16</sub>
+
+- [#1062](https://github.com/wisemen-digital/wisemen-core/pull/1062)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add monetary utils factory function
+
 ## 0.4.7
 
 ### Patch Changes

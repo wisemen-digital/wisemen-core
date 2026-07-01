@@ -6,6 +6,7 @@ import { PlainDateUnit, DiffPlainDateUnit, ReachablePlainDateUnit } from './plai
 import { PlainDateObject } from './plain-date-object.js'
 import { PlainDate, PlainDateInput } from './plain-date.js'
 import { factory } from './plain-date.factory.js'
+import { IsoWeekParity } from './iso-week-parity.js'
 
 export class FutureInfinityDate implements PlainDate {
   isSame (otherDate: PlainDateInput, _unit?: PlainDateUnit): boolean {
@@ -158,6 +159,18 @@ export class FutureInfinityDate implements PlainDate {
 
   day (): number {
     throw new Error('cannot access day of week of +infinity')
+  }
+
+  isoWeekday (): number {
+    throw new Error('cannot access ISO weekday of +infinity')
+  }
+
+  isoWeek (): number {
+    throw new Error('cannot access ISO week of +infinity')
+  }
+
+  isoWeekParity (): IsoWeekParity {
+    throw new Error('cannot access ISO week parity of +infinity')
   }
 
   toDate (): Date {

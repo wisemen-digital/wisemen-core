@@ -1,5 +1,11 @@
 # @wisemen/address
 
+
+## 0.4.6
+<sub>2026-06-16</sub>
+
+- [#1266](https://github.com/wisemen-digital/wisemen-core/pull/1266)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add getting started skill for address package
+
 ## 0.4.5
 
 ### Patch Changes

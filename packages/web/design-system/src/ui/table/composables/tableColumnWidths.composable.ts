@@ -1,4 +1,7 @@
-import { useResizeObserver } from '@vueuse/core'
+import {
+  useDebounceFn,
+  useResizeObserver,
+} from '@vueuse/core'
 import type {
   Action,
   ActionGroup,
@@ -41,6 +44,8 @@ export function useTableColumnWidths(
   actionGroup: ComputedRef<ActionGroup | null>,
   isColumnResizeDisabled: ComputedRef<boolean>,
   isSelectable: ComputedRef<boolean>,
+  hasActiveSearch: ComputedRef<boolean>,
+  activeFilterCount: ComputedRef<number>,
 ) {
   const frozenTemplate = ref<string | null>(null)
   const manualWidths = ref<number[] | null>(null)
@@ -75,10 +80,43 @@ export function useTableColumnWidths(
       return
     }
 
-    captureComputedTemplate(el)
+    // Immediately apply max-content so the first render uses header widths instead
+    // of the narrow fluid template, preventing the "truncated → expands" flash.
+    const headerCells = getResizableHeaderCells()
+
+    if (headerCells.length > 0) {
+      const totalCells = headerCells.length + 2
+
+      frozenTemplate.value = Array.from({
+        length: totalCells,
+      }).fill('max-content').join(' ')
+    }
+
+    // Defer the final measurement to the next macrotask so the virtual scroller's
+    // ResizeObserver has time to measure the container and render visible rows.
+    // The frozenTemplate above ensures no truncation during this brief wait.
+    setTimeout(() => {
+      if (isInitialized.value && gridEl.value !== null) {
+        fitAllColumnsToContent(getResizableHeaderCells())
+      }
+    }, 0)
+  }, {
+    flush: 'post',
+  })
+
+  watch([
+    hasActiveSearch,
+    activeFilterCount,
+  ], () => {
+    manualWidths.value = null
+    frozenTemplate.value = null
   })
 
   let lastContainerWidth = 0
+
+  const debouncedCaptureTemplate = useDebounceFn((el: HTMLElement) => {
+    captureComputedTemplate(el)
+  }, 25)
 
   useResizeObserver(gridEl, (entries) => {
     const width = entries[0]?.borderBoxSize[0]?.inlineSize
@@ -90,7 +128,7 @@ export function useTableColumnWidths(
     lastContainerWidth = width
 
     if (manualWidths.value === null && gridEl.value !== null) {
-      captureComputedTemplate(gridEl.value)
+      debouncedCaptureTemplate(gridEl.value)
     }
   }, {
     box: 'border-box',

@@ -9,6 +9,7 @@ import { InvalidPlainDate } from './invalid-date.js'
 import { PlainDateUnit, DiffPlainDateUnit, ReachablePlainDateUnit } from './plain-date.units.js'
 import { PlainDateObject } from './plain-date-object.js'
 import { PlainDate, PlainDateInput } from './plain-date.js'
+import { IsoWeekParity, getIsoWeekParity } from './iso-week-parity.js'
 import { factory } from './plain-date.factory.js'
 import { plainDate } from './plain-date.fn.js'
 
@@ -255,6 +256,18 @@ export class DayjsPlainDate implements PlainDate {
 
   day (): number {
     return this.date.day()
+  }
+
+  isoWeekday (): number {
+    return this.date.isoWeekday()
+  }
+
+  isoWeek (): number {
+    return this.date.isoWeek()
+  }
+
+  isoWeekParity (): IsoWeekParity {
+    return getIsoWeekParity(this.date.isoWeek())
   }
 
   isInfinity (): boolean {

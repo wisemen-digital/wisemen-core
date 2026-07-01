@@ -76,6 +76,12 @@ function isLastDayOfMonth(date: any): boolean {
               data-selection-start:rounded-l-full
               data-selection-start:bg-brand-secondary
               data-unavailable:pointer-events-none
+              dark:data-highlighted:bg-brand-secondary/20
+              dark:data-highlighted-end:bg-brand-secondary/20
+              dark:data-highlighted-start:bg-brand-secondary/20
+              dark:data-selected:bg-brand-secondary/20
+              dark:data-selection-end:bg-brand-secondary/20
+              dark:data-selection-start:bg-brand-secondary/20
               [&[data-selection-end][data-highlighted-start]:not([data-highlighted-end])]:rounded-r-none
               [&[data-selection-start][data-highlighted-end]:not([data-highlighted-start])]:rounded-l-none
             "
