@@ -7,6 +7,8 @@ import { defineConfig } from 'vitepress'
 
 import { getPackagesSidebar } from '../navigation/navigation.utils'
 import { DOC_PATHS } from '../navigation/paths'
+import { API_PLAYBOOK_NAVIGATION } from '../stacks/api/playbook/apiPlaybook.navigation'
+import { WEB_PLAYBOOK_NAVIGATION } from '../stacks/web/playbook/webPlaybook.navigation'
 import ComponentPreviewPlugin from './plugins/ComponentPreview'
 import ComponentPreviewV1Plugin from './plugins/ComponentPreviewV1'
 
@@ -71,6 +73,12 @@ export default defineConfig({
             },
           ],
         },
+      ],
+      '/web/playbook/': [
+        WEB_PLAYBOOK_NAVIGATION,
+      ],
+      '/api/playbook/': [
+        API_PLAYBOOK_NAVIGATION,
       ],
       ...getPackagesSidebar(),
     },
