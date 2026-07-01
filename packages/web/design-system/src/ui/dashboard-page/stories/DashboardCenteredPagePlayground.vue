@@ -9,7 +9,6 @@ import {
   Rows01Icon,
   Settings01Icon,
 } from '@wisemen/vue-core-icons'
-import type { Component } from 'vue'
 import { computed } from 'vue'
 
 import { UIBadge } from '@/ui/badge'
@@ -28,16 +27,11 @@ import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHe
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
+import type { DashboardSidebarNavLink } from '@/ui/sidebar/types/mainSidebar.type'
 
 interface NavigationGroup {
   label: string
-  links: NavigationItem[]
-}
-
-interface NavigationItem {
-  name: string
-  icon: Component
-  to: any
+  links: DashboardSidebarNavLink[]
 }
 
 const navigation = computed<NavigationGroup[]>(() => ([
@@ -45,18 +39,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Main',
     links: [
       {
-        name: 'Dashboard',
         icon: BarChartSquare02Icon,
+        label: 'Dashboard',
         to: {
           path: '/',
         },
+        type: 'leaf',
       },
       {
-        name: 'Projects',
         icon: Rows01Icon,
+        label: 'Projects',
         to: {
           path: '/projects',
         },
+        type: 'leaf',
       },
     ],
   },
@@ -64,18 +60,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Other',
     links: [
       {
-        name: 'Documents',
         icon: File05Icon,
+        label: 'Documents',
         to: {
           path: '/documents',
         },
+        type: 'leaf',
       },
       {
-        name: 'Calendar',
         icon: CalendarIcon,
+        label: 'Calendar',
         to: {
           path: '/calendar',
         },
+        type: 'leaf',
       },
     ],
   },
@@ -86,18 +84,20 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
     label: '',
     links: [
       {
-        name: 'Support',
         icon: LifeBuoy01Icon,
+        label: 'Support',
         to: {
           path: '/support',
         },
+        type: 'leaf',
       },
       {
-        name: 'Settings',
         icon: Settings01Icon,
+        label: 'Settings',
         to: {
           path: '/settings',
         },
+        type: 'leaf',
       },
     ],
   },
@@ -150,10 +150,8 @@ const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
           >
             <MainSidebarNavigationLink
               v-for="link in group.links"
-              :key="link.name"
-              :to="link.to"
-              :icon="link.icon"
-              :label="link.name"
+              :key="link.label"
+              v-bind="link"
             />
           </MainSidebarNavigationGroup>
         </template>
@@ -167,10 +165,8 @@ const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
           >
             <MainSidebarNavigationLink
               v-for="link in group.links"
-              :key="link.name"
-              :to="link.to"
-              :icon="link.icon"
-              :label="link.name"
+              :key="link.label"
+              v-bind="link"
             />
           </MainSidebarNavigationGroup>
           <MainSidebarFooterAccountCard

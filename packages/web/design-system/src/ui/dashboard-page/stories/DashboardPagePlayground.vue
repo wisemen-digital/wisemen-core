@@ -15,7 +15,6 @@ import {
   Trash01Icon,
   User01Icon,
 } from '@wisemen/vue-core-icons'
-import type { Component } from 'vue'
 import {
   computed,
   ref,
@@ -49,6 +48,7 @@ import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHea
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
+import type { DashboardSidebarNavLink } from '@/ui/sidebar/types/mainSidebar.type'
 import { UITabsItem } from '@/ui/tabs'
 import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
@@ -57,13 +57,7 @@ import { UIText } from '@/ui/text/index'
 
 interface NavigationGroup {
   label: string
-  links: NavigationItem[]
-}
-
-interface NavigationItem {
-  name: string
-  icon: Component
-  to: any
+  links: DashboardSidebarNavLink[]
 }
 
 const navigation = computed<NavigationGroup[]>(() => ([
@@ -71,18 +65,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Main',
     links: [
       {
-        name: 'Dashboard',
         icon: BarChartSquare02Icon,
+        label: 'Dashboard',
         to: {
           path: '/',
         },
+        type: 'leaf',
       },
       {
-        name: 'Projects',
         icon: Rows01Icon,
+        label: 'Projects',
         to: {
           path: '/projects',
         },
+        type: 'leaf',
       },
     ],
   },
@@ -90,18 +86,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Other',
     links: [
       {
-        name: 'Documents',
         icon: File05Icon,
+        label: 'Documents',
         to: {
           path: '/documents',
         },
+        type: 'leaf',
       },
       {
-        name: 'Calendar',
         icon: CalendarIcon,
+        label: 'Calendar',
         to: {
           path: '/calendar',
         },
+        type: 'leaf',
       },
     ],
   },
@@ -112,18 +110,20 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
     label: '',
     links: [
       {
-        name: 'Support',
         icon: LifeBuoy01Icon,
+        label: 'Support',
         to: {
           path: '/support',
         },
+        type: 'leaf',
       },
       {
-        name: 'Settings',
         icon: Settings01Icon,
+        label: 'Settings',
         to: {
           path: '/settings',
         },
+        type: 'leaf',
       },
     ],
   },
@@ -191,10 +191,8 @@ const exampleAction = createAction({
           >
             <MainSidebarNavigationLink
               v-for="link in group.links"
-              :key="link.name"
-              :to="link.to"
-              :icon="link.icon"
-              :label="link.name"
+              :key="link.label"
+              v-bind="link"
             />
           </MainSidebarNavigationGroup>
         </template>
@@ -208,10 +206,8 @@ const exampleAction = createAction({
           >
             <MainSidebarNavigationLink
               v-for="link in group.links"
-              :key="link.name"
-              :to="link.to"
-              :icon="link.icon"
-              :label="link.name"
+              :key="link.label"
+              v-bind="link"
             />
           </MainSidebarNavigationGroup>
           <MainSidebarFooterAccountCard

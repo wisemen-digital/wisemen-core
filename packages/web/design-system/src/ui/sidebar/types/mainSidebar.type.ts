@@ -17,11 +17,9 @@ export interface DashboardSidebarNavSubItem {
   to: RegisteredRouteLocationRaw
 }
 
-export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
+interface DashboardSidebarNavLinkBase extends WithKeyboardShortcut {
   /**
    * Optional function to determine if the link is active based on the current route
-   * @param route
-   * @returns boolean indicating if the link is active
    */
   isActive?: (route: RouteLocationNormalized) => boolean
   /**
@@ -32,24 +30,31 @@ export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
    * Text label for the navigation link
    */
   label: string
-
-  /**
-   * Route location to navigate to. Required when subItems is absent.
-   * When subItems is provided, the parent navigates to subItems[0].to.
-   */
-  to?: RegisteredRouteLocationRaw
-
   /**
    * Optional callback function to execute on click, in addition to navigation
    */
   onClick?: () => void
+}
 
+export interface SidebarNavLeafItem extends DashboardSidebarNavLinkBase {
   /**
-   * Optional 1-level-deep sub-items. When ≤3, rendered inline in expanded sidebar.
+   * Route location to navigate to
+   */
+  to: RegisteredRouteLocationRaw
+  type: 'leaf'
+
+}
+
+export interface SidebarNavParentItem extends DashboardSidebarNavLinkBase {
+  /**
+   * 1-level-deep sub-items. When ≤3, rendered inline in expanded sidebar.
    * When >3 or sidebar is minified/floating, rendered in a popover.
    */
-  subItems?: DashboardSidebarNavSubItem[]
+  subItems: DashboardSidebarNavSubItem[]
+  type: 'parent'
 }
+
+export type DashboardSidebarNavLink = SidebarNavLeafItem | SidebarNavParentItem
 
 export interface DashboardSidebarGroup {
   /**

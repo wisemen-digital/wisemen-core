@@ -1,38 +1,25 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
 import { computed } from 'vue'
-import type {
-  RouteLocationNormalized,
-  RouteLocationRaw,
-} from 'vue-router'
 import {
   useRoute,
   useRouter,
 } from 'vue-router'
 
-import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
 import MainSidebarNavigationLinkButton from '@/ui/sidebar/components/MainSidebarNavigationLinkButton.vue'
 import MainSidebarNavigationLinkCollapsible from '@/ui/sidebar/components/MainSidebarNavigationLinkCollapsible.vue'
 import MainSidebarNavigationLinkPopover from '@/ui/sidebar/components/MainSidebarNavigationLinkPopover.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import type {
+  DashboardSidebarNavLink,
+  SidebarNavLeafItem,
+  SidebarNavParentItem,
+} from '@/ui/sidebar/types/mainSidebar.type'
 
-export interface Props {
-  isActive?: (route: RouteLocationNormalized) => boolean
-  icon: Component
-  keyboardShortcut?: KeyboardShortcut | null
-  label: string
-  subItems?: {
-    label: string
-    to: RouteLocationRaw
-  }[]
-  to?: RouteLocationRaw
-}
+export type Props = DashboardSidebarNavLink
 
 const props = withDefaults(defineProps<Props>(), {
   isActive: () => false,
   keyboardShortcut: null,
-  subItems: undefined,
-  to: undefined,
 })
 
 const emit = defineEmits<{
@@ -48,8 +35,13 @@ const {
 const route = useRoute()
 const router = useRouter()
 
-const hasSubItems = computed<boolean>(() =>
-  (props.subItems?.length ?? 0) > 0)
+const parentProps = computed<SidebarNavParentItem | null>(() =>
+  props.type === 'parent' ? props as SidebarNavParentItem : null)
+
+const leafProps = computed<SidebarNavLeafItem | null>(() =>
+  props.type === 'leaf' ? props as SidebarNavLeafItem : null)
+
+const hasSubItems = computed<boolean>(() => props.type === 'parent')
 
 const usePopover = computed<boolean>(() =>
   hasSubItems.value && !isSidebarOpen.value)
@@ -59,7 +51,7 @@ const isParentActive = computed<boolean>(() => {
     return true
   }
 
-  return props.subItems?.some((sub) => {
+  return parentProps.value?.subItems.some((sub) => {
     const resolved = router.resolve(sub.to)
 
     if (resolved.name != null && resolved.name === route.name) {
@@ -98,32 +90,32 @@ function onLinkClick(): void {
 
 <template>
   <MainSidebarNavigationLinkPopover
-    v-if="usePopover"
+    v-if="usePopover && parentProps !== null"
     v-model:is-popover-open="isPopoverOpen"
     :icon="props.icon"
     :is-parent-active="isParentActive"
     :label="props.label"
-    :sub-items="props.subItems!"
+    :sub-items="parentProps.subItems"
   />
 
   <MainSidebarNavigationLinkCollapsible
-    v-else-if="hasSubItems"
+    v-else-if="hasSubItems && parentProps !== null"
     :icon="props.icon"
     :is-parent-active="isParentActive"
     :is-tooltip-disabled="isTooltipDisabled"
     :keyboard-shortcut="props.keyboardShortcut"
     :label="props.label"
-    :sub-items="props.subItems!"
+    :sub-items="parentProps.subItems"
   />
 
   <MainSidebarNavigationLinkButton
-    v-else
+    v-else-if="leafProps !== null"
     :icon="props.icon"
     :is-active="props.isActive"
     :is-tooltip-disabled="isTooltipDisabled"
     :keyboard-shortcut="props.keyboardShortcut"
     :label="props.label"
-    :to="props.to!"
+    :to="leafProps.to"
     @click="onLinkClick"
   >
     <template #right>
