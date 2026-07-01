@@ -21,7 +21,7 @@ import { computed } from 'vue'
 import {
   isApiRoute,
   isWebRoute,
-} from './getStack.util'
+} from './getStack.util.ts'
 import StackBadge from './StackBadge.vue'
 
 const route = useRoute()
@@ -82,24 +82,35 @@ function getFullPath(path: string): string {
 <template>
   <div
     v-if="activeStack != null"
-    class=" justify-end items-center w-full gap-md hidden lg:flex"
+    class="flex w-full gap-md flex-col"
   >
-    <StackBadge />
+    <div>
+      <StackBadge />
+    </div>
+
     <UILink
       v-if="playbookLink != null"
+      id="playbook-link"
       :to="playbookLink"
       variant="tertiary"
+      class="w-full justify-start! items-start! px-0!"
       size="lg"
       label="Playbook"
     />
 
-    <UIDropdownMenu v-if="packageGroups.length > 0">
+    <UIDropdownMenu
+      v-if="packageGroups.length > 0"
+      class="w-full"
+      popover-width="anchor-width"
+    >
       <template #trigger>
         <UIButton
+          id="dropdown-button"
           :variant="isPackagesActive ? 'tertiary' : 'secondary'"
           :icon-right="ChevronDownIcon"
           label="Packages"
           size="lg"
+          class="w-full"
         />
       </template>
 
@@ -129,17 +140,12 @@ function getFullPath(path: string): string {
   </div>
 </template>
 
-<style scoped>
-.stack-top-nav {
-  display: none;
+<style>
+#dropdown-button > .grid > div:last-child {
+  justify-content: space-between !important;
 }
 
-@media (min-width: 960px) {
-  .stack-top-nav {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-right: 14px;
-  }
+#playbook-link > .grid > div:last-child {
+  justify-content: start !important;
 }
 </style>

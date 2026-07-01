@@ -5,6 +5,7 @@ import './index.css'
 import ClassConfig from '@docs/.vitepress/components/ClassConfig.vue'
 import ComponentPreview from '@docs/.vitepress/components/ComponentPreview.vue'
 import DesignSystemPreview from '@docs/.vitepress/components/DesignSystemPreview.vue'
+import MobileStackTopNav from '@docs/.vitepress/components/MobileStackTopNav.vue'
 import StackBadge from '@docs/.vitepress/components/StackBadge.vue'
 import StackTopNav from '@docs/.vitepress/components/StackTopNav.vue'
 import EmitsTable from '@docs/.vitepress/components/tables/EmitsTable.vue'
@@ -90,7 +91,9 @@ const Layout = defineComponent({
       }, {
         default: () => h(UITooltipProvider, null, {
           default: () => h(DefaultTheme.Layout, null, {
+
             'nav-bar-content-before': () => h(StackTopNav),
+            'nav-screen-content-before': () => h(MobileStackTopNav),
           }),
         }),
       }),
