@@ -6,7 +6,10 @@ import {
   createAction,
   useTemporaryActions,
 } from '@wisemen/vue-core-actions'
-import type { PlainDateRange } from '@wisemen/vue-core-dates'
+import type {
+  PlainDate,
+  PlainDateRange,
+} from '@wisemen/vue-core-dates'
 import { useOverlay } from '@wisemen/vue-core-design-system'
 import {
   FilterLinesIcon,
@@ -26,6 +29,7 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import FiltersDialogDateFilter from '@/components/FiltersDialogDateFilter.vue'
 import FiltersDialogDateRangeFilter from '@/components/FiltersDialogDateRangeFilter.vue'
 import FiltersDialogNumberFilter from '@/components/FiltersDialogNumberFilter.vue'
 import { useProvideFiltersContext } from '@/context/filters.context'
@@ -33,7 +37,7 @@ import { useProvideFiltersContext } from '@/context/filters.context'
 export type SelectFilterValue = number | string | Record<string, any>
 
 interface BaseFilter<TKey extends string> {
-  isStatic?: boolean
+  isPersistent?: boolean
   icon?: Component
   key: TKey
   label: string
@@ -41,6 +45,7 @@ interface BaseFilter<TKey extends string> {
 
 export enum FilterType {
   BOOLEAN = 'boolean',
+  DATE = 'date',
   DATE_RANGE = 'date-range',
   MULTI_AUTOCOMPLETE = 'multi-autocomplete',
   MULTI_SELECT = 'multi-select',
@@ -110,6 +115,11 @@ export interface NumberFilter<TKey extends string = string> extends BaseFilter<T
   type: FilterType.NUMBER
 }
 
+export interface DateFilter<TKey extends string = string> extends BaseFilter<TKey> {
+  defaultValue?: PlainDate | null
+  type: FilterType.DATE
+}
+
 export interface DateRangeFilter<TKey extends string = string> extends BaseFilter<TKey> {
   defaultValue?: PlainDateRange
   type: FilterType.DATE_RANGE
@@ -157,6 +167,15 @@ export function createNumberFilter<const TKey extends string>(
   }
 }
 
+export function createDateFilter<const TKey extends string>(
+  options: Omit<DateFilter<TKey>, 'type'>,
+): DateFilter<TKey> {
+  return {
+    ...options,
+    type: FilterType.DATE,
+  }
+}
+
 export function createDateRangeFilter<const TKey extends string>(
   options: Omit<DateRangeFilter<TKey>, 'type'>,
 ): DateRangeFilter<TKey> {
@@ -168,6 +187,7 @@ export function createDateRangeFilter<const TKey extends string>(
 
 export type Filter
   = | BooleanFilter
+    | DateFilter<string>
     | DateRangeFilter<string>
     | MultiAutocompleteFilter<string, any>
     | MultiSelectFilter<string, any>
@@ -194,7 +214,7 @@ interface UseFiltersReturn<TFilters extends Filter[]> {
   actionGroup: ActionGroup
   activeFilters: ComputedRef<FilterWithAction<Filter>[]>
   clearAll: () => void
-  clearFilter: (key: string, onlyIfEmpty?: boolean, onlyIfNotStatic?: boolean) => void
+  clearFilter: (key: string, onlyIfEmpty?: boolean) => void
   setOpenFilter: (filterKey: string | null) => void
   values: Ref<FilterValues<TFilters>, any>
 }
@@ -218,6 +238,7 @@ export function useFilters<TFilters extends Filter[]>(
   const overlay = useOverlay()
 
   const numberFilterDialog = overlay.create(FiltersDialogNumberFilter)
+  const dateFilterDialog = overlay.create(FiltersDialogDateFilter)
   const dateRangeFilterDialog = overlay.create(FiltersDialogDateRangeFilter)
 
   const id = useId()
@@ -356,6 +377,27 @@ export function useFilters<TFilters extends Filter[]>(
           }),
           key: filter.key,
         }
+      case FilterType.DATE:
+        return {
+          action: createAction({
+            id: filter.key,
+            name: filter.label,
+            execute: () => {
+              dateFilterDialog.open({
+                filter,
+                initialValue: values.value[filter.key],
+                onSubmit: (value) => {
+                  values.value[filter.key] = value
+                  dateFilterDialog.close()
+                },
+              })
+            },
+            group: options.actionGroup,
+            icon: () => filter.icon ?? null,
+            parentScoreInfluence: 'none',
+          }),
+          key: filter.key,
+        }
       case FilterType.DATE_RANGE:
         return {
           action: createAction({
@@ -441,10 +483,18 @@ export function useFilters<TFilters extends Filter[]>(
 
   // Filters that are currently active (either have non-default values or are open)
   const activeFilters = computed<FilterWithAction<Filter>[]>(
-    () => Array.from(activeFiltersKeys.value).map(getFilterByKey).map((filter) => ({
-      ...filter,
-      action: getFilterActionByKey(filter.key),
-    })),
+    () => Array.from(activeFiltersKeys.value)
+      .map(getFilterByKey)
+      .map((filter) => ({
+        ...filter,
+        action: getFilterActionByKey(filter.key),
+      }))
+      .sort((a, b) => {
+        const aWeight = a.isPersistent === true ? 0 : 1
+        const bWeight = b.isPersistent === true ? 0 : 1
+
+        return aWeight - bWeight
+      }),
   )
 
   // Watches filter values and updates the set of active filter keys accordingly.
@@ -468,9 +518,10 @@ export function useFilters<TFilters extends Filter[]>(
    * @param key The key of the filter to check.
    */
   function isFilterActive(key: FilterKeys<TFilters>): boolean {
+    const filter = getFilterByKey(key)
     const isFilterOpen = openFilterKey.value === key
 
-    return isFilterOpen || !isFilterEmpty(key)
+    return filter.isPersistent === true || isFilterOpen || !isFilterEmpty(key)
   }
 
   /**
@@ -487,6 +538,8 @@ export function useFilters<TFilters extends Filter[]>(
       case FilterType.MULTI_AUTOCOMPLETE:
         return value.length === 0
       case FilterType.BOOLEAN:
+        return value === null
+      case FilterType.DATE:
         return value === null
       case FilterType.NUMBER:
         return value === null
@@ -516,6 +569,8 @@ export function useFilters<TFilters extends Filter[]>(
       case FilterType.MULTI_AUTOCOMPLETE:
         return []
       case FilterType.BOOLEAN:
+        return null
+      case FilterType.DATE:
         return null
       case FilterType.NUMBER:
         return null
@@ -550,15 +605,14 @@ export function useFilters<TFilters extends Filter[]>(
    * @param key The key of the filter to clear.
    * @param onlyIfEmpty If true, the filter is only cleared if it is currently empty. False by default.
    */
-  function clearFilter(key: string, onlyIfEmpty = false, onlyIfNotStatic = false): void {
-    const isEmpty = isFilterEmpty(key)
+  function clearFilter(key: string, onlyIfEmpty = false): void {
     const filter = getFilterByKey(key)
 
-    if (onlyIfEmpty && !isEmpty) {
+    if (filter.isPersistent === true) {
       return
     }
 
-    if (onlyIfNotStatic && filter.isStatic === true) {
+    if (onlyIfEmpty && !isFilterEmpty(key)) {
       return
     }
 
@@ -567,10 +621,13 @@ export function useFilters<TFilters extends Filter[]>(
   }
 
   function clearAll(): void {
-    activeFiltersKeys.value.clear()
-
     for (const filter of options.filters) {
+      if (filter.isPersistent === true) {
+        continue
+      }
+
       values.value[filter.key] = getFallbackValue(filter.key)
+      activeFiltersKeys.value.delete(filter.key)
     }
   }
 
