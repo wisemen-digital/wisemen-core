@@ -90,7 +90,6 @@ const Layout = defineComponent({
       }, {
         default: () => h(UITooltipProvider, null, {
           default: () => h(DefaultTheme.Layout, null, {
-            'doc-before': () => h(StackBadge),
             'nav-bar-content-before': () => h(StackTopNav),
           }),
         }),

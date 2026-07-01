@@ -82,7 +82,7 @@ function getFullPath(path: string): string {
 <template>
   <div
     v-if="activeStack != null"
-    class="flex justify-end items-center w-full gap-xl"
+    class="flex justify-end items-center w-full gap-md"
   >
     <StackBadge />
     <UILink
