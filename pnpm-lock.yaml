@@ -828,6 +828,12 @@ importers:
       '@wisemen/vue-core-components':
         specifier: workspace:*
         version: link:../packages/web/components-next
+      '@wisemen/vue-core-design-system':
+        specifier: workspace:*
+        version: link:../packages/web/design-system
+      '@wisemen/vue-core-icons':
+        specifier: workspace:*
+        version: link:../packages/web/icons
     devDependencies:
       '@tailwindcss/postcss':
         specifier: catalog:style
