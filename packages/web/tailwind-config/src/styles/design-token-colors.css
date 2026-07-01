@@ -1,4 +1,7 @@
 .light {
+  container-type: normal;
+  --theme-mode: light;
+
   --fg-primary: var(--gray-900);
   --fg-secondary: var(--gray-700);
   --fg-secondary-hover: var(--gray-800);
@@ -91,6 +94,9 @@
 }
 
 .dark {
+  container-type: normal;
+  --theme-mode: dark;
+
   --fg-primary: var(--white);
   --fg-secondary: var(--gray-300);
   --fg-secondary-hover: var(--gray-200);
@@ -184,6 +190,9 @@
 }
 
 .system {
+  container-type: normal;
+  --theme-mode: light;
+
   --fg-primary: var(--gray-900);
   --fg-secondary: var(--gray-700);
   --fg-secondary-hover: var(--gray-800);
@@ -275,6 +284,8 @@
   --corner-highlight: var(--brand-300);
 
   @media (prefers-color-scheme: dark) {
+    --theme-mode: dark;
+
     --fg-primary: var(--white);
     --fg-secondary: var(--gray-300);
     --fg-secondary-hover: var(--gray-200);
