@@ -127,7 +127,10 @@ const sortIcon = computed<Component | null>(() => {
           v-if="props.description !== null"
           :id="descriptionId"
           class="sr-only"
-        >{{ props.description }}</span>
+        >
+          {{ props.description }}
+        </span>
+
         <UIRowLayout gap="xs">
           <UIClickableElement v-if="props.label !== null">
             <button
