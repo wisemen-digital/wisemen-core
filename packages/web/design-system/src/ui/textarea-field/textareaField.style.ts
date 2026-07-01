@@ -4,8 +4,8 @@ export const createTextareaFieldStyle = tv({
   slots: {
     root: `
       group/textarea-field inline-flex w-full flex-col overflow-hidden
-      rounded-md border border-secondary bg-primary shadow-xs outline
-      outline-transparent duration-100
+      rounded-md border border-secondary bg-primary outline outline-transparent
+      duration-100
       data-disabled:cursor-not-allowed data-disabled:border-disabled-subtle
       data-disabled:bg-disabled-subtle
       data-error:border-error
