@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import FiltersActiveBadgeBoolean from '@/components/FiltersActiveBadgeBoolean.vue'
+import FiltersActiveBadgeDate from '@/components/FiltersActiveBadgeDate.vue'
 import FiltersActiveBadgeDateRange from '@/components/FiltersActiveBadgeDateRange.vue'
 import FiltersActiveBadgeNumber from '@/components/FiltersActiveBadgeNumber.vue'
 import FiltersActiveMultiSelectBadge from '@/components/FiltersActiveMultiSelectBadge.vue'
@@ -27,6 +28,11 @@ const props = defineProps<{
 
   <FiltersActiveBadgeBoolean
     v-else-if="props.filter.type === FilterType.BOOLEAN"
+    :filter="props.filter"
+  />
+
+  <FiltersActiveBadgeDate
+    v-else-if="props.filter.type === FilterType.DATE"
     :filter="props.filter"
   />
 
