@@ -227,7 +227,7 @@ useTemporaryActions(todayAction)
           :aria-label="label"
           type="button"
           class="
-            flex h-full w-4 shrink-0 items-center justify-center
+            flex h-full w-4 shrink-0 items-center justify-center rounded-none!
             hover:bg-fg-primary/2
             dark:hover:bg-fg-primary/5
           "
@@ -259,7 +259,7 @@ useTemporaryActions(todayAction)
           :aria-label="label"
           type="button"
           class="
-            flex h-full w-4 shrink-0 items-center justify-center
+            flex h-full w-4 shrink-0 items-center justify-center rounded-none!
             hover:bg-fg-primary/2
             dark:hover:bg-fg-primary/5
           "
