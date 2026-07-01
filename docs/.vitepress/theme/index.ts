@@ -1,16 +1,30 @@
+/* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
 import '@wisemen/vue-core-components/style.css'
 import './index.css'
 
 import ClassConfig from '@docs/.vitepress/components/ClassConfig.vue'
 import ComponentPreview from '@docs/.vitepress/components/ComponentPreview.vue'
 import DesignSystemPreview from '@docs/.vitepress/components/DesignSystemPreview.vue'
+import StackBadge from '@docs/.vitepress/components/StackBadge.vue'
+import StackTopNav from '@docs/.vitepress/components/StackTopNav.vue'
 import EmitsTable from '@docs/.vitepress/components/tables/EmitsTable.vue'
 import MethodsTable from '@docs/.vitepress/components/tables/MethodsTable.vue'
 import PropsTable from '@docs/.vitepress/components/tables/PropsTable.vue'
 import SlotsTable from '@docs/.vitepress/components/tables/SlotsTable.vue'
 import { router } from '@docs/router'
+import {
+  UIConfigProvider,
+  UIThemeProvider,
+  UITooltipProvider,
+} from '@wisemen/vue-core-design-system'
 import { createPinia } from 'pinia'
+import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+import {
+  computed,
+  defineComponent,
+  h,
+} from 'vue'
 import { createI18n } from 'vue-i18n'
 
 import designSystemEnUs from '../../../packages/web/design-system/src/locales/en-US.json'
@@ -52,8 +66,41 @@ export const i18nPlugin = createI18n({
   },
 })
 
+const Layout = defineComponent({
+  name: 'DocsLayout',
+  setup() {
+    const {
+      isDark,
+    } = useData()
+
+    const appearance = computed<'dark' | 'light'>(() => isDark.value ? 'dark' : 'light')
+
+    return () => h(UIConfigProvider, {
+      autoCloseToast: 'always',
+      hourCycle: null,
+      locale: 'en-US',
+      numberFormat: 'system',
+      projectName: 'Wisemen Core',
+      reducedMotion: false,
+      showNavigationArrowsInTopBar: false,
+    }, {
+      default: () => h(UIThemeProvider, {
+        appearance: appearance.value,
+        theme: 'default',
+      }, {
+        default: () => h(UITooltipProvider, null, {
+          default: () => h(DefaultTheme.Layout, null, {
+            'doc-before': () => h(StackBadge),
+            'nav-bar-content-before': () => h(StackTopNav),
+          }),
+        }),
+      }),
+    })
+  },
+})
+
 const theme: typeof DefaultTheme = {
-  Layout: DefaultTheme.Layout,
+  Layout: Layout as any,
   enhanceApp(ctx) {
     ctx.app.use(i18nPlugin as any)
     ctx.app.use(createPinia())
@@ -65,6 +112,8 @@ const theme: typeof DefaultTheme = {
     ctx.app.component('EmitsTable', EmitsTable)
     ctx.app.component('SlotsTable', SlotsTable)
     ctx.app.component('MethodsTable', MethodsTable)
+    ctx.app.component('StackBadge', StackBadge)
+    ctx.app.component('StackTopNav', StackTopNav)
     DefaultTheme.enhanceApp(ctx)
   },
 }
