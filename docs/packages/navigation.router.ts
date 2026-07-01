@@ -13,6 +13,7 @@ import type { PackageDocNavigation } from './navigation.utils'
 import { PERMISSIONS_NAVIGATION } from './permissions/permissions.navigation'
 import { PREFERENCES_NAVIGATION } from './preferences/preferences.navigation'
 import { TELEMETRY_NAVIGATION } from './telemetry/telemetry.navigation'
+import { TEMPLATE_NAVIGATION } from './template/template.navigation'
 import { TYPE_UTILS_NAVIGATION } from './type-utils/typeUtils.navigation'
 import { UTILS_NAVIGATION } from './utils/utils.navigation'
 import { ZOD_VALIDATION_NAVIGATION } from './zod-validation/zodValidation.navigation'
@@ -23,6 +24,12 @@ export interface PackageDocNavigationGroup {
 }
 
 export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
+  {
+    text: 'Getting started',
+    items: [
+      TEMPLATE_NAVIGATION,
+    ],
+  },
   {
     text: 'UI and Design',
     items: [
