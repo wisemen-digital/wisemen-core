@@ -1,3 +1,4 @@
+// oxlint-disable typescript-eslint(no-unsafe-argument), typescript-eslint(no-unsafe-member-access), typescript-eslint(no-unsafe-call), typescript-eslint(no-unsafe-assignment), typescript-eslint(no-explicit-any)
 import {
   Global,
   Module,
@@ -7,7 +8,7 @@ import {
   type Type
 } from '@nestjs/common'
 import { type EventsMap, SUBSCRIBE_KEY } from './subscribe.decorator.js'
-import { DomainEventEmitter, type EventSubscriberMethod } from './domain-event-emitter.js'
+import { DomainEventEmitter } from './domain-event-emitter.js'
 import { SUBSCRIBE_ALL_KEY, type SubscribeAllMethodNames } from './subscribe-all.decorator.js'
 import {
   DOMAIN_EVENT_EMITTER_MIDDLEWARE,
@@ -74,8 +75,8 @@ export class DomainEventEmitterModule implements OnApplicationBootstrap {
 
     for (const [eventType, methodNames] of eventMap.entries()) {
       for (const methodName of methodNames) {
-        const observer = instance[methodName] as EventSubscriberMethod
-        const boundObserver = observer.bind(instance) as EventSubscriberMethod
+        const observer = instance[methodName]
+        const boundObserver = observer.bind(instance) 
         this.emitter.addSubscriber(eventType, boundObserver)
       }
     }
@@ -85,9 +86,9 @@ export class DomainEventEmitterModule implements OnApplicationBootstrap {
     const globalSubscriberMethodNames = this.extractGlobalSubscribers(providerClass)
 
     for (const methodName of globalSubscriberMethodNames) {
-      const observer = instance[methodName] as EventSubscriberMethod
+      const observer = instance[methodName]
 
-      this.emitter.addGlobalSubscriber(observer.bind(instance) as EventSubscriberMethod)
+      this.emitter.addGlobalSubscriber(observer.bind(instance))
     }
   }
 

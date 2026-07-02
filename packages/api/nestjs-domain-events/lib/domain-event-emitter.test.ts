@@ -19,6 +19,7 @@ describe('DomainEventEmitter', () => {
 
     emitter.addSubscriber('test.event', async (events) => {
       calls.push(`subscriber:${events.length}`)
+      return Promise.resolve()
     })
 
     await emitter.emit([
@@ -35,6 +36,7 @@ describe('DomainEventEmitter', () => {
 
     emitter.addSubscriber('test.event', async (events) => {
       calls.push(`subscriber:${events.length}`)
+      return Promise.resolve()
     })
 
     await emitter.emit([new TestEvent({ content: { value: 'one' } })])
