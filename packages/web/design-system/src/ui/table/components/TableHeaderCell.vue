@@ -35,13 +35,13 @@ const props = withDefaults(defineProps<{
     label?: string | null
     metadata?: RegisteredActionContext['metadata']
   } | null
-  columnIndex: number
-  columnKey: string
-  label: string | null
   /**
    * @deprecated Use `isCentered` instead.
    */
   centerContent?: boolean
+  columnIndex: number
+  columnKey: string
+  label: string | null
 }>(), {
   isCentered: false,
   isResizable: true,

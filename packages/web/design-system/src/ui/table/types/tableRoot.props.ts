@@ -46,6 +46,10 @@ export interface TableRootProps {
    */
   columnSizes: TableColumnSize[]
   /**
+   * @deprecated Use `isColumnResizeDisabled` instead.
+   */
+  disableColumnResize?: boolean
+  /**
    * Actions rendered in the table header toolbar (top-right area), independent of row selection.
    */
   headerActions?: Action[]
@@ -62,14 +66,10 @@ export interface TableRootProps {
    * @default 'contained'
    */
   variant?: 'contained' | 'full-page'
+
   /**
    * Called when the user scrolls to the bottom of the table. Implement to fetch the next
    * page of data for infinite-scroll pagination. Omit when all data is loaded at once.
    */
   onNextPage?: () => void
-
-  /**
-   * @deprecated Use `isColumnResizeDisabled` instead.
-   */
-  disableColumnResize?: boolean
 }

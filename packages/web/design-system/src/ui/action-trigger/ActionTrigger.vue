@@ -22,11 +22,11 @@ import type { RegisteredActionContext } from '@/register'
 const props = withDefaults(defineProps<{
   isCurrentContextOnly: boolean
   action: Action
-  models?: RegisteredActionContext['models']
   /**
    * @deprecated Use `isCurrentContextOnly` instead.
    */
   currentContextOnly?: boolean
+  models?: RegisteredActionContext['models']
 }>(), {
   currentContextOnly: undefined,
 })

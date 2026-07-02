@@ -18,11 +18,11 @@ import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeF
 
 const props = withDefaults(defineProps<{
   hasNext?: boolean
-  side: 'left' | 'right'
   /**
    * @deprecated Use `hasNext` instead.
    */
   showNext?: boolean
+  side: 'left' | 'right'
 }>(), {
   showNext: undefined,
 })

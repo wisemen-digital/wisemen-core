@@ -17,11 +17,12 @@ export interface ContextMenuProps {
   collisionPadding?: number
 
   /**
-   * @deprecated Use `isPrioritizedPosition` instead.
-   */
-  prioritizePosition?: boolean
-  /**
    * @deprecated Use `isUpdateOnLayoutShiftDisabled` instead.
    */
   disableUpdateOnLayoutShift?: boolean
+  /**
+   * @deprecated Use `isPrioritizedPosition` instead.
+   */
+  prioritizePosition?: boolean
+
 }

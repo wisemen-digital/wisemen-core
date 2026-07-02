@@ -24,6 +24,11 @@ export interface DialogHeaderProps {
   description: string
 
   /**
+   * @deprecated Use `isDescriptionHidden` instead.
+   */
+  hideDescription?: boolean
+
+  /**
    * Optional featured icon component displayed at the start of the header.
    */
   icon?: Component | null
@@ -33,13 +38,8 @@ export interface DialogHeaderProps {
    * @default 'brand'
    */
   iconVariant?: 'brand' | 'error' | 'success' | 'warning'
-
   /**
    * @deprecated Use `hasSeparator` instead.
    */
   showSeparator?: boolean
-  /**
-   * @deprecated Use `isDescriptionHidden` instead.
-   */
-  hideDescription?: boolean
 }

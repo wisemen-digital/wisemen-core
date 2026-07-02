@@ -48,10 +48,15 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    */
   items: SelectItem<GetValue<TValue>>[]
   /**
+   * @deprecated Use `isDropdownKeptOpenOnSelect` instead.
+   */
+  keepDropdownOpenOnSelect?: boolean | null
+  /**
    * Should only be set when the dropdown list if not paginated, but is limited in the backend
    * @default null
    */
   limit?: number | null
+
   /**
    * The search mode of the select.
    * - `local`: filtering is done on the client side
@@ -66,11 +71,6 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default 'md'
    */
   size?: 'md' | 'sm'
-
-  /**
-   * @deprecated Use `isDropdownKeptOpenOnSelect` instead.
-   */
-  keepDropdownOpenOnSelect?: boolean | null
 }
 
 export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pick<

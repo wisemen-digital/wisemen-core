@@ -20,13 +20,13 @@ import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<{
   isOpenByDefault?: boolean
-  headerCells?: Component[]
-  items?: unknown[]
-  label: string
   /**
    * @deprecated Use `isOpenByDefault` instead.
    */
   defaultOpen?: boolean
+  headerCells?: Component[]
+  items?: unknown[]
+  label: string
 }>(), {
   isOpenByDefault: true,
   items: () => [],

@@ -16,13 +16,13 @@ import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 const props = withDefaults(defineProps<DropdownMenuProps & {
   isCurrentContextOnly: boolean
   actions?: Action[]
-  metadata?: RegisteredActionContext['metadata']
-  models?: RegisteredActionContext['models']
-  parentAction?: Action
   /**
    * @deprecated Use `isCurrentContextOnly` instead.
    */
   currentContextOnly?: boolean
+  metadata?: RegisteredActionContext['metadata']
+  models?: RegisteredActionContext['models']
+  parentAction?: Action
 }>(), {
   currentContextOnly: undefined,
 })

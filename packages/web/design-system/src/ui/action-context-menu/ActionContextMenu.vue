@@ -12,13 +12,13 @@ import { UIContextMenu } from '@/ui/context-menu/index'
 const props = withDefaults(defineProps<{
   isCurrentContextOnly: boolean
   actions?: Action[]
-  metadata?: RegisteredActionContext['metadata']
-  models?: RegisteredActionContext['models']
-  parentAction?: Action
   /**
    * @deprecated Use `isCurrentContextOnly` instead.
    */
   currentContextOnly?: boolean
+  metadata?: RegisteredActionContext['metadata']
+  models?: RegisteredActionContext['models']
+  parentAction?: Action
 }>(), {
   currentContextOnly: undefined,
 })

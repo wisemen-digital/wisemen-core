@@ -58,14 +58,14 @@ export interface Toast {
   isDismissible?: boolean
 
   /**
-   * @deprecated Use `isDismissible` instead.
-   */
-  dismissible?: boolean
-
-  /**
    * An optional call-to-action button rendered inside the toast.
    */
   button?: ToastButtonAction
+
+  /**
+   * @deprecated Use `isDismissible` instead.
+   */
+  dismissible?: boolean
 
   /**
    * How long the toast stays visible before auto-closing, in milliseconds.

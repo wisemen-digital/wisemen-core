@@ -19,10 +19,6 @@ export interface PopoverProps extends PopperProps {
   isUpdateOnLayoutShiftDisabled?: boolean
 
   /**
-   * @deprecated Use `isPrioritizedPosition` instead.
-   */
-  prioritizePosition?: boolean
-  /**
    * @deprecated Use `isSideFlipDisabled` instead.
    */
   disableSideFlip?: boolean
@@ -30,4 +26,8 @@ export interface PopoverProps extends PopperProps {
    * @deprecated Use `isUpdateOnLayoutShiftDisabled` instead.
    */
   disableUpdateOnLayoutShift?: boolean
+  /**
+   * @deprecated Use `isPrioritizedPosition` instead.
+   */
+  prioritizePosition?: boolean
 }

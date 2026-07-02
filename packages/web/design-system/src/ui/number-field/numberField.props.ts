@@ -30,14 +30,14 @@ export interface NumberFieldProps extends Input, AutocompleteInput, InputWrapper
    */
   min?: number | null
   /**
+   * @deprecated Use `hasControls` instead.
+   */
+  showControls?: boolean
+
+  /**
    * Defines the increment and decrement step for the number input.
    * This determines how much the value changes when using controls or arrow keys.
    * @default 1
    */
   step?: number
-
-  /**
-   * @deprecated Use `hasControls` instead.
-   */
-  showControls?: boolean
 }

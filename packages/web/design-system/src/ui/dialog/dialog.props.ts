@@ -26,21 +26,21 @@ export interface DialogProps {
   chin?: ChinConfig | null
 
   /**
-   * The size of the dialog.
-   * @default 'md'
+   * @deprecated Use `isClickOutsideDisabled` instead.
    */
-  size?: DialogSize
+  preventClickOutside?: boolean
 
+  /**
+   * @deprecated Use `isEscDisabled` instead.
+   */
+  preventEsc?: boolean
   /**
    * @deprecated Use `hasCloseButton` instead.
    */
   showCloseButton?: boolean
   /**
-   * @deprecated Use `isClickOutsideDisabled` instead.
+   * The size of the dialog.
+   * @default 'md'
    */
-  preventClickOutside?: boolean
-  /**
-   * @deprecated Use `isEscDisabled` instead.
-   */
-  preventEsc?: boolean
+  size?: DialogSize
 }
