@@ -2,7 +2,7 @@
   "name": "@wisemen/payload-core-translate",
   "type": "module",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "imports": {
     "#*": "./src/*"
   },

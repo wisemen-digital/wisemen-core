@@ -399,6 +399,6 @@ allowBuilds:
   vue-demi: true
 
 minimumReleaseAgeExclude:
-  - '@payloadcms/translations@3.85.2'
-  - '@payloadcms/ui@3.85.2'
+  - "@payloadcms/translations@3.85.2"
+  - "@payloadcms/ui@3.85.2"
   - payload@3.85.2
