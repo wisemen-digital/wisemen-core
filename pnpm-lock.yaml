@@ -1882,6 +1882,9 @@ importers:
         specifier: catalog:backend-peer
         version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
     devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
       '@types/sinon':
         specifier: 22.0.0
         version: 22.0.0

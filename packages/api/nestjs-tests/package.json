@@ -37,6 +37,7 @@
     "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
+    "@types/node": "catalog:backend",
     "@types/sinon": "22.0.0",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
