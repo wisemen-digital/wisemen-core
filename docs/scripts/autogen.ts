@@ -232,10 +232,12 @@ function renderDesignSystemPage(component: DesignSystemComponentConfig): string 
 }
 
 function renderDesignSystemNavigation(): string {
+  const basePath = '/web/packages/design-system'
+
   const groupLines = designSystemComponentGroups.map((group) => {
     const componentLines = group.components.map((component) => `        {
           text: '${component.title}',
-          link: 'components/${component.targetFolder}/${toKebabCase(component.componentName)}',
+          link: '${basePath}/components/${component.targetFolder}/${toKebabCase(component.componentName)}',
         },`)
 
     return `    {
@@ -246,10 +248,10 @@ ${componentLines.join('\n')}
     },`
   })
 
-  return `import type { PackageDocNavigation } from '@docs/packages/navigation.utils'
+  return `import type { PackageDocNavigation } from '@docs/navigation/navigation.utils'
 
 export const DESIGN_SYSTEM_NAVIGATION: PackageDocNavigation = {
-  link: 'pages/getting-started/installation',
+  link: '${basePath}/pages/getting-started/installation',
   title: 'Design System',
   path: 'design-system',
   sidebar: [
@@ -258,7 +260,7 @@ export const DESIGN_SYSTEM_NAVIGATION: PackageDocNavigation = {
       items: [
         {
           text: 'Installation',
-          link: 'pages/getting-started/installation',
+          link: '${basePath}/pages/getting-started/installation',
         },
       ],
     },
@@ -271,7 +273,7 @@ ${groupLines.join('\n')}
 for (const component of designSystemComponents) {
   const componentSourceFolder = resolve(__dirname, '../../packages/web/design-system/src/ui', component.sourceFolder)
   const meta = parseDesignSystemMeta(designSystemChecker.getComponentMeta(componentSourceFolder))
-  const metaDirPath = resolve(__dirname, '../packages/design-system/components/', component.targetFolder)
+  const metaDirPath = resolve(__dirname, '../stacks/web/packages/design-system/components/', component.targetFolder)
 
   if (!existsSync(metaDirPath)) {
     mkdirSync(metaDirPath, {
@@ -289,6 +291,6 @@ for (const component of designSystemComponents) {
 }
 
 writeFileSync(
-  resolve(__dirname, '../packages/design-system/designSystem.navigation.ts'),
+  resolve(__dirname, '../stacks/web/packages/design-system/designSystem.navigation.ts'),
   renderDesignSystemNavigation(),
 )

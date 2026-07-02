@@ -5,19 +5,13 @@
 @import './tailwind-design-tokens.css';
 
 @variant dark {
-  :where(.dark) & {
+  @container style(--theme-mode: dark) {
     @slot;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :where(.system) & {
-      @slot;
-    }
   }
 }
 
 @variant light {
-  :where(.light) & {
+  @container style(--theme-mode: light) {
     @slot;
   }
 }
