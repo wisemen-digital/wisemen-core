@@ -24,7 +24,9 @@ const props = withDefaults(defineProps<KeyboardShortcutProps>(), {
   isKeyHoldVisualizationEnabled: false,
 })
 
-const isKeyHoldVisualizationEnabled = computed<boolean>(() => props.isKeyHoldVisualizationEnabled || props.enableKeyHoldVisualization === true)
+const isKeyHoldVisualizationEnabled = computed<boolean>(
+  () => props.isKeyHoldVisualizationEnabled || props.enableKeyHoldVisualization === true,
+)
 
 const i18n = useI18n()
 

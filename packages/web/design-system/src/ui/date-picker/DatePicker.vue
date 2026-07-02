@@ -49,7 +49,7 @@ const {
   modelValue,
 })
 
-const hasFixedWeeks = computed(() => props.hasFixedWeeks || props.fixedWeeks)
+const hasFixedWeeks = computed<boolean>(() => props.hasFixedWeeks || props.fixedWeeks === true)
 
 const datePickerStyle = computed(() => createDatePickerFieldStyle({
   size: props.size,

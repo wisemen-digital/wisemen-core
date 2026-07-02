@@ -17,7 +17,9 @@ const props = withDefaults(defineProps<ActionTooltipProps>(), {
   popoverSide: 'top',
 })
 
-const isCloseOnTriggerClickDisabled = computed<boolean>(() => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick === true)
+const isCloseOnTriggerClickDisabled = computed<boolean>(
+  () => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick === true,
+)
 </script>
 
 <template>

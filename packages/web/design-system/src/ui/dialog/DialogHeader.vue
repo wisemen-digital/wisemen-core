@@ -50,8 +50,12 @@ const iconClasses = computed(() => iconVariantStyle({
   variant: props.iconVariant,
 }))
 
-const hasSeparator = computed(() => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator)
-const isDescriptionHidden = computed(() => props.isDescriptionHidden || props.hideDescription)
+const hasSeparator = computed<boolean>(
+  () => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator,
+)
+const isDescriptionHidden = computed<boolean>(
+  () => props.isDescriptionHidden || props.hideDescription === true,
+)
 
 const dialogContext = useInjectDialogContext(null)
 </script>

@@ -11,8 +11,6 @@ import {
   watch,
 } from 'vue'
 
-
-
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import DropdownMenuArrow from '@/ui/dropdown-menu/DropdownMenuArrow.vue'
@@ -52,6 +50,16 @@ function resolveHtmlElement(value: unknown): HTMLElement | null {
   return null
 }
 
+const isContentPositionFixed = computed<boolean>(
+  () => props.isContentPositionFixed || props.fixedContentPosition === true,
+)
+const isPrioritizedPosition = computed<boolean>(
+  () => props.isPrioritizedPosition || props.prioritizePosition === true,
+)
+const isUpdateOnLayoutShiftDisabled = computed<boolean>(
+  () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
+)
+
 watch(isOpen, (open) => {
   if (!open || !isContentPositionFixed.value || frozenAnchorRef.value === null) {
     return
@@ -68,10 +76,6 @@ watch(isOpen, (open) => {
   frozenAnchorRef.value.style.height = `${rect.height}px`
   frozenAnchorRef.value.style.width = `${rect.width}px`
 })
-
-const isContentPositionFixed = computed(() => props.isContentPositionFixed || props.fixedContentPosition)
-const isPrioritizedPosition = computed(() => props.isPrioritizedPosition || props.prioritizePosition)
-const isUpdateOnLayoutShiftDisabled = computed(() => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift)
 
 const anchorReference = computed<HTMLElement | undefined>(() => {
   if (isContentPositionFixed.value) {

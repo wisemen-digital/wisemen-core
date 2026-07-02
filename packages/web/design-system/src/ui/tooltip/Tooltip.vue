@@ -22,8 +22,12 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   delayDuration: 300,
 })
 
-const isCloseOnTriggerClickDisabled = computed(() => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick)
-const isHoverableContentDisabled = computed(() => props.isHoverableContentDisabled || props.disableHoverableContent)
+const isCloseOnTriggerClickDisabled = computed<boolean>(
+  () => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick === true,
+)
+const isHoverableContentDisabled = computed<boolean>(
+  () => props.isHoverableContentDisabled || props.disableHoverableContent === true,
+)
 
 const tooltipStyle = computed<TooltipStyle>(() => createTooltipStyle({
   popoverWidth: props.popoverWidth ?? undefined,

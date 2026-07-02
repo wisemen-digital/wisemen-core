@@ -16,12 +16,15 @@ const props = withDefaults(defineProps<ContextMenuProps>(), {
   collisionPadding: 0,
 })
 
-const isPrioritizedPosition = computed(() => props.isPrioritizedPosition || props.prioritizePosition)
-const isUpdateOnLayoutShiftDisabled = computed(() => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift)
-
 const emit = defineEmits<{
   open: []
 }>()
+const isPrioritizedPosition = computed<boolean>(
+  () => props.isPrioritizedPosition || props.prioritizePosition === true,
+)
+const isUpdateOnLayoutShiftDisabled = computed<boolean>(
+  () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
+)
 
 function onUpdateIsOpen(isOpen: boolean): void {
   if (isOpen) {

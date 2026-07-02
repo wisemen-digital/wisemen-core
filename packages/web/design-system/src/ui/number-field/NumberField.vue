@@ -64,7 +64,7 @@ const modelValue = defineModel<number | null>({
   required: true,
 })
 
-const hasControls = computed(() => props.hasControls || props.showControls)
+const hasControls = computed<boolean>(() => props.hasControls || props.showControls === true)
 
 const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle({
   hasControls: hasControls.value,

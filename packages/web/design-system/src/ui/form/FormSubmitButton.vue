@@ -8,18 +8,20 @@ import { useInjectFormContext } from '@/ui/form/form.context'
 
 const props = withDefaults(defineProps<{
   isKeyboardShortcutDisabled?: boolean
-  label: string
-  variant?: 'primary' | 'secondary'
   /**
    * @deprecated Use `isKeyboardShortcutDisabled` instead.
    */
   disableKeyboardShortcut?: boolean
+  label: string
+  variant?: 'primary' | 'secondary'
 }>(), {
   isKeyboardShortcutDisabled: false,
   variant: 'primary',
 })
 
-const isKeyboardShortcutDisabled = computed<boolean>(() => props.isKeyboardShortcutDisabled || props.disableKeyboardShortcut === true)
+const isKeyboardShortcutDisabled = computed<boolean>(
+  () => props.isKeyboardShortcutDisabled || props.disableKeyboardShortcut === true,
+)
 
 const KEYBOARD_SHORTCUTS = {
   submit: {

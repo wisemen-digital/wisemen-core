@@ -17,11 +17,13 @@ const props = withDefaults(defineProps<DialogFooterButtonProps>(), {
   type: 'button',
 })
 
-const isAutoFocusDisabled = computed(() => props.isAutoFocusDisabled || props.disableAutoFocus)
-
 const emit = defineEmits<{
   click: []
 }>()
+
+const isAutoFocusDisabled = computed<boolean>(
+  () => props.isAutoFocusDisabled || props.disableAutoFocus === true,
+)
 </script>
 
 <template>

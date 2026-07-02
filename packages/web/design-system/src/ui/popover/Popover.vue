@@ -20,16 +20,21 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   isUpdateOnLayoutShiftDisabled: false,
 })
 
-const isPrioritizedPosition = computed(() => props.isPrioritizedPosition || props.prioritizePosition)
-const isSideFlipDisabled = computed(() => props.isSideFlipDisabled || props.disableSideFlip)
-const isUpdateOnLayoutShiftDisabled = computed(() => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift)
-
 const emit = defineEmits<{
   autoFocusOnClose: [event: Event]
   escapeKeyDown: [event: KeyboardEvent]
   focusOutside: [event: CustomEvent]
   interactOutside: [event: CustomEvent]
 }>()
+const isPrioritizedPosition = computed<boolean>(
+  () => props.isPrioritizedPosition || props.prioritizePosition === true,
+)
+const isSideFlipDisabled = computed<boolean>(
+  () => props.isSideFlipDisabled || props.disableSideFlip === true,
+)
+const isUpdateOnLayoutShiftDisabled = computed<boolean>(
+  () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
+)
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,

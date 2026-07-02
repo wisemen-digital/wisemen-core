@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<TextProps>(), {
   truncate: true,
 })
 
-const isTooltipDisabled = computed(() => props.isTooltipDisabled || props.disableTooltip)
+const isTooltipDisabled = computed<boolean>(() => props.isTooltipDisabled || props.disableTooltip === true)
 
 const attrs = useAttrs()
 

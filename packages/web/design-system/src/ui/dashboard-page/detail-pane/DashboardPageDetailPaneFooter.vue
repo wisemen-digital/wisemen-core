@@ -8,7 +8,9 @@ const props = withDefaults(defineProps<DetailPaneFooterProps>(), {
   hasSeparator: true,
 })
 
-const hasSeparator = computed(() => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator)
+const hasSeparator = computed<boolean>(
+  () => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator,
+)
 </script>
 
 <template>

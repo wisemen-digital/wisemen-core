@@ -8,7 +8,7 @@ const props = withDefaults(defineProps<SkeletonItemProps>(), {
   animationDelayInMs: 0,
 })
 
-const isAnimated = computed(() => props.isAnimated || props.animate)
+const isAnimated = computed<boolean>(() => props.isAnimated || props.animate === true)
 </script>
 
 <template>

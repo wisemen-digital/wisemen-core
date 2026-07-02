@@ -23,15 +23,20 @@ const props = withDefaults(defineProps<DialogProps>(), {
   size: 'md',
 })
 
-const hasCloseButton = computed(() => props.showCloseButton !== undefined ? props.showCloseButton : props.hasCloseButton)
-const isClickOutsideDisabled = computed(() => props.isClickOutsideDisabled || props.preventClickOutside)
-const isEscDisabled = computed(() => props.isEscDisabled || props.preventEsc)
-
 const emit = defineEmits<{
   'afterLeave': []
   'close': []
   'update:isOpen': [value: boolean]
 }>()
+const hasCloseButton = computed<boolean>(
+  () => props.showCloseButton !== undefined ? props.showCloseButton : props.hasCloseButton,
+)
+const isClickOutsideDisabled = computed<boolean>(
+  () => props.isClickOutsideDisabled || props.preventClickOutside === true,
+)
+const isEscDisabled = computed<boolean>(
+  () => props.isEscDisabled || props.preventEsc === true,
+)
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,

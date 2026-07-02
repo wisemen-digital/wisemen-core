@@ -11,7 +11,9 @@ const props = withDefaults(defineProps<DetailPaneHeaderProps>(), {
   left: null,
 })
 
-const hasSeparator = computed(() => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator)
+const hasSeparator = computed<boolean>(
+  () => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator,
+)
 
 const scrollContext = useInjectDetailPaneScrollContext(null)
 </script>

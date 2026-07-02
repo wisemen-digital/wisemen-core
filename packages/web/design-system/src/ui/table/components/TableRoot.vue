@@ -41,7 +41,9 @@ const gridEl = computed<HTMLElement | null>(
   () => (scrollContainerEl.value?.children[0] ?? null) as HTMLElement | null,
 )
 
-const isColumnResizeDisabled = computed<boolean>(() => props.isColumnResizeDisabled === true || props.disableColumnResize === true)
+const isColumnResizeDisabled = computed<boolean>(
+  () => props.isColumnResizeDisabled === true || props.disableColumnResize === true,
+)
 
 const {
   isResizing,
