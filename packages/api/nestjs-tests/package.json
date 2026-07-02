@@ -28,13 +28,21 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
+    "class-validator": "catalog:backend",
     "expect": "catalog:test",
     "sinon": "catalog:test"
   },
   "peerDependencies": {
-    
+    "@wisemen/nestjs-domain-events": "workspace:^",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
+    "@types/sinon": "22.0.0",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "typescript": "catalog:peer"
   },
   "author": "Wisemen",
   "license": "SEE LICENSE IN LICENSE.md",

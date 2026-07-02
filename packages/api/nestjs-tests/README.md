@@ -1,91 +1,86 @@
-# @wisemen/nestjs-nats
+# @wisemen/nestjs-tests
 
-NestJS integration for NATS messaging, including:
-
-- Decorator-driven subscriber, consumer, and service-endpoint handlers
-- JetStream stream management
-- CloudEvent routing
-- Parameter injection with pipes
-- Simple client wrapper for fire-and-forget pub/sub
+Testing helpers for NestJS API packages, with custom `expect` matchers and a
+stubbed TypeORM `DataSource` for transaction-based unit tests.
 
 ## Installation
 
 ```bash
-npm install @wisemen/nestjs-nats
+pnpm add -D @wisemen/nestjs-tests
 ```
 
 ### Peer dependencies
 
 ```bash
-npm install @nestjs/common @nestjs/config @nestjs/core @opentelemetry/api class-transformer class-validator reflect-metadata rxjs
+pnpm add -D @wisemen/nestjs-domain-events typeorm
 ```
 
-## Quick start
+## Usage
 
-### 1. Register the application module
+### Register the matchers once
 
 ```ts
-import { NatsModule } from '@wisemen/nestjs-nats'
+import { expect } from 'expect'
+import {
+  ISO8601,
+  isEnumValue,
+  toHaveEmitted,
+  toHaveErrorCode,
+  toHaveStatus,
+  toHaveValidationErrors,
+  uuid,
+} from '@wisemen/nestjs-tests'
 
-@Module({
-  imports: [
-    NatsModule.forRoot({
-      modules: [MySubscriberModule, MyConsumerModule],
-      defaultClient: MyNatsClient,
-      streams: [MyStream],
-    }),
-  ],
+expect.extend({
+  ISO8601,
+  isEnumValue,
+  toHaveEmitted,
+  toHaveErrorCode,
+  toHaveStatus,
+  toHaveValidationErrors,
+  uuid,
 })
-export class NatsAppModule {}
 ```
 
-### 2. Define a connection client
+### Assert HTTP responses and DTO validation
 
 ```ts
-import { NatsConnection } from '@wisemen/nestjs-nats'
-import type { ConfigService } from '@nestjs/config'
+import { HttpStatus } from '@nestjs/common'
 
-@NatsConnection((config: ConfigService) => ({
-  name: 'default',
-  servers: config.getOrThrow('NATS_ENDPOINT'),
+expect(response).toHaveStatus(HttpStatus.CREATED)
+expect(response).toHaveErrorCode('validation_error')
+
+expect(response.body).toStrictEqual(expect.objectContaining({
+  uuid: expect.uuid(),
+  createdAt: expect.ISO8601(),
 }))
-export class MyNatsConnection {}
+
+await expect(command).toHaveValidationErrors()
+expect(role).isEnumValue(UserRole)
 ```
 
-### 3. Subscribe to messages
+### Stub transactional use cases
+
+`stubDataSource()` creates a Sinon stub for `DataSource` and executes
+`transaction(...)` callbacks with a stubbed `EntityManager`.
 
 ```ts
-import { NatsSubscriber, OnNatsMessage, NatsMessageData } from '@wisemen/nestjs-nats'
+import { createStubInstance } from 'sinon'
+import { DomainEventEmitter } from '@wisemen/nestjs-domain-events'
+import { stubDataSource } from '@wisemen/nestjs-tests'
 
-@NatsSubscriber((config) => ({
-  subject: 'my.subject',
-  name: 'my-subscriber',
-}))
-export class MySubscriber {
-  @OnNatsMessage()
-  async handle(@NatsMessageData(NatsMsgDataJsonPipe) payload: unknown): Promise<void> {
-    // ...
-  }
-}
+const eventEmitter = createStubInstance(DomainEventEmitter)
+const useCase = new CreateOrderUseCase(
+  stubDataSource(),
+  createStubInstance(OrderRepository),
+  eventEmitter,
+)
+
+const response = await useCase.execute(command)
+
+expect(eventEmitter).toHaveEmitted(new OrderCreatedEvent(response.uuid))
 ```
 
-### 4. Simple client (fire-and-forget publish)
+## License
 
-```ts
-import { NatsClient, NatsClientModule } from '@wisemen/nestjs-nats'
-
-@Module({
-  imports: [NatsClientModule],
-  providers: [MyService],
-})
-export class AppModule {}
-
-@Injectable()
-export class MyService {
-  constructor(private readonly nats: NatsClient) {}
-
-  async notifySomething(): Promise<void> {
-    this.nats.publish('my.subject', new TextEncoder().encode(JSON.stringify({ hello: 'world' })))
-  }
-}
-```
+GPL

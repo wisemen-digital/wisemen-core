@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import type { ExpectationResult, MatcherFunction } from 'expect'
 import { isISO8601 } from 'class-validator'
 

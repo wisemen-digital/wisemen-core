@@ -1589,7 +1589,7 @@ importers:
         version: link:../opentelemetry
       expect:
         specifier: catalog:test
-        version: 30.2.0
+        version: 30.4.1
       sinon:
         specifier: catalog:test
         version: 22.0.0
@@ -1866,12 +1866,40 @@ importers:
 
   packages/api/nestjs-tests:
     dependencies:
+      '@wisemen/nestjs-domain-events':
+        specifier: workspace:^
+        version: link:../nestjs-domain-events
+      class-validator:
+        specifier: catalog:backend
+        version: 0.15.1
       expect:
         specifier: catalog:test
         version: 30.4.1
       sinon:
         specifier: catalog:test
         version: 22.0.0
+      typeorm:
+        specifier: catalog:backend-peer
+        version: 1.0.0(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
+    devDependencies:
+      '@types/sinon':
+        specifier: 22.0.0
+        version: 22.0.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.6.1)
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
 
   packages/api/nestjs-typeorm:
     dependencies:
@@ -8321,6 +8349,12 @@ packages:
 
   '@types/serve-static@2.2.0':
     resolution: {integrity: sha512-8mam4H1NHLtu7nmtalF7eyBH14QyOASmcxHhSfEoRyr0nP/YdoesEtU+uSRvMe96TW/HPTtkoKqQLl53N7UXMQ==}
+
+  '@types/sinon@22.0.0':
+    resolution: {integrity: sha512-TDbVpbccc2HfiqHR09Argj3mHV1KMW7sCCKj52fsl8lbRLkEn7fB1966EWhOKWUBcqfBueZuPoA7/OK1CKiy3g==}
+
+  '@types/sinonjs__fake-timers@15.0.1':
+    resolution: {integrity: sha512-Ko2tjWJq8oozHzHV+reuvS5KYIRAokHnGbDwGh/J64LntgpbuylF74ipEL24HCyRjf9FOlBiBHWBR1RlVKsI1w==}
 
   '@types/sortablejs@1.15.9':
     resolution: {integrity: sha512-7HP+rZGE2p886PKV9c9OJzLBI6BBJu1O7lJGYnPyG3fS4/duUCcngkNCjsLwIMV+WMqANe3tt4irrXHSIe68OQ==}
@@ -19593,6 +19627,12 @@ snapshots:
     dependencies:
       '@types/http-errors': 2.0.5
       '@types/node': 25.3.0
+
+  '@types/sinon@22.0.0':
+    dependencies:
+      '@types/sinonjs__fake-timers': 15.0.1
+
+  '@types/sinonjs__fake-timers@15.0.1': {}
 
   '@types/sortablejs@1.15.9': {}
 

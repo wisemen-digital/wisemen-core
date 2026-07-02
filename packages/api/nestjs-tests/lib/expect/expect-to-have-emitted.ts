@@ -1,8 +1,8 @@
+// oxlint-disable typescript-eslint(no-unsafe-member-access), typescript-eslint(no-unsafe-call)
+import { DomainEvent, DomainEventEmitter } from '@wisemen/nestjs-domain-events'
 import type { ExpectationResult, MatcherFunction } from 'expect'
 import { expect } from 'expect'
 import type { SinonStubbedInstance } from 'sinon'
-import type { DomainEvent } from '#src/modules/domain-events/domain-event.js'
-import type { DomainEventEmitter } from '#src/modules/domain-events/domain-event-emitter.js'
 
 export const toHaveEmitted: MatcherFunction<[DomainEvent]> = function (
   received: SinonStubbedInstance<DomainEventEmitter>,
