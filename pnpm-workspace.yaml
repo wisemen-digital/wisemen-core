@@ -341,6 +341,10 @@ catalogs:
     payload: 3.85.2
     react: 19.2.7
     "@types/react": 19.2.17
+  payload-peer:
+    "@payloadcms/ui": ">=3.85.0"
+    payload: ">=3.85.0"
+    react: ">=19.2.7"
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"

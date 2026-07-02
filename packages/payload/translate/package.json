@@ -38,9 +38,9 @@
     "lint:fix": "eslint --fix"
   },
   "peerDependencies": {
-    "@payloadcms/ui": "catalog:payload",
-    "payload": "catalog:payload",
-    "react": "catalog:payload"
+    "@payloadcms/ui": "catalog:payload-peer",
+    "payload": "catalog:payload-peer",
+    "react": "catalog:payload-peer"
   },
   "dependencies": {
   },
