@@ -4,12 +4,12 @@ import type { TextProps } from '@/ui/text/text.props'
 
 const props = withDefaults(defineProps<{
   as?: TextProps['as']
-  disableTooltip?: boolean
+  isTooltipDisabled?: boolean
   text?: string
   truncate?: TextProps['truncate']
 }>(), {
   as: 'span',
-  disableTooltip: false,
+  isTooltipDisabled: false,
   text: 'Hello World',
   truncate: undefined,
 })
@@ -26,7 +26,7 @@ const longText = 'This is a long piece of text that should be truncated when it 
       <div class="w-64">
         <UIText
           :as="props.as"
-          :disable-tooltip="props.disableTooltip"
+          :is-tooltip-disabled="props.isTooltipDisabled"
           :text="props.text"
           :truncate="props.truncate"
         />

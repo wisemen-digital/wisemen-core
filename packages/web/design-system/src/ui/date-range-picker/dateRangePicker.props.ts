@@ -15,5 +15,5 @@ export interface DateRangePickerProps {
    * Whether to show the presets sidebar.
    * @default true
    */
-  showPresets?: boolean
+  hasPresets?: boolean
 }

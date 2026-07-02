@@ -27,7 +27,7 @@ import type { MenuItemLeftConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = defineProps<{
   action: Action
-  closeOnSelect: boolean
+  isClosedOnSelect: boolean
   context?: ActionContext
   models?: ActionModel[]
   preview?: Component | null
@@ -97,7 +97,7 @@ const itemLeft = computed<MenuItemLeftConfig | null>(() => {
 })
 
 function onSelectAction(event: Event): void {
-  if (!props.closeOnSelect || isShiftKeyHeld.value) {
+  if (!props.isClosedOnSelect || isShiftKeyHeld.value) {
     event.preventDefault()
   }
 

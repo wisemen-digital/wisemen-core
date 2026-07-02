@@ -28,11 +28,11 @@ const meta = {
       control: 'number',
       description: 'The duration in milliseconds to wait before showing the tooltip',
     },
-    disableCloseOnTriggerClick: {
+    isCloseOnTriggerClickDisabled: {
       control: 'boolean',
       description: 'When true, clicking on trigger won\'t close the tooltip',
     },
-    disableHoverableContent: {
+    isHoverableContentDisabled: {
       control: 'boolean',
       description: 'When true, hovering the content will close the tooltip as the pointer leaves the trigger',
     },

@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<DialogFooterButtonProps>(), {
   isDestructive: false,
   isDisabled: false,
   isLoading: false,
-  disableAutoFocus: false,
+  isAutoFocusDisabled: false,
   disabledReason: null,
   form: null,
   iconLeft: null,
@@ -21,7 +21,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <UIAutoFocus :is-disabled="props.disableAutoFocus">
+  <UIAutoFocus :is-disabled="props.isAutoFocusDisabled">
     <Button
       v-bind="props"
       :variant="props.isDestructive ? 'destructive-primary' : 'primary'"

@@ -1,3 +1,3 @@
 export interface DetailPaneFooterProps {
-  showSeparator?: boolean
+  hasSeparator?: boolean
 }

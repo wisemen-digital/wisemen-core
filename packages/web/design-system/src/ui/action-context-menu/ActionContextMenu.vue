@@ -11,7 +11,7 @@ import { UIContextMenu } from '@/ui/context-menu/index'
 
 const props = defineProps<{
   actions?: Action[]
-  currentContextOnly: boolean
+  isCurrentContextOnly: boolean
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
@@ -21,7 +21,7 @@ const emit = defineEmits<{
   open: []
 }>()
 
-if (!props.currentContextOnly) {
+if (!props.isCurrentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
 }

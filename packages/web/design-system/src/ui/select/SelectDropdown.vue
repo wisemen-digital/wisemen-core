@@ -25,15 +25,15 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
-  disableSideFlip: true,
-  keepDropdownOpenOnSelect: null,
+  isSideFlipDisabled: true,
+  isDropdownKeptOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  prioritizePosition: true,
+  isPrioritizedPosition: true,
   search: null,
   size: 'md',
 })
@@ -57,11 +57,11 @@ const {
 } = useSelectDropdown()
 
 function onSelectOption(): void {
-  if (props.keepDropdownOpenOnSelect === true) {
+  if (props.isDropdownKeptOpenOnSelect === true) {
     return
   }
 
-  if (props.keepDropdownOpenOnSelect === false) {
+  if (props.isDropdownKeptOpenOnSelect === false) {
     isDropdownVisible.value = false
 
     return
@@ -104,9 +104,9 @@ useProvideSelectContext({
     :popover-side="props.popoverSide"
     :popover-width="props.popoverWidth"
     :is-popover-arrow-visible="props.isPopoverArrowVisible"
-    :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-    :prioritize-position="props.prioritizePosition"
-    :disable-side-flip="props.disableSideFlip"
+    :is-update-on-layout-shift-disabled="props.isUpdateOnLayoutShiftDisabled"
+    :is-prioritized-position="props.isPrioritizedPosition"
+    :is-side-flip-disabled="props.isSideFlipDisabled"
     @keydown="onTriggerKeyDown"
   >
     <template #trigger>

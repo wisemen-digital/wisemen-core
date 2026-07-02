@@ -14,8 +14,8 @@ const props = withDefaults(defineProps<ConfirmDialogProps>(), {
   cancelLabel: null,
   confirmLabel: null,
   icon: null,
-  preventClickOutside: false,
-  preventEsc: false,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
 })
 
 const emit = defineEmits<{
@@ -49,8 +49,8 @@ function onClose(): void {
 <template>
   <Dialog
     :has-close-button="false"
-    :prevent-click-outside="props.preventClickOutside"
-    :prevent-esc="props.preventEsc"
+    :is-click-outside-disabled="props.isClickOutsideDisabled"
+    :is-esc-disabled="props.isEscDisabled"
     size="xxs"
     @close="onClose"
   >

@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
   max?: number
   min?: number
   placeholder?: string
-  showControls?: boolean
+  hasControls?: boolean
   step?: number
 }>(), {
   isDisabled: false,
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<{
   max: undefined,
   min: undefined,
   placeholder: 'Enter a number',
-  showControls: false,
+  hasControls: false,
   step: undefined,
 })
 
@@ -51,7 +51,7 @@ const modelValue = ref<number | null>(null)
       :max="props.max"
       :min="props.min"
       :placeholder="props.placeholder"
-      :show-controls="props.showControls"
+      :has-controls="props.hasControls"
       :step="0.001"
       class="w-72"
     />

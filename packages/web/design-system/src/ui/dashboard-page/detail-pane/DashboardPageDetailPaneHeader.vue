@@ -6,7 +6,7 @@ import { UISeparator } from '@/ui/separator'
 
 const props = withDefaults(defineProps<DetailPaneHeaderProps>(), {
   left: null,
-  showSeparator: true,
+  hasSeparator: true,
 })
 
 const scrollContext = useInjectDetailPaneScrollContext(null)
@@ -43,7 +43,7 @@ const scrollContext = useInjectDetailPaneScrollContext(null)
     </div>
 
     <UISeparator
-      v-if="props.showSeparator && !(scrollContext?.hasTabs.value)"
+      v-if="props.hasSeparator && !(scrollContext?.hasTabs.value)"
     />
   </div>
 </template>

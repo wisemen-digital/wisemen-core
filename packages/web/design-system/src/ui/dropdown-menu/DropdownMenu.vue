@@ -51,7 +51,7 @@ function resolveHtmlElement(value: unknown): HTMLElement | null {
 }
 
 watch(isOpen, (open) => {
-  if (!open || !props.fixedContentPosition || frozenAnchorRef.value === null) {
+  if (!open || !props.isContentPositionFixed || frozenAnchorRef.value === null) {
     return
   }
 
@@ -68,7 +68,7 @@ watch(isOpen, (open) => {
 })
 
 const anchorReference = computed<HTMLElement | undefined>(() => {
-  if (props.fixedContentPosition) {
+  if (props.isContentPositionFixed) {
     return frozenAnchorRef.value ?? undefined
   }
 
@@ -78,7 +78,7 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
 
 <template>
   <div
-    v-if="props.fixedContentPosition"
+    v-if="props.isContentPositionFixed"
     ref="frozenAnchor"
     class="pointer-events-none fixed"
   />
@@ -108,8 +108,8 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
             'w-(--reka-dropdown-menu-trigger-width)': props.popoverWidth === 'anchor-width',
             'w-(--reka-dropdown-menu-content-available-width)': props.popoverWidth === 'available-width',
           }"
-          :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-          :prioritize-position="props.prioritizePosition"
+          :disable-update-on-layout-shift="props.isUpdateOnLayoutShiftDisabled"
+          :prioritize-position="props.isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
           position-strategy="absolute"
           sticky="always"

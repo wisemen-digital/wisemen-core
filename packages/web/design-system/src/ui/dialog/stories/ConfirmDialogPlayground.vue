@@ -7,13 +7,13 @@ import ExampleConfirmDialog from './ExampleConfirmDialog.vue'
 
 const props = withDefaults(defineProps<{
   isDestructive?: boolean
-  preventClickOutside?: boolean
-  preventEsc?: boolean
+  isClickOutsideDisabled?: boolean
+  isEscDisabled?: boolean
   size?: DialogSize
 }>(), {
   isDestructive: true,
-  preventClickOutside: false,
-  preventEsc: false,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
   size: 'xs',
 })
 
@@ -28,8 +28,8 @@ const dialog = overlay.create(ExampleConfirmDialog)
       @click="dialog.open({
         isDestructive: props.isDestructive,
         size: props.size,
-        preventClickOutside: props.preventClickOutside,
-        preventEsc: props.preventEsc,
+        isClickOutsideDisabled: props.isClickOutsideDisabled,
+        isEscDisabled: props.isEscDisabled,
       })"
     />
   </div>

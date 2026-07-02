@@ -11,8 +11,8 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
   collisionPadding: 0,
-  disableUpdateOnLayoutShift: false,
-  prioritizePosition: false,
+  isUpdateOnLayoutShiftDisabled: false,
+  isPrioritizedPosition: false,
 })
 
 const emit = defineEmits<{
@@ -39,8 +39,8 @@ function onUpdateIsOpen(isOpen: boolean): void {
       <ThemeProvider :as-child="true">
         <RekaContextMenuContent
           :collision-padding="props.collisionPadding"
-          :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-          :prioritize-position="props.prioritizePosition"
+          :disable-update-on-layout-shift="props.isUpdateOnLayoutShiftDisabled"
+          :prioritize-position="props.isPrioritizedPosition"
           data-animation="popover-default"
           class="
             z-50 min-w-48 origin-(--reka-context-menu-content-transform-origin)

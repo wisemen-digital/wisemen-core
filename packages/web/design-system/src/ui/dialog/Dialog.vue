@@ -17,9 +17,9 @@ import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
   chin: null,
-  preventClickOutside: false,
-  preventEsc: false,
-  showCloseButton: true,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
+  hasCloseButton: true,
   size: 'md',
 })
 
@@ -51,13 +51,13 @@ useProvideDialogContext({
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
-  if (props.preventEsc) {
+  if (props.isEscDisabled) {
     event.preventDefault()
   }
 }
 
 function onPointerDownOutside(event: Event): void {
-  if (props.preventClickOutside) {
+  if (props.isClickOutsideDisabled) {
     event.preventDefault()
   }
 }
@@ -111,7 +111,7 @@ const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="props.showCloseButton" />
+        <DialogCloseButton v-if="props.hasCloseButton" />
       </div>
 
       <DialogChin :chin="props.chin" />

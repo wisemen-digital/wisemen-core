@@ -24,7 +24,7 @@ const meta = {
         'div',
       ],
     },
-    disableTooltip: {
+    isTooltipDisabled: {
       control: 'boolean',
       description: 'Disables the tooltip even if the text is truncated',
     },

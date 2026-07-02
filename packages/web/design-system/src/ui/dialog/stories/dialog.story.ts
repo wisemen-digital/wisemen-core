@@ -11,10 +11,10 @@ import FormDialogPlayground from './FormDialogPlayground.vue'
 const meta = {
   title: 'Components/Dialog',
   argTypes: {
-    preventClickOutside: {
+    isClickOutsideDisabled: {
       control: 'boolean',
     },
-    preventEsc: {
+    isEscDisabled: {
       control: 'boolean',
     },
     size: {
@@ -43,8 +43,8 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    preventClickOutside: false,
-    preventEsc: false,
+    isClickOutsideDisabled: false,
+    isEscDisabled: false,
     size: 'md',
   },
 }
@@ -52,8 +52,8 @@ export const Default: Story = {
 export const Confirm: StoryObj<typeof ConfirmDialogPlayground> = {
   args: {
     isDestructive: true,
-    preventClickOutside: false,
-    preventEsc: false,
+    isClickOutsideDisabled: false,
+    isEscDisabled: false,
     size: 'xs',
   },
   argTypes: {
@@ -74,8 +74,8 @@ export const Confirm: StoryObj<typeof ConfirmDialogPlayground> = {
 
 export const Scrollable: StoryObj<typeof DialogScrollablePlayground> = {
   args: {
-    preventClickOutside: false,
-    preventEsc: false,
+    isClickOutsideDisabled: false,
+    isEscDisabled: false,
     size: 'md',
   },
   render: (args) => ({

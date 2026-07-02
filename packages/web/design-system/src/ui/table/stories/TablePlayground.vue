@@ -22,13 +22,13 @@ const props = withDefaults(defineProps<{
   hasActiveSearch?: boolean
   isLoading?: boolean
   activeFilterCount?: number
-  disableColumnResize?: boolean
+  isColumnResizeDisabled?: boolean
   variant?: 'contained' | 'full-page'
 }>(), {
   hasActiveSearch: false,
   isLoading: false,
   activeFilterCount: 0,
-  disableColumnResize: false,
+  isColumnResizeDisabled: false,
   variant: 'full-page',
 })
 
@@ -94,7 +94,7 @@ const columns: TableColumn<User>[] = [
       :variant="props.variant"
       :has-active-search="props.hasActiveSearch"
       :active-filter-count="props.activeFilterCount"
-      :disable-column-resize="props.disableColumnResize"
+      :is-column-resize-disabled="props.isColumnResizeDisabled"
     />
   </div>
 </template>

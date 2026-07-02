@@ -16,7 +16,7 @@ export interface DatePickerProps {
    * This can be useful to prevent layout shifting.
    * @default false
    */
-  fixedWeeks?: boolean
+  hasFixedWeeks?: boolean
   /**
    * The size of the date picker.
    * @default 'md'

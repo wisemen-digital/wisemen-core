@@ -15,8 +15,8 @@ import { UISeparator } from '@/ui/separator/index'
 const props = withDefaults(defineProps<DialogHeaderProps>(), {
   icon: null,
   iconVariant: 'brand',
-  showCloseButton: true,
-  showSeparator: true,
+  hasCloseButton: true,
+  hasSeparator: true,
 })
 
 const iconVariantStyle = tv({
@@ -89,7 +89,7 @@ const dialogContext = useInjectDialogContext(null)
         <!--  eslint-disable vue/no-v-text-v-html-on-component -->
         <RekaDialogDescription
           :class="{
-            'sr-only': props.hideDescription,
+            'sr-only': props.isDescriptionHidden,
           }"
           as="p"
           class="text-xs text-tertiary"
@@ -99,7 +99,7 @@ const dialogContext = useInjectDialogContext(null)
     </RowLayout>
 
     <UISeparator
-      v-if="props.showSeparator"
+      v-if="props.hasSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToTop.value
           ? 'opacity-0'

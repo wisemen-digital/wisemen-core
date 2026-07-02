@@ -6,11 +6,11 @@ import { UIButton } from '@/ui/button/index'
 import { useInjectFormContext } from '@/ui/form/form.context'
 
 const props = withDefaults(defineProps<{
-  disableKeyboardShortcut?: boolean
+  isKeyboardShortcutDisabled?: boolean
   label: string
   variant?: 'primary' | 'secondary'
 }>(), {
-  disableKeyboardShortcut: false,
+  isKeyboardShortcutDisabled: false,
   variant: 'primary',
 })
 
@@ -30,7 +30,7 @@ const {
 
 useKeyboardShortcut({
   [KEYBOARD_SHORTCUTS.submit.shortcutKey]: () => {
-    if (props.disableKeyboardShortcut) {
+    if (props.isKeyboardShortcutDisabled) {
       return
     }
 
@@ -52,7 +52,7 @@ useKeyboardShortcut({
         :label="props.label"
         :form="formId"
         :variant="props.variant"
-        :keyboard-shortcut-keys="props.disableKeyboardShortcut ? null : KEYBOARD_SHORTCUTS.submit.keys"
+        :keyboard-shortcut-keys="props.isKeyboardShortcutDisabled ? null : KEYBOARD_SHORTCUTS.submit.keys"
       />
     </slot>
   </Primitive>

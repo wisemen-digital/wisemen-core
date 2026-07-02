@@ -2,10 +2,10 @@
 import { useInjectTableContext } from '@/ui/table/context/table.context'
 
 const props = withDefaults(defineProps<{
-  centerContent?: boolean
+  isCentered?: boolean
 }>(), {
   isResizable: true,
-  centerContent: false,
+  isCentered: false,
 })
 
 const {
@@ -17,7 +17,7 @@ const {
   <div
     :class="{
       'first-of-type:border-r first-of-type:border-secondary': isScrolledFromLeft,
-      'justify-center': props.centerContent,
+      'justify-center': props.isCentered,
       'bg-secondary': !isGroupingEnabled,
     }"
     class="

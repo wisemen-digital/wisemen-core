@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
   isError: false,
   gap: 'none',
   size: 'md',
-  wrap: false,
+  isWrapped: false,
 })
 </script>
 
@@ -29,10 +29,10 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     :data-readonly="props.isReadonly || undefined"
     :data-interactive="(!props.isDisabled && !props.isReadonly) || undefined"
     :class="{
-      'h-8': !props.wrap && props.size === 'md',
-      'h-7': !props.wrap && props.size === 'sm',
-      'min-h-8 flex-wrap px-xs py-1.25': props.wrap && props.size === 'md',
-      'min-h-7 flex-wrap px-xs py-0.75': props.wrap && props.size === 'sm',
+      'h-8': !props.isWrapped && props.size === 'md',
+      'h-7': !props.isWrapped && props.size === 'sm',
+      'min-h-8 flex-wrap px-xs py-1.25': props.isWrapped && props.size === 'md',
+      'min-h-7 flex-wrap px-xs py-0.75': props.isWrapped && props.size === 'sm',
     }"
     :gap="props.gap"
     class="

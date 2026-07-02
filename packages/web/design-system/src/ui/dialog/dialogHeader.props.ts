@@ -7,7 +7,7 @@ export interface DialogHeaderProps {
   title: string
 
   /**
-   * Description text displayed below the title. Can be hidden by setting `hideDescription` to `true`
+   * Description text displayed below the title. Can be hidden by setting `isDescriptionHidden` to `true`
    */
   description: string
 
@@ -15,7 +15,7 @@ export interface DialogHeaderProps {
    * Whether to hide the description visually
    * @default false
    */
-  hideDescription?: boolean
+  isDescriptionHidden?: boolean
 
   /**
    * Optional featured icon component displayed at the start of the header.
@@ -32,5 +32,5 @@ export interface DialogHeaderProps {
    * Whether to show the divider at the bottom of the header.
    * @default true
    */
-  showSeparator?: boolean
+  hasSeparator?: boolean
 }

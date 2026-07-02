@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   ...POPPER_PROPS_DEFAULTS,
   isDisabled: false,
   delayDuration: 300,
-  disableCloseOnTriggerClick: false,
-  disableHoverableContent: false,
+  isCloseOnTriggerClickDisabled: false,
+  isHoverableContentDisabled: false,
 })
 
 const tooltipStyle = computed<TooltipStyle>(() => createTooltipStyle({
@@ -36,8 +36,8 @@ const isOpen = defineModel<boolean>('isOpen', {
   <RekaTooltipRoot
     v-model:open="isOpen"
     :delay-duration="props.delayDuration"
-    :disable-closing-trigger="props.disableCloseOnTriggerClick"
-    :disable-hoverable-content="props.disableHoverableContent"
+    :disable-closing-trigger="props.isCloseOnTriggerClickDisabled"
+    :disable-hoverable-content="props.isHoverableContentDisabled"
     :disabled="props.isDisabled"
     :ignore-non-keyboard-focus="true"
   >

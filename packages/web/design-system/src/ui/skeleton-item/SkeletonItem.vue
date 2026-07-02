@@ -2,7 +2,7 @@
 import type { SkeletonItemProps } from '@/ui/skeleton-item/skeletonItem.props'
 
 const props = withDefaults(defineProps<SkeletonItemProps>(), {
-  animate: false,
+  isAnimated: false,
   animationDelayInMs: 0,
 })
 </script>
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<SkeletonItemProps>(), {
     aria-live="polite"
   >
     <div
-      v-if="props.animate"
+      v-if="props.isAnimated"
       :style="{ animationDelay: `${props.animationDelayInMs}ms` }"
       class="custom-shimmer absolute inset-0"
     />

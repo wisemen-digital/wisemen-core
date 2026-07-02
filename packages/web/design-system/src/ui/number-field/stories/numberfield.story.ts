@@ -62,7 +62,7 @@ const meta = {
       control: 'text',
       description: 'The placeholder text of the input',
     },
-    showControls: {
+    hasControls: {
       control: 'boolean',
       description: 'Whether to display increment and decrement controls',
     },
@@ -101,7 +101,7 @@ export const Default: Story = {
 export const WithControls: Story = {
   args: {
     label: 'Number Field',
-    showControls: true,
+    hasControls: true,
     step: 1,
   },
 }

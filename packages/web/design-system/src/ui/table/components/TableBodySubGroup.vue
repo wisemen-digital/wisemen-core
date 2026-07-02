@@ -16,11 +16,11 @@ import { useProvideTableSubGroupContext } from '@/ui/table/context/tableSubGroup
 import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<{
-  defaultOpen?: boolean
+  isOpenByDefault?: boolean
   items?: unknown[]
   label: string
 }>(), {
-  defaultOpen: true,
+  isOpenByDefault: true,
   items: () => [],
 })
 
@@ -43,7 +43,7 @@ useProvideTableSubGroupContext({
   <CollapsibleRoot
     v-slot="{ open: isOpen }"
     :as="TableSubgrid"
-    :default-open="props.defaultOpen"
+    :default-open="props.isOpenByDefault"
   >
     <div
       :style="{

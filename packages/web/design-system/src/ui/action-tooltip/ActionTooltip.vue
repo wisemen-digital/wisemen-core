@@ -8,7 +8,7 @@ import TooltipText from '@/ui/tooltip/TooltipText.vue'
 
 const props = withDefaults(defineProps<ActionTooltipProps>(), {
   isDisabled: false,
-  disableCloseOnTriggerClick: false,
+  isCloseOnTriggerClickDisabled: false,
   keyboardShortcut: null,
   label: null,
   popoverAlign: 'center',
@@ -20,10 +20,10 @@ const props = withDefaults(defineProps<ActionTooltipProps>(), {
   <Tooltip
     :is-disabled="props.isDisabled"
     :popover-side="props.popoverSide ?? undefined"
-    :disable-hoverable-content="true"
+    :is-hoverable-content-disabled="true"
     :popover-side-offset="4"
     :popover-align="props.popoverAlign"
-    :disable-close-on-trigger-click="props.disableCloseOnTriggerClick"
+    :is-close-on-trigger-click-disabled="props.isCloseOnTriggerClickDisabled"
   >
     <template #trigger>
       <slot />
@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<ActionTooltipProps>(), {
           <KeyboardShortcut
             v-if="props.keyboardShortcut !== null"
             :keyboard-shortcut="props.keyboardShortcut"
-            :enable-key-hold-visualization="true"
+            :is-key-hold-visualization-enabled="true"
           />
         </RowLayout>
       </TooltipContent>

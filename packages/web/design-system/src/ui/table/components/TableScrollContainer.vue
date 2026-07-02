@@ -8,9 +8,9 @@ import { useInjectTableContext } from '@/ui/table/context/table.context'
 import { useInjectTableScrollContainerContext } from '@/ui/table/context/tableScrollContainer.context'
 
 const props = withDefaults(defineProps<{
-  disableScroll?: boolean
+  isScrollDisabled?: boolean
 }>(), {
-  disableScroll: false,
+  isScrollDisabled: false,
 })
 
 const {
@@ -40,8 +40,8 @@ onMounted(() => {
   <div
     ref="containerEl"
     :class="{
-      'rounded-xl border border-secondary': variant === 'contained' && !props.disableScroll,
-      'overflow-auto': !props.disableScroll,
+      'rounded-xl border border-secondary': variant === 'contained' && !props.isScrollDisabled,
+      'overflow-auto': !props.isScrollDisabled,
     }"
     class="max-h-full w-full contain-layout contain-paint outline-none"
   >

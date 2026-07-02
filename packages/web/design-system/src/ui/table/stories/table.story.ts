@@ -21,7 +21,7 @@ const meta = {
     activeFilterCount: {
       control: 'number',
     },
-    disableColumnResize: {
+    isColumnResizeDisabled: {
       control: 'boolean',
     },
     variant: {
@@ -47,7 +47,7 @@ export const Default: Story = {
     hasActiveSearch: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
+    isColumnResizeDisabled: false,
     variant: 'full-page',
   },
 }
@@ -57,7 +57,7 @@ export const Contained: Story = {
     hasActiveSearch: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
+    isColumnResizeDisabled: false,
     variant: 'contained',
   },
 }
@@ -67,7 +67,7 @@ export const Loading: Story = {
     hasActiveSearch: false,
     isLoading: true,
     activeFilterCount: 0,
-    disableColumnResize: false,
+    isColumnResizeDisabled: false,
     variant: 'full-page',
   },
 }
@@ -77,7 +77,7 @@ export const WithActiveSearch: Story = {
     hasActiveSearch: true,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
+    isColumnResizeDisabled: false,
     variant: 'full-page',
   },
 }
@@ -87,7 +87,7 @@ export const WithActiveFilters: Story = {
     hasActiveSearch: false,
     isLoading: false,
     activeFilterCount: 3,
-    disableColumnResize: false,
+    isColumnResizeDisabled: false,
     variant: 'full-page',
   },
 }

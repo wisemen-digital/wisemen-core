@@ -77,12 +77,12 @@ const accountCardGridTemplateColumns = `${sidebarIconCellSize} 1fr`
               <div class="flex w-full flex-col overflow-hidden">
                 <UIText
                   :text="props.name ?? '-'"
-                  :disable-tooltip="true"
+                  :is-tooltip-disabled="true"
                   class="w-full text-xs font-semibold text-primary"
                 />
                 <UIText
                   :text="props.email"
-                  :disable-tooltip="true"
+                  :is-tooltip-disabled="true"
                   class="w-full text-xs text-tertiary"
                 />
               </div>

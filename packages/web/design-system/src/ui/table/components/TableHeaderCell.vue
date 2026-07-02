@@ -34,14 +34,14 @@ const props = withDefaults(defineProps<{
     label?: string | null
     metadata?: RegisteredActionContext['metadata']
   } | null
-  centerContent?: boolean
+  isCentered?: boolean
   columnIndex: number
   columnKey: string
   label: string | null
 }>(), {
   isResizable: true,
   actionConfig: null,
-  centerContent: false,
+  isCentered: false,
 })
 
 const i18n = useI18n()
@@ -96,7 +96,7 @@ const sortIcon = computed<Component | null>(() => {
     ref="cellEl"
     :class="{
       'first-of-type:border-r first-of-type:border-secondary': isScrolledFromLeft,
-      'justify-center': props.centerContent,
+      'justify-center': props.isCentered,
       'bg-secondary': !isGroupingEnabled,
       'first-of-type:left-10': isSelectable,
       'first-of-type:left-0': !isSelectable,
@@ -164,7 +164,7 @@ const sortIcon = computed<Component | null>(() => {
       <UIActionDropdownMenu
         :actions="props.actionConfig?.actions ?? []"
         :metadata="props.actionConfig?.metadata"
-        :current-context-only="props.actionConfig?.currentContextOnly ?? true"
+        :is-current-context-only="props.actionConfig?.currentContextOnly ?? true"
         popover-side="bottom"
         popover-align="end"
       >

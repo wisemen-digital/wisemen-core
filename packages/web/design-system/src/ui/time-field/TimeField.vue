@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<TimeFieldProps>(), {
   granularity: 'minute',
   size: 'md',
   step: null,
-  stepSnapping: false,
+  hasStepSnapping: false,
 })
 
 const modelValue = defineModel<Temporal.PlainTime | null>({
@@ -143,7 +143,7 @@ const timeValue = computed<TimeValue | undefined>({
         :locale="deviceLocale"
         :readonly="props.isReadonly"
         :required="props.isRequired"
-        :step-snapping="props.stepSnapping"
+        :step-snapping="props.hasStepSnapping"
         :step="props.step ?? undefined"
         :granularity="props.granularity"
       >

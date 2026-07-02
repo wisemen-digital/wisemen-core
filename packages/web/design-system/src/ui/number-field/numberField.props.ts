@@ -28,7 +28,7 @@ export interface NumberFieldProps extends Input, AutocompleteInput, InputWrapper
    * When `true`, buttons for increasing and decreasing the value will be hidden.
    * @default false
    */
-  showControls?: boolean
+  hasControls?: boolean
   /**
    * Defines the increment and decrement step for the number input.
    * This determines how much the value changes when using controls or arrow keys.

@@ -22,5 +22,5 @@ export interface FieldWrapperProps extends FieldWrapper {
    * its children to wrap onto multiple lines (e.g. for tags inputs).
    * @default false
    */
-  wrap?: boolean
+  isWrapped?: boolean
 }

@@ -22,7 +22,7 @@ defineOptions({
 const props = withDefaults(defineProps<DateRangePickerProps>(), {
   maxDate: null,
   minDate: null,
-  showPresets: true,
+  hasPresets: true,
 })
 
 const modelValue = defineModel<PlainDateRange>({
@@ -76,13 +76,13 @@ useProvideDateRangeFieldContext({
         weekday-format="short"
       >
         <div class="flex h-full">
-          <DateRangeFieldPresets v-if="props.showPresets" />
+          <DateRangeFieldPresets v-if="props.hasPresets" />
 
           <div class="flex min-w-0 flex-1 flex-col">
             <div class="flex">
               <div class="flex flex-1 flex-col">
                 <DateRangeFieldCalendarHeader
-                  :show-next="isSingleMonth"
+                  :has-next="isSingleMonth"
                   side="left"
                 />
                 <div class="p-xl pt-0">

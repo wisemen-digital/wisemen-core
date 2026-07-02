@@ -13,7 +13,7 @@ export interface TextProps {
    * If `true`, the tooltip will be disabled even if the text is truncated.
    * @default false
    */
-  disableTooltip?: boolean
+  isTooltipDisabled?: boolean
   /**
    * The text content to display.
    */

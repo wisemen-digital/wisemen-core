@@ -44,7 +44,7 @@ export interface TableRootProps {
   /**
    * When `true`, the column resize handles are hidden and users cannot drag to resize columns.
    */
-  disableColumnResize?: boolean
+  isColumnResizeDisabled?: boolean
   /**
    * Actions rendered in the table header toolbar (top-right area), independent of row selection.
    */

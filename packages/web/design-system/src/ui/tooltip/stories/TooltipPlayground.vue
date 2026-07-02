@@ -7,16 +7,16 @@ const props = withDefaults(defineProps<{
   isDisabled?: boolean
   isPopoverArrowVisible?: boolean
   delayDuration?: number
-  disableCloseOnTriggerClick?: boolean
-  disableHoverableContent?: boolean
+  isCloseOnTriggerClickDisabled?: boolean
+  isHoverableContentDisabled?: boolean
   popoverAlign?: TooltipProps['popoverAlign']
   popoverSide?: TooltipProps['popoverSide']
 }>(), {
   isDisabled: false,
   isPopoverArrowVisible: false,
   delayDuration: undefined,
-  disableCloseOnTriggerClick: false,
-  disableHoverableContent: false,
+  isCloseOnTriggerClickDisabled: false,
+  isHoverableContentDisabled: false,
   popoverAlign: 'center',
   popoverSide: 'top',
 })
@@ -25,8 +25,8 @@ const props = withDefaults(defineProps<{
 <template>
   <Tooltip
     :delay-duration="props.delayDuration"
-    :disable-close-on-trigger-click="props.disableCloseOnTriggerClick"
-    :disable-hoverable-content="props.disableHoverableContent"
+    :is-close-on-trigger-click-disabled="props.isCloseOnTriggerClickDisabled"
+    :is-hoverable-content-disabled="props.isHoverableContentDisabled"
     :is-disabled="props.isDisabled"
     :is-popover-arrow-visible="props.isPopoverArrowVisible"
     :popover-align="props.popoverAlign"

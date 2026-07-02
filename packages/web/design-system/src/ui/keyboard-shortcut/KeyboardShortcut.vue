@@ -21,7 +21,7 @@ import KeyboardShortcutKey from '@/ui/keyboard-shortcut/KeyboardShortcutKey.vue'
 import { UIRowLayout } from '@/ui/row-layout'
 
 const props = withDefaults(defineProps<KeyboardShortcutProps>(), {
-  enableKeyHoldVisualization: false,
+  isKeyHoldVisualizationEnabled: false,
 })
 
 const i18n = useI18n()
@@ -85,7 +85,7 @@ const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
         v-if="part.part === 'key'"
         :keyboard-key="part.value"
         :raw-key="part.rawKey"
-        :enable-key-hold-visualization="props.enableKeyHoldVisualization"
+        :is-key-hold-visualization-enabled="props.isKeyHoldVisualizationEnabled"
       />
 
       <span

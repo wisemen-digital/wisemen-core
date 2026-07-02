@@ -15,7 +15,7 @@ import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 
 const props = defineProps<DropdownMenuProps & {
   actions?: Action[]
-  currentContextOnly: boolean
+  isCurrentContextOnly: boolean
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
@@ -26,7 +26,7 @@ const isOpen = defineModel<boolean>('isOpen', {
   required: false,
 })
 
-if (!props.currentContextOnly) {
+if (!props.isCurrentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
 }

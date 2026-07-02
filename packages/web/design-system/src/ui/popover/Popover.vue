@@ -14,9 +14,9 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   ...POPPER_PROPS_DEFAULTS,
-  disableSideFlip: false,
-  disableUpdateOnLayoutShift: false,
-  prioritizePosition: false,
+  isSideFlipDisabled: false,
+  isUpdateOnLayoutShiftDisabled: false,
+  isPrioritizedPosition: false,
 })
 
 const emit = defineEmits<{
@@ -75,10 +75,10 @@ function onAutoFocusOnClose(event: Event): void {
             'w-(--reka-popover-trigger-width)': props.popoverWidth === 'anchor-width',
             'w-(--reka-popover-content-available-width)': props.popoverWidth === 'available-width',
           }"
-          :prioritize-position="props.prioritizePosition"
+          :prioritize-position="props.isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
-          :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-          :side-flip="!props.disableSideFlip"
+          :disable-update-on-layout-shift="props.isUpdateOnLayoutShiftDisabled"
+          :side-flip="!props.isSideFlipDisabled"
           position-strategy="absolute"
           sticky="always"
           class="

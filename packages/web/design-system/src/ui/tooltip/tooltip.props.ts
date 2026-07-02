@@ -15,10 +15,10 @@ export interface TooltipProps extends PopperProps {
    * When true, clicking on trigger won’t close the tooltip.
    * @default false
    */
-  disableCloseOnTriggerClick?: boolean
+  isCloseOnTriggerClickDisabled?: boolean
   /**
    * When true, trying to hover the content will result in the tooltip closing as the pointer leaves the trigger.
    * @default false
    */
-  disableHoverableContent?: boolean
+  isHoverableContentDisabled?: boolean
 }

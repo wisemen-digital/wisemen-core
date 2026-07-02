@@ -18,13 +18,13 @@ import TextField from '@/ui/text-field/TextField.vue'
 
 withDefaults(defineProps<{
   isOpen?: boolean
-  preventClickOutside?: boolean
-  preventEsc?: boolean
+  isClickOutsideDisabled?: boolean
+  isEscDisabled?: boolean
   size?: DialogSize
 }>(), {
   isOpen: false,
-  preventClickOutside: false,
-  preventEsc: false,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
   size: 'md',
 })
 
@@ -43,8 +43,8 @@ const dialogChin = useDialogChin()
   <Dialog
     :chin="dialogChin.chin.value"
     :is-open="isOpen"
-    :prevent-click-outside="preventClickOutside"
-    :prevent-esc="preventEsc"
+    :is-click-outside-disabled="isClickOutsideDisabled"
+    :is-esc-disabled="isEscDisabled"
     :size="size"
     @update:is-open="!$event && $emit('close')"
   >

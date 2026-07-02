@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<NumberFieldProps>(), {
   formatOptions: null,
   max: null,
   min: null,
-  showControls: false,
+  hasControls: false,
   step: 1,
 })
 
@@ -65,7 +65,7 @@ const modelValue = defineModel<number | null>({
 })
 
 const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle({
-  showControls: props.showControls,
+  hasControls: props.hasControls,
 }))
 
 // Since reka-ui's NumberField component only updates the modelValue on blur or enter key press,
@@ -262,7 +262,7 @@ watch(copiedModelValue, () => {
         <template #left>
           <slot name="left">
             <UIRowLayout
-              v-if="props.showControls"
+              v-if="props.hasControls"
               :class="numberFieldStyle.leftControl()"
               align="center"
             >
@@ -283,7 +283,7 @@ watch(copiedModelValue, () => {
         <template #right>
           <slot name="right">
             <UIRowLayout
-              v-if="props.showControls"
+              v-if="props.hasControls"
               :class="numberFieldStyle.rightControl()"
               align="center"
             >

@@ -2,16 +2,16 @@
 import { UIRowLayout } from '@/ui/row-layout/index'
 
 const props = withDefaults(defineProps<{
-  noWrap?: boolean
+  isWrapped?: boolean
 }>(), {
-  noWrap: false,
+  isWrapped: true,
 })
 </script>
 
 <template>
   <UIRowLayout
     :class="{
-      'flex-wrap': !props.noWrap,
+      'flex-wrap': props.isWrapped,
     }"
     gap="xs"
   >

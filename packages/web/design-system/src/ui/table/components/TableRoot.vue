@@ -52,7 +52,7 @@ const {
   gridEl,
   computed(() => props.isInitialized),
   computed(() => props.actionGroup),
-  computed(() => props.disableColumnResize),
+  computed(() => props.isColumnResizeDisabled),
   computed(() => props.isSelectable),
   computed(() => props.hasActiveSearch ?? false),
   computed(() => props.activeFilterCount ?? 0),
@@ -83,7 +83,7 @@ useInfiniteScroll(scrollContainerEl, () => {
 })
 
 useProvideTableContext({
-  isColumnResizeDisabled: computed(() => props.disableColumnResize),
+  isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isGroupingEnabled: computed(() => isGroupingEnabled.value),
   isResizingColumn: isResizing,
   isScrollableVertically: computed(() => isScrollableVertically.value),

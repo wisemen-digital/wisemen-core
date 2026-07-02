@@ -46,7 +46,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * Whether to keep the dropdown open after selecting an option.
    * @default null - will close on single select, stay open on multi select
    */
-  keepDropdownOpenOnSelect?: boolean | null
+  isDropdownKeptOpenOnSelect?: boolean | null
   /**
    * Should only be set when the dropdown list if not paginated, but is limited in the backend
    * @default null

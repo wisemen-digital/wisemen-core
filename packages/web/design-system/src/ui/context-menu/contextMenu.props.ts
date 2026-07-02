@@ -8,11 +8,11 @@ export interface ContextMenuProps {
    * Disables updating the content's position on layout shifts.
    * @default false
    */
-  disableUpdateOnLayoutShift?: boolean
+  isUpdateOnLayoutShiftDisabled?: boolean
   /**
    * Constrain the content to remain within the viewport. This may cause it
    * to overlap the trigger element, which might be undesirable.
    * @default false
    */
-  prioritizePosition?: boolean
+  isPrioritizedPosition?: boolean
 }

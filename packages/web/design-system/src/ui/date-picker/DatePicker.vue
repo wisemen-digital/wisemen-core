@@ -26,7 +26,7 @@ defineOptions({
 const props = withDefaults(defineProps<DatePickerProps>(), {
   maxDate: null,
   minDate: null,
-  fixedWeeks: false,
+  hasFixedWeeks: false,
   size: 'md',
 })
 
@@ -70,7 +70,7 @@ useProvideDatePickerContext({
       :max-value="maxDateValue"
       :min-value="minDateValue"
       :locale="locale"
-      :fixed-weeks="props.fixedWeeks"
+      :fixed-weeks="props.hasFixedWeeks"
     >
       <RekaDatePickerCalendar
         v-slot="{ weekDays, grid }"

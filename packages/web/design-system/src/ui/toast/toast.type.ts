@@ -60,7 +60,7 @@ export interface Toast {
    * Whether the user can manually dismiss the toast.
    * @default true
    */
-  dismissible?: boolean
+  isDismissible?: boolean
 
   /**
    * How long the toast stays visible before auto-closing, in milliseconds.

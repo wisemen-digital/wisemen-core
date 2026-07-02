@@ -33,5 +33,5 @@ export interface TimeFieldProps extends Input, Omit<InputWrapper, 'placeholder'>
    * When `true`, any manually typed value is rounded to the closest valid step.
    * @default false
    */
-  stepSnapping?: boolean
+  hasStepSnapping?: boolean
 }

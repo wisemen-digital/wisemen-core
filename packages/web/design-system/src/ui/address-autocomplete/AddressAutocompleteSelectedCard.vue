@@ -310,7 +310,7 @@ function onCancel(): void {
                           : null"
                         :has-virtual-scroll="true"
                         :label="t('component.address_autocomplete_selected_card.country.label')"
-                        :prioritize-position="false"
+                        :is-prioritized-position="false"
                         popover-align="end"
                         content-width-class="w-[20rem]"
                         search="remote"

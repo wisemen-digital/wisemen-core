@@ -21,7 +21,7 @@ export interface TableColumn<TElement, TKey extends string = string> {
     actions: Action[]
     metadata?: RegisteredActionContext['metadata']
   }
-  centerHeaderContent?: boolean
+  isCenteredHeaderContent?: boolean
   headerLabel: string
   key: TKey
   size?: TableColumnSize
@@ -31,18 +31,18 @@ export interface TableColumn<TElement, TKey extends string = string> {
 export type TableFlatData<T> = T
 
 export interface TableGroupedData<T> {
-  defaultOpen?: boolean
+  isOpenByDefault?: boolean
   items: T[]
   key: string
   label: string
 }
 
 export interface TableSubGroupedData<T> {
-  defaultOpen?: boolean
+  isOpenByDefault?: boolean
   key: string
   label: string
   subGroups: {
-    defaultOpen?: boolean
+    isOpenByDefault?: boolean
     items: T[]
     key: string
     label: string

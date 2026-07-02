@@ -11,7 +11,7 @@ import type { TextProps } from '@/ui/text/text.props'
 const props = withDefaults(defineProps<TextProps>(), {
   as: 'span',
   class: null,
-  disableTooltip: false,
+  isTooltipDisabled: false,
   truncate: true,
 })
 
@@ -23,7 +23,7 @@ const isTruncated = useIsTruncated(textRef)
 
 <template>
   <ActionTooltip
-    :is-disabled="!isTruncated || props.disableTooltip"
+    :is-disabled="!isTruncated || props.isTooltipDisabled"
     :label="props.text"
   >
     <Component
