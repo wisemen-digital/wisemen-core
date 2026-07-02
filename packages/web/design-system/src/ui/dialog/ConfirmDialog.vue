@@ -51,6 +51,8 @@ function onClose(): void {
     :has-close-button="false"
     :is-click-outside-disabled="props.isClickOutsideDisabled"
     :is-esc-disabled="props.isEscDisabled"
+    :prevent-click-outside="props.preventClickOutside"
+    :prevent-esc="props.preventEsc"
     size="xxs"
     @close="onClose"
   >

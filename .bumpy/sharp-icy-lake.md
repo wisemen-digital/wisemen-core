@@ -1,18 +1,16 @@
 ---
-"@wisemen/vue-core-custom-views": major
-"@wisemen/vue-core-design-system": major
-"@wisemen/vue-core-filters": major
+"@wisemen/vue-core-custom-views": minor
+"@wisemen/vue-core-design-system": minor
+"@wisemen/vue-core-filters": minor
 ---
 
 Normalize all boolean prop names to `is*` / `has*` prefix convention
 
-All packages that consume `@wisemen/vue-core-design-system` components will need to update prop bindings according to the tables below.
-
-## Breaking changes
+Old prop names are still supported but marked as `@deprecated` — they will be removed in a future major release. Update your usage when convenient; no immediate migration required.
 
 ### `show*` → `has*`
 
-| Component | Old prop | New prop |
+| Component | Old prop (deprecated) | New prop |
 |---|---|---|
 | `Dialog` | `showCloseButton` | `hasCloseButton` |
 | `DialogFooter` | `showSeparator` | `hasSeparator` |
@@ -24,13 +22,13 @@ All packages that consume `@wisemen/vue-core-design-system` components will need
 
 ### `hide*` → `is*Hidden`
 
-| Component | Old prop | New prop |
+| Component | Old prop (deprecated) | New prop |
 |---|---|---|
 | `DialogHeader` | `hideDescription` | `isDescriptionHidden` |
 
 ### `disable*` / `prevent*` → `is*Disabled`
 
-| Component | Old prop | New prop |
+| Component | Old prop (deprecated) | New prop |
 |---|---|---|
 | `ContextMenu` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
 | `DropdownMenu` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
@@ -49,7 +47,7 @@ All packages that consume `@wisemen/vue-core-design-system` components will need
 
 ### Other verb/noun patterns → `is*` / `has*`
 
-| Component | Old prop | New prop |
+| Component | Old prop (deprecated) | New prop |
 |---|---|---|
 | `SkeletonItem` | `animate` | `isAnimated` |
 | `DatePicker` | `fixedWeeks` | `hasFixedWeeks` |
@@ -57,20 +55,18 @@ All packages that consume `@wisemen/vue-core-design-system` components will need
 | `TimeField` | `stepSnapping` | `hasStepSnapping` |
 | `KeyboardShortcut` / `KeyboardShortcutKey` | `enableKeyHoldVisualization` | `isKeyHoldVisualizationEnabled` |
 | `Select` | `keepDropdownOpenOnSelect` | `isDropdownKeptOpenOnSelect` |
-| `ActionContextMenuItem` | `closeOnSelect` | `isClosedOnSelect` |
 | `ActionContextMenu` / `ActionDropdownMenu` / `ActionTrigger` | `currentContextOnly` | `isCurrentContextOnly` |
-| `ActionDropdownMenuItem` | `closeOnSelect` | `isClosedOnSelect` |
 | `ContextMenu` / `DropdownMenu` / `Popover` | `prioritizePosition` | `isPrioritizedPosition` |
 
 ### `no*` → inverted `is*`
 
-| Component | Old prop | New prop | Note |
+| Component | Old prop (deprecated) | New prop | Note |
 |---|---|---|---|
-| `BadgeGroup` | `noWrap` | `isWrapped` | **Logic inverted** — default changed from `false` to `true`. Replace `:no-wrap="true"` with `:is-wrapped="false"`. |
+| `BadgeGroup` | `noWrap` | `isWrapped` | **Logic inverted** — `:no-wrap="true"` becomes `:is-wrapped="false"`. The new prop defaults to `true`. |
 
 ### Type field renames
 
-| Type | Old field | New field |
+| Type | Old field (deprecated) | New field |
 |---|---|---|
 | `Toast` | `dismissible` | `isDismissible` |
 | `TableColumn` | `centerHeaderContent` | `isCenteredHeaderContent` |

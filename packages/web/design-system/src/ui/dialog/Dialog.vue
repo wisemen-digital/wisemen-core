@@ -23,6 +23,10 @@ const props = withDefaults(defineProps<DialogProps>(), {
   size: 'md',
 })
 
+const hasCloseButton = computed(() => props.showCloseButton !== undefined ? props.showCloseButton : props.hasCloseButton)
+const isClickOutsideDisabled = computed(() => props.isClickOutsideDisabled || props.preventClickOutside)
+const isEscDisabled = computed(() => props.isEscDisabled || props.preventEsc)
+
 const emit = defineEmits<{
   'afterLeave': []
   'close': []
@@ -51,13 +55,13 @@ useProvideDialogContext({
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
-  if (props.isEscDisabled) {
+  if (isEscDisabled.value) {
     event.preventDefault()
   }
 }
 
 function onPointerDownOutside(event: Event): void {
-  if (props.isClickOutsideDisabled) {
+  if (isClickOutsideDisabled.value) {
     event.preventDefault()
   }
 }
@@ -111,7 +115,7 @@ const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="props.hasCloseButton" />
+        <DialogCloseButton v-if="hasCloseButton" />
       </div>
 
       <DialogChin :chin="props.chin" />

@@ -33,4 +33,13 @@ export interface DialogHeaderProps {
    * @default 'brand'
    */
   iconVariant?: 'brand' | 'error' | 'success' | 'warning'
+
+  /**
+   * @deprecated Use `hasSeparator` instead.
+   */
+  showSeparator?: boolean
+  /**
+   * @deprecated Use `isDescriptionHidden` instead.
+   */
+  hideDescription?: boolean
 }

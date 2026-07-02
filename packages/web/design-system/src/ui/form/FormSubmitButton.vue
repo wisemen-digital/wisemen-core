@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Primitive } from 'reka-ui'
+import { computed } from 'vue'
 
 import { useKeyboardShortcut } from '@/composables/keyboardShortcut.composable'
 import { UIButton } from '@/ui/button/index'
@@ -9,10 +10,16 @@ const props = withDefaults(defineProps<{
   isKeyboardShortcutDisabled?: boolean
   label: string
   variant?: 'primary' | 'secondary'
+  /**
+   * @deprecated Use `isKeyboardShortcutDisabled` instead.
+   */
+  disableKeyboardShortcut?: boolean
 }>(), {
   isKeyboardShortcutDisabled: false,
   variant: 'primary',
 })
+
+const isKeyboardShortcutDisabled = computed<boolean>(() => props.isKeyboardShortcutDisabled || props.disableKeyboardShortcut === true)
 
 const KEYBOARD_SHORTCUTS = {
   submit: {
@@ -30,7 +37,7 @@ const {
 
 useKeyboardShortcut({
   [KEYBOARD_SHORTCUTS.submit.shortcutKey]: () => {
-    if (props.isKeyboardShortcutDisabled) {
+    if (isKeyboardShortcutDisabled.value) {
       return
     }
 
@@ -52,7 +59,7 @@ useKeyboardShortcut({
         :label="props.label"
         :form="formId"
         :variant="props.variant"
-        :keyboard-shortcut-keys="props.isKeyboardShortcutDisabled ? null : KEYBOARD_SHORTCUTS.submit.keys"
+        :keyboard-shortcut-keys="isKeyboardShortcutDisabled ? null : KEYBOARD_SHORTCUTS.submit.keys"
       />
     </slot>
   </Primitive>

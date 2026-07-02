@@ -3,4 +3,9 @@ import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.t
 export interface KeyboardShortcutProps {
   isKeyHoldVisualizationEnabled?: boolean
   keyboardShortcut: KeyboardShortcut
+
+  /**
+   * @deprecated Use `isKeyHoldVisualizationEnabled` instead.
+   */
+  enableKeyHoldVisualization?: boolean
 }

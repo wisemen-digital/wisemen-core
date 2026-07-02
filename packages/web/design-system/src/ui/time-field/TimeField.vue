@@ -58,6 +58,8 @@ const {
   ariaInvalid,
 } = useInput(id, props)
 
+const hasStepSnapping = computed<boolean>(() => props.hasStepSnapping || props.stepSnapping === true)
+
 const timeFieldStyle = computed(() => createTimeFieldStyle({
   size: props.size,
 }))
@@ -143,7 +145,7 @@ const timeValue = computed<TimeValue | undefined>({
         :locale="deviceLocale"
         :readonly="props.isReadonly"
         :required="props.isRequired"
-        :step-snapping="props.hasStepSnapping"
+        :step-snapping="hasStepSnapping"
         :step="props.step ?? undefined"
         :granularity="props.granularity"
       >

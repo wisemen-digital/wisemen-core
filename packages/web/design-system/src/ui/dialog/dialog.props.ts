@@ -30,4 +30,17 @@ export interface DialogProps {
    * @default 'md'
    */
   size?: DialogSize
+
+  /**
+   * @deprecated Use `hasCloseButton` instead.
+   */
+  showCloseButton?: boolean
+  /**
+   * @deprecated Use `isClickOutsideDisabled` instead.
+   */
+  preventClickOutside?: boolean
+  /**
+   * @deprecated Use `isEscDisabled` instead.
+   */
+  preventEsc?: boolean
 }

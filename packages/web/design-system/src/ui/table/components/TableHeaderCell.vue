@@ -38,11 +38,17 @@ const props = withDefaults(defineProps<{
   columnIndex: number
   columnKey: string
   label: string | null
+  /**
+   * @deprecated Use `isCentered` instead.
+   */
+  centerContent?: boolean
 }>(), {
   isCentered: false,
   isResizable: true,
   actionConfig: null,
 })
+
+const isCentered = computed<boolean>(() => props.isCentered || props.centerContent === true)
 
 const i18n = useI18n()
 
@@ -96,7 +102,7 @@ const sortIcon = computed<Component | null>(() => {
     ref="cellEl"
     :class="{
       'first-of-type:border-r first-of-type:border-secondary': isScrolledFromLeft,
-      'justify-center': props.isCentered,
+      'justify-center': isCentered,
       'bg-secondary': !isGroupingEnabled,
       'first-of-type:left-10': isSelectable,
       'first-of-type:left-0': !isSelectable,

@@ -50,6 +50,9 @@ const iconClasses = computed(() => iconVariantStyle({
   variant: props.iconVariant,
 }))
 
+const hasSeparator = computed(() => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator)
+const isDescriptionHidden = computed(() => props.isDescriptionHidden || props.hideDescription)
+
 const dialogContext = useInjectDialogContext(null)
 </script>
 
@@ -89,7 +92,7 @@ const dialogContext = useInjectDialogContext(null)
         <!--  eslint-disable vue/no-v-text-v-html-on-component -->
         <RekaDialogDescription
           :class="{
-            'sr-only': props.isDescriptionHidden,
+            'sr-only': isDescriptionHidden,
           }"
           as="p"
           class="text-xs text-tertiary"
@@ -99,7 +102,7 @@ const dialogContext = useInjectDialogContext(null)
     </RowLayout>
 
     <UISeparator
-      v-if="props.hasSeparator"
+      v-if="hasSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToTop.value
           ? 'opacity-0'

@@ -68,7 +68,7 @@ export function useToast() {
     })), {
       id: toast.id ?? crypto.randomUUID(),
       class: 'w-full sm:w-96',
-      dismissible: toast.isDismissible,
+      dismissible: toast.isDismissible ?? toast.dismissible,
       duration: toast.duration ?? getToastDuration(configContext.autoCloseToast.value, toast.variant === 'error' ? 'error' : 'info'),
       position: toast.position ?? 'bottom-right',
       onAutoClose: toast.onAutoClose,

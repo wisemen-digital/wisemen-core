@@ -4,6 +4,7 @@ import {
   Motion,
   MotionConfig,
 } from 'motion-v'
+import { computed } from 'vue'
 
 import { INPUT_FIELD_DEFAULTS } from '@/types/input.type'
 import type { FieldWrapperProps } from '@/ui/field-wrapper/fieldWrapper.props'
@@ -20,6 +21,8 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
   gap: 'none',
   size: 'md',
 })
+
+const isWrapped = computed<boolean>(() => props.isWrapped || props.wrap === true)
 </script>
 
 <template>
@@ -29,10 +32,10 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     :data-readonly="props.isReadonly || undefined"
     :data-interactive="(!props.isDisabled && !props.isReadonly) || undefined"
     :class="{
-      'h-8': !props.isWrapped && props.size === 'md',
-      'h-7': !props.isWrapped && props.size === 'sm',
-      'min-h-8 flex-wrap px-xs py-1.25': props.isWrapped && props.size === 'md',
-      'min-h-7 flex-wrap px-xs py-0.75': props.isWrapped && props.size === 'sm',
+      'h-8': !isWrapped && props.size === 'md',
+      'h-7': !isWrapped && props.size === 'sm',
+      'min-h-8 flex-wrap px-xs py-1.25': isWrapped && props.size === 'md',
+      'min-h-7 flex-wrap px-xs py-0.75': isWrapped && props.size === 'sm',
     }"
     :gap="props.gap"
     class="

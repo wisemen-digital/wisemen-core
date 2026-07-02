@@ -9,4 +9,9 @@ export interface SkeletonItemProps {
    * @default 0
    */
   animationDelayInMs?: number
+
+  /**
+   * @deprecated Use `isAnimated` instead.
+   */
+  animate?: boolean
 }

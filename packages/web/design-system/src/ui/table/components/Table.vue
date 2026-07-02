@@ -178,7 +178,7 @@ function onClearFiltersAndSearch(): void {
           :column-index="columnIndex"
           :is-resizable="columnIndex < props.columns.length - 1"
           :label="column.headerLabel"
-          :is-centered="column.isCenteredHeaderContent ?? false"
+          :is-centered="(column.isCenteredHeaderContent ?? column.centerHeaderContent) ?? false"
           :action-config="column.actionConfig"
           :column-key="column.key"
         />
@@ -221,13 +221,13 @@ function onClearFiltersAndSearch(): void {
           <TableBodyGroup
             v-for="group of subGroupedItems"
             :key="group.key"
-            :is-open-by-default="group.isOpenByDefault"
+            :is-open-by-default="group.isOpenByDefault ?? group.defaultOpen"
             :label="group.label"
           >
             <TableBodySubGroup
               v-for="subGroup of group.subGroups"
               :key="subGroup.key"
-              :is-open-by-default="subGroup.isOpenByDefault"
+              :is-open-by-default="subGroup.isOpenByDefault ?? subGroup.defaultOpen"
               :items="props.isSelectable ? subGroup.items : []"
               :label="subGroup.label"
             >
@@ -256,7 +256,7 @@ function onClearFiltersAndSearch(): void {
           <TableBodyGroup
             v-for="group of groupedItems"
             :key="group.key"
-            :is-open-by-default="group.isOpenByDefault"
+            :is-open-by-default="group.isOpenByDefault ?? group.defaultOpen"
             :items="props.isSelectable ? group.items : []"
             :label="group.label"
             :header-cells="props.groupHeaderCells?.(group)"

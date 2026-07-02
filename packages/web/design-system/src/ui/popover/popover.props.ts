@@ -17,4 +17,17 @@ export interface PopoverProps extends PopperProps {
    * @default false
    */
   isUpdateOnLayoutShiftDisabled?: boolean
+
+  /**
+   * @deprecated Use `isPrioritizedPosition` instead.
+   */
+  prioritizePosition?: boolean
+  /**
+   * @deprecated Use `isSideFlipDisabled` instead.
+   */
+  disableSideFlip?: boolean
+  /**
+   * @deprecated Use `isUpdateOnLayoutShiftDisabled` instead.
+   */
+  disableUpdateOnLayoutShift?: boolean
 }

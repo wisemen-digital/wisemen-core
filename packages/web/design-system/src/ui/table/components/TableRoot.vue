@@ -41,6 +41,8 @@ const gridEl = computed<HTMLElement | null>(
   () => (scrollContainerEl.value?.children[0] ?? null) as HTMLElement | null,
 )
 
+const isColumnResizeDisabled = computed<boolean>(() => props.isColumnResizeDisabled === true || props.disableColumnResize === true)
+
 const {
   isResizing,
   autoFitColumnsAction,
@@ -52,7 +54,7 @@ const {
   gridEl,
   computed(() => props.isInitialized),
   computed(() => props.actionGroup),
-  computed(() => props.isColumnResizeDisabled),
+  isColumnResizeDisabled,
   computed(() => props.isSelectable),
   computed(() => props.hasActiveSearch ?? false),
   computed(() => props.activeFilterCount ?? 0),

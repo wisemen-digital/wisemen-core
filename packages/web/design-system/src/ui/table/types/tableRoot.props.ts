@@ -67,4 +67,9 @@ export interface TableRootProps {
    * page of data for infinite-scroll pagination. Omit when all data is loaded at once.
    */
   onNextPage?: () => void
+
+  /**
+   * @deprecated Use `isColumnResizeDisabled` instead.
+   */
+  disableColumnResize?: boolean
 }

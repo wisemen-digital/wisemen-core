@@ -19,6 +19,10 @@ const props = withDefaults(defineProps<{
   isOpenByDefault?: boolean
   items?: unknown[]
   label: string
+  /**
+   * @deprecated Use `isOpenByDefault` instead.
+   */
+  defaultOpen?: boolean
 }>(), {
   isOpenByDefault: true,
   items: () => [],
@@ -43,7 +47,7 @@ useProvideTableSubGroupContext({
   <CollapsibleRoot
     v-slot="{ open: isOpen }"
     :as="TableSubgrid"
-    :default-open="props.isOpenByDefault"
+    :default-open="props.defaultOpen !== undefined ? props.defaultOpen : props.isOpenByDefault"
   >
     <div
       :style="{

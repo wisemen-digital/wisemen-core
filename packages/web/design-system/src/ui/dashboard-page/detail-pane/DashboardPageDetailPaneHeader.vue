@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import { UIBaseHeader } from '@/ui/base-header'
 import type { DetailPaneHeaderProps } from '@/ui/dashboard-page/detail-pane/detailPaneHeader.props'
 import { useInjectDetailPaneScrollContext } from '@/ui/dashboard-page/detail-pane/detailPaneScroll.context'
@@ -8,6 +10,8 @@ const props = withDefaults(defineProps<DetailPaneHeaderProps>(), {
   hasSeparator: true,
   left: null,
 })
+
+const hasSeparator = computed(() => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator)
 
 const scrollContext = useInjectDetailPaneScrollContext(null)
 </script>
@@ -43,7 +47,7 @@ const scrollContext = useInjectDetailPaneScrollContext(null)
     </div>
 
     <UISeparator
-      v-if="props.hasSeparator && !(scrollContext?.hasTabs.value)"
+      v-if="hasSeparator && !(scrollContext?.hasTabs.value)"
     />
   </div>
 </template>

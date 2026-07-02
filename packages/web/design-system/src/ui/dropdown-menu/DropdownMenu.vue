@@ -11,6 +11,8 @@ import {
   watch,
 } from 'vue'
 
+
+
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import DropdownMenuArrow from '@/ui/dropdown-menu/DropdownMenuArrow.vue'
@@ -51,7 +53,7 @@ function resolveHtmlElement(value: unknown): HTMLElement | null {
 }
 
 watch(isOpen, (open) => {
-  if (!open || !props.isContentPositionFixed || frozenAnchorRef.value === null) {
+  if (!open || !isContentPositionFixed.value || frozenAnchorRef.value === null) {
     return
   }
 
@@ -67,8 +69,12 @@ watch(isOpen, (open) => {
   frozenAnchorRef.value.style.width = `${rect.width}px`
 })
 
+const isContentPositionFixed = computed(() => props.isContentPositionFixed || props.fixedContentPosition)
+const isPrioritizedPosition = computed(() => props.isPrioritizedPosition || props.prioritizePosition)
+const isUpdateOnLayoutShiftDisabled = computed(() => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift)
+
 const anchorReference = computed<HTMLElement | undefined>(() => {
-  if (props.isContentPositionFixed) {
+  if (isContentPositionFixed.value) {
     return frozenAnchorRef.value ?? undefined
   }
 
@@ -78,7 +84,7 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
 
 <template>
   <div
-    v-if="props.isContentPositionFixed"
+    v-if="isContentPositionFixed"
     ref="frozenAnchor"
     class="pointer-events-none fixed"
   />
@@ -108,8 +114,8 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
             'w-(--reka-dropdown-menu-trigger-width)': props.popoverWidth === 'anchor-width',
             'w-(--reka-dropdown-menu-content-available-width)': props.popoverWidth === 'available-width',
           }"
-          :disable-update-on-layout-shift="props.isUpdateOnLayoutShiftDisabled"
-          :prioritize-position="props.isPrioritizedPosition"
+          :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
+          :prioritize-position="isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
           position-strategy="absolute"
           sticky="always"

@@ -4,7 +4,7 @@ import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerRoot as RekaDateRangePickerRoot,
 } from 'reka-ui'
-import { toRef } from 'vue'
+import { computed, toRef } from 'vue'
 
 import { useDateRangePicker } from '@/composables/dateRangePicker.composable'
 import { useProvideDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
@@ -46,6 +46,8 @@ const {
   modelValue,
 })
 
+const hasPresets = computed(() => props.hasPresets || props.showPresets)
+
 useProvideDateRangeFieldContext({
   isInvalidRange,
   draftValue,
@@ -76,7 +78,7 @@ useProvideDateRangeFieldContext({
         weekday-format="short"
       >
         <div class="flex h-full">
-          <DateRangeFieldPresets v-if="props.hasPresets" />
+          <DateRangeFieldPresets v-if="hasPresets" />
 
           <div class="flex min-w-0 flex-1 flex-col">
             <div class="flex">

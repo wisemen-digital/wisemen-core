@@ -22,6 +22,9 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   delayDuration: 300,
 })
 
+const isCloseOnTriggerClickDisabled = computed(() => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick)
+const isHoverableContentDisabled = computed(() => props.isHoverableContentDisabled || props.disableHoverableContent)
+
 const tooltipStyle = computed<TooltipStyle>(() => createTooltipStyle({
   popoverWidth: props.popoverWidth ?? undefined,
 }))
@@ -36,8 +39,8 @@ const isOpen = defineModel<boolean>('isOpen', {
   <RekaTooltipRoot
     v-model:open="isOpen"
     :delay-duration="props.delayDuration"
-    :disable-closing-trigger="props.isCloseOnTriggerClickDisabled"
-    :disable-hoverable-content="props.isHoverableContentDisabled"
+    :disable-closing-trigger="isCloseOnTriggerClickDisabled"
+    :disable-hoverable-content="isHoverableContentDisabled"
     :disabled="props.isDisabled"
     :ignore-non-keyboard-focus="true"
   >

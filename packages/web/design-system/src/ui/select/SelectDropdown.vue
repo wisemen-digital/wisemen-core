@@ -56,12 +56,14 @@ const {
   isDropdownVisible, onTriggerKeyDown,
 } = useSelectDropdown()
 
+const isDropdownKeptOpenOnSelect = computed(() => props.isDropdownKeptOpenOnSelect ?? props.keepDropdownOpenOnSelect ?? null)
+
 function onSelectOption(): void {
-  if (props.isDropdownKeptOpenOnSelect === true) {
+  if (isDropdownKeptOpenOnSelect.value === true) {
     return
   }
 
-  if (props.isDropdownKeptOpenOnSelect === false) {
+  if (isDropdownKeptOpenOnSelect.value === false) {
     isDropdownVisible.value = false
 
     return

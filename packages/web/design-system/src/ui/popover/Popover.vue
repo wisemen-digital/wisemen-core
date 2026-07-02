@@ -6,6 +6,7 @@ import {
   PopoverRoot as RekaPopoverRoot,
   PopoverTrigger as RekaPopoverTrigger,
 } from 'reka-ui'
+import { computed } from 'vue'
 
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
 import type { PopoverProps } from '@/ui/popover/popover.props'
@@ -18,6 +19,10 @@ const props = withDefaults(defineProps<PopoverProps>(), {
   isSideFlipDisabled: false,
   isUpdateOnLayoutShiftDisabled: false,
 })
+
+const isPrioritizedPosition = computed(() => props.isPrioritizedPosition || props.prioritizePosition)
+const isSideFlipDisabled = computed(() => props.isSideFlipDisabled || props.disableSideFlip)
+const isUpdateOnLayoutShiftDisabled = computed(() => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift)
 
 const emit = defineEmits<{
   autoFocusOnClose: [event: Event]
@@ -75,10 +80,10 @@ function onAutoFocusOnClose(event: Event): void {
             'w-(--reka-popover-trigger-width)': props.popoverWidth === 'anchor-width',
             'w-(--reka-popover-content-available-width)': props.popoverWidth === 'available-width',
           }"
-          :prioritize-position="props.isPrioritizedPosition"
+          :prioritize-position="isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
-          :disable-update-on-layout-shift="props.isUpdateOnLayoutShiftDisabled"
-          :side-flip="!props.isSideFlipDisabled"
+          :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
+          :side-flip="!isSideFlipDisabled"
           position-strategy="absolute"
           sticky="always"
           class="

@@ -7,4 +7,9 @@ export interface ActionTooltipProps extends Pick<TooltipProps, 'isCloseOnTrigger
    * @default null
    */
   label?: string | null
+
+  /**
+   * @deprecated Use `isCloseOnTriggerClickDisabled` instead.
+   */
+  disableCloseOnTriggerClick?: boolean
 }

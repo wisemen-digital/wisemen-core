@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  computed,
   onMounted,
   useTemplateRef,
 } from 'vue'
@@ -9,9 +10,15 @@ import { useInjectTableScrollContainerContext } from '@/ui/table/context/tableSc
 
 const props = withDefaults(defineProps<{
   isScrollDisabled?: boolean
+  /**
+   * @deprecated Use `isScrollDisabled` instead.
+   */
+  disableScroll?: boolean
 }>(), {
   isScrollDisabled: false,
 })
+
+const isScrollDisabled = computed<boolean>(() => props.isScrollDisabled || props.disableScroll === true)
 
 const {
   gridTemplateColumns,
@@ -40,8 +47,8 @@ onMounted(() => {
   <div
     ref="containerEl"
     :class="{
-      'rounded-xl border border-secondary': variant === 'contained' && !props.isScrollDisabled,
-      'overflow-auto': !props.isScrollDisabled,
+      'rounded-xl border border-secondary': variant === 'contained' && !isScrollDisabled,
+      'overflow-auto': !isScrollDisabled,
     }"
     class="max-h-full w-full contain-layout contain-paint outline-none"
   >

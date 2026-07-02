@@ -22,4 +22,9 @@ export interface DatePickerProps {
    * @default 'md'
    */
   size?: 'md' | 'sm'
+
+  /**
+   * @deprecated Use `hasFixedWeeks` instead.
+   */
+  fixedWeeks?: boolean
 }

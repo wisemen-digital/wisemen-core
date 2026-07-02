@@ -66,6 +66,11 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default 'md'
    */
   size?: 'md' | 'sm'
+
+  /**
+   * @deprecated Use `isDropdownKeptOpenOnSelect` instead.
+   */
+  keepDropdownOpenOnSelect?: boolean | null
 }
 
 export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pick<

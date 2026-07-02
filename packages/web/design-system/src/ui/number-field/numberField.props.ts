@@ -35,4 +35,9 @@ export interface NumberFieldProps extends Input, AutocompleteInput, InputWrapper
    * @default 1
    */
   step?: number
+
+  /**
+   * @deprecated Use `hasControls` instead.
+   */
+  showControls?: boolean
 }

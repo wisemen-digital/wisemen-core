@@ -23,6 +23,10 @@ const props = withDefaults(defineProps<{
   headerCells?: Component[]
   items?: unknown[]
   label: string
+  /**
+   * @deprecated Use `isOpenByDefault` instead.
+   */
+  defaultOpen?: boolean
 }>(), {
   isOpenByDefault: true,
   items: () => [],
@@ -58,7 +62,7 @@ onBeforeUnmount(() => {
   <CollapsibleRoot
     v-slot="{ open: isOpen }"
     :as="TableSubgrid"
-    :default-open="props.isOpenByDefault"
+    :default-open="props.defaultOpen !== undefined ? props.defaultOpen : props.isOpenByDefault"
     class="group/collapsible"
   >
     <TableSubgrid

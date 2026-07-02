@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import type { ActionTooltipProps } from '@/ui/action-tooltip/actionTooltip.props'
 import KeyboardShortcut from '@/ui/keyboard-shortcut/KeyboardShortcut.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
@@ -14,6 +16,8 @@ const props = withDefaults(defineProps<ActionTooltipProps>(), {
   popoverAlign: 'center',
   popoverSide: 'top',
 })
+
+const isCloseOnTriggerClickDisabled = computed<boolean>(() => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick === true)
 </script>
 
 <template>
@@ -23,7 +27,7 @@ const props = withDefaults(defineProps<ActionTooltipProps>(), {
     :is-hoverable-content-disabled="true"
     :popover-side-offset="4"
     :popover-align="props.popoverAlign"
-    :is-close-on-trigger-click-disabled="props.isCloseOnTriggerClickDisabled"
+    :is-close-on-trigger-click-disabled="isCloseOnTriggerClickDisabled"
   >
     <template #trigger>
       <slot />

@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import { useInjectTableContext } from '@/ui/table/context/table.context'
 
 const props = withDefaults(defineProps<{
   isCentered?: boolean
+  /**
+   * @deprecated Use `isCentered` instead.
+   */
+  centerContent?: boolean
 }>(), {
   isCentered: false,
   isResizable: true,
 })
+
+const isCentered = computed<boolean>(() => props.isCentered || props.centerContent === true)
 
 const {
   isGroupingEnabled, isScrolledFromLeft,
@@ -17,7 +25,7 @@ const {
   <div
     :class="{
       'first-of-type:border-r first-of-type:border-secondary': isScrolledFromLeft,
-      'justify-center': props.isCentered,
+      'justify-center': isCentered,
       'bg-secondary': !isGroupingEnabled,
     }"
     class="

@@ -58,6 +58,11 @@ export interface Toast {
   isDismissible?: boolean
 
   /**
+   * @deprecated Use `isDismissible` instead.
+   */
+  dismissible?: boolean
+
+  /**
    * An optional call-to-action button rendered inside the toast.
    */
   button?: ToastButtonAction

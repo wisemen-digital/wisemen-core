@@ -24,4 +24,9 @@ export interface TextProps {
    * @default true
    */
   truncate?: boolean | 2 | 3 | 4 | 5 | 6
+
+  /**
+   * @deprecated Use `isTooltipDisabled` instead.
+   */
+  disableTooltip?: boolean
 }

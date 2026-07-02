@@ -4,4 +4,9 @@ export interface DialogFooterProps {
    * @default true
    */
   hasSeparator?: boolean
+
+  /**
+   * @deprecated Use `hasSeparator` instead.
+   */
+  showSeparator?: boolean
 }

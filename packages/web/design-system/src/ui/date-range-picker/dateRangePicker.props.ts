@@ -16,4 +16,9 @@ export interface DateRangePickerProps {
    * @default true
    */
   hasPresets?: boolean
+
+  /**
+   * @deprecated Use `hasPresets` instead.
+   */
+  showPresets?: boolean
 }

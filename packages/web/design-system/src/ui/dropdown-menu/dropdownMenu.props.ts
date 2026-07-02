@@ -19,4 +19,17 @@ export interface DropdownMenuProps extends PopperProps {
    * @default false
    */
   isUpdateOnLayoutShiftDisabled?: boolean
+
+  /**
+   * @deprecated Use `isContentPositionFixed` instead.
+   */
+  fixedContentPosition?: boolean
+  /**
+   * @deprecated Use `isPrioritizedPosition` instead.
+   */
+  prioritizePosition?: boolean
+  /**
+   * @deprecated Use `isUpdateOnLayoutShiftDisabled` instead.
+   */
+  disableUpdateOnLayoutShift?: boolean
 }

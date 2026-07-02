@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<KeyboardShortcutProps>(), {
   isKeyHoldVisualizationEnabled: false,
 })
 
+const isKeyHoldVisualizationEnabled = computed<boolean>(() => props.isKeyHoldVisualizationEnabled || props.enableKeyHoldVisualization === true)
+
 const i18n = useI18n()
 
 // Resolve platform once — detectPlatform() reads navigator.userAgent synchronously
@@ -85,7 +87,7 @@ const shortcutParts = computed<KeyboardShortcutPart[]>(() => {
         v-if="part.part === 'key'"
         :keyboard-key="part.value"
         :raw-key="part.rawKey"
-        :is-key-hold-visualization-enabled="props.isKeyHoldVisualizationEnabled"
+        :is-key-hold-visualization-enabled="isKeyHoldVisualizationEnabled"
       />
 
       <span

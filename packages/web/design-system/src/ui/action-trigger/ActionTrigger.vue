@@ -19,15 +19,23 @@ import {
 
 import type { RegisteredActionContext } from '@/register'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   isCurrentContextOnly: boolean
   action: Action
   models?: RegisteredActionContext['models']
-}>()
+  /**
+   * @deprecated Use `isCurrentContextOnly` instead.
+   */
+  currentContextOnly?: boolean
+}>(), {
+  currentContextOnly: undefined,
+})
 
 const manager = useActionManagerStore()
 
-if (!props.isCurrentContextOnly) {
+const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
+
+if (!isCurrentContextOnly) {
   useTemporaryActions(props.action, (props.action.group?.priority as GroupPriority) ?? GroupPriority.VIEW)
   useViewModels(computed(() => props.models ?? []))
 }

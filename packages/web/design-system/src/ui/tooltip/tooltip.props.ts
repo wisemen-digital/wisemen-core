@@ -21,4 +21,13 @@ export interface TooltipProps extends PopperProps {
    * @default 0
    */
   delayDuration?: number
+
+  /**
+   * @deprecated Use `isCloseOnTriggerClickDisabled` instead.
+   */
+  disableCloseOnTriggerClick?: boolean
+  /**
+   * @deprecated Use `isHoverableContentDisabled` instead.
+   */
+  disableHoverableContent?: boolean
 }

@@ -34,4 +34,9 @@ export interface TimeFieldProps extends Input, Omit<InputWrapper, 'placeholder'>
    * Pass `null` to apply the default of 1.
    */
   step?: DateStep | null
+
+  /**
+   * @deprecated Use `hasStepSnapping` instead.
+   */
+  stepSnapping?: boolean
 }

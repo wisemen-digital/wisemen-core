@@ -23,4 +23,9 @@ export interface FieldWrapperProps extends FieldWrapper {
    * @default 'md'
    */
   size?: 'md' | 'sm'
+
+  /**
+   * @deprecated Use `isWrapped` instead.
+   */
+  wrap?: boolean
 }
