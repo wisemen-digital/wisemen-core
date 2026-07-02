@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2017",
     "jsx": "react-jsx",
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "lib": [
       "dom",
       "dom.iterable",
