@@ -27,7 +27,7 @@ const {
     <UIActionDropdownMenu
       :actions="actions"
       :models="props.actionModel === null ? [] : [props.actionModel]"
-      :current-context-only="true"
+      :is-current-context-only="true"
       popover-side="bottom"
       popover-align="end"
     >

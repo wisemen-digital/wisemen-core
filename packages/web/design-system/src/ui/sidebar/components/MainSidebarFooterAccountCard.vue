@@ -31,7 +31,7 @@ const accountCardGridTemplateColumns = `${sidebarIconCellSize} 1fr`
 <template>
   <ActionDropdownMenu
     :actions="props.actions"
-    :current-context-only="true"
+    :is-current-context-only="true"
     popover-side="right"
     popover-align="end"
   >

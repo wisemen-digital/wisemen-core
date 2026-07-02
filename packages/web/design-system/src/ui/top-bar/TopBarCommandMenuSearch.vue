@@ -15,7 +15,7 @@ const commandMenuAction = useCommandMenuAction()
   <ActionTrigger
     v-slot="{ keyboardShortcut }"
     :action="commandMenuAction"
-    :current-context-only="true"
+    :is-current-context-only="true"
   >
     <ClickableElement>
       <button
