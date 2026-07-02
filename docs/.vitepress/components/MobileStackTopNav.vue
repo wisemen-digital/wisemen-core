@@ -20,6 +20,7 @@ import { computed } from 'vue'
 
 import {
   isApiRoute,
+  isCmsRoute,
   isWebRoute,
 } from './getStack.util.ts'
 import StackBadge from './StackBadge.vue'
@@ -29,14 +30,19 @@ const router = useRouter()
 
 const isApi = computed(() => isApiRoute(route.path))
 const isWeb = computed(() => isWebRoute(route.path))
+const isCms = computed(() => isCmsRoute(route.path))
 
-const activeStack = computed<'api' | 'web' | null>(() => {
+const activeStack = computed<'api' | 'cms' | 'web' | null>(() => {
   if (isWeb.value) {
     return 'web'
   }
 
   if (isApi.value) {
     return 'api'
+  }
+
+  if (isCms.value) {
+    return 'cms'
   }
 
   return null
