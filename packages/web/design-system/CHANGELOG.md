@@ -14,6 +14,12 @@
 
 
 
+
+## 1.10.1
+<sub>2026-07-02</sub>
+
+- [#1347](https://github.com/wisemen-digital/wisemen-core/pull/1347)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Return early if document is not defined in reduced motion composable to support ssr / ssg
+
 ## 1.10.0
 <sub>2026-07-01</sub>
 
