@@ -13,10 +13,10 @@ import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import { UISeparator } from '@/ui/separator/index'
 
 const props = withDefaults(defineProps<DialogHeaderProps>(), {
-  icon: null,
-  iconVariant: 'brand',
   hasCloseButton: true,
   hasSeparator: true,
+  icon: null,
+  iconVariant: 'brand',
 })
 
 const iconVariantStyle = tv({

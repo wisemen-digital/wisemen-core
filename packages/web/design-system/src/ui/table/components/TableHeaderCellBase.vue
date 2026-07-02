@@ -4,8 +4,8 @@ import { useInjectTableContext } from '@/ui/table/context/table.context'
 const props = withDefaults(defineProps<{
   isCentered?: boolean
 }>(), {
-  isResizable: true,
   isCentered: false,
+  isResizable: true,
 })
 
 const {

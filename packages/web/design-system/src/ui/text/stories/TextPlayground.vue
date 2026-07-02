@@ -3,13 +3,13 @@ import { UIText } from '@/ui/text/index'
 import type { TextProps } from '@/ui/text/text.props'
 
 const props = withDefaults(defineProps<{
-  as?: TextProps['as']
   isTooltipDisabled?: boolean
+  as?: TextProps['as']
   text?: string
   truncate?: TextProps['truncate']
 }>(), {
-  as: 'span',
   isTooltipDisabled: false,
+  as: 'span',
   text: 'Hello World',
   truncate: undefined,
 })

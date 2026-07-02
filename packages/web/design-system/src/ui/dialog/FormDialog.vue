@@ -15,10 +15,10 @@ import type { FormDialogProps } from '@/ui/dialog/formDialog.props'
 import Form from '@/ui/form/Form.vue'
 
 const props = withDefaults(defineProps<FormDialogProps>(), {
+  hasCloseButton: true,
   isClickOutsideDisabled: false,
   isEscDisabled: false,
   promptOnUnsavedChanges: true,
-  hasCloseButton: true,
   size: 'md',
   unsavedChangesText: null,
 })

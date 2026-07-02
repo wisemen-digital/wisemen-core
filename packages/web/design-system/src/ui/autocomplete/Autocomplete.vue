@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  isPrioritizedPosition: true,
   isSideFlipDisabled: true,
   getItemConfig: null,
   popoverAlign: 'center',
@@ -44,7 +45,6 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  isPrioritizedPosition: true,
   searchMode: 'remote',
   size: 'md',
 })

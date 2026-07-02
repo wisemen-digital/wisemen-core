@@ -4,10 +4,10 @@ import Button from '@/ui/button/button/Button.vue'
 import type { DialogFooterButtonProps } from '@/ui/dialog/dialogFooterButton.props'
 
 const props = withDefaults(defineProps<DialogFooterButtonProps>(), {
+  isAutoFocusDisabled: false,
   isDestructive: false,
   isDisabled: false,
   isLoading: false,
-  isAutoFocusDisabled: false,
   disabledReason: null,
   form: null,
   iconLeft: null,

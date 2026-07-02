@@ -10,12 +10,12 @@ import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
 import DialogHeader from '@/ui/dialog/DialogHeader.vue'
 
 const props = withDefaults(defineProps<ConfirmDialogProps>(), {
+  isClickOutsideDisabled: false,
   isDestructive: false,
+  isEscDisabled: false,
   cancelLabel: null,
   confirmLabel: null,
   icon: null,
-  isClickOutsideDisabled: false,
-  isEscDisabled: false,
 })
 
 const emit = defineEmits<{

@@ -8,6 +8,12 @@ export interface FieldWrapperProps extends FieldWrapper {
    */
   isError?: boolean
   /**
+   * When true, the wrapper uses min-height instead of a fixed height and allows
+   * its children to wrap onto multiple lines (e.g. for tags inputs).
+   * @default false
+   */
+  isWrapped?: boolean
+  /**
    * Controls the spacing between items inside the wrapper.
    * @default 'none'
    */
@@ -17,10 +23,4 @@ export interface FieldWrapperProps extends FieldWrapper {
    * @default 'md'
    */
   size?: 'md' | 'sm'
-  /**
-   * When true, the wrapper uses min-height instead of a fixed height and allows
-   * its children to wrap onto multiple lines (e.g. for tags inputs).
-   * @default false
-   */
-  isWrapped?: boolean
 }

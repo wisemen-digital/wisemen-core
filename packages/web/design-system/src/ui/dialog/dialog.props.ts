@@ -4,10 +4,10 @@ export type DialogSize = 'full-screen' | 'lg' | 'md' | 'sm' | 'xl' | 'xs' | 'xxs
 
 export interface DialogProps {
   /**
-   * The chin configuration to display below the dialog.
-   * @default null
+   *   Whether to show a close button in the dialog.
+   * @default true
    */
-  chin?: ChinConfig | null
+  hasCloseButton?: boolean
   /**
    * Whether to prevent closing the dialog by clicking outside.
    * @default false
@@ -20,10 +20,10 @@ export interface DialogProps {
   isEscDisabled?: boolean
 
   /**
-   *   Whether to show a close button in the dialog.
-   * @default true
+   * The chin configuration to display below the dialog.
+   * @default null
    */
-  hasCloseButton?: boolean
+  chin?: ChinConfig | null
 
   /**
    * The size of the dialog.

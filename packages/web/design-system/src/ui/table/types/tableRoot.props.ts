@@ -13,6 +13,10 @@ export interface TableRootProps {
    */
   hasActiveSearch?: boolean
   /**
+   * When `true`, the column resize handles are hidden and users cannot drag to resize columns.
+   */
+  isColumnResizeDisabled?: boolean
+  /**
    * Whether the table has completed its initial data fetch. Controls whether the table
    * renders its content or shows a loading skeleton.
    */
@@ -41,10 +45,6 @@ export interface TableRootProps {
    * Used to build the CSS `grid-template-columns` value.
    */
   columnSizes: TableColumnSize[]
-  /**
-   * When `true`, the column resize handles are hidden and users cannot drag to resize columns.
-   */
-  isColumnResizeDisabled?: boolean
   /**
    * Actions rendered in the table header toolbar (top-right area), independent of row selection.
    */

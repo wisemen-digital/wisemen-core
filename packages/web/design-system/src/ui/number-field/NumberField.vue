@@ -44,10 +44,10 @@ const props = withDefaults(defineProps<NumberFieldProps>(), {
   ...INPUT_META_DEFAULTS,
   ...INPUT_FIELD_DEFAULTS,
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  hasControls: false,
   formatOptions: null,
   max: null,
   min: null,
-  hasControls: false,
   step: 1,
 })
 

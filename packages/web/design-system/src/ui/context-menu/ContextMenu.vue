@@ -10,9 +10,9 @@ import type { ContextMenuProps } from '@/ui/context-menu/contextMenu.props'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
-  collisionPadding: 0,
-  isUpdateOnLayoutShiftDisabled: false,
   isPrioritizedPosition: false,
+  isUpdateOnLayoutShiftDisabled: false,
+  collisionPadding: 0,
 })
 
 const emit = defineEmits<{

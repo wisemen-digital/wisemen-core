@@ -27,6 +27,7 @@ import { useInjectTableContext } from '@/ui/table/context/table.context'
 import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<{
+  isCentered?: boolean
   isResizable?: boolean
   actionConfig?: {
     actions: Action[]
@@ -34,14 +35,13 @@ const props = withDefaults(defineProps<{
     label?: string | null
     metadata?: RegisteredActionContext['metadata']
   } | null
-  isCentered?: boolean
   columnIndex: number
   columnKey: string
   label: string | null
 }>(), {
+  isCentered: false,
   isResizable: true,
   actionConfig: null,
-  isCentered: false,
 })
 
 const i18n = useI18n()

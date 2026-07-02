@@ -14,8 +14,8 @@ import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 
 const props = defineProps<DropdownMenuProps & {
-  actions?: Action[]
   isCurrentContextOnly: boolean
+  actions?: Action[]
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action

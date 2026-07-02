@@ -10,14 +10,14 @@ import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
 import DialogHeader from '@/ui/dialog/DialogHeader.vue'
 
 withDefaults(defineProps<{
-  isOpen?: boolean
   isClickOutsideDisabled?: boolean
   isEscDisabled?: boolean
+  isOpen?: boolean
   size?: DialogSize
 }>(), {
-  isOpen: false,
   isClickOutsideDisabled: false,
   isEscDisabled: false,
+  isOpen: false,
   size: 'md',
 })
 

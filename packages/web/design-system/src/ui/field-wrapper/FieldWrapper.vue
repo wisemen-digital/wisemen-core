@@ -16,9 +16,9 @@ import { UIRowLayout } from '@/ui/row-layout/index'
 const props = withDefaults(defineProps<FieldWrapperProps>(), {
   ...INPUT_FIELD_DEFAULTS,
   isError: false,
+  isWrapped: false,
   gap: 'none',
   size: 'md',
-  isWrapped: false,
 })
 </script>
 

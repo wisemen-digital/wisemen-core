@@ -33,10 +33,10 @@ const props = withDefaults(defineProps<TimeFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'placeholder'),
+  hasStepSnapping: false,
   granularity: 'minute',
   size: 'md',
   step: null,
-  hasStepSnapping: false,
 })
 
 const modelValue = defineModel<Temporal.PlainTime | null>({

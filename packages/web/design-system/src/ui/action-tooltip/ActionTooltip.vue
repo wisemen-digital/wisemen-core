@@ -7,8 +7,8 @@ import TooltipContent from '@/ui/tooltip/TooltipContent.vue'
 import TooltipText from '@/ui/tooltip/TooltipText.vue'
 
 const props = withDefaults(defineProps<ActionTooltipProps>(), {
-  isDisabled: false,
   isCloseOnTriggerClickDisabled: false,
+  isDisabled: false,
   keyboardShortcut: null,
   label: null,
   popoverAlign: 'center',

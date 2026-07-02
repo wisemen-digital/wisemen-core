@@ -5,14 +5,14 @@ import ConfirmDialog from '@/ui/dialog/ConfirmDialog.vue'
 import type { DialogSize } from '@/ui/dialog/dialog.props'
 
 withDefaults(defineProps<{
-  isDestructive?: boolean
-  isOpen?: boolean
   isClickOutsideDisabled?: boolean
+  isDestructive?: boolean
   isEscDisabled?: boolean
+  isOpen?: boolean
   size?: DialogSize
 }>(), {
-  isDestructive: true,
   isClickOutsideDisabled: false,
+  isDestructive: true,
   isEscDisabled: false,
   size: 'xs',
 })

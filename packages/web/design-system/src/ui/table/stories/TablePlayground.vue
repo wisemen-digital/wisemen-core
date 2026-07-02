@@ -20,15 +20,15 @@ interface User {
 
 const props = withDefaults(defineProps<{
   hasActiveSearch?: boolean
+  isColumnResizeDisabled?: boolean
   isLoading?: boolean
   activeFilterCount?: number
-  isColumnResizeDisabled?: boolean
   variant?: 'contained' | 'full-page'
 }>(), {
   hasActiveSearch: false,
+  isColumnResizeDisabled: false,
   isLoading: false,
   activeFilterCount: 0,
-  isColumnResizeDisabled: false,
   variant: 'full-page',
 })
 

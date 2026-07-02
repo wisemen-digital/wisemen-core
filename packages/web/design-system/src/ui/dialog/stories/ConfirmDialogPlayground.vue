@@ -6,13 +6,13 @@ import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import ExampleConfirmDialog from './ExampleConfirmDialog.vue'
 
 const props = withDefaults(defineProps<{
-  isDestructive?: boolean
   isClickOutsideDisabled?: boolean
+  isDestructive?: boolean
   isEscDisabled?: boolean
   size?: DialogSize
 }>(), {
-  isDestructive: true,
   isClickOutsideDisabled: false,
+  isDestructive: true,
   isEscDisabled: false,
   size: 'xs',
 })

@@ -16,10 +16,10 @@ import TooltipArrow from '@/ui/tooltip/TooltipArrow.vue'
 
 const props = withDefaults(defineProps<TooltipProps>(), {
   ...POPPER_PROPS_DEFAULTS,
-  isDisabled: false,
-  delayDuration: 300,
   isCloseOnTriggerClickDisabled: false,
+  isDisabled: false,
   isHoverableContentDisabled: false,
+  delayDuration: 300,
 })
 
 const tooltipStyle = computed<TooltipStyle>(() => createTooltipStyle({

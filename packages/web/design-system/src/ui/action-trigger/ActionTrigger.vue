@@ -20,8 +20,8 @@ import {
 import type { RegisteredActionContext } from '@/register'
 
 const props = defineProps<{
-  action: Action
   isCurrentContextOnly: boolean
+  action: Action
   models?: RegisteredActionContext['models']
 }>()
 

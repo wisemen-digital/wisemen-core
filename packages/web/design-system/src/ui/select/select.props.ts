@@ -24,12 +24,17 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default false
    */
   hasVirtualScroll?: boolean | null
+  /**
+   * Whether to keep the dropdown open after selecting an option.
+   * @default null - will close on single select, stay open on multi select
+   */
+  isDropdownKeptOpenOnSelect?: boolean | null
   contentWidthClass?: string
+
   /**
    * Function to display the item label.
    */
   displayFn: DisplayFn<TValue>
-
   /**
    * Maps a value to its visual config (avatar, icon, status, etc.).
    * Used both in the trigger to display the selected item and in each dropdown option.
@@ -42,11 +47,6 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * The items to display in the select.
    */
   items: SelectItem<GetValue<TValue>>[]
-  /**
-   * Whether to keep the dropdown open after selecting an option.
-   * @default null - will close on single select, stay open on multi select
-   */
-  isDropdownKeptOpenOnSelect?: boolean | null
   /**
    * Should only be set when the dropdown list if not paginated, but is limited in the backend
    * @default null

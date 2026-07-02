@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import NumberField from '@/ui/number-field/NumberField.vue'
 
 const props = withDefaults(defineProps<{
+  hasControls?: boolean
   isDisabled?: boolean
   isLoading?: boolean
   isReadonly?: boolean
@@ -15,9 +16,9 @@ const props = withDefaults(defineProps<{
   max?: number
   min?: number
   placeholder?: string
-  hasControls?: boolean
   step?: number
 }>(), {
+  hasControls: false,
   isDisabled: false,
   isLoading: false,
   isReadonly: false,
@@ -29,7 +30,6 @@ const props = withDefaults(defineProps<{
   max: undefined,
   min: undefined,
   placeholder: 'Enter a number',
-  hasControls: false,
   step: undefined,
 })
 

@@ -14,9 +14,9 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   ...POPPER_PROPS_DEFAULTS,
+  isPrioritizedPosition: false,
   isSideFlipDisabled: false,
   isUpdateOnLayoutShiftDisabled: false,
-  isPrioritizedPosition: false,
 })
 
 const emit = defineEmits<{

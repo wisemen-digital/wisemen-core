@@ -9,9 +9,9 @@ import { useIsTruncated } from '@/ui/text/isTruncated.composable'
 import type { TextProps } from '@/ui/text/text.props'
 
 const props = withDefaults(defineProps<TextProps>(), {
+  isTooltipDisabled: false,
   as: 'span',
   class: null,
-  isTooltipDisabled: false,
   truncate: true,
 })
 

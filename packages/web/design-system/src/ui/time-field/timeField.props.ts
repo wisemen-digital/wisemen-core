@@ -8,6 +8,12 @@ import type {
 
 export interface TimeFieldProps extends Input, Omit<InputWrapper, 'placeholder'>, FieldWrapper {
   /**
+   * Whether to snap the value to the nearest step increment after the user finishes input.
+   * When `true`, any manually typed value is rounded to the closest valid step.
+   * @default false
+   */
+  hasStepSnapping?: boolean
+  /**
    * The granularity to use for formatting and inputting times.
    * Determines which time segments are displayed and editable.
    * - `'hour'` — shows hours only
@@ -28,10 +34,4 @@ export interface TimeFieldProps extends Input, Omit<InputWrapper, 'placeholder'>
    * Pass `null` to apply the default of 1.
    */
   step?: DateStep | null
-  /**
-   * Whether to snap the value to the nearest step increment after the user finishes input.
-   * When `true`, any manually typed value is rounded to the closest valid step.
-   * @default false
-   */
-  hasStepSnapping?: boolean
 }

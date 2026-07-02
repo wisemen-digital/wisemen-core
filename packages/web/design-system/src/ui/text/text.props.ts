@@ -1,5 +1,10 @@
 export interface TextProps {
   /**
+   * If `true`, the tooltip will be disabled even if the text is truncated.
+   * @default false
+   */
+  isTooltipDisabled?: boolean
+  /**
    * The HTML element or component to render as the text container.
    * @default 'span'
    */
@@ -9,11 +14,6 @@ export interface TextProps {
    * @default null
    */
   class?: string | null
-  /**
-   * If `true`, the tooltip will be disabled even if the text is truncated.
-   * @default false
-   */
-  isTooltipDisabled?: boolean
   /**
    * The text content to display.
    */

@@ -17,11 +17,11 @@ type InferColumnItem<T>
       : T
 
 export interface TableColumn<TElement, TKey extends string = string> {
+  isCenteredHeaderContent?: boolean
   actionConfig?: {
     actions: Action[]
     metadata?: RegisteredActionContext['metadata']
   }
-  isCenteredHeaderContent?: boolean
   headerLabel: string
   key: TKey
   size?: TableColumnSize

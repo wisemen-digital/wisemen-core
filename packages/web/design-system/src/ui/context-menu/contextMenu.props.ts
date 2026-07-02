@@ -1,18 +1,18 @@
 export interface ContextMenuProps {
   /**
-   * The padding between the context menu content and the collision boundaries.
-   * @default 0
+   * Constrain the content to remain within the viewport. This may cause it
+   * to overlap the trigger element, which might be undesirable.
+   * @default false
    */
-  collisionPadding?: number
+  isPrioritizedPosition?: boolean
   /**
    * Disables updating the content's position on layout shifts.
    * @default false
    */
   isUpdateOnLayoutShiftDisabled?: boolean
   /**
-   * Constrain the content to remain within the viewport. This may cause it
-   * to overlap the trigger element, which might be undesirable.
-   * @default false
+   * The padding between the context menu content and the collision boundaries.
+   * @default 0
    */
-  isPrioritizedPosition?: boolean
+  collisionPadding?: number
 }

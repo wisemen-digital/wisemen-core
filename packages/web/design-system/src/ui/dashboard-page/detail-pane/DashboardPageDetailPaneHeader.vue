@@ -5,8 +5,8 @@ import { useInjectDetailPaneScrollContext } from '@/ui/dashboard-page/detail-pan
 import { UISeparator } from '@/ui/separator'
 
 const props = withDefaults(defineProps<DetailPaneHeaderProps>(), {
-  left: null,
   hasSeparator: true,
+  left: null,
 })
 
 const scrollContext = useInjectDetailPaneScrollContext(null)

@@ -51,8 +51,8 @@ export const Default: Story = {
 
 export const Confirm: StoryObj<typeof ConfirmDialogPlayground> = {
   args: {
-    isDestructive: true,
     isClickOutsideDisabled: false,
+    isDestructive: true,
     isEscDisabled: false,
     size: 'xs',
   },

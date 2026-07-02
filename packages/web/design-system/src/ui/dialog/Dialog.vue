@@ -16,10 +16,10 @@ import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
-  chin: null,
+  hasCloseButton: true,
   isClickOutsideDisabled: false,
   isEscDisabled: false,
-  hasCloseButton: true,
+  chin: null,
   size: 'md',
 })
 

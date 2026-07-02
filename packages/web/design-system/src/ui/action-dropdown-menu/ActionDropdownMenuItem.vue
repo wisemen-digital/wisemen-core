@@ -26,8 +26,8 @@ import {
 import type { MenuItemLeftConfig } from '@/ui/menu-item/menuItem.type'
 
 const props = defineProps<{
-  action: Action
   isClosedOnSelect: boolean
+  action: Action
   context?: ActionContext
   models?: ActionModel[]
   preview?: Component | null

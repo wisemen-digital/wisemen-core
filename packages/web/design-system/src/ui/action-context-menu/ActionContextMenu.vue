@@ -10,8 +10,8 @@ import ActionContextMenuContent from '@/ui/action-context-menu/ActionContextMenu
 import { UIContextMenu } from '@/ui/context-menu/index'
 
 const props = defineProps<{
-  actions?: Action[]
   isCurrentContextOnly: boolean
+  actions?: Action[]
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
