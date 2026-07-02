@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "ignoreDeprecations": "6.0",
     "lib": [
       "dom",
@@ -14,7 +14,9 @@
     "paths": {
       "#*": [
         "./src/*"
-      ]
+      ],
+      "@wisemen/payload-core-translate/client": ["./src/client.ts"],
+      "@wisemen/payload-core-translate/server": ["./src/server.ts"]
     },
     "resolveJsonModule": true,
     "allowImportingTsExtensions": true,

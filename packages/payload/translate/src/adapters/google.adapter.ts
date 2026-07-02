@@ -1,3 +1,4 @@
+/* eslint-disable e18e/prefer-static-regex */
 /* eslint-disable require-await */
 import type { Field } from 'payload'
 
@@ -51,9 +52,13 @@ export class GoogleTranslateAdapter implements TranslationAdapter {
     apiURL = 'https://translation.googleapis.com/language/translate/v2',
     fallbackApiURL = 'https://translate.googleapis.com/translate_a/single',
   }: GoogleTranslateAdapterOptions) {
-    this.apiKey = apiKey
-    this.apiURL = apiURL
-    this.fallbackApiURL = fallbackApiURL
+    this.apiKey = typeof apiKey === 'string' && apiKey.trim().length > 0 ? apiKey : undefined
+    this.apiURL = typeof apiURL === 'string' && apiURL.trim().length > 0
+      ? sanitizeUrlInput(apiURL)
+      : 'https://translation.googleapis.com/language/translate/v2'
+    this.fallbackApiURL = typeof fallbackApiURL === 'string' && fallbackApiURL.trim().length > 0
+      ? sanitizeUrlInput(fallbackApiURL)
+      : 'https://translate.googleapis.com/translate_a/single'
   }
 
   private normalizeLocaleForCloud(locale: string): string {
@@ -181,6 +186,10 @@ export class GoogleTranslateAdapter implements TranslationAdapter {
 
 export function createGoogleTranslateAdapter(options: GoogleTranslateAdapterOptions = {}): TranslationAdapter {
   return new GoogleTranslateAdapter(options)
+}
+
+function sanitizeUrlInput(url: string): string {
+  return url.replace(/\s+/g, '')
 }
 
 export const googleTranslateAdapterDefinition: TranslationAdapterDefinition<GoogleTranslateAdapterOptions> = {

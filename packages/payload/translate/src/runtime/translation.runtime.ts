@@ -77,6 +77,7 @@ export function createTranslationEndpointHandler({
     }
 
     const body = await req.json?.() as {
+      adapterKey?: string
       documentID?: number | string
       mode?: string
       sourceLocale?: string
@@ -159,6 +160,18 @@ export function createTranslationEndpointHandler({
       })
     }
 
+    const selectedAdapterKey = typeof body.adapterKey === 'string' && body.adapterKey.length > 0
+      ? body.adapterKey
+      : undefined
+
+    if (selectedAdapterKey && !adapterDefinitions.some((definition) => definition.key === selectedAdapterKey)) {
+      return Response.json({
+        error: `Unknown translation adapter: ${selectedAdapterKey}.`,
+      }, {
+        status: 400,
+      })
+    }
+
     const sourceDocument = await req.payload.findByID({
       id: body.documentID,
       collection: collectionSlug as never,
@@ -193,6 +206,7 @@ export function createTranslationEndpointHandler({
     const translationAdapters = await resolveTranslationAdapters({
       adapterDefinitions,
       req,
+      selectedAdapterKey,
       translations,
     })
 
@@ -270,10 +284,12 @@ export function createTranslationEndpointHandler({
 async function resolveTranslationAdapters({
   adapterDefinitions,
   req,
+  selectedAdapterKey,
   translations,
 }: {
   adapterDefinitions: readonly TranslationAdapterDefinition[]
   req: PayloadRequest
+  selectedAdapterKey?: string
   translations: NonNullable<TranslationPluginOptions['translations']> | undefined
 }): Promise<TranslationAdapter[]> {
   if (adapterDefinitions.length === 0) {
@@ -290,17 +306,63 @@ async function resolveTranslationAdapters({
   })
   const adapterSettings = extractTranslationAdapterSettings(translationSettingsDoc)
 
-  return adapterDefinitions.map((definition) => {
-    const rawOptions = adapterSettings[definition.key]
-    const options = isPlainObject(rawOptions)
-      ? {
-          ...definition.defaultOptions,
-          ...rawOptions,
-        }
-      : definition.defaultOptions ?? {}
+  if (selectedAdapterKey) {
+    const selectedDefinition = adapterDefinitions.find((definition) => definition.key === selectedAdapterKey)
 
-    return definition.create(options)
+    return [
+      createTranslationAdapterFromDefinition({
+        adapterSettings,
+        definition: selectedDefinition as TranslationAdapterDefinition,
+      }),
+    ]
+  }
+
+  return adapterDefinitions.map((definition) => {
+    return createTranslationAdapterFromDefinition({
+      adapterSettings,
+      definition,
+    })
   })
+}
+
+function createTranslationAdapterFromDefinition({
+  adapterSettings, definition,
+}: {
+  adapterSettings?: Record<string, unknown>
+  definition: TranslationAdapterDefinition
+}): TranslationAdapter {
+  const rawOptions = adapterSettings?.[definition.key]
+  const options = isPlainObject(rawOptions)
+    ? mergeAdapterOptions(definition.defaultOptions ?? {}, rawOptions)
+    : definition.defaultOptions ?? {}
+
+  return definition.create(options)
+}
+
+function mergeAdapterOptions(
+  defaultOptions: Record<string, unknown>,
+  rawOptions: Record<string, unknown>,
+): Record<string, unknown> {
+  const merged = {
+    ...defaultOptions,
+  }
+
+  for (const [
+    key,
+    value,
+  ] of Object.entries(rawOptions)) {
+    if (value === null || value === undefined) {
+      continue
+    }
+
+    if (typeof value === 'string' && value.trim().length === 0) {
+      continue
+    }
+
+    merged[key] = value
+  }
+
+  return merged
 }
 
 async function translateWithFallbackAdapters({

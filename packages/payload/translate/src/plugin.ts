@@ -7,7 +7,11 @@ import {
   ensureTranslationStatusField,
 } from '#collections/index.ts'
 import { createTranslationEndpointHandler } from '#runtime/index.ts'
-import { ensureTranslationSettingsFields } from '#settings/index.ts'
+import {
+  createTranslationSettingsCollection,
+  createTranslationSettingsGlobal,
+  ensureTranslationSettingsFields,
+} from '#settings/index.ts'
 import { resolveFieldSelections } from '#translation.engine.ts'
 import type {
   TranslatableCollectionDefinition,
@@ -49,6 +53,28 @@ export const payloadTranslatePlugin = definePlugin<TranslationPluginOptions>({
           },
         )
       }
+      else if (translations.type === 'collection') {
+        config.collections ??= []
+        config.collections.push(
+          createTranslationSettingsCollection({
+            access,
+            adapterDefinitions: adapters,
+            collectionSlug: translations.slug,
+            translations,
+          }),
+        )
+      }
+      else {
+        config.globals ??= []
+        config.globals.push(
+          createTranslationSettingsGlobal({
+            access,
+            adapterDefinitions: adapters,
+            collectionSlug: translations.slug,
+            translations,
+          }),
+        )
+      }
     }
 
     for (const collection of config.collections ?? []) {
@@ -68,10 +94,14 @@ export const payloadTranslatePlugin = definePlugin<TranslationPluginOptions>({
       collection.admin.components.edit.editMenuItems ??= []
       collection.admin.components.edit.editMenuItems.push({
         clientProps: {
+          adapterDefinitions: adapters.map((adapter) => ({
+            key: adapter.key,
+            label: adapter.label,
+          })),
           collectionSlug: collection.slug,
           endpointPath,
         },
-        path: '@repo/payload-translate/server#TranslateMenuItemsServer',
+        path: '@wisemen/payload-core-translate/server#TranslateMenuItemsServer',
       })
       collection.hooks ??= {}
       collection.hooks.beforeChange = [

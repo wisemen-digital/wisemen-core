@@ -22,8 +22,8 @@ export function ensureTranslationStatusField(fields: Field[], collectionSlug: st
       name: TRANSLATION_STATUS_FIELD_NAME,
       admin: {
         components: {
-          Cell: '@repo/payload-translate/client#TranslationStatusCell',
-          Field: '@repo/payload-translate/client#TranslationStatusField',
+          Cell: '@wisemen/payload-core-translate/client#TranslationStatusCell',
+          Field: '@wisemen/payload-core-translate/client#TranslationStatusField',
         },
         custom: {
           collectionSlug,

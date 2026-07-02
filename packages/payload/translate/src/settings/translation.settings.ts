@@ -1,5 +1,9 @@
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
-import type { Field } from 'payload'
+import type {
+  CollectionConfig,
+  Field,
+  GlobalConfig,
+} from 'payload'
 
 import type {
   TranslationAccess,
@@ -95,6 +99,55 @@ export function createTranslationSettingsField({
     ],
     label: 'Translations',
     type: 'group',
+  }
+}
+
+export function createTranslationSettingsCollection({
+  access,
+  adapterDefinitions,
+  collectionSlug,
+  translations,
+}: TranslationSettingsFieldArgs): CollectionConfig {
+  return {
+    admin: {
+      hidden: false,
+    },
+    fields: [
+      createTranslationSettingsField({
+        access,
+        adapterDefinitions,
+        collectionSlug,
+        translations,
+      }),
+    ],
+    labels: {
+      plural: 'Translation settings',
+      singular: 'Translation settings',
+    },
+    slug: collectionSlug ?? translations?.slug ?? 'translationSettings',
+  }
+}
+
+export function createTranslationSettingsGlobal({
+  access,
+  adapterDefinitions,
+  collectionSlug,
+  translations,
+}: TranslationSettingsFieldArgs): GlobalConfig {
+  return {
+    admin: {
+      hidden: false,
+    },
+    fields: [
+      createTranslationSettingsField({
+        access,
+        adapterDefinitions,
+        collectionSlug,
+        translations,
+      }),
+    ],
+    label: 'Translation settings',
+    slug: collectionSlug ?? translations?.slug ?? 'translationSettings',
   }
 }
 

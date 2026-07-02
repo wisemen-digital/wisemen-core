@@ -1,9 +1,18 @@
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
 export {
+  createDeepLTranslateAdapter,
   createGoogleTranslateAdapter,
+  DEEPL_TRANSLATE_ADAPTER_FIELDS,
+  DEEPL_TRANSLATE_ADAPTER_KEY,
+  deeplTranslateAdapterDefinition,
   googleTranslateAdapterDefinition,
 } from '#adapters/index.ts'
 export { payloadTranslatePlugin } from '#plugin.ts'
+export {
+  createTranslationSettingsCollection,
+  createTranslationSettingsField,
+  createTranslationSettingsGlobal,
+} from '#settings/index.ts'
 
 export function defineTranslatableCollection<
   TDocument extends object,

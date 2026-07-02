@@ -1,6 +1,6 @@
+'use client'
 /* eslint-disable unicorn/no-await-expression-member */
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
-'use client'
 
 import {
   ConfirmationModal,
@@ -17,6 +17,10 @@ import {
 } from '#status.ts'
 
 interface TranslateMenuItemsClientProps {
+  adapterDefinitions: {
+    key: string
+    label: string
+  }[]
   currentLocale: string
   documentID: number | string
   endpointPath: string
@@ -27,8 +31,10 @@ interface TranslateMenuItemsClientProps {
 }
 
 const ALL_LOCALES_VALUE = 'all'
+const TRANSLATION_ERROR_MESSAGE = 'Something went wrong with translating, check your settings and if it persists contact an admin.'
 
 export function TranslateMenuItemsClient({
+  adapterDefinitions,
   currentLocale,
   documentID,
   endpointPath,
@@ -60,11 +66,24 @@ export function TranslateMenuItemsClient({
     selectedMode,
     setSelectedMode,
   ] = useState<TranslationMode>(TRANSLATION_MODES.translate)
+  const [
+    selectedAdapterKey,
+    setSelectedAdapterKey,
+  ] = useState<string>(adapterDefinitions[0]?.key ?? '')
   const modalSlug = `translate-locale-${documentID}`
 
   if (targetLocales.length === 0) {
     return null
   }
+
+  const hasMultipleAdapters = adapterDefinitions.length > 1
+  const adapterOptions = adapterDefinitions.map((adapter) => ({
+    label: adapter.label,
+    value: adapter.key,
+  }))
+  const selectedAdapterLabel = adapterDefinitions.find((adapter) => adapter.key === selectedAdapterKey)?.label
+    ?? adapterDefinitions[0]?.label
+    ?? 'selected adapter'
 
   const selectedTargetLocale = targetLocales.find((locale) => locale.code === selectedLocale) ?? null
   const selectedLocaleLabel = selectedLocale === ALL_LOCALES_VALUE
@@ -128,6 +147,28 @@ export function TranslateMenuItemsClient({
                 Select the locale to translate this document into, or choose all locales except the current one.
               </p>
 
+              {hasMultipleAdapters
+                ? (
+                    <div>
+                      <SelectInput
+                        id={`${modalSlug}-adapter`}
+                        isClearable={false}
+                        label="Translation service"
+                        name={`${modalSlug}-adapter`}
+                        onChange={(option) => {
+                          if (!Array.isArray(option) && option?.value && typeof option.value === 'string') {
+                            setSelectedAdapterKey(option.value)
+                          }
+                        }}
+                        options={adapterOptions}
+                        path={`${modalSlug}-adapter`}
+                        required={true}
+                        value={selectedAdapterKey}
+                      />
+                    </div>
+                  )
+                : null}
+
               <div>
                 <SelectInput
                   id={`${modalSlug}-select`}
@@ -190,6 +231,7 @@ export function TranslateMenuItemsClient({
                 margin: 0,
               }}
               >
+                {hasMultipleAdapters ? `Using ${selectedAdapterLabel}. ` : null}
                 {selectedMode === TRANSLATION_MODES.translate
                   ? 'Translate updates stale and not translated locales'
                   : 'Retranslate replaces every locale, including manually edited ones'}
@@ -211,6 +253,7 @@ export function TranslateMenuItemsClient({
             const translationPromise = (async () => {
               const response = await fetch(endpointPath, {
                 body: JSON.stringify({
+                  adapterKey: hasMultipleAdapters ? selectedAdapterKey : undefined,
                   documentID,
                   mode: selectedMode,
                   sourceLocale: currentLocale,
@@ -235,7 +278,7 @@ export function TranslateMenuItemsClient({
             })()
 
             toast.promise(translationPromise, {
-              error: (error) => error instanceof Error ? error.message : 'Translation failed',
+              error: () => TRANSLATION_ERROR_MESSAGE,
               loading: `${selectedModeLabel} ${selectedLocaleLabel}...`,
               success: (result) => {
                 if ((result.translatedLocales?.length ?? 0) === 0) {
@@ -246,7 +289,14 @@ export function TranslateMenuItemsClient({
               },
             })
 
-            const translatedLocales = (await translationPromise).translatedLocales ?? []
+            let translatedLocales: string[] = []
+
+            try {
+              translatedLocales = (await translationPromise).translatedLocales ?? []
+            }
+            catch {
+              return
+            }
 
             if (selectedLocale !== ALL_LOCALES_VALUE && translatedLocales[0]) {
               const url = new URL(window.location.href)

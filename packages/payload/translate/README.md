@@ -15,39 +15,31 @@ Payload plugin for translating documents with one or more adapters.
 This package is workspace-local, so you usually import it directly from the monorepo package:
 
 ```ts
-import {
-  payloadTranslatePlugin,
-  googleTranslateAdapterDefinition,
-} from '@repo/payload-translate'
+import { payloadTranslatePlugin, googleTranslateAdapterDefinition } from "@repo/payload-translate";
 ```
 
 ## Basic usage
 
 ```ts
-import { payloadTranslatePlugin, googleTranslateAdapterDefinition } from '@repo/payload-translate'
+import { payloadTranslatePlugin, googleTranslateAdapterDefinition } from "@repo/payload-translate";
 
 export default buildConfig({
   plugins: [
     payloadTranslatePlugin({
-      adapters: [
-        googleTranslateAdapterDefinition,
-      ],
+      adapters: [googleTranslateAdapterDefinition],
       collections: [
         defineTranslatableCollection<Article>({
-          slug: 'articles',
-          translatableFields: [
-            'title',
-            'body',
-          ],
+          slug: "articles",
+          translatableFields: ["title", "body"],
         }),
       ],
       translations: {
-        type: 'collection',
-        slug: 'translation-settings',
+        type: "collection",
+        slug: "translationSettings",
       },
     }),
   ],
-})
+});
 ```
 
 ## Adapters
@@ -74,10 +66,27 @@ Google adapter settings:
 Example:
 
 ```ts
-adapters: [
-  googleTranslateAdapterDefinition,
-]
+adapters: [googleTranslateAdapterDefinition];
 ```
+
+The package also ships with a DeepL adapter definition:
+
+- `deeplTranslateAdapterDefinition`
+
+DeepL adapter settings:
+
+- `apiKey`
+- `apiURL`
+
+Example:
+
+```ts
+adapters: [deeplTranslateAdapterDefinition];
+```
+
+When you configure more than one adapter, the translation modal shows a
+`Translation service` dropdown so editors can choose which service to use for
+that translation run.
 
 ## Translation settings storage
 
@@ -86,7 +95,7 @@ Use `translations` to tell the plugin where to store adapter configuration.
 ```ts
 translations: {
   type: 'global',
-  slug: 'translation-settings',
+  slug: 'translationSettings',
 }
 ```
 
@@ -95,7 +104,7 @@ or:
 ```ts
 translations: {
   type: 'collection',
-  slug: 'translation-settings',
+  slug: 'translationSettings',
 }
 ```
 
@@ -111,17 +120,17 @@ You can optionally gate both:
 ```ts
 payloadTranslatePlugin({
   access: async ({ req, collectionSlug, document }) => {
-    if (!req.user) return false
-    if (collectionSlug === 'restricted') return false
-    return Boolean(document)
+    if (!req.user) return false;
+    if (collectionSlug === "restricted") return false;
+    return Boolean(document);
   },
   adapters: [googleTranslateAdapterDefinition],
   collections,
   translations: {
-    type: 'collection',
-    slug: 'translation-settings',
+    type: "collection",
+    slug: "translationSettings",
   },
-})
+});
 ```
 
 If `access` returns `false`, the endpoint responds with `403`, and the `translations` field will not render in admin.
@@ -135,11 +144,11 @@ payloadTranslatePlugin({
   adapters: [googleTranslateAdapterDefinition],
   collections,
   richText: {
-    metaKeys: ['myMetaKey'],
-    skipKeys: ['mySkipKey'],
+    metaKeys: ["myMetaKey"],
+    skipKeys: ["mySkipKey"],
     optionKeyPatterns: [/myOption$/i],
   },
-})
+});
 ```
 
 ## Notes
@@ -147,4 +156,3 @@ payloadTranslatePlugin({
 - `adapters` is required.
 - The runtime tries adapters in order and falls back to the next one if a translation fails.
 - The full source document is passed to each adapter, even if the adapter does not need it today.
-

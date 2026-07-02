@@ -1,4 +1,7 @@
-import type { TranslationAccess, TranslationAccessArgs } from '#types.ts'
+import type {
+  TranslationAccess,
+  TranslationAccessArgs,
+} from '#types.ts'
 
 export async function canAccessTranslation(
   access: TranslationAccess | undefined,

@@ -1,16 +1,20 @@
 /* eslint-disable e18e/prefer-static-regex */
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
+import { TranslateMenuItemsClient } from '@wisemen/payload-core-translate/client'
 import type { EditMenuItemsServerProps } from 'payload'
 
-import { TranslateMenuItemsClient } from '#components/translateMenuItems.client.tsx'
-
 interface TranslateMenuItemsServerPropsExtended extends EditMenuItemsServerProps {
+  adapterDefinitions: {
+    key: string
+    label: string
+  }[]
   collectionSlug: string
   endpointPath: string
 }
 
 export function TranslateMenuItemsServer({
   id,
+  adapterDefinitions,
   collectionSlug,
   endpointPath,
   locale,
@@ -28,6 +32,7 @@ export function TranslateMenuItemsServer({
 
   return (
     <TranslateMenuItemsClient
+      adapterDefinitions={adapterDefinitions}
       currentLocale={locale.code}
       documentID={id}
       endpointPath={joinPathSegments(apiRoute, endpointPath, collectionSlug)}
