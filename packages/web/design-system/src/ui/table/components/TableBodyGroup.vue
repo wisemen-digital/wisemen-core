@@ -7,27 +7,41 @@ import {
 } from 'reka-ui'
 import type { Component } from 'vue'
 import { onBeforeUnmount } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import TableSubgrid from '@/ui/table/components/TableSubgrid.vue'
 import { TABLE_Z_INDEX } from '@/ui/table/const/table.const'
 import { useInjectTableContext } from '@/ui/table/context/table.context'
 import { useProvideTableGroupContext } from '@/ui/table/context/tableGroup.context'
+import { useInjectTableSelectionContext } from '@/ui/table/context/tableSelection.context'
 import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<{
   defaultOpen?: boolean
   headerCells?: Component[]
+  items?: unknown[]
   label: string
 }>(), {
   defaultOpen: true,
+  items: () => [],
 })
 
 const {
   isScrolledFromLeft,
+  isSelectable,
   registerGroup,
   unregisterGroup,
 } = useInjectTableContext()
+
+const {
+  isGroupAllSelected,
+  isGroupIndeterminate,
+  toggleGroup,
+} = useInjectTableSelectionContext()
+
+const i18n = useI18n()
 
 useProvideTableGroupContext({
   isGroup: true,
@@ -58,41 +72,57 @@ onBeforeUnmount(() => {
         has-focus-visible:bg-tertiary
       "
     >
-      <CollapsibleTrigger :as-child="true">
-        <button
-          :class="{
-            'border-r border-secondary': isScrolledFromLeft,
-          }"
-          class="
-            sticky left-0 z-1 size-full bg-primary px-2xl outline-none
-            group-hover/group:bg-secondary
-            group-has-focus-visible/group:bg-tertiary
-            group-data-[state=open]/collapsible:bg-secondary
-          "
-        >
-          <UIRowLayout gap="none">
-            <div class="w-5">
-              <ChevronDownIcon
-                :class="{
-                  '-rotate-90': !isOpen,
-                }"
+      <div
+        class="
+          sticky z-1 flex items-center gap-xs bg-primary px-2xl
+          group-hover/group:bg-secondary
+          group-has-focus-visible/group:bg-tertiary
+          group-data-[state=open]/collapsible:bg-secondary
+        "
+      >
+        <BaseCheckbox
+          v-if="isSelectable"
+          :model-value="isGroupAllSelected(props.items) || isGroupIndeterminate(props.items)"
+          :is-indeterminate="isGroupIndeterminate(props.items) && !isGroupAllSelected(props.items)"
+          :is-label-hidden="true"
+          :label="i18n.t('component.table.group.toggle_selection_label')"
+          class="mr-sm"
+          @update:model-value="() => toggleGroup(props.items)"
+        />
+
+        <CollapsibleTrigger :as-child="true">
+          <button
+            :class="{
+              'border-r border-secondary': isScrolledFromLeft,
+              'left-0': !isSelectable,
+              'left-10': isSelectable,
+            }"
+            class="h-full flex-1 outline-none"
+          >
+            <UIRowLayout gap="none">
+              <div class="w-5">
+                <ChevronDownIcon
+                  :class="{
+                    '-rotate-90': !isOpen,
+                  }"
+                  class="
+                    size-3.5 text-disabled duration-150
+                    group-hover/group:text-secondary
+                  "
+                />
+              </div>
+
+              <UIText
+                :text="props.label"
                 class="
-                  size-3.5 text-disabled duration-150
+                  text-xs text-tertiary duration-150
                   group-hover/group:text-secondary
                 "
               />
-            </div>
-
-            <UIText
-              :text="props.label"
-              class="
-                text-xs text-tertiary duration-150
-                group-hover/group:text-secondary
-              "
-            />
-          </UIRowLayout>
-        </button>
-      </CollapsibleTrigger>
+            </UIRowLayout>
+          </button>
+        </CollapsibleTrigger>
+      </div>
 
       <Component
         :is="cell"

@@ -13,6 +13,21 @@
 
 
 
+
+
+## 1.10.1
+<sub>2026-07-02</sub>
+
+- [#1347](https://github.com/wisemen-digital/wisemen-core/pull/1347)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Return early if document is not defined in reduced motion composable to support ssr / ssg
+
+## 1.10.0
+<sub>2026-07-01</sub>
+
+- [#1194](https://github.com/wisemen-digital/wisemen-core/pull/1194)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: add `is-selectable` prop to select one, more or all rows
+- [#1181](https://github.com/wisemen-digital/wisemen-core/pull/1181)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix Button and IconButton styling inconsistencies
+- [#1339](https://github.com/wisemen-digital/wisemen-core/pull/1339)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Align tooltip border radius with other radii
+- [#1341](https://github.com/wisemen-digital/wisemen-core/pull/1341)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix min and max table column width
+
 ## 1.9.1
 <sub>2026-06-30</sub>
 

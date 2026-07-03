@@ -4,7 +4,7 @@ export const createButtonStyle = tv({
   compoundVariants: [
     {
       class: {
-        container: 'dark:rounded-[0.31rem] dark:px-md',
+        container: 'dark:rounded-[0.35rem] dark:px-md',
       },
       size: 'md',
       variant: 'primary',
@@ -206,7 +206,7 @@ export const createButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-secondary-hover
+          data-interactive:hover:bg-fg-primary/5
         `,
       },
     },

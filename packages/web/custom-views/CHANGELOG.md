@@ -4,6 +4,12 @@
 
 
 
+
+## 1.0.0
+<sub>2026-07-01</sub>
+
+- *(major)* Updated dependency `@wisemen/vue-core-filters` v10.0.0
+
 ## 0.3.2
 <sub>2026-06-30</sub>
 

@@ -1,13 +1,14 @@
 import { resolve } from 'node:path'
 
 import tailwindcss from '@tailwindcss/vite'
+// @ts-expect-error This works
 import postcssPrefixSelector from 'postcss-prefix-selector'
 import { defineConfig } from 'vitepress'
 
-import {
-  getPackagesNavigation,
-  getPackagesSidebar,
-} from '../packages/navigation.utils'
+import { getPackagesSidebar } from '../navigation/navigation.utils'
+import { DOC_PATHS } from '../navigation/paths'
+import { API_PLAYBOOK_NAVIGATION } from '../stacks/api/playbook/apiPlaybook.navigation'
+import { WEB_PLAYBOOK_NAVIGATION } from '../stacks/web/playbook/webPlaybook.navigation'
 import ComponentPreviewPlugin from './plugins/ComponentPreview'
 import ComponentPreviewV1Plugin from './plugins/ComponentPreviewV1'
 
@@ -24,20 +25,61 @@ export default defineConfig({
   base: '/wisemen-core/docs/',
   title: 'Wisemen Core',
   rewrites: {
-    home: 'index',
+    'stacks/web/:slug*': 'web/:slug*',
+    'stacks/api/:slug*': 'api/:slug*',
   },
   description: 'The central repository of Wisemen for all internal Vue packages.',
   themeConfig: {
     nav: [
       {
-        text: 'Packages',
+        text: 'Stacks',
         items: [
-          ...getPackagesNavigation(),
+          {
+            text: 'WEB',
+            link: DOC_PATHS.web,
+          },
+          {
+            text: 'API',
+            link: DOC_PATHS.api,
+          },
         ],
       },
     ],
 
     sidebar: {
+      '/stacks/': [
+        {
+          text: 'Stacks',
+          items: [
+            {
+              text: 'Overview',
+              link: DOC_PATHS.stacks,
+            },
+            {
+              text: 'WEB',
+              link: DOC_PATHS.web,
+            },
+            {
+              text: 'WEB Playbook',
+              link: DOC_PATHS.webPlaybook,
+            },
+            {
+              text: 'API',
+              link: DOC_PATHS.api,
+            },
+            {
+              text: 'API Playbook',
+              link: DOC_PATHS.apiPlaybook,
+            },
+          ],
+        },
+      ],
+      '/web/playbook/': [
+        WEB_PLAYBOOK_NAVIGATION,
+      ],
+      '/api/playbook/': [
+        API_PLAYBOOK_NAVIGATION,
+      ],
       ...getPackagesSidebar(),
     },
     socialLinks: [
@@ -89,7 +131,7 @@ export default defineConfig({
       },
     },
     plugins: [
-      tailwindcss(),
+      tailwindcss() as any,
       {
         name: 'eslint-inspector-spa',
         configureServer(server): void {

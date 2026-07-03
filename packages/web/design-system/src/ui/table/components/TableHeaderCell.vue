@@ -51,6 +51,7 @@ const {
   isGroupingEnabled,
   isResizingColumn,
   isScrolledFromLeft,
+  isSelectable,
   sort,
   onColumnResizeFitToContent,
   onColumnResizeStart,
@@ -97,11 +98,12 @@ const sortIcon = computed<Component | null>(() => {
       'first-of-type:border-r first-of-type:border-secondary': isScrolledFromLeft,
       'justify-center': props.centerContent,
       'bg-secondary': !isGroupingEnabled,
+      'first-of-type:left-10': isSelectable,
+      'first-of-type:left-0': !isSelectable,
     }"
     class="
       group relative flex h-10 items-center overflow-hidden bg-primary px-xl
-      first-of-type:sticky first-of-type:left-0 first-of-type:z-2
-      first-of-type:pl-2xl
+      first-of-type:sticky first-of-type:z-2 first-of-type:pl-2xl
       last-of-type:pr-2xl
     "
   >

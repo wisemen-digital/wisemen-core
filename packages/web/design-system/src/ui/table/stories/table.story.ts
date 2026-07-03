@@ -5,6 +5,8 @@ import type {
 
 import TableGroupedPlayground from './TableGroupedPlayground.vue'
 import TablePlayground from './TablePlayground.vue'
+import TableSelectionGroupedPlayground from './TableSelectionGroupedPlayground.vue'
+import TableSelectionPlayground from './TableSelectionPlayground.vue'
 import TableSortingPlayground from './TableSortingPlayground.vue'
 
 const meta = {
@@ -121,5 +123,39 @@ export const Grouped: Story = {
       }
     },
     template: '<TableGroupedPlayground v-bind="args" />',
+  }),
+}
+
+export const Selection: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableSelectionPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableSelectionPlayground v-bind="args" />',
+  }),
+}
+
+export const SelectionGrouped: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableSelectionGroupedPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableSelectionGroupedPlayground v-bind="args" />',
   }),
 }
