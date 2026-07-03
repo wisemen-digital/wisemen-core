@@ -1,5 +1,5 @@
 ---
-"@wisemen/vies": patch
+"@wisemen/vies": minor
 ---
 
 Replace Axios with Node fetch

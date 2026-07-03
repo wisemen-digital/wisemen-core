@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { VIES_BASE_URL, VIES_ENDPOINTS } from '../constants/vies-endpoint.constant.js'
+import { VIES_BASE_URL, VIES_ENDPOINTS, VIES_MAXIMUM_CONCURRENT_FIELD } from '../constants/vies-endpoint.constant.js'
 import { ViesHealthResponse } from '../responses/health.response.js'
 import { ViesCheckVatNumberCommand } from '../commands/check-vat-number.command.js'
 import { ViesCheckVatNumberResponse } from '../responses/check-vat-number.response.js'
@@ -17,7 +17,7 @@ export class ViesClient {
     const response = await this.fetchVies(url)
 
     if (!response.ok) {
-      throw new ViesUnavailableError('Vies temporary unavailable')
+      throw new ViesUnavailableError()
     }
 
     return await response.json() as ViesHealthResponse
@@ -35,13 +35,13 @@ export class ViesClient {
     })
 
     if (!response.ok) {
-      throw new ViesUnavailableError('Vies temporary unavailable')
+      throw new ViesUnavailableError()
     }
 
     const vatNumberResponse = await response.json() as CheckVatNumberResponse
 
-    if ('actionSucceed' in vatNumberResponse) {
-      throw new ViesUnavailableError('Vies temporary unavailable')
+    if (VIES_MAXIMUM_CONCURRENT_FIELD in vatNumberResponse) {
+      throw new ViesUnavailableError()
     }
 
     return vatNumberResponse
@@ -51,7 +51,7 @@ export class ViesClient {
     try {
       return await fetch(url, init)
     } catch {
-      throw new ViesUnavailableError('Vies temporary unavailable')
+      throw new ViesUnavailableError()
     }
   }
 }
