@@ -15,6 +15,12 @@
 
 
 
+
+## 1.11.0
+<sub>2026-07-03</sub>
+
+- [#1351](https://github.com/wisemen-digital/wisemen-core/pull/1351)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add "Discard changes" and "Keep editing" action buttons to the default unsaved-changes chin in `UIFormDialog`
+
 ## 1.10.1
 <sub>2026-07-02</sub>
 

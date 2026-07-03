@@ -1,6 +1,12 @@
 # Changelog
 
 
+
+## 0.0.4
+<sub>2026-07-03</sub>
+
+- [#1357](https://github.com/wisemen-digital/wisemen-core/pull/1357)  *(patch)* Thanks [@sander-coemans](https://github.com/sander-coemans)! - Use pathToFileURL for absolute path resolution
+
 ## 0.0.3
 <sub>2026-06-30</sub>
 
