@@ -15,6 +15,10 @@ function createStacksNav(): DefaultTheme.NavItemWithChildren {
         text: 'API',
         link: DOC_PATHS.api,
       },
+      {
+        text: 'CMS',
+        link: DOC_PATHS.cms,
+      },
     ],
   }
 }
