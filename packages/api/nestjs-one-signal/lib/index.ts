@@ -1,3 +1,7 @@
+// Combined module
+export { OneSignalModule } from './one-signal.module.js'
+export type { OneSignalModuleOptions, OneSignalModuleAsyncOptions } from './one-signal.options.js'
+
 // Client module (sending push notifications)
 export { OneSignalClientModule } from './one-signal.client.module.js'
 export type { OneSignalClientModuleOptions, OneSignalClientModuleAsyncOptions } from './one-signal.client.options.js'
