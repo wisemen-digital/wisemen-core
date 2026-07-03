@@ -6,6 +6,11 @@
   "imports": {
     "#*": "./src/*"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/payload/translate"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
