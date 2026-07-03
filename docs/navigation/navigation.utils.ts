@@ -1,6 +1,7 @@
 import type { DefaultTheme } from 'vitepress'
 
 import { API_PACKAGES_NAVIGATION } from '#stacks/api/api.router.ts'
+import { CMS_PACKAGES_NAVIGATION } from '#stacks/cms/cms.router.ts'
 import { PACKAGE_DOC_NAVIGATION } from '#stacks/web/web.router.ts'
 
 export interface PackageDocNavigation {
@@ -15,7 +16,7 @@ export interface PackageDocNavigationGroup {
   text: string
 }
 
-export type StackKey = 'api' | 'web'
+export type StackKey = 'api' | 'cms' | 'web'
 
 export type NavItem = DefaultTheme.NavItemChildren | DefaultTheme.NavItemWithLink
 
@@ -30,6 +31,11 @@ const STACK_CONFIGS: Record<StackKey, StackConfig> = {
     groups: API_PACKAGES_NAVIGATION,
     key: 'api',
     packageRootPath: '/api/packages/',
+  },
+  cms: {
+    groups: CMS_PACKAGES_NAVIGATION,
+    key: 'cms',
+    packageRootPath: '/cms/packages/',
   },
   web: {
     groups: PACKAGE_DOC_NAVIGATION,
@@ -89,6 +95,7 @@ export function getPackagesNavigation(stackKey: StackKey = 'web'): NavItem[] {
 export function getPackagesSidebar(): DefaultTheme.SidebarMulti {
   return {
     ...createPackageSidebars(STACK_CONFIGS.api),
+    ...createPackageSidebars(STACK_CONFIGS.cms),
     ...createPackageSidebars(STACK_CONFIGS.web),
   }
 }
