@@ -1,6 +1,6 @@
 {
-  "name": "@wisemen/nestjs-nats",
-  "version": "1.0.0",
+  "name": "@wisemen/nestjs-tests",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
@@ -28,28 +28,17 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
-    "@nats-io/jetstream": "catalog:backend",
-    "@nats-io/jwt": "catalog:backend",
-    "@nats-io/kv": "catalog:backend",
-    "@nats-io/nkeys": "catalog:backend",
-    "@nats-io/services": "catalog:backend",
-    "@nats-io/transport-node": "catalog:backend",
-    "@wisemen/api-error": "workspace:*",
-    "@wisemen/opentelemetry": "workspace:*",
-    "change-case": "catalog:backend"
+    "class-validator": "catalog:backend",
+    "expect": "catalog:test",
+    "sinon": "catalog:test"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend-peer",
-    "@nestjs/config": "catalog:backend-peer",
-    "@nestjs/core": "catalog:backend-peer",
-    "@opentelemetry/api": "catalog:backend-peer",
-    "class-transformer": "catalog:backend-peer",
-    "class-validator": "catalog:backend-peer",
-    "reflect-metadata": "catalog:backend-peer",
-    "rxjs": "catalog:backend-peer"
+    "@wisemen/nestjs-domain-events": "workspace:^",
+    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
+    "@types/sinon": "22.0.0",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
