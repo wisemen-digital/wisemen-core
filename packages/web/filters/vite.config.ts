@@ -32,10 +32,12 @@ export default defineConfig({
         '@wisemen/vue-core-design-system',
         '@wisemen/vue-core-icons',
         '@wisemen/vue-core-utils',
+        'temporal-polyfill',
         'formango',
         'vue',
         'vue-i18n',
         'pinia',
+        'zod',
       ],
       output: {
         globals: {
@@ -46,8 +48,10 @@ export default defineConfig({
           '@wisemen/vue-core-utils': 'VueCoreUtils',
           'formango': 'Formango',
           'pinia': 'Pinia',
+          'temporal-polyfill': 'TemporalPolyfill',
           'vue': 'Vue',
           'vue-i18n': 'VueI18n',
+          'zod': 'Zod',
         },
       },
     },

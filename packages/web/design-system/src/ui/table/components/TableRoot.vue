@@ -12,6 +12,7 @@ import type { TableRootProps } from '@/ui/table/types/tableRoot.props'
 
 const props = withDefaults(defineProps<TableRootProps>(), {
   hasActiveSearch: false,
+  isSelectable: false,
   actionGroup: null,
   actions: () => [],
   activeFilterCount: 0,
@@ -52,6 +53,9 @@ const {
   computed(() => props.isInitialized),
   computed(() => props.actionGroup),
   computed(() => props.disableColumnResize),
+  computed(() => props.isSelectable),
+  computed(() => props.hasActiveSearch ?? false),
+  computed(() => props.activeFilterCount ?? 0),
 )
 
 const activeFilterCountIncludingSearch = computed<number>(
@@ -85,6 +89,7 @@ useProvideTableContext({
   isScrollableVertically: computed(() => isScrollableVertically.value),
   isScrolledFromLeft: computed(() => isScrolledFromLeft.value),
   isScrolledToEnd: computed(() => isScrolledToEnd.value),
+  isSelectable: computed(() => props.isSelectable),
   actions: computed(() => props.actions),
   activeFilterCountIncludingSearch,
   gridTemplateColumns,

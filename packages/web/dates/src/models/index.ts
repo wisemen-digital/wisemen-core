@@ -1,3 +1,4 @@
+export * from './dateFormat.model'
 export * from './dateTimeInstant.model'
 export * from './dateTimeRange.model'
 export * from './duration.model'

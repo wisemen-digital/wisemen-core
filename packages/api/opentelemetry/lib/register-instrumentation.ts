@@ -5,8 +5,9 @@ import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core'
 import { PgInstrumentation } from '@opentelemetry/instrumentation-pg'
 import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis'
-import { Span } from '@opentelemetry/sdk-trace-base'
 import { ExpressInstrumentation, ExpressLayerType } from '@opentelemetry/instrumentation-express'
+import { UndiciInstrumentation, UndiciRequest } from '@opentelemetry/instrumentation-undici'
+import { Span } from '@opentelemetry/api'
 
 export function registerInstrumentation (
   extraInstrumentations: Instrumentation[] = []
@@ -55,6 +56,12 @@ export function registerInstrumentation (
           return `${cmdName} ${args.join(' ')}`
         },
         requireParentSpan: true
+      }),
+      new UndiciInstrumentation({
+        requestHook: (span: Span, request: UndiciRequest): void => {
+          const outgoingRoute = request.origin + request.path.split('?')[0]
+          span.updateName(`${request.method} ${outgoingRoute}`)
+        }
       }),
       ...extraInstrumentations
     ]

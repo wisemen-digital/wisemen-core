@@ -18,6 +18,11 @@ export interface TableRootProps {
    */
   isInitialized: boolean
   /**
+   * When `true`, a checkbox column is prepended to the table, enabling row selection.
+   * Use the `select` emit on the parent `Table` component to receive selection state.
+   */
+  isSelectable?: boolean
+  /**
    * An action group displayed in the table toolbar, typically shown when one or more
    * rows are selected.
    */

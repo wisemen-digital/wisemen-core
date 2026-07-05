@@ -7,6 +7,7 @@ import {
   UIDropdownMenuRadioItem,
 } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import FiltersActiveBadgeBase from '@/components/FiltersActiveBadgeBase.vue'
 import FiltersActiveBadgeBasePart from '@/components/FiltersActiveBadgeBasePart.vue'
@@ -21,6 +22,8 @@ const props = defineProps<{
   filter: FilterWithAction<BooleanFilter>
 }>()
 
+const i18n = useI18n()
+
 const {
   values,
 } = useInjectFiltersContext()
@@ -28,8 +31,10 @@ const {
 const currentValue = computed<boolean>(() => values.value[props.filter.key] as boolean)
 const radioValue = computed<string>(() => String(currentValue.value))
 
-const trueLabel = computed<string>(() => props.filter.trueLabel)
-const falseLabel = computed<string>(() => props.filter.falseLabel)
+const operatorLabel = computed<string>(() =>
+  currentValue.value
+    ? (props.filter.trueOperatorLabel ?? i18n.t('component.filters.operator.is'))
+    : (props.filter.falseOperatorLabel ?? i18n.t('component.filters.operator.is_not')))
 
 function onSelect(value: string): void {
   values.value[props.filter.key] = value === 'true'
@@ -39,7 +44,7 @@ function onSelect(value: string): void {
 <template>
   <FiltersActiveBadgeBase :filter="props.filter">
     <FiltersActiveBadgeBasePart
-      :label="props.filter.entityLabel"
+      :label="props.filter.label"
       :icon="props.filter.icon ?? null"
     />
 
@@ -53,7 +58,7 @@ function onSelect(value: string): void {
       <template #trigger>
         <UIClickableElement>
           <button
-            :disabled="!props.filter.canBeToggled"
+            :disabled="props.filter.disableOperators ?? false"
             type="button"
             class="
               size-full
@@ -61,8 +66,8 @@ function onSelect(value: string): void {
             "
           >
             <FiltersActiveBadgeBasePart
-              :is-interactive="props.filter.canBeToggled"
-              :label="currentValue ? trueLabel : falseLabel"
+              :is-interactive="!(props.filter.disableOperators ?? false)"
+              :label="operatorLabel"
             />
           </button>
         </UIClickableElement>
@@ -75,11 +80,11 @@ function onSelect(value: string): void {
             @update:model-value="onSelect"
           >
             <UIDropdownMenuRadioItem
-              :label="trueLabel"
+              :label="props.filter.trueOperatorLabel ?? i18n.t('component.filters.operator.is')"
               value="true"
             />
             <UIDropdownMenuRadioItem
-              :label="falseLabel"
+              :label="props.filter.falseOperatorLabel ?? i18n.t('component.filters.operator.is_not')"
               value="false"
             />
           </UIDropdownMenuRadioGroup>
@@ -90,7 +95,7 @@ function onSelect(value: string): void {
     <FiltersActiveBadgePartSeparator />
 
     <FiltersActiveBadgeBasePart
-      :label="props.filter.badgeLabel ?? props.filter.label"
+      :label="props.filter.entityLabel"
       class="lowercase"
     />
   </FiltersActiveBadgeBase>

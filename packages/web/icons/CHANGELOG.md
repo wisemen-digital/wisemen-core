@@ -1,5 +1,11 @@
 # @wisemen/vue-core-template-vue
 
+
+## 0.0.3
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
 ## 0.0.2
 
 ### Patch Changes

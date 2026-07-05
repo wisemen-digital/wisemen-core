@@ -9,6 +9,7 @@ export default [
       'perfectionist/sort-objects': 'off',
       '@intlify/vue-i18n/no-raw-text': 'off',
       'vuejs-accessibility/label-has-for': 'off',
+      'e18e/prefer-static-regex': 'off',
       'project-structure/independent-modules': 'off',
     },
   },

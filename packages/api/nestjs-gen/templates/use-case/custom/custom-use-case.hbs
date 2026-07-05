@@ -7,12 +7,11 @@ import { {{pascalCase entityName}} } from '{{entityImportPath}}'
 export class {{pascalCase useCaseName}}UseCase {
   constructor (
     @InjectRepository({{pascalCase entityName}})
-    private {{camelCase entityName}}Repository: Repository<{{pascalCase entityName}}>
+    private repository: Repository<{{pascalCase entityName}}>
   ) {}
 
-  public async execute (
-  ): Promise<void> {
-    await this.{{camelCase entityName}}Repository.findOne({})
+  async execute (): Promise<void> {
+    await this.repository.findOne({})
 
     throw new Error('To be implemented')
   }

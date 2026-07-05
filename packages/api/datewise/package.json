@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/datewise",
-  "version": "1.0.11",
+  "version": "1.0.14",
   "publishConfig": {
     "access": "public"
   },

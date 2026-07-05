@@ -9,7 +9,7 @@ interface TabsContext extends PropsToComputed<TabsProps> {
   hasHorizontalOverflow: ComputedRef<boolean>
   hasReachedHorizontalEnd: ComputedRef<boolean>
   isScrolledHorizontally: ComputedRef<boolean>
-  isTouchDevice: boolean
+  activeValue: ComputedRef<string | null>
   scrollToLeft: () => void
   scrollToRight: () => void
   setScrollContainerRef: (ref: HTMLElement) => void
