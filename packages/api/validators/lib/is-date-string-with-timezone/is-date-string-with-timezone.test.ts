@@ -14,8 +14,6 @@ class StrictTestClass {
 }
 
 describe('IsDateStringWithTimezone decorator test', () => {
-
-
   it('should fail validation when the date string is invalid', async () => {
     const testInstance = new TestClass()
 
