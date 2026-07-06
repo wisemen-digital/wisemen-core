@@ -5,18 +5,22 @@ import { Type } from 'class-transformer'
 import { ArrayUnique, IsArray, ValidateNested } from 'class-validator'
 
 type CustomFieldValueDtoClass = typeof CUSTOM_FIELD_VALUE_DTOS[number]
-function getCustomFieldValueDtoDiscriminatorSubTypes(): Array<{ name: CustomFieldType, value: CustomFieldValueDtoClass }> {
-  return [
-    { name: CustomFieldType.TEXT, value: TextCustomFieldValueDto },
-    { name: CustomFieldType.TEXT_ARRAY, value: TextArrayCustomFieldValueDto },
-    { name: CustomFieldType.NUMBER, value: NumberCustomFieldValueDto },
-    { name: CustomFieldType.BOOLEAN, value: BooleanCustomFieldValueDto },
-    { name: CustomFieldType.DATE, value: DateCustomFieldValueDto },
-    { name: CustomFieldType.TIMESTAMP, value: DateTimeCustomFieldValueDto },
-    { name: CustomFieldType.SINGLE_SELECT, value: SingleSelectCustomFieldValueDto },
-    { name: CustomFieldType.MULTI_SELECT, value: MultiSelectCustomFieldValueDto },
-    { name: CustomFieldType.MONETARY, value: MonetaryCustomFieldValueDto }
-  ]
+const CUSTOM_FIELD_VALUE_DTO_BY_TYPE = {
+  [CustomFieldType.TEXT]: TextCustomFieldValueDto,
+  [CustomFieldType.TEXT_ARRAY]: TextArrayCustomFieldValueDto,
+  [CustomFieldType.NUMBER]: NumberCustomFieldValueDto,
+  [CustomFieldType.BOOLEAN]: BooleanCustomFieldValueDto,
+  [CustomFieldType.DATE]: DateCustomFieldValueDto,
+  [CustomFieldType.TIMESTAMP]: DateTimeCustomFieldValueDto,
+  [CustomFieldType.SINGLE_SELECT]: SingleSelectCustomFieldValueDto,
+  [CustomFieldType.MULTI_SELECT]: MultiSelectCustomFieldValueDto,
+  [CustomFieldType.MONETARY]: MonetaryCustomFieldValueDto,
+} satisfies Record<CustomFieldType, CustomFieldValueDtoClass>
+
+function getCustomFieldValueDtoDiscriminatorSubTypes() {
+  return Object.entries(CUSTOM_FIELD_VALUE_DTO_BY_TYPE).map(
+    ([name, value]) => ({ name: name, value }),
+  )
 }
 
 export function IsCustomFieldsValues(): PropertyDecorator {
@@ -29,7 +33,7 @@ export function IsCustomFieldsValues(): PropertyDecorator {
         property: 'type',
         subTypes: getCustomFieldValueDtoDiscriminatorSubTypes()
       },
-      keepDiscriminatorProperty: true
-    })
+      keepDiscriminatorProperty: true,
+    }),
   )
 }
