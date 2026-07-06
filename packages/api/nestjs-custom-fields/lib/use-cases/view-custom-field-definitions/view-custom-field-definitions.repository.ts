@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { IsNull, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.entity.js'
-import { ViewCustomFieldDefinitionsQuery } from '#src/use-cases/view-custom-field-definitions/view-custom-field-definitions.query.js'
 import { InjectRepository } from '@wisemen/nestjs-typeorm'
+
+export interface ViewCustomFieldDefinitionsOptions {
+  tenantUuid?: string
+  entityType?: string
+}
 
 @Injectable()
 export class ViewCustomFieldDefinitionsRepository {
@@ -12,13 +16,12 @@ export class ViewCustomFieldDefinitionsRepository {
   ) { }
 
   async findDefinitions(
-    tenantUuid: string | null,
-    query: ViewCustomFieldDefinitionsQuery
+    options? : ViewCustomFieldDefinitionsOptions
   ): Promise<CustomFieldDefinition[]> {
     return this.repository.find({
       where: {
-        entityType: query.entityType,
-        tenantUuid: tenantUuid !== null ? tenantUuid : IsNull()
+        entityType: options?.entityType,
+        tenantUuid: options?.tenantUuid
       },
       order: {
         key: 'ASC'

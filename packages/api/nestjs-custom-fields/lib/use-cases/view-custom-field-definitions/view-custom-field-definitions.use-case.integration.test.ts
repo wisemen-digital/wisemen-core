@@ -6,7 +6,6 @@ import { IntegrationTestSetup } from '#src/tests/test-setup.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { customFieldDefinition } from '#src/factory/custom-field-definition.factory.js'
 import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.entity.js'
-import { ViewCustomFieldDefinitionsQuery } from './view-custom-field-definitions.query.js'
 import { ViewCustomFieldDefinitionsRepository } from './view-custom-field-definitions.repository.js'
 
 describe('ViewCustomFieldDefinitionsUseCase integration', () => {
@@ -90,10 +89,9 @@ describe('ViewCustomFieldDefinitionsUseCase integration', () => {
       dataSource.manager.getRepository(CustomFieldDefinition)
     )
 
-    const query = new ViewCustomFieldDefinitionsQuery()
-    query.entityType = 'ticket'
-
-    const response = await useCase.findDefinitions(null, query)
+    const response = await useCase.findDefinitions({
+      entityType: 'ticket'
+    })
 
     expect(response).toHaveLength(2)
     expect(response.map(item => item.key)).toEqual(['priority', 'reference'])
@@ -190,10 +188,10 @@ describe('ViewCustomFieldDefinitionsUseCase integration', () => {
       dataSource.manager.getRepository(CustomFieldDefinition)
     )
 
-    const query = new ViewCustomFieldDefinitionsQuery()
-    query.entityType = 'ticket'
-
-    const response = await useCase.findDefinitions(tenantUuid, query)
+    const response = await useCase.findDefinitions({
+      tenantUuid,
+      entityType: 'ticket'
+    })
 
     expect(response.map(item => item.key)).toEqual(['alpha', 'zulu'])
     expect(response.every(item => item.tenantUuid === tenantUuid)).toBe(true)
