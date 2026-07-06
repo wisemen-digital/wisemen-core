@@ -1,6 +1,6 @@
 import { ApiExtraModels, ApiProperty, type ApiPropertyOptions, getSchemaPath } from '@nestjs/swagger'
 import { plainDate, timestamp } from '@wisemen/datewise'
-import { Currency, IsMonetary, Monetary, MonetaryDto } from '@wisemen/monetary'
+import { Currency, IsMonetary, MonetaryDto } from '@wisemen/monetary'
 import { IsDateWithoutTimeString } from '@wisemen/validators'
 import { ArrayUnique, IsArray, IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator'
 import { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
@@ -232,7 +232,7 @@ export class MonetaryCustomFieldValueDto extends CustomFieldValueDto {
     return createCustomFieldValueDto(
       new MonetaryCustomFieldValueDto(),
       customFieldValue.definitionUuid,
-      MonetaryDto.from(customFieldValue.value as Monetary<Currency>)
+      MonetaryDto.from(customFieldValue.value)
     )
   }
 }

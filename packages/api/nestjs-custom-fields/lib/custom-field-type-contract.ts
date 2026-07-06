@@ -40,7 +40,7 @@ export type CustomFieldTypeContract = {
   [CustomFieldType.BOOLEAN]: {
     value: boolean
     columnValue: boolean
-    rules: {}
+    rules: Record<never, never>
     rulesMode: 'none'
     choicesMode: 'none'
   }
@@ -67,7 +67,7 @@ export type CustomFieldTypeContract = {
   [CustomFieldType.SINGLE_SELECT]: {
     value: string
     columnValue: string
-    rules: {}
+    rules: Record<never, never>
     rulesMode: 'none'
     choicesMode: 'required'
   }

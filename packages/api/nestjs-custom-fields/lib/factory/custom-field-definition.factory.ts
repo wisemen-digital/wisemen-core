@@ -51,12 +51,12 @@ type RulesInput<TType extends CustomFieldType>
   : TType extends OptionalRulesCustomField
   ? { rules?: CustomFieldRulesConfigByType<TType> }
   : TType extends NoRulesCustomField
-  ? {}
+  ? Record<never, never>
   : never
 
 type SelectChoicesConfig<TType extends CustomFieldType> = TType extends SelectCustomFieldType
   ? { choices: CustomFieldChoice[] }
-  : {}
+  : Record<never, never>
 
 export type CustomFieldDefinitionInput<TType extends CustomFieldType = CustomFieldType>
   = TType extends CustomFieldType

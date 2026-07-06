@@ -91,7 +91,7 @@ export function validateCustomFieldValue(
     case CustomFieldType.MONETARY:
       validateMonetaryValue(
         definition.rules as MonetaryCustomFieldRules | null,
-        value.value as Monetary<Currency>
+        value.value
       )
       return
     default:

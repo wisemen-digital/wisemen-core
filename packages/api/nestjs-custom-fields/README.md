@@ -36,7 +36,7 @@ import { LocalizedString } from '@wisemen/localized-string'
 import {
   customFieldDefinition,
   CustomFieldType
-} from '@wisemen/custom-fields'
+} from '@wisemen/nestjs-custom-fields'
 
 export const OrderReferenceField = customFieldDefinition(CustomFieldType.TEXT, {
   tenantUuid: null,
@@ -59,7 +59,7 @@ import { LocalizedString } from '@wisemen/localized-string'
 import {
   customFieldDefinition,
   CustomFieldType
-} from '@wisemen/custom-fields'
+} from '@wisemen/nestjs-custom-fields'
 
 export const PriorityField = customFieldDefinition(
   CustomFieldType.SINGLE_SELECT,
@@ -127,7 +127,7 @@ Include `CustomFieldDefinition` in the datasource entities and use it as the
 canonical persistence model for definitions.
 
 ```ts
-import { CustomFieldDefinition } from '@wisemen/custom-fields'
+import { CustomFieldDefinition } from '@wisemen/nestjs-custom-fields'
 
 entities: ['dist/src/**/*.entity.js', CustomFieldDefinition]
 ```
@@ -210,7 +210,7 @@ import {
   CustomFieldValueDto,
   CustomFieldValueDtoApiProperty,
   IsCustomFields
-} from '@wisemen/custom-fields'
+} from '@wisemen/nestjs-custom-fields'
 
 @CustomFieldValueApiExtraModels()
 export class UpdateTicketCommand {
@@ -231,7 +231,7 @@ import {
   CustomFieldValueApiExtraModels,
   CustomFieldValueDto,
   CustomFieldValueDtoApiProperty
-} from '@wisemen/custom-fields'
+} from '@wisemen/nestjs-custom-fields'
 
 @CustomFieldValueApiExtraModels()
 export class TicketResponseDto {
@@ -263,7 +263,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import {
   CustomFieldDefinition,
   validateCustomFieldValues
-} from '@wisemen/custom-fields'
+} from '@wisemen/nestjs-custom-fields'
 import { Repository } from 'typeorm'
 
 @Injectable()
@@ -308,7 +308,7 @@ import { Entity, PrimaryGeneratedColumn } from 'typeorm'
 import {
   CustomFieldValue,
   CustomFieldValueColumn
-} from '@wisemen/custom-fields'
+} from '@wisemen/nestjs-custom-fields'
 
 @Entity()
 export class Ticket {
