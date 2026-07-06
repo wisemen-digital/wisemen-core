@@ -1,0 +1,7 @@
+export * from './settingsContact.model.ts'
+export * from './settingsFooter.model.ts'
+export * from './settingsGeneral.model.ts'
+export * from './settingsHeader.model.ts'
+export * from './settingsHomePage.model.ts'
+export * from './settingsLegalPages.model.ts'
+export * from './settingsSocials.model.ts'

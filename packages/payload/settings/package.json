@@ -1,0 +1,57 @@
+{
+  "name": "@wisemen/payload-core-settings",
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "imports": {
+    "#*": "./src/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/payload/settings"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepack": "pnpm build",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "@orpc/contract": "catalog:payload",
+    "defu": "catalog:general",
+    "payload": "catalog:payload",
+    "zod": "catalog:general",
+    "@wisemen/payload-core-links": "workspace:*"
+  },
+  "peerDependencies": {
+    "payload": "catalog:payload-peer",
+    "@wisemen/payload-core-utils": "workspace:^"
+
+  },
+  "devDependencies": {
+    "@wisemen/payload-core-utils": "workspace:^",
+    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "eslint": "catalog:lint-web",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build"
+  }
+}
