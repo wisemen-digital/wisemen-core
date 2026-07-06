@@ -2562,7 +2562,7 @@ importers:
         specifier: catalog:payload
         version: 1.14.6(@opentelemetry/api@1.9.1)
       '@wisemen/payload-core-links':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../links
       defu:
         specifier: catalog:general
