@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
+  getItemKey: null,
   keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
@@ -123,6 +124,7 @@ useProvideSelectContext({
         :is-loading="props.isLoading"
         :search="props.search"
         :display-fn="props.displayFn"
+        :get-item-key="props.getItemKey"
         :items="props.items"
         :limit="props.limit"
         :has-virtual-scroll="props.hasVirtualScroll"
