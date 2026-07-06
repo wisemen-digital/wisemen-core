@@ -2,9 +2,9 @@ import type { Where } from 'payload'
 
 import {
   createPayloadUtilsError,
+  createPayloadUtilsInitializationError,
   createPayloadUtilsInvalidFallbackLocaleError,
   createPayloadUtilsInvalidLocalesError,
-  createPayloadUtilsInitializationError,
 } from '#payloadUtils.errors.ts'
 import {
   readPayloadUtilsConfig,
@@ -13,8 +13,8 @@ import {
 import type {
   GetRichTextFieldOptions,
   PayloadLocale,
-  PayloadUtilsPayload,
   PayloadUtilsConfig,
+  PayloadUtilsPayload,
 } from '#payloadUtils.types.ts'
 
 export type {
@@ -23,8 +23,8 @@ export type {
   GetSimpleRichTextField,
   GetTenantQuery,
   PayloadLocale,
-  PayloadUtilsPayload,
   PayloadUtilsConfig,
+  PayloadUtilsPayload,
 } from '#payloadUtils.types.ts'
 
 export function initializePayloadUtils(config: PayloadUtilsConfig): void {
@@ -38,7 +38,6 @@ export function initializePayloadUtils(config: PayloadUtilsConfig): void {
 
   setPayloadUtilsConfig(config)
 }
-
 
 export function getPayload(): Promise<PayloadUtilsPayload> {
   const payloadUtilsConfig = readPayloadUtilsConfig()

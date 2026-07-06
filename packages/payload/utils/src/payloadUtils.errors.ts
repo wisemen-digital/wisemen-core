@@ -1,5 +1,7 @@
-import type { PayloadLocale } from '#payloadUtils.types.ts'
-import type { PayloadUtilsMethodName } from '#payloadUtils.types.ts'
+import type {
+  PayloadLocale,
+  PayloadUtilsMethodName,
+} from '#payloadUtils.types.ts'
 
 export function createPayloadUtilsError(methodName: PayloadUtilsMethodName) {
   return new Error(

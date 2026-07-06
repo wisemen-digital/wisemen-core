@@ -4,7 +4,7 @@ export interface NavigationDropdownItemDocument {
   event?: string | null
   label: string
   link?: LinkFieldDocument | null
-  navType: 'link' | 'event'
+  navType: 'event' | 'link'
 }
 
 export interface NavigationDropdownDocument {
@@ -25,10 +25,10 @@ export interface NavigationLinkRelationDocument {
   navType: 'link'
 }
 
-export type NavigationLinkDocument =
-  | NavigationDropdownDocument
-  | NavigationEventDocument
-  | NavigationLinkRelationDocument
+export type NavigationLinkDocument
+  = | NavigationDropdownDocument
+    | NavigationEventDocument
+    | NavigationLinkRelationDocument
 
 export interface HeaderNavigationRowDocument {
   navLink: NavigationLinkDocument

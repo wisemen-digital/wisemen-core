@@ -1,6 +1,4 @@
-import type {
-  PayloadUtilsConfig,
-} from '#payloadUtils.types.ts'
+import type { PayloadUtilsConfig } from '#payloadUtils.types.ts'
 
 let payloadUtilsConfig: PayloadUtilsConfig | null = null
 

@@ -9,8 +9,8 @@ import { getLinkField } from '#link.field.ts'
 export interface GetNavLinkFieldOptions {
   hasDropdownLinks?: boolean
   isTranslatable?: boolean
-  label: GroupField['label']
   name: string
+  label: GroupField['label']
 }
 
 export function getNavLinkField({

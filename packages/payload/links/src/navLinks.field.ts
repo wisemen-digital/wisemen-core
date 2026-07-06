@@ -9,10 +9,10 @@ import { getNavLinkField } from '#navLink.field.ts'
 export interface GetNavLinksFieldOptions {
   hasDropdownLinks?: boolean
   isTranslatable?: boolean
+  name: string
   label: GroupField['label']
   maxItems?: number
   minItems?: number
-  name: string
 }
 
 export function getNavLinksField({

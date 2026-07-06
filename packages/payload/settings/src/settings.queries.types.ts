@@ -56,17 +56,16 @@ export interface SettingsSocialsDocument {
 }
 
 export interface SettingsDocument {
-  general?: SettingsGeneralDocument | null
-  contact?: SettingsContactDocument | null
-  header?: SettingsHeaderDocument | null
-  homepage?: SettingsHomePageDocument | null
-  footer?: SettingsFooterDocument | null
-  socials?: SettingsSocialsDocument | null
-
   // Legacy flat fields are kept for compatibility with existing records.
   adminEmail?: string | null
+  contact?: SettingsContactDocument | null
   email?: string | null
   facebook?: string | null
+  footer?: SettingsFooterDocument | null
+  general?: SettingsGeneralDocument | null
+
+  header?: SettingsHeaderDocument | null
+  homepage?: SettingsHomePageDocument | null
   homePage?: LinkFieldDocument | null
   instagram?: string | null
   linkedin?: string | null
@@ -74,6 +73,7 @@ export interface SettingsDocument {
   phone?: string | null
   pinterest?: string | null
   sections?: FooterSectionDocument[] | null
+  socials?: SettingsSocialsDocument | null
   subheaderLinks?: HeaderNavigationRowDocument[] | null
   tiktok?: string | null
   whatsappLink?: string | null
