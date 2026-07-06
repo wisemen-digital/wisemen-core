@@ -2564,9 +2564,6 @@ importers:
       '@wisemen/payload-core-links':
         specifier: workspace:^
         version: link:../links
-      '@wisemen/payload-core-utils':
-        specifier: workspace:^
-        version: link:../utils
       defu:
         specifier: catalog:general
         version: 6.1.5
@@ -2580,6 +2577,9 @@ importers:
       '@wisemen/eslint-config-vue':
         specifier: catalog:lint-web
         version: 2.1.3(@typescript-eslint/eslint-plugin@8.59.0(@typescript-eslint/parser@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(jsonc-eslint-parser@3.1.0)(oxlint@1.59.0(oxlint-tsgolint@0.20.0))(tailwindcss@4.1.18)(typescript@5.9.3)(vitest@4.1.0)(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1)))(yaml-eslint-parser@2.0.0)
+      '@wisemen/payload-core-utils':
+        specifier: workspace:^
+        version: link:../utils
       eslint:
         specifier: catalog:lint-web
         version: 9.39.4(jiti@2.6.1)

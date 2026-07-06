@@ -7,7 +7,11 @@ import {
 
 import type { ClientSettingsFooter } from '#models/index.ts'
 import { clientSettingsFooterSchema } from '#models/index.ts'
-import type { SettingsQueryContext } from '#settings.queries.types.ts'
+import type {
+  FooterSectionDocument,
+  FooterSectionLinkDocument,
+  SettingsQueryContext,
+} from '#settings.queries.types.ts'
 
 export async function getSettingsFooter({
   context,
@@ -36,10 +40,10 @@ export async function getSettingsFooter({
   const foundFooter = paginatedFooters.docs[0].footer
 
   return clientSettingsFooterSchema.parse(
-    (foundFooter?.sections)?.map((section) => ({
+    (foundFooter?.sections)?.map((section: FooterSectionDocument) => ({
       title: section.title ?? null,
       link: section.link ? LinkTransformer.toClientLink(section.link) : null,
-      links: section.links?.flatMap((link) => {
+      links: section.links?.flatMap((link: FooterSectionLinkDocument) => {
         if (link.label == null) {
           return []
         }

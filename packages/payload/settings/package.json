@@ -36,16 +36,18 @@
   },
   "dependencies": {
     "@orpc/contract": "catalog:payload",
-    "@wisemen/payload-core-links": "workspace:^",
-    "@wisemen/payload-core-utils": "workspace:^",
     "defu": "catalog:general",
     "payload": "catalog:payload",
-    "zod": "catalog:general"
+    "zod": "catalog:general",
+    "@wisemen/payload-core-links": "workspace:*"
   },
   "peerDependencies": {
-    "payload": "catalog:payload-peer"
+    "payload": "catalog:payload-peer",
+    "@wisemen/payload-core-utils": "workspace:^"
+
   },
   "devDependencies": {
+    "@wisemen/payload-core-utils": "workspace:^",
     "@wisemen/eslint-config-vue": "catalog:lint-web",
     "eslint": "catalog:lint-web",
     "rimraf": "catalog:build",
