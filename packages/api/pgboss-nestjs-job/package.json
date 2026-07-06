@@ -17,7 +17,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",
-    "test": "node --test ./dist/**/*.test.js",
+    "test": "node --test './dist/**/*.test.js'",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -38,13 +38,20 @@
     "@nestjs/core": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
     "@sentry/nestjs": "catalog:backend-peer",
+    "@wisemen/node-fetch": "workspace:*",
     "colors": "catalog:backend-peer",
     "rxjs": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",
     "class-transformer": "catalog:backend-peer"
   },
+  "peerDependenciesMeta": {
+    "@wisemen/node-fetch": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@wisemen/node-fetch": "workspace:*",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",

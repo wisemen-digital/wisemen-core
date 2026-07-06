@@ -1,6 +1,7 @@
 import { captureError } from 'rxjs/internal/util/errorContext'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
+import { PgbossRateLimiter } from '../rate-limit/rate-limiter.js'
 import { PgBossWorkerThread } from './pgboss-worker.thread.js'
 import { PgbossBouncer } from './pgboss-bouncer.js'
 import { PgbossWorkerQueueOptions } from './pgboss-worker.module-options.js'
@@ -21,7 +22,8 @@ export class PgBossWorker {
     config: PgbossWorkerQueueOptions,
     private bouncer: PgbossBouncer,
     private client: PgBossClient,
-    private jobRegistry: JobRegistry
+    private jobRegistry: JobRegistry,
+    private rateLimiter: Pick<PgbossRateLimiter, 'blockedKeys'>
   ) {
     this.queueName = config.queueName
     this.concurrency = config?.concurrency ?? 1
@@ -83,6 +85,8 @@ export class PgBossWorker {
       return
     }
 
+    const ignoreGroups = await this.rateLimiter.blockedKeys()
+
     // do not await between this if when null and the assignment of the jobFetchingPromise
     // to avoid multiple fetches in parallel
     if (this.jobFetchingPromise != null) {
@@ -94,7 +98,7 @@ export class PgBossWorker {
     this.jobFetchingPromise = new Promise((resolve, reject) => {
       void this.client.fetch<RawPgBossJobData>(
         this.queueName,
-        { batchSize: this.batchSize }
+        { batchSize: this.batchSize, ignoreGroups }
       )
         .then(async (jobs) => {
           if (jobs == null || jobs.length === 0) {

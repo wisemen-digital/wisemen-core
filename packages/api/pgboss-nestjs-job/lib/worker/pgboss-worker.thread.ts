@@ -5,6 +5,7 @@ import { propagation, context, SpanStatusCode, Context, trace } from '@opentelem
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
 import { TraceContextCarrier } from '../jobs/trace-context-carrier.js'
+import { rateLimitStorage } from '../rate-limit/rate-limit.context.js'
 import { RawPgBossJob } from './pgboss-worker.constants.js'
 
 export class PgBossWorkerThread {
@@ -17,11 +18,16 @@ export class PgBossWorkerThread {
   async run (): Promise<void> {
     for await (const job of this.queue) {
       try {
-        const result = await this.handleJob(job)
+        // Publish the job's rate-limit key into async context so a transport
+        // interceptor can attribute the handler's API calls to it. Rate-limit
+        // accounting (consume/report) happens there, not here.
+        const result = job.groupId != null
+          ? await rateLimitStorage.run({ key: job.groupId }, () => this.handleJob(job))
+          : await this.handleJob(job)
 
         await this.client.complete(job.name, job.id, result ?? undefined)
       } catch (error) {
-        captureException(error) 
+        captureException(error)
         await this.client.fail(job.name, job.id, { error }).catch(() => {})
       }
     }

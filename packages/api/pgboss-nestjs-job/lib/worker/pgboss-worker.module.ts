@@ -3,7 +3,9 @@ import { DynamicModule, Module } from '@nestjs/common'
 import { JobModule } from '../jobs/job.module.js'
 import { PgBossClientModule } from '../client/pgboss-client.module.js'
 import { ProvidersExplorerModule } from '../providers/providers-explorer.module.js'
+import { PgbossRateLimitModule } from '../rate-limit/rate-limit.module.js'
 import { ConfigurableModuleClass, PgbossWorkerModuleAsyncOptions, PgbossWorkerModuleOptions } from './pgboss-worker.module-definition.js'
+import { PgBossWorkerRateLimitOptions } from './pgboss-worker.module-options.js'
 import { PgbossBouncerRegistry } from './pgboss-bouncer.registry.js'
 import { PgbossWorkerApp } from './pgboss-worker-app.js'
 
@@ -12,7 +14,9 @@ import { PgbossWorkerApp } from './pgboss-worker-app.js'
   providers: [PgbossBouncerRegistry, PgbossWorkerApp]
 })
 export class PgBossWorkerModule extends ConfigurableModuleClass {
-  static override forRoot (options: PgbossWorkerModuleOptions): DynamicModule {
+  static override forRoot (
+    options: PgbossWorkerModuleOptions & PgBossWorkerRateLimitOptions
+  ): DynamicModule {
     const module = super.forRoot(options)
     const imports = [...module.imports ?? []]
 
@@ -22,13 +26,18 @@ export class PgBossWorkerModule extends ConfigurableModuleClass {
     })
 
     imports.push(clientModule)
+    imports.push(PgbossRateLimitModule.forRoot(options.rateLimits))
 
     return { ...module, imports }
   }
 
-  static override forRootAsync (options: PgbossWorkerModuleAsyncOptions): DynamicModule {
+  static override forRootAsync (
+    options: PgbossWorkerModuleAsyncOptions & PgBossWorkerRateLimitOptions
+  ): DynamicModule {
     const module = super.forRootAsync(options)
     const imports = module.imports ?? []
+
+    imports.push(PgbossRateLimitModule.forRoot(options.rateLimits))
 
     const clientModule = PgBossClientModule.forRootAsync({
       inject: options.inject,

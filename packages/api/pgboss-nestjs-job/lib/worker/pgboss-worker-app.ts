@@ -1,6 +1,7 @@
 import { Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
+import { PgbossRateLimiter } from '../rate-limit/rate-limiter.js'
 import { PgBossWorker } from './pgboss-worker.js'
 import { MODULE_OPTIONS_TOKEN, PgbossWorkerModuleOptions } from './pgboss-worker.module-definition.js'
 import { PgbossBouncerRegistry } from './pgboss-bouncer.registry.js'
@@ -14,6 +15,7 @@ export class PgbossWorkerApp implements OnModuleInit, OnModuleDestroy {
     private client: PgBossClient,
     private bouncerRegistry: PgbossBouncerRegistry,
     private jobRegistry: JobRegistry,
+    private rateLimiter: PgbossRateLimiter,
     @Inject(MODULE_OPTIONS_TOKEN) private options: PgbossWorkerModuleOptions
   ) { }
 
@@ -21,7 +23,9 @@ export class PgbossWorkerApp implements OnModuleInit, OnModuleDestroy {
     try {
       for (const queueOptions of this.options.queues) {
         const bouncer = await this.bouncerRegistry.getBouncer(queueOptions.queueName)
-        const worker = new PgBossWorker(queueOptions, bouncer, this.client, this.jobRegistry)
+        const worker = new PgBossWorker(
+          queueOptions, bouncer, this.client, this.jobRegistry, this.rateLimiter
+        )
 
         await this.client.createQueue(queueOptions.queueName, { policy: 'stately' })
         worker.start()

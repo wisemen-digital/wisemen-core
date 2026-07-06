@@ -11,4 +11,5 @@ interface SerializedJobData<T extends BaseJob> {
 export interface SerializedJob<T extends BaseJob = BaseJob>
   extends JobInsert<SerializedJobData<T>> {
   name: string
+  groupId?: string
 }

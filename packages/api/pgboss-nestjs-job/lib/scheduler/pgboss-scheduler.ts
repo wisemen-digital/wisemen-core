@@ -12,6 +12,7 @@ import { BaseJob } from '../jobs/base-job.js'
 import { PGBOSS_JOB_HANDLER, PGBOSS_QUEUE_NAME } from '../jobs/job.decorator.js'
 import { SerializedJob } from '../jobs/serialized-job.js'
 import { TraceContextCarrier } from '../jobs/trace-context-carrier.js'
+import { resolveGroupId } from './resolve-group-id.js'
 
 @Injectable()
 export class PgBossScheduler {
@@ -78,6 +79,7 @@ export class PgBossScheduler {
 
     return {
       name: queue,
+      groupId: resolveGroupId(job),
       data: {
         className,
         classData: job.data,
