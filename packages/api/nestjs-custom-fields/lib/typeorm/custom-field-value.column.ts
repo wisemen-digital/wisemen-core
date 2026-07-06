@@ -7,6 +7,7 @@ import { Column, ColumnOptions, type ValueTransformer } from 'typeorm'
 
 
 const EMPTY_CURRENCY_LIST = {} as Record<Currency, never>
+const PERSIST_PRECISION = true
 
 interface CustomFieldValueColumnTransformers {
   plainDateTransformer: PlainDateTransformer
@@ -84,7 +85,7 @@ class CustomFieldValueTransformer implements ValueTransformer {
         return {
           ...columnValue,
           value: this.assertDefined(
-            new MoneyTypeOrmTransformer(columnValue.value.precision, EMPTY_CURRENCY_LIST).to(columnValue.value, true))
+            new MoneyTypeOrmTransformer(columnValue.value.precision, EMPTY_CURRENCY_LIST).to(columnValue.value, PERSIST_PRECISION))
         }
       default: exhaustiveCheck(columnValue)
     }
