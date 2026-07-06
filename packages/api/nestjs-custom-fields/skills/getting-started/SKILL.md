@@ -7,10 +7,14 @@ description: Use when working with developer-defined custom fields in NestJS api
 
 Use `customFieldDefinition(...)` to define custom fields in application code.
 Use `CustomFieldDefinition` as the canonical persisted entity,
+`CustomFieldDefinitionResponse` in API responses that return definitions,
 `CustomFieldValueDto` in request and response DTOs, `@IsCustomFields()` to
 validate submitted values, `CustomFieldValueDto.from(...)` to map persisted
 values back into API responses, `validateCustomFieldValues(...)` in use cases,
-and `@CustomFieldValueColumn()` to persist resolved values on other entities.
+`ViewCustomFieldDefinitionsModule`, `ViewCustomFieldDefinitionsUseCase`, and
+`ViewCustomFieldDefinitionsQuery` to read definitions by tenant and
+`entityType`, and `@CustomFieldValueColumn()` to persist resolved values on
+other entities.
 
 `@IsCustomFields()` already validates that the property is an array, validates
 the nested DTOs, and enforces uniqueness by `definitionUuid`, so those
@@ -23,11 +27,13 @@ creation, and it does not ship TypeORM migrations.
 ```ts
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { ApiProperty } from '@nestjs/swagger'
 import { LocalizedString } from '@wisemen/localized-string'
 import { Entity, PrimaryGeneratedColumn, Repository } from 'typeorm'
 import {
   customFieldDefinition,
   CustomFieldDefinition,
+  CustomFieldDefinitionResponse,
   CustomFieldType,
   type CustomFieldValue,
   CustomFieldValueApiExtraModels,
@@ -36,7 +42,9 @@ import {
   CustomFieldValueDtoApiProperty,
   IsCustomFields,
   validateCustomFieldValues,
-} from '@wisemen/custom-fields'
+  ViewCustomFieldDefinitionsQuery,
+  ViewCustomFieldDefinitionsUseCase,
+} from '@wisemen/nestjs-custom-fields'
 
 export const PriorityField = customFieldDefinition(
   CustomFieldType.SINGLE_SELECT,
@@ -83,6 +91,21 @@ export class TicketResponseDto {
   }
 }
 
+export class TicketDefinitionResponseDto {
+  @ApiProperty({ type: CustomFieldDefinitionResponse, isArray: true })
+  definitions: CustomFieldDefinitionResponse[]
+
+  static fromDefinitions(
+    definitions: CustomFieldDefinition[],
+  ): TicketDefinitionResponseDto {
+    return {
+      definitions: definitions.map(definition =>
+        CustomFieldDefinitionResponse.from(definition),
+      ),
+    }
+  }
+}
+
 @Entity()
 export class Ticket {
   @PrimaryGeneratedColumn('uuid')
@@ -111,11 +134,35 @@ export class UpdateTicketCustomFieldsUseCase {
     validateCustomFieldValues(definitions, values)
   }
 }
+
+@Injectable()
+export class ViewTicketCustomFieldDefinitionsUseCase {
+  constructor(
+    private readonly viewCustomFieldDefinitionsUseCase: ViewCustomFieldDefinitionsUseCase,
+  ) {}
+
+  async execute(
+    tenantUuid: string | null,
+    query: ViewCustomFieldDefinitionsQuery,
+  ): Promise<CustomFieldDefinitionResponse[]> {
+    return await this.viewCustomFieldDefinitionsUseCase.execute(tenantUuid, query)
+  }
+}
 ```
 
 `CustomFieldValueDto.from(...)` keeps the concrete custom field type in the
 response and converts values into DTO-friendly shapes such as ISO strings for
 timestamps and `MonetaryDto` for monetary values.
+
+`CustomFieldDefinitionResponse.from(...)` maps persisted definition entities
+into API-friendly responses, including localized labels, select choices, and
+rules.
+
+Register `ViewCustomFieldDefinitionsModule` in your Nest feature module when
+you want the package to provide `ViewCustomFieldDefinitionsUseCase` with its
+repository dependency. `ViewCustomFieldDefinitionsUseCase.execute(...)`
+returns only global definitions when `tenantUuid` is `null`, only tenant
+definitions when `tenantUuid` is set, and orders results by `key ASC`.
 
 Add `CustomFieldDefinition` to the datasource entities, and create your own
 application migration for its partial unique indexes.

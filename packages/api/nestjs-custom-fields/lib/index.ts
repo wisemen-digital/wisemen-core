@@ -3,6 +3,7 @@ export * from './custom-field-definition.js'
 export type { CustomFieldDefinitionUuid } from './custom-field-definition.uuid.js'
 export * from './custom-field-rules.js'
 export * from './custom-field-value.js'
+export * from './use-cases/index.js'
 export { IsCustomFields } from './decorators/is-custom-fields.decorator.js'
 export {
   CustomFieldValueApiExtraModels,

@@ -32,7 +32,8 @@
     "@wisemen/datewise": "catalog:backend",
     "@wisemen/api-error": "catalog:backend",
     "@wisemen/localized-string": "catalog:backend",
-    "@wisemen/validators": "catalog:backend"
+    "@wisemen/validators": "catalog:backend",
+    "@wisemen/nestjs-typeorm": "catalog:backend"
   },
   "peerDependencies": {
     "@nestjs/swagger": "catalog:backend-peer",

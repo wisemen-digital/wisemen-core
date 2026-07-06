@@ -3,7 +3,7 @@ import { expect } from 'expect'
 import { LocalizedString } from '@wisemen/localized-string'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { customFieldDefinition } from '#src/factory/custom-field-definition.factory.js'
-import { CustomFieldDefinitionResponse } from '#src/responses/custom-field-definition.response.js'
+import { CustomFieldDefinitionResponse } from '#src/index.js'
 
 describe('CustomFieldDefinitionResponse', () => {
   it('maps a persisted custom field definition to an api response', () => {
