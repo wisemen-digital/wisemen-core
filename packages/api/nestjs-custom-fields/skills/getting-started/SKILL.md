@@ -3,13 +3,14 @@ name: getting-started
 description: Use when working with developer-defined custom fields in NestJS apis with TypeORM persistence and runtime validation.
 ---
 
-# @wisemen/custom-fields - Getting Started
+# @wisemen/nestjs-custom-fields - Getting Started
 
 Use `customFieldDefinition(...)` to define custom fields in application code.
 Use `CustomFieldDefinition` as the canonical persisted entity,
-`CustomFieldValueDto` in request DTOs, `@IsCustomFields()` to validate
-submitted values, `validateCustomFieldValues(...)` in use cases, and
-`@CustomFieldValueColumn()` to persist resolved values on other entities.
+`CustomFieldValueDto` in request and response DTOs, `@IsCustomFields()` to
+validate submitted values, `CustomFieldValueDto.from(...)` to map persisted
+values back into API responses, `validateCustomFieldValues(...)` in use cases,
+and `@CustomFieldValueColumn()` to persist resolved values on other entities.
 
 `@IsCustomFields()` already validates that the property is an array, validates
 the nested DTOs, and enforces uniqueness by `definitionUuid`, so those
@@ -68,6 +69,20 @@ export class UpdateTicketCommand {
   customFields: CustomFieldValueDto[]
 }
 
+@CustomFieldValueApiExtraModels()
+export class TicketResponseDto {
+  @CustomFieldValueDtoApiProperty({ isArray: true })
+  customFields: CustomFieldValueDto[]
+
+  static fromTicket(ticket: Ticket): TicketResponseDto {
+    return {
+      customFields: (ticket.customFields ?? []).map(customField =>
+        CustomFieldValueDto.from(customField),
+      ),
+    }
+  }
+}
+
 @Entity()
 export class Ticket {
   @PrimaryGeneratedColumn('uuid')
@@ -97,6 +112,10 @@ export class UpdateTicketCustomFieldsUseCase {
   }
 }
 ```
+
+`CustomFieldValueDto.from(...)` keeps the concrete custom field type in the
+response and converts values into DTO-friendly shapes such as ISO strings for
+timestamps and `MonetaryDto` for monetary values.
 
 Add `CustomFieldDefinition` to the datasource entities, and create your own
 application migration for its partial unique indexes.

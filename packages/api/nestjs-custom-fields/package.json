@@ -1,5 +1,5 @@
 {
-  "name": "@wisemen/custom-fields",
+  "name": "@wisemen/nestjs-custom-fields",
   "version": "0.0.0",
   "publishConfig": {
     "access": "public"
@@ -57,6 +57,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/custom-fields"
+    "directory": "packages/api/nestjs-custom-fields"
   }
 }

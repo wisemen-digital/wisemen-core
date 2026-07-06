@@ -1,5 +1,5 @@
 ---
-"@wisemen/custom-fields": patch
+"@wisemen/nestjs-custom-fields": patch
 ---
 
 Add custom field package

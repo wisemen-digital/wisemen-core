@@ -1,4 +1,4 @@
-# @wisemen/custom-fields
+# @wisemen/nestjs-custom-fields
 
 Custom field definitions and values for NestJS applications with TypeORM
 persistence, DTO support, and runtime validation.
@@ -142,6 +142,38 @@ export class UpdateTicketCommand {
   customFields: CustomFieldValueDto[]
 }
 ```
+
+## Return Custom Field Values In Responses
+
+Use `CustomFieldValueDto` in response DTOs as well. Register the Swagger
+discriminator models on the response class and map stored domain values back to
+DTOs with `CustomFieldValueDto.from(...)`.
+
+```ts
+import {
+  CustomFieldValueApiExtraModels,
+  CustomFieldValueDto,
+  CustomFieldValueDtoApiProperty
+} from '@wisemen/custom-fields'
+
+@CustomFieldValueApiExtraModels()
+export class TicketResponseDto {
+  @CustomFieldValueDtoApiProperty({ isArray: true })
+  customFields: CustomFieldValueDto[]
+
+  static fromTicket(ticket: Ticket): TicketResponseDto {
+    return {
+      customFields: (ticket.customFields ?? []).map(customField =>
+        CustomFieldValueDto.from(customField)
+      )
+    }
+  }
+}
+```
+
+`CustomFieldValueDto.from(...)` preserves the concrete custom field type and
+converts values to the response format expected by the DTOs, such as ISO
+strings for timestamps and `MonetaryDto` for monetary values.
 
 ## Parse And Validate Values
 
