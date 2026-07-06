@@ -22,6 +22,7 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<AutocompleteContentProps<TValue>>(), {
   isLoading: false,
+  getItemKey: null,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
   popoverSide: 'bottom',
@@ -60,6 +61,10 @@ onBeforeUnmount(() => {
     emit('update:search', '')
   }
 })
+
+function getItemKeyFor(value: NonNullable<TValue>): number | string {
+  return props.getItemKey?.(value) ?? JSON.stringify(value)
+}
 </script>
 
 <template>
@@ -96,7 +101,7 @@ onBeforeUnmount(() => {
           >
             <template
               v-for="(item, index) of filteredItems"
-              :key="item.type === 'option' ? `option-${displayFn(item.value as NonNullable<TValue>)}` : `sep-${index}`"
+              :key="item.type === 'option' ? `option-${getItemKeyFor(item.value as NonNullable<TValue>)}` : `sep-${index}`"
             >
               <AutocompleteOption
                 v-if="item.type === 'option'"
