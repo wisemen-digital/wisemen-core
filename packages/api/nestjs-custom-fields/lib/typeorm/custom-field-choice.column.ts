@@ -12,12 +12,8 @@ const localizedStringTransformer = LocalizedStringTransformer.getInstance()
 
 class CustomFieldChoiceTransformer implements ValueTransformer {
   to(
-    value: CustomFieldChoice | CustomFieldChoice[] | null | undefined
-  ): PersistedCustomFieldChoice | PersistedCustomFieldChoice[] | null | undefined {
-    if (value == null) {
-      return value
-    }
-
+    value: CustomFieldChoice | CustomFieldChoice[]
+  ): PersistedCustomFieldChoice | PersistedCustomFieldChoice[] {
     if (Array.isArray(value)) {
       return value.map(choice => this.toColumn(choice))
     }
@@ -26,12 +22,8 @@ class CustomFieldChoiceTransformer implements ValueTransformer {
   }
 
   from(
-    value: PersistedCustomFieldChoice | PersistedCustomFieldChoice[] | null | undefined
-  ): CustomFieldChoice | CustomFieldChoice[] | null | undefined {
-    if (value == null) {
-      return value
-    }
-
+    value: PersistedCustomFieldChoice | PersistedCustomFieldChoice[]
+  ): CustomFieldChoice | CustomFieldChoice[] {
     if (Array.isArray(value)) {
       return value.map(choice => this.fromColumn(choice))
     }

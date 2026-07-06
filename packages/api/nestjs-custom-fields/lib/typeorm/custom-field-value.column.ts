@@ -5,8 +5,8 @@ import { PlainDateTransformer, TimestampTransformer } from '@wisemen/datewise'
 import { Currency, MoneyTypeOrmTransformer } from '@wisemen/monetary'
 import { Column, ColumnOptions, type ValueTransformer } from 'typeorm'
 
-type EmptyCurrencyList = Record<Currency, never>
-const emptyCurrencyList = {} as EmptyCurrencyList
+
+const EMPTY_CURRENCY_LIST = {} as Record<Currency, never>
 
 interface CustomFieldValueColumnTransformers {
   plainDateTransformer: PlainDateTransformer
@@ -84,7 +84,7 @@ class CustomFieldValueTransformer implements ValueTransformer {
         return {
           ...columnValue,
           value: this.assertDefined(
-            new MoneyTypeOrmTransformer(columnValue.value.precision, emptyCurrencyList).to(columnValue.value, true))
+            new MoneyTypeOrmTransformer(columnValue.value.precision, EMPTY_CURRENCY_LIST).to(columnValue.value, true))
         }
       default: exhaustiveCheck(columnValue)
     }
@@ -113,7 +113,7 @@ class CustomFieldValueTransformer implements ValueTransformer {
         const precision = this.assertDefined(column.value.precision)
         return {
           ...column,
-          value: this.assertDefined(new MoneyTypeOrmTransformer(precision, emptyCurrencyList).from(column.value))
+          value: this.assertDefined(new MoneyTypeOrmTransformer(precision, EMPTY_CURRENCY_LIST).from(column.value))
         }
       }
       default: exhaustiveCheck(column)

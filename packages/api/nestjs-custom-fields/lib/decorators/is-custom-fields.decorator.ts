@@ -19,7 +19,7 @@ function getCustomFieldValueDtoDiscriminatorSubTypes(): Array<{ name: CustomFiel
   ]
 }
 
-export function IsCustomFields(): PropertyDecorator {
+export function IsCustomFieldsValues(): PropertyDecorator {
   return applyDecorators(
     IsArray(),
     ArrayUnique((customField: CustomFieldValueDto) => customField.definitionUuid),

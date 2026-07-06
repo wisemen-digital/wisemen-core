@@ -28,12 +28,12 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
-    "@wisemen/monetary": "workspace:*",
-    "@wisemen/datewise": "workspace:*",
-    "@wisemen/localized-string": "workspace:*",
-    "@wisemen/api-error": "workspace:*",
-    "@wisemen/validators": "workspace:*",
-    "@wisemen/nestjs-typeorm": "workspace:*"
+    "@wisemen/monetary": "workspace:^*",
+    "@wisemen/datewise": "workspace:^*",
+    "@wisemen/localized-string": "workspace:^*",
+    "@wisemen/api-error": "workspace:^*",
+    "@wisemen/validators": "workspace:^*",
+    "@wisemen/nestjs-typeorm": "workspace:^*"
   },
   "peerDependencies": {
     "@nestjs/swagger": "catalog:backend-peer",

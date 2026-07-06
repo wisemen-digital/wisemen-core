@@ -3,20 +3,19 @@ import { IsNull, Repository } from 'typeorm'
 import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.entity.js'
 import { ViewCustomFieldDefinitionsQuery } from '#src/use-cases/view-custom-field-definitions/view-custom-field-definitions.query.js'
 import { InjectRepository } from '@wisemen/nestjs-typeorm'
-import { CustomFieldDefinitionResponse } from '#src/index.js'
 
 @Injectable()
-export class ViewCustomFieldDefinitionsUseCase {
-  constructor (
+export class ViewCustomFieldDefinitionsRepository {
+  constructor(
     @InjectRepository(CustomFieldDefinition)
-    private readonly customFieldDefinitionRepository: Repository<CustomFieldDefinition>
-  ) {}
+    private readonly repository: Repository<CustomFieldDefinition>
+  ) { }
 
-  async execute (
+  async findDefinitions(
     tenantUuid: string | null,
     query: ViewCustomFieldDefinitionsQuery
-  ): Promise<CustomFieldDefinitionResponse[]> {
-    const definitions = await this.customFieldDefinitionRepository.find({
+  ): Promise<CustomFieldDefinition[]> {
+    return this.repository.find({
       where: {
         entityType: query.entityType,
         tenantUuid: tenantUuid !== null ? tenantUuid : IsNull()
@@ -25,7 +24,5 @@ export class ViewCustomFieldDefinitionsUseCase {
         key: 'ASC'
       }
     })
-
-    return definitions.map(definition => CustomFieldDefinitionResponse.from(definition))
   }
 }

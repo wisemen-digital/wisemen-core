@@ -1,4 +1,4 @@
-import { PlainDate, plainDate, Timestamp, timestamp } from '@wisemen/datewise'
+import { PlainDate, Timestamp } from '@wisemen/datewise'
 import { Currency, Monetary } from '@wisemen/monetary'
 import { CustomFieldValueValidationError } from './custom-field-value-validation.error.js'
 import { CustomFieldDefinitionFields } from '#src/custom-field-definition.js'
@@ -153,11 +153,11 @@ function validateDateValue(rules: DateCustomFieldRules, value: PlainDate): void 
     return
   }
 
-  if (rules.minDate !== undefined && value.isBefore(plainDate(rules.minDate))) {
+  if (rules.minDate !== undefined && value.isBefore(rules.minDate)) {
     throw new CustomFieldValueValidationError('Date custom field value can not be before minDate')
   }
 
-  if (rules.maxDate !== undefined && value.isAfter(plainDate(rules.maxDate))) {
+  if (rules.maxDate !== undefined && value.isAfter(rules.maxDate)) {
     throw new CustomFieldValueValidationError('Date custom field value can not be after maxDate')
   }
 }
@@ -170,11 +170,11 @@ function validateTimestampValue(
     return
   }
 
-  if (rules.minDate !== undefined && value.isBefore(timestamp(rules.minDate))) {
+  if (rules.minDate !== undefined && value.isBefore(rules.minDate)) {
     throw new CustomFieldValueValidationError('Timestamp custom field value can not be before minDate')
   }
 
-  if (rules.maxDate !== undefined && value.isAfter(timestamp(rules.maxDate))) {
+  if (rules.maxDate !== undefined && value.isAfter(rules.maxDate)) {
     throw new CustomFieldValueValidationError('Timestamp custom field value can not be after maxDate')
   }
 }
