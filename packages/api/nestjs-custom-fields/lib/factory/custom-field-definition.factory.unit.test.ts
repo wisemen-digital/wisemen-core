@@ -454,6 +454,20 @@ describe('customFieldDefinition', () => {
       })).toThrow(new CustomFieldDefinitionError('Date custom field minDate must be a valid date'))
     })
 
+    it('rejects a date field whose minDate includes a time', () => {
+      expect(() => customFieldDefinition(CustomFieldType.DATE, {
+        tenantUuid: null,
+        entityType: 'invoice',
+        key: 'due_date',
+        label: new LocalizedString([{ locale: 'en', value: 'Due date' }]),
+        description: null,
+        isRequired: false,
+        rules: {
+          minDate: '2026-01-01T23:00:00Z'
+        }
+      })).toThrow(new CustomFieldDefinitionError('Date custom field minDate must be a valid date'))
+    })
+
     it('rejects a timestamp field with an invalid maxDate', () => {
       expect(() => customFieldDefinition(CustomFieldType.TIMESTAMP, {
         tenantUuid: null,
@@ -466,6 +480,20 @@ describe('customFieldDefinition', () => {
           maxDate: 'invalid-date'
         }
       })).toThrow(new CustomFieldDefinitionError('Date custom field maxDate must be a valid date'))
+    })
+
+    it('rejects a timestamp field whose minDate omits a timezone', () => {
+      expect(() => customFieldDefinition(CustomFieldType.TIMESTAMP, {
+        tenantUuid: null,
+        entityType: 'invoice',
+        key: 'sent_at',
+        label: new LocalizedString([{ locale: 'en', value: 'Sent at' }]),
+        description: null,
+        isRequired: false,
+        rules: {
+          minDate: '2026-01-01T09:00:00'
+        }
+      })).toThrow(new CustomFieldDefinitionError('Date custom field minDate must be a valid date'))
     })
 
     it('rejects a timestamp field whose minDate is after maxDate', () => {

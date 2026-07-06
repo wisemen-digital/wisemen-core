@@ -191,7 +191,7 @@ function validateSingleSelectValue(
 
 function validateMultiSelectValue(
   definition: Pick<CustomFieldDefinitionFields, 'choices'>,
-  rules: MultiSelectCustomFieldRules,
+  rules: MultiSelectCustomFieldRules | null,
   value: CustomFieldSelectValue[]
 ): void {
   const choices = assertChoicesDefined(definition)
@@ -200,6 +200,10 @@ function validateMultiSelectValue(
     if (!choices.some(choice => choice.value === selectedValue)) {
       throw new CustomFieldValueValidationError('Multi select custom field value must only contain defined choices')
     }
+  }
+
+  if (new Set(value).size !== value.length) {
+    throw new CustomFieldValueValidationError('Multi select custom field value can not contain duplicate values')
   }
 
   if (rules === null) {

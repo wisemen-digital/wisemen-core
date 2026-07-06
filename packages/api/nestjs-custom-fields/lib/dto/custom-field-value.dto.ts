@@ -1,8 +1,8 @@
 import { ApiExtraModels, ApiProperty, type ApiPropertyOptions, getSchemaPath } from '@nestjs/swagger'
 import { plainDate, timestamp } from '@wisemen/datewise'
 import { Currency, IsMonetary, MonetaryDto } from '@wisemen/monetary'
-import { IsDateWithoutTimeString } from '@wisemen/validators'
-import { ArrayUnique, IsArray, IsBoolean, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator'
+import { IsDateStringWithTimezone, IsDateWithoutTimeString } from '@wisemen/validators'
+import { ArrayUnique, IsArray, IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator'
 import { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { exhaustiveCheck } from '#src/exhaustive-check.js'
@@ -163,7 +163,7 @@ export class DateTimeCustomFieldValueDto extends CustomFieldValueDto {
   type: CustomFieldType.TIMESTAMP = CustomFieldType.TIMESTAMP
 
   @ApiProperty({ type: String, format: 'date-time' })
-  @IsDateString({ strict: true })
+  @IsDateStringWithTimezone({ strict: true })
   value: string
 
   parse(): TimestampCustomFieldValue {

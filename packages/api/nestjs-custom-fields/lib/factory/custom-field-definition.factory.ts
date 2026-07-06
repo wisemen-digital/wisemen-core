@@ -7,7 +7,7 @@ import { CustomFieldDefinitionFieldsByType, ResolvedCustomFieldDefinitionFields 
 import { CustomFieldRulesModeByType, CustomFieldChoicesModeByType } from '#src/custom-field-type-contract.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { CustomFieldDefinitionError } from '#src/errors/custom-field-definition.error.js'
-import { timestamp } from '@wisemen/datewise'
+import { plainDate, timestamp } from '@wisemen/datewise'
 import { CustomFieldRulesByType, CustomFieldRules, DateCustomFieldRules, TimestampCustomFieldRules, TextCustomFieldRules, TextArrayCustomFieldRules, NumberCustomFieldRules, MultiSelectCustomFieldRules, MonetaryCustomFieldRules } from '#src/custom-field-rules.js'
 
 type NullIfEmpty<T> = keyof T extends never ? null : T | null
@@ -195,9 +195,12 @@ function validateCustomFieldDefinition(
       validateNoChoices(definition)
       return
     case CustomFieldType.DATE:
-    case CustomFieldType.TIMESTAMP:
       validateNoChoices(definition)
       validateDateRules(definition.rules)
+      return
+    case CustomFieldType.TIMESTAMP:
+      validateNoChoices(definition)
+      validateTimestampRules(definition.rules)
       return
     case CustomFieldType.SINGLE_SELECT:
       validateSelectChoices(definition.choices)
@@ -216,13 +219,64 @@ function validateCustomFieldDefinition(
 }
 
 function validateDateRules(
-  rules: DateCustomFieldRules | TimestampCustomFieldRules | null
+  rules: DateCustomFieldRules | null
 ): void {
   if (rules === null) {
     return
   }
 
-  const isValid = (date: string): boolean => isDateString(date, { strict: true })
+  const isValid = (date: string): boolean => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return false
+    }
+
+    try {
+      plainDate(date)
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  if (rules.minDate !== undefined && !isValid(rules.minDate)) {
+    throw new CustomFieldDefinitionError('Date custom field minDate must be a valid date')
+  }
+
+  if (rules.maxDate !== undefined && !isValid(rules.maxDate)) {
+    throw new CustomFieldDefinitionError('Date custom field maxDate must be a valid date')
+  }
+
+  if (
+    rules.minDate !== undefined
+    && rules.maxDate !== undefined
+    && plainDate(rules.minDate).isAfter(rules.maxDate)
+  ) {
+    throw new CustomFieldDefinitionError('Date custom field minDate can not be after maxDate')
+  }
+}
+
+function validateTimestampRules(
+  rules: TimestampCustomFieldRules | null
+): void {
+  if (rules === null) {
+    return
+  }
+
+  const isValid = (date: string): boolean => {
+    if (!isDateString(date, { strict: true })) {
+      return false
+    }
+
+    if (!/(Z|[+-]\d{2}:\d{2})$/.test(date)) {
+      return false
+    }
+
+    try {
+      return timestamp(date).isValid()
+    } catch {
+      return false
+    }
+  }
 
   if (rules.minDate !== undefined && !isValid(rules.minDate)) {
     throw new CustomFieldDefinitionError('Date custom field minDate must be a valid date')

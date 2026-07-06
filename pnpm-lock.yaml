@@ -96,24 +96,6 @@ catalogs:
     '@types/qs':
       specifier: 6.14.0
       version: 6.14.0
-    '@wisemen/api-error':
-      specifier: 0.0.12
-      version: 0.0.12
-    '@wisemen/datewise':
-      specifier: ^1.0.14
-      version: 1.0.14
-    '@wisemen/localized-string':
-      specifier: ^0.0.10
-      version: 0.0.10
-    '@wisemen/monetary':
-      specifier: ^0.5.2
-      version: 0.5.2
-    '@wisemen/nestjs-typeorm':
-      specifier: 0.2.0
-      version: 0.2.0
-    '@wisemen/validators':
-      specifier: 0.0.22
-      version: 0.0.22
     axios:
       specifier: 1.16.0
       version: 1.16.0
@@ -1619,23 +1601,23 @@ importers:
         specifier: catalog:backend-peer
         version: 1.9.1
       '@wisemen/api-error':
-        specifier: catalog:backend
-        version: 0.0.12(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(class-transformer@0.5.1)(class-validator@0.15.1)
+        specifier: workspace:*
+        version: link:../api-error
       '@wisemen/datewise':
-        specifier: catalog:backend
-        version: 1.0.14(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-transformer@0.5.1)(class-validator@0.15.1)(dayjs@1.11.20)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
+        specifier: workspace:*
+        version: link:../datewise
       '@wisemen/localized-string':
-        specifier: catalog:backend
-        version: 0.0.10(@nestjs/core@11.1.19)(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+        specifier: workspace:*
+        version: link:../localized-string
       '@wisemen/monetary':
-        specifier: catalog:backend
-        version: 0.5.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-transformer@0.5.1)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
+        specifier: workspace:*
+        version: link:../monetary
       '@wisemen/nestjs-typeorm':
-        specifier: catalog:backend
-        version: 0.2.0(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
+        specifier: workspace:*
+        version: link:../nestjs-typeorm
       '@wisemen/validators':
-        specifier: catalog:backend
-        version: 0.0.22(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
+        specifier: workspace:*
+        version: link:../validators
       class-transformer:
         specifier: catalog:backend-peer
         version: 0.5.1
@@ -9472,23 +9454,6 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
-  '@wisemen/api-error@0.0.12':
-    resolution: {integrity: sha512-rQJEhR/ElQKQihoWfIyei+Sh0pcloJZ4Fe/DEF3z2FyY6j7QW2rDncQPtEpLm2fokiKplTeNB2pZY9efdHlwew==}
-    peerDependencies:
-      '@nestjs/common': '>=11.1.14'
-      '@nestjs/swagger': '>=11.2.6'
-      class-transformer: '>=0.5.1'
-      class-validator: '>=0.14.3'
-
-  '@wisemen/datewise@1.0.14':
-    resolution: {integrity: sha512-OXNPSuIfG+cV1F5eaGyFLFEbdzFKL/gWoGHE9ZTwanRAvUcAKLqjyydNYc2x8uX+zEhFIuxZdMbGvcQJrvH/fQ==}
-    peerDependencies:
-      '@nestjs/swagger': ^11.4.2
-      class-transformer: ^0.5.1
-      class-validator: ^0.15.1
-      dayjs: ^1.11.20
-      typeorm: ^1.0.0
-
   '@wisemen/eslint-config-vue@2.1.3':
     resolution: {integrity: sha512-c4bQlPT7QG8T47LiL2+SyQlqpz4Cx8koRTrQZOslGU6vWH2JPXscbmiz6xTEbcPt+9XdFDIP4fpl8kM08T7wTg==}
     peerDependencies:
@@ -9500,98 +9465,6 @@ packages:
       '@typescript-eslint/parser': ^8.46.1
       eslint: '>=10.0.3'
       typescript: '>=4.8.4 <=5.9.3'
-
-  '@wisemen/localized-string@0.0.10':
-    resolution: {integrity: sha512-zD+dDbhWwTUXE21ZGz00C/2xBQBXfZbzxi/OKx2nvELHOYy02JBQzcFqKoqMFT70EEh7xBqAB03lqZCaFQNVdg==}
-
-  '@wisemen/monetary@0.5.2':
-    resolution: {integrity: sha512-lIZs9MJhz0y2qODKOu7HEEUdd/x6HxzLnSKilO9LL+XD7no83qElrwkF698w7V8E63oxePE8rXIYcUiKtv3PBQ==}
-    peerDependencies:
-      '@nestjs/common': ^11.1.19
-      '@nestjs/swagger': ^11.4.2
-      class-transformer: ^0.5.1
-      class-validator: ^0.15.1
-      typeorm: ^1.0.0
-
-  '@wisemen/nestjs-typeorm@0.2.0':
-    resolution: {integrity: sha512-Siq/51NrsGLER9PbZXACniQZo6YLJAgbaDr9/YnPwvfv+V5WRsKVVMctg+yFMzE5SSQZMcYRPj5TC1j9fIqreg==}
-    peerDependencies:
-      '@nestjs/common': '>=11.1.14'
-      '@nestjs/config': '>=4.0.3'
-      '@nestjs/typeorm': '>=11.0.0'
-      change-case: '>=5.4.4'
-      class-validator: '>=0.14.3'
-      pg: '>=8.18.0'
-      typeorm: '>=0.3.28'
-
-  '@wisemen/nestjs-typeorm@1.1.1':
-    resolution: {integrity: sha512-l/XXSsJDeKn3FWP5ZmMeJSYTnurJMh6o0vQvUN1INSGMG1NmnRO1JkyatlnMt5pQ56Z3eSAlFWJXjXpTUZyxdw==}
-    peerDependencies:
-      '@nestjs/common': '>=11.1.17'
-      '@nestjs/config': '>=4.0.3'
-      '@nestjs/typeorm': '>=11.0.1'
-      change-case: '>=5.4.4'
-      class-validator: '>=0.15.1'
-      pg: '>=8.20.0'
-      typeorm: '>=1.0.0'
-
-  '@wisemen/nestjs-typeorm@1.1.2':
-    resolution: {integrity: sha512-nFQJZpDEzKZqFu5Np0ZCegKWZMiVJjI+XUVbgcV43oGGf9iK8Xk3hikjB5VnpuLlC0qyPL2WS4OprChGc1M6Gg==}
-    peerDependencies:
-      '@nestjs/common': ^11.1.19
-      '@nestjs/config': ^4.0.3
-      '@nestjs/typeorm': ^11.0.1
-      change-case: ^5.4.4
-      class-validator: ^0.15.1
-      pg: ^8.20.0
-      typeorm: ^1.0.0
-
-  '@wisemen/pagination@1.0.0':
-    resolution: {integrity: sha512-GxuU0pK3uLkFx8NI+i7Ig81xcBy9bImtTrEJS528PYAh1c6cIm7T59QSKh0jdZveYSYI0m5HRBODrpvJwDzcCw==}
-    peerDependencies:
-      '@nestjs/common': '>=11.1.17'
-      '@nestjs/swagger': '>=11.2.6'
-      class-transformer: '>=0.5.1'
-      class-validator: '>=0.15.1'
-
-  '@wisemen/quantity@0.9.1':
-    resolution: {integrity: sha512-+bW98aCozcH2fFUN5IQxE4PjDBNcDQ7U2XRDHxYs/IwoWCwsfAF2VTRb3NzcNeFckHXTpSSgZnhrvv2lE06ufQ==}
-    peerDependencies:
-      '@nestjs/common': ^11.1.19
-      '@nestjs/swagger': ^11.4.2
-      class-transformer: ^0.5.1
-      class-validator: ^0.15.1
-      typeorm: ^1.0.0
-
-  '@wisemen/time@0.0.31':
-    resolution: {integrity: sha512-g9xFMxUYciLwI/DywO8MG/tywYRsq2qJBJ5OVClk/63ZR2jrfBrZp9Ufl8pmRyLXWFYrxmScPdoWin4fgz/x2Q==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    peerDependencies:
-      '@nestjs/common': '>=11.1.14'
-      class-validator: '>=0.14.3'
-      dayjs: '>=1.11.19'
-      typeorm: '>=0.3.28'
-
-  '@wisemen/time@0.0.32':
-    resolution: {integrity: sha512-+hecJOqGRU2t26Ld1Ehh+ZokkpdP3kXBNo2H6m5KwvjL1+pZ6uYcvMuAOHmWMByO3GZ0Vy/1rMsgJYvpGGK3dw==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
-    peerDependencies:
-      '@nestjs/common': '>=11.1.17'
-      class-validator: '>=0.15.1'
-      dayjs: '>=1.11.20'
-      typeorm: '>=0.3.28'
-
-  '@wisemen/validators@0.0.22':
-    resolution: {integrity: sha512-6Tuct9q5K7iQ6OQf7ZIOW7+IUBuRWvZGy0gZVp88aW7FqOWs2iNoClx4XwwbFOwpn66PV45Qf3v9iOa4zUFtgg==}
-    peerDependencies:
-      class-validator: '>=0.14.3'
-      dayjs: '>=1.11.19'
-
-  '@wisemen/validators@0.0.23':
-    resolution: {integrity: sha512-bFmlV2vqL5PZHp/17x0kOBny24MKCkD8o4JAtE4qVQkqigEHqwhhYaRAIuKlfla8EZdr+Yjul/wmFLEf0TWBdg==}
-    peerDependencies:
-      class-validator: '>=0.15.1'
-      dayjs: '>=1.11.20'
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -21747,29 +21620,6 @@ snapshots:
     dependencies:
       vue: 3.5.27(typescript@5.9.3)
 
-  '@wisemen/api-error@0.0.12(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(class-transformer@0.5.1)(class-validator@0.15.1)':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/swagger': 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
-      class-transformer: 0.5.1
-      class-validator: 0.15.1
-
-  '@wisemen/datewise@1.0.14(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-transformer@0.5.1)(class-validator@0.15.1)(dayjs@1.11.20)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/swagger': 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
-      '@wisemen/pagination': 1.0.0(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(class-transformer@0.5.1)(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      '@wisemen/quantity': 0.9.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-transformer@0.5.1)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      class-transformer: 0.5.1
-      class-validator: 0.15.1
-      dayjs: 1.11.20
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-    transitivePeerDependencies:
-      - '@nestjs/common'
-      - '@nestjs/config'
-      - '@nestjs/typeorm'
-      - change-case
-      - pg
-
   '@wisemen/eslint-config-vue@2.1.3(@typescript-eslint/eslint-plugin@8.59.0(@typescript-eslint/parser@8.59.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(@typescript-eslint/utils@8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(jsonc-eslint-parser@3.1.0)(oxlint@1.59.0(oxlint-tsgolint@0.20.0))(tailwindcss@4.1.18)(typescript@5.9.3)(vitest@4.1.0)(vue-eslint-parser@10.4.0(eslint@9.39.4(jiti@2.6.1)))(yaml-eslint-parser@2.0.0)':
     dependencies:
       '@antfu/eslint-config': 7.7.0(@typescript-eslint/utils@8.53.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint-plugin-format@1.3.1(eslint@9.39.4(jiti@2.6.1)))(eslint-plugin-vuejs-accessibility@2.4.1(eslint@9.39.4(jiti@2.6.1)))(eslint@9.39.4(jiti@2.6.1))(oxlint@1.59.0(oxlint-tsgolint@0.20.0))(typescript@5.9.3)(vitest@4.1.0)
@@ -21839,138 +21689,6 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
-
-  '@wisemen/localized-string@0.0.10(@nestjs/core@11.1.19)(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)(reflect-metadata@0.2.2)(rxjs@7.8.2)':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/swagger': 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
-      class-transformer: 0.5.1
-      class-validator: 0.15.1
-      typeorm: 0.3.30(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-    transitivePeerDependencies:
-      - '@fastify/static'
-      - '@google-cloud/spanner'
-      - '@nestjs/core'
-      - '@sap/hana-client'
-      - babel-plugin-macros
-      - better-sqlite3
-      - ioredis
-      - mongodb
-      - mssql
-      - mysql2
-      - oracledb
-      - pg
-      - pg-native
-      - pg-query-stream
-      - redis
-      - reflect-metadata
-      - rxjs
-      - sql.js
-      - sqlite3
-      - supports-color
-      - ts-node
-      - typeorm-aurora-data-api-driver
-
-  '@wisemen/monetary@0.5.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-transformer@0.5.1)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/swagger': 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
-      '@wisemen/nestjs-typeorm': 1.1.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      class-transformer: 0.5.1
-      class-validator: 0.15.1
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-    transitivePeerDependencies:
-      - '@nestjs/config'
-      - '@nestjs/typeorm'
-      - change-case
-      - pg
-
-  '@wisemen/nestjs-typeorm@0.2.0(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/config': 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@nestjs/typeorm': 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      change-case: 5.4.4
-      class-validator: 0.15.1
-      pg: 8.20.0
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-
-  '@wisemen/nestjs-typeorm@1.1.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/config': 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@nestjs/typeorm': 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      change-case: 5.4.4
-      class-validator: 0.15.1
-      pg: 8.20.0
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-
-  '@wisemen/nestjs-typeorm@1.1.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/config': 4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2)
-      '@nestjs/typeorm': 11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      change-case: 5.4.4
-      class-validator: 0.15.1
-      pg: 8.20.0
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-
-  '@wisemen/pagination@1.0.0(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(class-transformer@0.5.1)(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/swagger': 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
-      '@wisemen/validators': 0.0.23(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      class-transformer: 0.5.1
-      class-validator: 0.15.1
-    transitivePeerDependencies:
-      - dayjs
-      - typeorm
-
-  '@wisemen/quantity@0.9.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/swagger@11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-transformer@0.5.1)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/swagger': 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
-      '@wisemen/nestjs-typeorm': 1.1.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/config@4.0.3(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(rxjs@7.8.2))(@nestjs/typeorm@11.0.1(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)))(change-case@5.4.4)(class-validator@0.15.1)(pg@8.20.0)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      class-transformer: 0.5.1
-      class-validator: 0.15.1
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-    transitivePeerDependencies:
-      - '@nestjs/config'
-      - '@nestjs/typeorm'
-      - change-case
-      - pg
-
-  '@wisemen/time@0.0.31(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      class-validator: 0.15.1
-      dayjs: 1.11.20
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-
-  '@wisemen/time@0.0.32(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@nestjs/common': 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      class-validator: 0.15.1
-      dayjs: 1.11.20
-      typeorm: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
-
-  '@wisemen/validators@0.0.22(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@wisemen/time': 0.0.31(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      class-validator: 0.15.1
-      dayjs: 1.11.20
-    transitivePeerDependencies:
-      - '@nestjs/common'
-      - typeorm
-
-  '@wisemen/validators@0.0.23(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))':
-    dependencies:
-      '@wisemen/time': 0.0.32(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-validator@0.15.1)(dayjs@1.11.20)(typeorm@1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0))
-      class-validator: 0.15.1
-      dayjs: 1.11.20
-    transitivePeerDependencies:
-      - '@nestjs/common'
-      - typeorm
 
   abbrev@2.0.0: {}
 

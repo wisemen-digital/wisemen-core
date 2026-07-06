@@ -511,6 +511,38 @@ describe('validateCustomFieldValue', () => {
     })).toThrow(new CustomFieldValueValidationError('Multi select custom field value must only contain defined choices'))
   })
 
+  it('rejects a multi select custom field value containing duplicate selections', () => {
+    const definition = customFieldDefinition(CustomFieldType.MULTI_SELECT, {
+      tenantUuid: null,
+      entityType: 'invoice',
+      key: 'labels',
+      label: new LocalizedString([{ locale: 'en', value: 'Labels' }]),
+      description: null,
+      isRequired: false,
+      choices: [
+        {
+          value: 'finance',
+          label: new LocalizedString([{ locale: 'en', value: 'Finance' }]),
+          order: 1
+        },
+        {
+          value: 'priority',
+          label: new LocalizedString([{ locale: 'en', value: 'Priority' }]),
+          order: 2
+        }
+      ],
+      rules: {
+        minSelections: 2
+      }
+    })
+
+    expect(() => validateCustomFieldValue(definition, {
+      definitionUuid: definition.uuid,
+      type: CustomFieldType.MULTI_SELECT,
+      value: ['finance', 'finance']
+    })).toThrow(new CustomFieldValueValidationError('Multi select custom field value can not contain duplicate values'))
+  })
+
   it('rejects a multi select custom field value with fewer than minSelections', () => {
     const definition = customFieldDefinition(CustomFieldType.MULTI_SELECT, {
       tenantUuid: null,
