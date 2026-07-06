@@ -8,8 +8,8 @@ import { CustomFieldType, CustomFieldTypeColumn } from '../enum/custom-field-typ
 import { CustomFieldChoiceColumn } from './custom-field-choice.column.js'
 
 @Entity()
-@Index(['entityType', 'key'], { unique: true, where: '"tenantUuid" IS NULL' })
-@Index(['tenantUuid', 'entityType', 'key'], { unique: true, where: '"tenantUuid" IS NOT NULL' })
+@Index(['entityType', 'key'], { unique: true, where: '"tenant_uuid" IS NULL' })
+@Index(['tenantUuid', 'entityType', 'key'], { unique: true, where: '"tenant_uuid" IS NOT NULL' })
 export class CustomFieldDefinition implements CustomFieldDefinitionFields {
   @PrimaryGeneratedColumn('uuid')
   uuid: CustomFieldDefinitionUuid
@@ -20,7 +20,7 @@ export class CustomFieldDefinition implements CustomFieldDefinitionFields {
   @UpdateDateColumn({ type: 'timestamptz', precision: 3 })
   updatedAt: Date
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ name: 'tenant_uuid', type: 'uuid', nullable: true })
   tenantUuid: string | null
 
   @Column({ type: 'varchar' })

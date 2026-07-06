@@ -301,8 +301,7 @@ export class UpdateTicketCustomFieldsUseCase {
 ## Persist Custom Field Values On Other Entities
 
 Use `CustomFieldValueColumn()` on entities that store resolved custom field
-values. The column uses a JSONB default of `{}`, so set an explicit nullable
-type on the property when the field should also support `null`.
+values.
 
 ```ts
 import { Entity, PrimaryGeneratedColumn } from 'typeorm'

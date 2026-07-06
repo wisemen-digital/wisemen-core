@@ -17,7 +17,6 @@ export function CustomFieldValueColumn (options?: Omit<ColumnOptions, 'type' | '
   return Column({
     ...options,
     type: 'jsonb',
-    default: '{}',
     transformer: new CustomFieldValueTransformer({
       plainDateTransformer: PlainDateTransformer.getInstance(),
       timestampTransformer: new TimestampTransformer()
@@ -110,12 +109,13 @@ class CustomFieldValueTransformer implements ValueTransformer {
           ...column,
           value: this.assertDefined(this.timestampTransformer.from(column.value))
         }
-      case CustomFieldType.MONETARY:
+      case CustomFieldType.MONETARY: {
         const precision = this.assertDefined(column.value.precision)
         return {
           ...column,
           value: this.assertDefined(new MoneyTypeOrmTransformer(precision, emptyCurrencyList).from(column.value))
         }
+      }
       default: exhaustiveCheck(column)
     }
   }
