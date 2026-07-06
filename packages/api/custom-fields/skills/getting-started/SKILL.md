@@ -1,122 +1,102 @@
 ---
 name: getting-started
-description: Offset and Keyset pagination for NestJS applications. Use when an endpoints need a paginated response. 
+description: Use when working with developer-defined custom fields in NestJS apis with TypeORM persistence and runtime validation.
 ---
-## Import
+
+# @wisemen/custom-fields - Getting Started
+
+Use `customFieldDefinition(...)` to define custom fields in application code.
+Use `CustomFieldDefinition` as the canonical persisted entity,
+`CustomFieldValueDto` in request DTOs, `@IsCustomFields()` to validate
+submitted values, `validateCustomFieldValues(...)` in use cases, and
+`@CustomFieldValueColumn()` to persist resolved values on other entities.
+
+`@IsCustomFields()` already validates that the property is an array, validates
+the nested DTOs, and enforces uniqueness by `definitionUuid`, so those
+decorators do not need to be added separately.
+
+Custom field definitions are intended to be created and maintained by
+developers. This package does not target end-user managed custom field
+creation, and it does not ship TypeORM migrations.
 
 ```ts
-import { PaginatedOffsetSearchQuery, PaginatedOffsetResponse, PaginatedOffsetResponseMeta, PaginatedKeysetQuery, PaginatedKeysetResponse, typeormPagination, KeysetDirection, } from '@wisemen/pagination'
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { LocalizedString } from '@wisemen/localized-string'
+import { Entity, PrimaryGeneratedColumn, Repository } from 'typeorm'
+import {
+  customFieldDefinition,
+  CustomFieldDefinition,
+  CustomFieldType,
+  type CustomFieldValue,
+  CustomFieldValueApiExtraModels,
+  CustomFieldValueColumn,
+  CustomFieldValueDto,
+  CustomFieldValueDtoApiProperty,
+  IsCustomFields,
+  validateCustomFieldValues,
+} from '@wisemen/custom-fields'
+
+export const PriorityField = customFieldDefinition(
+  CustomFieldType.SINGLE_SELECT,
+  {
+    tenantUuid: null,
+    entityType: 'ticket',
+    key: 'priority',
+    label: new LocalizedString([{ locale: 'en', value: 'Priority' }]),
+    description: null,
+    isRequired: true,
+    choices: [
+      {
+        value: 'low',
+        order: 1,
+        label: new LocalizedString([{ locale: 'en', value: 'Low' }]),
+      },
+      {
+        value: 'high',
+        order: 2,
+        label: new LocalizedString([{ locale: 'en', value: 'High' }]),
+      },
+    ],
+  },
+)
+
+@CustomFieldValueApiExtraModels()
+export class UpdateTicketCommand {
+  @CustomFieldValueDtoApiProperty({ isArray: true })
+  @IsCustomFields()
+  customFields: CustomFieldValueDto[]
+}
+
+@Entity()
+export class Ticket {
+  @PrimaryGeneratedColumn('uuid')
+  uuid: string
+
+  @CustomFieldValueColumn({ nullable: true })
+  customFields: CustomFieldValue[] | null
+}
+
+@Injectable()
+export class UpdateTicketCustomFieldsUseCase {
+  constructor(
+    @InjectRepository(CustomFieldDefinition)
+    private readonly customFieldDefinitionRepository: Repository<CustomFieldDefinition>,
+  ) {}
+
+  async execute(command: UpdateTicketCommand): Promise<void> {
+    const definitions = await this.customFieldDefinitionRepository.find({
+      where: {
+        entityType: 'ticket',
+      },
+    })
+
+    const values = command.customFields.map(value => value.parse())
+
+    validateCustomFieldValues(definitions, values)
+  }
+}
 ```
 
-### Keyset pagination. Use by default.
-
-1. Define query key
-```ts
-export class ViewJobsIndexQueryKey {
-  @ApiProperty({ type: 'string', format: 'date-time', required: false })
-  @IsDateString({ strict: true })
-  createdAt: string
-
-  @ApiProperty({ type: 'string' })
-  @IsString()
-  @IsNotEmpty()
-  id: string
-
-  static nextKey (jobs: ViewJobsIndexJob[]): ViewJobsIndexQueryKey | null {
-    if (jobs.length == 0) {
-      return null
-    }
-
-    const lastItem = jobs.at(-1) as ViewJobsIndexJob
-
-    return this.from(lastItem)
-  }
-
-  static from (job: ViewJobsIndexJob): ViewJobsIndexQueryKey {
-    const key = new ViewJobsIndexQueryKey()
-
-    key.createdAt = job.createdAt
-    key.id = job.id
-
-    return key
-  }
-}
-```
-
-2. Add key to pagination
-```ts
-export class ViewJobsIndexPaginationQuery extends PaginatedKeysetQuery {
-  @ApiProperty({ type: ViewJobsIndexQueryKey, required: false, nullable: true })
-  @Type(() => ViewJobsIndexQueryKey)
-  @ValidateNested()
-  @IsObject()
-  @IsOptional()
-  key?: ViewJobsIndexQueryKey | null
-}
-```
-
-3. Add in response meta
-
-```ts
-class ViewJobsIndexResponseMeta implements PaginatedKeysetResponseMeta {
-  @ApiProperty({ type: ViewJobsIndexQueryKey, nullable: true })
-  next: ViewJobsIndexQueryKey | null
-
-  constructor (jobs: ViewJobsIndexJob[]) {
-    this.next = ViewJobsIndexQueryKey.nextKey(jobs)
-  }
-}
-```
-
-Typically keyset pagination can be used in combination with @wisemen/nestjs-typeorm.
-The key is then typically the `lastEntity` parameter for the `findNextBatch` method on the repository.
-
-### Offset pagination. Do not use.
-
-```ts
-// 1. Define your search query DTO
-import { PaginatedOffsetSearchQuery } from '@wisemen/pagination'
-import { IsString } from 'class-validator'
-import { IsUndefinable } from '@wisemen/validators'
-
-export class ViewUserIndexQuery extends PaginatedOffsetSearchQuery {
-  @Equals(undefined)
-  sort: never
-
-  @Equals(undefined)
-  filter: never
-
-  @IsString()
-  @IsUndefinable()
-  search?: string
-}
-
-// 2. Define your response DTO
-import { ApiProperty } from '@nestjs/swagger'
-import { PaginatedOffsetResponse } from '@wisemen/pagination'
-
-class ViewUserIndexItemResponse{
-  @ApiProperty({ type: String, format: 'uuid' })
-  uuid: UserUuid
-
-  @ApiProperty({ type: String})
-  name: string
-
-  constructor (user: User) {
-    this.uuid = user.uuid
-    this.name = user.name
-  }
-}
-
-export class ViewUserIndexResponse extends PaginatedOffsetResponse<UserIndexView> {
-  @ApiProperty({ type: UserIndexView, isArray: true })
-  declare items: UserIndexView[]
-
-  constructor (users: User[]) {
-    const userViews = users.map(user => new UserIndexView(user))
-    super(userViews, users.meta)
-  }
-}
-
-`PaginatedOffsetSearchQuery` provides `pagination?: { offset, limit }` with validation and Swagger docs. `typeormPagination()` maps it to `{ skip, take }`.
-
+Add `CustomFieldDefinition` to the datasource entities, and create your own
+application migration for its partial unique indexes.

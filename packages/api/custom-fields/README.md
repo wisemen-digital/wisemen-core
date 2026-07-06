@@ -123,6 +123,10 @@ Use `IsCustomFields()` on DTO properties that accept arrays of custom field
 values. For Swagger, register the discriminator models on the DTO class and use
 `CustomFieldValueDtoApiProperty()` on the property.
 
+`@IsCustomFields()` already applies array validation, nested DTO validation,
+and uniqueness on `definitionUuid`, so those decorators do not need to be added
+separately.
+
 ```ts
 import {
   CustomFieldValueApiExtraModels,
