@@ -1601,22 +1601,22 @@ importers:
         specifier: catalog:backend-peer
         version: 1.9.1
       '@wisemen/api-error':
-        specifier: workspace:*
+        specifier: workspace:^*
         version: link:../api-error
       '@wisemen/datewise':
-        specifier: workspace:*
+        specifier: workspace:^*
         version: link:../datewise
       '@wisemen/localized-string':
-        specifier: workspace:*
+        specifier: workspace:^*
         version: link:../localized-string
       '@wisemen/monetary':
-        specifier: workspace:*
+        specifier: workspace:^*
         version: link:../monetary
       '@wisemen/nestjs-typeorm':
-        specifier: workspace:*
+        specifier: workspace:^*
         version: link:../nestjs-typeorm
       '@wisemen/validators':
-        specifier: workspace:*
+        specifier: workspace:^*
         version: link:../validators
       class-transformer:
         specifier: catalog:backend-peer

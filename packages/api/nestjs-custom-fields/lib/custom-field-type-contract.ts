@@ -1,99 +1,43 @@
-import type { Currency, Monetary, MonetaryJSON } from '@wisemen/monetary'
+import type { BooleanCustomFieldTypeContract } from '#src/custom-field-types/boolean/boolean.contract.js'
+import type { DateCustomFieldTypeContract } from '#src/custom-field-types/date/date.contract.js'
+import type { MonetaryCustomFieldTypeContract } from '#src/custom-field-types/monetary/monetary.contract.js'
+import type { MultiSelectCustomFieldTypeContract } from '#src/custom-field-types/multi-select/multi-select.contract.js'
+import type { NumberCustomFieldTypeContract } from '#src/custom-field-types/number/number.contract.js'
+import type { SingleSelectCustomFieldTypeContract } from '#src/custom-field-types/single-select/single-select.contract.js'
+import type { TextArrayCustomFieldTypeContract } from '#src/custom-field-types/text-array/text-array.contract.js'
+import type { TextCustomFieldTypeContract } from '#src/custom-field-types/text/text.contract.js'
+import type { TimestampCustomFieldTypeContract } from '#src/custom-field-types/timestamp/timestamp.contract.js'
 import { CustomFieldType } from './enum/custom-field-type.enum.js'
-import { PlainDate, Timestamp } from '@wisemen/datewise'
+
+type Satisfies<T extends U, U> = T
 
 export type CustomFieldRulesMode = 'required' | 'optional' | 'none'
 export type CustomFieldChoicesMode = 'required' | 'none'
 
-export type CustomFieldTypeContract = {
-  [CustomFieldType.TEXT]: {
-    value: string
-    columnValue: string
-    rules: {
-      minLength?: number
-      maxLength?: number
-      regex?: string
-    }
-    rulesMode: 'optional'
-    choicesMode: 'none'
-  }
-  [CustomFieldType.TEXT_ARRAY]: {
-    value: string[]
-    columnValue: string[]
-    rules: {
-      minItems?: number
-      maxItems?: number
-    }
-    rulesMode: 'optional'
-    choicesMode: 'none'
-  }
-  [CustomFieldType.NUMBER]: {
-    value: number
-    columnValue: number
-    rules: {
-      min?: number
-      max?: number
-    }
-    rulesMode: 'optional'
-    choicesMode: 'none'
-  }
-  [CustomFieldType.BOOLEAN]: {
-    value: boolean
-    columnValue: boolean
-    rules: Record<never, never>
-    rulesMode: 'none'
-    choicesMode: 'none'
-  }
-  [CustomFieldType.TIMESTAMP]: {
-    value: Timestamp
-    columnValue: string
-    rules: {
-      minDate?: string
-      maxDate?: string
-    }
-    rulesMode: 'optional'
-    choicesMode: 'none'
-  }
-  [CustomFieldType.DATE]: {
-    value: PlainDate
-    columnValue: string
-    rules: {
-      minDate?: string
-      maxDate?: string
-    }
-    rulesMode: 'optional'
-    choicesMode: 'none'
-  }
-  [CustomFieldType.SINGLE_SELECT]: {
-    value: string
-    columnValue: string
-    rules: Record<never, never>
-    rulesMode: 'none'
-    choicesMode: 'required'
-  }
-  [CustomFieldType.MULTI_SELECT]: {
-    value: string[]
-    columnValue: string[]
-    rules: {
-      minSelections?: number
-      maxSelections?: number
-    }
-    rulesMode: 'optional'
-    choicesMode: 'required'
-  }
-  [CustomFieldType.MONETARY]: {
-    value: Monetary<Currency>
-    columnValue: MonetaryJSON
-    rules: {
-      precision: number
-      currencies?: Currency[]
-      min?: number
-      max?: number
-    }
-    rulesMode: 'required'
-    choicesMode: 'none'
-  }
+export interface CustomFieldTypeContractBase {
+  value: unknown
+  columnValue: unknown
+  rules: unknown
+  rulesMode: CustomFieldRulesMode
+  choicesMode: CustomFieldChoicesMode
 }
+
+export type DefineContract<T extends CustomFieldTypeContractBase & Record<Exclude<keyof T, keyof CustomFieldTypeContractBase>, never>> = T
+
+export type CustomFieldTypeContract = Satisfies<
+  {
+    [CustomFieldType.TEXT]: TextCustomFieldTypeContract
+    [CustomFieldType.TEXT_ARRAY]: TextArrayCustomFieldTypeContract
+    [CustomFieldType.NUMBER]: NumberCustomFieldTypeContract
+    [CustomFieldType.BOOLEAN]: BooleanCustomFieldTypeContract
+    [CustomFieldType.TIMESTAMP]: TimestampCustomFieldTypeContract
+    [CustomFieldType.DATE]: DateCustomFieldTypeContract
+    [CustomFieldType.SINGLE_SELECT]: SingleSelectCustomFieldTypeContract
+    [CustomFieldType.MULTI_SELECT]: MultiSelectCustomFieldTypeContract
+    [CustomFieldType.MONETARY]: MonetaryCustomFieldTypeContract
+  },
+  Record<CustomFieldType, CustomFieldTypeContractBase>
+>
 
 export type CustomFieldDomainValueByType<T extends CustomFieldType> = CustomFieldTypeContract[T]['value']
 export type CustomFieldColumnValueByType<T extends CustomFieldType> = CustomFieldTypeContract[T]['columnValue']
