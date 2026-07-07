@@ -238,7 +238,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
             :aria-controls="`${id}-listbox`"
             role="combobox"
             class="
-              absolute inset-0 size-full outline-none
+              absolute inset-0 z-1 size-full outline-none
               disabled:cursor-not-allowed
             "
             data-field-wrapper
