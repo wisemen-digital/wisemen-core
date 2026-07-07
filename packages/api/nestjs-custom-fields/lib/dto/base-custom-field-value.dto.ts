@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsUUID } from 'class-validator'
-import type { BaseCustomFieldValue, BooleanCustomFieldValue, CustomFieldValue, DateCustomFieldValue, MonetaryCustomFieldValue, MultiSelectCustomFieldValue, NumberCustomFieldValue, SingleSelectCustomFieldValue, TextArrayCustomFieldValue, TextCustomFieldValue, TimestampCustomFieldValue } from '#src/custom-field-value.js'
 import type { BooleanCustomFieldValueDto } from '#src/custom-field-types/boolean/boolean.dto.js'
 import type { DateCustomFieldValueDto } from '#src/custom-field-types/date/date.dto.js'
 import type { MonetaryCustomFieldValueDto } from '#src/custom-field-types/monetary/monetary.dto.js'
@@ -12,6 +11,8 @@ import type { TextCustomFieldValueDto } from '#src/custom-field-types/text/text.
 import type { DateTimeCustomFieldValueDto } from '#src/custom-field-types/timestamp/timestamp.dto.js'
 import { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
+import { TextCustomFieldValue, TextArrayCustomFieldValue, NumberCustomFieldValue, BooleanCustomFieldValue, DateCustomFieldValue, TimestampCustomFieldValue, SingleSelectCustomFieldValue, MultiSelectCustomFieldValue, MonetaryCustomFieldValue } from '#src/custom-field-types/index.js'
+import { CustomFieldValue, BaseCustomFieldValue } from '#src/custom-field-value.js'
 
 type CustomFieldValueDtoResolver = (customFieldValue: CustomFieldValue) => CustomFieldValueDto
 
