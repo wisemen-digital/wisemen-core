@@ -69,7 +69,10 @@ export function ensureTranslationStatusColumn(defaultColumns: string[] | undefin
   ]
 }
 
-export function createTranslationStatusBeforeChangeHook(translatablePaths: string[][]): CollectionBeforeChangeHook {
+export function createTranslationStatusBeforeChangeHook(
+  translatablePaths: string[][],
+  ignoredPaths: string[][] = [],
+): CollectionBeforeChangeHook {
   return ({
     data,
     originalDoc,
@@ -89,6 +92,7 @@ export function createTranslationStatusBeforeChangeHook(translatablePaths: strin
 
     if (!translationContext?.mode && !hasTranslatableFieldChange({
       data,
+      ignoredPaths,
       originalDoc,
       translatablePaths,
     })) {
@@ -106,15 +110,20 @@ export function createTranslationStatusBeforeChangeHook(translatablePaths: strin
 export function createTranslationStatusAfterChangeHook({
   collectionSlug,
   defaultLocale,
+  ignoredPaths = [],
   locales,
+  translatablePaths,
 }: {
   collectionSlug: string
   defaultLocale: string | undefined
+  ignoredPaths?: string[][]
   locales: string[]
+  translatablePaths: string[][]
 }): CollectionAfterChangeHook {
   return async ({
     doc,
     operation,
+    previousDoc,
     req,
   }) => {
     if (!defaultLocale || operation !== 'update' || req.locale !== defaultLocale || !doc?.id) {
@@ -126,6 +135,15 @@ export function createTranslationStatusAfterChangeHook({
     } | undefined
 
     if (translationContext?.mode) {
+      return doc
+    }
+
+    if (!hasTranslatableFieldChange({
+      data: doc,
+      ignoredPaths,
+      originalDoc: previousDoc,
+      translatablePaths,
+    })) {
       return doc
     }
 
@@ -185,14 +203,20 @@ export function createTranslationStatusAfterChangeHook({
 
 function hasTranslatableFieldChange({
   data,
+  ignoredPaths,
   originalDoc,
   translatablePaths,
 }: {
   data: Record<string, unknown>
+  ignoredPaths: string[][]
   originalDoc: unknown
   translatablePaths: string[][]
 }): boolean {
   return translatablePaths.some((path) => {
+    if (isIgnoredPath(path, ignoredPaths)) {
+      return false
+    }
+
     const nextValueResult = getValueAtPath(data, path)
 
     if (!nextValueResult.found) {
@@ -203,6 +227,14 @@ function hasTranslatableFieldChange({
 
     return !areValuesEqual(nextValueResult.value, previousValueResult.value)
   })
+}
+
+function isIgnoredPath(path: string[], ignoredPaths: string[][]): boolean {
+  return ignoredPaths.some((ignoredPath) => arePathsEqual(path, ignoredPath))
+}
+
+function arePathsEqual(left: string[], right: string[]): boolean {
+  return left.length === right.length && left.every((segment, index) => segment === right[index])
 }
 
 function getValueAtPath(value: unknown, path: string[]): {
@@ -229,5 +261,44 @@ function getValueAtPath(value: unknown, path: string[]): {
 }
 
 function areValuesEqual(left: unknown, right: unknown): boolean {
-  return JSON.stringify(left) === JSON.stringify(right)
+  return JSON.stringify(normalizeComparableValue(left)) === JSON.stringify(normalizeComparableValue(right))
+}
+
+function normalizeComparableValue(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item) => normalizeComparableValue(item))
+  }
+
+  if (!value || typeof value !== 'object') {
+    return value
+  }
+
+  const normalized = {
+    ...value,
+  } as Record<string, unknown>
+
+  delete normalized.id
+  delete normalized.blockName
+
+  const sortedEntries = Object.entries(normalized).sort(([
+    leftKey,
+  ], [
+    rightKey,
+  ]) => leftKey.localeCompare(rightKey))
+
+  for (const [
+    key,
+    childValue,
+  ] of sortedEntries) {
+    if (Array.isArray(childValue) || (childValue && typeof childValue === 'object')) {
+      normalized[key] = normalizeComparableValue(childValue)
+    }
+  }
+
+  return Object.fromEntries(sortedEntries.map(([
+    key,
+  ]) => [
+    key,
+    normalized[key],
+  ]))
 }
