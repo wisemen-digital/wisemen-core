@@ -5,11 +5,12 @@ import { computed } from 'vue'
 
 import {
   isApiRoute,
+  isCmsRoute,
   isWebRoute,
 } from './getStack.util'
 
 interface StackBadgeConfig {
-  color: 'blue' | 'moss'
+  color: 'blue' | 'moss' | 'purple'
   label: string
 }
 
@@ -27,6 +28,13 @@ const activeStack = computed<StackBadgeConfig | null>(() => {
     return {
       color: 'blue',
       label: 'API',
+    }
+  }
+
+  if (isCmsRoute(route.path)) {
+    return {
+      color: 'purple',
+      label: 'CMS',
     }
   }
 

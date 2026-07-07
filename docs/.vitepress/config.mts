@@ -5,7 +5,10 @@ import tailwindcss from '@tailwindcss/vite'
 import postcssPrefixSelector from 'postcss-prefix-selector'
 import { defineConfig } from 'vitepress'
 
-import { getPackagesSidebar } from '../navigation/navigation.utils'
+import {
+  getPackagesNavigation,
+  getPackagesSidebar,
+} from '../navigation/navigation.utils'
 import { DOC_PATHS } from '../navigation/paths'
 import { API_PLAYBOOK_NAVIGATION } from '../stacks/api/playbook/apiPlaybook.navigation'
 import { WEB_PLAYBOOK_NAVIGATION } from '../stacks/web/playbook/webPlaybook.navigation'
@@ -27,6 +30,7 @@ export default defineConfig({
   rewrites: {
     'stacks/web/:slug*': 'web/:slug*',
     'stacks/api/:slug*': 'api/:slug*',
+    'stacks/cms/:slug*': 'cms/:slug*',
   },
   description: 'The central repository of Wisemen for all internal Vue packages.',
   themeConfig: {
@@ -41,6 +45,10 @@ export default defineConfig({
           {
             text: 'API',
             link: DOC_PATHS.api,
+          },
+          {
+            text: 'CMS',
+            link: DOC_PATHS.cms,
           },
         ],
       },
@@ -71,6 +79,14 @@ export default defineConfig({
               text: 'API Playbook',
               link: DOC_PATHS.apiPlaybook,
             },
+            {
+              text: 'CMS',
+              link: DOC_PATHS.cms,
+            },
+            {
+              text: 'CMS Packages',
+              link: DOC_PATHS.cmsPackages,
+            },
           ],
         },
       ],
@@ -79,6 +95,12 @@ export default defineConfig({
       ],
       '/api/playbook/': [
         API_PLAYBOOK_NAVIGATION,
+      ],
+      '/cms/packages/': [
+        {
+          text: 'CMS Packages',
+          items: getPackagesNavigation('cms'),
+        },
       ],
       ...getPackagesSidebar(),
     },
