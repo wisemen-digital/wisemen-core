@@ -11,7 +11,7 @@ export {
   BooleanCustomFieldValueDto,
   CustomFieldValueDto,
   DateCustomFieldValueDto,
-  DateTimeCustomFieldValueDto,
+  TimestampCustomFieldValueDto,
   MonetaryCustomFieldValueDto,
   MultiSelectCustomFieldValueDto,
   NumberCustomFieldValueDto,

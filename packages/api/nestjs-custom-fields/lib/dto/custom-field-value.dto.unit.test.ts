@@ -5,14 +5,14 @@ import { plainDate, timestamp } from '@wisemen/datewise'
 import { Currency, Monetary } from '@wisemen/monetary'
 import type { BaseCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import type { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
-import { BooleanCustomFieldValueDto, CUSTOM_FIELD_VALUE_DTOS, CustomFieldValueDto, DateCustomFieldValueDto, DateTimeCustomFieldValueDto, MonetaryCustomFieldValueDto, MultiSelectCustomFieldValueDto, NumberCustomFieldValueDto, SingleSelectCustomFieldValueDto, TextArrayCustomFieldValueDto, TextCustomFieldValueDto } from '#src/dto/custom-field-value.dto.js'
+import { BooleanCustomFieldValueDto, CUSTOM_FIELD_VALUE_DTOS, CustomFieldValueDto, DateCustomFieldValueDto, MonetaryCustomFieldValueDto, MultiSelectCustomFieldValueDto, NumberCustomFieldValueDto, SingleSelectCustomFieldValueDto, TextArrayCustomFieldValueDto, TextCustomFieldValueDto, TimestampCustomFieldValueDto } from '#src/dto/custom-field-value.dto.js'
 import { generateUuid } from '#src/custom-field-definition.uuid.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import type { CustomFieldValue } from '#src/custom-field-value.js'
 
-describe('DateTimeCustomFieldValueDto', () => {
+describe('TimestampCustomFieldValueDto', () => {
   it('rejects a timestamp value without an explicit timezone', async () => {
-    const dto = new DateTimeCustomFieldValueDto()
+    const dto = new TimestampCustomFieldValueDto()
 
     dto.definitionUuid = generateUuid()
     dto.value = '2026-01-01T12:00:00'
@@ -23,7 +23,7 @@ describe('DateTimeCustomFieldValueDto', () => {
   })
 
   it('accepts a timestamp value with a Z timezone', async () => {
-    const dto = new DateTimeCustomFieldValueDto()
+    const dto = new TimestampCustomFieldValueDto()
 
     dto.definitionUuid = generateUuid()
     dto.value = '2026-01-01T12:00:00.000Z'
@@ -65,7 +65,7 @@ describe('CustomFieldValueDto', () => {
       },
       {
         input: { definitionUuid, type: CustomFieldType.TIMESTAMP, value: timestamp('2026-01-01T12:00:00.000Z') },
-        expectedClass: DateTimeCustomFieldValueDto
+        expectedClass: TimestampCustomFieldValueDto
       },
       {
         input: { definitionUuid, type: CustomFieldType.SINGLE_SELECT, value: 'primary' },

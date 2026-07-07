@@ -11,10 +11,10 @@ import { NumberCustomFieldValueDto } from '#src/custom-field-types/number/number
 import { SingleSelectCustomFieldValueDto } from '#src/custom-field-types/single-select/single-select.dto.js'
 import { TextArrayCustomFieldValueDto } from '#src/custom-field-types/text-array/text-array.dto.js'
 import { TextCustomFieldValueDto } from '#src/custom-field-types/text/text.dto.js'
-import { DateTimeCustomFieldValueDto } from '#src/custom-field-types/timestamp/timestamp.dto.js'
+import { TimestampCustomFieldValueDto } from '#src/custom-field-types/timestamp/timestamp.dto.js'
 import { BaseCustomFieldValueDto } from './base-custom-field-value.dto.js'
 
-type CustomFieldValueDtoClass = new () => BaseCustomFieldValueDto
+export type CustomFieldValueDtoClass = new () => BaseCustomFieldValueDto
 
 export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
   static from(customFieldValue: TextCustomFieldValue): TextCustomFieldValueDto
@@ -22,7 +22,7 @@ export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
   static from(customFieldValue: NumberCustomFieldValue): NumberCustomFieldValueDto
   static from(customFieldValue: BooleanCustomFieldValue): BooleanCustomFieldValueDto
   static from(customFieldValue: DateCustomFieldValue): DateCustomFieldValueDto
-  static from(customFieldValue: TimestampCustomFieldValue): DateTimeCustomFieldValueDto
+  static from(customFieldValue: TimestampCustomFieldValue): TimestampCustomFieldValueDto
   static from(customFieldValue: SingleSelectCustomFieldValue): SingleSelectCustomFieldValueDto
   static from(customFieldValue: MultiSelectCustomFieldValue): MultiSelectCustomFieldValueDto
   static from(customFieldValue: MonetaryCustomFieldValue): MonetaryCustomFieldValueDto
@@ -40,7 +40,7 @@ export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
       case CustomFieldType.DATE:
         return DateCustomFieldValueDto.from(customFieldValue)
       case CustomFieldType.TIMESTAMP:
-        return DateTimeCustomFieldValueDto.from(customFieldValue)
+        return TimestampCustomFieldValueDto.from(customFieldValue)
       case CustomFieldType.SINGLE_SELECT:
         return SingleSelectCustomFieldValueDto.from(customFieldValue)
       case CustomFieldType.MULTI_SELECT:
@@ -56,7 +56,7 @@ export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
 export {
   BooleanCustomFieldValueDto,
   DateCustomFieldValueDto,
-  DateTimeCustomFieldValueDto,
+  TimestampCustomFieldValueDto,
   MonetaryCustomFieldValueDto,
   MultiSelectCustomFieldValueDto,
   NumberCustomFieldValueDto,
@@ -65,13 +65,13 @@ export {
   TextCustomFieldValueDto
 }
 
-const CUSTOM_FIELD_VALUE_DTO_BY_TYPE = {
+export const CUSTOM_FIELD_VALUE_DTO_BY_TYPE = {
   [CustomFieldType.TEXT]: TextCustomFieldValueDto,
   [CustomFieldType.TEXT_ARRAY]: TextArrayCustomFieldValueDto,
   [CustomFieldType.NUMBER]: NumberCustomFieldValueDto,
   [CustomFieldType.BOOLEAN]: BooleanCustomFieldValueDto,
   [CustomFieldType.DATE]: DateCustomFieldValueDto,
-  [CustomFieldType.TIMESTAMP]: DateTimeCustomFieldValueDto,
+  [CustomFieldType.TIMESTAMP]: TimestampCustomFieldValueDto,
   [CustomFieldType.SINGLE_SELECT]: SingleSelectCustomFieldValueDto,
   [CustomFieldType.MULTI_SELECT]: MultiSelectCustomFieldValueDto,
   [CustomFieldType.MONETARY]: MonetaryCustomFieldValueDto

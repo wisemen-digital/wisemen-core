@@ -6,7 +6,7 @@ import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/bas
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { TimestampCustomFieldValue } from '#src/custom-field-types/timestamp/timestamp.value.js'
 
-export class DateTimeCustomFieldValueDto extends BaseCustomFieldValueDto {
+export class TimestampCustomFieldValueDto extends BaseCustomFieldValueDto {
   @ApiProperty({ enum: [CustomFieldType.TIMESTAMP] })
   @IsEnum([CustomFieldType.TIMESTAMP])
   declare type: CustomFieldType.TIMESTAMP
@@ -19,9 +19,9 @@ export class DateTimeCustomFieldValueDto extends BaseCustomFieldValueDto {
     return this.toCustomFieldValue(CustomFieldType.TIMESTAMP, timestamp(this.value))
   }
 
-  static from(customFieldValue: TimestampCustomFieldValue): DateTimeCustomFieldValueDto {
+  static from(customFieldValue: TimestampCustomFieldValue): TimestampCustomFieldValueDto {
     return createCustomFieldValueDto(
-      new DateTimeCustomFieldValueDto(),
+      new TimestampCustomFieldValueDto(),
       CustomFieldType.TIMESTAMP,
       customFieldValue.definitionUuid,
       customFieldValue.value.toISOString()
