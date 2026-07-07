@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
+  getItemKey: null,
   keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
