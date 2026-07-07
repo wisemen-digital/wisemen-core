@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger'
 import { plainDate } from '@wisemen/datewise'
 import { IsDateWithoutTimeString } from '@wisemen/validators'
 import { IsEnum } from 'class-validator'
-import { createCustomFieldValueDto, CustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
+import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import type { DateCustomFieldValue } from './date.value.js'
 
-export class DateCustomFieldValueDto extends CustomFieldValueDto {
+export class DateCustomFieldValueDto extends BaseCustomFieldValueDto {
   @ApiProperty({ enum: [CustomFieldType.DATE] })
   @IsEnum([CustomFieldType.DATE])
   type: CustomFieldType.DATE = CustomFieldType.DATE
@@ -19,7 +19,7 @@ export class DateCustomFieldValueDto extends CustomFieldValueDto {
     return this.toCustomFieldValue(CustomFieldType.DATE, plainDate(this.value))
   }
 
-  static fromCustomFieldValue(customFieldValue: DateCustomFieldValue): DateCustomFieldValueDto {
+  static from(customFieldValue: DateCustomFieldValue): DateCustomFieldValueDto {
     return createCustomFieldValueDto(new DateCustomFieldValueDto(), customFieldValue.definitionUuid, customFieldValue.value.toString())
   }
 }

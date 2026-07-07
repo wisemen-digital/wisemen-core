@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger'
 import { timestamp } from '@wisemen/datewise'
 import { IsDateStringWithTimezone } from '@wisemen/validators'
 import { IsEnum } from 'class-validator'
-import { createCustomFieldValueDto, CustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
+import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import type { TimestampCustomFieldValue } from './timestamp.value.js'
 
-export class DateTimeCustomFieldValueDto extends CustomFieldValueDto {
+export class DateTimeCustomFieldValueDto extends BaseCustomFieldValueDto {
   @ApiProperty({ enum: [CustomFieldType.TIMESTAMP] })
   @IsEnum([CustomFieldType.TIMESTAMP])
   type: CustomFieldType.TIMESTAMP = CustomFieldType.TIMESTAMP
@@ -19,7 +19,7 @@ export class DateTimeCustomFieldValueDto extends CustomFieldValueDto {
     return this.toCustomFieldValue(CustomFieldType.TIMESTAMP, timestamp(this.value))
   }
 
-  static fromCustomFieldValue(customFieldValue: TimestampCustomFieldValue): DateTimeCustomFieldValueDto {
+  static from(customFieldValue: TimestampCustomFieldValue): DateTimeCustomFieldValueDto {
     return createCustomFieldValueDto(new DateTimeCustomFieldValueDto(), customFieldValue.definitionUuid, customFieldValue.value.toISOString())
   }
 }

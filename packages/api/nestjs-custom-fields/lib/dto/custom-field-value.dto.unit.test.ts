@@ -3,6 +3,7 @@ import { expect } from 'expect'
 import { validate } from 'class-validator'
 import { plainDate, timestamp } from '@wisemen/datewise'
 import { Currency, Monetary } from '@wisemen/monetary'
+import type { BaseCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import type { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
 import { BooleanCustomFieldValueDto, CUSTOM_FIELD_VALUE_DTOS, CustomFieldValueDto, DateCustomFieldValueDto, DateTimeCustomFieldValueDto, MonetaryCustomFieldValueDto, MultiSelectCustomFieldValueDto, NumberCustomFieldValueDto, SingleSelectCustomFieldValueDto, TextArrayCustomFieldValueDto, TextCustomFieldValueDto } from '#src/dto/custom-field-value.dto.js'
 import { generateUuid } from '#src/custom-field-definition.uuid.js'
@@ -41,7 +42,7 @@ describe('CustomFieldValueDto', () => {
   it('maps every custom field value to its dto class', () => {
     const definitionUuid = generateUuid<CustomFieldDefinitionUuid>()
 
-    const testCases: Array<{ input: CustomFieldValue, expectedClass: typeof CustomFieldValueDto }> = [
+    const testCases: Array<{ input: CustomFieldValue, expectedClass: new () => BaseCustomFieldValueDto }> = [
       {
         input: { definitionUuid, type: CustomFieldType.TEXT, value: 'notes' },
         expectedClass: TextCustomFieldValueDto

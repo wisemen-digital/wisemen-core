@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { ArrayUnique, IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator'
-import { createCustomFieldValueDto, CustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
+import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import type { MultiSelectCustomFieldValue } from './multi-select.value.js'
 
-export class MultiSelectCustomFieldValueDto extends CustomFieldValueDto {
+export class MultiSelectCustomFieldValueDto extends BaseCustomFieldValueDto {
   @ApiProperty({ enum: [CustomFieldType.MULTI_SELECT] })
   @IsEnum([CustomFieldType.MULTI_SELECT])
   type: CustomFieldType.MULTI_SELECT = CustomFieldType.MULTI_SELECT
@@ -20,7 +20,7 @@ export class MultiSelectCustomFieldValueDto extends CustomFieldValueDto {
     return this.toCustomFieldValue(CustomFieldType.MULTI_SELECT, this.value)
   }
 
-  static fromCustomFieldValue(customFieldValue: MultiSelectCustomFieldValue): MultiSelectCustomFieldValueDto {
+  static from(customFieldValue: MultiSelectCustomFieldValue): MultiSelectCustomFieldValueDto {
     return createCustomFieldValueDto(new MultiSelectCustomFieldValueDto(), customFieldValue.definitionUuid, customFieldValue.value)
   }
 }

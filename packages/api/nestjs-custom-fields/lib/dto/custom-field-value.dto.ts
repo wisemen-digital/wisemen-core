@@ -1,7 +1,8 @@
 import { ApiExtraModels, ApiProperty, type ApiPropertyOptions, getSchemaPath } from '@nestjs/swagger'
+import type { BooleanCustomFieldValue, DateCustomFieldValue, MonetaryCustomFieldValue, MultiSelectCustomFieldValue, NumberCustomFieldValue, SingleSelectCustomFieldValue, TextArrayCustomFieldValue, TextCustomFieldValue, TimestampCustomFieldValue } from '#src/custom-field-types/index.js'
 import { exhaustiveCheck } from '#src/exhaustive-check.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
-import { CustomFieldValueDto } from './base-custom-field-value.dto.js'
+import type { CustomFieldValue } from '#src/custom-field-value.js'
 import { BooleanCustomFieldValueDto } from '#src/custom-field-types/boolean/boolean.dto.js'
 import { DateCustomFieldValueDto } from '#src/custom-field-types/date/date.dto.js'
 import { MonetaryCustomFieldValueDto } from '#src/custom-field-types/monetary/monetary.dto.js'
@@ -11,34 +12,47 @@ import { SingleSelectCustomFieldValueDto } from '#src/custom-field-types/single-
 import { TextArrayCustomFieldValueDto } from '#src/custom-field-types/text-array/text-array.dto.js'
 import { TextCustomFieldValueDto } from '#src/custom-field-types/text/text.dto.js'
 import { DateTimeCustomFieldValueDto } from '#src/custom-field-types/timestamp/timestamp.dto.js'
-import type { CustomFieldValue } from '#src/custom-field-value.js'
+import { BaseCustomFieldValueDto } from './base-custom-field-value.dto.js'
 
-CustomFieldValueDto.registerFromCustomFieldValue((customFieldValue: CustomFieldValue): CustomFieldValueDto => {
-  switch (customFieldValue.type) {
-    case CustomFieldType.TEXT:
-      return TextCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.TEXT_ARRAY:
-      return TextArrayCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.NUMBER:
-      return NumberCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.BOOLEAN:
-      return BooleanCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.DATE:
-      return DateCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.TIMESTAMP:
-      return DateTimeCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.SINGLE_SELECT:
-      return SingleSelectCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.MULTI_SELECT:
-      return MultiSelectCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    case CustomFieldType.MONETARY:
-      return MonetaryCustomFieldValueDto.fromCustomFieldValue(customFieldValue)
-    default:
-      return exhaustiveCheck(customFieldValue)
+type CustomFieldValueDtoClass = new () => BaseCustomFieldValueDto
+
+export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
+  static from(customFieldValue: TextCustomFieldValue): TextCustomFieldValueDto
+  static from(customFieldValue: TextArrayCustomFieldValue): TextArrayCustomFieldValueDto
+  static from(customFieldValue: NumberCustomFieldValue): NumberCustomFieldValueDto
+  static from(customFieldValue: BooleanCustomFieldValue): BooleanCustomFieldValueDto
+  static from(customFieldValue: DateCustomFieldValue): DateCustomFieldValueDto
+  static from(customFieldValue: TimestampCustomFieldValue): DateTimeCustomFieldValueDto
+  static from(customFieldValue: SingleSelectCustomFieldValue): SingleSelectCustomFieldValueDto
+  static from(customFieldValue: MultiSelectCustomFieldValue): MultiSelectCustomFieldValueDto
+  static from(customFieldValue: MonetaryCustomFieldValue): MonetaryCustomFieldValueDto
+  static from(customFieldValue: CustomFieldValue): BaseCustomFieldValueDto
+  static from(customFieldValue: CustomFieldValue): BaseCustomFieldValueDto {
+    switch (customFieldValue.type) {
+      case CustomFieldType.TEXT:
+        return TextCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.TEXT_ARRAY:
+        return TextArrayCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.NUMBER:
+        return NumberCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.BOOLEAN:
+        return BooleanCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.DATE:
+        return DateCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.TIMESTAMP:
+        return DateTimeCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.SINGLE_SELECT:
+        return SingleSelectCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.MULTI_SELECT:
+        return MultiSelectCustomFieldValueDto.from(customFieldValue)
+      case CustomFieldType.MONETARY:
+        return MonetaryCustomFieldValueDto.from(customFieldValue)
+      default:
+        return exhaustiveCheck(customFieldValue)
+    }
   }
-})
+}
 
-export { CustomFieldValueDto }
 export {
   BooleanCustomFieldValueDto,
   DateCustomFieldValueDto,
@@ -51,30 +65,30 @@ export {
   TextCustomFieldValueDto
 }
 
-export const CUSTOM_FIELD_VALUE_DTOS = [
-  TextCustomFieldValueDto,
-  TextArrayCustomFieldValueDto,
-  NumberCustomFieldValueDto,
-  BooleanCustomFieldValueDto,
-  DateCustomFieldValueDto,
-  DateTimeCustomFieldValueDto,
-  SingleSelectCustomFieldValueDto,
-  MultiSelectCustomFieldValueDto,
-  MonetaryCustomFieldValueDto
-] as const
+const CUSTOM_FIELD_VALUE_DTO_BY_TYPE = {
+  [CustomFieldType.TEXT]: TextCustomFieldValueDto,
+  [CustomFieldType.TEXT_ARRAY]: TextArrayCustomFieldValueDto,
+  [CustomFieldType.NUMBER]: NumberCustomFieldValueDto,
+  [CustomFieldType.BOOLEAN]: BooleanCustomFieldValueDto,
+  [CustomFieldType.DATE]: DateCustomFieldValueDto,
+  [CustomFieldType.TIMESTAMP]: DateTimeCustomFieldValueDto,
+  [CustomFieldType.SINGLE_SELECT]: SingleSelectCustomFieldValueDto,
+  [CustomFieldType.MULTI_SELECT]: MultiSelectCustomFieldValueDto,
+  [CustomFieldType.MONETARY]: MonetaryCustomFieldValueDto
+} satisfies Record<CustomFieldType, CustomFieldValueDtoClass>
+
+export const CUSTOM_FIELD_VALUE_DTOS = Object.values(CUSTOM_FIELD_VALUE_DTO_BY_TYPE)
 
 function getCustomFieldValueDtoSchemaPathMapping(): Record<CustomFieldType, string> {
-  return {
-    [CustomFieldType.TEXT]: getSchemaPath(TextCustomFieldValueDto),
-    [CustomFieldType.TEXT_ARRAY]: getSchemaPath(TextArrayCustomFieldValueDto),
-    [CustomFieldType.NUMBER]: getSchemaPath(NumberCustomFieldValueDto),
-    [CustomFieldType.BOOLEAN]: getSchemaPath(BooleanCustomFieldValueDto),
-    [CustomFieldType.DATE]: getSchemaPath(DateCustomFieldValueDto),
-    [CustomFieldType.TIMESTAMP]: getSchemaPath(DateTimeCustomFieldValueDto),
-    [CustomFieldType.SINGLE_SELECT]: getSchemaPath(SingleSelectCustomFieldValueDto),
-    [CustomFieldType.MULTI_SELECT]: getSchemaPath(MultiSelectCustomFieldValueDto),
-    [CustomFieldType.MONETARY]: getSchemaPath(MonetaryCustomFieldValueDto)
-  }
+  return Object.fromEntries(
+    Object.entries(CUSTOM_FIELD_VALUE_DTO_BY_TYPE).map(([type, dto]) => [type, getSchemaPath(dto)])
+  ) as Record<CustomFieldType, string>
+}
+
+export function getCustomFieldValueDtoDiscriminatorSubTypes(): Array<{ name: CustomFieldType, value: CustomFieldValueDtoClass }> {
+  return Object.entries(CUSTOM_FIELD_VALUE_DTO_BY_TYPE).map(
+    ([name, value]) => ({ name: name as CustomFieldType, value })
+  )
 }
 
 export function CustomFieldValueApiExtraModels(): ClassDecorator {
