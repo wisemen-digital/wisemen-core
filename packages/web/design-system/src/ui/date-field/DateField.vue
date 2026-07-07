@@ -220,6 +220,7 @@ useProvideDatePickerContext({
             <DatePickerCalendarGrid
               v-for="month in grid"
               :key="month.value.toString()"
+              :get-day-config="props.getDayConfig"
               :month="month"
               :week-days="weekDays"
             />

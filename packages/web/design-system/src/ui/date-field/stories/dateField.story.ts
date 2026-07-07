@@ -114,3 +114,27 @@ export const SmallSize: Story = {
     size: 'sm',
   },
 }
+
+export const WithDayIndicators: Story = {
+  args: {
+    getDayConfig: (date) => {
+      const today = Temporal.Now.plainDateISO()
+      const yesterday = today.subtract({
+        days: 1,
+      })
+      const tomorrow = today.add({
+        days: 1,
+      })
+
+      if (date.equals(yesterday) || date.equals(tomorrow)) {
+        return {
+          color: 'error',
+          type: 'dot',
+        }
+      }
+
+      return null
+    },
+    label: 'Date',
+  },
+}
