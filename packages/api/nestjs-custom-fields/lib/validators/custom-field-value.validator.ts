@@ -11,13 +11,13 @@ import { validateTimestampCustomFieldValue } from '#src/custom-field-types/times
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { exhaustiveCheck } from '#src/exhaustive-check.js'
 import { CustomFieldValueValidationError } from './custom-field-value-validation.error.js'
-import { CustomFieldDefinitionFields } from '#src/index.js'
+import { CustomFieldDefinitionData } from '#src/index.js'
 
 export function validateCustomFieldValues(
-  definitions: CustomFieldDefinitionFields[],
+  definitions: CustomFieldDefinitionData[],
   values: CustomFieldValue[]
 ): void {
-  const definitionsByUuid = new Map<string, CustomFieldDefinitionFields>()
+  const definitionsByUuid = new Map<string, CustomFieldDefinitionData>()
 
   for (const definition of definitions) {
     if (definitionsByUuid.has(definition.uuid)) {
@@ -51,7 +51,7 @@ export function validateCustomFieldValues(
 }
 
 export function validateCustomFieldValue(
-  definition: CustomFieldDefinitionFields,
+  definition: CustomFieldDefinitionData,
   value: CustomFieldValue
 ): void {
   if (value.definitionUuid !== definition.uuid) {
@@ -68,38 +68,38 @@ export function validateCustomFieldValue(
 
   switch (value.type) {
     case CustomFieldType.TEXT:
-      validateTextCustomFieldValue(definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.TEXT }>, value.value)
+      validateTextCustomFieldValue(definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.TEXT }>, value.value)
       return
     case CustomFieldType.TEXT_ARRAY:
-      validateTextArrayCustomFieldValue(definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.TEXT_ARRAY }>, value.value)
+      validateTextArrayCustomFieldValue(definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.TEXT_ARRAY }>, value.value)
       return
     case CustomFieldType.NUMBER:
-      validateNumberCustomFieldValue(definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.NUMBER }>, value.value)
+      validateNumberCustomFieldValue(definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.NUMBER }>, value.value)
       return
     case CustomFieldType.BOOLEAN:
       validateBooleanCustomFieldValue()
       return
     case CustomFieldType.DATE:
-      validateDateCustomFieldValue(definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.DATE }>, value.value)
+      validateDateCustomFieldValue(definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.DATE }>, value.value)
       return
     case CustomFieldType.TIMESTAMP:
-      validateTimestampCustomFieldValue(definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.TIMESTAMP }>, value.value)
+      validateTimestampCustomFieldValue(definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.TIMESTAMP }>, value.value)
       return
     case CustomFieldType.SINGLE_SELECT:
       validateSingleSelectCustomFieldValue(
-        definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.SINGLE_SELECT }>,
+        definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.SINGLE_SELECT }>,
         value.value
       )
       return
     case CustomFieldType.MULTI_SELECT:
       validateMultiSelectCustomFieldValue(
-        definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.MULTI_SELECT }>,
+        definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.MULTI_SELECT }>,
         value.value
       )
       return
     case CustomFieldType.MONETARY:
       validateMonetaryCustomFieldValue(
-        definition as Extract<CustomFieldDefinitionFields, { type: CustomFieldType.MONETARY }>,
+        definition as Extract<CustomFieldDefinitionData, { type: CustomFieldType.MONETARY }>,
         value.value
       )
       return

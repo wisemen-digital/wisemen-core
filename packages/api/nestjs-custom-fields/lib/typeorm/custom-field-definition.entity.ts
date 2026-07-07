@@ -1,7 +1,7 @@
 import { LocalizedString, LocalizedStringColumn } from '@wisemen/localized-string'
 import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import type { CustomFieldChoice } from '../custom-field-choice.js'
-import type { CustomFieldDefinitionFields } from '../custom-field-definition.js'
+import type { CustomFieldDefinitionData } from '../custom-field-definition.js'
 import type { CustomFieldDefinitionUuid } from '../custom-field-definition.uuid.js'
 import type { CustomFieldRules } from '../custom-field-rules.js'
 import { CustomFieldType, CustomFieldTypeColumn } from '../enum/custom-field-type.enum.js'
@@ -10,7 +10,7 @@ import { CustomFieldChoiceColumn } from './custom-field-choice.column.js'
 @Entity()
 @Index(['entityType', 'key'], { unique: true, where: '"tenant_uuid" IS NULL' })
 @Index(['tenantUuid', 'entityType', 'key'], { unique: true, where: '"tenant_uuid" IS NOT NULL' })
-export class CustomFieldDefinition implements CustomFieldDefinitionFields {
+export class CustomFieldDefinition implements CustomFieldDefinitionData {
   @PrimaryGeneratedColumn('uuid')
   uuid: CustomFieldDefinitionUuid
 

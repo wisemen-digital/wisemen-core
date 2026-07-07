@@ -37,7 +37,7 @@ describe('CustomFieldDefinitionResponse', () => {
       }
     })
 
-    const response = CustomFieldDefinitionResponse.from(definition)
+    const response = new CustomFieldDefinitionResponse(definition)
 
     expect(response).toEqual({
       uuid: definition.uuid,
@@ -71,10 +71,6 @@ describe('CustomFieldDefinitionResponse', () => {
         maxSelections: 2
       }
     })
-  })
-
-  it('returns null when mapping a null definition', () => {
-    expect(CustomFieldDefinitionResponse.from(null)).toBeNull()
   })
 
   it('maps nullable fields to null', () => {

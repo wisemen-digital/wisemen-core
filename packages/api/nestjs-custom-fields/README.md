@@ -111,15 +111,12 @@ export class TicketCustomFieldDefinitionResponse {
   ): TicketCustomFieldDefinitionResponse {
     return {
       definitions: definitions.map(definition =>
-        CustomFieldDefinitionResponse.from(definition)
+        new CustomFieldDefinitionResponse(definition)
       )
     }
   }
 }
 ```
-
-`CustomFieldDefinitionResponse.from(...)` also accepts `null` and returns
-`null`, which is useful when mapping optional lookups.
 
 ## Register The TypeORM Entity
 

@@ -22,7 +22,7 @@ export {
 export { CustomFieldDefinitionError } from './errors/custom-field-definition.error.js'
 export { customFieldDefinition } from './factory/custom-field-definition.factory.js'
 export { CustomFieldDefinitionResponse } from './responses/custom-field-definition.response.js'
-export { CustomFieldDefinitionFields } from './custom-field-definition.js'
+export { CustomFieldDefinitionData as CustomFieldDefinitionFields } from './custom-field-definition.js'
 export { CustomFieldType, CustomFieldTypeApiProperty, CustomFieldTypeColumn } from './enum/custom-field-type.enum.js'
 export { CustomFieldDefinition } from './typeorm/custom-field-definition.entity.js'
 export { CustomFieldChoiceColumn } from './typeorm/custom-field-choice.column.js'

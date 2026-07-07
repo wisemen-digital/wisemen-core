@@ -1,37 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { LocalizedString, LocalizedValue } from '@wisemen/localized-string'
-import type { CustomFieldDefinitionFields } from '#src/custom-field-definition.js'
+import { LocalizedString, LocalizedStringItemCommand } from '@wisemen/localized-string'
+import type { CustomFieldDefinitionData } from '#src/custom-field-definition.js'
 import { CustomFieldType, CustomFieldTypeApiProperty } from '#src/enum/custom-field-type.enum.js'
 import type { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
 import type { CustomFieldRules } from '#src/custom-field-rules.js'
 import { CustomFieldChoice } from '#src/custom-field-choice.js'
 
-class LocalizedValueResponse {
-  @ApiProperty({ type: String })
-  locale: string
-
-  @ApiProperty({ type: String })
-  value: string
-
-  constructor(localizedValue: LocalizedValue) {
-    this.locale = localizedValue.locale
-    this.value = localizedValue.value
-  }
-}
-
 class CustomFieldChoiceResponse {
   @ApiProperty({ type: String })
   value: string
 
-  @ApiProperty({ type: LocalizedValueResponse, isArray: true })
-  label: LocalizedValueResponse[]
+  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true })
+  label: LocalizedStringItemCommand[]
 
   @ApiProperty({ type: Number })
   order: number
 
   constructor(choice: CustomFieldChoice) {
     this.value = choice.value
-    this.label = toLocalizedValueResponses(choice.label)
+    this.label = toLocalizedStringItemCommands(choice.label)
     this.order = choice.order
   }
 }
@@ -49,11 +36,11 @@ export class CustomFieldDefinitionResponse {
   @ApiProperty({ type: String })
   key: string
 
-  @ApiProperty({ type: LocalizedValueResponse, isArray: true })
-  label: LocalizedValueResponse[]
+  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true })
+  label: LocalizedStringItemCommand[]
 
-  @ApiProperty({ type: LocalizedValueResponse, isArray: true, nullable: true })
-  description: LocalizedValueResponse[] | null
+  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true, nullable: true })
+  description: LocalizedStringItemCommand[] | null
 
   @CustomFieldTypeApiProperty()
   type: CustomFieldType
@@ -67,29 +54,22 @@ export class CustomFieldDefinitionResponse {
   @ApiProperty({ type: Object, nullable: true })
   rules: CustomFieldRules | null
 
-  constructor(definition: CustomFieldDefinitionFields) {
+  constructor(definition: CustomFieldDefinitionData) {
     this.uuid = definition.uuid
     this.tenantUuid = definition.tenantUuid
     this.entityType = definition.entityType
     this.key = definition.key
-    this.label = toLocalizedValueResponses(definition.label)
+    this.label = toLocalizedStringItemCommands(definition.label)
     this.description = definition.description !== null
-      ? toLocalizedValueResponses(definition.description)
+      ? toLocalizedStringItemCommands(definition.description)
       : null
     this.type = definition.type
     this.isRequired = definition.isRequired
     this.choices = definition.choices?.map(choice => new CustomFieldChoiceResponse(choice)) ?? null
     this.rules = definition.rules
   }
-
-  static from(definition: CustomFieldDefinitionFields): CustomFieldDefinitionResponse
-  static from(definition: null): null
-  static from(definition: CustomFieldDefinitionFields | null): CustomFieldDefinitionResponse | null
-  static from(definition: CustomFieldDefinitionFields | null): CustomFieldDefinitionResponse | null {
-    return definition !== null ? new CustomFieldDefinitionResponse(definition) : null
-  }
 }
 
-function toLocalizedValueResponses(value: LocalizedString): LocalizedValueResponse[] {
-  return value.toJSON().map(item => (new LocalizedValueResponse(item)))
+function toLocalizedStringItemCommands(value: LocalizedString): LocalizedStringItemCommand[] {
+  return value.toJSON().map(item => ({ value: item.value, locale: item.locale }))
 }

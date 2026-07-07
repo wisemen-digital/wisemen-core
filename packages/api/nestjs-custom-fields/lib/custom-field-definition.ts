@@ -5,7 +5,7 @@ import { CustomFieldChoicesModeByType, CustomFieldRulesModeByType } from '#src/c
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { LocalizedString } from '@wisemen/localized-string'
 
-export interface CustomFieldDefinitionFields {
+export interface CustomFieldDefinitionData {
   uuid: CustomFieldDefinitionUuid
   tenantUuid: string | null
   entityType: string
@@ -18,7 +18,7 @@ export interface CustomFieldDefinitionFields {
   rules: CustomFieldRules | null
 }
 
-type BaseCustomFieldDefinitionFields<T extends CustomFieldType> = Omit<CustomFieldDefinitionFields, 'type' | 'choices' | 'rules'> & {
+type BaseCustomFieldDefinitionFields<T extends CustomFieldType> = Omit<CustomFieldDefinitionData, 'type' | 'choices' | 'rules'> & {
   type: T
 }
 

@@ -4,7 +4,7 @@ import { Currency, Monetary } from '@wisemen/monetary'
 import { customFieldDefinition } from '#src/factory/custom-field-definition.factory.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { validateCustomFieldValue } from '#src/validators/custom-field-value.validator.js'
-import { CustomFieldDefinitionFields } from '#src/custom-field-definition.js'
+import { CustomFieldDefinitionData } from '#src/custom-field-definition.js'
 import { CustomFieldValueValidationError } from '#src/validators/custom-field-value-validation.error.js'
 import { expect } from 'expect'
 
@@ -51,7 +51,7 @@ describe('monetary validateCustomFieldValue', () => {
   })
 
   it('rejects a monetary custom field definition without rules', () => {
-    const definition: CustomFieldDefinitionFields = {
+    const definition: CustomFieldDefinitionData = {
       ...customFieldDefinition(CustomFieldType.MONETARY, {
         tenantUuid: null,
         entityType: 'invoice',
@@ -74,7 +74,7 @@ describe('monetary validateCustomFieldValue', () => {
   })
 
   it('rejects a monetary custom field definition without precision', () => {
-    const definition: CustomFieldDefinitionFields = {
+    const definition: CustomFieldDefinitionData = {
       ...customFieldDefinition(CustomFieldType.MONETARY, {
         tenantUuid: null,
         entityType: 'invoice',

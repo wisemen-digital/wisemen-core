@@ -3,7 +3,7 @@ import { LocalizedString } from '@wisemen/localized-string'
 import { customFieldDefinition } from '#src/factory/custom-field-definition.factory.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { validateCustomFieldValue, validateCustomFieldValues } from '#src/validators/custom-field-value.validator.js'
-import { CustomFieldDefinitionFields } from '#src/custom-field-definition.js'
+import { CustomFieldDefinitionData } from '#src/custom-field-definition.js'
 import { generateUuid, CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
 import { CustomFieldValueValidationError } from '#src/validators/custom-field-value-validation.error.js'
 import { expect } from 'expect'
@@ -175,7 +175,7 @@ describe('validateCustomFieldValue', () => {
   })
 
   it('rejects when the rules type does not match the definition type', () => {
-    const definition: CustomFieldDefinitionFields = {
+    const definition: CustomFieldDefinitionData = {
       ...customFieldDefinition(CustomFieldType.TEXT, {
         tenantUuid: null,
         entityType: 'invoice',

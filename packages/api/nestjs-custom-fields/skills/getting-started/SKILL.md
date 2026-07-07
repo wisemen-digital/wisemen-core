@@ -100,7 +100,7 @@ export class TicketDefinitionResponseDto {
   ): TicketDefinitionResponseDto {
     return {
       definitions: definitions.map(definition =>
-        CustomFieldDefinitionResponse.from(definition),
+        new CustomFieldDefinitionResponse(definition),
       ),
     }
   }
@@ -154,9 +154,9 @@ export class ViewTicketCustomFieldDefinitionsUseCase {
 response and converts values into DTO-friendly shapes such as ISO strings for
 timestamps and `MonetaryDto` for monetary values.
 
-`CustomFieldDefinitionResponse.from(...)` maps persisted definition entities
-into API-friendly responses, including localized labels, select choices, and
-rules.
+`new CustomFieldDefinitionResponse(definition)` maps persisted definition
+entities into API-friendly responses, including localized labels, select
+choices, and rules.
 
 Register `ViewCustomFieldDefinitionsModule` in your Nest feature module when
 you want the package to provide `ViewCustomFieldDefinitionsUseCase` with its
