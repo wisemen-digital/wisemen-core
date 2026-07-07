@@ -18,4 +18,10 @@ describe('FailureBackoffStrategy', () => {
     assert.equal(nextBackoff(config, { retryAfterSeconds: 120 }, now).toISOString(), '2026-07-03T10:01:00.000Z')
     assert.equal(nextBackoff(config, {}, now).toISOString(), '2026-07-03T10:00:10.000Z')
   })
+  it('falls back to backoffSeconds when retryAfter is NaN', () => {
+    assert.equal(nextBackoff(config, { retryAfterSeconds: NaN }, now).toISOString(), '2026-07-03T10:00:10.000Z')
+  })
+  it('falls back to backoffSeconds when retryAfter is 0', () => {
+    assert.equal(nextBackoff(config, { retryAfterSeconds: 0 }, now).toISOString(), '2026-07-03T10:00:10.000Z')
+  })
 })

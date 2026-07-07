@@ -1,5 +1,16 @@
 import { HeaderRateLimitConfig, RateLimitSignal } from './rate-limit-config.js'
 
+/** Parse a header value to a finite number, or undefined if absent/blank/non-numeric. */
+function toFiniteNumber (raw: string | undefined): number | undefined {
+  if (raw === undefined || raw.trim() === '') {
+    return undefined
+  }
+
+  const value = Number(raw)
+
+  return Number.isFinite(value) ? value : undefined
+}
+
 export function parseRateLimitHeaders (
   headers: Record<string, string | undefined>,
   config: HeaderRateLimitConfig
@@ -10,20 +21,20 @@ export function parseRateLimitHeaders (
 
   const signal: RateLimitSignal = {}
 
-  const remaining = headers[remainingKey]
+  const remaining = toFiniteNumber(headers[remainingKey])
   if (remaining !== undefined) {
-    signal.remaining = Number(remaining)
+    signal.remaining = remaining
   }
 
-  const reset = headers[resetKey]
+  const reset = toFiniteNumber(headers[resetKey])
   if (reset !== undefined) {
     // Epoch seconds per the common convention.
-    signal.resetAt = new Date(Number(reset) * 1000)
+    signal.resetAt = new Date(reset * 1000)
   }
 
-  const retryAfter = headers[retryAfterKey]
+  const retryAfter = toFiniteNumber(headers[retryAfterKey])
   if (retryAfter !== undefined) {
-    signal.retryAfterSeconds = Number(retryAfter)
+    signal.retryAfterSeconds = retryAfter
   }
 
   return signal

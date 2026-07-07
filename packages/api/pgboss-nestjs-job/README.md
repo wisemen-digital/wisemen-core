@@ -263,7 +263,9 @@ Each request the instrumented client sends consumes one token from the shared bu
 { source: "headers", remainingHeader?: string, resetHeader?: string, retryAfterHeader?: string }
 ```
 
-The headers default to `x-ratelimit-remaining`, `x-ratelimit-reset` (epoch seconds) and `retry-after`, and can be overridden per config. On **every** response the interceptor records the API's reported remaining/reset, so exhaustion is tracked proactively — not discovered one request too late on a failure. When the API reports the budget is spent, jobs for this key stop being fetched until the reset passes.
+The headers default to `x-ratelimit-remaining`, `x-ratelimit-reset` and `retry-after`, and can be overridden per config. On **every** response the interceptor records the API's reported remaining/reset, so exhaustion is tracked proactively — not discovered one request too late on a failure. When the API reports the budget is spent, jobs for this key stop being fetched until the reset passes.
+
+> The reset header is interpreted as a Unix timestamp in **seconds** (the common convention). APIs that report reset in epoch **milliseconds** are not supported — a millisecond value would be read as a far-future time and over-block the key. If you need one, normalize it before it reaches the limiter, or open an issue.
 
 ### `failure`: no header/limit info, only a backoff after a rejection
 
@@ -282,13 +284,23 @@ Rate-limit state is kept in Postgres (table `pgboss.rate_limit`, created automat
 On every poll, the worker asks the limiter which keys are currently blocked and excludes jobs carrying those keys from the fetch. Concretely:
 
 - A job that opts in is enqueued with its `rateLimited` key as a pg-boss group id.
-- When a key is exhausted (or backed off), jobs in that group simply stay in the `created` state — they are not fetched, not failed, not retried; they just wait.
-- Jobs in **other** groups on the same queue are unaffected and keep being fetched and processed normally.
-- Once the window rolls over (`static`), the reported `resetAt`/`remaining` allow it again (`headers`), or the backoff elapses (`failure`), the key stops being blocked and its jobs resume flowing on the next poll.
+- When a key is blocked, jobs in that group stay in the `created` (or `retry`) state — not fetched — until the block clears. Jobs in **other** groups on the same queue are unaffected and keep flowing.
+- The block clears when the window rolls over (`static`), the reported `resetAt` passes (`headers`), or the backoff/cooldown elapses (`failure`, or any mode after a `429`).
+
+#### Discovering a limit costs one retry
+
+The limiter learns a key is exhausted in one of two ways:
+
+- **Proactively** — the `static` token bucket runs out, or `headers` mode sees `remaining: 0`. Jobs for the key then wait in `created`, untouched: **not fetched, not failed.**
+- **Reactively** — a job that *was* already fetched makes a call that returns a **`429`**. On a 429 (in **any** mode) the interceptor blocks the key **and throws**, so that job **fails and consumes one `retryLimit` attempt**; it then waits for the block and re-runs.
+
+Because a reactive 429 fails the job, **give rate-limited jobs an adequate `retryLimit`** — under sustained limiting a job can burn through its retries across cooldown cycles and eventually dead-letter (a rate limit is not a permanent failure, but pg-boss can't tell the difference once retries are exhausted). When a 429 carries no `Retry-After`, the key blocks for a default **60 seconds** (`failure` mode uses its configured `backoffSeconds` instead).
 
 ### Overshoot caveat
 
 Gating happens once per poll and is binary (a key is either fetchable or not for that whole poll) — it is not a token bucket consulted per-job-per-worker. That means a single poll can fetch up to `batchSize` jobs for a not-yet-blocked key, and this can happen concurrently across all workers polling that queue, so a burst can overshoot the configured limit by up to `batchSize × workers` before the key is observed as blocked on the next poll. For hot queues where staying close to the limit matters, lower `batchSize` to reduce the size of a possible overshoot.
+
+The limiter throttles **across jobs** (it gates which jobs are fetched) and counts **per request**. It does **not** throttle the call volume **within** a single handler: `onRequest` counts each call but does not pause or block it, so a handler that makes many API calls in a loop will send them all in one run — potentially exceeding the limit for that job. If a single job legitimately makes many rate-limited calls, split the work across more jobs (one call each), or throttle inside the handler yourself.
 
 ### Producers vs. workers
 

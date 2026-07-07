@@ -1,9 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common'
-import { RateLimitSignal } from './rate-limit-config.js'
+import { RateLimitConfig, RateLimitSignal } from './rate-limit-config.js'
 import { parseRateLimitHeaders } from './parse-rate-limit-headers.js'
 import { PgbossRateLimitRegistry } from './rate-limit.registry.js'
 import { RateLimitStore } from './rate-limit.store.js'
 import { nextBackoff } from './strategies/failure-backoff.strategy.js'
+
+/** Cooldown applied to a 429 with no `Retry-After`, for modes without their own backoff config. */
+const DEFAULT_THROTTLE_COOLDOWN_SECONDS = 60
 
 @Injectable()
 export class PgbossRateLimiter {
@@ -33,8 +36,12 @@ export class PgbossRateLimiter {
       const blocked: string[] = []
 
       for (const key of keys) {
+        const row = byKey.get(key) ?? null
         const strategy = this.registry.getStrategy(key)
-        if (strategy?.isBlocked(byKey.get(key) ?? null, now) === true) {
+        // A `blockedUntil` cooldown (set by a 429) gates every mode; the
+        // per-mode strategy handles proactive gating (token bucket / headers).
+        const onCooldown = row?.blockedUntil != null && now < row.blockedUntil
+        if (onCooldown || strategy?.isBlocked(row, now) === true) {
           blocked.push(key)
         }
       }
@@ -63,29 +70,46 @@ export class PgbossRateLimiter {
 
   /**
    * Transport hook — a response arrived. Header mode records the API's reported
-   * remaining/reset; failure mode blocks on a 429 (honoring `Retry-After`).
-   * Static mode already counted at request time, so it is a no-op.
+   * remaining/reset (proactive gating). A 429 blocks the key for *every* mode so
+   * its jobs wait before retrying (failure mode uses its configured backoff;
+   * static/headers use `Retry-After` or a default cooldown).
    */
   async onResponse (key: string, status: number, headers: Record<string, string | undefined>): Promise<void> {
     const config = this.registry.getConfig(key)
+    if (config === undefined) {
+      return
+    }
 
-    if (config?.source === 'headers') {
+    if (config.source === 'headers') {
       const signal = parseRateLimitHeaders(headers, config)
       if (signal.remaining !== undefined) {
         await this.store.setHeaderState(key, signal.remaining, signal.resetAt ?? null)
       }
-
-      return
     }
 
-    if (config?.source === 'failure' && status === 429) {
-      const signal: RateLimitSignal = { throttled: true, status }
-      if (headers['retry-after'] !== undefined) {
-        signal.retryAfterSeconds = Number(headers['retry-after'])
+    if (status === 429) {
+      await this.store.setBlockedUntil(key, this.throttleUntil(config, headers))
+    }
+  }
+
+  /** When a 429 clears: `Retry-After` if given; failure mode falls back to its backoff, others to the default. */
+  private throttleUntil (config: RateLimitConfig, headers: Record<string, string | undefined>): Date {
+    const now = new Date()
+    const retryAfter = Number(headers['retry-after'])
+    const hasRetryAfter = Number.isFinite(retryAfter) && retryAfter > 0
+
+    if (config.source === 'failure') {
+      const signal: RateLimitSignal = { throttled: true, status: 429 }
+      if (hasRetryAfter) {
+        signal.retryAfterSeconds = retryAfter
       }
 
-      await this.store.setBlockedUntil(key, nextBackoff(config, signal, new Date()))
+      return nextBackoff(config, signal, now)
     }
+
+    const seconds = hasRetryAfter ? retryAfter : DEFAULT_THROTTLE_COOLDOWN_SECONDS
+
+    return new Date(now.getTime() + seconds * 1000)
   }
 
   /**

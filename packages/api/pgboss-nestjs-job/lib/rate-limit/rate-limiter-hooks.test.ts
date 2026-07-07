@@ -79,9 +79,32 @@ describe('PgbossRateLimiter.onResponse', () => {
     assert.deepEqual(store.blocked, [])
   })
 
-  it('does nothing for a static key', async () => {
+  it('blocks a static key on a 429 without recording header state', async () => {
     const store = new RecordingStore()
-    await limiter(store).onResponse('stripe', 429, { 'x-ratelimit-remaining': '0' })
+    await limiter(store).onResponse('stripe', 429, {})
+    assert.deepEqual(store.header, [])
+    assert.equal(store.blocked.length, 1)
+    assert.equal(store.blocked[0][0], 'stripe')
+  })
+
+  it('blocks a headers key on a 429', async () => {
+    const store = new RecordingStore()
+    await limiter(store).onResponse('gh', 429, {})
+    assert.equal(store.blocked.length, 1)
+    assert.equal(store.blocked[0][0], 'gh')
+  })
+
+  it('honors Retry-After for a static 429 block, else a default cooldown', async () => {
+    const store = new RecordingStore()
+    const before = Date.now()
+    await limiter(store).onResponse('stripe', 429, { 'retry-after': '30' })
+    const until = store.blocked[0][1].getTime()
+    assert.ok(until >= before + 29_000 && until <= before + 31_000, `expected ~30s, got ${until - before}ms`)
+  })
+
+  it('does nothing for a static key on a success', async () => {
+    const store = new RecordingStore()
+    await limiter(store).onResponse('stripe', 200, { 'x-ratelimit-remaining': '0' })
     assert.deepEqual(store.header, [])
     assert.deepEqual(store.blocked, [])
   })

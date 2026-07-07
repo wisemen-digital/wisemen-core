@@ -6,7 +6,17 @@ import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
 import { TraceContextCarrier } from '../jobs/trace-context-carrier.js'
 import { rateLimitStorage } from '../rate-limit/rate-limit.context.js'
+import { RateLimitError } from '../rate-limit/rate-limit.error.js'
 import { RawPgBossJob } from './pgboss-worker.constants.js'
+
+/**
+ * A `RateLimitError` is an expected, self-healing throttle signal (the transport
+ * interceptor throws it on a 429), not a defect — it should fail+retry the job
+ * but must not be reported to Sentry, or sustained throttling floods it.
+ */
+export function isReportableError (error: unknown): boolean {
+  return !(error instanceof RateLimitError)
+}
 
 export class PgBossWorkerThread {
   constructor (
@@ -27,7 +37,10 @@ export class PgBossWorkerThread {
 
         await this.client.complete(job.name, job.id, result ?? undefined)
       } catch (error) {
-        captureException(error)
+        if (isReportableError(error)) {
+          captureException(error)
+        }
+
         await this.client.fail(job.name, job.id, { error }).catch(() => {})
       }
     }

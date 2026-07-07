@@ -6,7 +6,10 @@ export function nextBackoff (
   signal: RateLimitSignal,
   now: Date
 ): Date {
-  const requested = signal.retryAfterSeconds ?? config.backoffSeconds
+  const retryAfter = signal.retryAfterSeconds
+  const requested = retryAfter !== undefined && Number.isFinite(retryAfter) && retryAfter > 0
+    ? retryAfter
+    : config.backoffSeconds
   const capped = config.maxBackoffSeconds != null
     ? Math.min(requested, config.maxBackoffSeconds)
     : requested

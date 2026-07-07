@@ -37,4 +37,16 @@ describe('PgbossRateLimiter.blockedKeys', () => {
     const limiter = new PgbossRateLimiter(registryDouble(), store)
     assert.deepEqual(await limiter.blockedKeys(), [])
   })
+
+  it('blocks any key whose blockedUntil is in the future, even when its strategy would allow it', async () => {
+    const store = new FakeStore()
+    // tokens remain (static strategy alone would NOT block), but a 429 set a cooldown.
+    store.rows.set('stripe', {
+      key: 'stripe', tokens: 3, windowStartAt: new Date(), resetAt: null,
+      blockedUntil: new Date(Date.now() + 60_000)
+    })
+    const limiter = new PgbossRateLimiter(registryDouble(), store)
+
+    assert.deepEqual(await limiter.blockedKeys(), ['stripe'])
+  })
 })
