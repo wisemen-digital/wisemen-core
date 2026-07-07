@@ -31,6 +31,7 @@ import { UIText } from '@/ui/text'
 const props = withDefaults(defineProps<SelectContentProps<TValue>>(), {
   hasVirtualScroll: false,
   isLoading: false,
+  getItemKey: null,
   limit: null,
   search: null,
 })
@@ -77,6 +78,7 @@ const {
   isSearchEmpty,
   isMultiple(modelValue.value),
   props.displayFn,
+  props.getItemKey,
 )
 
 const filterModelValue = computed<string>(() => props.search === 'local' ? localSearch.value : search.value)

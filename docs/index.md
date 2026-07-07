@@ -11,7 +11,10 @@ features:
     details: "Browse the existing package documentation for the web stack."
     link: /web/
   - title: API
-    details: "A dedicated area for API docs and payload documentation, ready to grow separately."
+    details: "A dedicated area for API docs and references."
     link: /api/
+  - title: CMS
+    details: "Payload CMS documentation and the payload-core-translate plugin."
+    link: /cms/
 
 ---
