@@ -6,9 +6,9 @@ import { IntegrationTestSetup } from '#src/tests/test-setup.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
 import { customFieldDefinition } from '#src/factory/custom-field-definition.factory.js'
 import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.entity.js'
-import { ViewCustomFieldDefinitionsRepository } from './view-custom-field-definitions.repository.js'
+import { CustomFieldDefinitionsRepository } from './custom-field-definitions.repository.js'
 
-describe('ViewCustomFieldDefinitionsUseCase integration', () => {
+describe('ViewCustomFieldDefinitionsRepository integration', () => {
   const integrationTest = new IntegrationTestSetup()
 
   before(async () => {
@@ -85,11 +85,11 @@ describe('ViewCustomFieldDefinitionsUseCase integration', () => {
       otherEntityDefinition
     ])
 
-    const useCase = new ViewCustomFieldDefinitionsRepository(
+    const repository = new CustomFieldDefinitionsRepository(
       dataSource.manager.getRepository(CustomFieldDefinition)
     )
 
-    const response = await useCase.findDefinitions({
+    const response = await repository.findDefinitions({
       entityType: 'ticket'
     })
 
@@ -184,11 +184,11 @@ describe('ViewCustomFieldDefinitionsUseCase integration', () => {
       globalDefinition
     ])
 
-    const useCase = new ViewCustomFieldDefinitionsRepository(
+    const repository = new CustomFieldDefinitionsRepository(
       dataSource.manager.getRepository(CustomFieldDefinition)
     )
 
-    const response = await useCase.findDefinitions({
+    const response = await repository.findDefinitions({
       tenantUuid,
       entityType: 'ticket'
     })

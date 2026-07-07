@@ -11,8 +11,8 @@ Use `CustomFieldDefinition` as the canonical persisted entity,
 `CustomFieldValueDto` in request and response DTOs, `@IsCustomFields()` to
 validate submitted values, `CustomFieldValueDto.from(...)` to map persisted
 values back into API responses, `validateCustomFieldValues(...)` in use cases,
-`ViewCustomFieldDefinitionsModule`, `ViewCustomFieldDefinitionsUseCase`, and
-`ViewCustomFieldDefinitionsQuery` to read definitions by tenant and
+`CustomFieldDefinitionRepositoryModule` and
+`CustomFieldDefinitionsRepository` to read definitions by tenant and
 `entityType`, and `@CustomFieldValueColumn()` to persist resolved values on
 other entities.
 
@@ -42,8 +42,7 @@ import {
   CustomFieldValueDtoApiProperty,
   IsCustomFields,
   validateCustomFieldValues,
-  ViewCustomFieldDefinitionsQuery,
-  ViewCustomFieldDefinitionsUseCase,
+  CustomFieldDefinitionsRepository,
 } from '@wisemen/nestjs-custom-fields'
 
 export const PriorityField = customFieldDefinition(
@@ -134,20 +133,6 @@ export class UpdateTicketCustomFieldsUseCase {
     validateCustomFieldValues(definitions, values)
   }
 }
-
-@Injectable()
-export class ViewTicketCustomFieldDefinitionsUseCase {
-  constructor(
-    private readonly viewCustomFieldDefinitionsUseCase: ViewCustomFieldDefinitionsUseCase,
-  ) {}
-
-  async execute(
-    tenantUuid: string | null,
-    query: ViewCustomFieldDefinitionsQuery,
-  ): Promise<CustomFieldDefinitionResponse[]> {
-    return await this.viewCustomFieldDefinitionsUseCase.execute(tenantUuid, query)
-  }
-}
 ```
 
 `CustomFieldValueDto.from(...)` keeps the concrete custom field type in the
@@ -158,11 +143,11 @@ timestamps and `MonetaryDto` for monetary values.
 entities into API-friendly responses, including localized labels, select
 choices, and rules.
 
-Register `ViewCustomFieldDefinitionsModule` in your Nest feature module when
-you want the package to provide `ViewCustomFieldDefinitionsUseCase` with its
-repository dependency. `ViewCustomFieldDefinitionsUseCase.execute(...)`
-returns only global definitions when `tenantUuid` is `null`, only tenant
-definitions when `tenantUuid` is set, and orders results by `key ASC`.
+Register `CustomFieldDefinitionRepositoryModule` in your Nest feature module when
+you want the package to provide `CustomFieldDefinitionsRepository` with
+its TypeORM dependency. `findDefinitions(...)` returns global definitions when
+`tenantUuid` is omitted, tenant definitions when `tenantUuid` is set, and
+orders results by `key ASC`.
 
 Add `CustomFieldDefinition` to the datasource entities, and create your own
 application migration for its partial unique indexes.

@@ -10,9 +10,8 @@ This package provides:
 - the canonical `CustomFieldDefinition` TypeORM entity
 - typed definition creation via `customFieldDefinition(...)`
 - response mapping through `CustomFieldDefinitionResponse`
-- a read use-case through `ViewCustomFieldDefinitionsModule`,
-  `ViewCustomFieldDefinitionsUseCase`, and
-  `ViewCustomFieldDefinitionsQuery`
+- definition lookup through `CustomFieldDefinitionRepositoryModule` and
+  `CustomFieldDefinitionsRepository`
 - custom field value DTOs through `CustomFieldValueDto`
 - nested DTO validation through `IsCustomFields()`
 - Swagger schema helpers through `CustomFieldValueApiExtraModels()` and
@@ -148,20 +147,20 @@ WHERE "tenantUuid" IS NOT NULL;
 This keeps global definitions unique by `entityType + key` and tenant
 definitions unique by `tenantUuid + entityType + key`.
 
-## Read Definitions Through The Exported Use-Case
+## Read Definitions Through The Exported Repository
 
-This package also exports a ready-to-wire NestJS read use-case for listing
-custom field definitions by `entityType` and tenant scope:
+This package also exports a ready-to-wire NestJS repository for listing custom
+field definitions by `entityType` and tenant scope:
 
-- `ViewCustomFieldDefinitionsModule`
-- `ViewCustomFieldDefinitionsUseCase`
-- `ViewCustomFieldDefinitionsQuery`
+- `CustomFieldDefinitionRepositoryModule`
+- `CustomFieldDefinitionsRepository`
 
-The query currently supports:
+The repository options currently support:
 
 - `entityType?: string`
+- `tenantUuid?: string`
 
-When `tenantUuid` is `null`, the use-case returns only global definitions. When
+When `tenantUuid` is omitted, the repository returns global definitions. When
 `tenantUuid` is set, it returns only definitions for that tenant. Results are
 ordered by `key ASC`.
 
@@ -169,27 +168,31 @@ ordered by `key ASC`.
 import { Controller, Get, Query } from '@nestjs/common'
 import {
   CustomFieldDefinitionResponse,
-  ViewCustomFieldDefinitionsQuery,
-  ViewCustomFieldDefinitionsUseCase
+  CustomFieldDefinitionsRepository
 } from '@wisemen/nestjs-custom-fields'
 
 @Controller('custom-field-definitions')
-export class ViewTicketCustomFieldDefinitionsController {
+export class TicketCustomFieldDefinitionsController {
   constructor(
-    private readonly viewCustomFieldDefinitionsUseCase: ViewCustomFieldDefinitionsUseCase
+    private readonly customFieldDefinitionsRepository: CustomFieldDefinitionsRepository
   ) {}
 
   @Get()
   async index(
-    @Query() query: ViewCustomFieldDefinitionsQuery
+    @Query('entityType') entityType?: string
   ): Promise<CustomFieldDefinitionResponse[]> {
-    return await this.viewCustomFieldDefinitionsUseCase.execute(null, query)
+    const definitions = await this.customFieldDefinitionsRepository.findDefinitions({
+      entityType
+    })
+
+    return definitions.map(definition => new CustomFieldDefinitionResponse(definition))
   }
 }
 ```
 
-Register `ViewCustomFieldDefinitionsModule` in your feature module when you
-want Nest to provide the exported use-case with its repository dependency.
+Register `CustomFieldDefinitionRepositoryModule` in your feature module when
+you want Nest to provide `CustomFieldDefinitionsRepository` with its TypeORM
+dependency.
 
 ## Accept Custom Field Values In DTOs
 

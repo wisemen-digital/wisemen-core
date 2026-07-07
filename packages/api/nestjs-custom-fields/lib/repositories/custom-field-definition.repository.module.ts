@@ -1,5 +1,5 @@
+import { CustomFieldDefinitionsRepository } from '#src/repositories/custom-field-definitions.repository.js'
 import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.entity.js'
-import { ViewCustomFieldDefinitionsUseCase } from '#src/use-cases/view-custom-field-definitions/view-custom-field-definitions.use-case.js'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@wisemen/nestjs-typeorm'
 
@@ -8,10 +8,10 @@ import { TypeOrmModule } from '@wisemen/nestjs-typeorm'
     TypeOrmModule.forFeature([CustomFieldDefinition])
   ],
   providers: [
-    ViewCustomFieldDefinitionsUseCase,
+    CustomFieldDefinitionsRepository,
   ],
   exports: [
-    ViewCustomFieldDefinitionsUseCase
+    CustomFieldDefinitionsRepository
   ]
 })
-export class ViewCustomFieldDefinitionsModule {}
+export class CustomFieldDefinitionRepositoryModule {}

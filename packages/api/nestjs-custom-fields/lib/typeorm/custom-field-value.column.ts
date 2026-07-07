@@ -47,13 +47,13 @@ class CustomFieldValueTransformer implements ValueTransformer {
     value: CustomFieldValue | CustomFieldValue[]
   ): CustomFieldColumnValue | CustomFieldColumnValue[] {
     if (Array.isArray(value)) {
-      return value.map(v => this.serializeCustomFieldValue(v))
+      return value.map(v => this.getSerializeValue(v))
     }
 
-    return this.serializeCustomFieldValue(value)
+    return this.getSerializeValue(value)
   }
 
-  private serializeCustomFieldValue(columnValue: CustomFieldValue): CustomFieldColumnValue {
+  private getSerializeValue(columnValue: CustomFieldValue): CustomFieldColumnValue {
     switch (columnValue.type) {
       case CustomFieldType.TEXT:
       case CustomFieldType.TEXT_ARRAY:
