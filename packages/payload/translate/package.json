@@ -39,6 +39,7 @@
     "prepack": "pnpm build",
     "cleanup": "rimraf dist/ node_modules/ .turbo/",
     "lint": "eslint",
+    "test": "vitest",
     "type-check": "tsc --noEmit",
     "lint:fix": "eslint --fix"
   },

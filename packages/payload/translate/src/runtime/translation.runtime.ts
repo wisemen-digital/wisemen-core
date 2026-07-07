@@ -174,10 +174,10 @@ export function createTranslationEndpointHandler({
 
     const sourceDocument = await req.payload.findByID({
       id: body.documentID,
-      collection: collectionSlug as never,
+      collection: collectionSlug,
       depth: 0,
       draft: true,
-      locale: sourceLocale as never,
+      locale: sourceLocale,
       overrideAccess: false,
       req,
     })
@@ -192,7 +192,7 @@ export function createTranslationEndpointHandler({
 
     if (!(await canAccessTranslation(access, {
       collectionSlug,
-      document: sourceDocument as Record<string, unknown>,
+      document: sourceDocument,
       req,
       translations,
     }))) {
@@ -211,12 +211,13 @@ export function createTranslationEndpointHandler({
     })
 
     const resolvedSelections = resolveFieldSelections(payloadCollection.fields ?? [], definition.translatableFields)
+    const translationMode = isTranslationMode(body.mode) ? body.mode : TRANSLATION_MODES.translate
     const documentWithAllLocales = await req.payload.findByID({
       id: body.documentID,
-      collection: collectionSlug as never,
+      collection: collectionSlug,
       depth: 0,
       draft: true,
-      locale: 'all' as never,
+      locale: 'all',
       overrideAccess: false,
       req,
     })
@@ -226,7 +227,9 @@ export function createTranslationEndpointHandler({
     )
     const eligibleTargetLocales = resolvedTargetLocales.length === 0
       ? []
-      : uniqueTargetLocales.filter((locale) => translationStatuses[locale] !== TRANSLATION_STATUSES.translated)
+      : (translationMode === TRANSLATION_MODES.retranslate
+          ? uniqueTargetLocales
+          : uniqueTargetLocales.filter((locale) => translationStatuses[locale] !== TRANSLATION_STATUSES.translated))
 
     if (eligibleTargetLocales.length === 0) {
       return Response.json({
@@ -242,7 +245,7 @@ export function createTranslationEndpointHandler({
         req,
         richText,
         selections: resolvedSelections,
-        sourceDocument: sourceDocument as Record<string, unknown>,
+        sourceDocument,
         sourceLocale,
         targetLocale,
       })
@@ -252,18 +255,18 @@ export function createTranslationEndpointHandler({
       req.context = {
         ...previousContext,
         payloadTranslate: {
-          mode: isTranslationMode(body.mode) ? body.mode : TRANSLATION_MODES.translate,
+          mode: translationMode,
         },
       }
 
       try {
         await req.payload.update({
           id: body.documentID,
-          collection: collectionSlug as never,
-          data: translatedData as never,
+          collection: collectionSlug,
+          data: translatedData,
           depth: 0,
           draft: true,
-          locale: targetLocale as never,
+          locale: targetLocale,
           overrideAccess: false,
           req,
         })
@@ -414,34 +417,34 @@ async function resolveTranslationSettingsDocument({
     return req.payload.findGlobal({
       depth: 0,
       draft: true,
-      locale: req.locale as never,
+      locale: req.locale,
       overrideAccess: false,
       req,
       slug: translations.slug,
-    }) as Promise<Record<string, unknown> | undefined>
+    })
   }
 
   if (translations.documentID) {
     return req.payload.findByID({
       id: translations.documentID,
-      collection: translations.slug as never,
+      collection: translations.slug,
       depth: 0,
       draft: true,
-      locale: req.locale as never,
+      locale: req.locale,
       overrideAccess: false,
       req,
-    }) as Promise<Record<string, unknown> | undefined>
+    })
   }
 
   const result = await req.payload.find({
-    collection: translations.slug as never,
+    collection: translations.slug,
     depth: 0,
     limit: 1,
-    locale: req.locale as never,
+    locale: req.locale,
     overrideAccess: false,
     pagination: false,
     req,
   })
 
-  return result.docs[0] as Record<string, unknown> | undefined
+  return result.docs[0]
 }
