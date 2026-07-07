@@ -25,12 +25,20 @@ export abstract class BaseCustomFieldValueDto {
   abstract parse(): CustomFieldValue
 }
 
-type CustomFieldValueDtoWithValue<TValue> = BaseCustomFieldValueDto & { value: TValue }
-export function createCustomFieldValueDto<TValue, TDto extends CustomFieldValueDtoWithValue<TValue>>(
+type CustomFieldValueDtoWithTypeAndValue<TType extends CustomFieldType, TValue>
+  = BaseCustomFieldValueDto & { type: TType, value: TValue }
+
+export function createCustomFieldValueDto<
+  TType extends CustomFieldType,
+  TValue,
+  TDto extends CustomFieldValueDtoWithTypeAndValue<TType, TValue>
+>(
   dto: TDto,
+  type: TType,
   definitionUuid: CustomFieldDefinitionUuid,
   value: TValue
 ): TDto {
+  dto.type = type
   dto.definitionUuid = definitionUuid
   dto.value = value
   return dto

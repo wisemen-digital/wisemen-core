@@ -2,12 +2,12 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsBoolean, IsEnum } from 'class-validator'
 import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
-import type { BooleanCustomFieldValue } from './boolean.value.js'
+import { BooleanCustomFieldValue } from '#src/custom-field-types/boolean/boolean.value.js'
 
 export class BooleanCustomFieldValueDto extends BaseCustomFieldValueDto {
   @ApiProperty({ enum: [CustomFieldType.BOOLEAN] })
   @IsEnum([CustomFieldType.BOOLEAN])
-  type: CustomFieldType.BOOLEAN = CustomFieldType.BOOLEAN
+  declare type: CustomFieldType.BOOLEAN
 
   @ApiProperty({ type: Boolean })
   @IsBoolean()
@@ -18,6 +18,6 @@ export class BooleanCustomFieldValueDto extends BaseCustomFieldValueDto {
   }
 
   static from(customFieldValue: BooleanCustomFieldValue): BooleanCustomFieldValueDto {
-    return createCustomFieldValueDto(new BooleanCustomFieldValueDto(), customFieldValue.definitionUuid, customFieldValue.value)
+    return createCustomFieldValueDto(new BooleanCustomFieldValueDto(), CustomFieldType.BOOLEAN, customFieldValue.definitionUuid, customFieldValue.value)
   }
 }

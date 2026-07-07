@@ -4,12 +4,12 @@ import { IsDateWithoutTimeString } from '@wisemen/validators'
 import { IsEnum } from 'class-validator'
 import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
-import type { DateCustomFieldValue } from './date.value.js'
+import { DateCustomFieldValue } from '#src/custom-field-types/date/date.value.js'
 
 export class DateCustomFieldValueDto extends BaseCustomFieldValueDto {
   @ApiProperty({ enum: [CustomFieldType.DATE] })
   @IsEnum([CustomFieldType.DATE])
-  type: CustomFieldType.DATE = CustomFieldType.DATE
+  declare type: CustomFieldType.DATE
 
   @ApiProperty({ type: String, format: 'date' })
   @IsDateWithoutTimeString()
@@ -20,6 +20,6 @@ export class DateCustomFieldValueDto extends BaseCustomFieldValueDto {
   }
 
   static from(customFieldValue: DateCustomFieldValue): DateCustomFieldValueDto {
-    return createCustomFieldValueDto(new DateCustomFieldValueDto(), customFieldValue.definitionUuid, customFieldValue.value.toString())
+    return createCustomFieldValueDto(new DateCustomFieldValueDto(), CustomFieldType.DATE, customFieldValue.definitionUuid, customFieldValue.value.toString())
   }
 }
