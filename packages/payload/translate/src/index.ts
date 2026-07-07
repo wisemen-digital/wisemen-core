@@ -18,6 +18,7 @@ export function defineTranslatableCollection<
   TDocument extends object,
   TSlug extends string = string,
 >(definition: {
+  ignoredFields?: readonly import('#types.ts').DeepFieldPath<TDocument>[]
   slug: TSlug
   translatableFields: readonly import('#types.ts').DeepFieldPath<TDocument>[]
 }) {

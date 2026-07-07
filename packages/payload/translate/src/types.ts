@@ -56,6 +56,7 @@ export interface TranslatableCollectionDefinition<
   TDocument extends object,
   TSlug extends string = string,
 > {
+  ignoredFields?: readonly DeepFieldPath<TDocument>[]
   slug: TSlug
   translatableFields: readonly DeepFieldPath<TDocument>[]
 }
