@@ -5,7 +5,6 @@ import { PlainDateTransformer, TimestampTransformer } from '@wisemen/datewise'
 import { Currency, MoneyTypeOrmTransformer } from '@wisemen/monetary'
 import { Column, ColumnOptions, type ValueTransformer } from 'typeorm'
 
-
 const EMPTY_CURRENCY_LIST = {} as Record<Currency, never>
 const PERSIST_PRECISION = true
 
@@ -14,7 +13,7 @@ interface CustomFieldValueColumnTransformers {
   timestampTransformer: TimestampTransformer
 }
 
-export function CustomFieldValueColumn (options?: Omit<ColumnOptions, 'type' | 'transformer'>): PropertyDecorator {
+export function CustomFieldValueColumn(options?: Omit<ColumnOptions, 'type' | 'transformer' | 'nullable'>): PropertyDecorator {
   return Column({
     ...options,
     type: 'jsonb',
@@ -29,18 +28,14 @@ class CustomFieldValueTransformer implements ValueTransformer {
   private plainDateTransformer: PlainDateTransformer
   private timestampTransformer: TimestampTransformer
 
-  constructor (transformers: CustomFieldValueColumnTransformers) {
+  constructor(transformers: CustomFieldValueColumnTransformers) {
     this.plainDateTransformer = transformers.plainDateTransformer
     this.timestampTransformer = transformers.timestampTransformer
   }
 
-  from (
-    value: CustomFieldColumnValue | CustomFieldColumnValue[] | null | undefined
-  ): CustomFieldValue | CustomFieldValue[] | null | undefined {
-    if (value == null) {
-      return value
-    }
-
+  from(
+    value: CustomFieldColumnValue | CustomFieldColumnValue[]
+  ): CustomFieldValue | CustomFieldValue[] {
     if (Array.isArray(value)) {
       return value.map(v => this.parseCustomFieldValue(v))
     }
@@ -48,13 +43,9 @@ class CustomFieldValueTransformer implements ValueTransformer {
     return this.parseCustomFieldValue(value)
   }
 
-  to (
-    value: CustomFieldValue | CustomFieldValue[] | null | undefined
-  ): CustomFieldColumnValue | CustomFieldColumnValue[] | null | undefined {
-    if (value == null) {
-      return value
-    }
-
+  to(
+    value: CustomFieldValue | CustomFieldValue[]
+  ): CustomFieldColumnValue | CustomFieldColumnValue[] {
     if (Array.isArray(value)) {
       return value.map(v => this.serializeCustomFieldValue(v))
     }
@@ -62,7 +53,7 @@ class CustomFieldValueTransformer implements ValueTransformer {
     return this.serializeCustomFieldValue(value)
   }
 
-  private serializeCustomFieldValue (columnValue: CustomFieldValue): CustomFieldColumnValue {
+  private serializeCustomFieldValue(columnValue: CustomFieldValue): CustomFieldColumnValue {
     switch (columnValue.type) {
       case CustomFieldType.TEXT:
       case CustomFieldType.TEXT_ARRAY:
@@ -87,11 +78,12 @@ class CustomFieldValueTransformer implements ValueTransformer {
           value: this.assertDefined(
             new MoneyTypeOrmTransformer(columnValue.value.precision, EMPTY_CURRENCY_LIST).to(columnValue.value, PERSIST_PRECISION))
         }
-      default: exhaustiveCheck(columnValue)
+      default:
+        return exhaustiveCheck(columnValue)
     }
   }
 
-  private parseCustomFieldValue (column: CustomFieldColumnValue): CustomFieldValue {
+  private parseCustomFieldValue(column: CustomFieldColumnValue): CustomFieldValue {
     switch (column.type) {
       case CustomFieldType.TEXT:
       case CustomFieldType.TEXT_ARRAY:
@@ -117,11 +109,12 @@ class CustomFieldValueTransformer implements ValueTransformer {
           value: this.assertDefined(new MoneyTypeOrmTransformer(precision, EMPTY_CURRENCY_LIST).from(column.value))
         }
       }
-      default: exhaustiveCheck(column)
+      default:
+        return exhaustiveCheck(column)
     }
   }
 
-  private assertDefined<TValue> (value: TValue | null | undefined): TValue {
+  private assertDefined<TValue>(value: TValue | null | undefined): TValue {
     if (value == null) {
       throw new Error('Expected transformed custom field value to be defined')
     }
