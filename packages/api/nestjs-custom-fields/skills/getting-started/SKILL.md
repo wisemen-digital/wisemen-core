@@ -1,109 +1,112 @@
 ---
-name: getting-started
-description: Use when working with developer-defined custom fields in NestJS apis with TypeORM persistence and runtime validation.
+name: nestjs-custom-fields
+description: Use when working with the @wisemen/nestjs-custom-fields package — developer-defined custom fields in NestJS with TypeORM persistence and runtime validation. Covers registering the CustomFieldDefinition entity, authoring definitions with customFieldDefinition(), storing resolved values via @CustomFieldValueColumn(), exposing them through CustomFieldValueDto / @IsCustomFields(), and validating submissions with CustomFieldDefinitionsRepository + validateCustomFieldValues(). Use this whenever a task involves custom field definitions, CustomFieldValue columns, custom-field DTOs, or tenant-scoped field definitions, even if the package is not named explicitly.
 ---
 
 # @wisemen/nestjs-custom-fields - Getting Started
 
-Use `customFieldDefinition(...)` to define custom fields in application code.
-Use `CustomFieldDefinition` as the canonical persisted entity,
-`CustomFieldDefinitionResponse` in API responses that return definitions,
-`CustomFieldValueDto` in request and response DTOs, `@IsCustomFields()` to
-validate submitted values, `CustomFieldValueDto.from(...)` to map persisted
-values back into API responses, `validateCustomFieldValues(...)` in use cases,
-`CustomFieldDefinitionRepositoryModule` and
-`CustomFieldDefinitionsRepository` to read definitions by tenant and
-`entityType`, and `@CustomFieldValueColumn()` to persist resolved values on
-other entities.
+This package manages developer-defined custom field definitions and values. It
+does not target end-user managed custom field creation, does not ship
+migrations, and does not auto-discover definitions.
 
-`@IsCustomFields()` already validates that the property is an array, validates
-the nested DTOs, and enforces uniqueness by `definitionUuid`, so those
-decorators do not need to be added separately.
+It is intended that custom field definitions are read-only for users.
+Creating, updating, and deleting definitions is handled manually by developers
+through migrations or `playground.ts` scripts.
 
-Custom field definitions are intended to be created and maintained by
-developers. This package does not target end-user managed custom field
-creation, and it does not ship TypeORM migrations.
+Definition uniqueness is scoped by `entityType`. For non-tenant definitions,
+`key` must be unique per `entityType`. For tenant-scoped definitions,
+`key + tenantUuid` must be unique per `entityType`.
+
+## Step 1: Register The Exported Entity And Create The Table
+
+This package already exports the effective `CustomFieldDefinition` TypeORM
+entity. Add it to your datasource entities yourself so TypeORM knows about the
+table metadata. After that, generate and run a migration so the table and the
+exported entity's partial unique indexes are created in your database.
 
 ```ts
-import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { ApiProperty } from '@nestjs/swagger'
+import { DataSource } from 'typeorm'
+import { CustomFieldDefinition } from '@wisemen/nestjs-custom-fields'
+
+const datasource = new DataSource({
+  entities: ['dist/src/**/*.entity.js', CustomFieldDefinition]
+})
+```
+
+## Step 2: Define Definitions And Insert Them In The Database
+
+Create a definition with `customFieldDefinition(...)`, then insert it yourself.
+The package does not discover definitions automatically. At the moment this is
+mainly done through a migration or through `playground.ts`.
+
+For persisted definitions, `tenantUuid` is part of the definition shape and
+should be `null` for non-tenant definitions or a tenant UUID for tenant-scoped
+definitions. This is different from repository lookups, where `tenantUuid` is
+optional and can simply be omitted.
+
+`key` uniqueness is enforced per `entityType`. Use a unique `key` for global
+definitions, and a unique `key + tenantUuid` combination for tenant-specific
+definitions.
+
+It is recommended to define your `entityType` values in an enum instead of
+repeating string literals across your application.
+
+```ts
+import type { INestApplicationContext } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { JobContainer } from '@wisemen/app-container/fastify'
 import { LocalizedString } from '@wisemen/localized-string'
-import { Entity, PrimaryGeneratedColumn, Repository } from 'typeorm'
+import { DataSource } from 'typeorm'
 import {
-  customFieldDefinition,
   CustomFieldDefinition,
-  CustomFieldDefinitionResponse,
   CustomFieldType,
-  type CustomFieldValue,
-  CustomFieldValueApiExtraModels,
-  CustomFieldValueColumn,
-  CustomFieldValueDto,
-  CustomFieldValueDtoApiProperty,
-  IsCustomFields,
-  validateCustomFieldValues,
-  CustomFieldDefinitionsRepository,
+  customFieldDefinition
 } from '@wisemen/nestjs-custom-fields'
 
-export const PriorityField = customFieldDefinition(
-  CustomFieldType.SINGLE_SELECT,
-  {
-    tenantUuid: null,
-    entityType: 'ticket',
-    key: 'priority',
-    label: new LocalizedString([{ locale: 'en', value: 'Priority' }]),
-    description: null,
-    isRequired: true,
-    choices: [
-      {
-        value: 'low',
-        order: 1,
-        label: new LocalizedString([{ locale: 'en', value: 'Low' }]),
-      },
-      {
-        value: 'high',
-        order: 2,
-        label: new LocalizedString([{ locale: 'en', value: 'High' }]),
-      },
-    ],
-  },
-)
-
-@CustomFieldValueApiExtraModels()
-export class UpdateTicketCommand {
-  @CustomFieldValueDtoApiProperty({ isArray: true })
-  @IsCustomFields()
-  customFields: CustomFieldValueDto[]
+enum CustomFieldEntityType {
+  TICKET = 'ticket'
 }
 
-@CustomFieldValueApiExtraModels()
-export class TicketResponseDto {
-  @CustomFieldValueDtoApiProperty({ isArray: true })
-  customFields: CustomFieldValueDto[]
+export class Playground extends JobContainer {
+  async bootstrap(): Promise<INestApplicationContext> {
+    return await NestFactory.createApplicationContext(PlayGroundModule)
+  }
 
-  static fromTicket(ticket: Ticket): TicketResponseDto {
-    return {
-      customFields: (ticket.customFields ?? []).map(customField =>
-        CustomFieldValueDto.from(customField),
-      ),
-    }
+  async execute(app: INestApplicationContext): Promise<void> {
+    const priorityField = customFieldDefinition(CustomFieldType.SINGLE_SELECT, {
+      tenantUuid: null,
+      entityType: CustomFieldEntityType.TICKET,
+      key: 'priority',
+      label: new LocalizedString([{ locale: 'en', value: 'Priority' }]),
+      description: null,
+      isRequired: true,
+      choices: [
+        {
+          value: 'low',
+          order: 1,
+          label: new LocalizedString([{ locale: 'en', value: 'Low' }])
+        },
+        {
+          value: 'high',
+          order: 2,
+          label: new LocalizedString([{ locale: 'en', value: 'High' }])
+        }
+      ]
+    })
+
+    await app.get(DataSource).manager.insert(CustomFieldDefinition, priorityField)
   }
 }
+```
 
-export class TicketDefinitionResponseDto {
-  @ApiProperty({ type: CustomFieldDefinitionResponse, isArray: true })
-  definitions: CustomFieldDefinitionResponse[]
+## Step 3: Store Values On The Entity With The Custom Column
 
-  static fromDefinitions(
-    definitions: CustomFieldDefinition[],
-  ): TicketDefinitionResponseDto {
-    return {
-      definitions: definitions.map(definition =>
-        new CustomFieldDefinitionResponse(definition),
-      ),
-    }
-  }
-}
+Resolved custom field values live on your own entity. Use
+`@CustomFieldValueColumn()` for the persisted values column.
+
+```ts
+import { Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { CustomFieldValueColumn, type CustomFieldValue } from '@wisemen/nestjs-custom-fields'
 
 @Entity()
 export class Ticket {
@@ -113,41 +116,166 @@ export class Ticket {
   @CustomFieldValueColumn({ nullable: true })
   customFields: CustomFieldValue[] | null
 }
+```
 
-@Injectable()
-export class UpdateTicketCustomFieldsUseCase {
-  constructor(
-    @InjectRepository(CustomFieldDefinition)
-    private readonly customFieldDefinitionRepository: Repository<CustomFieldDefinition>,
-  ) {}
+## Step 4: Receive And Show Values With DTOs
 
-  async execute(command: UpdateTicketCommand): Promise<void> {
-    const definitions = await this.customFieldDefinitionRepository.find({
-      where: {
-        entityType: 'ticket',
-      },
-    })
+Requests and responses use the DTO layer from this package. For incoming
+payloads, use `CustomFieldValueDto` with `@IsCustomFields()`. For outgoing
+payloads, map stored values back with `CustomFieldValueDto.from(...)`.
 
-    const values = command.customFields.map(value => value.parse())
+```ts
+// update-ticket.command.ts
+import { ApiProperty } from '@nestjs/swagger'
+import {
+  CustomFieldValueApiExtraModels,
+  CustomFieldValueDto,
+  CustomFieldValueDtoApiProperty,
+  IsCustomFields
+} from '@wisemen/nestjs-custom-fields'
 
-    validateCustomFieldValues(definitions, values)
+@CustomFieldValueApiExtraModels()
+export class UpdateTicketCommand {
+  @CustomFieldValueDtoApiProperty({ isArray: true })
+  @IsCustomFields()
+  customFields: CustomFieldValueDto[]
+}
+
+// view-ticket.response.ts
+@CustomFieldValueApiExtraModels()
+export class ViewTicketResponse {
+  @ApiProperty({ type: String, format: 'uuid' })
+  uuid: string
+
+  @CustomFieldValueDtoApiProperty({ isArray: true })
+  customFields: CustomFieldValueDto[]
+
+  constructor(ticket: Ticket) {
+    this.uuid = ticket.uuid
+    this.customFields = ticket.customFields?.map((value) => CustomFieldValueDto.from(value)) ?? []
   }
 }
 ```
 
-`CustomFieldValueDto.from(...)` keeps the concrete custom field type in the
-response and converts values into DTO-friendly shapes such as ISO strings for
-timestamps and `MonetaryDto` for monetary values.
+Calling `parse()` on a DTO turns the transport-friendly input into the domain
+custom field value shape, including richer value objects when needed. For
+example, a `MonetaryDto` is parsed into the package's monetary value object
+instead of staying a plain JSON structure.
 
-`new CustomFieldDefinitionResponse(definition)` maps persisted definition
-entities into API-friendly responses, including localized labels, select
-choices, and rules.
+```ts
+import {
+  CustomFieldType,
+  MonetaryCustomFieldValueDto
+} from '@wisemen/nestjs-custom-fields'
 
-Register `CustomFieldDefinitionRepositoryModule` in your Nest feature module when
-you want the package to provide `CustomFieldDefinitionsRepository` with
-its TypeORM dependency. `findDefinitions(...)` returns global definitions when
-`tenantUuid` is omitted, tenant definitions when `tenantUuid` is set, and
-orders results by `key ASC`.
+const dto = new MonetaryCustomFieldValueDto()
+dto.definitionUuid = definitionUuid
+dto.value = {
+  amount: '12.50',
+  currency: 'EUR',
+  precision: 2
+}
 
-Add `CustomFieldDefinition` to the datasource entities, and create your own
-application migration for its partial unique indexes.
+const parsed = dto.parse()
+
+// parsed is now a domain custom field value object:
+// {
+//   definitionUuid,
+//   type: CustomFieldType.MONETARY,
+//   value: dto.value.parse()
+// }
+```
+
+## Step 5: Retrieve Definitions For Validation
+
+When you process submitted values, retrieve the matching definitions through
+`CustomFieldDefinitionsRepository` and validate against them with
+`validateCustomFieldValues(...)`. If you also want to return definitions from
+an API, map the same repository results with `CustomFieldDefinitionResponse`.
+To inject the repository, register `CustomFieldDefinitionRepositoryModule` in
+the Nest module that owns your use case or controller.
+
+```ts
+import { Module } from '@nestjs/common'
+import { CustomFieldDefinitionRepositoryModule } from '@wisemen/nestjs-custom-fields'
+
+@Module({
+  imports: [CustomFieldDefinitionRepositoryModule],
+  providers: [UpdateTicketUseCase]
+})
+export class UpdateTicketModule {}
+```
+
+`validateCustomFieldValues(...)` throws `CustomFieldValueValidationError` when
+the submitted values do not match the definitions. In controllers, document
+that error according to the `@wisemen/api-error` package pattern by registering
+it with `@ApiErrorResponse(...)`.
+
+```ts
+import { ApiErrorResponse } from '@wisemen/api-error'
+import { CustomFieldValueValidationError } from '@wisemen/nestjs-custom-fields'
+
+@ApiErrorResponse(CustomFieldValueValidationError)
+async update(...): Promise<void> {
+  // controller logic
+}
+```
+On repository lookups, `tenantUuid` is optional. Omit it to work with
+non-tenant definitions, or set it to retrieve tenant-specific definitions in a
+multi-tenant setup.
+
+After DTO parsing, validate the resolved values against the definitions that
+apply for that entity and tenant. This is the runtime check that enforces the
+definition rules.
+
+The runtime order matters: call `.parse()` on the DTOs first, then run
+`validateCustomFieldValues(...)` against the definitions for that
+`entityType` and tenant scope.
+
+```ts
+import { Injectable } from '@nestjs/common'
+import {
+  CustomFieldDefinitionResponse,
+  CustomFieldDefinitionsRepository,
+  validateCustomFieldValues
+} from '@wisemen/nestjs-custom-fields'
+
+enum CustomFieldEntityType {
+  TICKET = 'ticket'
+}
+
+@Injectable()
+export class UpdateTicketUseCase {
+  constructor(
+    private readonly repository: CustomFieldDefinitionsRepository
+  ) {}
+
+  async execute(command: UpdateTicketCommand): Promise<void> {
+    const definitions = await this.repository.findDefinitions({
+      entityType: CustomFieldEntityType.TICKET
+    })
+
+    const values = command.customFields.map((value) => value.parse())
+
+    validateCustomFieldValues(definitions, values)
+
+    // Remaining use-case logic
+  }
+}
+```
+
+If you want to return definitions from a read endpoint, use
+`CustomFieldDefinitionResponse` to map the repository results into the response
+shape:
+
+```ts
+async function findTicketDefinitions(
+  repository: CustomFieldDefinitionsRepository
+): Promise<CustomFieldDefinitionResponse[]> {
+  const definitions = await repository.findDefinitions({
+    entityType: CustomFieldEntityType.TICKET
+  })
+
+  return definitions.map(definition => new CustomFieldDefinitionResponse(definition))
+}
+```
