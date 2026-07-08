@@ -1,6 +1,6 @@
 import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common'
 import { captureException } from '@wisemen/opentelemetry'
-import { type NatsConnection, type Authenticator, credsAuthenticator, type SubscriptionOptions, type Payload, connect, type Subscription, headers } from '@nats-io/transport-node'
+import { type NatsConnection, type SubscriptionOptions, type Payload, connect, type Subscription, headers } from '@nats-io/transport-node'
 import { propagation, context, type Context } from '@opentelemetry/api'
 import type { TraceContextCarrier } from '@wisemen/opentelemetry'
 import { NatsUnavailableError } from './errors/nats-unavailable.error.js'
@@ -19,9 +19,8 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
   private lastConnectionAttempt: Date | null = null
 
   constructor (
-    @Inject(NATS_CLIENT_OPTIONS_TOKEN)
-    private readonly options: NatsClientModuleOptions
-  ) {}
+    @Inject(NATS_CLIENT_OPTIONS_TOKEN) private options: NatsClientModuleOptions
+  ) { }
 
   async client (): Promise<NatsConnection> {
     if (this._client === undefined) {
@@ -79,8 +78,8 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
    * to create a new connection, instead it returns false and relies on the auto reconnect 
    * mechanisms of @nats-io/transport-node
    */
-  async reconnect(): Promise<boolean> {
-    if(this._client === undefined) {
+  async reconnect (): Promise<boolean> {
+    if (this._client === undefined) {
       return this.connect()
     } else {
       return false
@@ -108,27 +107,15 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
 
     try {
       this.lastConnectionAttempt = new Date()
-
-      let authenticator: Authenticator | Authenticator[] | undefined
-      if ('nkey' in this.options && this.options.nkey !== undefined) {
-        const decodedNkey = Buffer.from(this.options.nkey, 'base64').toString()
-        authenticator = credsAuthenticator(new TextEncoder().encode(decodedNkey))
-      } else if ('authenticator' in this.options.client) {
-        authenticator = this.options.client.authenticator
-      }
-
-      this._client = await connect({
-        ...this.options.client,
-        authenticator: authenticator,
-      })
-
+      this._client = await connect(this.options.client)
       this.connected = true
       this.monitorConnection(this._client)
-  
+
       return true
     } catch (error) {
       this.connected = false
       captureException(error)
+      await this.options.onConnectError?.(error)
       return false
     }
   }

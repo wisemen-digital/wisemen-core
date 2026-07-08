@@ -6,11 +6,20 @@ import type { WithKeyboardShortcut } from '@/types/withKeyboardShortcut.type'
 
 export type MainSidebarCollapsedVariant = 'hidden' | 'minified'
 
-export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
+export interface DashboardSidebarNavSubItem {
+  /**
+   * Text label for the sub-item
+   */
+  label: string
+  /**
+   * Route location to navigate to
+   */
+  to: RegisteredRouteLocationRaw
+}
+
+interface DashboardSidebarNavLinkBase extends WithKeyboardShortcut {
   /**
    * Optional function to determine if the link is active based on the current route
-   * @param route
-   * @returns boolean indicating if the link is active
    */
   isActive?: (route: RouteLocationNormalized) => boolean
   /**
@@ -21,17 +30,31 @@ export interface DashboardSidebarNavLink extends WithKeyboardShortcut {
    * Text label for the navigation link
    */
   label: string
-
-  /**
-   * Route location to navigate to
-   */
-  to: RegisteredRouteLocationRaw
-
   /**
    * Optional callback function to execute on click, in addition to navigation
    */
   onClick?: () => void
 }
+
+export interface SidebarNavLeafItem extends DashboardSidebarNavLinkBase {
+  /**
+   * Route location to navigate to
+   */
+  to: RegisteredRouteLocationRaw
+  type: 'link'
+
+}
+
+export interface SidebarNavParentItem extends DashboardSidebarNavLinkBase {
+  /**
+   * 1-level-deep sub-items. When ≤3, rendered inline in expanded sidebar.
+   * When >3 or sidebar is minified/floating, rendered in a popover.
+   */
+  subItems: DashboardSidebarNavSubItem[]
+  type: 'sub-items'
+}
+
+export type DashboardSidebarNavLink = SidebarNavLeafItem | SidebarNavParentItem
 
 export interface DashboardSidebarGroup {
   /**

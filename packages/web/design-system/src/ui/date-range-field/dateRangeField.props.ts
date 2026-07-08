@@ -5,6 +5,7 @@ import type {
   Input,
   InputWrapper,
 } from '@/types/input.type'
+import type { DayConfig } from '@/ui/date-field/dateField.type'
 
 export interface DateRangeFieldProps extends Input, InputWrapper, FieldWrapper {
   /**
@@ -22,6 +23,11 @@ export interface DateRangeFieldProps extends Input, InputWrapper, FieldWrapper {
    * @default false
    */
   isPickerHidden?: boolean
+  /**
+   * Returns a config to decorate a given calendar day (e.g. a colored dot for a birthday or holiday).
+   * Called once per rendered day. Return `null` for days that shouldn't be decorated.
+   */
+  getDayConfig?: (date: PlainDate) => DayConfig | null
   /**
    * The placeholder text shown when no date range is selected.
    *

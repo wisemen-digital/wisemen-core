@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PlainDate } from '@wisemen/vue-core-dates'
 import {
   DatePickerCell as RekaDatePickerCell,
   DatePickerCellTrigger as RekaDatePickerCellTrigger,
@@ -9,9 +10,12 @@ import {
   DatePickerHeadCell as RekaDatePickerHeadCell,
 } from 'reka-ui'
 
+import type { DayConfig } from '@/ui/date-field/dateField.type'
+import { getDayIndicatorDotClass } from '@/ui/date-field/dayConfig.util'
 import { useInjectDatePickerContext } from '@/ui/date-picker/datePicker.context'
 
 const props = defineProps<{
+  getDayConfig?: (date: PlainDate) => DayConfig | null
   month: any
   weekDays: string[]
 }>()
@@ -19,6 +23,14 @@ const props = defineProps<{
 const {
   onClose,
 } = useInjectDatePickerContext()
+
+function getDotColorClass(date: {
+  day: number
+  month: number
+  year: number
+}): string | null {
+  return getDayIndicatorDotClass(date, props.getDayConfig)
+}
 </script>
 
 <template>
@@ -75,6 +87,14 @@ const {
               class="
                 absolute bottom-1 left-1/2 size-1 -translate-x-1/2 rounded-full
                 bg-brand-solid
+                group-data-selected/cell:bg-white
+              "
+            />
+            <span
+              v-else-if="getDotColorClass(date)"
+              :class="getDotColorClass(date)"
+              class="
+                absolute bottom-1 left-1/2 size-1 -translate-x-1/2
                 group-data-selected/cell:bg-white
               "
             />
