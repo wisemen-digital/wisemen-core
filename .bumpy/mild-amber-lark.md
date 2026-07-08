@@ -1,15 +1,13 @@
 ---
-"@wisemen/vue-core-design-system": major
+"@wisemen/vue-core-design-system": minor
 ---
 
-**Breaking:** `DashboardSidebarNavLink` is now a discriminated union. Each nav link requires a `type` field.
+`DashboardSidebarNavLink` is now the union of two explicit shapes, both exported from `@wisemen/vue-core-design-system`:
 
-`DashboardSidebarNavLink` is the union of two explicit shapes, both exported from `@wisemen/vue-core-design-system`:
+- **`SidebarNavLinkItem`** — a link that navigates directly to a route. Requires `to`, has no `subItems`.
+- **`SidebarNavSubItemsItem`** — a link that expands into sub-items. Requires `subItems`, has no `to`.
 
-- **`SidebarNavLeafItem`** (`type: 'link'`) — a link that navigates directly to a route. Requires `to`, has no `subItems`.
-- **`SidebarNavParentItem`** (`type: 'sub-items'`) — a link that expands into sub-items. Requires `subItems`, has no `to`.
-
-Add the `type` discriminator to every nav link object:
+Each shape also accepts an optional `type` discriminator (`'link'` or `'sub-items'`) for clearer intent and stricter narrowing, but it is not required — existing nav link objects keep working as-is:
 
 ```ts
 const links: DashboardSidebarNavLink[] = [
