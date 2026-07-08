@@ -29,7 +29,6 @@
   "dependencies": {
     "@nestjs/common": "catalog:backend",
     "@nestjs/swagger": "catalog:backend",
-    "bumpy": "^0.2.0",
     "class-transformer": "catalog:backend",
     "class-validator": "catalog:backend",
     "typeorm": "catalog:backend"
