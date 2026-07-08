@@ -9,8 +9,10 @@ interface TableContext {
   isColumnResizeDisabled: ComputedRef<boolean>
   isGroupingEnabled: ComputedRef<boolean>
   isResizingColumn: ComputedRef<boolean>
+  isScrollableVertically: ComputedRef<boolean>
   isScrolledFromLeft: ComputedRef<boolean>
   isScrolledToEnd: ComputedRef<boolean>
+  isSelectable: ComputedRef<boolean>
   actions: ComputedRef<Action[]>
   activeFilterCountIncludingSearch: ComputedRef<number>
   gridTemplateColumns: ComputedRef<string>

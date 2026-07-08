@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   disableSideFlip: true,
+  getItemKey: null,
   keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
@@ -126,6 +127,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
     :label="props.label"
     :class="props.class"
     :style="props.style"
+    :is-label-hidden="props.isLabelHidden"
     :for="id"
     :hide-error-message="props.hideErrorMessage"
   >
@@ -236,7 +238,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
             :aria-controls="`${id}-listbox`"
             role="combobox"
             class="
-              absolute inset-0 size-full outline-none
+              absolute inset-0 z-1 size-full outline-none
               disabled:cursor-not-allowed
             "
             data-field-wrapper

@@ -1,0 +1,15 @@
+export class {{ contentClassName }} {
+  constructor (
+    readonly {{ propertyName }}: string
+  ) {}
+}
+
+@RegisterDomainEvent(DomainEventType.{{ eventType }}, 1)
+export class {{ className }} extends {{ baseEventClassName }}<{{ contentClassName }}> {
+  constructor ({{ propertyName }}: string) {
+    super({
+      {{ propertyName}},
+      content: new {{ contentClassName }}({{ propertyName}})
+    })
+  }
+}

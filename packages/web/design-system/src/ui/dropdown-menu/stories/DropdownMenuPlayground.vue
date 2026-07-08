@@ -54,7 +54,7 @@ import {
               right: {
                 keyboardShortcut: {
                   key: 'K',
-                  meta: true,
+                  mod: true,
                 },
                 type: 'shortcut',
               },

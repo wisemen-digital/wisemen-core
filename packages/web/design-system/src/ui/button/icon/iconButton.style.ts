@@ -78,7 +78,7 @@ export const createIconButtonStyle = tv({
       xs: {
         icon: `size-3.5`,
         loader: `size-3.5`,
-        root: 'size-5.5 rounded-xs',
+        root: 'size-5.5 rounded-sm',
       },
     },
     variant: {
@@ -164,7 +164,7 @@ export const createIconButtonStyle = tv({
         root: `
           border-transparent
           focus-visible:outline-fg-brand-primary
-          data-interactive:hover:bg-secondary-hover
+          data-interactive:hover:bg-fg-primary/5
         `,
       },
     },

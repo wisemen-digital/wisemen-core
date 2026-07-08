@@ -1,0 +1,28 @@
+{{#each entities}}
+export class {{entityType}}Builder {
+  private command: {{entityType}}
+
+  constructor () {
+    this.command = new {{entityType}}()
+  }
+  {{#unless properties}}
+  
+  {{/unless}}
+  {{#each properties}}
+  {{#if @first}}
+
+  {{/if}}
+  with{{pascalCase name}} ({{#if isUndefined}}{{name}}?{{else}}{{name}}{{/if}}: {{type}}{{#if isNullable}} | null{{/if}}): this {
+    this.command.{{name}} = {{name}}
+    return this
+  }
+
+  {{/each}}
+  build (): {{entityType}} {
+    return this.command
+  }
+}
+{{#unless @last }}
+
+{{/unless}}
+{{/each}}

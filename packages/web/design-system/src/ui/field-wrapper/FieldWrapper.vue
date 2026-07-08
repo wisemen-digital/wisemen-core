@@ -36,8 +36,8 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     }"
     :gap="props.gap"
     class="
-      group/field-wrapper relative rounded-md border border-secondary bg-primary
-      outline outline-transparent duration-100
+      group/field-wrapper relative isolate rounded-md border border-secondary
+      bg-primary outline outline-transparent duration-100
       data-disabled:cursor-not-allowed data-disabled:border-disabled-subtle
       data-disabled:bg-disabled-subtle data-disabled:text-disabled
       data-error:border-error

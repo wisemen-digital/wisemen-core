@@ -1,0 +1,34 @@
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@wisemen/nestjs-typeorm'
+import { typeormPagination } from '@wisemen/pagination'
+import { Repository } from 'typeorm'
+import { {{pascalCase entityName}} } from '{{entityImportPath}}'
+import { {{pascalCase useCaseName}}Query } from './{{dashCase useCaseName}}.query.js'
+import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.response.js'
+
+@Injectable()
+export class {{pascalCase useCaseName}}UseCase {
+  constructor (
+    @InjectRepository({{pascalCase entityName}})
+    private repository: Repository<{{pascalCase entityName}}>
+  ) {}
+
+  async execute (
+    query: {{pascalCase useCaseName}}Query
+  ): Promise<{{pascalCase useCaseName}}Response> {
+    const pagination = typeormPagination(query.pagination)
+
+    const [items, count] = await this.repository.findAndCount({
+      take: pagination.take,
+      skip: pagination.skip,
+      order: { uuid: 'ASC' }
+    })
+
+    return new {{pascalCase useCaseName}}Response(
+      items,
+      count,
+      pagination.take,
+      pagination.skip
+    )
+  }
+}

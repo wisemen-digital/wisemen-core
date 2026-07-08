@@ -1,0 +1,25 @@
+import { Controller, Get, Version } from '@nestjs/common'
+import { ApiTags, ApiOAuth2, ApiOkResponse } from '@nestjs/swagger'
+import { UuidParam } from '@wisemen/decorators'
+import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.use-case.js'
+import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.response.js'
+
+@ApiTags('{{pascalCase moduleName}}')
+@ApiOAuth2([])
+@Controller()
+export class {{pascalCase useCaseName}}Controller {
+  constructor (
+    private useCase: {{pascalCase useCaseName}}UseCase
+  ) {}
+
+  @Get('{{dashCase moduleNamePlural}}/:uuid')
+  @Version('1')
+  @Permissions(Permission.{{constantCase permissionName}})
+  @ApiOkResponse({ type: {{pascalCase useCaseName}}Response })
+  @ApiNotFoundErrorResponse({{notFoundError}})
+  async view (
+    @UuidParam('uuid') uuid: string
+  ): Promise<{{pascalCase useCaseName}}Response> {
+    return this.useCase.execute(uuid)
+  }
+}

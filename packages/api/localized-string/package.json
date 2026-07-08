@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/localized-string",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "publishConfig": {
     "access": "public"
   },
@@ -11,7 +11,8 @@
     "#src/*": "./dist/*"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "prebuild": "rm -rf ./dist",

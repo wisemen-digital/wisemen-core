@@ -1,0 +1,24 @@
+import { Controller, Get, Query, Version } from '@nestjs/common'
+import { ApiTags, ApiOAuth2, ApiOkResponse } from '@nestjs/swagger'
+import { {{pascalCase useCaseName}}Query } from './{{dashCase useCaseName}}.query.js'
+import { {{pascalCase useCaseName}}Response } from './{{dashCase useCaseName}}.response.js'
+import { {{pascalCase useCaseName}}UseCase } from './{{dashCase useCaseName}}.use-case.js'
+
+@ApiTags('{{pascalCase moduleName}}')
+@ApiOAuth2([])
+@Controller()
+export class {{pascalCase useCaseName}}Controller {
+  constructor (
+    private useCase: {{pascalCase useCaseName}}UseCase
+  ) {}
+
+  @Get('{{dashCase moduleNamePlural}}')
+  @Version('1')
+  @Permissions(Permission.{{constantCase permissionName}})
+  @ApiOkResponse({ type: {{pascalCase useCaseName}}Response })
+  async view (
+    @Query() query: {{pascalCase useCaseName}}Query
+  ): Promise<{{pascalCase useCaseName}}Response> {
+    return this.useCase.execute(query)
+  }
+}

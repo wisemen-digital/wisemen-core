@@ -1,9 +1,8 @@
-import { FilterQuery } from '@wisemen/pagination'
 import { IsTimestamp, TimestampApiProperty } from '../timestamp/index.js'
 import { DateTimeRange } from './date-time-range.js'
 import { InclusivityString } from '../common/inclusivity.js'
 
-export class DateTimeRangeDto implements FilterQuery {
+export class DateTimeRangeDto {
   @TimestampApiProperty({ description: 'start of the range, inclusive' })
   @IsTimestamp({ isBefore: (dto: DateTimeRangeDto) => dto.until })
   from: string

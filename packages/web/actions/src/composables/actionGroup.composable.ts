@@ -9,8 +9,10 @@ export enum GroupPriority {
   GENERAL = 4,
   NAVIGATION = 5,
   PREFERENCES = 6,
-  ACCOUNT = 7,
-  DEVELOPER = 8,
+  SETTINGS = 7,
+  APPLICATION = 8,
+  ACCOUNT = 9,
+  DEVELOPER = 10,
 }
 
 export function useActionGroup() {
@@ -20,6 +22,10 @@ export function useActionGroup() {
     account: {
       name: i18n.t('action.group.account'),
       priority: GroupPriority.ACCOUNT,
+    },
+    application: {
+      name: i18n.t('action.group.application'),
+      priority: GroupPriority.APPLICATION,
     },
     developer: {
       name: i18n.t('action.group.developer'),
@@ -36,6 +42,10 @@ export function useActionGroup() {
     preferences: {
       name: i18n.t('action.group.preferences'),
       priority: GroupPriority.PREFERENCES,
+    },
+    settings: {
+      name: i18n.t('action.group.settings'),
+      priority: GroupPriority.SETTINGS,
     },
   } satisfies Record<string, ActionGroup>
 }

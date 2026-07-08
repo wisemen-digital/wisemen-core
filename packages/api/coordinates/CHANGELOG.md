@@ -1,5 +1,21 @@
 # @wisemen/coordinates
 
+
+
+## 0.1.1
+<sub>2026-06-25</sub>
+
+- [#1276](https://github.com/wisemen-digital/wisemen-core/pull/1276)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: reformat imports in skill
+
+## 0.1.0
+<sub>2026-06-16</sub>
+
+- [#1268](https://github.com/wisemen-digital/wisemen-core/pull/1268)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - rename `CoordinatesCommand.toCoordinates()` and `CoordinatesQuery.toCoordinates()` to
+  `parse()`, add `CoordinatesResponse.from(...)` for nullable response mapping, and
+  update the coordinates skill example to use the new API.
+  Migration: replace `dto.toCoordinates()` and `query.toCoordinates()` with
+  `dto.parse()` and `query.parse()`.
+
 ## 0.0.31
 
 ### Patch Changes

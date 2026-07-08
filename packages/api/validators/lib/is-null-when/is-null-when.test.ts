@@ -5,11 +5,10 @@ import { IsNullWhen } from './is-null-when.validator.js'
 
 class TestClass {
   @IsNullWhen((obj: TestClass) => obj.reference !== null)
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  value: unknown | null
+   
+  value: unknown
 
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  reference: unknown | null
+  reference: unknown
 }
 
 describe('IsNullWhen decorator test', () => {

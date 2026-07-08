@@ -40,7 +40,7 @@ onMounted(() => {
   <div
     ref="containerEl"
     :class="{
-      'rounded-xl border border-secondary': variant === 'contained',
+      'rounded-xl border border-secondary': variant === 'contained' && !props.disableScroll,
       'overflow-auto': !props.disableScroll,
     }"
     class="max-h-full w-full contain-layout contain-paint outline-none"

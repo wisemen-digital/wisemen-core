@@ -12,6 +12,8 @@ export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
   /** The NATS connection class decorated with `@NatsConnection` */
   connection: ClassConstructor<unknown>
   streamName: string
+  /** The backoff interval for NAK (negative acknowledgment) messages in milliseconds */
+  nakBackoff?: number
 }
 
 export type NatsConsumerConfigFunction = (configService: ConfigService) => NatsConsumerConfig
@@ -49,6 +51,7 @@ export function getNatsConsumerConfig (
   const consumerConfig = configFn(config)
   const name = consumerConfig.name ?? target.name
   const connectionOptions = getNatsConnectionOptions(consumerConfig.connection, config)
+  const { connection: _connection, ...configWithoutConnection } = consumerConfig
 
-  return { ...consumerConfig, name, connectionOptions }
+  return { ...configWithoutConnection, name, connectionOptions }
 }

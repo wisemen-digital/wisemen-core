@@ -1,5 +1,11 @@
 # @wisemen/twilio
 
+
+## 0.0.5
+<sub>2026-06-25</sub>
+
+- [#1278](https://github.com/wisemen-digital/wisemen-core/pull/1278)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1150): add twilio agent skill
+
 ## 0.0.4
 
 ### Patch Changes

@@ -23,10 +23,13 @@ function mapSize({
   return `fit-content(${max})`
 }
 
+export const CHECKBOX_COLUMN_WIDTH = '2.5rem'
+
 export class TableUtil {
   static columnSizesToGridTemplateColumns(
     columnSizes: TableColumnSize[],
     hasActionColumn: boolean,
+    hasCheckboxColumn = false,
   ): string {
     const columns = [
       ...columnSizes.slice(0, -1),
@@ -35,6 +38,8 @@ export class TableUtil {
       .map(mapSize)
       .join(' ')
 
-    return hasActionColumn ? `${columns} min-content` : columns
+    const base = hasActionColumn ? `${columns} min-content` : columns
+
+    return hasCheckboxColumn ? `${CHECKBOX_COLUMN_WIDTH} ${base}` : base
   }
 }

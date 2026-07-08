@@ -36,7 +36,7 @@ const gridTemplateColumns = `${sidebarIconCellSize} 1fr`
       <ActionTooltip
         :keyboard-shortcut="{
           key: 'Backspace',
-          meta: true,
+          mod: true,
         }"
         :label="i18n.t('components.sidebar.return_to_app')"
       >

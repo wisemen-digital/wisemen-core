@@ -1,0 +1,28 @@
+{{#each entities}}
+export class {{entityType}}Builder {
+  private query: {{entityType}}
+
+  constructor () {
+    this.query = new {{entityType}}()
+  }
+  {{#unless properties}}
+  
+  {{/unless}}
+  {{#each properties}}
+  {{#if @first}}
+
+  {{/if}}
+  with{{pascalCase name}} ({{#if isUndefined}}{{name}}?{{else}}{{name}}{{/if}}: {{type}}{{#if isNullable}} | null{{/if}}): this {
+    this.query.{{name}} = {{name}}
+    return this
+  }
+
+  {{/each}}
+  build (): {{entityType}} {
+    return this.query
+  }
+}
+{{#unless @last }}
+
+{{/unless}}
+{{/each}}

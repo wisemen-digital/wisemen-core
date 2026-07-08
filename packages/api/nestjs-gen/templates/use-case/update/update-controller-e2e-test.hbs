@@ -1,0 +1,42 @@
+import { after, before, describe, it } from 'node:test'
+import { randomUUID } from 'crypto'
+import request from 'supertest'
+import { expect } from 'expect'
+import { HttpStatus } from '@nestjs/common'
+
+describe('{{ testDescriptionName }}', () => {
+  let setup: TestSetup
+  let user: TestUser
+
+  before(async () => {
+    setup = await TestBench.setupEndToEndTest()
+    user = await setup.authContext.getUser([Permission.{{ permissionEnumValue }}])
+  })
+
+  after(async () => {
+    await setup.teardown()
+  })
+
+  it('{{ testCaseName }}', async () => {
+    const command = new {{ commandBuilderName }}().build()
+
+    const response = await request(setup.httpServer)
+      .put(`{{ routePath }}`)
+      .set('Authorization', `Bearer ${user.token}`)
+      .send(command)
+
+    expect(response).toHaveStatus(HttpStatus.NO_CONTENT)
+  })
+
+  it('returns 403 when user does not have permission', async () => {
+    const userWithoutPermission = await setup.authContext.getUser([])
+    const command = new {{ commandBuilderName }}().build()
+
+    const response = await request(setup.httpServer)
+      .put(`{{ routePath }}`)
+      .set('Authorization', `Bearer ${userWithoutPermission.token}`)
+      .send(command)
+
+    expect(response).toHaveStatus(HttpStatus.FORBIDDEN)
+  })
+})

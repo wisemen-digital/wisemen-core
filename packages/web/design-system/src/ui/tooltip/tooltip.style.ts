@@ -3,7 +3,7 @@ import { tv } from '@/libs/tailwindVariants.lib'
 export const createTooltipStyle = tv({
   slots: {
     content: `
-      relative size-full overflow-hidden rounded-sm border border-secondary
+      relative size-full overflow-hidden rounded-md border border-secondary
       bg-primary shadow-lg
     `,
     contentWrapper: `z-50 will-change-[transform,filter,opacity]`,

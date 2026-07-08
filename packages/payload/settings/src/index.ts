@@ -1,0 +1,7 @@
+export * from './collections/settings.collection.ts'
+export * from './models/index.ts'
+export * from './settings.contract.ts'
+export * from './settings.plugin.ts'
+export * from './settings.queries.ts'
+export * from './settings.queries.types.ts'
+export * from './settingsLegalPages.collection.ts'

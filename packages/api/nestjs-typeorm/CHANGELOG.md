@@ -1,5 +1,11 @@
 # @wisemen/nestjs-typeorm
 
+
+## 1.1.2
+<sub>2026-06-25</sub>
+
+- [#1314](https://github.com/wisemen-digital/wisemen-core/pull/1314)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Add custom data types before initializing datasource
+
 ## 1.1.1
 
 ### Patch Changes

@@ -22,6 +22,7 @@ export interface TableColumn<TElement, TKey extends string = string> {
     metadata?: RegisteredActionContext['metadata']
   }
   centerHeaderContent?: boolean
+  headerDescription?: string
   headerLabel: string
   key: TKey
   size?: TableColumnSize
@@ -63,3 +64,13 @@ export type InferTableItem<T>
         : never
 
 export type InferTableColumnKeys<T extends { key: string }[]> = T[number]['key']
+
+export type TableSelectionState<T>
+  = | {
+    items: T[]
+    type: 'excludes'
+  }
+  | {
+    items: T[]
+    type: 'includes'
+  }

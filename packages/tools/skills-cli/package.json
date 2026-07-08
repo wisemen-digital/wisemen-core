@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/skills-cli",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Sync AI coding skills from installed @wisemen/* packages into a consumer project, rendered per LLM target (Claude Code, AGENTS.md, llms.txt).",
   "publishConfig": {
     "access": "public"
@@ -21,7 +21,7 @@
     "codegen"
   ],
   "bin": {
-    "wisemen-skills": "./dist/index.mjs"
+    "skills-cli": "./dist/index.mjs"
   },
   "exports": {
     ".": {
@@ -42,11 +42,11 @@
     "typecheck": "pnpm tsc --noEmit"
   },
   "dependencies": {
-    "@wisemen/eslint-config-nestjs": "catalog:",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
     "chalk": "5.6.2",
     "commander": "14.0.2",
     "fast-glob": "3.3.2",
-    "js-yaml": "4.1.1"
+    "js-yaml": "4.3.0"
   },
   "devDependencies": {
     "@types/js-yaml": "4.0.9",

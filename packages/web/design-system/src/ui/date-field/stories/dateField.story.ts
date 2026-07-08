@@ -40,6 +40,9 @@ const meta = {
     hideErrorMessage: {
       control: 'boolean',
       description: 'Whether to hide the error message visually',
+      table: {
+        disable: true,
+      },
     },
     hint: {
       control: 'text',
@@ -109,5 +112,29 @@ export const SmallSize: Story = {
   args: {
     label: 'Date',
     size: 'sm',
+  },
+}
+
+export const WithDayIndicators: Story = {
+  args: {
+    getDayConfig: (date) => {
+      const today = Temporal.Now.plainDateISO()
+      const yesterday = today.subtract({
+        days: 1,
+      })
+      const tomorrow = today.add({
+        days: 1,
+      })
+
+      if (date.equals(yesterday) || date.equals(tomorrow)) {
+        return {
+          color: 'error',
+          type: 'dot',
+        }
+      }
+
+      return null
+    },
+    label: 'Date',
   },
 }

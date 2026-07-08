@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
 import { ref } from 'vue'
 
 import type { PhoneNumberFieldProps } from '@/ui/phone-number-field/phoneNumberField.props'

@@ -21,7 +21,7 @@ export class CoordinatesQuery {
   @IsNumberString()
   latitude: string
 
-  toCoordinates (): Coordinates {
+  parse (): Coordinates {
     return new Coordinates(parseFloat(this.latitude), parseFloat(this.longitude))
   }
 }

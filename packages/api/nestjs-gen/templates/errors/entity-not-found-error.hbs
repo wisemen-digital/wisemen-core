@@ -1,0 +1,10 @@
+export class {{ entityName }}NotFoundError extends NotFoundApiError {
+  @ApiErrorCode('{{ errorCode }}')
+  code = '{{ errorCode }}'
+
+  meta: never
+
+  constructor ( {{ propertyName }}?: string) {
+    super(`{{ entityName }} ${ {{ propertyName }} ?? ''} not found`)
+  }
+}

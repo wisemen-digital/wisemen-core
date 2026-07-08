@@ -13,6 +13,7 @@ dist
 **/.vitepress/cache
 **/*/.mjs
 .turbo
+.pnpm-store
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +28,4 @@ static
 **/static
 
 **/.eslintcache
+.temp
