@@ -3,6 +3,13 @@
 
 
 
+
+## 0.1.1
+<sub>2026-07-08</sub>
+
+- [#1388](https://github.com/wisemen-digital/wisemen-core/pull/1388)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add static from() on dto
+- [#1390](https://github.com/wisemen-digital/wisemen-core/pull/1390)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add missing from overload
+
 ## 0.1.0
 <sub>2026-07-08</sub>
 
