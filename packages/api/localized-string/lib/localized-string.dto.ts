@@ -14,7 +14,14 @@ export class LocalizedStringItemDto {
   @IsString()
   value: string
 
-  static from(value: LocalizedValue): LocalizedStringItemDto {
+  static from(value: null) : null
+  static from(value: LocalizedValue): LocalizedStringItemDto
+  static from(value: LocalizedValue | null): LocalizedStringItemDto | null
+  static from(value: LocalizedValue | null): LocalizedStringItemDto | null {
+    if (value === null) {
+      return null
+    }
+
     return new LocalizedStringItemDtoBuilder()
       .withLocale(value.locale)
       .withValue(value.value)
@@ -30,7 +37,13 @@ export class LocalizedStringDto {
   @IsUniqueLanguage()
   items: LocalizedStringItemDto[]
 
-  static from(value: LocalizedValue[] | LocalizedString): LocalizedStringDto {
+  static from(value: null): LocalizedStringDto | null 
+  static from(value: LocalizedValue[] | LocalizedString | null): LocalizedStringDto | null
+  static from(value: LocalizedValue[] | LocalizedString | null): LocalizedStringDto | null {
+    if (value === null) {
+      return null
+    }
+
     const dto = new LocalizedStringDto()
     const localizedValues = Array.isArray(value) ? value : value.toJSON()
 

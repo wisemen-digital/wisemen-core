@@ -4,6 +4,12 @@ import { LocalizedString } from '#src/localized-string.js'
 import { LocalizedStringDto, LocalizedStringItemDto } from '#src/localized-string.dto.js'
 
 describe('LocalizedStringDto', () => {
+  describe('LocalizedStringItemDto.from', () => {
+    it('returns null when the localized value is null', () => {
+      expect(LocalizedStringItemDto.from(null)).toBeNull()
+    })
+  })
+
   describe('from', () => {
     it('creates the transport shape from a LocalizedString', () => {
       const localizedString = new LocalizedString([
@@ -14,7 +20,7 @@ describe('LocalizedStringDto', () => {
       const dto = LocalizedStringDto.from(localizedString)
 
       expect(dto).toBeInstanceOf(LocalizedStringDto)
-      expect(dto.items).toEqual([
+      expect(dto?.items).toEqual([
         { locale: 'en', value: 'Hello' },
         { locale: 'fr', value: 'Bonjour' }
       ])
@@ -25,9 +31,16 @@ describe('LocalizedStringDto', () => {
         { locale: 'en', value: 'Hello' }
       ])
 
-      expect(dto.items).toHaveLength(1)
-      expect(dto.items[0]).toBeInstanceOf(LocalizedStringItemDto)
-      expect(dto.items[0]).toEqual({ locale: 'en', value: 'Hello' })
+      expect(dto?.items).toHaveLength(1)
+      expect(dto?.items[0]).toBeInstanceOf(LocalizedStringItemDto)
+      expect(dto?.items[0]).toEqual({ locale: 'en', value: 'Hello' })
+    })
+
+    it('creates the transport shape from empty localized values', () => {
+      const dto = LocalizedStringDto.from([])
+
+      expect(dto).toBeInstanceOf(LocalizedStringDto)
+      expect(dto?.items).toEqual([])
     })
   })
 
@@ -40,7 +53,13 @@ describe('LocalizedStringDto', () => {
 
       const dto = LocalizedStringDto.from(localizedString)
 
-      expect(dto.parse().toJSON()).toEqual(localizedString.toJSON())
+      expect(dto?.parse().toJSON()).toEqual(localizedString.toJSON())
+    })
+
+    it('round-trips empty localized values', () => {
+      const dto = LocalizedStringDto.from([])
+
+      expect(dto?.parse().toJSON()).toEqual([])
     })
   })
 })
