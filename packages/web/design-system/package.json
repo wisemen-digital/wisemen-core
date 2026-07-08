@@ -116,6 +116,7 @@
     "pinia": "catalog:vue",
     "playwright": "catalog:test",
     "reka-ui": "catalog:vue",
+    "sb-addon-vue-csf": "catalog:storybook",
     "storybook": "catalog:storybook",
     "typescript": "catalog:build",
     "vite-plugin-dts": "catalog:vite",

@@ -1,11 +1,11 @@
-import type {
-  Meta,
-  StoryObj,
-} from '@storybook/vue3-vite'
+<script setup lang="ts">
+import { defineMeta } from 'sb-addon-vue-csf'
 
 import NumberBadgePlayground from './NumberBadgePlayground.vue'
 
-const meta = {
+const {
+  Story,
+} = defineMeta({
   title: 'Components/NumberBadge',
   argTypes: {
     color: {
@@ -47,44 +47,39 @@ const meta = {
     'autodocs',
   ],
   component: NumberBadgePlayground,
-} satisfies Meta<typeof NumberBadgePlayground>
+})
+</script>
 
-export default meta
+<template>
+  <Story
+    :args="{ color: 'gray',
+             size: 'md',
+             value: 5,
+             variant: 'translucent' }"
+    name="Default"
+  />
 
-type Story = StoryObj<typeof meta>
+  <Story
+    :args="{ color: 'brand',
+             size: 'md',
+             value: 12,
+             variant: 'solid' }"
+    name="Solid"
+  />
 
-export const Default: Story = {
-  args: {
-    color: 'gray',
-    size: 'md',
-    value: 5,
-    variant: 'translucent',
-  },
-}
+  <Story
+    :args="{ color: 'error',
+             size: 'md',
+             value: 3,
+             variant: 'outline' }"
+    name="Outline"
+  />
 
-export const Solid: Story = {
-  args: {
-    color: 'brand',
-    size: 'md',
-    value: 12,
-    variant: 'solid',
-  },
-}
-
-export const Outline: Story = {
-  args: {
-    color: 'error',
-    size: 'md',
-    value: 3,
-    variant: 'outline',
-  },
-}
-
-export const LargeSize: Story = {
-  args: {
-    color: 'success',
-    size: 'lg',
-    value: 99,
-    variant: 'translucent',
-  },
-}
+  <Story
+    :args="{ color: 'success',
+             size: 'lg',
+             value: 99,
+             variant: 'translucent' }"
+    name="LargeSize"
+  />
+</template>

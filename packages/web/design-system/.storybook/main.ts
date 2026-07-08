@@ -20,6 +20,7 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-vitest'),
     getAbsolutePath('@storybook/addon-a11y'),
     getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath('sb-addon-vue-csf'),
   ],
   core: {
     disableWhatsNewNotifications: true,
@@ -41,6 +42,7 @@ const config: StorybookConfig = {
   stories: [
     '../src/**/*.mdx',
     '../src/**/*.story.@(js|jsx|mjs|ts|tsx)',
+    '../src/**/*.stories.vue',
   ],
   viteFinal(config) {
     // Remove dts plugin — it's only needed for library builds, not Storybook

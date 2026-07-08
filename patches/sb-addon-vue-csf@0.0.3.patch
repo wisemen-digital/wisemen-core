@@ -1,0 +1,7 @@
+diff --git a/preset.js b/preset.js
+index ffbf17ef077c6f592cba2e6c917133458786b685..d36777fb5d822bd83e86c507c3fb62a5478b3bff 100644
+--- a/preset.js
++++ b/preset.js
+@@ -1 +1 @@
+-module.exports = require('./dist/preset.js')
++export * from './dist/preset.js'

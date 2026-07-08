@@ -250,6 +250,7 @@ catalogs:
     "@storybook/vue3": 10.3.0
     "@storybook/vue3-vite": 10.3.0
     "eslint-plugin-storybook": "10.2.13"
+    "sb-addon-vue-csf": "0.0.3"
     "storybook": 10.3.0
     "vue-component-meta": 3.2.6
   style:
@@ -413,3 +414,6 @@ minimumReleaseAgeExclude:
   - "@payloadcms/translations@3.85.2"
   - "@payloadcms/ui@3.85.2"
   - payload@3.85.2
+
+patchedDependencies:
+  sb-addon-vue-csf@0.0.3: patches/sb-addon-vue-csf@0.0.3.patch
