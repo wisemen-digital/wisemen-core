@@ -3,11 +3,11 @@ import { expect } from 'expect'
 import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
 import { IsUniqueLanguage } from '#src/validators/is-unique-language.js'
-import { LocalizedStringItemCommand } from '#src/localized-string.command.js'
+import { LocalizedStringItemDto } from '#src/localized-string.dto.js'
 
 class TestDto {
   @IsUniqueLanguage()
-  items: LocalizedStringItemCommand[]
+  items: LocalizedStringItemDto[]
 }
 
 describe('IsUniqueLanguage validator', () => {
@@ -119,7 +119,7 @@ describe('IsUniqueLanguage validator', () => {
 
     it('fails when items is not an array', async () => {
       const dto = plainToInstance(TestDto, {
-        items: 'not an array' as unknown as LocalizedStringItemCommand[]
+        items: 'not an array' as unknown as LocalizedStringItemDto[]
       })
 
       const errors = await validate(dto)
@@ -130,7 +130,7 @@ describe('IsUniqueLanguage validator', () => {
 
     it('fails when items is null', async () => {
       const dto = plainToInstance(TestDto, {
-        items: null as unknown as LocalizedStringItemCommand[]
+        items: null as unknown as LocalizedStringItemDto[]
       })
 
       const errors = await validate(dto)
@@ -141,7 +141,7 @@ describe('IsUniqueLanguage validator', () => {
 
     it('fails when items is undefined', async () => {
       const dto = plainToInstance(TestDto, {
-        items: undefined as unknown as LocalizedStringItemCommand[]
+        items: undefined as unknown as LocalizedStringItemDto[]
       })
 
       const errors = await validate(dto)

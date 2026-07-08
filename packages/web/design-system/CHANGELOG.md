@@ -17,6 +17,28 @@
 
 
 
+
+## 1.12.0
+<sub>2026-07-08</sub>
+
+- [#1340](https://github.com/wisemen-digital/wisemen-core/pull/1340)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add `variant="branded"` prop to `UIMainLayout` — applies a deep brand gradient to the sidebar and topbar while leaving the main content area unaffected. Introduces a new `.branded` CSS theme class in `@wisemen/vue-core-tailwind-config` that maps all semantic color tokens to brand-scale values.
+- [#1348](https://github.com/wisemen-digital/wisemen-core/pull/1348)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add an optional tooltip description for the table header
+- [#1313](https://github.com/wisemen-digital/wisemen-core/pull/1313)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - `DashboardSidebarNavLink` is now the union of two explicit shapes, both exported from `@wisemen/vue-core-design-system`:
+  - **`SidebarNavLinkItem`** — a link that navigates directly to a route. Requires `to`, has no `subItems`.
+  - **`SidebarNavSubItemsItem`** — a link that expands into sub-items. Requires `subItems`, has no `to`.
+  Each shape also accepts an optional `type` discriminator (`'link'` or `'sub-items'`) for clearer intent and stricter narrowing, but it is not required — existing nav link objects keep working as-is:
+  ```ts
+  const links: DashboardSidebarNavLink[] = [
+    { type: 'link', label: 'Dashboard', icon: DashboardIcon, to: { path: '/' } },
+    { type: 'sub-items', label: 'Reports', icon: ReportsIcon, subItems: [...] },
+  ]
+  ```
+- [#1378](https://github.com/wisemen-digital/wisemen-core/pull/1378)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a `getDayConfig` prop to `DateField`, `DateRangeField`, `DatePicker`, and `DateRangePicker` to mark specific calendar days with a colored dot (e.g. birthdays or holidays)
+- [#1345](https://github.com/wisemen-digital/wisemen-core/pull/1345)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove shadow from the text area field
+- [#1346](https://github.com/wisemen-digital/wisemen-core/pull/1346)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - The vertical spacing between the title and the description of the dialog header will be 'xxs' instead of 'md'
+- [#1352](https://github.com/wisemen-digital/wisemen-core/pull/1352)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make the chevron in the select fully clickable
+- [#1370](https://github.com/wisemen-digital/wisemen-core/pull/1370)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Change copy of unsaved changes dialog chin
+
 ## 1.11.1
 <sub>2026-07-06</sub>
 
