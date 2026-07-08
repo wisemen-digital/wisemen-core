@@ -38,6 +38,7 @@ export class LocalizedStringDto {
   items: LocalizedStringItemDto[]
 
   static from(value: null): LocalizedStringDto | null 
+  static from(value: LocalizedValue[] | LocalizedString): LocalizedStringDto 
   static from(value: LocalizedValue[] | LocalizedString | null): LocalizedStringDto | null
   static from(value: LocalizedValue[] | LocalizedString | null): LocalizedStringDto | null {
     if (value === null) {
