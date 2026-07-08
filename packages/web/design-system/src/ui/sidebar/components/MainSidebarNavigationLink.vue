@@ -41,30 +41,21 @@ const router = useRouter()
 
 const hasSubItems = computed<boolean>(() => props.type === 'sub-items')
 
-const parentProps = computed<SidebarNavSubItemsItem | null>(() =>
-  hasSubItems.value ? props as SidebarNavSubItemsItem : null)
+const subItemsProps = computed<SidebarNavSubItemsItem | null>(() =>
+  isSubItemsProps(props) ? props : null)
 
-const leafProps = computed<SidebarNavLinkItem | null>(() =>
-  hasSubItems.value ? null : props as SidebarNavLinkItem)
-
-onMounted(() => {
-  if (props.type === 'link' && 'subItems' in props && props.subItems != null) {
-    console.warn(
-      '[MainSidebarNavigationLink] Received `subItems` but `type` is missing or set to \'link\'. '
-      + 'Set `type: \'sub-items\'` to render this item as an expandable group.',
-    )
-  }
-})
+const linkProps = computed<SidebarNavLinkItem | null>(() =>
+  isSubItemsProps(props) ? null : props)
 
 const usePopover = computed<boolean>(() =>
   hasSubItems.value && !isSidebarOpen.value)
 
-const isParentActive = computed<boolean>(() => {
+const isSubItemsActive = computed<boolean>(() => {
   if (props.isActive?.(route)) {
     return true
   }
 
-  return parentProps.value?.subItems.some((sub) => {
+  return subItemsProps.value?.subItems.some((sub) => {
     const resolved = router.resolve(sub.to)
 
     if (resolved.name != null && resolved.name === route.name) {
@@ -99,36 +90,53 @@ function onLinkClick(): void {
   closeIfFloatingSidebar()
   emit('click')
 }
+
+function isSubItemsProps(item: DashboardSidebarNavLink): item is SidebarNavSubItemsItem {
+  if (item.type === 'sub-items') {
+    return true
+  }
+
+  return false
+}
+
+onMounted(() => {
+  if (props.type === 'link' && 'subItems' in props && props.subItems != null) {
+    console.warn(
+      '[MainSidebarNavigationLink] Received `subItems` but `type` is missing or set to \'link\'. '
+      + 'Set `type: \'sub-items\'` to render this item as an expandable group.',
+    )
+  }
+})
 </script>
 
 <template>
   <MainSidebarNavigationLinkPopover
-    v-if="usePopover && parentProps !== null"
+    v-if="usePopover && subItemsProps !== null"
     v-model:is-popover-open="isPopoverOpen"
     :icon="props.icon"
-    :is-parent-active="isParentActive"
+    :is-sub-items-active="isSubItemsActive"
     :label="props.label"
-    :sub-items="parentProps.subItems"
+    :sub-items="subItemsProps.subItems"
   />
 
   <MainSidebarNavigationLinkCollapsible
-    v-else-if="hasSubItems && parentProps !== null"
+    v-else-if="hasSubItems && subItemsProps !== null"
     :icon="props.icon"
-    :is-parent-active="isParentActive"
+    :is-sub-items-active="isSubItemsActive"
     :is-tooltip-disabled="isTooltipDisabled"
     :keyboard-shortcut="props.keyboardShortcut"
     :label="props.label"
-    :sub-items="parentProps.subItems"
+    :sub-items="subItemsProps.subItems"
   />
 
   <MainSidebarNavigationLinkButton
-    v-else-if="leafProps !== null"
+    v-else-if="linkProps !== null"
     :icon="props.icon"
     :is-active="props.isActive"
     :is-tooltip-disabled="isTooltipDisabled"
     :keyboard-shortcut="props.keyboardShortcut"
     :label="props.label"
-    :to="leafProps.to"
+    :to="linkProps.to"
     @click="onLinkClick"
   >
     <template #right>

@@ -17,7 +17,7 @@ import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 interface Props {
-  isParentActive: boolean
+  isSubItemsActive: boolean
   icon: Component
   label: string
   subItems: {
@@ -48,7 +48,7 @@ function togglePopover(): void {
 </script>
 
 <template>
-  <MainSidebarNavigationLinkProvider :is-active="isParentActive">
+  <MainSidebarNavigationLinkProvider :is-active="isSubItemsActive">
     <RekaHoverCardRoot
       v-model:open="isPopoverOpen"
       :open-delay="150"
@@ -57,7 +57,7 @@ function togglePopover(): void {
       <RekaHoverCardTrigger :as-child="true">
         <ClickableElement>
           <button
-            :data-active="isParentActive || undefined"
+            :data-active="isSubItemsActive || undefined"
             :style="{
               height: sidebarLinkHeight,
               gridTemplateColumns: navigationLinkGridTemplateColumns,
