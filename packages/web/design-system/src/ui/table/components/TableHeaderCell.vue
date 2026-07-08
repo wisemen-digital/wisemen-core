@@ -33,6 +33,7 @@ import {
 } from '@/ui/tooltip/index'
 
 const props = withDefaults(defineProps<{
+  isCentered?: boolean
   isResizable?: boolean
   actionConfig?: {
     actions: Action[]
@@ -40,17 +41,22 @@ const props = withDefaults(defineProps<{
     label?: string | null
     metadata?: RegisteredActionContext['metadata']
   } | null
+  /**
+   * @deprecated Use `isCentered` instead.
+   */
   centerContent?: boolean
   columnIndex: number
   columnKey: string
   description?: string | null
   label: string | null
 }>(), {
+  isCentered: false,
   isResizable: true,
   actionConfig: null,
-  centerContent: false,
   description: null,
 })
+
+const isCentered = computed<boolean>(() => props.isCentered || props.centerContent === true)
 
 const i18n = useI18n()
 
@@ -112,7 +118,7 @@ const sortIcon = computed<Component | null>(() => {
         :aria-describedby="props.description !== null ? descriptionId : undefined"
         :class="{
           'first-of-type:border-r first-of-type:border-secondary': isScrolledFromLeft,
-          'justify-center': props.centerContent,
+          'justify-center': isCentered,
           'bg-secondary': !isGroupingEnabled,
           'first-of-type:left-10': isSelectable,
           'first-of-type:left-0': !isSelectable,
@@ -189,7 +195,7 @@ const sortIcon = computed<Component | null>(() => {
           <UIActionDropdownMenu
             :actions="props.actionConfig?.actions ?? []"
             :metadata="props.actionConfig?.metadata"
-            :current-context-only="props.actionConfig?.currentContextOnly ?? true"
+            :is-current-context-only="props.actionConfig?.currentContextOnly ?? true"
             popover-side="bottom"
             popover-align="end"
           >

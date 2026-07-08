@@ -41,6 +41,9 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  isDropdownKeptOpenOnSelect: null,
+  isPrioritizedPosition: true,
+  isSideFlipDisabled: true,
   disableSideFlip: true,
   getItemKey: null,
   keepDropdownOpenOnSelect: null,
@@ -50,7 +53,6 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  prioritizePosition: true,
   search: null,
   size: 'md',
 })
@@ -130,6 +132,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
     :is-label-hidden="props.isLabelHidden"
     :for="id"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />

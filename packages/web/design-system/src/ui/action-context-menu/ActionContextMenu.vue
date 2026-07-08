@@ -9,19 +9,27 @@ import type { RegisteredActionContext } from '@/register'
 import ActionContextMenuContent from '@/ui/action-context-menu/ActionContextMenuContent.vue'
 import { UIContextMenu } from '@/ui/context-menu/index'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  isCurrentContextOnly: boolean
   actions?: Action[]
-  currentContextOnly: boolean
+  /**
+   * @deprecated Use `isCurrentContextOnly` instead.
+   */
+  currentContextOnly?: boolean
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
-}>()
+}>(), {
+  currentContextOnly: undefined,
+})
 
 const emit = defineEmits<{
   open: []
 }>()
 
-if (!props.currentContextOnly) {
+const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
+
+if (!isCurrentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
 }

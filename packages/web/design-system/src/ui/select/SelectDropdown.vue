@@ -25,6 +25,9 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  isDropdownKeptOpenOnSelect: null,
+  isPrioritizedPosition: true,
+  isSideFlipDisabled: true,
   disableSideFlip: true,
   getItemKey: null,
   keepDropdownOpenOnSelect: null,
@@ -34,7 +37,6 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  prioritizePosition: true,
   search: null,
   size: 'md',
 })
@@ -57,12 +59,16 @@ const {
   isDropdownVisible, onTriggerKeyDown,
 } = useSelectDropdown()
 
+const isDropdownKeptOpenOnSelect = computed<boolean | null>(
+  () => props.isDropdownKeptOpenOnSelect ?? props.keepDropdownOpenOnSelect ?? null,
+)
+
 function onSelectOption(): void {
-  if (props.keepDropdownOpenOnSelect === true) {
+  if (isDropdownKeptOpenOnSelect.value === true) {
     return
   }
 
-  if (props.keepDropdownOpenOnSelect === false) {
+  if (isDropdownKeptOpenOnSelect.value === false) {
     isDropdownVisible.value = false
 
     return
@@ -105,9 +111,9 @@ useProvideSelectContext({
     :popover-side="props.popoverSide"
     :popover-width="props.popoverWidth"
     :is-popover-arrow-visible="props.isPopoverArrowVisible"
-    :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-    :prioritize-position="props.prioritizePosition"
-    :disable-side-flip="props.disableSideFlip"
+    :is-update-on-layout-shift-disabled="props.isUpdateOnLayoutShiftDisabled"
+    :is-prioritized-position="props.isPrioritizedPosition"
+    :is-side-flip-disabled="props.isSideFlipDisabled"
     @keydown="onTriggerKeyDown"
   >
     <template #trigger>

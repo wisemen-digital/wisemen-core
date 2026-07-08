@@ -13,20 +13,28 @@ import ActionDropdownMenuContent from '@/ui/action-dropdown-menu/ActionDropdownM
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 
-const props = defineProps<DropdownMenuProps & {
+const props = withDefaults(defineProps<DropdownMenuProps & {
+  isCurrentContextOnly: boolean
   actions?: Action[]
-  currentContextOnly: boolean
+  /**
+   * @deprecated Use `isCurrentContextOnly` instead.
+   */
+  currentContextOnly?: boolean
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
-}>()
+}>(), {
+  currentContextOnly: undefined,
+})
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,
   required: false,
 })
 
-if (!props.currentContextOnly) {
+const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
+
+if (!isCurrentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
 }

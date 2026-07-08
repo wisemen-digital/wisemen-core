@@ -1,19 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import { RouterLink } from 'vue-router'
 
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  isIndented?: boolean
   label: string
+  /**
+   * @deprecated Use `isIndented` instead.
+   */
   noIndent?: boolean
   to: RouteLocationRaw
-}>()
+}>(), {
+  isIndented: true,
+})
 
 const emit = defineEmits<{
   click: []
 }>()
+
+const isIndented = computed<boolean>(() => props.noIndent === true ? false : props.isIndented)
 
 const {
   closeIfFloatingSidebar, sidebarIconCellSize,
@@ -40,10 +49,10 @@ function onClick(): void {
       <div
         :data-active="isActive || undefined"
         :style="{
-          paddingLeft: props.noIndent ? undefined : subItemPaddingLeft,
+          paddingLeft: isIndented ? subItemPaddingLeft : undefined,
           height: '1.5rem',
         }"
-        :class="props.noIndent ? 'px-sm' : 'pr-md'"
+        :class="isIndented ? 'pr-md' : 'px-sm'"
         class="
           group flex items-center rounded-md duration-100
           hover:bg-fg-primary/4

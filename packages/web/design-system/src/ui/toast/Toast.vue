@@ -41,7 +41,7 @@ const variants = computed(() => toastVariants({
 <template>
   <ToastLayout :data-toast-id="props.toast.id">
     <ToastCloseButton
-      v-if="(props.toast.dismissible ?? true) && props.toast.variant !== 'loading'"
+      v-if="(props.toast.isDismissible ?? true) && props.toast.variant !== 'loading'"
       @close="emit('closeToast')"
     />
 

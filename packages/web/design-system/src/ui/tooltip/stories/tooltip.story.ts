@@ -16,9 +16,17 @@ import TooltipVariantsPlayground from './TooltipVariantsPlayground.vue'
 const meta = {
   title: 'Components/Tooltip',
   argTypes: {
+    isCloseOnTriggerClickDisabled: {
+      control: 'boolean',
+      description: 'When true, clicking on trigger won\'t close the tooltip',
+    },
     isDisabled: {
       control: 'boolean',
       description: 'When true, the tooltip will be hidden',
+    },
+    isHoverableContentDisabled: {
+      control: 'boolean',
+      description: 'When true, hovering the content will close the tooltip as the pointer leaves the trigger',
     },
     isPopoverArrowVisible: {
       control: 'boolean',
@@ -27,14 +35,6 @@ const meta = {
     delayDuration: {
       control: 'number',
       description: 'The duration in milliseconds to wait before showing the tooltip',
-    },
-    disableCloseOnTriggerClick: {
-      control: 'boolean',
-      description: 'When true, clicking on trigger won\'t close the tooltip',
-    },
-    disableHoverableContent: {
-      control: 'boolean',
-      description: 'When true, hovering the content will close the tooltip as the pointer leaves the trigger',
     },
     popoverAlign: {
       control: 'select',

@@ -5,15 +5,15 @@ import ConfirmDialog from '@/ui/dialog/ConfirmDialog.vue'
 import type { DialogSize } from '@/ui/dialog/dialog.props'
 
 withDefaults(defineProps<{
+  isClickOutsideDisabled?: boolean
   isDestructive?: boolean
+  isEscDisabled?: boolean
   isOpen?: boolean
-  preventClickOutside?: boolean
-  preventEsc?: boolean
   size?: DialogSize
 }>(), {
+  isClickOutsideDisabled: false,
   isDestructive: true,
-  preventClickOutside: false,
-  preventEsc: false,
+  isEscDisabled: false,
   size: 'xs',
 })
 
@@ -35,8 +35,8 @@ function onCancel(): void {
     :is-open="isOpen"
     :is-destructive="isDestructive"
     :size="size"
-    :prevent-click-outside="preventClickOutside"
-    :prevent-esc="preventEsc"
+    :is-click-outside-disabled="isClickOutsideDisabled"
+    :is-esc-disabled="isEscDisabled"
     :icon="Trash01Icon"
     title="Delete item"
     description="Are you sure you want to delete this item? This action cannot be undone."

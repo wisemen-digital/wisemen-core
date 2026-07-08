@@ -164,12 +164,12 @@ function onClearFiltersAndSearch(): void {
     :is-selectable="props.isSelectable"
     :header-actions="props.headerActions"
     :action-group="props.actionGroup"
-    :disable-column-resize="props.disableColumnResize"
+    :is-column-resize-disabled="props.isColumnResizeDisabled"
     :variant="props.variant"
     :sort="props.sort"
     @clear-filters-and-search="onClearFiltersAndSearch"
   >
-    <TableScrollContainer :disable-scroll="props.data.length === 0">
+    <TableScrollContainer :is-scroll-disabled="props.data.length === 0">
       <TableHeader v-if="data.length > 0 || props.isLoading">
         <TableHeaderCheckboxCell v-if="props.isSelectable" />
         <TableHeaderCell
@@ -179,7 +179,7 @@ function onClearFiltersAndSearch(): void {
           :is-resizable="columnIndex < props.columns.length - 1"
           :label="column.headerLabel"
           :description="column.headerDescription ?? null"
-          :center-content="column.centerHeaderContent ?? false"
+          :is-centered="(column.isCenteredHeaderContent ?? column.centerHeaderContent) ?? false"
           :action-config="column.actionConfig"
           :column-key="column.key"
         />
@@ -222,13 +222,13 @@ function onClearFiltersAndSearch(): void {
           <TableBodyGroup
             v-for="group of subGroupedItems"
             :key="group.key"
-            :default-open="group.defaultOpen"
+            :is-open-by-default="group.isOpenByDefault ?? group.defaultOpen"
             :label="group.label"
           >
             <TableBodySubGroup
               v-for="subGroup of group.subGroups"
               :key="subGroup.key"
-              :default-open="subGroup.defaultOpen"
+              :is-open-by-default="subGroup.isOpenByDefault ?? subGroup.defaultOpen"
               :items="props.isSelectable ? subGroup.items : []"
               :label="subGroup.label"
             >
@@ -257,7 +257,7 @@ function onClearFiltersAndSearch(): void {
           <TableBodyGroup
             v-for="group of groupedItems"
             :key="group.key"
-            :default-open="group.defaultOpen"
+            :is-open-by-default="group.isOpenByDefault ?? group.defaultOpen"
             :items="props.isSelectable ? group.items : []"
             :label="group.label"
             :header-cells="props.groupHeaderCells?.(group)"

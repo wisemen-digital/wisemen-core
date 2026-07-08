@@ -10,12 +10,12 @@ import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
 import DialogHeader from '@/ui/dialog/DialogHeader.vue'
 
 const props = withDefaults(defineProps<ConfirmDialogProps>(), {
+  isClickOutsideDisabled: false,
   isDestructive: false,
+  isEscDisabled: false,
   cancelLabel: null,
   confirmLabel: null,
   icon: null,
-  preventClickOutside: false,
-  preventEsc: false,
 })
 
 const emit = defineEmits<{
@@ -49,6 +49,8 @@ function onClose(): void {
 <template>
   <Dialog
     :has-close-button="false"
+    :is-click-outside-disabled="props.isClickOutsideDisabled"
+    :is-esc-disabled="props.isEscDisabled"
     :prevent-click-outside="props.preventClickOutside"
     :prevent-esc="props.preventEsc"
     size="xxs"
