@@ -1966,6 +1966,34 @@ importers:
         specifier: catalog:peer
         version: 5.9.3
 
+  packages/api/nestjs-typesense:
+    dependencies:
+      typesense:
+        specifier: 3.0.5
+        version: 3.0.5(@babel/runtime@7.29.7)
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.6.1)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/node-doc-processor:
     dependencies:
       '@wisemen/pgboss-nestjs-job':
@@ -9729,6 +9757,9 @@ packages:
     resolution: {integrity: sha512-BASOg+YwO2C+346x3LZOeoovTIoTrRqEsqMa6fmfAV0P+U9mFr9NsyOEpiYvFjbc64NMrSswhV50WdXzdb/Z5A==}
     engines: {node: '>=4'}
 
+  axios@1.13.5:
+    resolution: {integrity: sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==}
+
   axios@1.16.0:
     resolution: {integrity: sha512-6hp5CwvTPlN2A31g5dxnwAX0orzM7pmCRDLnZSX772mv8WDqICwFjowHuPs04Mc8deIld1+ejhtaMn5vp6b+1w==}
 
@@ -12352,6 +12383,10 @@ packages:
     resolution: {integrity: sha512-i24m8rpwhmPIS4zscNzK6MSEhk0DUWa/8iYQWxhffV8jkI4Phvs3F+quL5xvS0gdQR0FyTCMMH33Y78dDTzzIw==}
     engines: {node: '>=18'}
 
+  loglevel@1.9.2:
+    resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
+    engines: {node: '>= 0.6.0'}
+
   long@5.3.2:
     resolution: {integrity: sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==}
 
@@ -14644,6 +14679,12 @@ packages:
     resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
+
+  typesense@3.0.5:
+    resolution: {integrity: sha512-Pw/yWosbqEOFMM/wQDsnS8FA6r3Qp5ilxuqZTMBoUc95SGCEBflMd39kvDEZZFoTORzNDxCLiiQ+LfYJTl1ulQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@babel/runtime': ^7.23.2
 
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
@@ -22155,6 +22196,14 @@ snapshots:
 
   axe-core@4.11.1: {}
 
+  axios@1.13.5:
+    dependencies:
+      follow-redirects: 1.16.0
+      form-data: 4.0.6
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axios@1.16.0:
     dependencies:
       follow-redirects: 1.16.0
@@ -25122,6 +25171,8 @@ snapshots:
       chalk: 5.6.2
       is-unicode-supported: 1.3.0
 
+  loglevel@1.9.2: {}
+
   long@5.3.2: {}
 
   longest-streak@3.1.0: {}
@@ -27863,6 +27914,15 @@ snapshots:
   typescript@5.8.2: {}
 
   typescript@5.9.3: {}
+
+  typesense@3.0.5(@babel/runtime@7.29.7):
+    dependencies:
+      '@babel/runtime': 7.29.7
+      axios: 1.13.5
+      loglevel: 1.9.2
+      tslib: 2.8.1
+    transitivePeerDependencies:
+      - debug
 
   uc.micro@2.1.0: {}
 
