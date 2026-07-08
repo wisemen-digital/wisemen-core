@@ -126,9 +126,9 @@ const navigationLinkGridTemplateColumns = `${sidebarIconCellSize} 1fr`
 
     <RekaCollapsibleContent
       class="
+        overflow-hidden
         data-[state=closed]:animate-collapsible-up
         data-[state=open]:animate-collapsible-down
-        overflow-hidden
       "
     >
       <div
