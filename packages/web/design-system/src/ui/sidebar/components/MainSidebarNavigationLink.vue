@@ -11,8 +11,8 @@ import MainSidebarNavigationLinkPopover from '@/ui/sidebar/components/MainSideba
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import type {
   DashboardSidebarNavLink,
-  SidebarNavLeafItem,
-  SidebarNavParentItem,
+  SidebarNavLinkItem,
+  SidebarNavSubItemsItem,
 } from '@/ui/sidebar/types/mainSidebar.type'
 
 export type Props = DashboardSidebarNavLink
@@ -35,11 +35,11 @@ const {
 const route = useRoute()
 const router = useRouter()
 
-const parentProps = computed<SidebarNavParentItem | null>(() =>
-  props.type === 'sub-items' ? props as SidebarNavParentItem : null)
+const parentProps = computed<SidebarNavSubItemsItem | null>(() =>
+  props.type === 'sub-items' ? props as SidebarNavSubItemsItem : null)
 
-const leafProps = computed<SidebarNavLeafItem | null>(() =>
-  props.type === 'link' ? props as SidebarNavLeafItem : null)
+const leafProps = computed<SidebarNavLinkItem | null>(() =>
+  props.type === 'link' ? props as SidebarNavLinkItem : null)
 
 const hasSubItems = computed<boolean>(() => props.type === 'sub-items')
 
