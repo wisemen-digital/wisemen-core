@@ -92,15 +92,11 @@ function onLinkClick(): void {
 }
 
 function isSubItemsProps(item: DashboardSidebarNavLink): item is SidebarNavSubItemsItem {
-  if (item.type === 'sub-items') {
-    return true
-  }
-
-  return false
+  return item.type === 'sub-items'
 }
 
 onMounted(() => {
-  if (props.type === 'link' && 'subItems' in props && props.subItems != null) {
+  if (isSubItemsProps(props) && props.subItems != null) {
     console.warn(
       '[MainSidebarNavigationLink] Received `subItems` but `type` is missing or set to \'link\'. '
       + 'Set `type: \'sub-items\'` to render this item as an expandable group.',

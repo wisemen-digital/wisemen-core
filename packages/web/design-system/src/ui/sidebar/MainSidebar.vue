@@ -14,6 +14,7 @@ import { useI18n } from 'vue-i18n'
 
 import { useIsReducedMotion } from '@/composables/useIsReducedMotion.composable'
 import MainSidebarContent from '@/ui/sidebar/components/MainSidebarContent.vue'
+import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebarTransition from '@/ui/sidebar/components/MainSidebarTransition.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import type { MainSidebarProps } from '@/ui/sidebar/mainSidebar.props'
@@ -46,6 +47,7 @@ setCollapsedVariant(props.collapsedVariant)
         :as-child="true"
         :force-mount="true"
       >
+        <MainSidebarNavigationLink />
         <MainSidebarTransition
           class="absolute z-6 h-full w-64 p-md outline-none"
         >
