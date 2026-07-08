@@ -1,3 +1,4 @@
+import { getDefaultEventOptions } from '@wisemen/payload-core-utils'
 import type {
   Field,
   GroupField,
@@ -18,6 +19,7 @@ export function getNavLinkField({
   name,
   label,
 }: GetNavLinkFieldOptions): GroupField {
+  const defaultEventOptions = getDefaultEventOptions()
   const fields: Field[] = [
     {
       name: 'label',
@@ -63,7 +65,7 @@ export function getNavLinkField({
       },
       defaultValue: undefined,
       enumName: 'cta_event',
-      options: CTA_EVENTS,
+      options: defaultEventOptions.length > 0 ? defaultEventOptions : CTA_EVENTS,
       required: true,
       type: 'select',
     },
@@ -115,7 +117,7 @@ export function getNavLinkField({
             condition: (_, siblingData) => siblingData?.navType === 'event',
           },
           enumName: 'cta_event',
-          options: CTA_EVENTS,
+          options: defaultEventOptions.length > 0 ? defaultEventOptions : CTA_EVENTS,
           required: true,
           type: 'select',
         },

@@ -1,4 +1,5 @@
 /* eslint-disable func-style */
+import { getDefaultLinkableCollections } from '@wisemen/payload-core-utils'
 import { defu } from 'defu'
 import type {
   CollectionSlug,
@@ -51,10 +52,12 @@ export const getLinkField: LinkType = (
     name = 'link',
     canBeExternal = true,
     disableLabel = true,
-    linkTo = DEFAULT_LINK_TO,
+    linkTo,
     overrides = {},
   } = {},
 ) => {
+  const resolvedLinkTo = linkTo ?? getDefaultLinkableCollections()
+
   const linkResult: GroupField = {
     name,
     admin: {
@@ -106,7 +109,7 @@ export const getLinkField: LinkType = (
         },
       },
       label: 'Link',
-      relationTo: linkTo,
+      relationTo: resolvedLinkTo.length > 0 ? resolvedLinkTo : DEFAULT_LINK_TO,
       required: isRequired,
       type: 'relationship',
     },

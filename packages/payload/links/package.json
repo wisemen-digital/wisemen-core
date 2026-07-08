@@ -35,13 +35,16 @@
     "lint:fix": "eslint --fix"
   },
   "peerDependencies": {
+    "@wisemen/payload-core-utils": "workspace:^",
     "payload": "catalog:payload-peer"
   },
   "dependencies": {
+    "@wisemen/payload-core-utils": "workspace:^",
     "defu": "catalog:general",
     "zod": "catalog:general"
   },
   "devDependencies": {
+    "@wisemen/payload-core-utils": "workspace:^",
     "payload": "catalog:payload",
     "@wisemen/eslint-config-vue": "catalog:lint-web",
     "eslint": "catalog:lint-web",
