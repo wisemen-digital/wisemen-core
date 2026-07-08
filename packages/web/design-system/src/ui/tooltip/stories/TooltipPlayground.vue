@@ -4,19 +4,19 @@ import type { TooltipProps } from '@/ui/tooltip/tooltip.props'
 import Tooltip from '@/ui/tooltip/Tooltip.vue'
 
 const props = withDefaults(defineProps<{
+  isCloseOnTriggerClickDisabled?: boolean
   isDisabled?: boolean
+  isHoverableContentDisabled?: boolean
   isPopoverArrowVisible?: boolean
   delayDuration?: number
-  disableCloseOnTriggerClick?: boolean
-  disableHoverableContent?: boolean
   popoverAlign?: TooltipProps['popoverAlign']
   popoverSide?: TooltipProps['popoverSide']
 }>(), {
+  isCloseOnTriggerClickDisabled: false,
   isDisabled: false,
+  isHoverableContentDisabled: false,
   isPopoverArrowVisible: false,
   delayDuration: undefined,
-  disableCloseOnTriggerClick: false,
-  disableHoverableContent: false,
   popoverAlign: 'center',
   popoverSide: 'top',
 })
@@ -25,8 +25,8 @@ const props = withDefaults(defineProps<{
 <template>
   <Tooltip
     :delay-duration="props.delayDuration"
-    :disable-close-on-trigger-click="props.disableCloseOnTriggerClick"
-    :disable-hoverable-content="props.disableHoverableContent"
+    :is-close-on-trigger-click-disabled="props.isCloseOnTriggerClickDisabled"
+    :is-hoverable-content-disabled="props.isHoverableContentDisabled"
     :is-disabled="props.isDisabled"
     :is-popover-arrow-visible="props.isPopoverArrowVisible"
     :popover-align="props.popoverAlign"

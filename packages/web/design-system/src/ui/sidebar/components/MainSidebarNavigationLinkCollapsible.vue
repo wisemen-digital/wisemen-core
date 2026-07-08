@@ -21,7 +21,7 @@ import MainSidebarNavigationSubItem from '@/ui/sidebar/components/MainSidebarNav
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 
 interface Props {
-  isParentActive: boolean
+  isSubItemsActive: boolean
   isTooltipDisabled: boolean
   icon: Component
   keyboardShortcut?: KeyboardShortcut | null
@@ -44,8 +44,8 @@ const {
   sidebarLinkHeight,
 } = useMainSidebar()
 
-watch(() => props.isParentActive, (isParentActive) => {
-  if (isParentActive) {
+watch(() => props.isSubItemsActive, (isSubItemsActive) => {
+  if (isSubItemsActive) {
     isCollapsibleOpen.value = true
   }
 })
@@ -65,7 +65,7 @@ const navigationLinkGridTemplateColumns = `${sidebarIconCellSize} 1fr`
       popover-side="right"
     >
       <ClickableElement>
-        <MainSidebarNavigationLinkProvider :is-active="isParentActive">
+        <MainSidebarNavigationLinkProvider :is-active="isSubItemsActive">
           <button
             :style="{
               height: sidebarLinkHeight,

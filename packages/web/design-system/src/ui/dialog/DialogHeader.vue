@@ -14,10 +14,10 @@ import RowLayout from '@/ui/row-layout/RowLayout.vue'
 import { UISeparator } from '@/ui/separator/index'
 
 const props = withDefaults(defineProps<DialogHeaderProps>(), {
+  hasCloseButton: true,
+  hasSeparator: true,
   icon: null,
   iconVariant: 'brand',
-  showCloseButton: true,
-  showSeparator: true,
 })
 
 const iconVariantStyle = tv({
@@ -50,6 +50,13 @@ const iconVariantStyle = tv({
 const iconClasses = computed(() => iconVariantStyle({
   variant: props.iconVariant,
 }))
+
+const hasSeparator = computed<boolean>(
+  () => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator,
+)
+const isDescriptionHidden = computed<boolean>(
+  () => props.isDescriptionHidden || props.hideDescription === true,
+)
 
 const dialogContext = useInjectDialogContext(null)
 </script>
@@ -93,7 +100,7 @@ const dialogContext = useInjectDialogContext(null)
         <!--  eslint-disable vue/no-v-text-v-html-on-component -->
         <RekaDialogDescription
           :class="{
-            'sr-only': props.hideDescription,
+            'sr-only': isDescriptionHidden,
           }"
           as="p"
           class="text-xs text-tertiary"
@@ -103,7 +110,7 @@ const dialogContext = useInjectDialogContext(null)
     </RowLayout>
 
     <UISeparator
-      v-if="props.showSeparator"
+      v-if="hasSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToTop.value
           ? 'opacity-0'

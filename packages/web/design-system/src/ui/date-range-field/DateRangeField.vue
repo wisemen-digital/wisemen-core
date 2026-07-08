@@ -130,6 +130,7 @@ useProvideDateRangeFieldContext({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />
@@ -267,7 +268,7 @@ useProvideDateRangeFieldContext({
                 <div class="flex">
                   <div class="flex flex-1 flex-col">
                     <DateRangeFieldCalendarHeader
-                      :show-next="isSingleMonth"
+                      :has-next="isSingleMonth"
                       side="left"
                     />
                     <div class="p-xl pt-0">

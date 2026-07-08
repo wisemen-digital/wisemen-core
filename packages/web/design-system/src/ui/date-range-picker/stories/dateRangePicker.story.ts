@@ -17,7 +17,7 @@ const meta = {
       control: 'text',
       description: 'The minimum selectable date in ISO format (YYYY-MM-DD)',
     },
-    showPresets: {
+    hasPresets: {
       control: 'boolean',
       description: 'Whether to show the presets sidebar',
     },
@@ -33,13 +33,13 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
-    showPresets: true,
+    hasPresets: true,
   },
 }
 
 export const WithoutPresets: Story = {
   args: {
-    showPresets: false,
+    hasPresets: false,
   },
 }
 
@@ -50,6 +50,6 @@ export const WithDateConstraints: Story = {
       month: 4,
       year: 2026,
     }),
-    showPresets: true,
+    hasPresets: true,
   },
 }

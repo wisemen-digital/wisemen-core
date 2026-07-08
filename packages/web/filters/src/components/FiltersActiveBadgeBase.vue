@@ -64,7 +64,7 @@ const clearFilterAction = createAction({
         <UIActionTrigger
           v-slot="{ keyboardShortcut, label }"
           :action="clearFilterAction"
-          :current-context-only="true"
+          :is-current-context-only="true"
         >
           <UIIconButton
             :icon="XCloseIcon"

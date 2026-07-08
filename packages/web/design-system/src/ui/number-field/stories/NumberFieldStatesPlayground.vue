@@ -64,7 +64,7 @@ const requiredValue = ref<number | null>(null)
     />
     <NumberField
       v-model="counterValue"
-      :show-controls="true"
+      :has-controls="true"
       :step="1"
       class="w-64"
       label="Counter"
@@ -72,7 +72,7 @@ const requiredValue = ref<number | null>(null)
     <NumberField
       v-model="disabledCounterValue"
       :is-disabled="true"
-      :show-controls="true"
+      :has-controls="true"
       :step="1"
       class="w-64"
       label="Disabled Counter"
@@ -80,7 +80,7 @@ const requiredValue = ref<number | null>(null)
     <NumberField
       v-model="readonlyCounterValue"
       :is-readonly="true"
-      :show-controls="true"
+      :has-controls="true"
       :step="1"
       class="w-64"
       label="Read Only Counter"

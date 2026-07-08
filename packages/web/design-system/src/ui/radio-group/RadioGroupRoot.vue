@@ -9,6 +9,7 @@ import type { RadioGroupProps } from '@/ui/radio-group/radioGroup.props'
 
 const props = withDefaults(defineProps<RadioGroupProps>(), {
   isDisabled: false,
+  isErrorMessageHidden: false,
   disabledReason: null,
   hideErrorMessage: false,
   orientation: 'vertical',

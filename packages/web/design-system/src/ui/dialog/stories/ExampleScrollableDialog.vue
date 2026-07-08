@@ -10,14 +10,14 @@ import DialogFooterPrimary from '@/ui/dialog/DialogFooterPrimary.vue'
 import DialogHeader from '@/ui/dialog/DialogHeader.vue'
 
 withDefaults(defineProps<{
+  isClickOutsideDisabled?: boolean
+  isEscDisabled?: boolean
   isOpen?: boolean
-  preventClickOutside?: boolean
-  preventEsc?: boolean
   size?: DialogSize
 }>(), {
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
   isOpen: false,
-  preventClickOutside: false,
-  preventEsc: false,
   size: 'md',
 })
 
@@ -34,8 +34,8 @@ function onClose(): void {
   <Dialog
     :is-open="isOpen"
     :size="size"
-    :prevent-click-outside="preventClickOutside"
-    :prevent-esc="preventEsc"
+    :is-click-outside-disabled="isClickOutsideDisabled"
+    :is-esc-disabled="isEscDisabled"
     @close="$emit('close')"
     @update:is-open="!$event && $emit('close')"
   >

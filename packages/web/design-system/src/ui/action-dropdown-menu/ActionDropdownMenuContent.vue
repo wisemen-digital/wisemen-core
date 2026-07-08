@@ -126,7 +126,7 @@ useEventListener('keydown', () => {
               :action="action"
               :context="context"
               :preview="preview"
-              :close-on-select="parentAction?.multiSelectSubActions !== true"
+              :is-closed-on-select="parentAction?.multiSelectSubActions !== true"
             />
           </UIDropdownMenuGroup>
         </template>

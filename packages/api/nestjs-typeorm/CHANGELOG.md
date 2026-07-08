@@ -1,6 +1,13 @@
 # @wisemen/nestjs-typeorm
 
 
+
+## 1.2.0
+<sub>2026-07-08</sub>
+
+- [#1217](https://github.com/wisemen-digital/wisemen-core/pull/1217)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add support for embedded and relations with insert type
+- [#1217](https://github.com/wisemen-digital/wisemen-core/pull/1217)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add support for embbeded and relations on entityInsert type
+
 ## 1.1.2
 <sub>2026-06-25</sub>
 

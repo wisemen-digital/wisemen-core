@@ -60,7 +60,7 @@ useProvideTableBodyRowContext({
 <template>
   <UIActionContextMenu
     :actions="actions"
-    :current-context-only="true"
+    :is-current-context-only="true"
     :models="props.actionModel === null ? [] : [props.actionModel]"
   >
     <UIActionFocus

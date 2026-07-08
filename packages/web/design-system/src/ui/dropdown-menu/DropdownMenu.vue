@@ -50,8 +50,18 @@ function resolveHtmlElement(value: unknown): HTMLElement | null {
   return null
 }
 
+const isContentPositionFixed = computed<boolean>(
+  () => props.isContentPositionFixed || props.fixedContentPosition === true,
+)
+const isPrioritizedPosition = computed<boolean>(
+  () => props.isPrioritizedPosition || props.prioritizePosition === true,
+)
+const isUpdateOnLayoutShiftDisabled = computed<boolean>(
+  () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
+)
+
 watch(isOpen, (open) => {
-  if (!open || !props.fixedContentPosition || frozenAnchorRef.value === null) {
+  if (!open || !isContentPositionFixed.value || frozenAnchorRef.value === null) {
     return
   }
 
@@ -68,7 +78,7 @@ watch(isOpen, (open) => {
 })
 
 const anchorReference = computed<HTMLElement | undefined>(() => {
-  if (props.fixedContentPosition) {
+  if (isContentPositionFixed.value) {
     return frozenAnchorRef.value ?? undefined
   }
 
@@ -78,7 +88,7 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
 
 <template>
   <div
-    v-if="props.fixedContentPosition"
+    v-if="isContentPositionFixed"
     ref="frozenAnchor"
     class="pointer-events-none fixed"
   />
@@ -108,8 +118,8 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
             'w-(--reka-dropdown-menu-trigger-width)': props.popoverWidth === 'anchor-width',
             'w-(--reka-dropdown-menu-content-available-width)': props.popoverWidth === 'available-width',
           }"
-          :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-          :prioritize-position="props.prioritizePosition"
+          :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
+          :prioritize-position="isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
           position-strategy="absolute"
           sticky="always"

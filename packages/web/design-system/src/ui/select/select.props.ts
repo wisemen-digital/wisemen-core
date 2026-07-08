@@ -29,11 +29,17 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    */
   hasVirtualScroll?: boolean | null
   /**
+   * Whether to keep the dropdown open after selecting an option.
+   * @default null - will close on single select, stay open on multi select
+   */
+  isDropdownKeptOpenOnSelect?: boolean | null
+  /**
    * Whether to hide the chevron trigger icon on the right side of the select.
    * @default false
    */
   isTriggerHidden?: boolean
   contentWidthClass?: string
+
   /**
    * Function to display the item label.
    */
@@ -56,8 +62,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    */
   items: SelectItem<GetValue<TValue>>[]
   /**
-   * Whether to keep the dropdown open after selecting an option.
-   * @default null - will close on single select, stay open on multi select
+   * @deprecated Use `isDropdownKeptOpenOnSelect` instead.
    */
   keepDropdownOpenOnSelect?: boolean | null
   /**
@@ -65,6 +70,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default null
    */
   limit?: number | null
+
   /**
    * The search mode of the select.
    * - `local`: filtering is done on the client side

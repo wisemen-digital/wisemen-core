@@ -36,25 +36,31 @@ interface DashboardSidebarNavLinkBase extends WithKeyboardShortcut {
   onClick?: () => void
 }
 
-export interface SidebarNavLeafItem extends DashboardSidebarNavLinkBase {
+export interface SidebarNavLinkItem extends DashboardSidebarNavLinkBase {
   /**
    * Route location to navigate to
    */
   to: RegisteredRouteLocationRaw
-  type: 'link'
-
+  /**
+   * Discriminator, defaults to `'link'` when omitted.
+   */
+  type?: 'link'
 }
 
-export interface SidebarNavParentItem extends DashboardSidebarNavLinkBase {
+export interface SidebarNavSubItemsItem extends DashboardSidebarNavLinkBase {
   /**
    * 1-level-deep sub-items. When ≤3, rendered inline in expanded sidebar.
    * When >3 or sidebar is minified/floating, rendered in a popover.
    */
   subItems: DashboardSidebarNavSubItem[]
-  type: 'sub-items'
+  /**
+   * Discriminator. Required to render this item as an expandable group —
+   * without it, `type` defaults to `'link'` and a dev warning is logged.
+   */
+  type?: 'sub-items'
 }
 
-export type DashboardSidebarNavLink = SidebarNavLeafItem | SidebarNavParentItem
+export type DashboardSidebarNavLink = SidebarNavLinkItem | SidebarNavSubItemsItem
 
 export interface DashboardSidebarGroup {
   /**

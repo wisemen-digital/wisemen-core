@@ -17,11 +17,16 @@ type InferColumnItem<T>
       : T
 
 export interface TableColumn<TElement, TKey extends string = string> {
+  isCenteredHeaderContent?: boolean
   actionConfig?: {
     actions: Action[]
     metadata?: RegisteredActionContext['metadata']
   }
+  /**
+   * @deprecated Use `isCenteredHeaderContent` instead.
+   */
   centerHeaderContent?: boolean
+  headerDescription?: string
   headerLabel: string
   key: TKey
   size?: TableColumnSize
@@ -31,6 +36,10 @@ export interface TableColumn<TElement, TKey extends string = string> {
 export type TableFlatData<T> = T
 
 export interface TableGroupedData<T> {
+  isOpenByDefault?: boolean
+  /**
+   * @deprecated Use `isOpenByDefault` instead.
+   */
   defaultOpen?: boolean
   items: T[]
   key: string
@@ -38,10 +47,18 @@ export interface TableGroupedData<T> {
 }
 
 export interface TableSubGroupedData<T> {
+  isOpenByDefault?: boolean
+  /**
+   * @deprecated Use `isOpenByDefault` instead.
+   */
   defaultOpen?: boolean
   key: string
   label: string
   subGroups: {
+    isOpenByDefault?: boolean
+    /**
+     * @deprecated Use `isOpenByDefault` instead.
+     */
     defaultOpen?: boolean
     items: T[]
     key: string

@@ -7,4 +7,10 @@ layout: doc
 
 This section contains Payload CMS package documentation.
 
-Right now, it focuses on `@wisemen/payload-core-translate`, the translation plugin for Payload apps.
+Available packages:
+
+- `@wisemen/payload-core-auth`
+- `@wisemen/payload-core-links`
+- `@wisemen/payload-core-settings`
+- `@wisemen/payload-core-translate`
+- `@wisemen/payload-core-utils`

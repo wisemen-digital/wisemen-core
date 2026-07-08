@@ -59,7 +59,7 @@ function toggleSidebar(): void {
   >
     <ActionTrigger
       :action="toggleMainSidebarAction"
-      :current-context-only="false"
+      :is-current-context-only="false"
       :group-priority="GroupPriority.NAVIGATION"
     >
       <Toggle

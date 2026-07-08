@@ -41,6 +41,10 @@ const gridEl = computed<HTMLElement | null>(
   () => (scrollContainerEl.value?.children[0] ?? null) as HTMLElement | null,
 )
 
+const isColumnResizeDisabled = computed<boolean>(
+  () => props.isColumnResizeDisabled === true || props.disableColumnResize === true,
+)
+
 const {
   isResizing,
   autoFitColumnsAction,
@@ -52,7 +56,7 @@ const {
   gridEl,
   computed(() => props.isInitialized),
   computed(() => props.actionGroup),
-  computed(() => props.disableColumnResize),
+  isColumnResizeDisabled,
   computed(() => props.isSelectable),
   computed(() => props.hasActiveSearch ?? false),
   computed(() => props.activeFilterCount ?? 0),
@@ -83,7 +87,7 @@ useInfiniteScroll(scrollContainerEl, () => {
 })
 
 useProvideTableContext({
-  isColumnResizeDisabled: computed(() => props.disableColumnResize),
+  isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isGroupingEnabled: computed(() => isGroupingEnabled.value),
   isResizingColumn: isResizing,
   isScrollableVertically: computed(() => isScrollableVertically.value),

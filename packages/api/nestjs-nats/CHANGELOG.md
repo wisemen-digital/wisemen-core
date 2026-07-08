@@ -2,6 +2,13 @@
 
 
 
+
+## 1.1.0
+<sub>2026-07-08</sub>
+
+- [#1380](https://github.com/wisemen-digital/wisemen-core/pull/1380)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove `nkey` config on client, pass authenticator instead. Add optional callback on connection error.
+- [#1381](https://github.com/wisemen-digital/wisemen-core/pull/1381)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: handle service messages in parallel
+
 ## 1.0.0
 <sub>2026-06-25</sub>
 

@@ -216,7 +216,7 @@ useTemporaryActions(todayAction)
   <UIActionTrigger
     v-slot="{ label, keyboardShortcut }"
     :action="previousAction"
-    :current-context-only="false"
+    :is-current-context-only="false"
   >
     <UIActionTooltip
       :label="label"
@@ -248,7 +248,7 @@ useTemporaryActions(todayAction)
   <UIActionTrigger
     v-slot="{ label, keyboardShortcut }"
     :action="nextAction"
-    :current-context-only="false"
+    :is-current-context-only="false"
   >
     <UIActionTooltip
       :label="label"

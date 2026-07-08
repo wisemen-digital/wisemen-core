@@ -68,7 +68,7 @@ export function useToast() {
     })), {
       id: toast.id ?? crypto.randomUUID(),
       class: 'w-full sm:w-96',
-      dismissible: toast.dismissible,
+      dismissible: toast.isDismissible ?? toast.dismissible,
       duration: toast.duration ?? getToastDuration(configContext.autoCloseToast.value, toast.variant === 'error' ? 'error' : 'info'),
       position: toast.position ?? 'bottom-right',
       onAutoClose: toast.onAutoClose,
@@ -81,7 +81,7 @@ export function useToast() {
 
     show({
       id,
-      dismissible: false,
+      isDismissible: false,
       duration: PERMANENT_TOAST_DURATION,
       icon: toast.icon,
       interactableModels: toast.interactableModels,

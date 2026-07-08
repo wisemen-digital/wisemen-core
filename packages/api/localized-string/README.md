@@ -180,19 +180,19 @@ await productRepository.save(product)
 ### DTO with Validation
 
 ```typescript
-import { IsLocalizedString, LocalizedStringCommand } from '@wisemen/localized-string'
+import { IsLocalizedString, LocalizedStringDto } from '@wisemen/localized-string'
 
 class CreateProductDto {
   @IsLocalizedString({
     requiredLanguages: ['en', 'fr'],
     forbidNonRequiredLanguages: true
   })
-  name: LocalizedStringCommand
+  name: LocalizedStringDto
 
   @IsLocalizedString({
     requiredLanguages: ['en']
   })
-  description: LocalizedStringCommand
+  description: LocalizedStringDto
 }
 ```
 
@@ -230,18 +230,18 @@ class ProductDto {
     requiredLanguages: ['en', 'fr'],      // Must contain these locales
     forbidNonRequiredLanguages: false     // Allow additional locales
   })
-  name: LocalizedStringCommand
+  name: LocalizedStringDto
 
   @IsLocalizedString({
     requiredLanguages: ['en'],
     forbidNonRequiredLanguages: true      // Only 'en' allowed
   })
-  strictName: LocalizedStringCommand
+  strictName: LocalizedStringDto
 }
 ```
 
 The `@IsLocalizedString` decorator automatically applies:
-- `@Type(() => LocalizedStringCommand)` for class-transformer
+- `@Type(() => LocalizedStringDto)` for class-transformer
 - `@ValidateNested()` for nested validation
 - Custom validation for required languages
 
@@ -250,7 +250,7 @@ The `@IsLocalizedString` decorator automatically applies:
 Ensures each locale appears only once in the items array:
 
 ```typescript
-class LocalizedStringItemCommand {
+class LocalizedStringItemDto {
   @IsString()
   locale: string
 
@@ -258,12 +258,12 @@ class LocalizedStringItemCommand {
   value: string
 }
 
-class LocalizedStringCommand {
-  @Type(() => LocalizedStringItemCommand)
+class LocalizedStringDto {
+  @Type(() => LocalizedStringItemDto)
   @IsArray()
   @ValidateNested({ each: true })
   @IsUniqueLanguage()  // Validates unique locales
-  items: LocalizedStringItemCommand[]
+  items: LocalizedStringItemDto[]
 
   parse(): LocalizedString {
     return new LocalizedString(this.items)
@@ -409,7 +409,7 @@ interface IsLocalizedStringOptions {
 2. **Use DTOs for API inputs**:
    ```typescript
    @IsLocalizedString({ requiredLanguages: ['en'] })
-   name: LocalizedStringCommand
+   name: LocalizedStringDto
    ```
 
 3. **Store as entities, translate on read**:

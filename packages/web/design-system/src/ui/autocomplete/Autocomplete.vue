@@ -38,7 +38,8 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
   isTriggerHidden: true,
-  disableSideFlip: true,
+  isPrioritizedPosition: true,
+  isSideFlipDisabled: true,
   getItemConfig: null,
   getItemKey: null,
   popoverAlign: 'center',
@@ -46,7 +47,6 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  prioritizePosition: true,
   searchMode: 'remote',
   size: 'md',
 })
@@ -109,6 +109,7 @@ useProvideAutocompleteContext({
     :style="props.style"
     :for="id"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />

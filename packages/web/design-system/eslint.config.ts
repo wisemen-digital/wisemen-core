@@ -14,6 +14,8 @@ export default [
             '^peer(?:\\/(\\S*))?$',
             '^custom-(?:\\S+)?$',
             '^z-(sticky|overlay|modal|tooltip)$',
+            '^default$',
+            '^branded$',
           ],
         },
       ],
