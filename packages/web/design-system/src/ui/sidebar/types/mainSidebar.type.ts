@@ -41,8 +41,10 @@ export interface SidebarNavLinkItem extends DashboardSidebarNavLinkBase {
    * Route location to navigate to
    */
   to: RegisteredRouteLocationRaw
-  type: 'link'
-
+  /**
+   * Optional discriminator. Inferred from the presence of `to` when omitted.
+   */
+  type?: 'link'
 }
 
 export interface SidebarNavSubItemsItem extends DashboardSidebarNavLinkBase {
@@ -51,7 +53,10 @@ export interface SidebarNavSubItemsItem extends DashboardSidebarNavLinkBase {
    * When >3 or sidebar is minified/floating, rendered in a popover.
    */
   subItems: DashboardSidebarNavSubItem[]
-  type: 'sub-items'
+  /**
+   * Optional discriminator. Inferred from the presence of `subItems` when omitted.
+   */
+  type?: 'sub-items'
 }
 
 export type DashboardSidebarNavLink = SidebarNavLinkItem | SidebarNavSubItemsItem

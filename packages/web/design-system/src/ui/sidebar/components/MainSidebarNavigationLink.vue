@@ -35,13 +35,13 @@ const {
 const route = useRoute()
 const router = useRouter()
 
+const hasSubItems = computed<boolean>(() => 'subItems' in props && props.subItems != null)
+
 const parentProps = computed<SidebarNavSubItemsItem | null>(() =>
-  props.type === 'sub-items' ? props as SidebarNavSubItemsItem : null)
+  hasSubItems.value ? props as SidebarNavSubItemsItem : null)
 
 const leafProps = computed<SidebarNavLinkItem | null>(() =>
-  props.type === 'link' ? props as SidebarNavLinkItem : null)
-
-const hasSubItems = computed<boolean>(() => props.type === 'sub-items')
+  hasSubItems.value ? null : props as SidebarNavLinkItem)
 
 const usePopover = computed<boolean>(() =>
   hasSubItems.value && !isSidebarOpen.value)
