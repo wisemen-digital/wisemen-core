@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useAttrs } from 'vue'
+import {
+  computed,
+  useAttrs,
+} from 'vue'
 
 import { INPUT_META_DEFAULTS } from '@/types/input.type'
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
@@ -19,6 +22,8 @@ const props = withDefaults(defineProps<InputWrapperProps>(), {
 })
 
 const attrs = useAttrs()
+
+const isErrorMessageHidden = computed<boolean | undefined>(() => props.isErrorMessageHidden || props.hideErrorMessage)
 </script>
 
 <template>
@@ -55,14 +60,14 @@ const attrs = useAttrs()
             </template>
           </InputWrapperLabel>
 
-          <div v-if="props.hint !== null || (props.errorMessage !== null && !props.hideErrorMessage)">
+          <div v-if="props.hint !== null || (props.errorMessage !== null && !isErrorMessageHidden)">
             <InputWrapperHint
               :hint="props.hint"
               :for="props.for"
             />
 
             <InputWrapperErrorMessage
-              v-if="!props.hideErrorMessage"
+              v-if="!isErrorMessageHidden"
               :error-message="props.errorMessage"
               :for="props.for"
             />
@@ -98,7 +103,7 @@ const attrs = useAttrs()
       />
 
       <InputWrapperErrorMessage
-        v-if="!props.hideErrorMessage"
+        v-if="!isErrorMessageHidden"
         :error-message="props.errorMessage"
         :for="props.for"
       />

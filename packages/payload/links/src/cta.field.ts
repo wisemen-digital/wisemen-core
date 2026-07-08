@@ -1,3 +1,4 @@
+import { getDefaultEventOptions } from '@wisemen/payload-core-utils'
 import type {
   Condition,
   Field,
@@ -19,6 +20,7 @@ export function getCtaField({
   condition,
   label,
 }: GetCtaFieldOptions): GroupField {
+  const defaultEventOptions = getDefaultEventOptions()
   const fields: Field[] = [
     {
       name: 'label',
@@ -74,7 +76,7 @@ export function getCtaField({
       },
       defaultValue: undefined,
       enumName: 'cta_event',
-      options: CTA_EVENTS,
+      options: defaultEventOptions.length > 0 ? defaultEventOptions : CTA_EVENTS,
       type: 'select',
     },
   ]

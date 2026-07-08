@@ -15,14 +15,14 @@ const meta = {
     hasActiveSearch: {
       control: 'boolean',
     },
+    isColumnResizeDisabled: {
+      control: 'boolean',
+    },
     isLoading: {
       control: 'boolean',
     },
     activeFilterCount: {
       control: 'number',
-    },
-    disableColumnResize: {
-      control: 'boolean',
     },
     variant: {
       control: 'select',
@@ -45,9 +45,9 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -55,9 +55,9 @@ export const Default: Story = {
 export const Contained: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'contained',
   },
 }
@@ -65,9 +65,9 @@ export const Contained: Story = {
 export const Loading: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: true,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -75,9 +75,9 @@ export const Loading: Story = {
 export const WithActiveSearch: Story = {
   args: {
     hasActiveSearch: true,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -85,9 +85,9 @@ export const WithActiveSearch: Story = {
 export const WithActiveFilters: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 3,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }

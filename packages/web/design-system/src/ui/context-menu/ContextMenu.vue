@@ -5,19 +5,26 @@ import {
   ContextMenuRoot as RekaContextMenuRoot,
   ContextMenuTrigger as RekaContextMenuTrigger,
 } from 'reka-ui'
+import { computed } from 'vue'
 
 import type { ContextMenuProps } from '@/ui/context-menu/contextMenu.props'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<ContextMenuProps>(), {
+  isPrioritizedPosition: false,
+  isUpdateOnLayoutShiftDisabled: false,
   collisionPadding: 0,
-  disableUpdateOnLayoutShift: false,
-  prioritizePosition: false,
 })
 
 const emit = defineEmits<{
   open: []
 }>()
+const isPrioritizedPosition = computed<boolean>(
+  () => props.isPrioritizedPosition || props.prioritizePosition === true,
+)
+const isUpdateOnLayoutShiftDisabled = computed<boolean>(
+  () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
+)
 
 function onUpdateIsOpen(isOpen: boolean): void {
   if (isOpen) {
@@ -39,8 +46,8 @@ function onUpdateIsOpen(isOpen: boolean): void {
       <ThemeProvider :as-child="true">
         <RekaContextMenuContent
           :collision-padding="props.collisionPadding"
-          :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-          :prioritize-position="props.prioritizePosition"
+          :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
+          :prioritize-position="isPrioritizedPosition"
           data-animation="popover-default"
           class="
             z-50 min-w-48 origin-(--reka-context-menu-content-transform-origin)

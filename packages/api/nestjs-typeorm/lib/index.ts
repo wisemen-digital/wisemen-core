@@ -18,4 +18,4 @@ export {
 export { AnyOrIgnore, AndOrIgnore } from './operators/index.js'
 export { SnakeNamingStrategy } from './naming/index.js'
 export { migrate, sslHelper } from './helpers/index.js'
-export { Default, Insert } from './types/index.js'
+export { Default, EntityInsert } from './types/index.js'

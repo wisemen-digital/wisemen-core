@@ -45,6 +45,8 @@ const id = props.id ?? useId()
 
 const switchStyle = computed<SwitchStyle>(() => createSwitchStyle())
 
+const isErrorMessageHidden = computed<boolean | undefined>(() => props.isErrorMessageHidden || props.hideErrorMessage)
+
 useProvideSwitchContext({
   isChecked: computed<boolean>(() => modelValue.value),
   iconChecked: computed<Component | null>(() => props.iconChecked ?? null),
@@ -103,7 +105,7 @@ useProvideSwitchContext({
         />
 
         <InputWrapperErrorMessage
-          v-if="!props.hideErrorMessage"
+          v-if="!isErrorMessageHidden"
           :error-message="props.errorMessage"
           :for="props.for"
         />

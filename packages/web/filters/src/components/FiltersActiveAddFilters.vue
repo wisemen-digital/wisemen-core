@@ -22,7 +22,7 @@ const {
         hideClearAll: true,
       },
     }"
-    :current-context-only="false"
+    :is-current-context-only="false"
     :parent-action="action"
     :popover-collision-padding="10"
     :fixed-content-position="true"

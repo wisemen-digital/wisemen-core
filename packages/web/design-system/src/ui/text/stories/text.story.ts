@@ -12,6 +12,10 @@ import TextPlayground from './TextPlayground.vue'
 const meta = {
   title: 'Components/Text',
   argTypes: {
+    isTooltipDisabled: {
+      control: 'boolean',
+      description: 'Disables the tooltip even if the text is truncated',
+    },
     as: {
       control: 'select',
       description: 'The HTML element to render as',
@@ -23,10 +27,6 @@ const meta = {
         'h3',
         'div',
       ],
-    },
-    disableTooltip: {
-      control: 'boolean',
-      description: 'Disables the tooltip even if the text is truncated',
     },
     text: {
       control: 'text',

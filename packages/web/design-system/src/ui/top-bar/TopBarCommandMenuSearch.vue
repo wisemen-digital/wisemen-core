@@ -15,7 +15,7 @@ const commandMenuAction = useCommandMenuAction()
   <ActionTrigger
     v-slot="{ keyboardShortcut }"
     :action="commandMenuAction"
-    :current-context-only="true"
+    :is-current-context-only="true"
   >
     <ClickableElement>
       <button
@@ -37,7 +37,7 @@ const commandMenuAction = useCommandMenuAction()
         <KeyboardShortcut
           v-if="keyboardShortcut !== null"
           :keyboard-shortcut="keyboardShortcut"
-          :enable-key-hold-visualization="true"
+          :is-key-hold-visualization-enabled="true"
         />
       </button>
     </ClickableElement>

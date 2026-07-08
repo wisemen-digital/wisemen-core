@@ -144,7 +144,7 @@ function togglePopover(): void {
                   :key="subItem.label"
                   :label="subItem.label"
                   :to="subItem.to"
-                  no-indent
+                  :is-indented="false"
                   @click="isPopoverOpen = false"
                 />
               </div>

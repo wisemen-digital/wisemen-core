@@ -32,6 +32,10 @@ const props = withDefaults(defineProps<TagsFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
+  isAddedOnBlur: false,
+  isAddedOnPaste: true,
+  isAddedOnTab: false,
+  isDuplicateAllowed: false,
   addOnBlur: false,
   addOnPaste: true,
   addOnTab: false,
@@ -58,6 +62,13 @@ const tagsFieldStyle = computed<TagsFieldStyle>(() => createTagsFieldStyle({
   size: props.size,
 }))
 
+const isAddedOnBlur = computed<boolean>(() => props.isAddedOnBlur || props.addOnBlur)
+const isAddedOnPaste = computed<boolean>(
+  () => props.addOnPaste !== true ? false : props.isAddedOnPaste,
+)
+const isAddedOnTab = computed<boolean>(() => props.isAddedOnTab || props.addOnTab)
+const isDuplicateAllowed = computed<boolean>(() => props.isDuplicateAllowed || props.allowDuplicate)
+
 const {
   isError,
   ariaBusy,
@@ -80,6 +91,7 @@ const {
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />
@@ -108,11 +120,11 @@ const {
         :disabled="props.isDisabled"
         :read-only="props.isReadonly"
         :max="props.max ?? undefined"
-        :add-on-blur="props.addOnBlur"
-        :add-on-paste="props.addOnPaste"
-        :add-on-tab="props.addOnTab"
+        :add-on-blur="isAddedOnBlur"
+        :add-on-paste="isAddedOnPaste"
+        :add-on-tab="isAddedOnTab"
         :delimiter="props.delimiter"
-        :allow-duplicate="props.allowDuplicate"
+        :allow-duplicate="isDuplicateAllowed"
         class="contents"
       >
         <TagsFieldTag
