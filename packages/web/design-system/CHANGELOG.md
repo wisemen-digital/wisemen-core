@@ -14,6 +14,25 @@
 
 
 
+
+
+
+## 1.11.1
+<sub>2026-07-06</sub>
+
+- [#1371](https://github.com/wisemen-digital/wisemen-core/pull/1371)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add an optional `getItemKey` prop to `UIAutocomplete` and `UISelect` for supplying a stable, unique key per item (defaults to `JSON.stringify(value)` when not provided).
+  Also fixes `UISelect`: dropdown items were previously keyed with a random string regenerated on every render, so Vue tore down and recreated every option on any items/search/selection change instead of patching them. Item identity (for selected/non-selected matching) is now derived consistently from the same key.
+
+## 1.11.0
+<sub>2026-07-03</sub>
+
+- [#1351](https://github.com/wisemen-digital/wisemen-core/pull/1351)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add "Discard changes" and "Keep editing" action buttons to the default unsaved-changes chin in `UIFormDialog`
+
+## 1.10.1
+<sub>2026-07-02</sub>
+
+- [#1347](https://github.com/wisemen-digital/wisemen-core/pull/1347)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Return early if document is not defined in reduced motion composable to support ssr / ssg
+
 ## 1.10.0
 <sub>2026-07-01</sub>
 

@@ -1,6 +1,12 @@
 # @wisemen/validators
 
 
+
+## 0.0.25
+<sub>2026-07-05</sub>
+
+- [#1300](https://github.com/wisemen-digital/wisemen-core/pull/1300)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add IsDateStringWithTimezone() validator
+
 ## 0.0.24
 <sub>2026-06-30</sub>
 

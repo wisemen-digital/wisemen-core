@@ -13,7 +13,7 @@ export function TimestampColumn (options?: TimestampColumnOptions): PropertyDeco
   })
 }
 
-class TimestampTransformer {
+export class TimestampTransformer {
   from (value: string | null): Timestamp | null {
     return timestamp(value)
   }
