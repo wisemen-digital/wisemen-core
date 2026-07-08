@@ -1,4 +1,8 @@
-import type { Where } from 'payload'
+import type {
+  CollectionSlug,
+  SelectField,
+  Where,
+} from 'payload'
 
 import {
   createPayloadUtilsError,
@@ -22,10 +26,19 @@ export type {
   GetRichTextFieldOptions,
   GetSimpleRichTextField,
   GetTenantQuery,
+  PayloadEventOption,
+  PayloadLabel,
   PayloadLocale,
   PayloadUtilsConfig,
   PayloadUtilsPayload,
 } from '#payloadUtils.types.ts'
+
+const DEFAULT_LINKABLE_COLLECTIONS: CollectionSlug[] = [
+  'pages',
+  'articles',
+]
+
+const DEFAULT_EVENT_OPTIONS: SelectField['options'] = []
 
 export function initializePayloadUtils(config: PayloadUtilsConfig): void {
   if (config.locales.length === 0) {
@@ -87,6 +100,31 @@ export function getFallbackLocale(): PayloadLocale {
   }
 
   return payloadUtilsConfig.fallbackLocale
+}
+
+export function getDefaultLinkableCollections(): CollectionSlug[] {
+  const payloadUtilsConfig = readPayloadUtilsConfig()
+
+  return payloadUtilsConfig?.defaultLinkableCollections ?? DEFAULT_LINKABLE_COLLECTIONS
+}
+
+export function getDefaultEvents() {
+  const payloadUtilsConfig = readPayloadUtilsConfig()
+
+  return payloadUtilsConfig?.defaultEvents ?? []
+}
+
+export function getDefaultEventOptions(): SelectField['options'] {
+  const payloadUtilsConfig = readPayloadUtilsConfig()
+
+  if (payloadUtilsConfig?.defaultEvents == null) {
+    return DEFAULT_EVENT_OPTIONS
+  }
+
+  return payloadUtilsConfig.defaultEvents.map((event) => ({
+    label: event.label,
+    value: event.id,
+  }))
 }
 
 export function getPayloadUtils(): PayloadUtilsConfig {

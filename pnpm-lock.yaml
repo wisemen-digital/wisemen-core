@@ -2594,6 +2594,9 @@ importers:
 
   packages/payload/links:
     dependencies:
+      '@wisemen/payload-core-utils':
+        specifier: workspace:^
+        version: link:../utils
       defu:
         specifier: catalog:general
         version: 6.1.5

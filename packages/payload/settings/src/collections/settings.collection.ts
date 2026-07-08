@@ -2,6 +2,7 @@ import {
   getLinkField,
   getNavLinksField,
 } from '@wisemen/payload-core-links'
+import { getDefaultEventOptions } from '@wisemen/payload-core-utils'
 import type { CollectionConfig } from 'payload'
 
 import { getSettingsLegalPagesCollection } from '#settingsLegalPages.collection.ts'
@@ -18,6 +19,8 @@ export interface GetSettingsCollectionDependencies {
 export function getSettingsCollection({
   access, hooks,
 }: GetSettingsCollectionDependencies): CollectionConfig {
+  const defaultEventOptions = getDefaultEventOptions()
+
   return {
     access,
     fields: [
@@ -164,7 +167,7 @@ export function getSettingsCollection({
                           condition: (_, siblingData) => siblingData?.navType === 'event',
                         },
                         enumName: 'cta_event',
-                        options: [],
+                        options: defaultEventOptions,
                         required: true,
                         type: 'select',
                       },
