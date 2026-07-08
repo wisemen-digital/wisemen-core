@@ -1,7 +1,7 @@
 ---
-"@wisemen/vue-core-custom-views": minor
-"@wisemen/vue-core-design-system": minor
-"@wisemen/vue-core-filters": minor
+"@wisemen/vue-core-custom-views": patch
+"@wisemen/vue-core-design-system": patch
+"@wisemen/vue-core-filters": patch
 ---
 
 Normalize all boolean prop names to `is*` / `has*` prefix convention

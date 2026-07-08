@@ -1,5 +1,5 @@
 ---
-"@wisemen/vue-core-design-system": minor
+"@wisemen/vue-core-design-system": patch
 ---
 
 Normalize additional boolean prop names to `is*`/`has*` convention, filling gaps missed by the initial normalization pass.
