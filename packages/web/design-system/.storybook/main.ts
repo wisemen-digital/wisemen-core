@@ -33,6 +33,11 @@ const config: StorybookConfig = {
       },
     },
   },
+  // Serves storybook-assets/wisemen-logo.png as ./wisemen-logo.png for the
+  // manager theme's brandImage (see manager.ts).
+  staticDirs: [
+    '../storybook-assets',
+  ],
   stories: [
     '../src/**/*.mdx',
     '../src/**/*.story.@(js|jsx|mjs|ts|tsx)',
