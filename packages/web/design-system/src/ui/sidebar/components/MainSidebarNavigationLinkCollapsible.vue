@@ -5,7 +5,10 @@ import {
   CollapsibleRoot as RekaCollapsibleRoot,
 } from 'reka-ui'
 import type { Component } from 'vue'
-import { ref } from 'vue'
+import {
+  ref,
+  watch,
+} from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
@@ -31,7 +34,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const isCollapsibleOpen = ref<boolean>(false)
+const isCollapsibleOpen = ref<boolean>(true)
 
 const {
   isSidebarOpen,
@@ -40,6 +43,12 @@ const {
   sidebarIconSize,
   sidebarLinkHeight,
 } = useMainSidebar()
+
+watch(() => props.isParentActive, (isParentActive) => {
+  if (isParentActive) {
+    isCollapsibleOpen.value = true
+  }
+})
 
 const navigationLinkGridTemplateColumns = `${sidebarIconCellSize} 1fr`
 </script>
