@@ -4,7 +4,10 @@ import {
   DateRangePickerCalendar as RekaDateRangePickerCalendar,
   DateRangePickerRoot as RekaDateRangePickerRoot,
 } from 'reka-ui'
-import { toRef } from 'vue'
+import {
+  computed,
+  toRef,
+} from 'vue'
 
 import { useDateRangePicker } from '@/composables/dateRangePicker.composable'
 import { useProvideDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
@@ -22,7 +25,7 @@ defineOptions({
 const props = withDefaults(defineProps<DateRangePickerProps>(), {
   maxDate: null,
   minDate: null,
-  showPresets: true,
+  hasPresets: true,
 })
 
 const modelValue = defineModel<PlainDateRange>({
@@ -45,6 +48,8 @@ const {
   minDate: toRef(props, 'minDate'),
   modelValue,
 })
+
+const hasPresets = computed<boolean>(() => props.hasPresets || props.showPresets === true)
 
 useProvideDateRangeFieldContext({
   isInvalidRange,
@@ -76,13 +81,13 @@ useProvideDateRangeFieldContext({
         weekday-format="short"
       >
         <div class="flex h-full">
-          <DateRangeFieldPresets v-if="props.showPresets" />
+          <DateRangeFieldPresets v-if="hasPresets" />
 
           <div class="flex min-w-0 flex-1 flex-col">
             <div class="flex">
               <div class="flex flex-1 flex-col">
                 <DateRangeFieldCalendarHeader
-                  :show-next="isSingleMonth"
+                  :has-next="isSingleMonth"
                   side="left"
                 />
                 <div class="p-xl pt-0">

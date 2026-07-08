@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import { UIAutoFocus } from '@/ui/auto-focus'
 import Button from '@/ui/button/button/Button.vue'
 import type { DialogFooterButtonProps } from '@/ui/dialog/dialogFooterButton.props'
 
 const props = withDefaults(defineProps<DialogFooterButtonProps>(), {
+  isAutoFocusDisabled: false,
   isDestructive: false,
   isDisabled: false,
   isLoading: false,
-  disableAutoFocus: false,
   disabledReason: null,
   form: null,
   iconLeft: null,
@@ -18,10 +20,14 @@ const props = withDefaults(defineProps<DialogFooterButtonProps>(), {
 const emit = defineEmits<{
   click: []
 }>()
+
+const isAutoFocusDisabled = computed<boolean>(
+  () => props.isAutoFocusDisabled || props.disableAutoFocus === true,
+)
 </script>
 
 <template>
-  <UIAutoFocus :is-disabled="props.disableAutoFocus">
+  <UIAutoFocus :is-disabled="isAutoFocusDisabled">
     <Button
       v-bind="props"
       :variant="props.isDestructive ? 'destructive-primary' : 'primary'"

@@ -16,10 +16,16 @@ import DatePickerMonthPopover from '@/ui/date-field/DatePickerMonthPopover.vue'
 import DatePickerYearPopover from '@/ui/date-field/DatePickerYearPopover.vue'
 import { useInjectDateRangeFieldContext } from '@/ui/date-range-field/dateRangeField.context'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  hasNext?: boolean
+  /**
+   * @deprecated Use `hasNext` instead.
+   */
   showNext?: boolean
   side: 'left' | 'right'
-}>()
+}>(), {
+  showNext: undefined,
+})
 
 const i18n = useI18n()
 
@@ -77,7 +83,7 @@ function onPlaceholderUpdate(date: CalendarDate): void {
     </div>
 
     <RekaDateRangePickerNext
-      v-if="props.side === 'right' || props.showNext"
+      v-if="props.side === 'right' || props.hasNext || props.showNext"
       v-slot="{ disabled }"
       :as-child="true"
     >

@@ -9,7 +9,7 @@ const formDialogContext = useInjectFormDialogContext()
   <UIForm
     :id="formDialogContext.formId"
     :form="formDialogContext.form"
-    :prompt-on-unsaved-changes="false"
+    :is-unsaved-changes-prompt-enabled="false"
   >
     <slot
       :form-id="formDialogContext.formId"

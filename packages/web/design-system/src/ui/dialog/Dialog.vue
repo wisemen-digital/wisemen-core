@@ -16,10 +16,10 @@ import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
+  hasCloseButton: true,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
   chin: null,
-  preventClickOutside: false,
-  preventEsc: false,
-  showCloseButton: true,
   size: 'md',
 })
 
@@ -28,6 +28,15 @@ const emit = defineEmits<{
   'close': []
   'update:isOpen': [value: boolean]
 }>()
+const hasCloseButton = computed<boolean>(
+  () => props.showCloseButton !== undefined ? props.showCloseButton : props.hasCloseButton,
+)
+const isClickOutsideDisabled = computed<boolean>(
+  () => props.isClickOutsideDisabled || props.preventClickOutside === true,
+)
+const isEscDisabled = computed<boolean>(
+  () => props.isEscDisabled || props.preventEsc === true,
+)
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,
@@ -51,13 +60,13 @@ useProvideDialogContext({
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
-  if (props.preventEsc) {
+  if (isEscDisabled.value) {
     event.preventDefault()
   }
 }
 
 function onPointerDownOutside(event: Event): void {
-  if (props.preventClickOutside) {
+  if (isClickOutsideDisabled.value) {
     event.preventDefault()
   }
 }
@@ -111,7 +120,7 @@ const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="props.showCloseButton" />
+        <DialogCloseButton v-if="hasCloseButton" />
       </div>
 
       <DialogChin :chin="props.chin" />

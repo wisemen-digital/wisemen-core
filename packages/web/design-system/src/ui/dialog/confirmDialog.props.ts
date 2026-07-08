@@ -2,7 +2,7 @@ import type { Component } from 'vue'
 
 import type { DialogProps } from '@/ui/dialog/dialog.props'
 
-export interface ConfirmDialogProps extends Pick<DialogProps, 'preventClickOutside' | 'preventEsc'> {
+export interface ConfirmDialogProps extends Pick<DialogProps, 'isClickOutsideDisabled' | 'isEscDisabled' | 'preventClickOutside' | 'preventEsc'> {
   /**
    * The title displayed in the dialog header.
    */

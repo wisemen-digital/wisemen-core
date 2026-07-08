@@ -33,7 +33,7 @@ const i18n = useI18n()
   >
     <UIDialogHeader
       :description="props.imageAlt"
-      :hide-description="props.imageAlt.length === 0"
+      :is-description-hidden="props.imageAlt.length === 0"
       :title="i18n.t('component.form_file_upload.preview.dialog_title')"
     />
 
