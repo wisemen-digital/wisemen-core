@@ -31,6 +31,7 @@ export default buildConfig({
         defineTranslatableCollection<Article>({
           slug: "articles",
           translatableFields: ["title", "body"],
+          ignoredFields: ["seo.slug"],
         }),
       ],
       translations: {
@@ -109,6 +110,10 @@ translations: {
 ```
 
 The plugin injects a `translations` group with one tab per configured adapter.
+
+Use `ignoredFields` for fields that can be edited without changing the
+translation status. They still translate normally, but editing them will not
+flip a locale to `manually edited` or mark sibling locales stale.
 
 ## Access
 

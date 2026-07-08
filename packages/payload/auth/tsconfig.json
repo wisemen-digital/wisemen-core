@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "jsx": "react-jsx",
+    "ignoreDeprecations": "5.0",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "#*": [
+        "./src/*"
+      ],
+      "@wisemen/payload-core-auth/client": [
+        "./src/client.ts"
+      ],
+      "@wisemen/payload-core-auth/server": [
+        "./src/server.ts"
+      ],
+      "@wisemen/payload-core-utils": [
+        "../utils/src/index.ts"
+      ]
+    },
+    "resolveJsonModule": true,
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -84,9 +84,18 @@ export const payloadTranslatePlugin = definePlugin<TranslationPluginOptions>({
         continue
       }
 
-      resolveFieldSelections(collection.fields ?? [], definition.translatableFields)
-      collection.fields = ensureTranslationStatusField(collection.fields ?? [], collection.slug)
+      const translatableFieldSelections = resolveFieldSelections(
+        collection.fields ?? [],
+        definition.translatableFields,
+      )
+      const ignoredFieldPaths = definition.ignoredFields
+        ? resolveFieldSelections(
+            collection.fields ?? [],
+            definition.ignoredFields,
+          ).map((selection) => selection.dataPath)
+        : []
 
+      collection.fields = ensureTranslationStatusField(collection.fields ?? [], collection.slug)
       collection.admin ??= {}
       collection.admin.defaultColumns = ensureTranslationStatusColumn(collection.admin.defaultColumns)
       collection.admin.components ??= {}
@@ -107,8 +116,8 @@ export const payloadTranslatePlugin = definePlugin<TranslationPluginOptions>({
       collection.hooks.beforeChange = [
         ...(collection.hooks.beforeChange ?? []),
         createTranslationStatusBeforeChangeHook(
-          resolveFieldSelections(collection.fields ?? [], definition.translatableFields)
-            .map((selection) => selection.dataPath),
+          translatableFieldSelections.map((selection) => selection.dataPath),
+          ignoredFieldPaths,
         ),
       ]
       collection.hooks.afterChange = [
@@ -116,9 +125,11 @@ export const payloadTranslatePlugin = definePlugin<TranslationPluginOptions>({
         createTranslationStatusAfterChangeHook({
           collectionSlug: collection.slug,
           defaultLocale: typeof config.localization === 'object' ? config.localization.defaultLocale : undefined,
+          ignoredPaths: ignoredFieldPaths,
           locales: typeof config.localization === 'object'
             ? config.localization.locales.map((locale) => typeof locale === 'string' ? locale : locale.code)
             : [],
+          translatablePaths: translatableFieldSelections.map((selection) => selection.dataPath),
         }),
       ]
     }

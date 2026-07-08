@@ -98,7 +98,9 @@ async function translateValueByField(field: Field, value: unknown, context: Tran
         return value
       }
 
-      return Promise.all(value.map((row) => translateFieldsObject(field.fields, row, context)))
+      return sanitizeArrayRows(
+        await Promise.all(value.map((row) => translateFieldsObject(field.fields, row, context))),
+      )
     }
 
     case 'blocks': {
@@ -106,7 +108,9 @@ async function translateValueByField(field: Field, value: unknown, context: Tran
         return value
       }
 
-      return Promise.all(value.map((row) => translateBlockRow(field.blocks, row, context)))
+      return sanitizeArrayRows(
+        await Promise.all(value.map((row) => translateBlockRow(field.blocks, row, context))),
+      )
     }
 
     case 'collapsible':
@@ -251,4 +255,31 @@ async function translateString(value: string, context: TranslationContext): Prom
   context.memo.set(cacheKey, translationPromise)
 
   return translationPromise
+}
+
+function sanitizeArrayRows(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitizeArrayRows(item))
+  }
+
+  if (!isPlainObject(value)) {
+    return value
+  }
+
+  const sanitized = {
+    ...value,
+  } as Record<string, unknown>
+
+  delete sanitized.id
+
+  for (const [
+    key,
+    childValue,
+  ] of Object.entries(sanitized)) {
+    if (Array.isArray(childValue) || isPlainObject(childValue)) {
+      sanitized[key] = sanitizeArrayRows(childValue)
+    }
+  }
+
+  return sanitized
 }

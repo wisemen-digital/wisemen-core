@@ -1,0 +1,3 @@
+export const DEFAULT_ACCESS_TOKEN_EXPIRATION = 60 * 60 * 24 * 30 // 30 days
+export const DEFAULT_MAX_LOGIN_ATTEMPTS = 5
+export const DEFAULT_LOCK_TIME = 600 * 1000
