@@ -60,6 +60,7 @@ function makeCellComponent(item: User, key: keyof User, isPrimary = false) {
 
 const columns: TableColumn<User>[] = [
   {
+    headerDescription: 'This name represents the user his first name',
     headerLabel: 'Name',
     key: 'name',
     component: (item) => makeCellComponent(item, 'name', true),

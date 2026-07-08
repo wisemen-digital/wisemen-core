@@ -92,6 +92,7 @@ useProvideDateRangeFieldContext({
                 />
                 <div class="p-xl pt-0">
                   <DateRangeFieldCalendarGrid
+                    :get-day-config="props.getDayConfig"
                     :month="grid[0]"
                     :week-days="weekDays"
                   />
@@ -105,6 +106,7 @@ useProvideDateRangeFieldContext({
                   <DateRangeFieldCalendarHeader side="right" />
                   <div class="p-xl pt-0">
                     <DateRangeFieldCalendarGrid
+                      :get-day-config="props.getDayConfig"
                       :month="grid[1]"
                       :week-days="weekDays"
                     />

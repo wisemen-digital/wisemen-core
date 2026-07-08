@@ -16,4 +16,5 @@ export type {
   MainSidebarCollapsedVariant as UIMainSidebarCollapsedVariant,
   DashboardSidebarGroup as UIMainSidebarGroup,
   DashboardSidebarNavLink as UIMainSidebarNavLink,
+  DashboardSidebarNavSubItem as UIMainSidebarNavSubItem,
 } from './types/mainSidebar.type'

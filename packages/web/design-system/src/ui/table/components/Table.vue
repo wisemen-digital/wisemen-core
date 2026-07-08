@@ -178,6 +178,7 @@ function onClearFiltersAndSearch(): void {
           :column-index="columnIndex"
           :is-resizable="columnIndex < props.columns.length - 1"
           :label="column.headerLabel"
+          :description="column.headerDescription ?? null"
           :is-centered="(column.isCenteredHeaderContent ?? column.centerHeaderContent) ?? false"
           :action-config="column.actionConfig"
           :column-key="column.key"

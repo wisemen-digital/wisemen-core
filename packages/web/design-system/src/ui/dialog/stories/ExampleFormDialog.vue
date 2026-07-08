@@ -59,7 +59,7 @@ const chin = computed<ChinConfig | null>(() => {
     :form="form"
     :prompt-on-unsaved-changes="props.promptOnUnsavedChanges"
     :unsaved-changes-text="props.unsavedChangesText"
-    size="xs"
+    size="sm"
     @close="emit('close')"
   >
     <DialogHeader

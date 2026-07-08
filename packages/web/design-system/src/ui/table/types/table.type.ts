@@ -26,6 +26,7 @@ export interface TableColumn<TElement, TKey extends string = string> {
    * @deprecated Use `isCenteredHeaderContent` instead.
    */
   centerHeaderContent?: boolean
+  headerDescription?: string
   headerLabel: string
   key: TKey
   size?: TableColumnSize

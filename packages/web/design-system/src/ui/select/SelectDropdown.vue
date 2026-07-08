@@ -28,6 +28,9 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   isDropdownKeptOpenOnSelect: null,
   isPrioritizedPosition: true,
   isSideFlipDisabled: true,
+  disableSideFlip: true,
+  getItemKey: null,
+  keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
@@ -127,6 +130,7 @@ useProvideSelectContext({
         :is-loading="props.isLoading"
         :search="props.search"
         :display-fn="props.displayFn"
+        :get-item-key="props.getItemKey"
         :items="props.items"
         :limit="props.limit"
         :has-virtual-scroll="props.hasVirtualScroll"

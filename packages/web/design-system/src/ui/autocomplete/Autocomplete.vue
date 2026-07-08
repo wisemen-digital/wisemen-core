@@ -40,6 +40,7 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   isPrioritizedPosition: true,
   isSideFlipDisabled: true,
   getItemConfig: null,
+  getItemKey: null,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
   popoverSide: 'bottom',
@@ -167,6 +168,7 @@ useProvideAutocompleteContext({
 
       <AutocompleteContent
         :display-fn="props.displayFn"
+        :get-item-key="props.getItemKey"
         :is-loading="props.isLoading"
         :items="props.items"
         :popover-align="props.popoverAlign"
