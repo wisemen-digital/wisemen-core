@@ -4,7 +4,7 @@ import { IsArray, IsString, ValidateNested } from 'class-validator'
 import { IsUniqueLanguage } from './validators/is-unique-language.js'
 import { LocalizedString } from './localized-string.js'
 
-export class LocalizedStringItemCommand {
+export class LocalizedStringItemDto {
   @ApiProperty({ type: String })
   @IsString()
   locale: string
@@ -14,13 +14,13 @@ export class LocalizedStringItemCommand {
   value: string
 }
 
-export class LocalizedStringCommand {
-  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true })
-  @Type(() => LocalizedStringItemCommand)
+export class LocalizedStringDto {
+  @ApiProperty({ type: LocalizedStringItemDto, isArray: true })
+  @Type(() => LocalizedStringItemDto)
   @IsArray()
   @ValidateNested({ each: true })
   @IsUniqueLanguage()
-  items: LocalizedStringItemCommand[]
+  items: LocalizedStringItemDto[]
 
   parse (): LocalizedString {
     return new LocalizedString(this.items)
