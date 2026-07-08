@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import {
+  computed,
+  onMounted,
+} from 'vue'
 import {
   useRoute,
   useRouter,
@@ -20,6 +23,7 @@ export type Props = DashboardSidebarNavLink
 const props = withDefaults(defineProps<Props>(), {
   isActive: () => false,
   keyboardShortcut: null,
+  type: 'link',
 })
 
 const emit = defineEmits<{
@@ -35,13 +39,22 @@ const {
 const route = useRoute()
 const router = useRouter()
 
-const hasSubItems = computed<boolean>(() => 'subItems' in props && props.subItems != null)
+const hasSubItems = computed<boolean>(() => props.type === 'sub-items')
 
 const parentProps = computed<SidebarNavSubItemsItem | null>(() =>
   hasSubItems.value ? props as SidebarNavSubItemsItem : null)
 
 const leafProps = computed<SidebarNavLinkItem | null>(() =>
   hasSubItems.value ? null : props as SidebarNavLinkItem)
+
+onMounted(() => {
+  if (props.type === 'link' && 'subItems' in props && props.subItems != null) {
+    console.warn(
+      '[MainSidebarNavigationLink] Received `subItems` but `type` is missing or set to \'link\'. '
+      + 'Set `type: \'sub-items\'` to render this item as an expandable group.',
+    )
+  }
+})
 
 const usePopover = computed<boolean>(() =>
   hasSubItems.value && !isSidebarOpen.value)

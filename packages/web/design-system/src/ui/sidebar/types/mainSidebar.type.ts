@@ -42,7 +42,7 @@ export interface SidebarNavLinkItem extends DashboardSidebarNavLinkBase {
    */
   to: RegisteredRouteLocationRaw
   /**
-   * Optional discriminator. Inferred from the presence of `to` when omitted.
+   * Discriminator, defaults to `'link'` when omitted.
    */
   type?: 'link'
 }
@@ -54,7 +54,8 @@ export interface SidebarNavSubItemsItem extends DashboardSidebarNavLinkBase {
    */
   subItems: DashboardSidebarNavSubItem[]
   /**
-   * Optional discriminator. Inferred from the presence of `subItems` when omitted.
+   * Discriminator. Required to render this item as an expandable group —
+   * without it, `type` defaults to `'link'` and a dev warning is logged.
    */
   type?: 'sub-items'
 }
