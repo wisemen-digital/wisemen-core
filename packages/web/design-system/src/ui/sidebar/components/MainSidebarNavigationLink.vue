@@ -1,30 +1,21 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
 import { computed } from 'vue'
-import type {
-  RouteLocationNormalized,
-  RouteLocationRaw,
-} from 'vue-router'
 import {
-  RouterLink,
   useRoute,
+  useRouter,
 } from 'vue-router'
 
-import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
-import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
-import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
-import RowLayout from '@/ui/row-layout/RowLayout.vue'
-import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
-import MainSidebarNavigationLinkProvider from '@/ui/sidebar/components/MainSidebarNavigationLinkProvider.vue'
+import MainSidebarNavigationLinkButton from '@/ui/sidebar/components/MainSidebarNavigationLinkButton.vue'
+import MainSidebarNavigationLinkCollapsible from '@/ui/sidebar/components/MainSidebarNavigationLinkCollapsible.vue'
+import MainSidebarNavigationLinkPopover from '@/ui/sidebar/components/MainSidebarNavigationLinkPopover.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import type {
+  DashboardSidebarNavLink,
+  SidebarNavLeafItem,
+  SidebarNavParentItem,
+} from '@/ui/sidebar/types/mainSidebar.type'
 
-export interface Props {
-  isActive?: (route: RouteLocationNormalized) => boolean
-  icon: Component
-  keyboardShortcut?: KeyboardShortcut | null
-  label: string
-  to: RouteLocationRaw
-}
+export type Props = DashboardSidebarNavLink
 
 const props = withDefaults(defineProps<Props>(), {
   isActive: () => false,
@@ -39,21 +30,47 @@ const {
   isSidebarOpen,
   closeIfFloatingSidebar,
   collapsedVariant,
-  sidebarIconCellSize,
-  sidebarIconSize,
-  sidebarLinkHeight,
 } = useMainSidebar()
 
 const route = useRoute()
+const router = useRouter()
 
-function onClick(): void {
-  closeIfFloatingSidebar()
-  emit('click')
-}
+const parentProps = computed<SidebarNavParentItem | null>(() =>
+  props.type === 'sub-items' ? props as SidebarNavParentItem : null)
 
-const navigationLinkGridTemplateColumns = `${sidebarIconCellSize} 1fr`
+const leafProps = computed<SidebarNavLeafItem | null>(() =>
+  props.type === 'link' ? props as SidebarNavLeafItem : null)
+
+const hasSubItems = computed<boolean>(() => props.type === 'sub-items')
+
+const usePopover = computed<boolean>(() =>
+  hasSubItems.value && !isSidebarOpen.value)
+
+const isParentActive = computed<boolean>(() => {
+  if (props.isActive?.(route)) {
+    return true
+  }
+
+  return parentProps.value?.subItems.some((sub) => {
+    const resolved = router.resolve(sub.to)
+
+    if (resolved.name != null && resolved.name === route.name) {
+      return true
+    }
+
+    return resolved.path !== '/' && route.path.startsWith(resolved.path)
+  }) ?? false
+})
+
+const isPopoverOpen = defineModel<boolean>('isPopoverOpen', {
+  default: false,
+})
 
 const isTooltipDisabled = computed<boolean>(() => {
+  if (usePopover.value) {
+    return true
+  }
+
   if (collapsedVariant.value === 'hidden' && props.keyboardShortcut === null) {
     return true
   }
@@ -64,89 +81,45 @@ const isTooltipDisabled = computed<boolean>(() => {
 
   return false
 })
+
+function onLinkClick(): void {
+  closeIfFloatingSidebar()
+  emit('click')
+}
 </script>
 
 <template>
-  <ActionTooltip
-    :is-disabled="isTooltipDisabled"
+  <MainSidebarNavigationLinkPopover
+    v-if="usePopover && parentProps !== null"
+    v-model:is-popover-open="isPopoverOpen"
+    :icon="props.icon"
+    :is-parent-active="isParentActive"
+    :label="props.label"
+    :sub-items="parentProps.subItems"
+  />
+
+  <MainSidebarNavigationLinkCollapsible
+    v-else-if="hasSubItems && parentProps !== null"
+    :icon="props.icon"
+    :is-parent-active="isParentActive"
+    :is-tooltip-disabled="isTooltipDisabled"
     :keyboard-shortcut="props.keyboardShortcut"
     :label="props.label"
-    popover-side="right"
-  >
-    <ClickableElement>
-      <RouterLink
-        v-slot="{ isActive: isRouteActive }"
-        :to="props.to"
-        class="w-full"
-        @click="onClick"
-      >
-        <MainSidebarNavigationLinkProvider
-          :is-active="isRouteActive"
-        >
-          <div
-            :data-active="isRouteActive || props.isActive(route) || undefined"
-            :style="{
-              height: sidebarLinkHeight,
-              gridTemplateColumns: navigationLinkGridTemplateColumns,
-            }"
-            class="
-              group grid rounded-md duration-100
-              hover:bg-fg-primary/4
-              data-active:bg-fg-primary/4
-            "
-          >
-            <RowLayout
-              :style="{
-                width: sidebarIconCellSize,
-                height: sidebarIconCellSize,
-              }"
-              align="center"
-              justify="center"
-            >
-              <Component
-                :is="props.icon"
-                :style="{
-                  width: sidebarIconSize,
-                  height: sidebarIconSize,
-                }"
-                class="
-                  shrink-0 text-fg-quaternary duration-100
-                  group-data-active:text-fg-brand-primary
-                  dark:group-data-active:text-fg-primary
-                "
-              />
-            </RowLayout>
+    :sub-items="parentProps.subItems"
+  />
 
-            <MainSidebarFadeTransition>
-              <RowLayout
-                v-if="collapsedVariant !== 'minified' || isSidebarOpen"
-                align="center"
-                justify="between"
-                gap="md"
-                class="overflow-hidden pr-md"
-              >
-                <span
-                  class="
-                    truncate text-xs font-medium whitespace-nowrap
-                    text-secondary duration-100
-                    group-hover:text-primary
-                    group-data-active:text-brand-secondary
-                  "
-                >
-                  {{ props.label }}
-                </span>
-                <RowLayout
-                  gap="lg"
-                  align="center"
-                  class="shrink-0"
-                >
-                  <slot name="right" />
-                </RowLayout>
-              </RowLayout>
-            </MainSidebarFadeTransition>
-          </div>
-        </MainSidebarNavigationLinkProvider>
-      </RouterLink>
-    </ClickableElement>
-  </ActionTooltip>
+  <MainSidebarNavigationLinkButton
+    v-else-if="leafProps !== null"
+    :icon="props.icon"
+    :is-active="props.isActive"
+    :is-tooltip-disabled="isTooltipDisabled"
+    :keyboard-shortcut="props.keyboardShortcut"
+    :label="props.label"
+    :to="leafProps.to"
+    @click="onLinkClick"
+  >
+    <template #right>
+      <slot name="right" />
+    </template>
+  </MainSidebarNavigationLinkButton>
 </template>
