@@ -340,12 +340,17 @@ catalogs:
   payload:
     "@payloadcms/ui": 3.85.2
     payload: 3.85.2
+    next: 16.2.6
     react: 19.2.7
     "@orpc/contract": "1.14.6"
     "@types/react": 19.2.17
+    "cookies-next": "6.1.1"
+    "pkce-challenge": "6.0.0"
+    "jose": "6.2.3"
   payload-peer:
     "@payloadcms/ui": ">=3.85.0"
     payload: ">=3.85.0"
+    next: ">=16.2.6"
     react: ">=19.2.7"
 
 "overrides":
