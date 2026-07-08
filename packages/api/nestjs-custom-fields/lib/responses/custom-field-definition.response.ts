@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { LocalizedString, LocalizedStringItemCommand } from '@wisemen/localized-string'
+import { LocalizedStringDto } from '@wisemen/localized-string'
 import type { CustomFieldDefinitionData } from '#src/custom-field-definition.js'
 import { CustomFieldType, CustomFieldTypeApiProperty } from '#src/enum/custom-field-type.enum.js'
 import type { CustomFieldDefinitionUuid } from '#src/custom-field-definition.uuid.js'
@@ -10,15 +10,15 @@ class CustomFieldChoiceResponse {
   @ApiProperty({ type: String })
   value: string
 
-  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true })
-  label: LocalizedStringItemCommand[]
+  @ApiProperty({ type: LocalizedStringDto, isArray: true })
+  label: LocalizedStringDto[]
 
   @ApiProperty({ type: Number })
   order: number
 
   constructor(choice: CustomFieldChoice) {
     this.value = choice.value
-    this.label = toLocalizedStringItemCommands(choice.label)
+    this.label = LocalizedStringDto.from(choice.label)
     this.order = choice.order
   }
 }
@@ -36,11 +36,11 @@ export class CustomFieldDefinitionResponse {
   @ApiProperty({ type: String })
   key: string
 
-  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true })
-  label: LocalizedStringItemCommand[]
+  @ApiProperty({ type: LocalizedStringDto })
+  label: LocalizedStringDto
 
-  @ApiProperty({ type: LocalizedStringItemCommand, isArray: true, nullable: true })
-  description: LocalizedStringItemCommand[] | null
+  @ApiProperty({ type: LocalizedStringDto, nullable: true })
+  description: LocalizedStringDto | null
 
   @CustomFieldTypeApiProperty()
   type: CustomFieldType
@@ -59,9 +59,9 @@ export class CustomFieldDefinitionResponse {
     this.tenantUuid = definition.tenantUuid
     this.entityType = definition.entityType
     this.key = definition.key
-    this.label = toLocalizedStringItemCommands(definition.label)
+    this.label = LocalizedStringDto.from(definition.label)
     this.description = definition.description !== null
-      ? toLocalizedStringItemCommands(definition.description)
+      ? LocalizedStringDto.from(definition.description)
       : null
     this.type = definition.type
     this.isRequired = definition.isRequired
@@ -70,6 +70,3 @@ export class CustomFieldDefinitionResponse {
   }
 }
 
-function toLocalizedStringItemCommands(value: LocalizedString): LocalizedStringItemCommand[] {
-  return value.toJSON().map(item => ({ value: item.value, locale: item.locale }))
-}
