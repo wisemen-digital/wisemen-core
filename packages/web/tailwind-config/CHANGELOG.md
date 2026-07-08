@@ -1,6 +1,12 @@
 # @wisemen/vue-core-tailwind-config
 
 
+
+## 0.0.6
+<sub>2026-07-02</sub>
+
+- [#1342](https://github.com/wisemen-digital/wisemen-core/pull/1342)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Resolve issue where nested @light and @dark wouldn't behave as expected
+
 ## 0.0.5
 <sub>2026-06-08</sub>
 

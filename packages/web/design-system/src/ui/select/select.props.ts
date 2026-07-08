@@ -17,6 +17,10 @@ export type DisplayFn<
   TValue extends SelectValue | SelectValue[],
 > = (item: NonNullable<GetValue<TValue>>) => string
 
+export type GetItemKeyFn<
+  TValue extends SelectValue | SelectValue[],
+> = (item: NonNullable<GetValue<TValue>>) => number | string
+
 export interface SelectProps<TValue extends SelectValue | SelectValue[]>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
@@ -38,6 +42,11 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default null
    */
   getItemConfig?: ((value: NonNullable<GetValue<TValue>>) => MenuItemConfig | null) | null
+  /**
+   * Returns a stable, unique key for an item. Defaults to `JSON.stringify(value)` when not provided.
+   * @default null
+   */
+  getItemKey?: GetItemKeyFn<TValue> | null
   /**
    * The items to display in the select.
    */
@@ -71,6 +80,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
 export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pick<
   SelectProps<TValue>,
   | 'displayFn'
+  | 'getItemKey'
   | 'hasVirtualScroll'
   | 'isLoading'
   | 'items'

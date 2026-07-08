@@ -160,7 +160,7 @@ const shouldPulse = computed<boolean>(() => props.chin?.pulseKey != null && !isR
                 justify="between"
                 class="min-w-0 gap-md"
               >
-                <RowLayout class="min-w-0 flex-1 gap-sm">
+                <RowLayout class="min-w-0 flex-1 gap-md">
                   <Component
                     :is="props.chin?.icon"
                     v-if="props.chin?.icon ?? false"
@@ -171,7 +171,7 @@ const shouldPulse = computed<boolean>(() => props.chin?.pulseKey != null && !isR
                     v-if="props.chin !== null && props.chin.text"
                     :text="props.chin.text"
                     :truncate="2"
-                    class="min-w-0 flex-1 text-xs font-medium"
+                    class="min-w-0 flex-1 text-xs font-medium text-secondary"
                   />
                 </RowLayout>
                 <RowLayout

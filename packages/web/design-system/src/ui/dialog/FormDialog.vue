@@ -77,7 +77,23 @@ function getNextChinPulseKey(): number {
 function createInvalidCloseChinConfig(pulseKey?: number | string | null): ChinConfig {
   return {
     icon: AlertTriangleIcon,
+    primaryAction: {
+      action: (): void => {
+        closeInvalidCloseChin()
+        isOpen.value = false
+        emit('close')
+      },
+      label: i18n.t('component.unsaved_changes_dialog.confirm'),
+      type: 'button',
+      variant: 'destructive',
+    },
     pulseKey,
+    secondaryAction: {
+      action: closeInvalidCloseChin,
+      label: i18n.t('component.unsaved_changes_dialog.cancel'),
+      type: 'button',
+      variant: 'default',
+    },
     text: props.unsavedChangesText ?? i18n.t('component.form_dialog.unsaved_changes'),
     variant: 'error',
   }

@@ -2,6 +2,12 @@
 
 
 
+
+## 0.5.2
+<sub>2026-07-04</sub>
+
+- [#1364](https://github.com/wisemen-digital/wisemen-core/pull/1364)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add optional persistence of precision on monetary column
+
 ## 0.5.1
 <sub>2026-06-17</sub>
 

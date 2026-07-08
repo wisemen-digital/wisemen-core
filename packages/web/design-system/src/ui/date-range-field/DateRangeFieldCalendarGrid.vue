@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { endOfMonth } from '@internationalized/date'
+import type { PlainDate } from '@wisemen/vue-core-dates'
 import {
   DateRangePickerCell as RekaDateRangePickerCell,
   DateRangePickerCellTrigger as RekaDateRangePickerCellTrigger,
@@ -10,7 +11,11 @@ import {
   DateRangePickerHeadCell as RekaDateRangePickerHeadCell,
 } from 'reka-ui'
 
+import type { DayConfig } from '@/ui/date-field/dateField.type'
+import { getDayIndicatorDotClass } from '@/ui/date-field/dayConfig.util'
+
 const props = defineProps<{
+  getDayConfig?: (date: PlainDate) => DayConfig | null
   month: any
   weekDays: string[]
 }>()
@@ -21,6 +26,14 @@ function isFirstDayOfMonth(date: any): boolean {
 
 function isLastDayOfMonth(date: any): boolean {
   return date.day === endOfMonth(date).day
+}
+
+function getDotColorClass(date: {
+  day: number
+  month: number
+  year: number
+}): string | null {
+  return getDayIndicatorDotClass(date, props.getDayConfig)
 }
 </script>
 
@@ -119,6 +132,17 @@ function isLastDayOfMonth(date: any): boolean {
                 class="
                   absolute bottom-1 left-1/2 size-1 -translate-x-1/2
                   rounded-full bg-brand-solid
+                  group-data-highlighted-end/celtrig:bg-white
+                  group-data-highlighted-start/celtrig:bg-white
+                  group-data-selection-end/celtrig:bg-white
+                  group-data-selection-start/celtrig:bg-white
+                "
+              />
+              <span
+                v-else-if="getDotColorClass(date)"
+                :class="getDotColorClass(date)"
+                class="
+                  absolute bottom-1 left-1/2 size-1 -translate-x-1/2
                   group-data-highlighted-end/celtrig:bg-white
                   group-data-highlighted-start/celtrig:bg-white
                   group-data-selection-end/celtrig:bg-white
