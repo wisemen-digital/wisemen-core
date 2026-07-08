@@ -33,6 +33,11 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default null - will close on single select, stay open on multi select
    */
   isDropdownKeptOpenOnSelect?: boolean | null
+  /**
+   * Whether to hide the chevron trigger icon on the right side of the select.
+   * @default false
+   */
+  isTriggerHidden?: boolean
   contentWidthClass?: string
 
   /**
