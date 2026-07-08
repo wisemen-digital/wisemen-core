@@ -22,6 +22,11 @@ export type AutocompleteGetItemKeyFn<TValue extends AutocompleteValue> = (
 export interface AutocompleteProps<TValue extends AutocompleteValue>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
+   * Whether to hide the chevron trigger icon on the right side of the autocomplete.
+   * @default true
+   */
+  isTriggerHidden?: boolean
+  /**
    * Function to display the item label.
    */
   displayFn: AutocompleteDisplayFn<TValue>

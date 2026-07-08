@@ -37,6 +37,7 @@ const props = withDefaults(defineProps<AutocompleteProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  isTriggerHidden: true,
   disableSideFlip: true,
   getItemConfig: null,
   getItemKey: null,
@@ -129,7 +130,7 @@ useProvideAutocompleteContext({
       <RekaComboboxAnchor class="block w-full">
         <FieldWrapper
           :icon-left="props.iconLeft"
-          :icon-right="ChevronDownIcon"
+          :icon-right="props.isTriggerHidden ? null : ChevronDownIcon"
           :is-loading="props.isLoading"
           :is-error="isError"
           :is-disabled="props.isDisabled"

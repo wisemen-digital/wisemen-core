@@ -28,12 +28,16 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default false
    */
   hasVirtualScroll?: boolean | null
+  /**
+   * Whether to hide the chevron trigger icon on the right side of the select.
+   * @default false
+   */
+  isTriggerHidden?: boolean
   contentWidthClass?: string
   /**
    * Function to display the item label.
    */
   displayFn: DisplayFn<TValue>
-
   /**
    * Maps a value to its visual config (avatar, icon, status, etc.).
    * Used both in the trigger to display the selected item and in each dropdown option.
