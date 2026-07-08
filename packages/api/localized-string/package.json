@@ -29,18 +29,19 @@
   "dependencies": {
     "@nestjs/common": "catalog:backend",
     "@nestjs/swagger": "catalog:backend",
+    "bumpy": "^0.2.0",
     "class-transformer": "catalog:backend",
     "class-validator": "catalog:backend",
     "typeorm": "catalog:backend"
   },
   "devDependencies": {
+    "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "@types/node": "catalog:backend"
+    "typescript": "catalog:peer"
   },
   "author": "Wisemen",
   "contributors": [],
