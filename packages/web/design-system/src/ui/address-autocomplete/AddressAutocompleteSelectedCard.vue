@@ -242,7 +242,7 @@ function onCancel(): void {
         <template #content>
           <div class="w-96 p-xl">
             <UIForm
-              :prompt-on-unsaved-changes="false"
+              :is-unsaved-changes-prompt-enabled="false"
               :form="form"
             >
               <UIColumnLayout gap="3xl">

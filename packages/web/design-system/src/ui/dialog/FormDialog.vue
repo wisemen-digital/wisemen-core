@@ -16,9 +16,12 @@ import Form from '@/ui/form/Form.vue'
 
 const props = withDefaults(defineProps<FormDialogProps>(), {
   hasCloseButton: true,
+  hasOwnFormComponent: false,
   isClickOutsideDisabled: false,
   isEscDisabled: false,
+  isUnsavedChangesPromptEnabled: true,
   promptOnUnsavedChanges: true,
+  renderOwnFormComponent: false,
   size: 'md',
   unsavedChangesText: null,
 })
@@ -43,6 +46,13 @@ useProvideFormDialogContext({
 
 const resolvedChin = computed<ChinConfig | null>(() => dialogChin.chin.value ?? props.chin ?? null)
 
+const isUnsavedChangesPromptEnabled = computed<boolean>(
+  () => props.promptOnUnsavedChanges !== true ? false : props.isUnsavedChangesPromptEnabled,
+)
+const hasOwnFormComponent = computed<boolean>(
+  () => props.hasOwnFormComponent || props.renderOwnFormComponent,
+)
+
 const dialogOpenState = computed<boolean>({
   get: () => isOpen.value,
   set: (value) => {
@@ -52,7 +62,7 @@ const dialogOpenState = computed<boolean>({
       return
     }
 
-    if (props.promptOnUnsavedChanges && props.form.isDirty.value) {
+    if (isUnsavedChangesPromptEnabled.value && props.form.isDirty.value) {
       openInvalidCloseChin()
 
       return
@@ -140,14 +150,14 @@ watch(() => isOpen.value, (value) => {
     :is-esc-disabled="props.isEscDisabled"
   >
     <slot
-      v-if="props.renderOwnFormComponent"
+      v-if="hasOwnFormComponent"
       :form-id="id"
     />
 
     <Form
       v-else
       :form="props.form"
-      :prompt-on-unsaved-changes="false"
+      :is-unsaved-changes-prompt-enabled="false"
       class="flex size-full flex-col overflow-hidden"
     >
       <slot :form-id="id" />

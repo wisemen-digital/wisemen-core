@@ -130,6 +130,7 @@ useProvideDateRangeFieldContext({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />
