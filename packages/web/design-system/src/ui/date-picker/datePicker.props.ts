@@ -18,7 +18,12 @@ export interface DatePickerProps {
    * This can be useful to prevent layout shifting.
    * @default false
    */
+  hasFixedWeeks?: boolean
+  /**
+   * @deprecated Use `hasFixedWeeks` instead.
+   */
   fixedWeeks?: boolean
+
   /**
    * Returns a config to decorate a given calendar day (e.g. a colored dot for a birthday or holiday).
    * Called once per rendered day. Return `null` for days that shouldn't be decorated.

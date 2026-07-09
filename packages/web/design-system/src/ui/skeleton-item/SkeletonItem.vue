@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 import type { SkeletonItemProps } from '@/ui/skeleton-item/skeletonItem.props'
 
 const props = withDefaults(defineProps<SkeletonItemProps>(), {
-  animate: false,
+  isAnimated: false,
   animationDelayInMs: 0,
 })
+
+const isAnimated = computed<boolean>(() => props.isAnimated || props.animate === true)
 </script>
 
 <template>
@@ -15,7 +19,7 @@ const props = withDefaults(defineProps<SkeletonItemProps>(), {
     aria-live="polite"
   >
     <div
-      v-if="props.animate"
+      v-if="isAnimated"
       :style="{ animationDelay: `${props.animationDelayInMs}ms` }"
       class="custom-shimmer absolute inset-0"
     />

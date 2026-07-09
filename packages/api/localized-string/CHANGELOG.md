@@ -2,6 +2,12 @@
 
 
 
+
+## 0.1.0
+<sub>2026-07-08</sub>
+
+- [#1385](https://github.com/wisemen-digital/wisemen-core/pull/1385)  *(minor)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Rename command to dto
+
 ## 0.0.10
 <sub>2026-06-30</sub>
 

@@ -20,15 +20,15 @@ interface User {
 
 const props = withDefaults(defineProps<{
   hasActiveSearch?: boolean
+  isColumnResizeDisabled?: boolean
   isLoading?: boolean
   activeFilterCount?: number
-  disableColumnResize?: boolean
   variant?: 'contained' | 'full-page'
 }>(), {
   hasActiveSearch: false,
+  isColumnResizeDisabled: false,
   isLoading: false,
   activeFilterCount: 0,
-  disableColumnResize: false,
   variant: 'full-page',
 })
 
@@ -95,7 +95,7 @@ const columns: TableColumn<User>[] = [
       :variant="props.variant"
       :has-active-search="props.hasActiveSearch"
       :active-filter-count="props.activeFilterCount"
-      :disable-column-resize="props.disableColumnResize"
+      :is-column-resize-disabled="props.isColumnResizeDisabled"
     />
   </div>
 </template>

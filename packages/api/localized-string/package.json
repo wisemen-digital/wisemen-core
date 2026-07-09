@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/localized-string",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -34,13 +34,13 @@
     "typeorm": "catalog:backend"
   },
   "devDependencies": {
+    "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "@types/node": "catalog:backend"
+    "typescript": "catalog:peer"
   },
   "author": "Wisemen",
   "contributors": [],
