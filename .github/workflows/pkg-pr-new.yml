@@ -1,5 +1,5 @@
 ---
-name: pkg.pr.new
+name: PR Preview
 
 on:
   pull_request:
@@ -20,7 +20,6 @@ jobs:
       TURBO_API: https://cache.turbo.internal.appwi.se
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ github.event.repository.name }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
