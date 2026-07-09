@@ -18,6 +18,78 @@
 
 
 
+
+## 1.13.0
+<sub>2026-07-08</sub>
+
+- [#1383](https://github.com/wisemen-digital/wisemen-core/pull/1383)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - feat(select,autocomplete): add `isTriggerHidden` prop to hide the chevron trigger icon. Defaults to `true` for `Autocomplete`.
+- [#1349](https://github.com/wisemen-digital/wisemen-core/pull/1349)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Normalize all boolean prop names to `is*` / `has*` prefix convention
+  Old prop names are still supported but marked as `@deprecated` — they will be removed in a future major release. Update your usage when convenient; no immediate migration required.
+  ### `show*` → `has*`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `Dialog` | `showCloseButton` | `hasCloseButton` |
+  | `DialogFooter` | `showSeparator` | `hasSeparator` |
+  | `DialogHeader` | `showSeparator` | `hasSeparator` |
+  | `DashboardPageDetailPaneFooter` | `showSeparator` | `hasSeparator` |
+  | `DashboardPageDetailPaneHeader` | `showSeparator` | `hasSeparator` |
+  | `DateRangePicker` | `showPresets` | `hasPresets` |
+  | `NumberField` | `showControls` | `hasControls` |
+  ### `hide*` → `is*Hidden`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `DialogHeader` | `hideDescription` | `isDescriptionHidden` |
+  ### `disable*` / `prevent*` → `is*Disabled`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `ContextMenu` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
+  | `DropdownMenu` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
+  | `DropdownMenu` | `fixedContentPosition` | `isContentPositionFixed` |
+  | `Popover` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
+  | `Popover` | `disableSideFlip` | `isSideFlipDisabled` |
+  | `Text` | `disableTooltip` | `isTooltipDisabled` |
+  | `Tooltip` / `ActionTooltip` | `disableCloseOnTriggerClick` | `isCloseOnTriggerClickDisabled` |
+  | `Tooltip` | `disableHoverableContent` | `isHoverableContentDisabled` |
+  | `DialogFooterButton` | `disableAutoFocus` | `isAutoFocusDisabled` |
+  | `Table` | `disableColumnResize` | `isColumnResizeDisabled` |
+  | `TableScrollContainer` | `disableScroll` | `isScrollDisabled` |
+  | `FormSubmitButton` | `disableKeyboardShortcut` | `isKeyboardShortcutDisabled` |
+  | `Dialog` | `preventClickOutside` | `isClickOutsideDisabled` |
+  | `Dialog` | `preventEsc` | `isEscDisabled` |
+  ### Other verb/noun patterns → `is*` / `has*`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `SkeletonItem` | `animate` | `isAnimated` |
+  | `DatePicker` | `fixedWeeks` | `hasFixedWeeks` |
+  | `FieldWrapper` | `wrap` | `isWrapped` |
+  | `TimeField` | `stepSnapping` | `hasStepSnapping` |
+  | `KeyboardShortcut` / `KeyboardShortcutKey` | `enableKeyHoldVisualization` | `isKeyHoldVisualizationEnabled` |
+  | `Select` | `keepDropdownOpenOnSelect` | `isDropdownKeptOpenOnSelect` |
+  | `ActionContextMenu` / `ActionDropdownMenu` / `ActionTrigger` | `currentContextOnly` | `isCurrentContextOnly` |
+  | `ContextMenu` / `DropdownMenu` / `Popover` | `prioritizePosition` | `isPrioritizedPosition` |
+  ### `no*` → inverted `is*`
+  | Component | Old prop (deprecated) | New prop | Note |
+  |---|---|---|---|
+  | `BadgeGroup` | `noWrap` | `isWrapped` | **Logic inverted** — `:no-wrap="true"` becomes `:is-wrapped="false"`. The new prop defaults to `true`. |
+  ### Type field renames
+  | Type | Old field (deprecated) | New field |
+  |---|---|---|
+  | `Toast` | `dismissible` | `isDismissible` |
+  | `TableColumn` | `centerHeaderContent` | `isCenteredHeaderContent` |
+  | `TableGroupedData` / `TableSubGroupedData` | `defaultOpen` | `isOpenByDefault` |
+- [#1349](https://github.com/wisemen-digital/wisemen-core/pull/1349)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Normalize additional boolean prop names to `is*`/`has*` convention, filling gaps missed by the initial normalization pass.
+  Old prop names are still supported but marked as `@deprecated` — they will be removed in a future major release.
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `TextField` / `TextareaField` / `NumberField` / `Select` / `Autocomplete` / `TagsField` / `DateField` / `TimeField` / `DateRangeField` / `PhoneNumberField` / `FormFileUpload` / `Checkbox` / `Switch` / `RadioGroup` (via shared `InputWrapper` type) | `hideErrorMessage` | `isErrorMessageHidden` |
+  | `MainSidebarNavigationSubItem` | `noIndent` | `isIndented` (inverted, defaults to `true`) |
+  | `FormDialog` / `Form` | `promptOnUnsavedChanges` | `isUnsavedChangesPromptEnabled` |
+  | `FormDialog` | `renderOwnFormComponent` | `hasOwnFormComponent` |
+  | `TagsField` | `addOnBlur` | `isAddedOnBlur` |
+  | `TagsField` | `addOnPaste` | `isAddedOnPaste` |
+  | `TagsField` | `addOnTab` | `isAddedOnTab` |
+  | `TagsField` | `allowDuplicate` | `isDuplicateAllowed` |
+
 ## 1.12.0
 <sub>2026-07-08</sub>
 
