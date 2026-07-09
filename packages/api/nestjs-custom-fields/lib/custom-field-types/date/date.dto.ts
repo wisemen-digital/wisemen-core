@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { plainDate } from '@wisemen/datewise'
-import { IsDateWithoutTimeString } from '@wisemen/validators'
+import { IsPlainDate, plainDate, PlainDateApiProperty } from '@wisemen/datewise'
 import { IsEnum } from 'class-validator'
 import { BaseCustomFieldValueDto, createCustomFieldValueDto } from '#src/dto/base-custom-field-value.dto.js'
 import { CustomFieldType } from '#src/enum/custom-field-type.enum.js'
@@ -11,8 +10,8 @@ export class DateCustomFieldValueDto extends BaseCustomFieldValueDto {
   @IsEnum([CustomFieldType.DATE])
   declare type: CustomFieldType.DATE
 
-  @ApiProperty({ type: String, format: 'date' })
-  @IsDateWithoutTimeString()
+  @PlainDateApiProperty()
+  @IsPlainDate()
   value: string
 
   parse(): DateCustomFieldValue {
