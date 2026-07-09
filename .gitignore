@@ -29,3 +29,4 @@ static
 
 **/.eslintcache
 .temp
+.context

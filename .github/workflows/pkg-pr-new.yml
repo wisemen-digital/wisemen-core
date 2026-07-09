@@ -1,0 +1,39 @@
+---
+name: pkg.pr.new
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: ['main']
+
+concurrency:
+  group: pkg-pr-new-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  publish-preview:
+    name: Publish Preview Packages
+    if: github.event.pull_request.draft == false && github.head_ref != 'bumpy/version-packages'
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Publish PR previews
+        run: pnpm exec pkg-pr-new publish --comment=update --commentWithSha './packages/*/*'
