@@ -1601,6 +1601,70 @@ importers:
         specifier: catalog:peer
         version: 5.9.3
 
+  packages/api/nestjs-custom-fields:
+    dependencies:
+      '@nestjs/common':
+        specifier: catalog:backend-peer
+        version: 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core':
+        specifier: catalog:backend-peer
+        version: 11.1.19(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.18)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: catalog:backend-peer
+        version: 11.4.2(@nestjs/common@11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.19)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@opentelemetry/api':
+        specifier: catalog:backend-peer
+        version: 1.9.1
+      '@wisemen/api-error':
+        specifier: workspace:^*
+        version: link:../api-error
+      '@wisemen/datewise':
+        specifier: workspace:^*
+        version: link:../datewise
+      '@wisemen/localized-string':
+        specifier: workspace:^*
+        version: link:../localized-string
+      '@wisemen/monetary':
+        specifier: workspace:^*
+        version: link:../monetary
+      '@wisemen/nestjs-typeorm':
+        specifier: workspace:^*
+        version: link:../nestjs-typeorm
+      '@wisemen/validators':
+        specifier: workspace:^*
+        version: link:../validators
+      class-transformer:
+        specifier: catalog:backend-peer
+        version: 0.5.1
+      class-validator:
+        specifier: catalog:backend-peer
+        version: 0.15.1
+      typeorm:
+        specifier: catalog:backend-peer
+        version: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.11.0)
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.6.1)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/nestjs-domain-events:
     dependencies:
       '@nestjs/common':
