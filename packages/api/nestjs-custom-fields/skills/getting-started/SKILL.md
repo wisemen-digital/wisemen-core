@@ -251,31 +251,13 @@ export class UpdateTicketUseCase {
   ) {}
 
   async execute(command: UpdateTicketCommand): Promise<void> {
+    const values = command.customFields.map((value) => value.parse())
     const definitions = await this.repository.findDefinitions({
       entityType: CustomFieldEntityType.TICKET
     })
-
-    const values = command.customFields.map((value) => value.parse())
-
     validateCustomFieldValues(definitions, values)
 
     // Remaining use-case logic
   }
-}
-```
-
-If you want to return definitions from a read endpoint, use
-`CustomFieldDefinitionResponse` to map the repository results into the response
-shape:
-
-```ts
-async function findTicketDefinitions(
-  repository: CustomFieldDefinitionsRepository
-): Promise<CustomFieldDefinitionResponse[]> {
-  const definitions = await repository.findDefinitions({
-    entityType: CustomFieldEntityType.TICKET
-  })
-
-  return definitions.map(definition => new CustomFieldDefinitionResponse(definition))
 }
 ```
