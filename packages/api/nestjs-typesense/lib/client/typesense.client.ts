@@ -44,7 +44,7 @@ export class TypesenseClient {
   get client (): Typesense.Client {
     if (this._client == null) {
       this.initialize()
-      throw new TypesenseUnavailableError('The Typesense client is not configured')
+      return this._client!
     } else {
       return this._client
     }
