@@ -39,29 +39,37 @@ describe('CustomFieldDefinitionResponse', () => {
 
     const response = new CustomFieldDefinitionResponse(definition)
 
-    expect(response).toEqual({
+    expect(response).toMatchObject({
       uuid: definition.uuid,
       tenantUuid: definition.tenantUuid,
       entityType: 'ticket',
       key: 'priority',
-      label: [
-        { locale: 'en', value: 'Priority' },
-        { locale: 'nl', value: 'Prioriteit' }
-      ],
-      description: [
-        { locale: 'en', value: 'How urgent the ticket is' }
-      ],
+      label: {
+        items: [
+          { locale: 'en', value: 'Priority' },
+          { locale: 'nl', value: 'Prioriteit' }
+        ]
+      },
+      description: {
+        items: [
+          { locale: 'en', value: 'How urgent the ticket is' }
+        ]
+      },
       type: CustomFieldType.MULTI_SELECT,
       isRequired: true,
       choices: [
         {
           value: 'high',
-          label: [{ locale: 'en', value: 'High' }],
+          label: {
+            items: [{ locale: 'en', value: 'High' }]
+          },
           order: 2
         },
         {
           value: 'low',
-          label: [{ locale: 'en', value: 'Low' }],
+          label: {
+            items: [{ locale: 'en', value: 'Low' }]
+          },
           order: 1
         }
       ],

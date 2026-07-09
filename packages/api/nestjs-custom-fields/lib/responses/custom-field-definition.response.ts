@@ -10,8 +10,8 @@ class CustomFieldChoiceResponse {
   @ApiProperty({ type: String })
   value: string
 
-  @ApiProperty({ type: LocalizedStringDto, isArray: true })
-  label: LocalizedStringDto[]
+  @ApiProperty({ type: LocalizedStringDto })
+  label: LocalizedStringDto
 
   @ApiProperty({ type: Number })
   order: number
@@ -60,9 +60,7 @@ export class CustomFieldDefinitionResponse {
     this.entityType = definition.entityType
     this.key = definition.key
     this.label = LocalizedStringDto.from(definition.label)
-    this.description = definition.description !== null
-      ? LocalizedStringDto.from(definition.description)
-      : null
+    this.description = LocalizedStringDto.from(definition.description)
     this.type = definition.type
     this.isRequired = definition.isRequired
     this.choices = definition.choices?.map(choice => new CustomFieldChoiceResponse(choice)) ?? null
