@@ -8,7 +8,7 @@ const toast = useToast()
 
 function show(): void {
   toast.show({
-    dismissible: false,
+    isDismissible: false,
     icon: InfoCircleIcon,
     message: 'This toast cannot be dismissed manually.',
     variant: 'info',

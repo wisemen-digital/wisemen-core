@@ -31,6 +31,10 @@ import {
 } from '@wisemen/payload-core-translate'
 
 export default buildConfig({
+  localization: {
+    defaultLocale: 'en',
+    locales: ['en', 'nl', 'fr'],
+  },
   plugins: [
     payloadTranslatePlugin({
       adapters: [googleTranslateAdapterDefinition],
@@ -51,11 +55,26 @@ export default buildConfig({
 
 ## What it adds
 
-- A translation action in collection edit screens.
-- Field selection for the fields that should be translated.
-- Translation status columns and hooks that keep translated content in sync.
-- Optional translation settings storage in a Payload global or collection.
-- Adapter-based translation, including Google Translate and DeepL.
+For every collection you register through `collections`, the plugin mutates the collection config and adds:
+
+- a localized `translationStatus` field in the sidebar
+- a `translationStatus` default admin column
+- a translate action in the collection edit menu
+- a `beforeChange` hook that marks edited translations as manually edited
+- an `afterChange` hook that marks translated sibling locales as stale when the source locale changes
+
+It also adds a translation endpoint at `POST /translate-locale/:collection`.
+
+If you configure `translations`, it also ensures adapter settings are stored in either:
+
+- a Payload collection, or
+- a Payload global
+
+That settings target gets a `translations` group with one tab per adapter.
+
+`translatableFields` controls which fields are translated and tracked for status changes.
+
+`ignoredFields` lets you exclude fields from stale-status detection while still keeping them in the translation config.
 
 ## Adapter setup
 
@@ -88,6 +107,8 @@ translations: {
 }
 ```
 
+If the target already exists, the plugin injects the translation settings fields into it. If it does not exist yet, the plugin creates the collection or global for you.
+
 ## Access control
 
 You can gate both the translation endpoint and the rendered translation settings field with an `access` function.
@@ -113,3 +134,4 @@ payloadTranslatePlugin({
 - `adapters` is required.
 - The runtime tries adapters in order and falls back to the next one if a translation fails.
 - The full source document is passed to every adapter.
+- The package is most useful when Payload localization is enabled.

@@ -50,7 +50,7 @@ function getHiddenBadgesLabels(hiddenCount: number): string {
 
 <template>
   <AdaptiveContent v-slot="{ hiddenBlockCount }">
-    <BadgeGroup :no-wrap="true">
+    <BadgeGroup :is-wrapped="false">
       <AdaptiveContentBlock
         v-for="(badge, badgeIndex) of maxVisibleBadges"
         :key="badgeIndex"

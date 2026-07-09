@@ -35,7 +35,7 @@ function onUpdateIsOpen(isOpen: boolean): void {
 <template>
   <UIActionDropdownMenu
     :parent-action="props.filter.action"
-    :current-context-only="true"
+    :is-current-context-only="true"
     :fixed-content-position="true"
     popover-align="start"
     popover-side="bottom"

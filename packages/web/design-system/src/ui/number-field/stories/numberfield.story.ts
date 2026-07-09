@@ -15,6 +15,10 @@ import NumberFieldStatesPlayground from './NumberFieldStatesPlayground.vue'
 const meta = {
   title: 'Components/NumberField',
   argTypes: {
+    hasControls: {
+      control: 'boolean',
+      description: 'Whether to display increment and decrement controls',
+    },
     isDisabled: {
       control: 'boolean',
       description: 'Whether the input is disabled',
@@ -62,10 +66,6 @@ const meta = {
       control: 'text',
       description: 'The placeholder text of the input',
     },
-    showControls: {
-      control: 'boolean',
-      description: 'Whether to display increment and decrement controls',
-    },
     step: {
       control: 'number',
       description: 'The increment and decrement step for the number input',
@@ -100,8 +100,8 @@ export const Default: Story = {
 
 export const WithControls: Story = {
   args: {
+    hasControls: true,
     label: 'Number Field',
-    showControls: true,
     step: 1,
   },
 }

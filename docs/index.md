@@ -14,7 +14,7 @@ features:
     details: "A dedicated area for API docs and references."
     link: /api/
   - title: CMS
-    details: "Payload CMS documentation and the payload-core-translate plugin."
+    details: "Payload CMS documentation for shared auth, links, settings, translate, and utils packages."
     link: /cms/
 
 ---

@@ -57,7 +57,7 @@ const columns: TableColumn<TableGroupedData<User>>[] = [
 
 const groupedData: TableGroupedData<User>[] = [
   {
-    defaultOpen: true,
+    isOpenByDefault: true,
     items: [
       {
         id: '1',
@@ -76,7 +76,7 @@ const groupedData: TableGroupedData<User>[] = [
     label: 'Admins',
   },
   {
-    defaultOpen: true,
+    isOpenByDefault: true,
     items: [
       {
         id: '3',
@@ -101,7 +101,7 @@ const groupedData: TableGroupedData<User>[] = [
     label: 'Editors',
   },
   {
-    defaultOpen: false,
+    isOpenByDefault: false,
     items: [
       {
         id: '6',

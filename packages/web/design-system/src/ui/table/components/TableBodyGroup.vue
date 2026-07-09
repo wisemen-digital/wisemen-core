@@ -19,12 +19,16 @@ import { useInjectTableSelectionContext } from '@/ui/table/context/tableSelectio
 import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<{
+  isOpenByDefault?: boolean
+  /**
+   * @deprecated Use `isOpenByDefault` instead.
+   */
   defaultOpen?: boolean
   headerCells?: Component[]
   items?: unknown[]
   label: string
 }>(), {
-  defaultOpen: true,
+  isOpenByDefault: true,
   items: () => [],
 })
 
@@ -58,7 +62,7 @@ onBeforeUnmount(() => {
   <CollapsibleRoot
     v-slot="{ open: isOpen }"
     :as="TableSubgrid"
-    :default-open="props.defaultOpen"
+    :default-open="props.defaultOpen !== undefined ? props.defaultOpen : props.isOpenByDefault"
     class="group/collapsible"
   >
     <TableSubgrid

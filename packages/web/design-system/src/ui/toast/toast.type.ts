@@ -52,13 +52,18 @@ export interface Toast {
   title?: string
 
   /**
+   * Whether the user can manually dismiss the toast.
+   * @default true
+   */
+  isDismissible?: boolean
+
+  /**
    * An optional call-to-action button rendered inside the toast.
    */
   button?: ToastButtonAction
 
   /**
-   * Whether the user can manually dismiss the toast.
-   * @default true
+   * @deprecated Use `isDismissible` instead.
    */
   dismissible?: boolean
 

@@ -1,6 +1,6 @@
 import type { ValidatorConstraintInterface, ValidationArguments, ValidationOptions } from 'class-validator'
 import { Validate, ValidatorConstraint } from 'class-validator'
-import type { LocalizedStringItemCommand } from '#src/localized-string.command.js'
+import type { LocalizedStringItemDto } from '#src/localized-string.dto.js'
 
 /** Validate that each language is only present once in the items array */
 export function IsUniqueLanguage (validationOptions?: ValidationOptions): PropertyDecorator {
@@ -14,7 +14,7 @@ export class IsUniqueLanguageValidator implements ValidatorConstraintInterface {
       return false
     }
 
-    const languages = (items as LocalizedStringItemCommand[]).map(item => item.locale)
+    const languages = (items as LocalizedStringItemDto[]).map(item => item.locale)
     const uniqueLanguages = new Set(languages)
 
     return languages.length === uniqueLanguages.size

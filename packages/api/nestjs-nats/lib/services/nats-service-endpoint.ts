@@ -57,8 +57,7 @@ export class NatsServiceEndpoint {
 
   async listen (): Promise<void> {
     for await (const message of this.stream) {
-      // Handle messages one by one
-      await this.handleMessage(message)
+      void this.handleMessage(message)
     }
   }
 

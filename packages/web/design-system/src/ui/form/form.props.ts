@@ -2,6 +2,10 @@ import type { Form } from 'formango'
 
 export interface FormProps {
   id?: string | null
+  isUnsavedChangesPromptEnabled?: boolean
   form: Form<any>
-  promptOnUnsavedChanges: boolean
+  /**
+   * @deprecated Use `isUnsavedChangesPromptEnabled` instead.
+   */
+  promptOnUnsavedChanges?: boolean
 }

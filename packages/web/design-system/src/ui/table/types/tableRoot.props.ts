@@ -13,6 +13,10 @@ export interface TableRootProps {
    */
   hasActiveSearch?: boolean
   /**
+   * When `true`, the column resize handles are hidden and users cannot drag to resize columns.
+   */
+  isColumnResizeDisabled?: boolean
+  /**
    * Whether the table has completed its initial data fetch. Controls whether the table
    * renders its content or shows a loading skeleton.
    */
@@ -42,7 +46,7 @@ export interface TableRootProps {
    */
   columnSizes: TableColumnSize[]
   /**
-   * When `true`, the column resize handles are hidden and users cannot drag to resize columns.
+   * @deprecated Use `isColumnResizeDisabled` instead.
    */
   disableColumnResize?: boolean
   /**
@@ -62,6 +66,7 @@ export interface TableRootProps {
    * @default 'contained'
    */
   variant?: 'contained' | 'full-page'
+
   /**
    * Called when the user scrolls to the bottom of the table. Implement to fetch the next
    * page of data for infinite-scroll pagination. Omit when all data is loaded at once.

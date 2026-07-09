@@ -13,7 +13,7 @@ export const createNumberFieldStyle = tv({
     rightControl: `pr-xs`,
   },
   variants: {
-    showControls: {
+    hasControls: {
       true: {
         input: 'text-center',
       },
