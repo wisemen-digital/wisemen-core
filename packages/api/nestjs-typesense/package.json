@@ -24,10 +24,17 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/core": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "typesense": "catalog:backend-peer",
+    "@wisemen/opentelemetry": "workspace:^",
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/pagination": "workspace:^",
+    "@wisemen/coordinates": "workspace:^"
   },
-  "dependencies": {
-    "typesense": "3.0.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",

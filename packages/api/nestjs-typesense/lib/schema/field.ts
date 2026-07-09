@@ -1,38 +1,63 @@
+// oxlint-disable typescript/no-explicit-any
+/* eslint-disable @typescript-eslint/naming-convention */
 import type { CollectionFieldSchema, FieldType } from 'typesense/lib/Typesense/Collection.js'
+import type { TypesenseCollection } from './collection.js'
 
 export type TypesenseFieldType = FieldType
 export type TypesenseQueryByFieldType = Extract<FieldType, 'string' | 'string[]' | 'string*'>
+export const typesenseFieldConfig = Symbol.for('wisemen.typesense.field.config')
 
-export interface TypesenseFieldFlags {
-  readonly optional: boolean
-  readonly index: boolean
-  readonly sort: boolean
-  readonly facet: boolean
-  readonly infix: boolean
+export interface TypesenseFieldReference<
+  TName extends string = string,
+  TType extends TypesenseFieldType = TypesenseFieldType,
+  TValue = unknown,
+  TCollection extends TypesenseCollection = TypesenseCollection
+> {
+  readonly name: TName
+  readonly type: TType
+  collection: TCollection
+  readonly [typesenseFieldConfig]?: TValue
+}
+
+export interface TypesenseFieldFlags<TReferenceField extends TypesenseFieldReference | undefined = undefined> {
+  optional: boolean
+  index: boolean
+  sort: boolean
+  facet: boolean
+  infix: boolean
+  reference: TReferenceField
+}
+
+export type TypesenseGeoPoint = [number, number]
+
+interface TypesenseTypeMap {
+  'string': string
+  'string*': string
+  'image': string
+  'string[]': string[]
+  'bool': boolean
+  'bool[]': boolean[]
+  'int32': number
+  'int64': number
+  'float': number
+  'int32[]': number[]
+  'int64[]': number[]
+  'float[]': number[]
+  'geopoint': TypesenseGeoPoint
+  'geopoint[]': TypesenseGeoPoint[]
+  'geopolygon': TypesenseGeoPoint[]
+  'object': Record<string, unknown>
+  'object[]': Record<string, unknown>[]
 }
 
 export type TypesenseFieldValueFromType<TType extends TypesenseFieldType> =
-  TType extends 'string' | 'string*' | 'image' ? string
-    : TType extends 'string[]' ? string[]
-      : TType extends 'bool' ? boolean
-        : TType extends 'bool[]' ? boolean[]
-          : TType extends 'int32' | 'int64' | 'float' ? number
-            : TType extends 'int32[]' | 'int64[]' | 'float[]' ? number[]
-              : TType extends 'geopoint' ? [number, number]
-                : TType extends 'geopoint[]' | 'geopolygon' ? [number, number][]
-                  : TType extends 'object' ? Record<string, unknown>
-                    : TType extends 'object[]' ? Record<string, unknown>[]
-                      : unknown
+  TType extends keyof TypesenseTypeMap ? TypesenseTypeMap[TType] : unknown
 
-export type TypesenseCollectionFieldSchema<TType extends TypesenseFieldType = TypesenseFieldType> = Omit<
-CollectionFieldSchema,
-'name' | 'type'
-> & {
-  readonly name: string
-  readonly type: TType
-}
-
-export const typesenseFieldConfig = Symbol.for('wisemen.typesense.field.config')
+export type TypesenseCollectionFieldSchema<TType extends TypesenseFieldType = TypesenseFieldType> =
+  Omit<CollectionFieldSchema, 'name' | 'type'> & {
+    readonly name: string
+    readonly type: TType
+  }
 
 type DefaultTypesenseFieldFlags = {
   readonly optional: false
@@ -40,145 +65,124 @@ type DefaultTypesenseFieldFlags = {
   readonly sort: false
   readonly facet: false
   readonly infix: false
+  readonly reference: undefined
 }
 
 type SetFlag<
-  TFlags extends TypesenseFieldFlags,
-  TKey extends keyof TypesenseFieldFlags,
-  TValue extends boolean
+  TFlags extends TypesenseFieldFlags<TypesenseFieldReference | undefined>,
+  TKey extends keyof TFlags,
+  TValue
 > = Omit<TFlags, TKey> & Record<TKey, TValue>
 
-const defaultTypesenseFieldFlags: DefaultTypesenseFieldFlags = {
-  optional: false,
-  index: true,
-  sort: false,
-  facet: false,
-  infix: false
-}
+type FieldValue<TField extends TypesenseFieldReference> =
+  TField extends TypesenseFieldReference<any, any, infer TValue, any>
+    ? TValue
+    : never
 
-interface TypesenseFieldConfigMetadata<
-  TName extends string,
-  TType extends TypesenseFieldType,
-  TValue,
-  TFlags extends TypesenseFieldFlags
-> {
-  readonly name: TName
-  readonly type: TType
-  readonly value: TValue
-  readonly flags: TFlags
+function defaultFlags (): DefaultTypesenseFieldFlags {
+  return {
+    optional: false,
+    index: true,
+    sort: false,
+    facet: false,
+    infix: false,
+    reference: undefined
+  }
 }
 
 export interface TypesenseField<
   TName extends string = string,
   TType extends TypesenseFieldType = TypesenseFieldType,
+  // oxlint-disable-next-line no-unused-vars
   TValue = unknown,
-  TFlags extends TypesenseFieldFlags = TypesenseFieldFlags
-> extends TypesenseCollectionFieldSchema<TType> {
-  readonly name: TName
-  readonly optional: TFlags['optional']
-  readonly index: TFlags['index']
-  readonly sort: TFlags['sort']
-  readonly facet: TFlags['facet']
-  readonly infix: TFlags['infix']
-  readonly [typesenseFieldConfig]: TypesenseFieldConfigMetadata<TName, TType, TValue, TFlags>
+  TFlags extends TypesenseFieldFlags<TypesenseFieldReference | undefined> = TypesenseFieldFlags<TypesenseFieldReference | undefined>,
+  TCollection extends TypesenseCollection = TypesenseCollection
+> extends TypesenseCollectionFieldSchema<TType>, TypesenseFieldReference<TName, TType, TValue, TCollection> {
+  name: TName
+  optional: TFlags['optional']
+  index: TFlags['index']
+  sort: TFlags['sort']
+  facet: TFlags['facet']
+  infix: TFlags['infix']
+  reference: TFlags['reference']
+  collection: TCollection
 }
 
-export type AnyTypesenseField = TypesenseField<string, TypesenseFieldType, unknown, TypesenseFieldFlags>
-
-export type TypesenseFieldValue<TField extends AnyTypesenseField> = TField[typeof typesenseFieldConfig]['value']
-export type TypesenseFieldName<TField extends AnyTypesenseField> = TField[typeof typesenseFieldConfig]['name']
-export type TypesenseFieldFlagsFor<TField extends AnyTypesenseField> = TField[typeof typesenseFieldConfig]['flags']
-export type TypesenseFieldTypeFor<TField extends AnyTypesenseField> = TField[typeof typesenseFieldConfig]['type']
-
 export class TypesenseFieldBuilder<
-  TType extends TypesenseFieldType,
-  TValue,
-  TFlags extends TypesenseFieldFlags = DefaultTypesenseFieldFlags
+  TType extends TypesenseFieldType = TypesenseFieldType,
+  TValue = unknown,
+  TFlags extends TypesenseFieldFlags<TypesenseFieldReference | undefined> = DefaultTypesenseFieldFlags
 > {
   constructor (
-    private readonly fieldType: TType,
-    private readonly flags: TypesenseFieldFlags = defaultTypesenseFieldFlags
-  ) {}
+    private fieldType: TType,
+    private flags: TypesenseFieldFlags<TypesenseFieldReference | undefined> = defaultFlags()
+  ) { }
 
   optional (): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'optional', true>> {
-    return new TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'optional', true>>(
-      this.fieldType,
-      {
-        ...this.flags,
-        optional: true
-      }
-    )
+    this.flags.optional = true
+    return this as TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'optional', true>>
   }
 
+  /** Index is set to true by default */
   index (): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'index', true>>
   index<TEnabled extends boolean> (
     enabled: TEnabled
   ): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'index', TEnabled>>
-  index (enabled: boolean = true): TypesenseFieldBuilder<TType, TValue, TypesenseFieldFlags> {
-    return new TypesenseFieldBuilder(this.fieldType, {
-      ...this.flags,
-      index: enabled
-    })
+  index (enabled: boolean = true): TypesenseFieldBuilder<TType, TValue, TypesenseFieldFlags<TypesenseFieldReference | undefined>> {
+    this.flags.index = enabled
+    return this
   }
 
   sort (): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'sort', true>> {
-    return new TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'sort', true>>(
-      this.fieldType,
-      {
-        ...this.flags,
-        sort: true
-      }
-    )
+    this.flags.sort = true
+    return this as TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'sort', true>>
   }
 
   facet (): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'facet', true>> {
-    return new TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'facet', true>>(
-      this.fieldType,
-      {
-        ...this.flags,
-        facet: true
-      }
-    )
+    this.flags.facet = true
+    return this as TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'facet', true>>
   }
 
-  infix (
-    this: TypesenseFieldBuilder<TypesenseQueryByFieldType, TValue, TFlags>
-  ): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'infix', true>> {
-    return new TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'infix', true>>(
-      this.fieldType as TType,
-      {
-        ...this.flags,
-        infix: true
-      }
-    )
+  infix (): TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'infix', true>> {
+    this.flags.infix = true
+    return this as TypesenseFieldBuilder<TType, TValue, SetFlag<TFlags, 'infix', true>>
   }
 
-  build<TName extends string> (name: TName): TypesenseField<TName, TType, TValue, TFlags> {
+  reference<
+    TReferenceCollection extends TypesenseCollection,
+    TReferenceField extends TypesenseFieldReference<string, TType, any, TReferenceCollection>
+  > (
+    field: TReferenceField
+  ): TypesenseFieldBuilder<TType, FieldValue<TReferenceField>, SetFlag<TFlags, 'reference', TReferenceField>> {
+    this.flags.reference = field
+    return this as unknown as TypesenseFieldBuilder<TType, FieldValue<TReferenceField>, SetFlag<TFlags, 'reference', TReferenceField>>
+  }
+
+  brand<Brand extends TValue> (): TypesenseFieldBuilder<TType, Brand, TFlags> {
+    return this as unknown as TypesenseFieldBuilder<TType, Brand, TFlags>
+  }
+
+  build<TPropertyName extends string, TCollection extends TypesenseCollection> (
+    propertyName: TPropertyName,
+    collection: TCollection
+  ): TypesenseField<TPropertyName, TType, TValue, TFlags, TCollection> {
+
     return Object.freeze({
-      name,
+      name: propertyName,
       type: this.fieldType,
-      optional: this.flags.optional as TFlags['optional'],
-      index: this.flags.index as TFlags['index'],
-      sort: this.flags.sort as TFlags['sort'],
-      facet: this.flags.facet as TFlags['facet'],
-      infix: this.flags.infix as TFlags['infix'],
-      [typesenseFieldConfig]: {
-        name,
-        type: this.fieldType,
-        value: undefined as TValue,
-        flags: {
-          optional: this.flags.optional as TFlags['optional'],
-          index: this.flags.index as TFlags['index'],
-          sort: this.flags.sort as TFlags['sort'],
-          facet: this.flags.facet as TFlags['facet'],
-          infix: this.flags.infix as TFlags['infix']
-        } as TFlags
-      }
-    }) as TypesenseField<TName, TType, TValue, TFlags>
+      index: this.flags.index,
+      sort: this.flags.sort,
+      facet: this.flags.facet,
+      infix: this.flags.infix,
+      optional: this.flags.optional,
+      reference: this.flags.reference,
+      collection
+    }) as TypesenseField<TPropertyName, TType, TValue, TFlags, TCollection>
   }
 }
 
-export type AnyTypesenseFieldBuilder = TypesenseFieldBuilder<TypesenseFieldType, unknown, TypesenseFieldFlags>
+export type AnyTypesenseFieldBuilder =
+  TypesenseFieldBuilder<TypesenseFieldType, unknown, TypesenseFieldFlags<TypesenseFieldReference | undefined>>
 
 function createFieldBuilder<TType extends TypesenseFieldType> (
   fieldType: TType
@@ -256,4 +260,25 @@ export function auto (): TypesenseFieldBuilder<'auto', unknown> {
 
 export function image (): TypesenseFieldBuilder<'image', string> {
   return createFieldBuilder('image')
+}
+
+export const TypesenseFieldBuilders = {
+  string,
+  stringArray,
+  stringStar,
+  bool,
+  boolArray,
+  int32,
+  int32Array,
+  int64,
+  int64Array,
+  float,
+  floatArray,
+  geopoint,
+  geopointArray,
+  geopolygon,
+  object,
+  objectArray,
+  auto,
+  image
 }

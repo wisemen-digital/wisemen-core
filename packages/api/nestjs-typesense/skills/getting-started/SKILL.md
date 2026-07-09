@@ -1,116 +1,230 @@
 ---
 name: getting-started
-description: Feature flags for NestJS API applications backed by OpenFeature and Go Feature Flag. Use when defining, evaluating feature flags.
+description: Use when defining Typesense collections, collectors, and search queries in NestJS APIs.
 ---
 
-## Define Flags
+# @wisemen/nestjs-typesense - Getting Started
+
+Use `TypesenseModule.forRootAsync(...)` to register the client, define typed
+collections with `Typesense.collection(...)`, implement a
+`@RegisterTypesenseCollector(...)` provider to transform entities into search
+documents, and query through `TypesenseClient` with
+`Typesense.createSearchParamsBuilder(...)`.
+
+## Register The Module
+
+Wrap the package module in a local app module and point `collectionsGlob` at
+the compiled `*.typesense-collection.js` files.
 
 ```ts
-import { createFlag } from '@wisemen/nestjs-feature-flags'
-
-export const SearchCollectionsFlag = createFlag({
-  type: 'boolean',
-  defaultValue: true,
-  name: 'global_search'
-})
-```
-
-```ts
-import { createFlag } from '@wisemen/nestjs-feature-flags'
-import { MailProvider } from '#src/modules/mail/enums/mail-provider.enum.js'
-
-export const MailProviderFlag = createFlag({
-  type: 'string',
-  enum: MailProvider,
-  defaultValue: MailProvider.SCALEWAY,
-  name: 'mail_provider'
-})
-```
-
-Export flags from files matched by `flagsGlob`. By convention use `*.flag.ts`
-filenames so they are easy to discover.
-
-## Evaluate Flags In Application Code
-
-After the middleware sets the context, inject `FeatureFlags` and call `get(...)`
-directly.
-
-```ts
+import { join } from 'node:path'
+import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { FeatureFlags } from '@wisemen/nestjs-feature-flags'
-import { MailProvider } from '#src/modules/mail/enums/mail-provider.enum.js'
-import { MailProviderFlag } from './mail-provider.flag.js'
+import { TypesenseModule } from '@wisemen/nestjs-typesense'
 
-export async function mailClientFactory(
-  cfg: ConfigService,
-  flags: FeatureFlags
-): Promise<MailClient> {
-  const provider = await flags.get(MailProviderFlag)
-
-  switch (provider) {
-    case MailProvider.SCALEWAY:
-      return new ScalewayMailClient(cfg)
-    case MailProvider.SEND_GRID:
-      return new SendGridMailClient(cfg)
-    default:
-      exhaustiveCheck(provider)
-  }
-}
+@Module({
+  imports: [TypesenseModule.forRootAsync({
+    inject: [ConfigService],
+    useFactory: (cfg: ConfigService) => ({
+      nodes: [{
+        host: cfg.getOrThrow('TYPESENSE_HOST'),
+        port: 8108,
+        protocol: 'http'
+      }],
+      apiKey: cfg.getOrThrow('TYPESENSE_KEY'),
+      collectionsGlob: join(process.cwd(), 'dist', '**', 'typesense', '**', '*.typesense-collection.js')
+    })
+  })],
+  exports: [TypesenseModule]
+})
+export class TypesenseClientModule {}
 ```
 
-## Guard Controllers
+If you keep collections in `src/**/typesense/*.typesense-collection.ts`, the
+default glob already matches the compiled files. Override `collectionsGlob`
+only when your app uses a different layout.
+
+## Define A Collection
+
+Define one exported collection object per searchable document shape. Use
+`InferDocumentType<typeof Collection>` to derive the Typesense document type.
 
 ```ts
-import { Controller, Get } from '@nestjs/common'
-import { RequireFlag } from '@wisemen/nestjs-feature-flags'
-import { SearchCollectionsFlag } from './search-collections.flag.js'
+import { Typesense, type InferDocumentType } from '@wisemen/nestjs-typesense'
 
-@Controller('search-collections')
-export class SearchCollectionsController {
-  @Get()
-  @RequireFlag(SearchCollectionsFlag)
-  async index(): Promise<void> {}
-}
+export const ContactCollection = Typesense.collection('contact', {
+  id: Typesense.string().brand<ContactUuid>(),
+  isActive: Typesense.bool().optional(),
+  name: Typesense.string().sort().infix(),
+  email: Typesense.string().sort().optional(),
+  phone: Typesense.string().sort().optional(),
+  country: Typesense.string().optional(),
+  city: Typesense.string().optional(),
+  postalCode: Typesense.string().optional(),
+  streetName: Typesense.string().optional(),
+  streetNumber: Typesense.string().optional(),
+  unit: Typesense.string().optional(),
+  coordinates: Typesense.geopoint().optional()
+})
+
+export type ContactCollection = typeof ContactCollection
+export type TypesenseContact = InferDocumentType<typeof ContactCollection>
 ```
 
-`RequireFlag(...)` only accepts boolean flags.
+Use field flags deliberately:
 
-## Stub Flags In Tests
+- `sort()` is required before `addSortOn(...)`.
+- `facet()` is required before `groupBy(...)`.
+- `infix()` enables infix search for that field.
+- `optional()` marks nullable or omitted document fields.
+- `reference(...)` links collections for join queries.
 
-Create one stub from the Nest app container and expose it through your test
-setup so each test can override only the flags it cares about.
+Use `Typesense.createGeopoint(...)` and `Typesense.parseGeopoint(...)` when
+mapping coordinate values to and from geopoint fields.
+
+## Register A Collector
+
+Collectors are the bridge between your persistence model and Typesense
+documents. Register one provider per collection with
+`@RegisterTypesenseCollector(...)`.
 
 ```ts
-setup.flags.mockFlag(SearchCollectionsFlag, true)
-setup.flags.mockFlag(MailProviderFlag, MailProvider.SEND_GRID)
-```
+import { MoreThanOrEqual } from 'typeorm'
+import { AnyOrIgnore, InjectRepository, TypeOrmRepository } from '@wisemen/nestjs-typeorm'
+import { RegisterTypesenseCollector, Typesense, type TypesenseCollector } from '@wisemen/nestjs-typesense'
+import { Contact } from '#src/app/contact/entities/contact.entity.js'
 
+@RegisterTypesenseCollector(ContactCollection)
+export class ContactTypesenseCollector implements TypesenseCollector<ContactCollection> {
+  static readonly BATCH_SIZE = 10_000
 
-## Set Request Context In Middleware
-
-Set the feature-flag transaction context once in auth middleware, then evaluate
-flags later without passing a context object around.
-
-```ts
-import { Injectable, type NestMiddleware } from '@nestjs/common'
-import type { FastifyReply, FastifyRequest } from 'fastify'
-import { FeatureFlagContext } from '@wisemen/nestjs-feature-flags'
-import { AuthorizationResolver } from '#src/modules/auth/services/authorization-resolver.js'
-import { AuthContext } from '#src/modules/auth/auth.context.js'
-
-@Injectable()
-export class AuthMiddleware implements NestMiddleware {
-  constructor(
-    private authContext: AuthContext,
-    private flagContext: FeatureFlagContext,
-    private authResolver: AuthorizationResolver
+  constructor (
+    @InjectRepository(Contact) private contactRepository: TypeOrmRepository<Contact>
   ) {}
 
-  async use(req: FastifyRequest, _res: FastifyReply, next: () => void): Promise<void> {
-    const auth = await this.authResolver.fromAuthorization(req.headers.authorization)
-    const cb = () => this.flagContext.run({ userUuid: auth.userUuid }, next)
+  transform (contacts: Contact[]): TypesenseContact[] {
+    return contacts.map(contact => ({
+      id: contact.uuid,
+      name: (contact.firstName ?? '') + ' ' + (contact.lastName ?? ''),
+      email: contact.email ?? undefined,
+      phone: contact.phone ?? undefined,
+      country: contact.address?.country ?? undefined,
+      city: contact.address?.city ?? undefined,
+      postalCode: contact.address?.postalCode ?? undefined,
+      streetName: contact.address?.streetName ?? undefined,
+      streetNumber: contact.address?.streetNumber ?? undefined,
+      unit: contact.address?.unit ?? undefined,
+      coordinates: Typesense.createGeopoint(contact.address?.coordinates),
+      isActive: contact.isActive ?? undefined
+    }))
+  }
 
-    this.authContext.runWithAuthorization(auth, cb)
+  fetch (uuids?: ContactUuid[]): AsyncGenerator<Contact[], void, void> {
+    return this.contactRepository.findByInBatches({
+      uuid: AnyOrIgnore(uuids)
+    }, ContactTypesenseCollector.BATCH_SIZE)
+  }
+
+  fetchChanged (since: Date): AsyncGenerator<Contact[], void, void> {
+    return this.contactRepository.findByInBatches({
+      updatedAt: MoreThanOrEqual(since)
+    }, ContactTypesenseCollector.BATCH_SIZE)
+  }
+
+  async* fetchRemoved (since: Date): AsyncGenerator<ContactUuid[], void, void> {
+    const contacts = this.contactRepository.findInBatches({
+      select: { uuid: true },
+      where: { deletedAt: MoreThanOrEqual(since) },
+      withDeleted: true
+    }, ContactTypesenseCollector.BATCH_SIZE)
+
+    for await (const batch of contacts) {
+      yield batch.map(contact => contact.uuid)
+    }
   }
 }
 ```
+
+`import(...)` uses `fetch(...)`, `importChanged(...)` uses `fetchChanged(...)`,
+and `deleteRemoved(...)` uses `fetchRemoved(...)`. Keep these methods batch
+oriented and return ids from `fetchRemoved(...)`, not full entities.
+
+## Query A Collection
+
+Inject `TypesenseClient`, build typed query params, then call `search(...)`.
+
+```ts
+import { Injectable } from '@nestjs/common'
+import { Typesense, TypesenseClient } from '@wisemen/nestjs-typesense'
+import { FilterOperator } from '@wisemen/nestjs-typesense/dist/params-builder/enums/typesense-filter-options.enum.js'
+
+@Injectable()
+export class ViewContactIndexUseCase {
+  constructor (
+    private typesense: TypesenseClient
+  ) {}
+
+  async execute (query: ViewContactIndexQuery): Promise<ViewContactIndexResponse> {
+    const pb = Typesense.createSearchParamsBuilder(ContactCollection)
+      .withQuery(query.search)
+      .withLimit(query.pagination?.limit)
+      .withOffset(query.pagination?.offset)
+
+    if (query.filter?.isActive != null) {
+      pb.addFilterOn(
+        ContactCollection.isActive,
+        FilterOperator.EQUALS,
+        toBoolean(query.filter.isActive)
+      )
+    }
+
+    pb.addSearchOn(ContactCollection.name)
+      .addSearchOn(ContactCollection.email)
+      .addSearchOn(ContactCollection.phone)
+      .addSearchOn(ContactCollection.city)
+      .addSearchOn(ContactCollection.country)
+
+    if (query.sort != null) {
+      for (const sort of query.sort) {
+        if (sort.key === ViewContactIndexSortQueryKey.NAME) {
+          pb.addSortOn(ContactCollection.name, sort.order)
+        }
+      }
+    }
+
+    const result = await this.typesense.search(ContactCollection, pb.build())
+
+    return new ViewContactIndexResponse(result)
+  }
+}
+```
+
+The builder enforces field capabilities at compile time:
+
+- `addSearchOn(...)` only accepts indexed fields.
+- `addFilterOn(...)` only accepts indexed fields and valid operators.
+- `addSortOn(...)` only accepts fields marked with `sort()`.
+- `groupBy(...)` only accepts fields marked with `facet()`.
+
+For cross-collection queries, use `innerJoin(...)`, `leftJoin(...)`, or
+`inverseJoin(...)` on fields declared with `reference(...)`.
+
+## Import And Sync Documents
+
+Use `TypesenseClient` methods according to the data you already have:
+
+- `import(collectionName, uuids?)`: fetch entities through the registered
+  collector and upsert them.
+- `importChanged(collectionName, since)`: reindex changed entities since a
+  timestamp.
+- `deleteRemoved(collectionName, since)`: remove deleted document ids reported
+  by the collector.
+- `importManually(collectionName, entities)`: transform already loaded entities
+  with the collector and upsert them.
+- `addDocuments(collectionOrName, documents)`: upsert already transformed
+  Typesense documents.
+- `truncateCollection(collectionOrName)`: remove every document from the
+  collection.
+
+In application code, trigger synchronization from domain events or jobs rather
+than from controllers directly.
