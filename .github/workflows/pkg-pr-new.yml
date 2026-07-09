@@ -16,6 +16,10 @@ jobs:
     if: github.event.pull_request.draft == false && github.head_ref != 'bumpy/version-packages'
     runs-on: ubuntu-latest
     permissions: {}
+    env:
+      TURBO_API: https://cache.turbo.internal.appwi.se
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
