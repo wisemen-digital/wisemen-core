@@ -5,7 +5,7 @@ export type DomainEventOptions<Content extends object = object, TUuid extends st
   content: Content
   subjectType?: string
   subjectId?: string
-  tenantUuid?: TUuid
+  tenantUuid?: TUuid | null
 }
 
 export type SubjectedEventOptions<
@@ -23,7 +23,7 @@ export class DomainEvent<Content extends object = object, TUuid extends string =
   readonly type: string
   readonly subjectType?: string
   readonly subjectId?: string
-  readonly tenantUuid?: TUuid
+  readonly tenantUuid?: TUuid | null
 
   constructor (options: DomainEventOptions<Content, TUuid>) {
     this.id = randomUUID()
