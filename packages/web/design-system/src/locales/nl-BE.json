@@ -83,6 +83,7 @@
   "component.offline_warning.title": "Je bent offline",
   "component.search_input.clear": "Zoekopdracht wissen",
   "component.search_input.placeholder": "Zoeken...",
+  "component.select.dropdown_title": "Opties",
   "component.skip_to_main_content_link.label": "Ga naar hoofdinhoud",
   "component.table.actions_cell.label": "Rij-acties",
   "component.table.auto_fit_columns_action.name": "Kolommen automatisch aanpassen",

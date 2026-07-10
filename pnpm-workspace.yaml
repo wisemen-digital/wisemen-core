@@ -227,7 +227,7 @@ catalogs:
     "libphonenumber-js": ">=1.12.35"
     "motion-v": "^2.2.1"
     "neverthrow": "^8.2.0"
-    "reka-ui": "^2.9.7"
+    "reka-ui": "^2.10.1"
     "tailwind-variants": ">=3.2.2"
     "temporal-polyfill": "^0.3.0"
     "typescript": "^5.9.3"
@@ -326,7 +326,7 @@ catalogs:
     "@wisemen/vue-core-api-utils": ^0.0.0
     "motion-v": "2.2.1"
     "pinia": "3.0.4"
-    "reka-ui": "2.9.7"
+    "reka-ui": "2.10.1"
     "superjson": "2.2.6"
     "vue": "3.5.27"
     "vue-i18n": "11.2.8"

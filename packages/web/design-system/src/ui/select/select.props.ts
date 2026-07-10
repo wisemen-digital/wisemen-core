@@ -21,6 +21,12 @@ export type GetItemKeyFn<
   TValue extends SelectValue | SelectValue[],
 > = (item: NonNullable<GetValue<TValue>>) => number | string
 
+/**
+ * The `PopoverProps` inherited below (`popoverSide`, `popoverAlign`, `popoverWidth`,
+ * `popoverCollisionPadding`, `disableSideFlip`, `prioritizePosition`, etc.) only apply
+ * to the desktop popover presentation. Below the `md` (768px) breakpoint the dropdown
+ * renders as a bottom drawer instead, and these props are ignored.
+ */
 export interface SelectProps<TValue extends SelectValue | SelectValue[]>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**

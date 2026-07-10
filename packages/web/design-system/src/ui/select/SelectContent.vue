@@ -8,6 +8,7 @@ import {
 import {
   computed,
   onBeforeUnmount,
+  ref,
   watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -27,6 +28,7 @@ import { useSelectLocalSearch } from '@/ui/select/selectLocalSearch.composable'
 import SelectOption from '@/ui/select/SelectOption.vue'
 import { UISeparator } from '@/ui/separator'
 import { UIText } from '@/ui/text'
+import { isMobileDevice } from '@/utils/device.util'
 
 const props = withDefaults(defineProps<SelectContentProps<TValue>>(), {
   hasVirtualScroll: false,
@@ -70,6 +72,14 @@ const {
 
 const isSearchEmpty = computed<boolean>(() =>
   props.search === 'local' ? localSearch.value === '' : search.value === '')
+
+// Reka-UI's `auto-focus` prop doesn't work, so this is a somewhat hacky workaround to prevent auto-focus
+// on mobile devices
+const isFilterInputDisabled = ref<boolean>(isMobileDevice())
+
+setTimeout(() => {
+  isFilterInputDisabled.value = false
+}, 0)
 
 const {
   createDisplayItemList, displayItems,
@@ -162,6 +172,7 @@ onBeforeUnmount(() => {
       <RekaListboxFilter
         :model-value="filterModelValue"
         :placeholder="i18n.t('component.autocomplete.search_placeholder')"
+        :disabled="isFilterInputDisabled"
         class="
           h-7 w-full rounded-sm bg-secondary px-md text-xs text-primary
           outline-none

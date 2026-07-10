@@ -83,6 +83,7 @@
   "component.offline_warning.title": "You are currently offline",
   "component.search_input.clear": "Clear search",
   "component.search_input.placeholder": "Search...",
+  "component.select.dropdown_title": "Options",
   "component.skip_to_main_content_link.label": "Skip to main content",
   "component.table.actions_cell.label": "Row actions",
   "component.table.auto_fit_columns_action.name": "Auto-fit columns",
