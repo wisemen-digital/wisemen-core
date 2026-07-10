@@ -116,6 +116,7 @@ catalogs:
     "reflect-metadata": "^0.2.2"
     "rxjs": "^7.8.2"
     "typeorm": "^1.0.0"
+    "typesense": "^3.0.6"
   build:
     "bumpp": "11.0.1"
     "chalk": "5.6.2"
@@ -216,9 +217,9 @@ catalogs:
     "globals": "17.3.0"
     "typescript-eslint": "^8.56.0"
   openapi:
-    "@hey-api/openapi-ts": "0.94.0"
+    "@hey-api/openapi-ts": "0.94.5"
   peer:
-    "@hey-api/openapi-ts": "^0.94.0"
+    "@hey-api/openapi-ts": "^0.94.5"
     "@tanstack/vue-query": "^5.100.6"
     "@typescript-eslint/parser": "^8.59.0"
     "@vitejs/plugin-vue": ">=6.0.3"
@@ -393,6 +394,21 @@ catalogs:
   js-yaml@<=4.1.1: ^4.1.2
   multer@>=1.0.0 <2.2.0: ^2.2.0
   multer@>=2.0.0-alpha.1 <2.2.0: ^2.2.0
+  '@hey-api/openapi-ts@<0.97.3': ^0.97.3
+  dompurify@<3.3.2: ^3.3.2
+  dompurify@<3.4.0: ^3.4.0
+  dompurify@<3.4.7: ^3.4.7
+  dompurify@<3.4.9: ^3.4.9
+  dompurify@<=3.3.1: ^3.3.2
+  dompurify@<=3.3.3: ^3.3.4
+  dompurify@<=3.4.10: ^3.4.11
+  dompurify@<=3.4.5: ^3.4.6
+  dompurify@<=3.4.6: ^3.4.7
+  dompurify@>=1.0.10 <3.4.0: ^3.4.0
+  dompurify@>=3.0.0 <=3.4.7: ^3.4.8
+  dompurify@>=3.0.1 <3.4.0: ^3.4.0
+  dompurify@>=3.1.3 <=3.3.1: ^3.3.2
+  postcss@<8.5.10: ^8.5.10
 
 "packageExtensions":
   "eslint-plugin-vuejs-accessibility":
@@ -410,6 +426,4 @@ allowBuilds:
   vue-demi: true
 
 minimumReleaseAgeExclude:
-  - "@payloadcms/translations@3.85.2"
-  - "@payloadcms/ui@3.85.2"
-  - payload@3.85.2
+  - '@hey-api/openapi-ts@0.97.3'
