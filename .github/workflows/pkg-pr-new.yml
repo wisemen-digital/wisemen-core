@@ -40,4 +40,4 @@ jobs:
         run: pnpm build
 
       - name: Publish PR previews
-        run: pnpm exec pkg-pr-new publish --comment=update --commentWithSha './packages/*/*'
+        run: pnpm exec pkg-pr-new publish --compact --comment=update --commentWithSha --pnpm './packages/*/*'
