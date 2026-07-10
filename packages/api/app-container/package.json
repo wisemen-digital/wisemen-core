@@ -43,7 +43,7 @@
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
-    "fastify": "^5.8.5",
+    "fastify": "^5.10.0",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
