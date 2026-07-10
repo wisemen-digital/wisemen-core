@@ -10,7 +10,7 @@ import { TypesenseJoinParamsBuilder } from './join-params.builder.js'
 import type { TypesenseCollection, TypesenseCollectionName } from '../schema/collection.js'
 import { getTypesenseCollectionName } from '../schema/collection.js'
 import type { InferDocumentType } from '../schema/document.js'
-import { TYPESENSE_DEFAULT_OFFSET, TYPESENSE_DEFAULT_LIMIT, TYPESENSE_DEFAULT_GROUP_LIMIT } from '../typesense.constant.js'
+import { TYPESENSE_DEFAULT_OFFSET, TYPESENSE_DEFAULT_LIMIT } from '../typesense.constant.js'
 import type {
   CollectionField,
   FilterOperatorForField,
@@ -249,7 +249,7 @@ export class TypesenseSearchParamsBuilder<
   }
 
   build (): TypesenseSearchParams<TResult> {
-    const groupLimit = this.groupLimit ?? TYPESENSE_DEFAULT_GROUP_LIMIT
+    const groupLimit = this.groupLimit  
 
     return {
       q: this.query,
