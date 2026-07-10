@@ -88,3 +88,4 @@ await this.pdfClient.generatePdfFromUrl({
 
 - Inject `Api2PdfClient` regardless of whether the configured provider is `api2pdf` or `mock`.
 - The package always uploads the generated file to `uploadUrl` with a `PUT` request.
+- `generatePdfFromUrl()` has optional `ensureReachable` option. This option validates if the passed url is reachable, before sending to API2PDF. This ensures that API2PDF does not take a screenshot of an unreachable endpoint (eg 503), since puppeteer option `WaitForNavigation` sees the 503 response as a navigation.

@@ -44,6 +44,10 @@ export class Api2PdfClient {
       storage: this.createStorageOptions(options.uploadUrl, options.storage?.extraHTTPHeaders)
     }
 
+    if (options.ensureReachable === true) {
+      await this.axios.get(options.url)
+    }
+
     await this.axios.post('/chrome/pdf/url', requestOptions)
   }
 
