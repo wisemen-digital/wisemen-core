@@ -20,7 +20,7 @@ Definition uniqueness is scoped by `entityType`. For non-tenant definitions,
 ## Step 1: Register The Exported Entity And Create The Table
 
 This package already exports the effective `CustomFieldDefinition` TypeORM
-entity. Add it to your datasource entities yourself so TypeORM knows about the
+entity. Add it to all TypeORM datasources yourself so TypeORM knows about the
 table metadata. After that, generate and run a migration so the table and the
 exported entity's partial unique indexes are created in your database.
 
@@ -64,7 +64,8 @@ import {
 } from '@wisemen/nestjs-custom-fields'
 
 enum CustomFieldEntityType {
-  TICKET = 'ticket'
+  TICKET = 'ticket',
+  COMMENT = 'comment'
 }
 
 export class Playground extends JobContainer {
@@ -186,6 +187,49 @@ const parsed = dto.parse()
 // }
 ```
 
+## Creating Definitions And Values In Tests
+
+Use `customFieldDefinition(...)` to create definitions in tests. This keeps
+test fixtures on the same normalized and validated path as production
+definitions. The factory generates the definition UUID, so use `definition.uuid`
+when creating its values.
+
+```ts
+import { LocalizedString } from '@wisemen/localized-string'
+import {
+  CustomFieldType,
+  customFieldDefinition,
+  customFieldValue,
+  type CustomFieldValue
+} from '@wisemen/nestjs-custom-fields'
+
+const definition = customFieldDefinition(CustomFieldType.TEXT, {
+  tenantUuid: null,
+  entityType: 'ticket',
+  key: 'summary',
+  label: new LocalizedString([{ locale: 'en', value: 'Summary' }]),
+  description: null,
+  isRequired: false
+})
+
+const value: CustomFieldValue = customFieldValue(
+  CustomFieldType.TEXT,
+  definition.uuid,
+  'hello'
+)
+```
+
+For request-boundary tests, instantiate the relevant
+`CustomFieldValueDto` subclass and call `.parse()` to create the domain value.
+`CustomFieldValueDto.from(value)` is the inverse operation: it maps an existing
+domain value to a response DTO and does not create a value.
+
+There is no public builder for definitions or values. Use the two factories for
+standard fixtures, and keep more specialized test builders local to the
+consuming project. `customFieldValue(...)` only constructs the typed value; use
+`validateCustomFieldValue(...)` or `validateCustomFieldValues(...)` to validate
+it against its definition.
+
 ## Step 5: Retrieve Definitions For Validation
 
 When you process submitted values, retrieve the matching definitions through
@@ -222,15 +266,27 @@ async update(...): Promise<void> {
 ```
 On repository lookups, `tenantUuid` is optional. Omit it to work with
 non-tenant definitions, or set it to retrieve tenant-specific definitions in a
-multi-tenant setup.
+multi-tenant setup. `entityType` is also optional and accepts either one entity
+type or an array of entity types.
+
+```ts
+const definitions = await repository.findDefinitions({
+  entityType: [CustomFieldEntityType.TICKET, CustomFieldEntityType.COMMENT],
+  tenantUuid
+})
+```
+
+Use a multi-entity lookup when a use case validates or returns definitions for
+several entity types together. The tenant filter still applies to every
+requested entity type, and results remain ordered by definition `key`.
 
 After DTO parsing, validate the resolved values against the definitions that
 apply for that entity and tenant. This is the runtime check that enforces the
 definition rules.
 
 The runtime order matters: call `.parse()` on the DTOs first, then run
-`validateCustomFieldValues(...)` against the definitions for that
-`entityType` and tenant scope.
+`validateCustomFieldValues(...)` against the definitions for the relevant
+entity type or entity types and tenant scope.
 
 ```ts
 import { Injectable } from '@nestjs/common'
