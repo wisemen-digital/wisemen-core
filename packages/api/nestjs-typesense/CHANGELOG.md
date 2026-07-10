@@ -2,6 +2,12 @@
 
 
 
+
+## 0.0.1
+<sub>2026-07-10</sub>
+
+- [#1394](https://github.com/wisemen-digital/wisemen-core/pull/1394)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-479): extract typesense into package
+
 ## 0.0.4
 <sub>2026-07-03</sub>
 

@@ -1,6 +1,12 @@
 # @wisemen/nestjs-api-2-pdf
 
 
+
+## 0.2.2
+<sub>2026-07-10</sub>
+
+- [#1393](https://github.com/wisemen-digital/wisemen-core/pull/1393)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - add optional ensureReachable option for url to pdf
+
 ## 0.2.1
 <sub>2026-06-16</sub>
 
