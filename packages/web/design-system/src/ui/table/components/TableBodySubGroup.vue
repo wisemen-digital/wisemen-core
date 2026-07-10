@@ -6,18 +6,37 @@ import {
   CollapsibleTrigger,
 } from 'reka-ui'
 
+import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import { UIRowLayout } from '@/ui/row-layout/index'
 import TableSubgrid from '@/ui/table/components/TableSubgrid.vue'
 import { TABLE_Z_INDEX } from '@/ui/table/const/table.const'
+import { useInjectTableContext } from '@/ui/table/context/table.context'
+import { useInjectTableSelectionContext } from '@/ui/table/context/tableSelection.context'
 import { useProvideTableSubGroupContext } from '@/ui/table/context/tableSubGroup.context'
 import { UIText } from '@/ui/text/index'
 
 const props = withDefaults(defineProps<{
+  isOpenByDefault?: boolean
+  /**
+   * @deprecated Use `isOpenByDefault` instead.
+   */
   defaultOpen?: boolean
+  items?: unknown[]
   label: string
 }>(), {
-  defaultOpen: true,
+  isOpenByDefault: true,
+  items: () => [],
 })
+
+const {
+  isSelectable,
+} = useInjectTableContext()
+
+const {
+  isGroupAllSelected,
+  isGroupIndeterminate,
+  toggleGroup,
+} = useInjectTableSelectionContext()
 
 useProvideTableSubGroupContext({
   isSubGroup: true,
@@ -28,7 +47,7 @@ useProvideTableSubGroupContext({
   <CollapsibleRoot
     v-slot="{ open: isOpen }"
     :as="TableSubgrid"
-    :default-open="props.defaultOpen"
+    :default-open="props.defaultOpen !== undefined ? props.defaultOpen : props.isOpenByDefault"
   >
     <div
       :style="{
@@ -39,10 +58,23 @@ useProvideTableSubGroupContext({
         bg-primary
       "
     >
+      <div
+        v-if="isSelectable"
+        class="flex h-full w-10 shrink-0 items-center justify-center"
+      >
+        <BaseCheckbox
+          :model-value="isGroupAllSelected(props.items) || isGroupIndeterminate(props.items)"
+          :is-indeterminate="isGroupIndeterminate(props.items) && !isGroupAllSelected(props.items)"
+          label=""
+          is-label-hidden
+          @update:model-value="() => toggleGroup(props.items)"
+        />
+      </div>
+
       <CollapsibleTrigger :as-child="true">
         <button
           class="
-            size-full px-5xl outline-none
+            h-full flex-1 px-5xl outline-none
             focus-visible:bg-tertiary
           "
         >

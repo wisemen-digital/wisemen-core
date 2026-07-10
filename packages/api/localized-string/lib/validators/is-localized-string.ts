@@ -2,7 +2,7 @@ import type { ValidatorConstraintInterface, ValidationArguments, ValidationOptio
 import { Validate, ValidatorConstraint, ValidateNested } from 'class-validator'
 import { applyDecorators } from '@nestjs/common'
 import { Type } from 'class-transformer'
-import { LocalizedStringCommand } from '#src/localized-string.command.js'
+import { LocalizedStringDto } from '#src/localized-string.dto.js'
 
 export interface IsLocalizedStringOptions extends ValidationOptions {
   requiredLanguages?: string[]
@@ -19,7 +19,7 @@ export function IsLocalizedString (options?: IsLocalizedStringOptions): Property
   } = options ?? {}
 
   return applyDecorators(
-    Type(() => LocalizedStringCommand),
+    Type(() => LocalizedStringDto),
     ValidateNested(),
     Validate(
       IsLocalizedStringValidator,
@@ -36,7 +36,7 @@ export class IsLocalizedStringValidator implements ValidatorConstraintInterface 
       return false
     }
 
-    const localizedString = value as LocalizedStringCommand
+    const localizedString = value as LocalizedStringDto
     const [requiredLanguages, forbidNonRequiredLanguages] = args.constraints as [string[], boolean]
 
     if (!Array.isArray(localizedString.items)) {

@@ -8,10 +8,10 @@ import {
 
 import { UIActionTooltip } from '@/ui/action-tooltip/index'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
-import { UINumberBadge } from '@/ui/number-badge/index'
 import { useInjectTabsContext } from '@/ui/tabs/tabs.context'
 import type { TabsRouterLinkItemProps } from '@/ui/tabs/tabs.props'
-import { UIText } from '@/ui/text/index'
+
+import TabsItemContent from './TabsItemContent.vue'
 
 const props = withDefaults(defineProps<TabsRouterLinkItemProps>(), {
   isDisabled: false,
@@ -20,10 +20,8 @@ const props = withDefaults(defineProps<TabsRouterLinkItemProps>(), {
   icon: undefined,
 })
 
-const {
-  variants,
-} = useInjectTabsContext()
-
+const tabsContext = useInjectTabsContext()
+const variants = tabsContext.variants
 const router = useRouter()
 
 const routeName = computed<string>(() => {
@@ -50,22 +48,11 @@ const routeName = computed<string>(() => {
             :to="props.to"
             :replace="true"
           >
-            <component
-              :is="props.icon"
-              v-if="props.icon != null"
-              class="size-4 shrink-0"
-            />
-            <UIText
-              :text="props.label"
-              :class="{
-                'sr-only': props.isLabelHidden,
-              }"
-              class="text-xs"
-            />
-            <UINumberBadge
-              v-if="props.count != null"
-              :value="props.count.toString()"
-              size="md"
+            <TabsItemContent
+              :count="props.count"
+              :icon="props.icon"
+              :is-label-hidden="props.isLabelHidden"
+              :label="props.label"
             />
           </RouterLink>
         </RekaTabsTrigger>

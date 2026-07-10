@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<{
   isRequired?: boolean
   disabledReason?: string
   errorMessage?: DateRangeFieldProps['errorMessage']
+  getDayConfig?: DateRangeFieldProps['getDayConfig']
   hideErrorMessage?: boolean
   hint?: DateRangeFieldProps['hint']
   label?: string
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<{
   isReadonly: false,
   isRequired: false,
   errorMessage: undefined,
+  getDayConfig: undefined,
   hideErrorMessage: false,
   hint: undefined,
   label: 'Date range',
@@ -55,6 +57,7 @@ const modelValue = ref<PlainDateRange>({
       :size="props.size"
       :min-date="props.minDate ?? null"
       :max-date="props.maxDate ?? null"
+      :get-day-config="props.getDayConfig"
       class="w-72"
     />
   </div>

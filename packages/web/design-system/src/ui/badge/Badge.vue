@@ -90,7 +90,7 @@ useProvideBadgeContext({
         :actions="props.actions"
         :models="props.models ?? []"
         :metadata="props.metadata"
-        :current-context-only="true"
+        :is-current-context-only="true"
         popover-side="bottom"
         popover-align="end"
       >

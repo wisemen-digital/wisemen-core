@@ -1,15 +1,6 @@
 # @wisemen/scoped-filter
 
-Scope-based UUID filtering for NestJS/TypeORM applications. Provides DTO classes and TypeORM query operators for including or excluding entities by UUID with validation decorators.
-
-## Features
-
-- **ScopedUuidFilter DTO**: Validated filter class with include/exclude scope
-- **Validation Decorator**: `@IsScopedUuidFilter` for nested validation
-- **TypeORM Integration**: `MatchesScopedUuids` operator for query building
-- **Query Builder Support**: Direct integration with TypeORM query builders
-- **Built-in Validation**: Class validator decorators for API inputs
-- **NestJS Support**: Swagger decorators for API documentation
+Reusable NestJS/TypeORM filter DTOs with built-in validation and query helpers.
 
 ## Installation
 
@@ -23,63 +14,94 @@ pnpm add @wisemen/scoped-filter
 pnpm add typeorm class-validator class-transformer @nestjs/swagger
 ```
 
-## Usage
+## Available Filters
 
-### DTO
+### Scoped inclusion filters
+
+Use `ScopedUuidFilter` or `buildScopedEnumFilter(...)` when the query should include or exclude a list of values.
 
 ```typescript
-import { ScopedUuidFilter, IsScopedUuidFilter } from '@wisemen/scoped-filter'
+import { ApiProperty } from '@nestjs/swagger'
+import { IsScopedUuidFilter, ScopedUuidFilter } from '@wisemen/scoped-filter'
 
 export class ListUsersQuery {
-  @ApiProperty({type: ScopedUuidFilter})
+  @ApiProperty({ type: ScopedUuidFilter })
   @IsScopedUuidFilter()
   uuid: ScopedUuidFilter<UserUuid>
 }
 ```
 
-Or use the manual decorators:
+### Conditional filters
+
+Use `IsFilter(...)` for nested validation with the new single-value filters:
+
+- `NumberFilter`
+- `TimestampFilter`
+- `PlainDateFilter`
+- `DateTimeRangeFilter`
+- `DateRangeFilter`
 
 ```typescript
-import { ScopedUuidFilter } from '@wisemen/scoped-filter'
-import { Type } from 'class-transformer'
-import { ValidateNested, IsObject } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger'
+import {
+  IsFilter,
+  NumberFilter,
+  TimestampFilter,
+} from '@wisemen/scoped-filter'
 
-export class ListUsersQuery {
-  @ApiProperty({type: ScopedUuidFilter})
-  @Type(() => ScopedUuidFilter)
-  @ValidateNested()
-  @IsObject()
-  uuid: ScopedUuidFilter<UserUuid>
+export class ListInvoicesQuery {
+  @ApiProperty({ type: NumberFilter })
+  @IsFilter(NumberFilter)
+  amount?: NumberFilter
+
+  @ApiProperty({ type: TimestampFilter })
+  @IsFilter(TimestampFilter)
+  createdAt?: TimestampFilter
 }
 ```
 
-### TypeORM
+## Conditions
+
+- `NumberFilterCondition`: `equal`, `notEqual`, `greaterThan`, `greaterThanOrEqual`, `lessThan`, `lessThanOrEqual`
+- `DateFilterCondition`: `equal`, `notEqual`, `before`, `after`
+- `RangeFilterCondition`: `overlaps`, `doesNotOverlap`, `contains`, `doesNotContain`
+
+## TypeORM
+
+Repository helpers:
 
 ```typescript
-import { MatchesScopedUuids } from '@wisemen/scoped-filter'
+import {
+  Matches,
+  MatchesNumber,
+  MatchesTimestamp,
+} from '@wisemen/scoped-filter'
 
 const entities = await repo.find({
   where: {
-    uuid: MatchesScopedUuids(query.uuid)
-  }
+    uuid: Matches(query.uuid),
+    amount: MatchesNumber(query.amount),
+    createdAt: MatchesTimestamp(query.createdAt),
+  },
 })
 ```
-The filter includes or excludes entities based on the `scope` property:
-- `INCLUDE`: Return only entities matching the provided UUIDs
-- `EXCLUDE`: Return entities not matching the provided UUIDs
+
+Query builder helpers:
 
 ```typescript
-import { matchesScopedUuids } from '@wisemen/scoped-filter'
+import {
+  matches,
+  matchesNumber,
+  matchesTimestamp,
+} from '@wisemen/scoped-filter'
 
-const entities = await repo.createQueryBuilder()
-  .where(matchesScopedUuids('user.uuid', query.uuid))
+const entities = await repo.createQueryBuilder('invoice')
+  .where(matches('invoice.uuid', query.uuid))
+  .andWhere(matchesNumber('invoice.amount', query.amount))
+  .andWhere(matchesTimestamp('invoice.createdAt', query.createdAt))
   .getMany()
 ```
 
 ## License
 
 SEE LICENSE IN LICENSE.md
-
-## Author
-
-Wisemen

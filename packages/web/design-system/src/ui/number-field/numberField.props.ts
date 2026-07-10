@@ -7,6 +7,12 @@ import type {
 
 export interface NumberFieldProps extends Input, AutocompleteInput, InputWrapper, FieldWrapper {
   /**
+   * Determines whether the number input should display increment and decrement controls.
+   * When `true`, buttons for increasing and decreasing the value will be hidden.
+   * @default false
+   */
+  hasControls?: boolean
+  /**
    * Specifies formatting options for the number input, using `Intl.NumberFormatOptions`.
    * This controls how the number is displayed (e.g., decimal places, currency, or percentage).
    * When `null`, no formatting is applied.
@@ -24,11 +30,10 @@ export interface NumberFieldProps extends Input, AutocompleteInput, InputWrapper
    */
   min?: number | null
   /**
-   * Determines whether the number input should display increment and decrement controls.
-   * When `true`, buttons for increasing and decreasing the value will be hidden.
-   * @default false
+   * @deprecated Use `hasControls` instead.
    */
   showControls?: boolean
+
   /**
    * Defines the increment and decrement step for the number input.
    * This determines how much the value changes when using controls or arrow keys.

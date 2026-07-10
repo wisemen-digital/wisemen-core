@@ -12,27 +12,33 @@ import { UIErrorState } from '@/ui/error-state/index'
 import TableBody from '@/ui/table/components/TableBody.vue'
 import TableBodyGroup from '@/ui/table/components/TableBodyGroup.vue'
 import TableBodyRow from '@/ui/table/components/TableBodyRow.vue'
+import TableBodyRowCheckboxCell from '@/ui/table/components/TableBodyRowCheckboxCell.vue'
 import TableBodySubGroup from '@/ui/table/components/TableBodySubGroup.vue'
 import TableHeader from '@/ui/table/components/TableHeader.vue'
 import TableHeaderCell from '@/ui/table/components/TableHeaderCell.vue'
+import TableHeaderCheckboxCell from '@/ui/table/components/TableHeaderCheckboxCell.vue'
 import TableHiddenResultsWarning from '@/ui/table/components/TableHiddenResultsWarning.vue'
 import TableLoading from '@/ui/table/components/TableLoading.vue'
 import TableRoot from '@/ui/table/components/TableRoot.vue'
 import TableScrollContainer from '@/ui/table/components/TableScrollContainer.vue'
+import { useTableSelection } from '@/ui/table/composables/tableSelection.composable'
 import { useTableVirtualScroller } from '@/ui/table/composables/tableVirtualScroller.composable'
 import { useProvideTableScrollContainerContext } from '@/ui/table/context/tableScrollContainer.context'
+import { useProvideTableSelectionContext } from '@/ui/table/context/tableSelection.context'
 import type { TableProps } from '@/ui/table/types/table.props'
 import type {
   InferTableItem,
   TableColumnSize,
   TableData,
   TableGroupedData,
+  TableSelectionState,
   TableSubGroupedData,
 } from '@/ui/table/types/table.type'
 
 type TItem = InferTableItem<TTableData>
 
 const props = withDefaults(defineProps<TableProps<TTableData>>(), {
+  isSelectable: false,
   activeFilterCount: 0,
   getLink: null,
 })
@@ -40,6 +46,7 @@ const props = withDefaults(defineProps<TableProps<TTableData>>(), {
 const emit = defineEmits<{
   clearFilters: []
   clearSearch: []
+  select: [state: TableSelectionState<TItem>]
 }>()
 
 const i18n = useI18n()
@@ -76,6 +83,19 @@ const subGroupedItems = computed<TableSubGroupedData<TItem>[]>(
   () => props.data as unknown as TableSubGroupedData<TItem>[],
 )
 
+const allCurrentItems = computed<TItem[]>(() => {
+  if (dataMode.value === 'flat') {
+    return flatItems.value
+  }
+  if (dataMode.value === 'grouped') {
+    return groupedItems.value.flatMap((g) => g.items)
+  }
+
+  return subGroupedItems.value.flatMap(
+    (g) => g.subGroups.flatMap((s) => s.items),
+  )
+})
+
 const columnSizes = computed<TableColumnSize[]>(() => (
   props.columns.map((column) => column.size ?? {
     max: '20rem',
@@ -91,6 +111,33 @@ const {
   computed(() => (dataMode.value === 'flat' ? flatItems.value.length : 0)),
   scrollContainerEl,
 )
+
+const {
+  isAllSelected,
+  isGroupAllSelected,
+  isGroupIndeterminate,
+  isIndeterminate,
+  isItemSelected,
+  toggleAll,
+  toggleGroup,
+  toggleItem,
+} = useTableSelection(
+  allCurrentItems,
+  (item) => props.getKey(item),
+  (state) => emit('select', state),
+)
+
+useProvideTableSelectionContext({
+  isAllSelected,
+  isGroupAllSelected: (items) => isGroupAllSelected(items as TItem[]),
+  isGroupIndeterminate: (items) => isGroupIndeterminate(items as TItem[]),
+  isIndeterminate,
+  isItemSelected,
+  isSelectable: computed(() => props.isSelectable),
+  toggleAll,
+  toggleGroup: (items) => toggleGroup(items as TItem[]),
+  toggleItem,
+})
 
 watch(() => props.data.length, (length, oldLength) => {
   if (length < oldLength) {
@@ -114,22 +161,25 @@ function onClearFiltersAndSearch(): void {
     :has-active-search="props.hasActiveSearch"
     :on-next-page="props.onNextPage"
     :is-initialized="props.data.length > 0"
+    :is-selectable="props.isSelectable"
     :header-actions="props.headerActions"
     :action-group="props.actionGroup"
-    :disable-column-resize="props.disableColumnResize"
+    :is-column-resize-disabled="props.isColumnResizeDisabled"
     :variant="props.variant"
     :sort="props.sort"
     @clear-filters-and-search="onClearFiltersAndSearch"
   >
-    <TableScrollContainer :disable-scroll="props.data.length === 0">
+    <TableScrollContainer :is-scroll-disabled="props.data.length === 0">
       <TableHeader v-if="data.length > 0 || props.isLoading">
+        <TableHeaderCheckboxCell v-if="props.isSelectable" />
         <TableHeaderCell
           v-for="(column, columnIndex) of props.columns"
           :key="column.key"
           :column-index="columnIndex"
           :is-resizable="columnIndex < props.columns.length - 1"
           :label="column.headerLabel"
-          :center-content="column.centerHeaderContent ?? false"
+          :description="column.headerDescription ?? null"
+          :is-centered="(column.isCenteredHeaderContent ?? column.centerHeaderContent) ?? false"
           :action-config="column.actionConfig"
           :column-key="column.key"
         />
@@ -147,8 +197,13 @@ function onClearFiltersAndSearch(): void {
             v-for="row of virtualRows"
             :key="props.getKey(flatItems[row.index]!)"
             :action-model="props.getActionModel?.(flatItems[row.index]!)"
+            :item-key="props.getKey(flatItems[row.index]!)"
             :link="props.getLink?.(flatItems[row.index]!) ?? null"
           >
+            <TableBodyRowCheckboxCell
+              v-if="props.isSelectable"
+              :item-key="props.getKey(flatItems[row.index]!)"
+            />
             <Component
               :is="column.component(flatItems[row.index]! as any)"
               v-for="column of props.columns"
@@ -167,21 +222,27 @@ function onClearFiltersAndSearch(): void {
           <TableBodyGroup
             v-for="group of subGroupedItems"
             :key="group.key"
-            :default-open="group.defaultOpen"
+            :is-open-by-default="group.isOpenByDefault ?? group.defaultOpen"
             :label="group.label"
           >
             <TableBodySubGroup
               v-for="subGroup of group.subGroups"
               :key="subGroup.key"
-              :default-open="subGroup.defaultOpen"
+              :is-open-by-default="subGroup.isOpenByDefault ?? subGroup.defaultOpen"
+              :items="props.isSelectable ? subGroup.items : []"
               :label="subGroup.label"
             >
               <TableBodyRow
                 v-for="item of subGroup.items"
                 :key="props.getKey(item)"
                 :action-model="props.getActionModel?.(item)"
+                :item-key="props.getKey(item)"
                 :link="props.getLink?.(item) ?? null"
               >
+                <TableBodyRowCheckboxCell
+                  v-if="props.isSelectable"
+                  :item-key="props.getKey(item)"
+                />
                 <Component
                   :is="column.component(item as any)"
                   v-for="column of props.columns"
@@ -196,7 +257,8 @@ function onClearFiltersAndSearch(): void {
           <TableBodyGroup
             v-for="group of groupedItems"
             :key="group.key"
-            :default-open="group.defaultOpen"
+            :is-open-by-default="group.isOpenByDefault ?? group.defaultOpen"
+            :items="props.isSelectable ? group.items : []"
             :label="group.label"
             :header-cells="props.groupHeaderCells?.(group)"
           >
@@ -204,8 +266,13 @@ function onClearFiltersAndSearch(): void {
               v-for="item of group.items"
               :key="props.getKey(item)"
               :action-model="props.getActionModel?.(item)"
+              :item-key="props.getKey(item)"
               :link="props.getLink?.(item) ?? null"
             >
+              <TableBodyRowCheckboxCell
+                v-if="props.isSelectable"
+                :item-key="props.getKey(item)"
+              />
               <Component
                 :is="column.component(item as any)"
                 v-for="column of props.columns"

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "9.0.1",
+  "version": "10.0.1",
   "private": false,
   "license": "MIT",
   "repository": {
@@ -48,12 +48,12 @@
     "cleanup": "rimraf dist/ node_modules/ .turbo/"
   },
   "peerDependencies": {
-    "@wisemen/vue-core-actions": ">=0.1.3",
-    "@wisemen/vue-core-dates": ">=1.0.1",
-    "@wisemen/vue-core-design-system": ">=1.4.2",
+    "@wisemen/vue-core-actions": ">=0.2.1",
+    "@wisemen/vue-core-dates": ">=1.1.0",
+    "@wisemen/vue-core-design-system": ">=1.13.0",
     "@wisemen/vue-core-utils": ">=0.1.0",
-    "@wisemen/vue-core-icons": ">=0.0.1",
-    "formango": "catalog:peer",
+    "@wisemen/vue-core-icons": ">=0.0.3",
+    "formango": "workspace:^",
     "vue": "catalog:peer",
     "zod": "catalog:peer",
     "vue-i18n": "catalog:peer",
@@ -70,7 +70,7 @@
     "@vitejs/plugin-vue": "catalog:vite",
     "@vue/test-utils": "catalog:test",
     "@vue/tsconfig": "catalog:vue",
-    "formango": "catalog:peer",
+    "formango": "workspace:*",
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-tailwind-config": "workspace:*",
     "@wisemen/vue-core-actions": "workspace:*",
@@ -88,6 +88,7 @@
     "pinia": "catalog:vue",
     "vue": "catalog:vue",
     "vue-i18n": "catalog:peer",
+    "temporal-polyfill": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }

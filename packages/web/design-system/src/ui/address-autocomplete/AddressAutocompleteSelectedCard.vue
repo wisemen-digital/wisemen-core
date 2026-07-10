@@ -242,7 +242,7 @@ function onCancel(): void {
         <template #content>
           <div class="w-96 p-xl">
             <UIForm
-              :prompt-on-unsaved-changes="false"
+              :is-unsaved-changes-prompt-enabled="false"
               :form="form"
             >
               <UIColumnLayout gap="3xl">
@@ -310,7 +310,7 @@ function onCancel(): void {
                           : null"
                         :has-virtual-scroll="true"
                         :label="t('component.address_autocomplete_selected_card.country.label')"
-                        :prioritize-position="false"
+                        :is-prioritized-position="false"
                         popover-align="end"
                         content-width-class="w-[20rem]"
                         search="remote"

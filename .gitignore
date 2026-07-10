@@ -28,3 +28,5 @@ static
 **/static
 
 **/.eslintcache
+.temp
+.context

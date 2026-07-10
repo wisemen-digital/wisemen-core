@@ -41,7 +41,7 @@ const deleteViewAction = useCustomViewDeleteViewAction()
       "
     >
       <UIActionContextMenu
-        :current-context-only="true"
+        :is-current-context-only="true"
         :actions="[
           editViewAction,
           deleteViewAction,

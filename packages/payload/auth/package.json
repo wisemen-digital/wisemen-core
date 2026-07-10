@@ -1,0 +1,72 @@
+{
+  "name": "@wisemen/payload-core-auth",
+  "type": "module",
+  "version": "0.0.2",
+  "private": false,
+  "imports": {
+    "#*": "./src/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/payload/auth"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./client": {
+      "types": "./dist/client.d.mts",
+      "import": "./dist/client.mjs"
+    },
+    "./server": {
+      "types": "./dist/server.d.mts",
+      "import": "./dist/server.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepack": "pnpm build",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "lint:fix": "eslint --fix"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": "catalog:payload-peer",
+    "@wisemen/payload-core-utils": "workspace:^",
+    "next": ">=16.2.6",
+    "payload": "catalog:payload-peer",
+    "react": "catalog:payload-peer"
+  },
+  "dependencies": {
+    "cookies-next": "catalog:payload",
+    "jose": "catalog:payload",
+    "pkce-challenge": "catalog:payload",
+    "zod": "catalog:general"
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "catalog:payload",
+    "@types/node": "catalog:types",
+    "@types/react": "catalog:payload",
+    "@wisemen/payload-core-utils": "workspace:^",
+    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "eslint": "catalog:lint-web",
+    "next": "catalog:payload",
+    "payload": "catalog:payload",
+    "react": "catalog:payload",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build"
+  }
+}

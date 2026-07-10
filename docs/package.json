@@ -6,6 +6,9 @@
   "author": "",
   "license": "SEE LICENSE IN LICENSE.md",
   "keywords": [],
+  "imports": {
+    "#*": "./*"
+  },
   "main": "index.js",
   "scripts": {
     "docs:dev": "vitepress dev",
@@ -18,7 +21,9 @@
     "type-check": "vue-tsc --noEmit --project tsconfig.autogen.json"
   },
   "dependencies": {
-    "@wisemen/vue-core-components": "workspace:*"
+    "@wisemen/vue-core-components": "workspace:*",
+    "@wisemen/vue-core-icons": "workspace:*",
+    "@wisemen/vue-core-design-system": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "catalog:style",

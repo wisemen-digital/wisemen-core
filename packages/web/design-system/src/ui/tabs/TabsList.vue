@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '@wisemen/vue-core-icons'
 import { TabsList as RekaTabsList } from 'reka-ui'
 import {
   onMounted,
@@ -16,7 +20,6 @@ const {
   hasHorizontalOverflow,
   hasReachedHorizontalEnd,
   isScrolledHorizontally,
-  isTouchDevice,
   orientation,
   scrollToLeft,
   scrollToRight,
@@ -36,36 +39,18 @@ onMounted(() => {
 <template>
   <div :class="variants.base()">
     <div
-      v-if="isTouchDevice && isScrolledHorizontally && hasHorizontalOverflow && orientation === 'horizontal'"
-      class="
-        absolute top-0 left-0 z-20 flex h-full items-center bg-linear-to-r
-        from-primary to-transparent
-      "
+      v-if="isScrolledHorizontally && hasHorizontalOverflow && orientation === 'horizontal'"
+      :class="variants.scrollEdge()"
+      class="left-0 justify-start bg-linear-to-r from-50%"
     >
       <button
         :aria-label="i18n.t('component.tabs.scroll_left')"
-        class="
-          flex size-7 items-center justify-center rounded-md bg-primary
-          text-secondary
-          hover:bg-primary-hover
-        "
+        :class="variants.scrollButton()"
         tabindex="-1"
         type="button"
         @click="scrollToLeft"
       >
-        <svg
-          aria-hidden="true"
-          class="size-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m15 18-6-6 6-6" />
-        </svg>
+        <ChevronLeftIcon class="size-3" />
       </button>
     </div>
 
@@ -74,9 +59,7 @@ onMounted(() => {
       :class="variants.scrollContainer()"
       :data-orientation="orientation"
     >
-      <RekaTabsList
-        :class="variants.list()"
-      >
+      <RekaTabsList :class="variants.list()">
         <slot />
 
         <TabsIndicator />
@@ -84,36 +67,18 @@ onMounted(() => {
     </div>
 
     <div
-      v-if="isTouchDevice && !hasReachedHorizontalEnd && hasHorizontalOverflow && orientation === 'horizontal'"
-      class="
-        absolute top-0 right-0 z-20 flex h-full items-center bg-linear-to-l
-        from-primary to-transparent
-      "
+      v-if="!hasReachedHorizontalEnd && hasHorizontalOverflow && orientation === 'horizontal'"
+      :class="variants.scrollEdge()"
+      class="right-0 justify-end bg-linear-to-l from-50%"
     >
       <button
         :aria-label="i18n.t('component.tabs.scroll_right')"
-        class="
-          flex size-7 items-center justify-center rounded-md bg-primary
-          text-secondary
-          hover:bg-primary-hover
-        "
+        :class="variants.scrollButton()"
         tabindex="-1"
         type="button"
         @click="scrollToRight"
       >
-        <svg
-          aria-hidden="true"
-          class="size-4"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m9 18 6-6-6-6" />
-        </svg>
+        <ChevronRightIcon class="size-3" />
       </button>
     </div>
   </div>

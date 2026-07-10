@@ -55,6 +55,10 @@ const config: StorybookConfig = {
     config.plugins = plugins
     config.optimizeDeps = {
       ...config.optimizeDeps,
+      include: [
+        ...(config.optimizeDeps?.include ?? []),
+        'formango',
+      ],
     }
 
     return config

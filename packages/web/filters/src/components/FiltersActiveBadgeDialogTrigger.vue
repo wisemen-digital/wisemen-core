@@ -16,7 +16,7 @@ const props = defineProps<{
 
 <template>
   <UIActionTrigger
-    :current-context-only="true"
+    :is-current-context-only="true"
     :action="props.filter.action"
   >
     <UIClickableElement>

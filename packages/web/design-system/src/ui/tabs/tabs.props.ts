@@ -17,7 +17,6 @@ export interface TabsProps {
    * @default 'horizontal'
    */
   orientation?: 'horizontal' | 'vertical'
-
   /**
    * Controls the horizontal padding of the scroll container. Only applies to the `underline` variant.
    */

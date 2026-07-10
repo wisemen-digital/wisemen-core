@@ -16,11 +16,18 @@ import TooltipArrow from '@/ui/tooltip/TooltipArrow.vue'
 
 const props = withDefaults(defineProps<TooltipProps>(), {
   ...POPPER_PROPS_DEFAULTS,
+  isCloseOnTriggerClickDisabled: false,
   isDisabled: false,
+  isHoverableContentDisabled: false,
   delayDuration: 300,
-  disableCloseOnTriggerClick: false,
-  disableHoverableContent: false,
 })
+
+const isCloseOnTriggerClickDisabled = computed<boolean>(
+  () => props.isCloseOnTriggerClickDisabled || props.disableCloseOnTriggerClick === true,
+)
+const isHoverableContentDisabled = computed<boolean>(
+  () => props.isHoverableContentDisabled || props.disableHoverableContent === true,
+)
 
 const tooltipStyle = computed<TooltipStyle>(() => createTooltipStyle({
   popoverWidth: props.popoverWidth ?? undefined,
@@ -36,8 +43,8 @@ const isOpen = defineModel<boolean>('isOpen', {
   <RekaTooltipRoot
     v-model:open="isOpen"
     :delay-duration="props.delayDuration"
-    :disable-closing-trigger="props.disableCloseOnTriggerClick"
-    :disable-hoverable-content="props.disableHoverableContent"
+    :disable-closing-trigger="isCloseOnTriggerClickDisabled"
+    :disable-hoverable-content="isHoverableContentDisabled"
     :disabled="props.isDisabled"
     :ignore-non-keyboard-focus="true"
   >

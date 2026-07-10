@@ -3,7 +3,7 @@ import type { IndividualKey } from '@tanstack/vue-hotkeys'
 import { useKeyHold } from '@tanstack/vue-hotkeys'
 
 const props = defineProps<{
-  enableKeyHoldVisualization: boolean
+  isKeyHoldVisualizationEnabled: boolean
   keyboardKey: string
   rawKey: IndividualKey
 }>()
@@ -14,8 +14,8 @@ const isHeld = useKeyHold(props.rawKey)
 <template>
   <kbd
     :class="{
-      'bg-primary/75 text-tertiary dark:bg-secondary': !isHeld || !enableKeyHoldVisualization,
-      'bg-tertiary/75 text-primary': isHeld && enableKeyHoldVisualization,
+      'bg-primary/75 text-tertiary dark:bg-secondary': !isHeld || !isKeyHoldVisualizationEnabled,
+      'bg-tertiary/75 text-primary': isHeld && isKeyHoldVisualizationEnabled,
     }"
     class="
       flex h-4 min-w-4 items-center justify-center rounded-xs border

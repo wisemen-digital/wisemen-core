@@ -13,7 +13,12 @@
     "provider": "github",
     "workflow": "release.yml",
     "permissions": "publish",
-    "ignore": ["docs-next", "@appwise/express-dto-router", "@appwise/transformer", "formango"]
+    "ignore": [
+      "docs-next",
+      "@appwise/express-dto-router",
+      "@appwise/transformer",
+      "formango"
+    ]
   },
   "scripts": {
     "build": "turbo run build",
@@ -43,6 +48,7 @@
     "@varlock/bumpy": "catalog:tooling",
     "fledgling": "catalog:build",
     "husky": "catalog:build",
+    "pkg-pr-new": "^0.0.75",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
     "typescript": "catalog:build",

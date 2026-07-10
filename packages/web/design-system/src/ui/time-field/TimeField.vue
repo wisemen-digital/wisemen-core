@@ -33,10 +33,10 @@ const props = withDefaults(defineProps<TimeFieldProps>(), {
   ...INPUT_DEFAULTS,
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'placeholder'),
+  hasStepSnapping: false,
   granularity: 'minute',
   size: 'md',
   step: null,
-  stepSnapping: false,
 })
 
 const modelValue = defineModel<Temporal.PlainTime | null>({
@@ -57,6 +57,8 @@ const {
   ariaDescribedBy,
   ariaInvalid,
 } = useInput(id, props)
+
+const hasStepSnapping = computed<boolean>(() => props.hasStepSnapping || props.stepSnapping === true)
 
 const timeFieldStyle = computed(() => createTimeFieldStyle({
   size: props.size,
@@ -111,6 +113,7 @@ const timeValue = computed<TimeValue | undefined>({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
     :is-label-hidden="props.isLabelHidden"
   >
     <template #label-left>
@@ -143,7 +146,7 @@ const timeValue = computed<TimeValue | undefined>({
         :locale="deviceLocale"
         :readonly="props.isReadonly"
         :required="props.isRequired"
-        :step-snapping="props.stepSnapping"
+        :step-snapping="hasStepSnapping"
         :step="props.step ?? undefined"
         :granularity="props.granularity"
       >

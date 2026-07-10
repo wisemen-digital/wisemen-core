@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+  computed,
   ref,
   useAttrs,
 } from 'vue'
@@ -9,11 +10,13 @@ import { useIsTruncated } from '@/ui/text/isTruncated.composable'
 import type { TextProps } from '@/ui/text/text.props'
 
 const props = withDefaults(defineProps<TextProps>(), {
+  isTooltipDisabled: false,
   as: 'span',
   class: null,
-  disableTooltip: false,
   truncate: true,
 })
+
+const isTooltipDisabled = computed<boolean>(() => props.isTooltipDisabled || props.disableTooltip === true)
 
 const attrs = useAttrs()
 
@@ -23,7 +26,7 @@ const isTruncated = useIsTruncated(textRef)
 
 <template>
   <ActionTooltip
-    :is-disabled="!isTruncated || props.disableTooltip"
+    :is-disabled="!isTruncated || isTooltipDisabled"
     :label="props.text"
   >
     <Component

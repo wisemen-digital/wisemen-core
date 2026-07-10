@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { createAction } from '@wisemen/vue-core-actions'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { RouteLocationRaw } from 'vue-router'
@@ -11,14 +12,17 @@ import TableBodyRowActionsCell from '@/ui/table/components/TableBodyRowActionsCe
 import TableSubgrid from '@/ui/table/components/TableSubgrid.vue'
 import { useInjectTableContext } from '@/ui/table/context/table.context'
 import { useProvideTableBodyRowContext } from '@/ui/table/context/tableBodyRow.context'
+import { useInjectTableSelectionContext } from '@/ui/table/context/tableSelection.context'
 
 const props = withDefaults(defineProps<{
   actionModel?: RegisteredActionContext['models'][number] | null
   ariaLabel?: string | null
+  itemKey?: string | null
   link?: RouteLocationRaw | null
 }>(), {
   actionModel: null,
   ariaLabel: null,
+  itemKey: null,
   link: null,
 })
 
@@ -28,6 +32,26 @@ const {
   isGroupingEnabled, actions,
 } = useInjectTableContext()
 
+const {
+  isSelectable, toggleItem,
+} = useInjectTableSelectionContext()
+
+const toggleSelectionAction = createAction({
+  id: 'table-row-toggle-selection',
+  isApplicable: (ctx) => isSelectable.value
+    && props.itemKey !== null
+    && ctx.menuType === undefined,
+  name: () => i18n.t('component.table.row.toggle_selection_action.name'),
+  execute: () => {
+    if (props.itemKey != null) {
+      toggleItem(props.itemKey)
+    }
+  },
+  keyboardShortcut: {
+    key: 'X',
+  },
+})
+
 useProvideTableBodyRowContext({
   link: computed(() => props.link),
 })
@@ -36,11 +60,11 @@ useProvideTableBodyRowContext({
 <template>
   <UIActionContextMenu
     :actions="actions"
-    :current-context-only="true"
+    :is-current-context-only="true"
     :models="props.actionModel === null ? [] : [props.actionModel]"
   >
     <UIActionFocus
-      :actions="actions"
+      :actions="[...actions, toggleSelectionAction]"
       :models="props.actionModel === null ? [] : [props.actionModel]"
     >
       <TableSubgrid

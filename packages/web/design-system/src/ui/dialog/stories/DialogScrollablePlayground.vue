@@ -6,12 +6,12 @@ import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import ExampleScrollableDialog from './ExampleScrollableDialog.vue'
 
 const props = withDefaults(defineProps<{
-  preventClickOutside?: boolean
-  preventEsc?: boolean
+  isClickOutsideDisabled?: boolean
+  isEscDisabled?: boolean
   size?: DialogSize
 }>(), {
-  preventClickOutside: false,
-  preventEsc: false,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
   size: 'md',
 })
 
@@ -25,8 +25,8 @@ const dialog = overlay.create(ExampleScrollableDialog)
       label="Open scrollable dialog"
       @click="dialog.open({
         size: props.size,
-        preventClickOutside: props.preventClickOutside,
-        preventEsc: props.preventEsc,
+        isClickOutsideDisabled: props.isClickOutsideDisabled,
+        isEscDisabled: props.isEscDisabled,
       })"
     />
   </div>

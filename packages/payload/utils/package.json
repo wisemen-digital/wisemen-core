@@ -1,0 +1,48 @@
+{
+  "name": "@wisemen/payload-core-utils",
+  "type": "module",
+  "version": "0.0.2",
+  "private": false,
+  "imports": {
+    "#*": "./src/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/payload/utils"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepack": "pnpm build",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint",
+    "type-check": "tsc --noEmit",
+    "lint:fix": "eslint --fix"
+  },
+  "peerDependencies": {
+    "payload": "catalog:payload-peer"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "eslint": "catalog:lint-web",
+    "payload": "catalog:payload",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build"
+  }
+}

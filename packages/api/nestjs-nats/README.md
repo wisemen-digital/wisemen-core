@@ -31,7 +31,7 @@ import { NatsModule } from '@wisemen/nestjs-nats'
   imports: [
     NatsModule.forRoot({
       modules: [MySubscriberModule, MyConsumerModule],
-      defaultClient: MyNatsClient,
+      defaultClient: MyNatsConnection,
       streams: [MyStream],
     }),
   ],
@@ -55,7 +55,7 @@ export class MyNatsConnection {}
 ### 3. Subscribe to messages
 
 ```ts
-import { NatsSubscriber, OnNatsMessage, NatsMessageData } from '@wisemen/nestjs-nats'
+import { NatsSubscriber, OnNatsMessage, NatsMessageData, NatsMsgDataJsonPipe } from '@wisemen/nestjs-nats'
 
 @NatsSubscriber((config) => ({
   subject: 'my.subject',
@@ -69,23 +69,56 @@ export class MySubscriber {
 }
 ```
 
-### 4. Simple client (fire-and-forget publish)
+### 4. Register the simple client
 
 ```ts
-import { NatsClient, NatsClientModule } from '@wisemen/nestjs-nats'
+import { Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { NatsClientModule } from '@wisemen/nestjs-nats'
+import { credsAuthenticator } from '@nats-io/transport-node'
 
 @Module({
-  imports: [NatsClientModule],
-  providers: [MyService],
+  imports: [
+    NatsClientModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        client: {
+          servers: config.getOrThrow('NATS_ENDPOINT'),
+          authenticator: credsAuthenticator(
+            new TextEncoder().encode(config.getOrThrow('NATS_CREDS'))
+          ),
+        },
+        onConnectError: (error) => {
+          console.error('Initial NATS connection failed', error)
+        },
+      }),
+    }),
+  ],
+  exports: [NatsClientModule],
 })
-export class AppModule {}
+export class OutboundNatsModule {}
+```
+
+`client` is passed straight to `@nats-io/transport-node`, so authentication
+should be configured with `client.authenticator`. `onConnectError` only runs
+when a connection attempt fails before the first successful connection;
+`captureException(...)` is already called before that callback executes.
+
+### 5. Publish messages
+
+```ts
+import { Injectable } from '@nestjs/common'
+import { NatsClient } from '@wisemen/nestjs-nats'
 
 @Injectable()
 export class MyService {
   constructor(private readonly nats: NatsClient) {}
 
   async notifySomething(): Promise<void> {
-    this.nats.publish('my.subject', new TextEncoder().encode(JSON.stringify({ hello: 'world' })))
+    await this.nats.publish(
+      'my.subject',
+      new TextEncoder().encode(JSON.stringify({ hello: 'world' }))
+    )
   }
 }
 ```

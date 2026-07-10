@@ -8,11 +8,11 @@ import DateRangePicker from '@/ui/date-range-picker/DateRangePicker.vue'
 const props = withDefaults(defineProps<{
   maxDate?: Temporal.PlainDate | null
   minDate?: Temporal.PlainDate | null
-  showPresets?: boolean
+  hasPresets?: boolean
 }>(), {
   maxDate: null,
   minDate: null,
-  showPresets: true,
+  hasPresets: true,
 })
 
 const modelValue = ref<PlainDateRange>({
@@ -30,7 +30,7 @@ const modelValue = ref<PlainDateRange>({
         v-model="modelValue"
         :min-date="props.minDate ?? null"
         :max-date="props.maxDate ?? null"
-        :show-presets="props.showPresets"
+        :has-presets="props.hasPresets"
       />
     </div>
   </div>
