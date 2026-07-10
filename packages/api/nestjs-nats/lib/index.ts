@@ -25,9 +25,6 @@ export type { NamedConnectionOptions } from './connections/nats-connection.manag
 export { NatsStream } from './streams/nats-stream.decorator.js'
 export type { NatsLimitsStreamConfigFunction, NatsStreamConfigFunction } from './streams/nats-stream.decorator.js'
 
-// Stream publisher
-export { NatsStreamPublisher } from './streams/nats-stream-publisher.js'
-
 // Subscriber decorators
 export { NatsSubscriber } from './subscribers/nats-subscriber.decorator.js'
 export { NatsSubscriberHandler } from './subscribers/nats-subscriber-handler.decorator.js'

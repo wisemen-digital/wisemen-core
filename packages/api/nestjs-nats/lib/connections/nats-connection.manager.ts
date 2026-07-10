@@ -1,10 +1,9 @@
 import type { ConnectionOptions, NatsConnection } from '@nats-io/transport-node'
 import { AuthorizationError, connect } from '@nats-io/transport-node'
-import { Injectable, Logger } from '@nestjs/common'
+import { Logger } from '@nestjs/common'
 
 export type NamedConnectionOptions = ConnectionOptions & { name: string }
 
-@Injectable()
 export class NatsConnectionManager {
   private connections: Map<string, NatsConnection> = new Map()
 

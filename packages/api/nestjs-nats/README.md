@@ -91,37 +91,7 @@ import type { ConfigService } from '@nestjs/config'
 export class OrdersStream {}
 ```
 
-### 5. Publish to a stream
-
-Inject `NatsStreamPublisher` (exported by `NatsModule`) to publish persisted
-messages onto a stream. The publish reuses the stream's connection and resolves
-back to a server acknowledgement (`PubAck`). The subject must be captured by one
-of the stream's configured `subjects`.
-
-```ts
-import { Injectable } from '@nestjs/common'
-import { NatsStreamPublisher } from '@wisemen/nestjs-nats'
-
-@Injectable()
-export class OrdersService {
-  constructor(private readonly streamPublisher: NatsStreamPublisher) {}
-
-  async placeOrder(): Promise<void> {
-    const ack = await this.streamPublisher.publish(
-      OrdersStream,
-      'orders.created',
-      new TextEncoder().encode(JSON.stringify({ id: '123' }))
-    )
-
-    // ack.stream, ack.seq, ack.duplicate
-  }
-}
-```
-
-Pass JetStream publish options as the fourth argument, e.g. `{ msgID: order.id }`
-to enable server-side deduplication within the stream's duplicate window.
-
-### 6. Consume from a stream
+### 5. Consume from a stream
 
 To read messages back off a stream, define a **consumer**. Unlike the core NATS
 subscriber in step 3 (fire-and-forget, no redelivery), a JetStream consumer reads
@@ -169,7 +139,7 @@ For CloudEvent-typed streams, route by event type with
 `@OnNatsCloudEvent(...)`) and add a plain `@OnNatsMessage()` method as the
 fallback handler.
 
-### 7. Register the simple client
+### 6. Register the simple client
 
 ```ts
 import { Module } from '@nestjs/common'
@@ -204,10 +174,10 @@ should be configured with `client.authenticator`. `onConnectError` only runs
 when a connection attempt fails before the first successful connection;
 `captureException(...)` is already called before that callback executes.
 
-### 8. Publish fire-and-forget messages
+### 7. Publish fire-and-forget messages
 
 `NatsClient.publish` sends a plain core NATS message: it is not persisted and
-there is no server acknowledgement. Use the stream publisher from step 5 when you
+there is no server acknowledgement. Use `publishToStream` (next step) when you
 need JetStream persistence and a `PubAck`.
 
 ```ts
@@ -223,6 +193,34 @@ export class MyService {
       'my.subject',
       new TextEncoder().encode(JSON.stringify({ hello: 'world' }))
     )
+  }
+}
+```
+
+### 8. Publish to a stream
+
+`NatsClient.publishToStream` publishes onto a JetStream stream and waits for the
+server to acknowledge it, returning a `PubAck`. The subject must be captured by a
+stream on the server — created via the `NatsModule` framework (step 4) or
+out-of-band. Nothing extra needs to be registered on the client: it reuses the
+same connection as `publish`.
+
+```ts
+import { Injectable } from '@nestjs/common'
+import { NatsClient } from '@wisemen/nestjs-nats'
+
+@Injectable()
+export class OrdersService {
+  constructor(private readonly nats: NatsClient) {}
+
+  async placeOrder(): Promise<void> {
+    const ack = await this.nats.publishToStream(
+      'orders.created',
+      new TextEncoder().encode(JSON.stringify({ id: '123' })),
+      { msgID: '123' } // optional: dedup within the stream's duplicate window
+    )
+
+    // ack.stream, ack.seq, ack.duplicate
   }
 }
 ```
