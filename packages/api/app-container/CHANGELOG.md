@@ -2,6 +2,12 @@
 
 
 
+
+## 4.1.3
+<sub>2026-07-10</sub>
+
+- [#1410](https://github.com/wisemen-digital/wisemen-core/pull/1410)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: bump dependencies to resolve version mismatches
+
 ## 4.1.2
 <sub>2026-06-30</sub>
 
