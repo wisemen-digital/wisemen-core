@@ -162,3 +162,76 @@ export class CuoptWorkerBouncer extends QueueBouncer {
   }
 }
 ```
+
+#### Rate-limited queues
+
+When a queue's jobs call an external API that is rate limited, give the queue a
+**rate-limit bouncer**. It reuses the `QueueBouncer` fetch-gate above — when the
+limit is reached the worker simply stops polling, so jobs wait in `created`
+instead of failing and burning retries — and keeps its state in Redis (shared
+across worker instances) via `@wisemen/nestjs-redis`.
+
+Use one dedicated queue per rate-limited API (the queue name is the limit key).
+Register the module once at the app root:
+
+```typescript
+PgbossRateLimitModule.forRoot({ url: process.env.REDIS_URL })
+// or forRootAsync({ inject: [ConfigService], useFactory: (c) => ({ url: c.getOrThrow('REDIS_URL') }) })
+```
+
+Then pick the base class that matches how much you know about the limit and
+declare a bouncer for the queue:
+
+```typescript
+// STATIC — a known budget (N requests per window)
+@Bouncer(QueueName.STRIPE)
+export class StripeBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 100, windowSeconds: 60 }
+}
+
+// HEADERS — the API reports its own budget via X-RateLimit-* / Retry-After
+@Bouncer(QueueName.CUOPT)
+export class CuoptBouncer extends HeaderRateLimitBouncer {
+  protected readonly options = {} // optional custom header names
+}
+
+// FAILURE — nothing is known up front; back off only after a 429 / error
+@Bouncer(QueueName.FLAKY)
+export class FlakyBouncer extends FailureBackoffBouncer {
+  protected readonly options = { backoffSeconds: 30, maxBackoffSeconds: 300 }
+}
+```
+
+Register the bouncer as a provider in its queue's module (same as any
+`QueueBouncer`). The `RedisRateLimitStore` is injected automatically.
+
+**Feed usage back from the transport.** All three modes learn from the actual
+HTTP traffic, so wrap the `@wisemen/node-fetch` client that talks to the API with
+`useRateLimiting`. A client talks to exactly one rate-limited API, so bind that
+queue's bouncer directly — inject it (it is a provider) and pass it in:
+
+```typescript
+constructor (private readonly bouncer: StripeBouncer) {
+  this.client = createClient({ baseUrl: 'https://api.stripe.com' })
+  useRateLimiting(this.client, this.bouncer)
+}
+```
+
+The interceptor drives the bound bouncer on every call: static counts one request
+per call, header mirrors the reported budget, failure backs off on a 429 or
+transport error. A 429 records the cooldown and throws `RateLimitError` so the job
+is retried after the cooldown clears — make sure the queue has pg-boss retry
+configured. Because it counts every request through the client, all real API
+usage counts against the budget, not only calls made from that queue's jobs.
+
+Notes:
+
+- **Fail-open:** if Redis is unavailable, bouncers allow work through rather than
+  wedge the queue.
+- Keep rate-limit bouncers **default-scoped** (singleton) — do not mark them
+  `TRANSIENT`/`REQUEST`.
+- Header mode treats the reset header as **epoch seconds**; APIs that send
+  delta-seconds need a custom adapter.
+- Enforcement is per-queue (no per-tenant sub-keys), and a poll can fetch a batch
+  before the counter updates, so overshoot is bounded by `batchSize × workers` —
+  lower `batchSize` on hot queues if needed.
