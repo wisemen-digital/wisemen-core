@@ -121,6 +121,24 @@ function openInvalidCloseChin(): void {
   dialogChin.open(createInvalidCloseChinConfig())
 }
 
+function onEscapeKeyDown(event: KeyboardEvent): void {
+  if (props.isEscDisabled || !isUnsavedChangesPromptEnabled.value || !props.form.isDirty.value) {
+    return
+  }
+
+  event.preventDefault()
+
+  if (dialogChin.chin.value !== null) {
+    closeInvalidCloseChin()
+    isOpen.value = false
+    emit('close')
+
+    return
+  }
+
+  openInvalidCloseChin()
+}
+
 watch(() => props.form.state.value, () => {
   if (dialogChin.chin.value === null) {
     return
@@ -148,6 +166,7 @@ watch(() => isOpen.value, (value) => {
     :size="props.size"
     :is-click-outside-disabled="props.isClickOutsideDisabled"
     :is-esc-disabled="props.isEscDisabled"
+    @escape-key-down="onEscapeKeyDown"
   >
     <slot
       v-if="hasOwnFormComponent"

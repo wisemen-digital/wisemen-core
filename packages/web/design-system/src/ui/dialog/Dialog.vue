@@ -26,6 +26,7 @@ const props = withDefaults(defineProps<DialogProps>(), {
 const emit = defineEmits<{
   'afterLeave': []
   'close': []
+  'escapeKeyDown': [event: KeyboardEvent]
   'update:isOpen': [value: boolean]
 }>()
 const hasCloseButton = computed<boolean>(
@@ -60,6 +61,8 @@ useProvideDialogContext({
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
+  emit('escapeKeyDown', event)
+
   if (isEscDisabled.value) {
     event.preventDefault()
   }
