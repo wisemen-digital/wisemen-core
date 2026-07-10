@@ -110,8 +110,6 @@ function createInvalidCloseChinConfig(pulseKey?: number | string | null): ChinCo
 }
 
 function openInvalidCloseChin(): void {
-  props.form.blurAll()
-
   if (dialogChin.chin.value !== null) {
     dialogChin.open(createInvalidCloseChinConfig(getNextChinPulseKey()))
 
