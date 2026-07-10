@@ -2,6 +2,12 @@
 
 
 
+
+## 0.0.5
+<sub>2026-07-10</sub>
+
+- [#1405](https://github.com/wisemen-digital/wisemen-core/pull/1405)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: rerelease
+
 ## 0.0.4
 <sub>2026-07-10</sub>
 
