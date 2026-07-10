@@ -4,6 +4,8 @@ import { NatsApplication } from './nats-application.js'
 import { NatsApplicationFactory } from './nats-application-factory.js'
 import { NATS_STREAMS_TOKEN } from './tokens.js'
 import { ProvidersExplorerModule } from './providers/providers-explorer.module.js'
+import { NatsConnectionManager } from './connections/nats-connection.manager.js'
+import { NatsStreamPublisher } from './streams/nats-stream-publisher.js'
 
 export interface NatsApplicationModuleOptions {
   modules: Type<unknown>[]
@@ -22,8 +24,11 @@ export class NatsModule implements OnApplicationBootstrap, OnApplicationShutdown
       ],
       providers: [
         { provide: NATS_STREAMS_TOKEN, useValue: options.streams },
-        NatsApplicationFactory
-      ]
+        NatsConnectionManager,
+        NatsApplicationFactory,
+        NatsStreamPublisher
+      ],
+      exports: [NatsStreamPublisher]
     }
   }
 

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import type { ClassConstructor } from 'class-transformer'
 import { getNatsMessageHandlerConfig, isNatsMessageHandler } from './message-handler/on-nats-message.decorator.js'
+import { NatsConnectionManager } from './connections/nats-connection.manager.js'
 import { NatsApplication } from './nats-application.js'
 import { getNatsStreamConfig } from './streams/nats-stream.decorator.js'
 import { getNatsParameters, type MethodName } from './parameters/nats-parameter.js'
@@ -17,11 +18,12 @@ export class NatsApplicationFactory {
   constructor (
     private providerExplorer: ProvidersExplorer,
     private config: ConfigService,
+    private connectionManager: NatsConnectionManager,
     @Inject(NATS_STREAMS_TOKEN) private streams?: ClassConstructor<unknown>[]
   ) {}
 
   async createApp (): Promise<NatsApplication> {
-    const app = new NatsApplication()
+    const app = new NatsApplication(this.connectionManager)
 
     for (const stream of this.streams ?? []) {
       const options = getNatsStreamConfig(stream, this.config)

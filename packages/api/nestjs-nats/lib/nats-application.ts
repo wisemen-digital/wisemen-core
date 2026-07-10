@@ -44,14 +44,12 @@ export interface CreateSubscriberHandlerConfig {
 }
 
 export class NatsApplication {
-  private connectionManager: NatsConnectionManager
   private serviceManager: NatsServiceManager
   private subscriberManager: NatsSubscriberManager
   private consumerManager: NatsConsumerManager
   private streamManager: NatsStreamManager
 
-  constructor () {
-    this.connectionManager = new NatsConnectionManager()
+  constructor (private connectionManager: NatsConnectionManager) {
     this.serviceManager = new NatsServiceManager(this.connectionManager)
     this.subscriberManager = new NatsSubscriberManager(this.connectionManager)
     this.consumerManager = new NatsConsumerManager(this.connectionManager)

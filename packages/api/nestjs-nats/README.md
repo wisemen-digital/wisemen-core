@@ -3,7 +3,7 @@
 NestJS integration for NATS messaging, including:
 
 - Decorator-driven subscriber, consumer, and service-endpoint handlers
-- JetStream stream management
+- JetStream stream management and publishing
 - CloudEvent routing
 - Parameter injection with pipes
 - Simple client wrapper for fire-and-forget pub/sub
@@ -31,7 +31,6 @@ import { NatsModule } from '@wisemen/nestjs-nats'
   imports: [
     NatsModule.forRoot({
       modules: [MySubscriberModule, MyConsumerModule],
-      defaultClient: MyNatsConnection,
       streams: [MyStream],
     }),
   ],
@@ -69,7 +68,108 @@ export class MySubscriber {
 }
 ```
 
-### 4. Register the simple client
+### 4. Define a stream
+
+Streams are declared as classes with the `@NatsStream` decorator, tied to a
+connection client, and registered on `NatsModule.forRoot({ streams: [...] })`.
+Each registered stream is created (or updated to match the config) at startup.
+
+```ts
+import { NatsStream } from '@wisemen/nestjs-nats'
+import { RetentionPolicy } from '@nats-io/jetstream'
+import type { ConfigService } from '@nestjs/config'
+
+@NatsStream((config: ConfigService) => ({
+  connection: MyNatsConnection,
+  name: 'orders',
+  subjects: ['orders.>'],
+  retention: RetentionPolicy.Limits,
+  max_age: 0,
+  max_bytes: -1,
+  max_msgs: -1,
+}))
+export class OrdersStream {}
+```
+
+### 5. Publish to a stream
+
+Inject `NatsStreamPublisher` (exported by `NatsModule`) to publish persisted
+messages onto a stream. The publish reuses the stream's connection and resolves
+back to a server acknowledgement (`PubAck`). The subject must be captured by one
+of the stream's configured `subjects`.
+
+```ts
+import { Injectable } from '@nestjs/common'
+import { NatsStreamPublisher } from '@wisemen/nestjs-nats'
+
+@Injectable()
+export class OrdersService {
+  constructor(private readonly streamPublisher: NatsStreamPublisher) {}
+
+  async placeOrder(): Promise<void> {
+    const ack = await this.streamPublisher.publish(
+      OrdersStream,
+      'orders.created',
+      new TextEncoder().encode(JSON.stringify({ id: '123' }))
+    )
+
+    // ack.stream, ack.seq, ack.duplicate
+  }
+}
+```
+
+Pass JetStream publish options as the fourth argument, e.g. `{ msgID: order.id }`
+to enable server-side deduplication within the stream's duplicate window.
+
+### 6. Consume from a stream
+
+To read messages back off a stream, define a **consumer**. Unlike the core NATS
+subscriber in step 3 (fire-and-forget, no redelivery), a JetStream consumer reads
+persisted messages and redelivers them until they are acknowledged.
+
+`@NatsConsumer` registers the class both as the consumer definition and as its own
+message handler, so the `@OnNatsMessage()` handler methods live on the same class.
+Give it a `durable_name` so the consumer survives restarts and resumes where it
+left off; omit it for an ephemeral consumer that starts fresh each boot.
+
+```ts
+import { NatsConsumer, OnNatsMessage, NatsMessageData, NatsMsgDataJsonPipe } from '@wisemen/nestjs-nats'
+import { AckPolicy } from '@nats-io/jetstream'
+import type { ConfigService } from '@nestjs/config'
+
+@NatsConsumer((config: ConfigService) => ({
+  connection: MyNatsConnection,
+  streamName: 'orders',
+  durable_name: 'orders-processor',
+  filter_subject: 'orders.created',
+  ack_policy: AckPolicy.Explicit,
+  // nakBackoff: 5000, // optional delay (ms) before a failed message is redelivered
+}))
+export class OrdersConsumer {
+  @OnNatsMessage()
+  async handle(@NatsMessageData(NatsMsgDataJsonPipe) payload: unknown): Promise<void> {
+    // process the message
+  }
+}
+```
+
+Acknowledgement is handled for you: the message is `ack`-ed once the handler
+resolves, and `nak`-ed (redelivered, optionally after `nakBackoff` ms) if the
+handler throws. Register the consumer's module the same way as a subscriber:
+
+```ts
+NatsModule.forRoot({
+  modules: [OrdersModule], // the module that provides OrdersConsumer
+  streams: [OrdersStream],
+})
+```
+
+For CloudEvent-typed streams, route by event type with
+`@OnNatsMessage({ event: { type: 'order.created', specversion: '1.0' } })` (or
+`@OnNatsCloudEvent(...)`) and add a plain `@OnNatsMessage()` method as the
+fallback handler.
+
+### 7. Register the simple client
 
 ```ts
 import { Module } from '@nestjs/common'
@@ -104,7 +204,11 @@ should be configured with `client.authenticator`. `onConnectError` only runs
 when a connection attempt fails before the first successful connection;
 `captureException(...)` is already called before that callback executes.
 
-### 5. Publish messages
+### 8. Publish fire-and-forget messages
+
+`NatsClient.publish` sends a plain core NATS message: it is not persisted and
+there is no server acknowledgement. Use the stream publisher from step 5 when you
+need JetStream persistence and a `PubAck`.
 
 ```ts
 import { Injectable } from '@nestjs/common'
