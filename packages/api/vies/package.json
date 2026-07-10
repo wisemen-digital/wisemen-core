@@ -33,8 +33,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "@nestjs/config": "catalog:backend-peer",
-    "axios": "catalog:backend-peer"
+    "@nestjs/config": "catalog:backend-peer"
   },
   "author": "Yu Hang Hu",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -42,5 +41,8 @@
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/vies"
+  },
+   "engines": {
+    "node": ">=18.0.0"
   }
 }
