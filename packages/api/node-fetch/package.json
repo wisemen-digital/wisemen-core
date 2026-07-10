@@ -1,46 +1,33 @@
 {
-  "name": "@wisemen/nestjs-tests",
-  "version": "0.0.4",
+  "name": "@wisemen/node-fetch",
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "imports": {
-    "#src/*": "./dist/*"
-  },
-  "exports": {
-    ".": "./dist/index.js"
-  },
+  "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm run clean && pnpm run build",
+    "test": "node --test dist/lib/tests/**/*.test.js",
     "lint:oxlint": "oxlint --type-aware lib",
     "lint:eslint": "eslint lib",
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
-    "clean": "rm -rf ./dist",
-    "build": "tsc",
-    "pretest": "pnpm build",
-    "test": "node --test ./dist/lib/**/*.test.js",
-    "prerelease": "npm run build",
+    "prerelease": "pnpm run build",
     "release": "pnpx release-it"
-  },
-  "dependencies": {
-    "class-validator": "catalog:backend",
-    "expect": "catalog:test",
-    "sinon": "catalog:test"
-  },
-  "peerDependencies": {
-    "@wisemen/nestjs-domain-events": "workspace:^",
-    "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
-    "@types/sinon": "22.0.0",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
@@ -50,6 +37,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-nats"
+    "directory": "packages/api/fetch"
   }
 }
