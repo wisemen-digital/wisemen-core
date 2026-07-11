@@ -117,7 +117,7 @@ export class DayjsPlainDate implements PlainDate {
   }
 
   dayOfMonth (): number {
-    return this.date.get('day')
+    return this.date.date()
   }
 
   weekOfYear (): number {

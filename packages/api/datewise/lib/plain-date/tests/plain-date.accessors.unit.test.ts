@@ -1,7 +1,7 @@
 import { before, describe, it } from 'node:test'
 import { expect } from 'expect'
 import { initDayjs } from '../../common/init-dayjs.js'
-import { factory } from '../plain-date.factory.js'
+import { factory, today } from '../plain-date.factory.js'
 import { DayjsPlainDate } from '../dayjs-plain-date.js'
 import { FutureInfinityDate } from '../future-infinity-date.js'
 import { PastInfinityDate } from '../past-infinity-date.js'
@@ -22,7 +22,6 @@ describe('PlainDate accessors', () => {
 
       expect(day.day()).toBe(0) // wrapped around to sunday
     })
-
   })
 
   describe('isoWeek', () => {
@@ -31,7 +30,6 @@ describe('PlainDate accessors', () => {
       expect(factory('2025-12-28').isoWeek()).toBe(52)
       expect(factory('2025-12-29').isoWeek()).toBe(1)
     })
-
   })
 
   describe('isoWeekParity', () => {
@@ -44,7 +42,6 @@ describe('PlainDate accessors', () => {
       expect(factory('2025-01-06').isoWeekParity()).toBe(IsoWeekParity.EVEN) // week 2
       expect(factory('2025-01-20').isoWeekParity()).toBe(IsoWeekParity.EVEN) // week 4
     })
-
   })
 
   describe('isoWeekday', () => {
@@ -58,7 +55,6 @@ describe('PlainDate accessors', () => {
 
       expect(day.isoWeekday()).toBe(7) // wrapped around to sunday
     })
-
   })
 
   describe('until', () => {
@@ -304,6 +300,14 @@ describe('PlainDate accessors', () => {
 
       expect(date1.until(date2).days).toBe(0)
       expect(date1.since(date2).days).toBe(0)
+    })
+  })
+
+  describe('dayOfMonth', () => {
+    it('returns the day of the month', () => {
+      const now = today().startOf('month').add(9, 'day')
+      const dayOfMonth = now.dayOfMonth()
+      expect(dayOfMonth).toBe(10)
     })
   })
 })
