@@ -1,6 +1,6 @@
 {
-  "name": "@wisemen/nestjs-nats",
-  "version": "1.1.0",
+  "name": "@wisemen/nestjs-provider-explorer",
+  "version": "0.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -14,7 +14,8 @@
     ".": "./dist/index.js"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
@@ -23,31 +24,13 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",
-    "test": "node --test ./dist/lib/**/*.test.js",
+    "test": "node --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
-  "dependencies": {
-    "@nats-io/jetstream": "catalog:backend",
-    "@nats-io/jwt": "catalog:backend",
-    "@nats-io/kv": "catalog:backend",
-    "@nats-io/nkeys": "catalog:backend",
-    "@nats-io/services": "catalog:backend",
-    "@nats-io/transport-node": "catalog:backend",
-    "@wisemen/api-error": "workspace:*",
-    "@wisemen/nestjs-provider-explorer": "workspace:^",
-    "@wisemen/opentelemetry": "workspace:*",
-    "change-case": "catalog:backend"
-  },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "@nestjs/config": "catalog:backend-peer",
-    "@nestjs/core": "catalog:backend-peer",
-    "@opentelemetry/api": "catalog:backend-peer",
-    "class-transformer": "catalog:backend-peer",
-    "class-validator": "catalog:backend-peer",
-    "reflect-metadata": "catalog:backend-peer",
-    "rxjs": "catalog:backend-peer"
+    "@nestjs/core": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -62,6 +45,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-nats"
+    "directory": "packages/api/nestjs-provider-explorer"
   }
 }

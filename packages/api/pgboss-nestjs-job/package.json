@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "pg-boss": "catalog:backend",
+    "@wisemen/nestjs-provider-explorer": "workspace:^",
     "@wisemen/nestjs-typeorm": "workspace:*",
     "@wisemen/opentelemetry": "workspace:*"
   },
