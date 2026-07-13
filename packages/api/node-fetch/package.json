@@ -1,46 +1,33 @@
 {
-  "name": "@wisemen/nestjs-domain-events",
-  "version": "0.0.5",
+  "name": "@wisemen/node-fetch",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "imports": {
-    "#src/*": "./dist/*"
-  },
-  "exports": {
-    ".": "./dist/index.js"
-  },
+  "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm run clean && pnpm run build",
+    "test": "node --test dist/lib/tests/**/*.test.js",
     "lint:oxlint": "oxlint --type-aware lib",
     "lint:eslint": "eslint lib",
     "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
-    "clean": "rm -rf ./dist",
-    "build": "tsc",
-    "pretest": "pnpm build",
-    "test": "node --test ./dist/**/*.test.js",
-    "prerelease": "npm run build",
+    "prerelease": "pnpm run build",
     "release": "pnpx release-it"
-  },
-  "dependencies": {
-    "expect": "catalog:test",
-    "sinon": "catalog:test"
-  },
-  "peerDependencies": {
-    "@nestjs/common": "catalog:backend-peer",
-    "@nestjs/core": "catalog:backend-peer",
-    "@opentelemetry/api": "catalog:backend-peer",
-    "@wisemen/opentelemetry": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
@@ -50,6 +37,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-domain-events"
+    "directory": "packages/api/fetch"
   }
 }
