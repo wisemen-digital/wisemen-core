@@ -3,6 +3,12 @@
 
 
 
+
+## 0.0.6
+<sub>2026-07-13</sub>
+
+- [#1417](https://github.com/wisemen-digital/wisemen-core/pull/1417)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added a shared NestJS provider explorer package and migrated existing packages to use it.
+
 ## 0.0.5
 <sub>2026-07-10</sub>
 
