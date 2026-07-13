@@ -1,4 +1,4 @@
-import { Inject, Injectable, type LoggerService, type LogLevel, type OnModuleInit } from '@nestjs/common'
+import { Inject, Injectable, type LoggerService, type LogLevel } from '@nestjs/common'
 import { LogRecord, OpenTelemetryLogger } from '../logging.js'
 import { MODULE_OPTIONS_TOKEN } from './otel-logger.module-definitions.js'
 import { OtelLoggerModuleOptions } from './otel-logger.module-options.js'
@@ -12,14 +12,12 @@ const DEFAULT_LOG_LEVELS: LogLevel[] = [
 ]
 
 @Injectable()
-export class NestjsOtelLogger implements LoggerService, OnModuleInit {
+export class NestjsOtelLogger implements LoggerService {
   private _logger: OpenTelemetryLogger | undefined
 
   constructor (
     @Inject(MODULE_OPTIONS_TOKEN) private config: OtelLoggerModuleOptions
-  ) {}
-
-  onModuleInit () {
+  ) {
     this._logger = new OpenTelemetryLogger(this.config)
   }
 
