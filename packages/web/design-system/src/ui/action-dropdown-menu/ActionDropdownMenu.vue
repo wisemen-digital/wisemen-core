@@ -61,6 +61,7 @@ const hasApplicableActions = computed<boolean>(() => {
     v-if="hasApplicableActions"
     v-bind="props"
     v-model:is-open="isOpen"
+    :is-adaptive-content-width="true"
   >
     <template #trigger>
       <slot />

@@ -11,6 +11,7 @@ import {
   watch,
 } from 'vue'
 
+import { useAdaptiveContentWidth } from '@/composables/adaptiveContentWidth.composable'
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import DropdownMenuArrow from '@/ui/dropdown-menu/DropdownMenuArrow.vue'
@@ -84,6 +85,11 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
 
   return props.popoverAnchorReferenceElement as HTMLElement | undefined ?? undefined
 })
+
+const adaptiveContentWidth = useAdaptiveContentWidth(
+  () => props.isAdaptiveContentWidth === true,
+  () => isOpen.value,
+)
 </script>
 
 <template>
@@ -121,6 +127,7 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
           :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
           :prioritize-position="isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
+          :style="adaptiveContentWidth.style.value"
           position-strategy="absolute"
           sticky="always"
           class="
@@ -129,6 +136,7 @@ const anchorReference = computed<HTMLElement | undefined>(() => {
           "
         >
           <div
+            :ref="adaptiveContentWidth.contentRef"
             class="
               relative size-full
               max-h-(--reka-dropdown-menu-content-available-height)

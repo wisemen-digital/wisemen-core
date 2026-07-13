@@ -62,8 +62,10 @@ const isFilterVisible = computed<boolean>(
     ),
 )
 
-useEventListener('keydown', () => {
-  userHasTyped.value = true
+useEventListener('keydown', (e) => {
+  if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    userHasTyped.value = true
+  }
 })
 </script>
 

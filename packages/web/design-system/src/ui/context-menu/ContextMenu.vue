@@ -5,8 +5,12 @@ import {
   ContextMenuRoot as RekaContextMenuRoot,
   ContextMenuTrigger as RekaContextMenuTrigger,
 } from 'reka-ui'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+} from 'vue'
 
+import { useAdaptiveContentWidth } from '@/composables/adaptiveContentWidth.composable'
 import type { ContextMenuProps } from '@/ui/context-menu/contextMenu.props'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
@@ -26,11 +30,20 @@ const isUpdateOnLayoutShiftDisabled = computed<boolean>(
   () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
 )
 
-function onUpdateIsOpen(isOpen: boolean): void {
-  if (isOpen) {
+const isOpen = ref(false)
+
+function onUpdateIsOpen(open: boolean): void {
+  isOpen.value = open
+
+  if (open) {
     emit('open')
   }
 }
+
+const adaptiveContentWidth = useAdaptiveContentWidth(
+  () => props.isAdaptiveContentWidth === true,
+  () => isOpen.value,
+)
 </script>
 
 <template>
@@ -48,6 +61,7 @@ function onUpdateIsOpen(isOpen: boolean): void {
           :collision-padding="props.collisionPadding"
           :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
           :prioritize-position="isPrioritizedPosition"
+          :style="adaptiveContentWidth.style.value"
           data-animation="popover-default"
           class="
             z-50 min-w-48 origin-(--reka-context-menu-content-transform-origin)
@@ -55,6 +69,7 @@ function onUpdateIsOpen(isOpen: boolean): void {
           "
         >
           <div
+            :ref="adaptiveContentWidth.contentRef"
             class="
               relative size-full
               max-h-(--reka-context-menu-content-available-height)
