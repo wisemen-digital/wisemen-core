@@ -4,7 +4,7 @@ import {
   type TypesenseCollection,
   type TypesenseCollectionName
 } from '../schema/collection.js'
-import { ProvidersExplorer } from '../providers/providers-explorer.js'
+import { ProvidersExplorer } from '@wisemen/nestjs-provider-explorer'
 import type { TypesenseCollector } from './typesense-collector.js'
 import {
   getTypesenseCollectorCollection,

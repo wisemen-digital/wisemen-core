@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common'
-import { ProvidersExplorerModule } from '../providers/providers-explorer.module.js'
+import { ProvidersExplorerModule } from '@wisemen/nestjs-provider-explorer'
 import { TypesenseCollectors } from './typesense-collectors.js'
 
 @Module({

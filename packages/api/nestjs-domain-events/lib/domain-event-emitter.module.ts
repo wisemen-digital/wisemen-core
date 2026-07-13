@@ -15,8 +15,10 @@ import {
   type DomainEventEmitterModuleAsyncOptions,
   type DomainEventEmitterModuleOptions
 } from './domain-event-emitter.middleware.js'
-import { ProvidersExplorer } from './providers/providers-explorer.js'
-import { ProvidersExplorerModule } from './providers/providers-explorer.module.js'
+import {
+  ProvidersExplorer,
+  ProvidersExplorerModule
+} from '@wisemen/nestjs-provider-explorer'
 
 const DOMAIN_EVENT_EMITTER_MODULE_OPTIONS = Symbol('wisemen.domain-event-emitter-module-options')
 
