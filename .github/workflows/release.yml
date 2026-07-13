@@ -92,7 +92,7 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: npm install -g npm@latest # ensure npm >= 11.15.0 for OIDC/staged publishing
+      - run: npm install -g npm@11 # keep publish on npm 11.x due to npm 12 regression
       - run: pnpm run build
       - run: pnpx "@varlock/bumpy@$BUMPY_VERSION" ci release --expect-mode publish
         env:

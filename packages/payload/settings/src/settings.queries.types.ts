@@ -1,6 +1,7 @@
 import type {
   HeaderNavigationRowDocument,
   LinkFieldDocument,
+  NavigationLinkEventValue,
 } from '@wisemen/payload-core-links'
 import type { TypedLocale } from 'payload'
 
@@ -29,7 +30,7 @@ export interface SettingsHomePageDocument {
 }
 
 export interface FooterSectionLinkDocument {
-  event?: string | null
+  event?: NavigationLinkEventValue | null
   label?: string | null
   link?: LinkFieldDocument | null
   navType?: 'event' | 'link' | null

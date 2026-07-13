@@ -1,5 +1,11 @@
 # @wisemen/open-api-plugins
 
+
+## 1.0.4
+<sub>2026-07-10</sub>
+
+- [#1402](https://github.com/wisemen-digital/wisemen-core/pull/1402)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: resolve vulnerabilities
+
 ## 1.0.3
 
 ### Patch Changes

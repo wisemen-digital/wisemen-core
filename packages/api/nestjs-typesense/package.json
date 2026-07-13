@@ -1,0 +1,56 @@
+{
+  "name": "@wisemen/nestjs-typesense",
+  "version": "0.0.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist/",
+    "skills/"
+  ],
+  "scripts": {
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/core": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "typesense": "catalog:backend-peer",
+    "@wisemen/opentelemetry": "workspace:^",
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/pagination": "workspace:^",
+    "@wisemen/coordinates": "workspace:^"
+  },
+  "dependencies": {
+    "@wisemen/nestjs-provider-explorer": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "expect": "catalog:test",
+    "eslint": "catalog:lint-api",
+    "typescript": "catalog:peer",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api"
+  },
+  "author": "Kobe Kwanten",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-feature-flags"
+  }
+}
