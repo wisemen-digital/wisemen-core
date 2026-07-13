@@ -93,6 +93,24 @@ Other packages use those helpers instead of hardcoding your app's:
 - fallback locale
 - Payload access entrypoint
 
+## Sharing typed defaults across packages
+
+If you also want TypeScript to know your shared linkable collections and event ids across packages, augment `PayloadUtilsRegistry` in your app:
+
+```ts
+import type { Config } from 'payload'
+
+declare module '@wisemen/payload-core-utils' {
+  interface PayloadUtilsRegistry {
+    Payload: Config
+    linkableCollection: 'pages' | 'articles' | 'services'
+    navigationEvent: 'open_calculator' | 'open_contact_modal'
+  }
+}
+```
+
+That single augmentation is then picked up by packages like `@wisemen/payload-core-links`, so types such as `ClientLink`, `ClientNavigationLink`, and the related transformers narrow automatically.
+
 ## Why it matters
 
 Without this package, shared CMS packages would need to know too much about the host app.
