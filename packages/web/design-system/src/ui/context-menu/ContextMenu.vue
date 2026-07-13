@@ -11,6 +11,7 @@ import {
 } from 'vue'
 
 import { useAdaptiveContentWidth } from '@/composables/adaptiveContentWidth.composable'
+import { useMenuAutoHighlight } from '@/composables/menuAutoHighlight.composable'
 import type { ContextMenuProps } from '@/ui/context-menu/contextMenu.props'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
@@ -44,6 +45,8 @@ const adaptiveContentWidth = useAdaptiveContentWidth(
   () => props.isAdaptiveContentWidth === true,
   () => isOpen.value,
 )
+
+const menuAutoHighlight = useMenuAutoHighlight()
 </script>
 
 <template>
@@ -67,6 +70,7 @@ const adaptiveContentWidth = useAdaptiveContentWidth(
             z-50 min-w-48 origin-(--reka-context-menu-content-transform-origin)
             will-change-[transform,opacity]
           "
+          @open-auto-focus="menuAutoHighlight.onOpenAutoFocus"
         >
           <div
             :ref="adaptiveContentWidth.contentRef"
