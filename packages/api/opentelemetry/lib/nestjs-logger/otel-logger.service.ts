@@ -10,15 +10,16 @@ const DEFAULT_LOG_LEVELS: LogLevel[] = [
   'debug',
   'fatal'
 ]
-
 @Injectable()
 export class NestjsOtelLogger implements LoggerService {
   private _logger: OpenTelemetryLogger | undefined
+  private _logLevels: LogLevel[]
 
   constructor (
     @Inject(MODULE_OPTIONS_TOKEN) private config: OtelLoggerModuleOptions
   ) {
     this._logger = new OpenTelemetryLogger(this.config)
+    this._logLevels = this.config.logLevels ?? DEFAULT_LOG_LEVELS
   }
 
   private get logger (): OpenTelemetryLogger {
@@ -30,46 +31,67 @@ export class NestjsOtelLogger implements LoggerService {
   }
 
   private get logLevels (): LogLevel[] {
-    return this.config.logLevels ?? DEFAULT_LOG_LEVELS
+    return this._logLevels
   }
 
-  log (logRecord: LogRecord) {
+  log (message: unknown, context?: string, attributes?: Record<string, unknown>) {
     if (!this.logLevels.includes('log')) {
       return
     }
 
+    const logRecord = this.toLogRecord(message,context, attributes)
     this.logger.info(logRecord)
   }
 
-  error (logRecord: LogRecord) {
+  error (message: unknown, context?: string, attributes?: Record<string, unknown>) {
     if (!this.logLevels.includes('error')) {
       return
     }
 
+    const logRecord = this.toLogRecord(message,context, attributes)
     this.logger.error(logRecord)
   }
 
-  warn (logRecord: LogRecord) {
+  warn (message: unknown, context?: string, attributes?: Record<string, unknown>) {
     if (!this.logLevels.includes('warn')) {
       return
     }
 
+    const logRecord = this.toLogRecord(message,context, attributes)
     this.logger.warn(logRecord)
   }
 
-  debug (logRecord: LogRecord) {
+  debug (message: unknown, context?: string, attributes?: Record<string, unknown>) {
     if (!this.logLevels.includes('debug')) {
       return
     }
     
+    const logRecord = this.toLogRecord(message,context, attributes)
     this.logger.debug(logRecord)
   }
 
-  fatal (logRecord: LogRecord) {
+  fatal (message: unknown, context?: string, attributes?: Record<string, unknown>) {
     if (!this.logLevels.includes('fatal')) {
       return
     }
 
+    const logRecord = this.toLogRecord(message,context, attributes)
     this.logger.fatal(logRecord)
+  }
+
+  setLogLevels (logLevels: LogLevel[]): void {
+    this._logLevels = logLevels
+  }
+
+  private toLogRecord (message: unknown, context?: string, attributes?: Record<string, unknown>): LogRecord {
+    if (context == null || context === '') {
+      throw new Error('Log context is missing.')
+    }
+
+    return {
+      body: message as object,
+      context,
+      attributes
+    }
   }
 }
