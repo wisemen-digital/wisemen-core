@@ -1,13 +1,13 @@
 import { getPayload } from '@wisemen/payload-core-utils'
 import {
   createRemoteJWKSet,
-  errors,
   jwtVerify,
 } from 'jose'
 import type {
   AuthStrategy,
   AuthStrategyResult,
 } from 'payload'
+import { APIError } from 'payload'
 
 import {
   getUnauthenticatedResult,
@@ -139,13 +139,15 @@ async function createFirstUser({
 }
 
 export function createZitadelAuthStrategy<TUser extends BaseUserRecordWithId>({
+  canLogin,
   isUserAllowed,
   createFirstUser: createFirstUserConfig,
   env,
+  strategyName = 'zitadel',
   userCollectionSlug,
 }: CreateZitadelAuthStrategyParams<TUser>): AuthStrategy {
   return {
-    name: 'zitadel',
+    name: strategyName,
     authenticate: async (ctx) => {
       const authorizationHeader = ctx.headers.get('Authorization')
       const bearerToken = authorizationHeader?.split(' ')[1]
@@ -156,48 +158,57 @@ export function createZitadelAuthStrategy<TUser extends BaseUserRecordWithId>({
 
       const jwk = createRemoteJWKSet(new URL(env.authJwksEndpoint))
 
+      let jwtVerifyResponse: Awaited<ReturnType<typeof jwtVerify>>
+
       try {
-        const jwtVerifyResponse = await jwtVerify(bearerToken, jwk, {
+        jwtVerifyResponse = await jwtVerify(bearerToken, jwk, {
           issuer: env.authIssuer,
           audience: env.authClientId,
         })
+      }
+      catch {
+        return getUnauthenticatedResult(Boolean(ctx.canSetHeaders))
+      }
 
-        const userEmail = jwtVerifyResponse.payload.email
+      const userEmail = jwtVerifyResponse.payload.email
 
-        if (typeof userEmail !== 'string' || userEmail.length === 0) {
-          return USER_NOT_AUTHENTICATED
-        }
+      if (typeof userEmail !== 'string' || userEmail.length === 0) {
+        return USER_NOT_AUTHENTICATED
+      }
 
-        const singleUser = await findUserByEmail<TUser>({
+      const singleUser = await findUserByEmail<TUser>({
+        userCollectionSlug,
+        userEmail,
+      })
+
+      if (singleUser == null) {
+        return createFirstUser({
+          createFirstUserConfig: createFirstUserConfig === false
+            ? undefined
+            : createFirstUserConfig,
           userCollectionSlug,
           userEmail,
         })
-
-        if (singleUser == null) {
-          return createFirstUser({
-            createFirstUserConfig,
-            userCollectionSlug,
-            userEmail,
-          })
-        }
-
-        if (!isUserAllowed(singleUser)) {
-          return USER_NOT_AUTHENTICATED
-        }
-
-        return {
-          user: {
-            ...singleUser,
-            collection: userCollectionSlug,
-          } as AuthStrategyResult['user'],
-        }
       }
-      catch (error) {
-        if (error instanceof errors.JWTExpired) {
-          return getUnauthenticatedResult(Boolean(ctx.canSetHeaders))
-        }
 
-        return getUnauthenticatedResult(Boolean(ctx.canSetHeaders))
+      if (!isUserAllowed(singleUser)) {
+        return USER_NOT_AUTHENTICATED
+      }
+
+      const loginDecision = await canLogin?.(singleUser)
+
+      if (loginDecision != null && !loginDecision.allowed) {
+        throw new APIError(
+          loginDecision.reason,
+          loginDecision.status ?? 403,
+        )
+      }
+
+      return {
+        user: {
+          ...singleUser,
+          collection: userCollectionSlug,
+        } as AuthStrategyResult['user'],
       }
     },
   }

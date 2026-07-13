@@ -40,10 +40,29 @@ export interface CreateFirstUserConfig {
   }) => Record<string, unknown>
 }
 
+export type CanLoginResult =
+  | {
+    allowed: true
+  }
+  | {
+    allowed: false
+    reason: string
+    status?: number
+  }
+
 export interface CreateZitadelAuthStrategyParams<TUser extends BaseUserRecord> {
   isUserAllowed: (user: TUser) => boolean
-  createFirstUser?: CreateFirstUserConfig
+  /**
+   * Makes an authorization decision after the Zitadel token and Payload user
+   * have been validated. A denied result is returned as a public Payload API
+   * error, preserving its reason and optional HTTP status.
+   */
+  canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
+  /** Set to false to disable first-user bootstrapping. */
+  createFirstUser?: CreateFirstUserConfig | false
   env: AuthEnv
+  /** @default 'zitadel' */
+  strategyName?: string
   userCollectionSlug: string
 }
 
@@ -70,7 +89,11 @@ export interface PublicAuthConfig {
 
 export interface CreateAuthStrategyParams<TUser extends BaseUserRecord> {
   isUserAllowed: (user: TUser) => boolean
-  createFirstUser?: CreateFirstUserConfig
+  canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
+  /** Set to false to disable first-user bootstrapping. */
+  createFirstUser?: CreateFirstUserConfig | false
+  /** @default 'zitadel' */
+  strategyName?: string
   userCollectionSlug: string
 }
 
@@ -88,9 +111,13 @@ export interface PayloadAuthProvider<TUser extends BaseUserRecord & TypeWithID> 
 export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & TypeWithID> {
   isUserAllowed: (user: TUser) => boolean
   authConfig?: Omit<CreatePayloadCollectionAuthParams, 'strategy'>
-  createFirstUser?: CreateFirstUserConfig
+  canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
+  /** Set to false to disable the default first-user bootstrap flow. */
+  createFirstUser?: CreateFirstUserConfig | false
   provider: PayloadAuthProvider<TUser>
   shouldSkipUserSync?: (user: Partial<TUser>) => boolean
+  /** @default 'zitadel' */
+  strategyName?: string
   tenantCollectionSlug: string
   tokenRefreshBufferMs?: number
   userCollectionSlug: string

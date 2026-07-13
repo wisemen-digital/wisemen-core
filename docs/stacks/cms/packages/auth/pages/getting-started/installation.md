@@ -90,9 +90,29 @@ On user creation it:
 
 ## First-user bootstrapping
 
-If you pass `createFirstUser`, the strategy can create the first tenant and first user when no users exist yet.
+By default, the strategy can create the first tenant and first user when no users exist yet. Pass a `createFirstUser` configuration to customize that flow, or pass `createFirstUser: false` to disable it explicitly.
 
 This is useful for fresh environments where the first admin authenticates through Zitadel before a Payload user record exists.
+
+## Login decisions and multiple strategies
+
+`isUserAllowed` remains a simple boolean check. Use `canLogin` when a valid
+Zitadel session should be rejected with an application-visible reason and HTTP
+status:
+
+```ts
+const payloadAuth = createPayloadAuthPlugin({
+  // ...
+  canLogin: (customer) => customer.status === 'approved'
+    ? { allowed: true }
+    : { allowed: false, reason: 'Your account is awaiting approval.', status: 403 },
+  createFirstUser: false,
+  strategyName: 'customer-zitadel',
+})
+```
+
+The default strategy name is `zitadel`. Set `strategyName` when more than one
+Zitadel-backed user collection is registered in the same Payload instance.
 
 ## Client and server helpers
 
