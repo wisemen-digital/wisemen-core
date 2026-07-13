@@ -17,8 +17,8 @@ class _PlainDateFilter {
       { $ref: getSchemaPath(DateRangeDto) }
     ]
   })
-  @ValidateWhen([IsPlainDate()], (f: _PlainDateFilter) => isEnum(f.value, PlainDateSingleOperation))
-  @ValidateWhen([IsDateRange()], (f: _PlainDateFilter) => isEnum(f.value, PlainDateRangeOperation))
+  @ValidateWhen([IsPlainDate()], (f: _PlainDateFilter) => isEnum(f.operation, PlainDateSingleOperation))
+  @ValidateWhen([IsDateRange()], (f: _PlainDateFilter) => isEnum(f.operation, PlainDateRangeOperation))
   value: string | DateRangeDto
 }
 
