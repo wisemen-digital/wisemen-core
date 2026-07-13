@@ -40,14 +40,14 @@ export interface CreateFirstUserConfig {
   }) => Record<string, unknown>
 }
 
-export type CanLoginResult =
-  | {
-    allowed: true
-  }
-  | {
+export type CanLoginResult
+  = | {
     allowed: false
     reason: string
     status?: number
+  }
+  | {
+    allowed: true
   }
 
 export interface CreateZitadelAuthStrategyParams<TUser extends BaseUserRecord> {
@@ -59,7 +59,7 @@ export interface CreateZitadelAuthStrategyParams<TUser extends BaseUserRecord> {
    */
   canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
   /** Set to false to disable first-user bootstrapping. */
-  createFirstUser?: CreateFirstUserConfig | false
+  createFirstUser?: false | CreateFirstUserConfig
   env: AuthEnv
   /** @default 'zitadel' */
   strategyName?: string
@@ -91,7 +91,7 @@ export interface CreateAuthStrategyParams<TUser extends BaseUserRecord> {
   isUserAllowed: (user: TUser) => boolean
   canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
   /** Set to false to disable first-user bootstrapping. */
-  createFirstUser?: CreateFirstUserConfig | false
+  createFirstUser?: false | CreateFirstUserConfig
   /** @default 'zitadel' */
   strategyName?: string
   userCollectionSlug: string
@@ -113,7 +113,7 @@ export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & Ty
   authConfig?: Omit<CreatePayloadCollectionAuthParams, 'strategy'>
   canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
   /** Set to false to disable the default first-user bootstrap flow. */
-  createFirstUser?: CreateFirstUserConfig | false
+  createFirstUser?: false | CreateFirstUserConfig
   provider: PayloadAuthProvider<TUser>
   shouldSkipUserSync?: (user: Partial<TUser>) => boolean
   /** @default 'zitadel' */

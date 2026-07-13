@@ -139,8 +139,8 @@ async function createFirstUser({
 }
 
 export function createZitadelAuthStrategy<TUser extends BaseUserRecordWithId>({
-  canLogin,
   isUserAllowed,
+  canLogin,
   createFirstUser: createFirstUserConfig,
   env,
   strategyName = 'zitadel',
