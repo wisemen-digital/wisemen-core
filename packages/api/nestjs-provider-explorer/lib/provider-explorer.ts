@@ -9,7 +9,7 @@ export interface NestjsProvider {
 }
 
 @Injectable()
-export class ProvidersExplorer {
+export class ProviderExplorer {
   private readonly discoveredProviders: NestjsProvider[] = []
   private isInitialized = false
 

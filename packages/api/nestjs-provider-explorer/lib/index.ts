@@ -1,3 +1,3 @@
-export type { NestjsProvider } from './providers-explorer.js'
-export { ProvidersExplorer } from './providers-explorer.js'
-export { ProvidersExplorerModule } from './providers-explorer.module.js'
+export type { NestjsProvider } from './provider-explorer.js'
+export { ProviderExplorer } from './provider-explorer.js'
+export { ProviderExplorerModule } from './provider-explorer.module.js'

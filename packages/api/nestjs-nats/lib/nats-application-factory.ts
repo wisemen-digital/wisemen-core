@@ -11,13 +11,13 @@ import { isNatsServiceEndpoint, getNatsServiceEndpointConfig } from './services/
 import { NATS_STREAMS_TOKEN } from './tokens.js'
 import {
   type NestjsProvider,
-  ProvidersExplorer
+  ProviderExplorer
 } from '@wisemen/nestjs-provider-explorer'
 
 @Injectable()
 export class NatsApplicationFactory {
   constructor (
-    private providerExplorer: ProvidersExplorer,
+    private providerExplorer: ProviderExplorer,
     private config: ConfigService,
     @Inject(NATS_STREAMS_TOKEN) private streams?: ClassConstructor<unknown>[]
   ) {}

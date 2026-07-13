@@ -1,5 +1,5 @@
 import { type DynamicModule, Module, type OnApplicationBootstrap, type OnApplicationShutdown, type Type } from '@nestjs/common'
-import { ProvidersExplorerModule } from '@wisemen/nestjs-provider-explorer'
+import { ProviderExplorerModule } from '@wisemen/nestjs-provider-explorer'
 import type { ClassConstructor } from 'class-transformer'
 import { NatsApplication } from './nats-application.js'
 import { NatsApplicationFactory } from './nats-application-factory.js'
@@ -17,7 +17,7 @@ export class NatsModule implements OnApplicationBootstrap, OnApplicationShutdown
     return {
       module: NatsModule,
       imports: [
-        ProvidersExplorerModule,
+        ProviderExplorerModule,
         ...options.modules
       ],
       providers: [

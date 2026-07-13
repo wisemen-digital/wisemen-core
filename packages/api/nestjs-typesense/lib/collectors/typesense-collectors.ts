@@ -4,7 +4,7 @@ import {
   type TypesenseCollection,
   type TypesenseCollectionName
 } from '../schema/collection.js'
-import { ProvidersExplorer } from '@wisemen/nestjs-provider-explorer'
+import { ProviderExplorer } from '@wisemen/nestjs-provider-explorer'
 import type { TypesenseCollector } from './typesense-collector.js'
 import {
   getTypesenseCollectorCollection,
@@ -16,11 +16,11 @@ export class TypesenseCollectors implements OnApplicationBootstrap {
   private readonly collectors = new Map<string, TypesenseCollector>()
 
   constructor (
-    private readonly providersExplorer: ProvidersExplorer
+    private readonly providerExplorer: ProviderExplorer
   ) {}
 
   onApplicationBootstrap (): void {
-    for (const provider of this.providersExplorer.providers) {
+    for (const provider of this.providerExplorer.providers) {
       if (!isTypesenseCollector(provider.providerClass)) {
         continue
       }

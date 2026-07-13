@@ -4,8 +4,8 @@ Shared provider discovery utilities for NestJS packages.
 
 This package provides:
 
-- `ProvidersExplorerModule` to register the explorer with Nest
-- `ProvidersExplorer` to enumerate discovered providers lazily
+- `ProviderExplorerModule` to register the explorer with Nest
+- `ProviderExplorer` to enumerate discovered providers lazily
 - `NestjsProvider` metadata containing `providerClass`, `providerInstance`, and
   the underlying Nest `instanceWrapper`
 
@@ -23,16 +23,16 @@ pnpm add @nestjs/common @nestjs/core
 
 ## Register The Module
 
-Import `ProvidersExplorerModule` into the module that needs provider discovery.
+Import `ProviderExplorerModule` into the module that needs provider discovery.
 It wraps Nest's `DiscoveryModule`, so no extra discovery setup is required.
 
 ```ts
 import { Module } from '@nestjs/common'
-import { ProvidersExplorerModule } from '@wisemen/nestjs-provider-explorer'
+import { ProviderExplorerModule } from '@wisemen/nestjs-provider-explorer'
 import { ProviderRegistry } from './provider.registry.js'
 
 @Module({
-  imports: [ProvidersExplorerModule],
+  imports: [ProviderExplorerModule],
   providers: [ProviderRegistry]
 })
 export class ProviderRegistryModule {}
@@ -40,21 +40,21 @@ export class ProviderRegistryModule {}
 
 ## Explore Providers
 
-Inject `ProvidersExplorer`, then iterate over `providers` to inspect the
+Inject `ProviderExplorer`, then iterate over `providers` to inspect the
 discovered classes and instances.
 
 ```ts
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
-import { ProvidersExplorer } from '@wisemen/nestjs-provider-explorer'
+import { ProviderExplorer } from '@wisemen/nestjs-provider-explorer'
 
 @Injectable()
 export class ProviderRegistry implements OnApplicationBootstrap {
   constructor (
-    private readonly providersExplorer: ProvidersExplorer
+    private readonly providerExplorer: ProviderExplorer
   ) {}
 
   onApplicationBootstrap (): void {
-    for (const provider of this.providersExplorer.providers) {
+    for (const provider of this.providerExplorer.providers) {
       console.info(provider.providerClass.name)
     }
   }
@@ -75,17 +75,17 @@ expected to filter them with their own decorators or metadata checks.
 
 ```ts
 import { Injectable } from '@nestjs/common'
-import { ProvidersExplorer } from '@wisemen/nestjs-provider-explorer'
+import { ProviderExplorer } from '@wisemen/nestjs-provider-explorer'
 import { isTypesenseCollector } from './typesense-collector.decorator.js'
 
 @Injectable()
 export class TypesenseCollectors {
   constructor (
-    private readonly providersExplorer: ProvidersExplorer
+    private readonly providerExplorer: ProviderExplorer
   ) {}
 
   collect (): void {
-    for (const provider of this.providersExplorer.providers) {
+    for (const provider of this.providerExplorer.providers) {
       if (!isTypesenseCollector(provider.providerClass)) {
         continue
       }
