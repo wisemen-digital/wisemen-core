@@ -1,5 +1,11 @@
 # Changelog
 
+
+## 0.1.1
+<sub>2026-07-13</sub>
+
+- [#1421](https://github.com/wisemen-digital/wisemen-core/pull/1421)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: rerelease
+
 ## 0.1.0
 <sub>2026-07-13</sub>
 
