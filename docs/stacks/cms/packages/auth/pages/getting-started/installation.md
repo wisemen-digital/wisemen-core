@@ -81,12 +81,23 @@ That means the collection becomes externally authenticated instead of using Payl
 
 Attach `payloadAuth.userHook` to your user collection `afterChange` hooks.
 
-On user creation it:
+By default, on user creation it:
 
 - skips non-`create` operations
 - optionally skips users through `shouldSkipUserSync`
 - checks whether the matching Zitadel user already exists
 - creates the Zitadel user when needed
+
+To also create a missing Zitadel user after a Payload update, set
+`operationsToCreate`. The hook uses the saved user document, so all user fields
+are available on update:
+
+```ts
+const payloadAuth = createPayloadAuthPlugin({
+  // ...
+  operationsToCreate: ['create', 'update'],
+})
+```
 
 ## First-user bootstrapping
 
