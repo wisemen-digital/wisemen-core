@@ -39,7 +39,7 @@ import { ProvidersExplorer } from '@wisemen/nestjs-provider-explorer'
 @Injectable()
 export class DecoratedProviderRegistry implements OnApplicationBootstrap {
   constructor (
-    private readonly providersExplorer: ProvidersExplorer
+    private providersExplorer: ProvidersExplorer
   ) {}
 
   onApplicationBootstrap (): void {
@@ -66,7 +66,7 @@ import { getQueueName, isQueueHandler } from './queue-handler.decorator.js'
 @Injectable()
 export class QueueHandlerRegistry {
   constructor (
-    private readonly providersExplorer: ProvidersExplorer
+    private providersExplorer: ProvidersExplorer
   ) {}
 
   build (): Map<string, object> {
