@@ -13,7 +13,7 @@ interface CustomFieldValueColumnTransformers {
   timestampTransformer: TimestampTransformer
 }
 
-export function CustomFieldValueColumn(options?: Omit<ColumnOptions, 'type' | 'transformer' | 'nullable'>): PropertyDecorator {
+export function CustomFieldValueColumn(options?: Omit<ColumnOptions, 'type' | 'transformer'>): PropertyDecorator {
   return Column({
     ...options,
     type: 'jsonb',
@@ -34,8 +34,12 @@ class CustomFieldValueTransformer implements ValueTransformer {
   }
 
   from(
-    value: CustomFieldColumnValue | CustomFieldColumnValue[]
-  ): CustomFieldValue | CustomFieldValue[] {
+    value: CustomFieldColumnValue | CustomFieldColumnValue[] | null | undefined
+  ): CustomFieldValue | CustomFieldValue[] | null | undefined {
+    if (value == null) {
+      return value
+    }
+
     if (Array.isArray(value)) {
       return value.map(v => this.parseCustomFieldValue(v))
     }
@@ -44,8 +48,12 @@ class CustomFieldValueTransformer implements ValueTransformer {
   }
 
   to(
-    value: CustomFieldValue | CustomFieldValue[]
-  ): CustomFieldColumnValue | CustomFieldColumnValue[] {
+    value: CustomFieldValue | CustomFieldValue[] | null | undefined
+  ): CustomFieldColumnValue | CustomFieldColumnValue[] | null | undefined {
+    if (value == null) {
+      return value
+    }
+
     if (Array.isArray(value)) {
       return value.map(v => this.getSerializeValue(v))
     }

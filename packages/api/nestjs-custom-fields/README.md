@@ -17,7 +17,7 @@ Definition uniqueness is scoped by `entityType`. For non-tenant definitions,
 ## Step 1: Register The Exported Entity And Create The Table
 
 This package already exports the effective `CustomFieldDefinition` TypeORM
-entity. Add it to your datasource entities yourself so TypeORM knows about the
+entity. Add it to all TypeORM datasources yourself so TypeORM knows about the
 table metadata. After that, generate and run a migration so the table and the
 exported entity's partial unique indexes are created in your database.
 

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-custom-fields",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -29,30 +29,30 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
-    "@wisemen/monetary": "workspace:^*",
-    "@wisemen/datewise": "workspace:^*",
-    "@wisemen/localized-string": "workspace:^*",
-    "@wisemen/api-error": "workspace:^*",
-    "@wisemen/validators": "workspace:^*",
-    "@wisemen/nestjs-typeorm": "workspace:^*"
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/datewise": "workspace:^",
+    "@wisemen/localized-string": "workspace:^",
+    "@wisemen/monetary": "workspace:^",
+    "@wisemen/nestjs-typeorm": "workspace:^",
+    "@wisemen/validators": "workspace:^"
   },
   "peerDependencies": {
-    "@nestjs/swagger": "catalog:backend-peer",
-    "class-transformer": "catalog:backend-peer",
-    "class-validator": "catalog:backend-peer",
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "typescript": "catalog:peer",
-    "expect": "catalog:test"
+    "typescript": "catalog:peer"
   },
   "author": "Wisemen",
   "license": "SEE LICENSE IN LICENSE.md",
