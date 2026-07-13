@@ -12,7 +12,7 @@ export class {{pascalCase useCaseName}}Controller {
 
   @Version('1')
   @Permissions(Permission.{{constantCase permissionName}})
-  async {{camelCase useCaseName}} (): Promise<void> {
+  public async {{camelCase useCaseName}} (): Promise<void> {
     return this.useCase.execute()
   }
 }

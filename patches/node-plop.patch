@@ -1,0 +1,88 @@
+diff --git a/src/prompt-bypass.js b/src/prompt-bypass.js
+index 8310a97d1ad6f7a593163c702a083753a89c3242..0d2ea3334d3b84f149691313d094fbb5f91323be 100644
+--- a/src/prompt-bypass.js
++++ b/src/prompt-bypass.js
+@@ -54,10 +54,20 @@ const flag = {
+   isPrompt: (v) => /^_+$/.test(v),
+ };
+ 
++// resolve a prompt's `choices`, calling it (and awaiting the result) when
++// it's a dynamic function instead of a static array
++async function resolveChoices(prompt, answers) {
++  if (typeof prompt.choices === "function") {
++    return (await prompt.choices(answers)) ?? [];
++  }
++  return prompt.choices ?? [];
++}
++
+ // generic list bypass function. used for all types of lists.
+ // accepts value, index, or key as matching criteria
+-const listTypeBypass = (v, prompt) => {
+-  const choice = prompt.choices.find((c, idx) => choiceMatchesValue(c, idx, v));
++const listTypeBypass = async (v, prompt, answers) => {
++  const choices = await resolveChoices(prompt, answers);
++  const choice = choices.find((c, idx) => choiceMatchesValue(c, idx, v));
+   if (choice != null) {
+     return getChoiceValue(choice);
+   }
+@@ -79,24 +89,22 @@ const typeBypass = {
+     }
+     throw Error("invalid input");
+   },
+-  checkbox(v, prompt) {
++  async checkbox(v, prompt, answers) {
+     if (v === "") {
+       return [];
+     }
+ 
++    const choices = await resolveChoices(prompt, answers);
+     const valList = v.split(",");
+     const valuesNoMatch = valList.filter(
+-      (val) =>
+-        !prompt.choices.some((c, idx) => choiceMatchesValue(c, idx, val)),
++      (val) => !choices.some((c, idx) => choiceMatchesValue(c, idx, val)),
+     );
+     if (valuesNoMatch.length) {
+       throw Error(`no match for "${valuesNoMatch.join('", "')}"`);
+     }
+ 
+     return valList.map((val) =>
+-      getChoiceValue(
+-        prompt.choices.find((c, idx) => choiceMatchesValue(c, idx, val)),
+-      ),
++      getChoiceValue(choices.find((c, idx) => choiceMatchesValue(c, idx, val))),
+     );
+   },
+   list: listTypeBypass,
+@@ -150,13 +158,16 @@ export default async function (prompts, bypassArr, plop) {
+       continue;
+     }
+ 
+-    // if this prompt is dynamic, throw error because we can't know if
+-    // the pompt bypass values given line up with the path this user
+-    // has taken through the prompt tree.
++    // if this prompt is conditional, resolve `when` against the answers
++    // gathered so far (built up in-order, same as inquirer would) instead of
++    // refusing outright — if it doesn't apply, there's nothing to bypass;
++    // if it does apply, the bypass value below is used like any other.
+     if (typeof p.when === "function") {
+-      bypassFailures.push(`You can not bypass conditional prompts: ${p.name}`);
+-      bypassedPromptValues.push(false);
+-      continue;
++      const shouldAsk = await p.when(answers);
++      if (!shouldAsk) {
++        bypassedPromptValues.push(true);
++        continue;
++      }
+     }
+ 
+     try {
+@@ -167,7 +178,7 @@ export default async function (prompts, bypassArr, plop) {
+       // get the real answer data out of the bypass function and attach it
+       // to the answer data object
+       const bypassIsFunc = typeof bypass === "function";
+-      const value = bypassIsFunc ? bypass.call(null, val, p) : val;
++      const value = bypassIsFunc ? await bypass.call(null, val, p, answers) : val;
+ 
+       // if inquirer prompt has a filter function - call it
+       const answer = p.filter ? p.filter(value, answers) : value;
