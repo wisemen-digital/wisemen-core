@@ -84,13 +84,9 @@ export class NestjsOtelLogger implements LoggerService {
   }
 
   private toLogRecord (message: unknown, context?: string, attributes?: Record<string, unknown>): LogRecord {
-    if (context == null || context === '') {
-      throw new Error('Log context is missing.')
-    }
-
     return {
       body: message as object,
-      context,
+      context: context ?? 'undefined',
       attributes
     }
   }
