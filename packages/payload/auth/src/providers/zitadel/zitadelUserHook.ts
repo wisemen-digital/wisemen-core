@@ -52,20 +52,24 @@ async function doesZitadelUserExist({
 }
 
 export function createZitadelUserHook<TUser extends BaseUserRecordWithId>({
-  env, shouldSkip,
+  env,
+  operationsToCreate = [
+    'create',
+  ],
+  shouldSkip,
 }: CreateZitadelUserHookParams<TUser>): CollectionAfterChangeHook<TUser> {
   return async ({
-    data, operation,
+    doc, operation,
   }) => {
-    if (operation !== 'create') {
+    if (!operationsToCreate.includes(operation)) {
       return
     }
 
-    if (shouldSkip?.(data)) {
+    if (shouldSkip?.(doc)) {
       return
     }
 
-    const email = data.email
+    const email = doc.email
 
     if (!email) {
       throw new Error('Cannot create Zitadel user without email')
@@ -83,8 +87,8 @@ export function createZitadelUserHook<TUser extends BaseUserRecordWithId>({
     }
 
     const displayName = [
-      data.firstName,
-      data.lastName,
+      doc.firstName,
+      doc.lastName,
     ].filter(Boolean).join(' ') || email
 
     const createResponse = await fetch(`${env.authBaseUrl}/v2/users/human`, {
@@ -98,8 +102,8 @@ export function createZitadelUserHook<TUser extends BaseUserRecordWithId>({
         },
         profile: {
           displayName,
-          familyName: data.lastName || email,
-          givenName: data.firstName || email,
+          familyName: doc.lastName || email,
+          givenName: doc.firstName || email,
         },
       }),
       headers: {

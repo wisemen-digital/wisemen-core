@@ -68,6 +68,11 @@ export interface CreateZitadelAuthStrategyParams<TUser extends BaseUserRecord> {
 
 export interface CreateZitadelUserHookParams<TUser extends BaseUserRecord & TypeWithID> {
   env: AuthEnv
+  /**
+   * Payload operations that create a matching Zitadel user when one does not
+   * already exist. Defaults to `['create']`.
+   */
+  operationsToCreate?: Array<'create' | 'update'>
   shouldSkip?: (user: Partial<TUser>) => boolean
 }
 
@@ -98,6 +103,8 @@ export interface CreateAuthStrategyParams<TUser extends BaseUserRecord> {
 }
 
 export interface CreateAuthUserHookParams<TUser extends BaseUserRecord & TypeWithID> {
+  /** @default ['create'] */
+  operationsToCreate?: Array<'create' | 'update'>
   shouldSkip?: (user: Partial<TUser>) => boolean
 }
 
@@ -114,6 +121,8 @@ export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & Ty
   canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
   /** Set to false to disable the default first-user bootstrap flow. */
   createFirstUser?: false | CreateFirstUserConfig
+  /** @default ['create'] */
+  operationsToCreate?: Array<'create' | 'update'>
   provider: PayloadAuthProvider<TUser>
   shouldSkipUserSync?: (user: Partial<TUser>) => boolean
   /** @default 'zitadel' */

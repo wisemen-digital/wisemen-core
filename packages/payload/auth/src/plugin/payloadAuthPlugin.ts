@@ -27,6 +27,7 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   authConfig,
   canLogin,
   createFirstUser,
+  operationsToCreate,
   provider,
   shouldSkipUserSync,
   strategyName,
@@ -52,6 +53,7 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   })
 
   const userHook = provider.createUserHook({
+    operationsToCreate,
     shouldSkip: shouldSkipUserSync,
   })
 
