@@ -73,7 +73,7 @@ export interface CreateZitadelUserHookParams<TUser extends BaseUserRecord & Type
    * already exist. Defaults to `['create']`.
    */
   operationsToCreate?: Array<'create' | 'update'>
-  shouldSkip?: (user: Partial<TUser>) => boolean
+  shouldSkip?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
 }
 
 export interface CreatePayloadCollectionAuthParams {
@@ -105,7 +105,7 @@ export interface CreateAuthStrategyParams<TUser extends BaseUserRecord> {
 export interface CreateAuthUserHookParams<TUser extends BaseUserRecord & TypeWithID> {
   /** @default ['create'] */
   operationsToCreate?: Array<'create' | 'update'>
-  shouldSkip?: (user: Partial<TUser>) => boolean
+  shouldSkip?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
 }
 
 export interface PayloadAuthProvider<TUser extends BaseUserRecord & TypeWithID> {
@@ -124,7 +124,7 @@ export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & Ty
   /** @default ['create'] */
   operationsToCreate?: Array<'create' | 'update'>
   provider: PayloadAuthProvider<TUser>
-  shouldSkipUserSync?: (user: Partial<TUser>) => boolean
+  shouldSkipUserSync?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
   /** @default 'zitadel' */
   strategyName?: string
   tenantCollectionSlug: string

@@ -84,7 +84,8 @@ Attach `payloadAuth.userHook` to your user collection `afterChange` hooks.
 By default, on user creation it:
 
 - skips non-`create` operations
-- optionally skips users through `shouldSkipUserSync`
+- optionally skips users through `shouldSkipUserSync`, which receives the full
+  Payload `afterChange` hook arguments, including `doc` and `previousDoc`
 - checks whether the matching Zitadel user already exists
 - creates the Zitadel user when needed
 
