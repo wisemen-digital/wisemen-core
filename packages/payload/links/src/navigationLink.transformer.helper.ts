@@ -1,8 +1,27 @@
 import { LinkTransformer } from '#link.transformer.ts'
+import type {
+  LinkableCollectionSlug,
+  NavigationLinkEventValue,
+  NonEmptyReadonlyArray,
+} from '#links.registry.ts'
 import type { ClientNavigationDropdown } from '#navigationLink.model.ts'
 import type { DropdownNavLink } from '#navigationLink.transformer.ts'
 
-export function toClientNavigationLinksDropdown(dropdownNavLink: DropdownNavLink): ClientNavigationDropdown {
+export interface ToClientNavigationLinksDropdownOptions<
+  TRelationTo extends string = LinkableCollectionSlug,
+  TEvent extends string = NavigationLinkEventValue,
+> {
+  events?: NonEmptyReadonlyArray<TEvent>
+  relationTo?: NonEmptyReadonlyArray<TRelationTo>
+}
+
+export function toClientNavigationLinksDropdown<
+  TRelationTo extends string = LinkableCollectionSlug,
+  TEvent extends string = NavigationLinkEventValue,
+>(
+  dropdownNavLink: DropdownNavLink<TRelationTo, TEvent>,
+  options: ToClientNavigationLinksDropdownOptions<TRelationTo, TEvent> = {},
+): ClientNavigationDropdown<TRelationTo, TEvent> {
   if (dropdownNavLink.navType !== 'dropdown') {
     throw new Error('Can only be dropdown type')
   }
@@ -33,7 +52,9 @@ export function toClientNavigationLinksDropdown(dropdownNavLink: DropdownNavLink
 
       return {
         label: link.label,
-        link: LinkTransformer.toClientLink(link.link),
+        link: LinkTransformer.toClientLink(link.link, {
+          relationTo: options.relationTo,
+        }),
         navType: 'link',
       }
     }) ?? [],

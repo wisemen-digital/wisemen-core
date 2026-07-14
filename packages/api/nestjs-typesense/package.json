@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-typesense",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,9 @@
     "@wisemen/pagination": "workspace:^",
     "@wisemen/coordinates": "workspace:^"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@wisemen/nestjs-provider-explorer": "workspace:^"
+  },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",

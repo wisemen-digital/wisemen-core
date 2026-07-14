@@ -1,6 +1,12 @@
 # @wisemen/address
 
 
+
+## 0.4.7
+<sub>2026-07-10</sub>
+
+- [#1410](https://github.com/wisemen-digital/wisemen-core/pull/1410)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: bump dependencies to resolve version mismatches
+
 ## 0.4.6
 <sub>2026-06-16</sub>
 

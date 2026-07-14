@@ -2,6 +2,12 @@
 
 
 
+
+## 1.0.1
+<sub>2026-07-13</sub>
+
+- [#1415](https://github.com/wisemen-digital/wisemen-core/pull/1415)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Fix ValidateWhen in PlainDateFilter
+
 ## 1.0.0
 <sub>2026-06-30</sub>
 
