@@ -25,6 +25,26 @@ describe('PlainDate accessors', () => {
 
   })
 
+  describe('weekday helpers', () => {
+    it('matches each ISO weekday helper', () => {
+      const monday = factory().startOf('isoWeek')
+      const tuesday = monday.add(1, 'day')
+      const wednesday = monday.add(2, 'day')
+      const thursday = monday.add(3, 'day')
+      const friday = monday.add(4, 'day')
+      const saturday = monday.add(5, 'day')
+      const sunday = monday.add(6, 'day')
+
+      expect(monday.isMonday()).toBe(true)
+      expect(tuesday.isTuesday()).toBe(true)
+      expect(wednesday.isWednesday()).toBe(true)
+      expect(thursday.isThursday()).toBe(true)
+      expect(friday.isFriday()).toBe(true)
+      expect(saturday.isSaturday()).toBe(true)
+      expect(sunday.isSunday()).toBe(true)
+    })
+  })
+
   describe('isoWeek', () => {
     it('returns the ISO week number', () => {
       expect(factory('2025-01-01').isoWeek()).toBe(1)

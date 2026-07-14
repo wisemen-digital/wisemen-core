@@ -166,6 +166,34 @@ export class PastInfinityDate implements PlainDate {
     throw new Error('cannot access day of week of -infinity')
   }
 
+  isMonday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
+  isTuesday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
+  isWednesday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
+  isThursday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
+  isFriday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
+  isSaturday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
+  isSunday (): boolean {
+    throw new Error('cannot access day of week of -infinity')
+  }
+
   isoWeekday (): number {
     throw new Error('cannot access ISO weekday of -infinity')
   }
