@@ -2,6 +2,12 @@
 
 
 
+
+## 0.0.3
+<sub>2026-07-13</sub>
+
+- *(patch)* Updated dependency `@wisemen/payload-core-utils` v0.0.3
+
 ## 0.0.2
 <sub>2026-07-08</sub>
 

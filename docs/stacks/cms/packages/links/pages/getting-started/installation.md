@@ -106,6 +106,13 @@ Useful exports:
 - `clientLinkSchema`
 - `clientNavigationLinkSchema`
 
+If your app augments `PayloadUtilsRegistry` in `@wisemen/payload-core-utils`, these exports also get project-specific types for:
+
+- `relationTo` on internal links
+- navigation/footer event ids
+
+You can also pass explicit schema/transformer overrides when a field uses collections or events outside the shared defaults.
+
 ## Notes
 
 - `getLinkField(...)` returns a `group` field.

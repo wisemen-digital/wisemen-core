@@ -36,7 +36,10 @@ if (!isCurrentContextOnly) {
 </script>
 
 <template>
-  <UIContextMenu @open="emit('open')">
+  <UIContextMenu
+    :is-adaptive-content-width="true"
+    @open="emit('open')"
+  >
     <template #trigger>
       <slot />
     </template>

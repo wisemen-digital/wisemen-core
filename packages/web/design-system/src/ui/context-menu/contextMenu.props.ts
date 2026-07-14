@@ -1,5 +1,13 @@
 export interface ContextMenuProps {
   /**
+   * Lets the content grow wider than its default min-width to fit its
+   * content. While open, it remembers the widest size it has rendered at so
+   * it never shrinks back down again, preventing layout shifts when content
+   * changes. This is reset each time the context menu is reopened.
+   * @default false
+   */
+  isAdaptiveContentWidth?: boolean
+  /**
    * Constrain the content to remain within the viewport. This may cause it
    * to overlap the trigger element, which might be undesirable.
    * @default false
