@@ -4,6 +4,12 @@
 
 
 
+
+## 1.0.15
+<sub>2026-07-14</sub>
+
+- [#1430](https://github.com/wisemen-digital/wisemen-core/pull/1430)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add weekdays methods
+
 ## 1.0.14
 <sub>2026-07-04</sub>
 

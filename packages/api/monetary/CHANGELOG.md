@@ -3,6 +3,13 @@
 
 
 
+
+## 0.5.3
+<sub>2026-07-14</sub>
+
+- [#1430](https://github.com/wisemen-digital/wisemen-core/pull/1430)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add currency column
+- [#1434](https://github.com/wisemen-digital/wisemen-core/pull/1434)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add @Type() in MonetaryDto for filtering
+
 ## 0.5.2
 <sub>2026-07-04</sub>
 
