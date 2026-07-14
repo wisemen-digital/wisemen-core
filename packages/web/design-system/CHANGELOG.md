@@ -19,6 +19,20 @@
 
 
 
+
+## 1.14.0
+<sub>2026-07-14</sub>
+
+- [#1418](https://github.com/wisemen-digital/wisemen-core/pull/1418)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - UIDropdownMenu, UIContextMenu: Content can now grow past its min-width to fit larger items. While open,
+  it remembers the widest size it has rendered at so it never shrinks back
+  down and shifts the layout; this resets each time the menu is reopened. This requires `is-adaptive-content-width: true`
+- [#1409](https://github.com/wisemen-digital/wisemen-core/pull/1409)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix `FormDialog` and `DialogChin` issues:
+  - Pressing Esc on a dirty `FormDialog` now shows the unsaved-changes confirmation chin instead of discarding changes immediately; pressing Esc again closes the dialog and discards the changes
+  - Fixed a height jump/chop in the dialog chin's open animation, most noticeable when it opened at the same time as a form field's error message
+  - Closing a `FormDialog` with unsaved changes no longer marks every form field as touched, so validation errors no longer appear on fields the user never interacted with
+- [#1413](https://github.com/wisemen-digital/wisemen-core/pull/1413)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove unsude component from sidebar
+- [#1419](https://github.com/wisemen-digital/wisemen-core/pull/1419)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix dropdown/context menus not keeping an item highlighted while navigating via keyboard. Items loaded in asynchronously, or a list filtered down to zero results and then cleared, could end up with nothing highlighted. The first item is now kept highlighted for as long as the menu stays open and the user is driving it via keyboard, including once a search/filter kicks in on a menu that was opened with the mouse.
+
 ## 1.13.0
 <sub>2026-07-08</sub>
 

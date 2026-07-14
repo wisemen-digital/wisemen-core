@@ -2,6 +2,12 @@
 
 
 
+
+## 0.2.2
+<sub>2026-07-14</sub>
+
+- [#1423](https://github.com/wisemen-digital/wisemen-core/pull/1423)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Reduce debounce from 200ms to 80ms for menus
+
 ## 0.2.1
 <sub>2026-06-30</sub>
 
