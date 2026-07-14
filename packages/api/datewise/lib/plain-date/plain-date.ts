@@ -95,6 +95,13 @@ export interface PlainDate {
   isPastInfinity(): boolean
   /** @returns Returns numbers from 0 (Sunday) to 6 (Saturday). */
   day(): number
+  isMonday(): boolean
+  isTuesday(): boolean
+  isWednesday(): boolean
+  isThursday(): boolean
+  isFriday(): boolean
+  isSaturday(): boolean
+  isSunday(): boolean
   /** @returns Returns numbers from 1 (Monday) to 7 (Sunday). */
   isoWeekday(): number
   /** @returns Returns the ISO week number (1–53). */
