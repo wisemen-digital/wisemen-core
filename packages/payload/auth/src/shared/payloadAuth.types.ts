@@ -40,16 +40,40 @@ export interface CreateFirstUserConfig {
   }) => Record<string, unknown>
 }
 
+export type CanLoginResult
+  = | {
+    allowed: false
+    reason: string
+    status?: number
+  }
+  | {
+    allowed: true
+  }
+
 export interface CreateZitadelAuthStrategyParams<TUser extends BaseUserRecord> {
   isUserAllowed: (user: TUser) => boolean
-  createFirstUser?: CreateFirstUserConfig
+  /**
+   * Makes an authorization decision after the Zitadel token and Payload user
+   * have been validated. A denied result is returned as a public Payload API
+   * error, preserving its reason and optional HTTP status.
+   */
+  canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
+  /** Set to false to disable first-user bootstrapping. */
+  createFirstUser?: false | CreateFirstUserConfig
   env: AuthEnv
+  /** @default 'zitadel' */
+  strategyName?: string
   userCollectionSlug: string
 }
 
 export interface CreateZitadelUserHookParams<TUser extends BaseUserRecord & TypeWithID> {
   env: AuthEnv
-  shouldSkip?: (user: Partial<TUser>) => boolean
+  /**
+   * Payload operations that create a matching Zitadel user when one does not
+   * already exist. Defaults to `['create']`.
+   */
+  operationsToCreate?: Array<'create' | 'update'>
+  shouldSkip?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
 }
 
 export interface CreatePayloadCollectionAuthParams {
@@ -70,12 +94,18 @@ export interface PublicAuthConfig {
 
 export interface CreateAuthStrategyParams<TUser extends BaseUserRecord> {
   isUserAllowed: (user: TUser) => boolean
-  createFirstUser?: CreateFirstUserConfig
+  canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
+  /** Set to false to disable first-user bootstrapping. */
+  createFirstUser?: false | CreateFirstUserConfig
+  /** @default 'zitadel' */
+  strategyName?: string
   userCollectionSlug: string
 }
 
 export interface CreateAuthUserHookParams<TUser extends BaseUserRecord & TypeWithID> {
-  shouldSkip?: (user: Partial<TUser>) => boolean
+  /** @default ['create'] */
+  operationsToCreate?: Array<'create' | 'update'>
+  shouldSkip?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
 }
 
 export interface PayloadAuthProvider<TUser extends BaseUserRecord & TypeWithID> {
@@ -88,9 +118,15 @@ export interface PayloadAuthProvider<TUser extends BaseUserRecord & TypeWithID> 
 export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & TypeWithID> {
   isUserAllowed: (user: TUser) => boolean
   authConfig?: Omit<CreatePayloadCollectionAuthParams, 'strategy'>
-  createFirstUser?: CreateFirstUserConfig
+  canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
+  /** Set to false to disable the default first-user bootstrap flow. */
+  createFirstUser?: false | CreateFirstUserConfig
+  /** @default ['create'] */
+  operationsToCreate?: Array<'create' | 'update'>
   provider: PayloadAuthProvider<TUser>
-  shouldSkipUserSync?: (user: Partial<TUser>) => boolean
+  shouldSkipUserSync?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
+  /** @default 'zitadel' */
+  strategyName?: string
   tenantCollectionSlug: string
   tokenRefreshBufferMs?: number
   userCollectionSlug: string

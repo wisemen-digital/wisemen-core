@@ -112,6 +112,20 @@ describe('FutureInfinityDate', () => {
     })
   })
 
+  describe('weekday helpers', () => {
+    it('throws when accessing weekday helpers', () => {
+      const date = new FutureInfinityDate()
+
+      expect(() => date.isMonday()).toThrow()
+      expect(() => date.isTuesday()).toThrow()
+      expect(() => date.isWednesday()).toThrow()
+      expect(() => date.isThursday()).toThrow()
+      expect(() => date.isFriday()).toThrow()
+      expect(() => date.isSaturday()).toThrow()
+      expect(() => date.isSunday()).toThrow()
+    })
+  })
+
   describe('isoWeekday', () => {
     it('throws when accessing the ISO weekday', () => {
       expect(() => new FutureInfinityDate().isoWeekday()).toThrow()
