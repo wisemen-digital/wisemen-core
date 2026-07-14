@@ -20,6 +20,13 @@
 
 
 
+
+## 1.14.1
+<sub>2026-07-14</sub>
+
+- [#1431](https://github.com/wisemen-digital/wisemen-core/pull/1431)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Hide the overlfow-x in the main sidebar
+- [#1431](https://github.com/wisemen-digital/wisemen-core/pull/1431)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Invert check for missing type in `mainSidebarNavigationLink`
+
 ## 1.14.0
 <sub>2026-07-14</sub>
 
