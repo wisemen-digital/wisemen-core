@@ -34,6 +34,35 @@ in the expected shape.
 8. If `Event` is checked: `Domain event name:` — e.g. `Archived` → emits an
    `ArchivedEvent`.
 
+## Non-interactive (agent) usage
+
+No terminal/TTY needed, including for the `custom` flow. Every prompt, static
+or conditional, can be bypassed via plop's own bypass mechanism (built into
+`ngen`, no extra flags or tooling), by name. This generator's name is
+`module / useCase` (with spaces) — quote it as a single CLI argument:
+
+```sh
+pnpx @wisemen/ngen "module / useCase" --dir=src/app/ --subdir=/ --module=book --createEntity=yes --type=create,index,detail,update,delete
+```
+
+`dir`/`subdir`/`createEntity` fall back to their defaults if omitted;
+`module` and `type` have no default and must be supplied. `type` is a
+checkbox — pass a comma-separated list of values.
+
+For the `custom` flow, include `custom` and (if relevant) `custom_addons` /
+`domain_event_name` — they only apply when `type` includes `"custom"` /
+`custom_addons` includes `"domain_event"`, so omit them otherwise:
+
+```sh
+pnpx @wisemen/ngen "module / useCase" --dir=src/app/ --subdir=/ --module=book --createEntity=yes --type=custom --custom=archive --custom_addons=response,command,domain_event --domain_event_name=Archived
+```
+
+(Conditional prompts like `custom` are only bypassable here because this repo
+patches `node-plop` via `patches/node-plop.patch` to evaluate each prompt's
+`when` against the answers gathered so far, instead of hard-refusing any
+conditional prompt outright — upstream `node-plop@0.32.3` throws `You can not
+bypass conditional prompts: custom` instead, with no workaround.)
+
 ## What always gets generated
 
 - A `Permission` enum + `Permissions()`/`Public()` decorator (created once,

@@ -20,6 +20,24 @@ an existing queue defined in the project's `QueueName` enum.
    isn't found, this prompt has zero choices and effectively blocks the
    generator. Add the queue to `QueueName` first if it's missing.
 
+## Non-interactive (agent) usage
+
+No terminal/TTY needed. All four prompts, including the dynamic `queue`
+list, can be bypassed non-interactively via plop's own bypass mechanism
+(built into `ngen`, no extra flags or tooling), by name:
+
+```sh
+pnpx @wisemen/ngen job --dir=src/app/ --subdir=reports --name=send-invoice --queue=reports
+```
+
+`dir` falls back to its default if omitted; `subdir`, `name`, and `queue`
+have no default and must be supplied. `queue` accepts the enum member's
+value, name, or index. (`queue`'s `choices` are computed dynamically from
+the target project's `QueueName` enum — this repo patches `node-plop` via
+`patches/node-plop.patch` to resolve dynamic `choices` before bypass
+matching; upstream `node-plop@0.32.3` does not support this and throws
+`prompt.choices.find is not a function` instead.)
+
 ## What gets generated
 
 All under `<dir>/<subdir>/use-cases/<kebab-name>/`:

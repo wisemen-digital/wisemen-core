@@ -36,6 +36,21 @@ Naming your source files with the matching suffix (`*.entity.ts`,
 filename clean — the suffix is only stripped from the input basename, so a
 non-matching file produces an odd double-extension output name.
 
+## Non-interactive (agent) usage
+
+No terminal/TTY needed — this generator has no conditional or dynamic-choice
+prompts, so plop's own bypass mechanism (built into `ngen`, no extra flags or
+tooling) can supply every answer up front by name:
+
+```sh
+pnpx @wisemen/ngen builder --inputPath=src/app/book/entities/book.entity.ts --outputPath= --type=entity
+```
+
+`inputPath` and `type` have no default and must be supplied; `outputPath` also
+has no default, so pass it explicitly as empty (`--outputPath=`) for the
+"write next to input file" behavior. `type` accepts the list's value, name, or
+index (`entity`/`command`/`query`/`interface`).
+
 ## Output shape
 
 ```ts

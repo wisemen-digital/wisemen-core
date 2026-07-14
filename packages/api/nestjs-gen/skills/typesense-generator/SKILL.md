@@ -24,6 +24,20 @@ Requires the target entity to already exist at
 
 All files land under `<dir>/<subdir>/<entity>/typesense/`.
 
+## Non-interactive (agent) usage
+
+No terminal/TTY needed — this generator has no conditional or dynamic-choice
+prompts, so plop's own bypass mechanism (built into `ngen`, no extra flags or
+tooling) can supply every answer up front by name:
+
+```sh
+pnpx @wisemen/ngen typesense --dir=src/app/ --subdir=/ --name=book --includeSubscriber=no
+```
+
+Confirm-type prompts (`includeSubscriber`) accept `yes`/`no`/`y`/`n`/`true`/`false`.
+Any prompt you omit falls back to its default (`dir`, `subdir`,
+`includeSubscriber`); `name` has no default and must be supplied.
+
 ## What gets generated
 
 | File | Class | Notes |

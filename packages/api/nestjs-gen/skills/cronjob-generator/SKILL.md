@@ -20,6 +20,19 @@ expected to come from the target project's own `CronjobType` enum +
 Both `subdir` and `name` are required in practice — leaving either blank
 produces a malformed path.
 
+## Non-interactive (agent) usage
+
+No terminal/TTY needed — this generator has no conditional or dynamic-choice
+prompts, so plop's own bypass mechanism (built into `ngen`, no extra flags or
+tooling) can supply every answer up front by name:
+
+```sh
+pnpx @wisemen/ngen cronjob --dir=src/app/ --subdir=reports --name=sync-invoices
+```
+
+`dir` falls back to its default if omitted; `subdir` and `name` have no
+default and must be supplied.
+
 ## What gets generated
 
 Both files land at `<dir>/<subdir>/use-cases/<kebab-name>/`:

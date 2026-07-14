@@ -23,6 +23,24 @@ throws; if it has no language subfolders, the checkbox has zero choices.
 2. `Select the languages...` — checkbox, choices = subfolder names under
    `src/modules/localization/resources/`, all pre-checked.
 
+## Non-interactive (agent) usage
+
+No terminal/TTY needed. Both prompts, including the dynamic `languages`
+checkbox, can be bypassed non-interactively via plop's own bypass mechanism
+(built into `ngen`, no extra flags or tooling), by name:
+
+```sh
+pnpx @wisemen/ngen translations --type=permissions --languages=en,nl-BE
+```
+
+`type` falls back to its default (`permissions`) if omitted. `languages`
+accepts a comma-separated list of language folder names; passing `--languages=`
+(empty) generates none. (`languages`' `choices` are computed dynamically from
+`src/modules/localization/resources/`'s subfolders — this repo patches
+`node-plop` via `patches/node-plop.patch` to resolve dynamic `choices` before
+bypass matching; upstream `node-plop@0.32.3` does not support this and throws
+`prompt.choices.some is not a function` instead.)
+
 ## What each type does
 
 | Type | Target file | Source enum | Leaf fields |
