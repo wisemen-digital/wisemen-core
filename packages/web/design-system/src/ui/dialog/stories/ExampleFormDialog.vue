@@ -10,6 +10,7 @@ import DialogFooterCancel from '@/ui/dialog/DialogFooterCancel.vue'
 import DialogFooterSubmit from '@/ui/dialog/DialogFooterSubmit.vue'
 import DialogHeader from '@/ui/dialog/DialogHeader.vue'
 import FormDialog from '@/ui/dialog/FormDialog.vue'
+import NumberField from '@/ui/number-field/NumberField.vue'
 import TextField from '@/ui/text-field/TextField.vue'
 import { toFormField } from '@/utils/toFormField.util'
 
@@ -32,6 +33,7 @@ const emit = defineEmits<{
 const form = useForm({
   schema: z.object({
     name: z.string().min(2, 'Enter at least 2 characters'),
+    age: z.number().min(1),
   }),
   onSubmit: () => {
     emit('close')
@@ -39,6 +41,7 @@ const form = useForm({
 })
 
 const nameField = form.register('name', '')
+const ageField = form.register('age', 0)
 
 const chin = computed<ChinConfig | null>(() => {
   if (!props.showExternalChin) {
@@ -74,6 +77,11 @@ const chin = computed<ChinConfig | null>(() => {
           :is-required="true"
           label="Name"
           placeholder="Enter a name"
+        />
+        <NumberField
+          v-bind="toFormField(ageField)"
+          label="Age"
+          placeholder="Enter your age"
         />
       </div>
     </DialogBody>
