@@ -88,6 +88,12 @@ describe('MatchPlainDate', () => {
     expect(result).toBeUndefined()
   })
 
+  it('returns undefined when filter is null', () => {
+    const result = MatchPlainDate(null)
+
+    expect(result).toBeUndefined()
+  })
+
   async function findByDate (filter: PlainDateFilter): Promise<ScopedFilterTest[]> {
     return await dataSource.manager.find(ScopedFilterTest, {
       where: {

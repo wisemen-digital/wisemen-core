@@ -70,6 +70,12 @@ describe('MatchNumber', () => {
     expect(result).toBeUndefined()
   })
 
+  it('returns undefined when filter is null', () => {
+    const result = MatchNumber(null)
+
+    expect(result).toBeUndefined()
+  })
+
   async function findByAmount (filter: NumberFilter): Promise<ScopedFilterTest[]> {
     return await dataSource.manager.find(ScopedFilterTest, {
       where: {
