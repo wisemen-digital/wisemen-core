@@ -2,11 +2,53 @@ import { exhaustiveCheck } from "#src/exhaustive-check.js"
 import { MultiSelectFilter } from "#src/multi-select/multi-select-filter.js"
 import { MultiSelectOperation } from "#src/multi-select/multi-select-operation.js"
 import { randomUUID } from "crypto"
-import { ObjectLiteral, SelectQueryBuilder } from "typeorm"
+import { ObjectLiteral, QueryBuilder, SelectQueryBuilder } from "typeorm"
 
 
 declare module "typeorm" {
-  interface SelectQueryBuilder<Entity extends ObjectLiteral> {
+  interface QueryBuilder<Entity extends ObjectLiteral> {
+    /**  
+    * Checks if the column matches any of the requested scoped values.
+    * Best used for query builders.
+    * 
+    * Uses `column = ANY(...)` for inclusive scope. \
+    * Uses `column != ALL(...)` for exclusive scope.
+    * 
+    * @param column the name of the column to match on.
+    * @param filter the scoped filter to match.
+    * 
+    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    */
+    whereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
+        /**  
+    * Checks if the column matches any of the requested scoped values.
+    * Best used for query builders.
+    * 
+    * Uses `column = ANY(...)` for inclusive scope. \
+    * Uses `column != ALL(...)` for exclusive scope.
+    * 
+    * @param column the name of the column to match on.
+    * @param filter the scoped filter to match.
+    * 
+    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    */
+    andWhereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
+    /**  
+    * Checks if the column matches any of the requested scoped values.
+    * Best used for query builders.
+    * 
+    * Uses `column = ANY(...)` for inclusive scope. \
+    * Uses `column != ALL(...)` for exclusive scope.
+    * 
+    * @param column the name of the column to match on.
+    * @param filter the scoped filter to match.
+    * 
+    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    */
+    orWhereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
+  }
+
+  interface WhereExpressionBuilder {
     /**  
     * Checks if the column matches any of the requested scoped values.
     * Best used for query builders.
@@ -49,7 +91,8 @@ declare module "typeorm" {
   }
 }
 
-(SelectQueryBuilder.prototype).whereMatchMultiSelect = function<V> (
+
+(QueryBuilder.prototype).whereMatchMultiSelect = function<V> (
   this: SelectQueryBuilder<ObjectLiteral>,
   column: string,
   filter: MultiSelectFilter<V> | undefined | null
@@ -61,7 +104,7 @@ declare module "typeorm" {
   return this.where(matchMultiSelect(column,filter))
 };
 
-(SelectQueryBuilder.prototype).andWhereMatchMultiSelect = function<V> (
+(QueryBuilder.prototype).andWhereMatchMultiSelect = function<V> (
   this: SelectQueryBuilder<ObjectLiteral>,
   column: string,
   filter: MultiSelectFilter<V> | undefined | null
@@ -73,7 +116,7 @@ declare module "typeorm" {
   return this.andWhere(matchMultiSelect(column,filter))
 };
 
-(SelectQueryBuilder.prototype).orWhereMatchMultiSelect = function<V> (
+(QueryBuilder.prototype).orWhereMatchMultiSelect = function<V> (
   this: SelectQueryBuilder<ObjectLiteral>,
   column: string,
   filter: MultiSelectFilter<V> | undefined | null
