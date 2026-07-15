@@ -18,10 +18,7 @@ export function useTableScrollState() {
       passive: true,
     })
 
-    // Observe both the container (viewport size changes) and its content (rows being
-    // added/removed). The container's own box size stays clamped once it hits `max-h-full`,
-    // so appended rows only change `scrollHeight`, which a ResizeObserver on `el` alone
-    // would never pick up.
+    
     const resizeObserver = new ResizeObserver(() => updateScrollState(el))
 
     resizeObserver.observe(el)
@@ -30,6 +27,7 @@ export function useTableScrollState() {
     const contentEl = el.children[0]
 
     if (contentEl !== undefined) {
+      // Observe this for when inner content of the table changes
       resizeObserver.observe(contentEl)
     }
   }

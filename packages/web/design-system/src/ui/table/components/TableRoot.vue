@@ -87,9 +87,6 @@ useInfiniteScroll(scrollContainerEl, () => {
   },
 })
 
-// `useInfiniteScroll` only reacts to `scroll` events, so if a page of data doesn't
-// fill/overflow the container, no scroll event ever fires and pagination stalls.
-// Fall back to fetching the next page whenever the container isn't scrollable yet.
 watch(isScrollableVertically, (canScrollVertically) => {
   if (!canScrollVertically && props.isInitialized) {
     props.onNextPage?.()
