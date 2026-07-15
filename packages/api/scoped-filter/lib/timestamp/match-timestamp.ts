@@ -7,11 +7,13 @@ import { Equal, FindOperator, LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqu
 /**
  * Checks if the column matches a timestamp filter.
  *
+ * `null` and `undefined` match all values
+ *
  * @param filter the filter to match.
  * @example repo.findOneBy({ timestamp: MatchTimestamp(query.filter.timestamp) })
  */
-export function MatchTimestamp (filter: TimestampFilter | undefined): FindOperator<Timestamp> | undefined {
-  if (filter === undefined) {
+export function MatchTimestamp (filter: TimestampFilter | undefined | null): FindOperator<Timestamp> | undefined {
+  if (filter === undefined || filter === null) {
     return undefined
   }
 
