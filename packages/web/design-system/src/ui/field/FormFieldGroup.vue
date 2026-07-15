@@ -6,6 +6,7 @@ import { UIColumnLayout } from '@/ui/column-layout'
   <UIColumnLayout
     class="w-full"
     gap="xl"
+    align="stretch"
   >
     <slot />
   </UIColumnLayout>
