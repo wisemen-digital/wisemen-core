@@ -216,7 +216,9 @@ catalogs:
   openapi:
     "@hey-api/openapi-ts": "0.94.0"
   peer:
+    "@axe-core/playwright": "^4.11.3"
     "@hey-api/openapi-ts": "^0.94.0"
+    "@playwright/test": "^1.57.0"
     "@tanstack/vue-query": "^5.100.6"
     "@typescript-eslint/parser": "^8.59.0"
     "@vitejs/plugin-vue": ">=6.0.3"
@@ -224,7 +226,9 @@ catalogs:
     formango: ^3.2.4
     "libphonenumber-js": ">=1.12.35"
     "motion-v": "^2.2.1"
+    msw: "^2.14.6"
     "neverthrow": "^8.2.0"
+    playwright-msw: "^3.0.1"
     "reka-ui": "^2.9.7"
     "tailwind-variants": ">=3.2.2"
     "temporal-polyfill": "^0.3.0"
@@ -275,12 +279,16 @@ catalogs:
     "@opentelemetry/sdk-trace-base": "2.7.1"
     "@opentelemetry/sdk-trace-web": "2.7.1"
   test:
+    "@axe-core/playwright": "4.11.3"
+    "@playwright/test": "1.57.0"
     "@vitest/browser-playwright": "4.1.0"
     "@vitest/coverage-v8": "4.1.0"
     "@vue/test-utils": "2.4.6"
     "expect": "30.2.0"
     "jsdom": "27.4.0"
+    msw: "2.14.6"
     playwright: 1.57.0
+    playwright-msw: "3.0.1"
     "vite-plugin-istanbul": "6.0.2"
     "vitest": "4.1.0"
   tooling:
@@ -380,6 +388,7 @@ allowBuilds:
   "@parcel/watcher": true
   "@scarf/scarf": true
   esbuild: true
+  msw: true
   protobufjs: true
   unrs-resolver: true
   vue-demi: true

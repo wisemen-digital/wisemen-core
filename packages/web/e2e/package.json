@@ -1,0 +1,69 @@
+{
+  "name": "@wisemen/web-e2e",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.0",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/e2e"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.mts",
+      "import": "./dist/config/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "msw",
+    "page-objects"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "pub:release": "pnpm publish --access public",
+    "pub:beta": "pnpm publish --no-git-checks --access public --tag beta",
+    "pub:next": "pnpm publish --no-git-checks --access public --tag next",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest --run",
+    "type-check": "pnpm tsc"
+  },
+  "peerDependencies": {
+    "@axe-core/playwright": "catalog:peer",
+    "@playwright/test": "catalog:peer",
+    "msw": "catalog:peer",
+    "playwright-msw": "catalog:peer"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "catalog:test",
+    "@playwright/test": "catalog:test",
+    "@types/node": "catalog:types",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "msw": "catalog:test",
+    "playwright-msw": "catalog:test",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build",
+    "vitest": "catalog:test"
+  }
+}
