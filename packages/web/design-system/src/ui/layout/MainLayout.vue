@@ -25,7 +25,9 @@ useProvideMainLayoutContext({
 
 <template>
   <div
-    :class="isBranded ? 'light:bg-linear-to-tr light:from-brand-950 light:to-brand-800' : null"
+    :class="isBranded ? `
+      light:bg-linear-to-tr light:from-brand-950 light:to-brand-800
+    ` : null"
     class="relative flex h-dvh w-full overflow-hidden"
   >
     <slot />
