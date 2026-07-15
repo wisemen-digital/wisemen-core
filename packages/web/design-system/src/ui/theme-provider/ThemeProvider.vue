@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePreferredColorScheme } from '@vueuse/core'
 import { Primitive } from 'reka-ui'
 import { computed } from 'vue'
 
@@ -17,19 +16,10 @@ const props = withDefaults(defineProps<ThemeProviderProps>(), {
 })
 
 const themeContext = useInjectThemeProviderContext()
-const preferredColorScheme = usePreferredColorScheme()
 
 const computedAppearance = computed<Appearance>(() => (
   props.appearance ?? themeContext.appearance.value ?? 'light'
 ))
-
-const resolvedAppearance = computed<Exclude<Appearance, 'system'>>(() => {
-  if (computedAppearance.value === 'system') {
-    return preferredColorScheme.value === 'dark' ? 'dark' : 'light'
-  }
-
-  return computedAppearance.value
-})
 
 const theme = computed<string>(
   () => props.theme ?? themeContext.theme.value,
@@ -37,7 +27,6 @@ const theme = computed<string>(
 
 useProvideThemeProviderContext({
   appearance: computedAppearance,
-  resolvedAppearance,
   theme,
 })
 </script>
