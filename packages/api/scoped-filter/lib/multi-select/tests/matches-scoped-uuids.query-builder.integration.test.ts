@@ -85,6 +85,53 @@ describe('matchesScopedUuids (query builder)', () => {
     })
   })
 
+  describe('query builder overrides', () => {
+    it('supports whereMultiSelect', async () => {
+      const filter: MultiSelectUuidFilter<string> = { operation: MultiSelectOperation.INCLUDE, values: [UUID_1, UUID_2] }
+
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .whereMatchMultiSelect('e.uuid', filter)
+        .getMany()
+
+      expect(results.map(result => result.id).sort((a, b) => a - b)).toEqual([1, 2])
+    })
+
+    it('supports andWhereMultiSelect', async () => {
+      const filter: MultiSelectUuidFilter<string> = { operation: MultiSelectOperation.EXCLUDE, values: [UUID_2] }
+
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.amount >= :amount', { amount: 20 })
+        .andWhereMatchMultiSelect('e.uuid', filter)
+        .getMany()
+
+      expect(results.map(result => result.id).sort((a, b) => a - b)).toEqual([3])
+    })
+
+    it('supports orWhereMultiSelect', async () => {
+      const filter: MultiSelectUuidFilter<string> = { operation: MultiSelectOperation.INCLUDE, values: [UUID_3] }
+
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.id = :id', { id: 1 })
+        .orWhereMatchMultiSelect('e.uuid', filter)
+        .getMany()
+
+      expect(results.map(result => result.id).sort((a, b) => a - b)).toEqual([1, 3])
+    })
+
+    it('does not add a clause when the override filter is undefined', async () => {
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.id = :id', { id: 2 })
+        .andWhereMatchMultiSelect('e.uuid', undefined)
+        .getMany()
+
+      expect(results.map(result => result.id)).toEqual([2])
+    })
+  })
+
   async function seed (dataSource: DataSource, row: ScopedFilterTest): Promise<void> {
     await dataSource.manager.upsert(ScopedFilterTest, row, { conflictPaths: { id: true } })
   }
