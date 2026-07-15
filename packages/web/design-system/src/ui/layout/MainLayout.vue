@@ -14,11 +14,11 @@ const props = withDefaults(defineProps<{
 })
 
 const {
-  appearance,
+  resolvedAppearance,
 } = useInjectThemeProviderContext()
 
 const isBrandedActive = computed<boolean>(
-  () => props.variant === 'branded' && appearance.value !== 'dark',
+  () => props.variant === 'branded' && resolvedAppearance.value !== 'dark',
 )
 
 useProvideMainLayoutContext({
