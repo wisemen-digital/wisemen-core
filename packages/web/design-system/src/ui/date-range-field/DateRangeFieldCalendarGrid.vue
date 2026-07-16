@@ -120,6 +120,7 @@ function getDotColorClass(date: {
                 group-data-selection-start/celtrig:bg-brand-solid
                 group-data-selection-start/celtrig:text-primary-on-brand
                 group-data-selection-start/celtrig:group-focus-visible/celtrig:ring-0
+                group-data-today/celtrig:font-semibold
                 group-data-unavailable/celtrig:text-disabled
                 group-data-unavailable/celtrig:line-through
                 group-not-data-disabled/celtrig:group-not-data-highlighted/celtrig:group-not-data-selected/celtrig:hover:bg-secondary-hover
