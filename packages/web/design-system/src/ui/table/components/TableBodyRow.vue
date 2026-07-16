@@ -19,11 +19,13 @@ const props = withDefaults(defineProps<{
   ariaLabel?: string | null
   itemKey?: string | null
   link?: RouteLocationRaw | null
+  onRowClick?: (() => void) | null
 }>(), {
   actionModel: null,
   ariaLabel: null,
   itemKey: null,
   link: null,
+  onRowClick: null,
 })
 
 const i18n = useI18n()
@@ -54,6 +56,7 @@ const toggleSelectionAction = createAction({
 
 useProvideTableBodyRowContext({
   link: computed(() => props.link),
+  onClick: computed(() => props.onRowClick),
 })
 </script>
 
@@ -91,6 +94,19 @@ useProvideTableBodyRowContext({
           :to="link"
           :aria-label="ariaLabel ?? i18n.t('component.table.row.view_details_label')"
           class="pointer-events-none absolute inset-0 z-0 outline-none"
+        />
+
+        <!--
+          Row-level click handler: keyboard tab stop, mirrors the link above.
+          pointer-events-none so it never intercepts mouse clicks (per-cell overlays handle those).
+          Must be first in DOM so it's first in tab order.
+        -->
+        <button
+          v-else-if="onRowClick !== null"
+          :aria-label="ariaLabel ?? i18n.t('component.table.row.view_details_label')"
+          class="pointer-events-none absolute inset-0 z-0 outline-none"
+          type="button"
+          @click="onRowClick"
         />
 
         <slot />

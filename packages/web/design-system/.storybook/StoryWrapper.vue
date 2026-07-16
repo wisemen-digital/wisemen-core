@@ -133,6 +133,7 @@ const mockFileUploadAdapter: BaseFileUploadAdapter = {
     :reduced-motion="false"
     number-format="system"
     project-name="story-book"
+    auto-close-toast="never"
   >
     <ThemeProvider
       :appearance="theme ?? 'light'"

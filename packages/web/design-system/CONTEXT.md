@@ -15,3 +15,7 @@ Because resolution already happens in CSS, JS code must never compare `appearanc
 
 ### Branded (variant)
 A `MainLayout` `variant` option (`'branded' | 'default'`) that layers brand-colored tokens over the surface, via the `.branded` CSS class. `.branded`'s tokens are only meaningful in light mode — the class carries its own `@container style(--theme-mode: dark)` reset block so that branded content in dark mode renders identically to plain (non-branded) dark mode. This means `.branded` can be applied unconditionally whenever `variant === 'branded'`, with the light/dark distinction handled entirely by CSS, not by gating the class in JS.
+
+### Row interaction (table)
+The single mechanism by which an entire `UITable` row becomes actionable as a unit, distinct from actions/interactive elements scoped to one cell. A row has exactly one interaction mode at a time: `getLink` (navigates) or `onRowClick` (invokes a handler with the row's item) — never both on the same table. Implemented as a full-row overlay per cell (see `TableBodyRowCellInteractiveElement` for the opt-out used by nested interactive elements within a cell).
+_Avoid_: "row click" alone (ambiguous between the row-interaction mechanism and a raw DOM click event on the row).
