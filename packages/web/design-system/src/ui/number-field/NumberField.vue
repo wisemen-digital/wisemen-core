@@ -185,6 +185,11 @@ function formatNumberDecimalSeparators(value: string): number {
     return Number(value.replaceAll(sep, ''))
   }
 
+  if (value.startsWith(`0${sep}`)) {
+    // Leading "0" before the separator → always decimal (e.g. "0,11111")
+    return Number(value.replace(sep, '.'))
+  }
+
   // Single separator: check digits after it
   const digitsAfter = value.slice(value.lastIndexOf(sep) + 1).replace(NON_DIGIT_REGEX, '')
 
