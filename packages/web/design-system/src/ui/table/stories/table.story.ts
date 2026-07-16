@@ -6,6 +6,7 @@ import type {
 import TableGroupedPlayground from './TableGroupedPlayground.vue'
 import TableInfiniteScrollPlayground from './TableInfiniteScrollPlayground.vue'
 import TablePlayground from './TablePlayground.vue'
+import TableRowClickPlayground from './TableRowClickPlayground.vue'
 import TableSelectionGroupedPlayground from './TableSelectionGroupedPlayground.vue'
 import TableSelectionPlayground from './TableSelectionPlayground.vue'
 import TableSortingPlayground from './TableSortingPlayground.vue'
@@ -175,5 +176,22 @@ export const InfiniteScroll: Story = {
       }
     },
     template: '<TableInfiniteScrollPlayground v-bind="args" />',
+  }),
+}
+
+export const RowClick: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableRowClickPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableRowClickPlayground v-bind="args" />',
   }),
 }

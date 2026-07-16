@@ -21,6 +21,14 @@
 
 
 
+
+## 1.14.2
+<sub>2026-07-15</sub>
+
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Made FormFieldGroup stretch its columns to fill the available width instead of leaving them at their content size.
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Handle the system apearance correctly in the branded sidebar
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dark mode variables to branded css class and only check via css
+
 ## 1.14.1
 <sub>2026-07-14</sub>
 

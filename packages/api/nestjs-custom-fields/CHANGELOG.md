@@ -2,6 +2,12 @@
 
 
 
+
+## 0.0.4
+<sub>2026-07-15</sub>
+
+- [#1440](https://github.com/wisemen-digital/wisemen-core/pull/1440)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Split runtime and type level for CustomFieldValueDto
+
 ## 0.0.3
 <sub>2026-07-10</sub>
 

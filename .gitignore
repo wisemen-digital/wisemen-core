@@ -30,3 +30,7 @@ static
 **/.eslintcache
 .temp
 .context
+
+# AI/agent working notes
+**/CONTEXT.md
+**/docs/adr/

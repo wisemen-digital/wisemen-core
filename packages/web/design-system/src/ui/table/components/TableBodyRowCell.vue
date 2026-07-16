@@ -14,9 +14,10 @@ const {
 } = useInjectTableContext()
 
 const {
-  link,
+  link, onClick,
 } = useInjectTableBodyRowContext({
   link: computed(() => null),
+  onClick: computed(() => null),
 })
 
 const {
@@ -72,6 +73,14 @@ const firstCellPaddingLeft = computed<string>(() => {
       :to="link"
       tabindex="-1"
       class="absolute inset-0 z-0"
+    />
+
+    <button
+      v-else-if="onClick !== null"
+      tabindex="-1"
+      class="absolute inset-0 z-0"
+      type="button"
+      @click="onClick"
     />
 
     <div

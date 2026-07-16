@@ -16,7 +16,8 @@ import { BaseCustomFieldValueDto } from './base-custom-field-value.dto.js'
 
 export type CustomFieldValueDtoClass = new () => BaseCustomFieldValueDto
 
-export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+abstract class _CustomFieldValueDto extends BaseCustomFieldValueDto {
   static from(customFieldValue: TextCustomFieldValue): TextCustomFieldValueDto
   static from(customFieldValue: TextArrayCustomFieldValue): TextArrayCustomFieldValueDto
   static from(customFieldValue: NumberCustomFieldValue): NumberCustomFieldValueDto
@@ -26,8 +27,8 @@ export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
   static from(customFieldValue: SingleSelectCustomFieldValue): SingleSelectCustomFieldValueDto
   static from(customFieldValue: MultiSelectCustomFieldValue): MultiSelectCustomFieldValueDto
   static from(customFieldValue: MonetaryCustomFieldValue): MonetaryCustomFieldValueDto
-  static from(customFieldValue: CustomFieldValue): BaseCustomFieldValueDto
-  static from(customFieldValue: CustomFieldValue): BaseCustomFieldValueDto {
+  static from(customFieldValue: CustomFieldValue): CustomFieldValueDto
+  static from(customFieldValue: CustomFieldValue): CustomFieldValueDto {
     switch (customFieldValue.type) {
       case CustomFieldType.TEXT:
         return TextCustomFieldValueDto.from(customFieldValue)
@@ -52,6 +53,18 @@ export abstract class CustomFieldValueDto extends BaseCustomFieldValueDto {
     }
   }
 }
+
+export const CustomFieldValueDto = _CustomFieldValueDto
+export type CustomFieldValueDto =
+  | BooleanCustomFieldValueDto
+  | DateCustomFieldValueDto
+  | TimestampCustomFieldValueDto
+  | MonetaryCustomFieldValueDto
+  | MultiSelectCustomFieldValueDto
+  | NumberCustomFieldValueDto
+  | SingleSelectCustomFieldValueDto
+  | TextArrayCustomFieldValueDto
+  | TextCustomFieldValueDto
 
 export {
   BooleanCustomFieldValueDto,
