@@ -29,9 +29,6 @@ const emit = defineEmits<{
   'escapeKeyDown': [event: KeyboardEvent]
   'update:isOpen': [value: boolean]
 }>()
-const hasCloseButton = computed<boolean>(
-  () => props.showCloseButton !== undefined ? props.showCloseButton : props.hasCloseButton,
-)
 const isClickOutsideDisabled = computed<boolean>(
   () => props.isClickOutsideDisabled || props.preventClickOutside === true,
 )
@@ -123,7 +120,7 @@ const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="hasCloseButton" />
+        <DialogCloseButton v-if="props.hasCloseButton" />
       </div>
 
       <DialogChin :chin="props.chin" />

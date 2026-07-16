@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
 import { useInjectDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogFooterProps } from '@/ui/dialog/dialogFooter.props'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
@@ -9,10 +7,6 @@ import { UISeparator } from '@/ui/separator/index'
 const props = withDefaults(defineProps<DialogFooterProps>(), {
   hasSeparator: true,
 })
-
-const hasSeparator = computed<boolean>(
-  () => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator,
-)
 
 const dialogContext = useInjectDialogContext(null)
 </script>
@@ -23,7 +17,7 @@ const dialogContext = useInjectDialogContext(null)
     data-dialog-footer
   >
     <UISeparator
-      v-if="hasSeparator"
+      v-if="props.hasSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToBottom.value
           ? 'opacity-0'
