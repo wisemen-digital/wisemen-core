@@ -22,6 +22,15 @@
 
 
 
+
+## 1.15.0
+<sub>2026-07-16</sub>
+
+- [#1455](https://github.com/wisemen-digital/wisemen-core/pull/1455)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a onRowClick prop to the table component. to make rows have a click handler
+- [#1439](https://github.com/wisemen-digital/wisemen-core/pull/1439)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Made today's date bold in the date picker and date range picker calendar grids, so it stays visually distinguishable from custom day dots.
+- [#1444](https://github.com/wisemen-digital/wisemen-core/pull/1444)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make sure the data in the table fetches the next page when the table is bigger then the content
+- [#1452](https://github.com/wisemen-digital/wisemen-core/pull/1452)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a shrink-0 to the primitive children of the badge truncate component
+
 ## 1.14.2
 <sub>2026-07-15</sub>
 
