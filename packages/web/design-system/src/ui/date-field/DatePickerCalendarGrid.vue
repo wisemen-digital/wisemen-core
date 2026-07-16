@@ -75,6 +75,7 @@ function getDotColorClass(date: {
               data-selected:bg-brand-solid data-selected:text-primary-on-brand
               data-selected:hover:bg-brand-solid-hover
               data-selected:focus-visible:ring-0
+              data-today:font-semibold
               data-unavailable:pointer-events-none
               data-unavailable:text-disabled data-unavailable:line-through
             "
