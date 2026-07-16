@@ -1,5 +1,0 @@
-# Row click handler is mutually exclusive with row link
-
-`UITable` already supports `getLink`, which makes an entire row a navigable link via a per-cell overlay (`TableBodyRowCellInteractiveElement` opts individual elements back into pointer events). We added `onRowClick` for callers who need to run a handler — receiving the row's item — instead of navigating.
-
-We considered letting `getLink` and `onRowClick` combine (e.g. click navigates, some other trigger fires the handler) or having `onRowClick` act as a fallback only when `getLink` returns `null` for a row. We rejected both: a row only has one interaction affordance to a user, and stacking two silently-coexisting behaviors on the same overlay invites ambiguous UX (what does a row click *do* when both are set?) and doubled event handling on the same DOM overlay. Instead `onRowClick` reuses the exact same per-cell overlay mechanism as `getLink` (same context, same pointer-events opt-out), and the two props are mutually exclusive — passing both is a misuse of the API, not a supported combination.
