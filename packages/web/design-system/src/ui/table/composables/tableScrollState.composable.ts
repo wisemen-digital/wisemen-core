@@ -18,7 +18,6 @@ export function useTableScrollState() {
       passive: true,
     })
 
-    
     const resizeObserver = new ResizeObserver(() => updateScrollState(el))
 
     resizeObserver.observe(el)
