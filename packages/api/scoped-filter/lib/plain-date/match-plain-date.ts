@@ -7,11 +7,13 @@ import { Equal, FindOperator, LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqu
 /**  
  * Checks if the column matches a plain date filter.
  * 
+ * `null` and `undefined` match all values
+ *
  * @param filter the filter to match.
  * @example repo.findOneBy({date: MatchPlainDate(query.filter.date)})
  */
-export function MatchPlainDate (filter: PlainDateFilter | undefined): FindOperator<PlainDate> | undefined {
-  if (filter === undefined) {
+export function MatchPlainDate (filter: PlainDateFilter | undefined | null): FindOperator<PlainDate> | undefined {
+  if (filter === undefined || filter === null) {
     return undefined
   }
 

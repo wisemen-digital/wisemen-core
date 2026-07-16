@@ -8,13 +8,15 @@ import { Any, FindOperator, Not } from 'typeorm'
  * Uses `column = ANY(...)` for inclusive scope. \
  * Uses `NOT(column = ANY(...))` for exclusive scope.
  * 
+ * `null` and `undefined` match all values
+ * 
  * @param filter the scope to match.
  * @example repo.findOneBy({uuid: Matches(query.filter.uuid)})
  */
 export function MatchMultiSelect<T> (
-    filter: MultiSelectFilter<T> | undefined
+    filter: MultiSelectFilter<T> | undefined | null
 ): FindOperator<T> | undefined {
-  if (filter === undefined) {
+  if (filter === undefined || filter === null) {
     return undefined
   } else if (filter.operation === MultiSelectOperation.INCLUDE) {
     return Any(filter.values)
