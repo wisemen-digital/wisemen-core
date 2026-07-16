@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { DotsVerticalIcon } from '@wisemen/vue-core-icons'
+import type { Component } from 'vue'
 import { computed } from 'vue'
 
 import { toComputedRefs } from '@/composables/context.composable'
@@ -19,13 +20,16 @@ import { UIClickableElement } from '@/ui/clickable-element/index'
 import { UIRowLayout } from '@/ui/row-layout/index'
 
 const props = withDefaults(defineProps<BadgeProps>(), {
+  isDisabled: false,
   actions: null,
   ariaLabel: null,
   avatar: null,
   color: 'gray',
   dot: null,
   icon: null,
+  iconColor: undefined,
   label: null,
+  left: null,
   metadata: null,
   models: null,
   rounded: 'default',
@@ -33,7 +37,53 @@ const props = withDefaults(defineProps<BadgeProps>(), {
   variant: 'translucent',
 })
 
-const effectiveDotColor = computed<BadgeColor>(() => props.dot?.color ?? props.color)
+type ResolvedLeft
+  = { color?: BadgeColor
+    icon: Component
+    type: 'icon' }
+    | { color?: BadgeColor
+      type: 'dot' }
+      | { name: string
+        src?: string | null
+        type: 'avatar' }
+        | { type: 'none' }
+
+const resolvedLeft = computed<ResolvedLeft>(() => {
+  if (props.left != null) {
+    return props.left
+  }
+
+  // Fallback for the deprecated `dot`/`avatar`/`icon` props, kept working until removed.
+  if (props.dot != null) {
+    return {
+      color: props.dot.color,
+      type: 'dot',
+    }
+  }
+
+  if (props.avatar != null) {
+    return {
+      name: props.avatar.name,
+      src: props.avatar.src,
+      type: 'avatar',
+    }
+  }
+
+  if (props.icon != null) {
+    return {
+      color: props.iconColor ?? undefined,
+      icon: props.icon,
+      type: 'icon',
+    }
+  }
+
+  return {
+    type: 'none',
+  }
+})
+
+const effectiveDotColor = computed<BadgeColor>(() =>
+  (resolvedLeft.value.type === 'dot' ? resolvedLeft.value.color : undefined) ?? props.color)
 
 const variants = computed<BadgeVariants>(() =>
   badgeVariants({
@@ -54,20 +104,22 @@ useProvideBadgeContext({
   <UIRowLayout
     :class="[variants.base(), props.actions != null && 'group relative']"
     :aria-label="props.ariaLabel"
+    :data-disabled="props.isDisabled || undefined"
     gap="xs"
     role="status"
   >
-    <BadgeDot v-if="props.dot != null" />
+    <BadgeDot v-if="resolvedLeft.type === 'dot'" />
 
     <slot>
       <BadgeAvatar
-        v-if="props.avatar != null"
-        :name="props.avatar.name"
-        :src="props.avatar.src"
+        v-if="resolvedLeft.type === 'avatar'"
+        :name="resolvedLeft.name"
+        :src="resolvedLeft.src"
       />
       <BadgeIcon
-        v-if="props.icon"
-        :icon="props.icon"
+        v-if="resolvedLeft.type === 'icon'"
+        :color="resolvedLeft.color"
+        :icon="resolvedLeft.icon"
       />
       <BadgeLabel
         v-if="props.label"
