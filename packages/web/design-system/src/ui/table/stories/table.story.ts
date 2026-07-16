@@ -5,6 +5,7 @@ import type {
 
 import TableGroupedPlayground from './TableGroupedPlayground.vue'
 import TablePlayground from './TablePlayground.vue'
+import TableRowClickPlayground from './TableRowClickPlayground.vue'
 import TableSelectionGroupedPlayground from './TableSelectionGroupedPlayground.vue'
 import TableSelectionPlayground from './TableSelectionPlayground.vue'
 import TableSortingPlayground from './TableSortingPlayground.vue'
@@ -157,5 +158,22 @@ export const SelectionGrouped: Story = {
       }
     },
     template: '<TableSelectionGroupedPlayground v-bind="args" />',
+  }),
+}
+
+export const RowClick: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableRowClickPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableRowClickPlayground v-bind="args" />',
   }),
 }
