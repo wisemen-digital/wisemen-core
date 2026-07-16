@@ -17,7 +17,7 @@ declare module "typeorm" {
     * @param column the name of the column to match on.
     * @param filter the scoped filter to match.
     * 
-    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    * @example qb.whereMatchMultiSelect("user.uuid", query.filter.uuid)
     */
     whereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
         /**  
@@ -30,7 +30,7 @@ declare module "typeorm" {
     * @param column the name of the column to match on.
     * @param filter the scoped filter to match.
     * 
-    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    * @example qb.andWhereMatchMultiSelect("user.uuid", query.filter.uuid)
     */
     andWhereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
     /**  
@@ -43,7 +43,7 @@ declare module "typeorm" {
     * @param column the name of the column to match on.
     * @param filter the scoped filter to match.
     * 
-    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    * @example qb.orWhereMatchMultiSelect("user.uuid", query.filter.uuid)
     */
     orWhereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
   }
@@ -59,7 +59,7 @@ declare module "typeorm" {
     * @param column the name of the column to match on.
     * @param filter the scoped filter to match.
     * 
-    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    * @example qb.whereMatchMultiSelect("user.uuid", query.filter.uuid)
     */
     whereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
         /**  
@@ -72,7 +72,7 @@ declare module "typeorm" {
     * @param column the name of the column to match on.
     * @param filter the scoped filter to match.
     * 
-    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    * @example qb.andWhereMatchMultiSelect("user.uuid", query.filter.uuid)
     */
     andWhereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
     /**  
@@ -85,7 +85,7 @@ declare module "typeorm" {
     * @param column the name of the column to match on.
     * @param filter the scoped filter to match.
     * 
-    * @example qb.where(matches("user.uuid", query.filter.uuid))
+    * @example qb.orWhereMatchMultiSelect("user.uuid", query.filter.uuid)
     */
     orWhereMatchMultiSelect<V> (column: string, filter: MultiSelectFilter<V> | null | undefined): this
   }
