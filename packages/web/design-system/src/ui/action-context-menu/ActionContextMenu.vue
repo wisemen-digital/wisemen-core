@@ -10,7 +10,7 @@ import ActionContextMenuContent from '@/ui/action-context-menu/ActionContextMenu
 import { UIContextMenu } from '@/ui/context-menu/index'
 
 const props = withDefaults(defineProps<{
-  isCurrentContextOnly: boolean
+  isCurrentContextOnly?: boolean
   actions?: Action[]
   /**
    * @deprecated Use `isCurrentContextOnly` instead.
@@ -20,12 +20,17 @@ const props = withDefaults(defineProps<{
   models?: RegisteredActionContext['models']
   parentAction?: Action
 }>(), {
+  isCurrentContextOnly: undefined,
   currentContextOnly: undefined,
 })
 
 const emit = defineEmits<{
   open: []
 }>()
+
+if (props.isCurrentContextOnly === undefined && props.currentContextOnly === undefined) {
+  console.error('ActionContextMenu: either `isCurrentContextOnly` or the deprecated `currentContextOnly` prop must be provided.')
+}
 
 const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
 
