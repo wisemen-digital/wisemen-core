@@ -23,11 +23,11 @@ const colors: BadgeColor[] = [
   'success',
   'warning',
   'purple',
+  'neutral',
 ]
 
 const variants = [
   'translucent',
-  'outline',
   'solid',
 ] as const
 </script>
