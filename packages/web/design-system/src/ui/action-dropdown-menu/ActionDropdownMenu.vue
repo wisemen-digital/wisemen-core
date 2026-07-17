@@ -14,7 +14,7 @@ import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 
 const props = withDefaults(defineProps<DropdownMenuProps & {
-  isCurrentContextOnly?: boolean
+  isCurrentContextOnly: boolean
   actions?: Action[]
   /**
    * @deprecated Use `isCurrentContextOnly` instead.
@@ -24,7 +24,6 @@ const props = withDefaults(defineProps<DropdownMenuProps & {
   models?: RegisteredActionContext['models']
   parentAction?: Action
 }>(), {
-  isCurrentContextOnly: undefined,
   currentContextOnly: undefined,
 })
 
@@ -32,10 +31,6 @@ const isOpen = defineModel<boolean>('isOpen', {
   default: false,
   required: false,
 })
-
-if (props.isCurrentContextOnly === undefined && props.currentContextOnly === undefined) {
-  console.error('ActionDropdownMenu: either `isCurrentContextOnly` or the deprecated `currentContextOnly` prop must be provided.')
-}
 
 const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
 

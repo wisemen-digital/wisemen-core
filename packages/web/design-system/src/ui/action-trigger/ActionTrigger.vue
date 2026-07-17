@@ -20,7 +20,7 @@ import {
 import type { RegisteredActionContext } from '@/register'
 
 const props = withDefaults(defineProps<{
-  isCurrentContextOnly?: boolean
+  isCurrentContextOnly: boolean
   action: Action
   /**
    * @deprecated Use `isCurrentContextOnly` instead.
@@ -28,15 +28,10 @@ const props = withDefaults(defineProps<{
   currentContextOnly?: boolean
   models?: RegisteredActionContext['models']
 }>(), {
-  isCurrentContextOnly: undefined,
   currentContextOnly: undefined,
 })
 
 const manager = useActionManagerStore()
-
-if (props.isCurrentContextOnly === undefined && props.currentContextOnly === undefined) {
-  console.error('ActionTrigger: either `isCurrentContextOnly` or the deprecated `currentContextOnly` prop must be provided.')
-}
 
 const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
 
