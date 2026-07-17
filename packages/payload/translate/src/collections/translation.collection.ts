@@ -4,6 +4,7 @@ import type {
   Field,
 } from 'payload'
 
+import { t } from '#i18n/index.ts'
 import type { TranslationMode } from '#status.ts'
 import {
   resolveTranslationStatusMap,
@@ -31,23 +32,23 @@ export function ensureTranslationStatusField(fields: Field[], collectionSlug: st
         position: 'sidebar',
         readOnly: true,
       },
-      label: 'Translation status',
+      label: t('general.translation_status'),
       localized: true,
       options: [
         {
-          label: 'Not translated',
+          label: t('general.not_translated'),
           value: TRANSLATION_STATUSES.notTranslated,
         },
         {
-          label: 'Automatically translated',
+          label: t('general.automatically_translated'),
           value: TRANSLATION_STATUSES.translated,
         },
         {
-          label: 'Stale translation',
+          label: t('general.stale_translation'),
           value: TRANSLATION_STATUSES.staleTranslation,
         },
         {
-          label: 'Manually edited',
+          label: t('general.manually_edited'),
           value: TRANSLATION_STATUSES.manuallyEdited,
         },
       ],

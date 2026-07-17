@@ -3,6 +3,7 @@ import type {
   Field,
   Payload as BasePayload,
   SelectField,
+  StaticLabel,
   TypedLocale,
   Where,
 } from 'payload'
@@ -31,7 +32,7 @@ export interface PayloadEventOption {
 export interface GetRichTextFieldOptions {
   name: string
   enabledCollections?: CollectionSlug[]
-  label: string
+  label: StaticLabel
   localized?: boolean
   required?: boolean
 }

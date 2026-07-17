@@ -5,6 +5,7 @@ import {
 import { getDefaultEventOptions } from '@wisemen/payload-core-utils'
 import type { CollectionConfig } from 'payload'
 
+import { t } from '#i18n/index.ts'
 import { getSettingsLegalPagesCollection } from '#settingsLegalPages.collection.ts'
 
 export type SettingsCollectionSlug = 'settings' | 'settingsLegalPages'
@@ -37,28 +38,28 @@ export function getSettingsCollection({
                 type: 'email',
               },
             ],
-            label: 'General',
+            label: t('general.general'),
           },
           {
             name: 'contact',
             fields: [
               {
                 name: 'email',
-                label: 'Email',
+                label: t('general.email'),
                 type: 'email',
               },
               {
                 name: 'phone',
-                label: 'Phone',
+                label: t('general.phone'),
                 type: 'text',
               },
               {
                 name: 'whatsappLink',
-                label: 'WhatsApp link',
+                label: t('general.whats_app_link'),
                 type: 'text',
               },
             ],
-            label: 'Contact',
+            label: t('contact.contact'),
           },
           {
             name: 'home',
@@ -70,7 +71,7 @@ export function getSettingsCollection({
                 canBeExternal: false,
               }),
             ],
-            label: 'Home page',
+            label: t('general.home_page'),
           },
           {
             name: 'header',
@@ -79,16 +80,16 @@ export function getSettingsCollection({
                 hasDropdownLinks: true,
                 isTranslatable: true,
                 name: 'links',
-                label: 'Header links',
+                label: t('general.header_links'),
               }),
               getNavLinksField({
                 hasDropdownLinks: true,
                 isTranslatable: true,
                 name: 'subheaderLinks',
-                label: 'Subheader links',
+                label: t('general.subheader_links'),
               }),
             ],
-            label: 'Header',
+            label: t('general.header'),
           },
           {
             name: 'footer',
@@ -98,7 +99,7 @@ export function getSettingsCollection({
                 fields: [
                   {
                     name: 'title',
-                    label: 'Title',
+                    label: t('general.title'),
                     localized: true,
                     required: false,
                     type: 'text',
@@ -115,14 +116,14 @@ export function getSettingsCollection({
                         name: 'navType',
                         defaultValue: 'link',
                         enumName: 'footer_nav_link_type',
-                        label: 'Type',
+                        label: t('general.type'),
                         options: [
                           {
-                            label: 'Link',
+                            label: t('general.link'),
                             value: 'link',
                           },
                           {
-                            label: 'Event',
+                            label: t('general.event'),
                             value: 'event',
                           },
                         ],
@@ -141,11 +142,11 @@ export function getSettingsCollection({
                         enumName: 'footer_link_variant',
                         options: [
                           {
-                            label: 'Default',
+                            label: t('general.default'),
                             value: 'default',
                           },
                           {
-                            label: 'Highlighted',
+                            label: t('general.highlighted'),
                             value: 'highlighted',
                           },
                         ],
@@ -172,52 +173,52 @@ export function getSettingsCollection({
                         type: 'select',
                       },
                     ],
-                    label: 'Links',
+                    label: t('general.links'),
                     required: false,
                     type: 'array',
                   },
                 ],
-                label: 'Footer sections',
+                label: t('general.footer_sections'),
                 type: 'array',
               },
             ],
-            label: 'Footer',
+            label: t('general.footer'),
           },
           {
             name: 'socials',
             fields: [
               {
                 name: 'facebook',
-                label: 'Facebook',
+                label: t('general.facebook'),
                 type: 'text',
               },
               {
                 name: 'instagram',
-                label: 'Instagram',
+                label: t('general.instagram'),
                 type: 'text',
               },
               {
                 name: 'linkedin',
-                label: 'LinkedIn',
+                label: t('general.linked_in'),
                 type: 'text',
               },
               {
                 name: 'youtube',
-                label: 'YouTube',
+                label: t('general.you_tube'),
                 type: 'text',
               },
               {
                 name: 'pinterest',
-                label: 'Pinterest',
+                label: t('general.pinterest'),
                 type: 'text',
               },
               {
                 name: 'tiktok',
-                label: 'TikTok',
+                label: t('general.tik_tok'),
                 type: 'text',
               },
             ],
-            label: 'Socials',
+            label: t('general.socials'),
           },
         ],
         type: 'tabs',
@@ -225,8 +226,8 @@ export function getSettingsCollection({
     ],
     hooks: hooks?.settings,
     labels: {
-      plural: 'Settings',
-      singular: 'Settings',
+      plural: t('general.settings'),
+      singular: t('general.settings'),
     },
     slug: 'settings',
   }

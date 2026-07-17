@@ -1,6 +1,7 @@
 /* eslint-disable e18e/prefer-static-regex */
 import type { Field } from 'payload'
 
+import { t } from '#i18n/index.ts'
 import type {
   TranslationAdapter,
   TranslationAdapterArgs,
@@ -17,12 +18,12 @@ export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
     name: 'apiKey',
-    label: 'API key',
+    label: t('general.api_key'),
     type: 'text',
   },
   {
     name: 'apiURL',
-    label: 'API URL',
+    label: t('general.api_url'),
     type: 'text',
   },
 ]
@@ -104,5 +105,5 @@ export const deeplTranslateAdapterDefinition: TranslationAdapterDefinition<DeepL
   create: (options) => createDeepLTranslateAdapter(options),
   fields: DEEPL_TRANSLATE_ADAPTER_FIELDS,
   key: DEEPL_TRANSLATE_ADAPTER_KEY,
-  label: 'DeepL',
+  label: t('general.deep_l'),
 }
