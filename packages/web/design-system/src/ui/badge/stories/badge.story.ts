@@ -23,6 +23,10 @@ const meta = {
       control: 'boolean',
       description: 'Shows a dot indicator inside the badge',
     },
+    isDisabled: {
+      control: 'boolean',
+      description: 'Whether the badge is disabled',
+    },
     color: {
       control: 'select',
       description: 'Color palette applied to the badge',
@@ -35,6 +39,7 @@ const meta = {
         'success',
         'warning',
         'purple',
+        'neutral',
       ],
     },
     label: {
@@ -63,7 +68,6 @@ const meta = {
       description: 'Visual style applied to the badge',
       options: [
         'translucent',
-        'outline',
         'solid',
       ],
     },
@@ -81,6 +85,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     hasDot: false,
+    isDisabled: false,
     color: 'gray',
     label: 'Badge',
     rounded: 'default',
