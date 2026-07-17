@@ -267,7 +267,7 @@ describe('CSV util', () => {
     })
 
     it('propagates source failures through the returned stream', async () => {
-      async function* data (): AsyncGenerator<Record<'name', string>> {
+      function* data (): Generator<Record<'name', string>> {
         yield { name: 'John Doe' }
         throw new Error('query failed')
       }
