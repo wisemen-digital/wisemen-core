@@ -9,13 +9,15 @@ import { getNatsSubscriberHandlerConfig, isNatsSubscriberHandler } from './subsc
 import { getNatsConsumerHandlerConfig, isNatsConsumerHandler } from './consumers/nats-consumer-handler.decorator.js'
 import { isNatsServiceEndpoint, getNatsServiceEndpointConfig } from './services/nats-service-endpoint.decorator.js'
 import { NATS_STREAMS_TOKEN } from './tokens.js'
-import type { NestjsProvider } from './providers/providers-explorer.js'
-import { ProvidersExplorer } from './providers/providers-explorer.js'
+import {
+  type NestjsProvider,
+  ProviderExplorer
+} from '@wisemen/nestjs-provider-explorer'
 
 @Injectable()
 export class NatsApplicationFactory {
   constructor (
-    private providerExplorer: ProvidersExplorer,
+    private providerExplorer: ProviderExplorer,
     private config: ConfigService,
     @Inject(NATS_STREAMS_TOKEN) private streams?: ClassConstructor<unknown>[]
   ) {}

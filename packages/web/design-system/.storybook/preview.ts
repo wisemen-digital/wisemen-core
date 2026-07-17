@@ -30,6 +30,11 @@ setup((app) => {
   app.use(router)
 })
 
+const localeToVueI18nLocale: Record<string, 'en' | 'nl'> = {
+  'en-US': 'en',
+  'nl-BE': 'nl',
+}
+
 const preview: Preview = {
   decorators: [
 
@@ -37,6 +42,8 @@ const preview: Preview = {
       const theme = context.globals.theme || 'light'
       const locale = context.globals.locale || 'en-US'
       const hourCycle = context.globals.hourCycle || '24-hour'
+
+      i18nPlugin.global.locale.value = localeToVueI18nLocale[locale] ?? 'en'
 
       return () => h(StoryWrapper, {
         hourCycle,
@@ -79,10 +86,6 @@ const preview: Preview = {
           {
             title: 'Dutch (BE)',
             value: 'nl-BE',
-          },
-          {
-            title: 'French (BE)',
-            value: 'fr-BE',
           },
         ],
       },

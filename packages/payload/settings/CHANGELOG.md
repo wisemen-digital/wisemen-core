@@ -2,6 +2,12 @@
 
 
 
+
+## 0.0.4
+<sub>2026-07-13</sub>
+
+- [#1391](https://github.com/wisemen-digital/wisemen-core/pull/1391)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added type augmentation for linkable collections and events
+
 ## 0.0.3
 <sub>2026-07-08</sub>
 

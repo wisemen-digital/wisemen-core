@@ -258,6 +258,34 @@ export class DayjsPlainDate implements PlainDate {
     return this.date.day()
   }
 
+  isMonday (): boolean {
+    return this.isoWeekday() === 1
+  }
+
+  isTuesday (): boolean {
+    return this.isoWeekday() === 2
+  }
+
+  isWednesday (): boolean {
+    return this.isoWeekday() === 3
+  }
+
+  isThursday (): boolean {
+    return this.isoWeekday() === 4
+  }
+
+  isFriday (): boolean {
+    return this.isoWeekday() === 5
+  }
+
+  isSaturday (): boolean {
+    return this.isoWeekday() === 6
+  }
+
+  isSunday (): boolean {
+    return this.isoWeekday() === 7
+  }
+
   isoWeekday (): number {
     return this.date.isoWeekday()
   }

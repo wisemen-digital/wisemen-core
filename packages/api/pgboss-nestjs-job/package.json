@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pgboss-nestjs-job",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "publishConfig": {
     "access": "public"
   },
@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "pg-boss": "catalog:backend",
+    "@wisemen/nestjs-provider-explorer": "workspace:^",
     "@wisemen/nestjs-typeorm": "workspace:*",
     "@wisemen/opentelemetry": "workspace:*"
   },

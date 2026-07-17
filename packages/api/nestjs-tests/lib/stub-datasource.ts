@@ -1,5 +1,5 @@
-import { createStubInstance } from 'sinon'
-import { DataSource, EntityManager } from 'typeorm'
+import { createStubInstance, stub } from 'sinon'
+import { DataSource, EntityManager, QueryRunner } from 'typeorm'
 
 export function stubDataSource (): DataSource {
   const dataSource = createStubInstance(DataSource)
@@ -9,6 +9,12 @@ export function stubDataSource (): DataSource {
 
     return runInTransaction(createStubInstance(EntityManager))
   })
+
+  dataSource.createQueryRunner.callsFake(() => ({
+    manager: createStubInstance(EntityManager),
+    release: stub().resolves(),
+    isReleased: false
+  } as unknown as QueryRunner))
 
   return dataSource
 }

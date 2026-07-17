@@ -88,6 +88,12 @@ describe('MatchTimestamp', () => {
     expect(result).toBeUndefined()
   })
 
+  it('returns undefined when filter is null', () => {
+    const result = MatchTimestamp(null)
+
+    expect(result).toBeUndefined()
+  })
+
   async function findByTimestamp (filter: TimestampFilter): Promise<ScopedFilterTest[]> {
     return await dataSource.manager.find(ScopedFilterTest, {
       where: {

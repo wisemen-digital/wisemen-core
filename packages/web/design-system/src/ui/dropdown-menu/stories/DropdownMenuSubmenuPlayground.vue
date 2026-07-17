@@ -40,8 +40,12 @@ import {
         <UIDropdownMenuGroup>
           <UIDropdownMenuSub>
             <UIDropdownMenuSubTrigger
-              :config="{ left: { icon: Settings01Icon,
-                                 type: 'icon' } }"
+              :config="{
+                left: {
+                  icon: Settings01Icon,
+                  type: 'icon',
+                },
+              }"
               label="Settings"
             />
             <UIDropdownMenuSubContent>

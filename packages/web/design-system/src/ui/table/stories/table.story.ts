@@ -4,7 +4,9 @@ import type {
 } from '@storybook/vue3-vite'
 
 import TableGroupedPlayground from './TableGroupedPlayground.vue'
+import TableInfiniteScrollPlayground from './TableInfiniteScrollPlayground.vue'
 import TablePlayground from './TablePlayground.vue'
+import TableRowClickPlayground from './TableRowClickPlayground.vue'
 import TableSelectionGroupedPlayground from './TableSelectionGroupedPlayground.vue'
 import TableSelectionPlayground from './TableSelectionPlayground.vue'
 import TableSortingPlayground from './TableSortingPlayground.vue'
@@ -157,5 +159,39 @@ export const SelectionGrouped: Story = {
       }
     },
     template: '<TableSelectionGroupedPlayground v-bind="args" />',
+  }),
+}
+
+export const InfiniteScroll: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableInfiniteScrollPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableInfiniteScrollPlayground v-bind="args" />',
+  }),
+}
+
+export const RowClick: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableRowClickPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableRowClickPlayground v-bind="args" />',
   }),
 }

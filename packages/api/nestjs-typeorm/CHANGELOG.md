@@ -2,6 +2,12 @@
 
 
 
+
+## 1.2.1
+<sub>2026-07-15</sub>
+
+- [#1435](https://github.com/wisemen-digital/wisemen-core/pull/1435)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add entitymanager to readonly callback
+
 ## 1.2.0
 <sub>2026-07-08</sub>
 

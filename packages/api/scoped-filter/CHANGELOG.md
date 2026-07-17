@@ -2,6 +2,31 @@
 
 
 
+
+
+
+
+## 1.0.4
+<sub>2026-07-15</sub>
+
+- [#1449](https://github.com/wisemen-digital/wisemen-core/pull/1449)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: override QueryBuilder and WhereQueryBuilder instead of SelectQueryBuilder
+
+## 1.0.3
+<sub>2026-07-15</sub>
+
+- [#1445](https://github.com/wisemen-digital/wisemen-core/pull/1445)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: support `null` type in Match typeorm operators
+- [#1447](https://github.com/wisemen-digital/wisemen-core/pull/1447)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add experiment to override typeorm querybuilder type
+
+## 1.0.2
+<sub>2026-07-14</sub>
+
+- [#1426](https://github.com/wisemen-digital/wisemen-core/pull/1426)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add missing @Type() in NumberFilter
+
+## 1.0.1
+<sub>2026-07-13</sub>
+
+- [#1415](https://github.com/wisemen-digital/wisemen-core/pull/1415)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Fix ValidateWhen in PlainDateFilter
+
 ## 1.0.0
 <sub>2026-06-30</sub>
 

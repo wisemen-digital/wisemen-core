@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-domain-events",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publishConfig": {
     "access": "public"
   },
@@ -28,6 +28,7 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
+    "@wisemen/nestjs-provider-explorer": "workspace:^",
     "expect": "catalog:test",
     "sinon": "catalog:test"
   },
