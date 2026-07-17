@@ -3,6 +3,12 @@
 
 
 
+
+## 0.0.5
+<sub>2026-07-17</sub>
+
+- [#1467](https://github.com/wisemen-digital/wisemen-core/pull/1467)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Updated overriden schema type to work correctly in payload-links
+
 ## 0.0.4
 <sub>2026-07-17</sub>
 
