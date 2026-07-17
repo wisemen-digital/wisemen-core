@@ -1,4 +1,4 @@
-import { Readable } from 'stream'
+import { Readable, Writable } from 'stream'
 import { Injectable } from '@nestjs/common'
 import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
@@ -7,6 +7,7 @@ import { validateSync } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 import { S3Config } from '#src/providers/s3/s3.config.js'
 import { S3_DOWNLOAD_URL_EXPIRES_S, S3_UPLOAD_EXPIRES_MS, S3_UPLOAD_URL_EXPIRES_S } from '#src/providers/s3/s3.constants.js'
+import { createUploadWritable } from '#src/providers/create-upload-writable.js'
 import { FileIndex, FileStorage } from '#src/providers/file-storage-provider.js'
 
 @Injectable()
@@ -61,7 +62,7 @@ export class S3 extends FileStorage {
     // ❌ Rejects keys starting with ./
     // ❌ Rejects any path segment exactly . or ..
 
-    // eslint-disable-next-line no-useless-escape
+     
     const regex = /^(?!\.\/)(?!\.{1,2}$)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[A-Za-z0-9!\-_.\*'()\/]{1,1024}$/
 
     if (!regex.test(key)) {
@@ -168,6 +169,14 @@ export class S3 extends FileStorage {
     const chunks = await result.Body.transformToByteArray()
 
     return Buffer.from(chunks)
+  }
+
+  public createUploadWritable (key: string, isPublic?: boolean): Writable {
+    this.validateKey(key)
+
+    return createUploadWritable(async stream => {
+      await this.uploadStream(key, stream, isPublic)
+    })
   }
 
   public async uploadStream (key: string, stream: Readable, isPublic?: boolean): Promise<void> {

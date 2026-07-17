@@ -1,4 +1,4 @@
-import { Readable } from 'stream'
+import { Readable, Writable } from 'stream'
 import { BlobSASPermissions, BlobServiceClient, ContainerClient, StorageSharedKeyCredential } from '@azure/storage-blob'
 import { Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
@@ -6,6 +6,7 @@ import { validateSync } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 import { AzureBlobStorageConfig } from '#src/providers/azure-blob-storage/azure-blob-storage.config.js'
 import { AZURE_BLOB_STORAGE_DOWNLOAD_URL_EXPIRES_S, AZURE_BLOB_STORAGE_UPLOAD_URL_EXPIRES_S } from '#src/providers/azure-blob-storage/azure-blob-storage.constants.js'
+import { createUploadWritable } from '#src/providers/create-upload-writable.js'
 import { FileIndex, FileStorage } from '#src/providers/file-storage-provider.js'
 
 @Injectable()
@@ -53,7 +54,7 @@ export class AzureBlobStorage extends FileStorage {
     // (?!.*[.\/\\]$) → cannot end with ., /, or \
     // [\s\S]+ → allow any characters (including unicode, spaces, etc.)
 
-    // eslint-disable-next-line no-useless-escape
+     
     const regex = /^(?=.{1,1024}$)(?!.*\.(?:[\/\\]|$))(?!.*[.\/\\]$)[\s\S]+$/
 
     if (!regex.test(key)) {
@@ -147,6 +148,14 @@ export class AzureBlobStorage extends FileStorage {
     const blobClient = this.containerClient.getBlockBlobClient(key)
 
     return await blobClient.downloadToBuffer()
+  }
+
+  public createUploadWritable (key: string, _isPublic?: boolean): Writable {
+    this.validateKey(key)
+
+    return createUploadWritable(async stream => {
+      await this.uploadStream(key, stream)
+    })
   }
 
   public async uploadStream (
