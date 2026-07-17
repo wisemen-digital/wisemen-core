@@ -1,6 +1,7 @@
 import type {
   Field,
   PayloadRequest,
+  StaticLabel,
 } from 'payload'
 
 export type Primitive = boolean | number | string | null | undefined
@@ -43,7 +44,7 @@ export interface TranslationAdapterDefinition<TOptions extends object = Record<s
   defaultOptions?: Partial<TOptions>
   fields?: Field[]
   key: string
-  label: string
+  label: StaticLabel
 }
 
 export interface RichTextTranslationOptions {

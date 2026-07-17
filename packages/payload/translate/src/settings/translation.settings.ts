@@ -5,6 +5,7 @@ import type {
   GlobalConfig,
 } from 'payload'
 
+import { t } from '#i18n/index.ts'
 import type {
   TranslationAccess,
   TranslationAdapterDefinition,
@@ -88,7 +89,7 @@ export function createTranslationSettingsField({
       : undefined,
     fields: [
       {
-        label: 'Translations',
+        label: t('general.translations'),
         tabs: adapterDefinitions.map((definition) => ({
           name: definition.key,
           fields: definition.fields ?? [],
@@ -97,7 +98,7 @@ export function createTranslationSettingsField({
         type: 'tabs',
       },
     ],
-    label: 'Translations',
+    label: t('general.translations'),
     type: 'group',
   }
 }
@@ -121,8 +122,8 @@ export function createTranslationSettingsCollection({
       }),
     ],
     labels: {
-      plural: 'Translation settings',
-      singular: 'Translation settings',
+      plural: t('general.translation_settings'),
+      singular: t('general.translation_settings'),
     },
     slug: collectionSlug ?? translations?.slug ?? 'translationSettings',
   }
@@ -146,7 +147,7 @@ export function createTranslationSettingsGlobal({
         translations,
       }),
     ],
-    label: 'Translation settings',
+    label: t('general.translation_settings'),
     slug: collectionSlug ?? translations?.slug ?? 'translationSettings',
   }
 }

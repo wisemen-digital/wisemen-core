@@ -1,7 +1,6 @@
 'use client'
 /* eslint-disable unicorn/no-await-expression-member */
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
-
 import {
   ConfirmationModal,
   SelectInput,
@@ -10,6 +9,7 @@ import {
 } from '@payloadcms/ui'
 import { useState } from 'react'
 
+import { t } from '#i18n/index.ts'
 import type { TranslationMode } from '#status.ts'
 import {
   TRANSLATION_MODE_LABELS,
@@ -50,7 +50,7 @@ export function TranslateMenuItemsClient({
   const targetLocales = locales.filter((locale) => locale.code !== currentLocale)
   const localeOptions = [
     {
-      label: 'All locales',
+      label: t('general.all_locales'),
       value: ALL_LOCALES_VALUE,
     },
     ...targetLocales.map((locale) => ({

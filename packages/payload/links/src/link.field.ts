@@ -7,6 +7,8 @@ import type {
   GroupField,
 } from 'payload'
 
+import { t } from './i18n/index.ts'
+
 export type LinkAppearances = 'default' | 'outline'
 
 type LinkType = (options?: {
@@ -28,18 +30,18 @@ const DEFAULT_LINK_TO: CollectionSlug[] = [
 
 const DEFAULT_LINK_TYPES = [
   {
-    label: 'Internal link',
+    label: t('general.internal_link'),
     value: 'reference',
   },
   {
-    label: 'Custom URL',
+    label: t('general.custom_url'),
     value: 'custom',
   },
 ]
 
 const NO_EXTERNAL_LINK_TYPES = [
   {
-    label: 'Internal link',
+    label: t('general.internal_link'),
     value: 'reference',
   },
 ]
@@ -87,7 +89,7 @@ export const getLinkField: LinkType = (
               width: '50%',
             },
             defaultValue: false,
-            label: 'Open in new tab',
+            label: t('general.open_in_new_tab'),
             required: true,
             type: 'checkbox',
           },
@@ -108,7 +110,7 @@ export const getLinkField: LinkType = (
           return siblingData?.type === 'reference'
         },
       },
-      label: 'Link',
+      label: t('general.link'),
       relationTo: resolvedLinkTo.length > 0 ? resolvedLinkTo : DEFAULT_LINK_TO,
       required: isRequired,
       type: 'relationship',
@@ -120,7 +122,7 @@ export const getLinkField: LinkType = (
           return siblingData?.type === 'custom'
         },
       },
-      label: 'Custom URL',
+      label: t('general.custom_url'),
       required: isRequired,
       type: 'text',
     },
