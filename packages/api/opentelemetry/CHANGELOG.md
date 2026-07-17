@@ -1,6 +1,12 @@
 # @wisemen/opentelemetry
 
 
+
+## 0.2.4
+<sub>2026-07-17</sub>
+
+- [#1399](https://github.com/wisemen-digital/wisemen-core/pull/1399)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add Nestjs otel logger
+
 ## 0.2.3
 <sub>2026-06-30</sub>
 
