@@ -62,8 +62,7 @@ export class S3 extends FileStorage {
     // ❌ Rejects keys starting with ./
     // ❌ Rejects any path segment exactly . or ..
 
-     
-    const regex = /^(?!\.\/)(?!\.{1,2}$)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[A-Za-z0-9!\-_.\*'()\/]{1,1024}$/
+    const regex = /^(?!\.\/)(?!\.{1,2}$)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[A-Za-z0-9!\-_.*'()/]{1,1024}$/
 
     if (!regex.test(key)) {
       throw new Error(`Invalid S3 key: ${key}`)

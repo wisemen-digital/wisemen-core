@@ -17,7 +17,7 @@ export function createUploadWritable ( upload: (stream: PassThrough) => Promise<
 
       void uploadPromise.then(
         () => callback(),
-        error => callback(error)
+        error => callback(asError(error))
       )
     },
     destroy (error, callback) {
@@ -36,9 +36,17 @@ export function createUploadWritable ( upload: (stream: PassThrough) => Promise<
 
   void uploadPromise.catch(error => {
     if (!writable.destroyed) {
-      writable.destroy(error)
+      writable.destroy(asError(error))
     }
   })
 
   return writable
+}
+
+function asError (error: unknown): Error {
+  if (error instanceof Error) {
+    return error
+  }
+
+  return new Error('Upload failed', {cause: error})
 }

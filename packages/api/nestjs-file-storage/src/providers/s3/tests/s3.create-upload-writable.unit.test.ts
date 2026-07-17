@@ -18,10 +18,10 @@ describe('S3 - createUploadWritable', () => {
     let uploadCompleted = false
 
     s3.uploadStream = async (_key, stream) => {
-      const chunks: Buffer[] = []
+      const chunks: Uint8Array[] = []
 
       for await (const chunk of stream) {
-        chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk))
+        chunks.push(toUint8Array(chunk))
       }
 
       await new Promise(resolve => setTimeout(resolve, 10))
@@ -38,3 +38,15 @@ describe('S3 - createUploadWritable', () => {
     expect(uploadCompleted).toBe(true)
   })
 })
+
+function toUint8Array (chunk: unknown): Uint8Array {
+  if (typeof chunk === 'string') {
+    return Buffer.from(chunk)
+  }
+
+  if (chunk instanceof Uint8Array) {
+    return chunk
+  }
+
+  throw new TypeError(`Unexpected chunk type: ${typeof chunk}`)
+}

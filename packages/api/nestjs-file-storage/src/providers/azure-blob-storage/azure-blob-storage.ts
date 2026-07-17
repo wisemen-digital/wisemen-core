@@ -54,8 +54,7 @@ export class AzureBlobStorage extends FileStorage {
     // (?!.*[.\/\\]$) → cannot end with ., /, or \
     // [\s\S]+ → allow any characters (including unicode, spaces, etc.)
 
-     
-    const regex = /^(?=.{1,1024}$)(?!.*\.(?:[\/\\]|$))(?!.*[.\/\\]$)[\s\S]+$/
+    const regex = /^(?=.{1,1024}$)(?!.*\.(?:[/\\]|$))(?!.*[./\\]$)[\s\S]+$/
 
     if (!regex.test(key)) {
       throw new Error(`Invalid Azure Blob Storage key: ${key}`)
