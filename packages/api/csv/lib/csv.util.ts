@@ -22,7 +22,6 @@ interface EncodeCsvOptions<K extends string> extends CSVOptions {
   columns?: readonly K[]
 }
 
-interface EncodeStreamCSVOptions<K extends string> extends EncodeCsvOptions<K> {}
 
 export class CSV {
   /**
@@ -133,9 +132,32 @@ export class CSV {
   static encodeStream<K extends string> (
     data: Iterable<Record<K, string | null | undefined>> |
       AsyncIterable<Record<K, string | null | undefined>>,
-    options?: EncodeStreamCSVOptions<K>
+    options?: EncodeCsvOptions<K>
   ): Readable {
-    return Readable.from(data).pipe(new CSVEncodeTransform(options))
+    const source = data instanceof Readable ? data : Readable.from(data)
+    const transform = new CSVEncodeTransform(options)
+
+    const forwardSourceError = (error: Error): void => {
+      if (!transform.destroyed) {
+        transform.destroy(error)
+      }
+    }
+
+    const destroySource = (error?: Error): void => {
+      source.off('error', forwardSourceError)
+
+      if (!source.destroyed) {
+        source.destroy(error)
+      }
+    }
+
+    source.once('error', forwardSourceError)
+    transform.once('error', destroySource)
+    transform.once('close', () => { destroySource() })
+
+    source.pipe(transform)
+
+    return transform
   }
 
   /**
@@ -144,7 +166,7 @@ export class CSV {
    * @returns A transform stream that writes objects and emits CSV chunks.
    */
   static encodeTransform<K extends string>(
-    options?: EncodeStreamCSVOptions<K>
+    options?: EncodeCsvOptions<K>
   ): CSVEncodeTransform<K> {
     return new CSVEncodeTransform(options)
   }
@@ -158,7 +180,7 @@ export class CSVEncodeTransform<K extends string> extends Transform {
   private keys: readonly K[] | null
   private headerWritten = false
 
-  constructor(options?: EncodeStreamCSVOptions<K>) {
+  constructor(options?: EncodeCsvOptions<K>) {
     super({
       writableObjectMode: true,
       readableObjectMode: false

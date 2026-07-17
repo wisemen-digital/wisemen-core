@@ -1,4 +1,5 @@
 import { describe, it } from 'node:test'
+import { once } from 'node:events'
 import { Readable } from 'node:stream'
 import { CSV, CSVRow } from '../csv.util.js'
 import { expect } from 'expect'
@@ -263,6 +264,57 @@ describe('CSV util', () => {
       for await (const chunk of stream) rawText += String(chunk)
 
       expect(rawText).toBe('')
+    })
+
+    it('propagates source failures through the returned stream', async () => {
+      async function* data (): AsyncGenerator<Record<'name', string>> {
+        yield { name: 'John Doe' }
+        throw new Error('query failed')
+      }
+
+      const stream = CSV.encodeStream(data(), { columns: ['name'] })
+
+      await expect((async () => {
+        for await (const chunk of stream) {
+          void chunk
+        }
+      })()).rejects.toThrow('query failed')
+    })
+
+    it('destroys the hidden source when the returned stream is destroyed', async () => {
+      let sourceDestroyed = false
+
+      class PendingRowStream extends Readable {
+        private sentRow = false
+
+        constructor () {
+          super({ objectMode: true })
+        }
+
+        override _read (): void {
+          if (!this.sentRow) {
+            this.sentRow = true
+            this.push({ name: 'John Doe' })
+          }
+        }
+
+        override _destroy (error: Error | null, callback: (error?: Error | null) => void): void {
+          sourceDestroyed = true
+          callback(error)
+        }
+      }
+
+      const source = new PendingRowStream()
+      const stream = CSV.encodeStream(source, { columns: ['name'] })
+      const iterator = stream[Symbol.asyncIterator]()
+
+      await iterator.next()
+
+      const closed = once(stream, 'close')
+      stream.destroy()
+      await closed
+
+      expect(sourceDestroyed).toBe(true)
     })
   })
 
