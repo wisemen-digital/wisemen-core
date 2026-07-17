@@ -5,6 +5,7 @@ export default defineConfig({
     'src/index.ts',
   ],
   external: [
+    '@wisemen/payload-core-utils',
     'payload',
   ],
   format: [

@@ -39,7 +39,6 @@
     "payload": "catalog:payload-peer"
   },
   "dependencies": {
-    "@wisemen/payload-core-utils": "workspace:^",
     "defu": "catalog:general",
     "zod": "catalog:general"
   },

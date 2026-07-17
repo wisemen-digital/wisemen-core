@@ -1,4 +1,4 @@
-import type { PayloadUtilsRegistry } from '../../utils/src/payloadUtils.types.ts'
+import type { PayloadUtilsRegistry } from '@wisemen/payload-core-utils'
 
 type RegisteredLinkableCollection = PayloadUtilsRegistry extends {
   linkableCollection: infer TValue extends string

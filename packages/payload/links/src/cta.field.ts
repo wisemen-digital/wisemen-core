@@ -23,6 +23,7 @@ export function getCtaField({
   label,
 }: GetCtaFieldOptions): GroupField {
   const defaultEventOptions = getDefaultEventOptions()
+
   const fields: Field[] = [
     {
       name: 'label',
