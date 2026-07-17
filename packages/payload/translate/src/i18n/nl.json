@@ -1,0 +1,15 @@
+{
+  "general.all_locales": "Alle talen",
+  "general.api_key": "API-sleutel",
+  "general.api_url": "API-URL",
+  "general.automatically_translated": "Automatisch vertaald",
+  "general.deep_l": "DeepL",
+  "general.fallback_api_url": "Terugval-API-URL",
+  "general.google_translate": "Google Translate",
+  "general.manually_edited": "Handmatig bewerkt",
+  "general.not_translated": "Niet vertaald",
+  "general.stale_translation": "Verouderde vertaling",
+  "general.translation_settings": "Vertaalinstellingen",
+  "general.translation_status": "Vertaalstatus",
+  "general.translations": "Vertalingen"
+}

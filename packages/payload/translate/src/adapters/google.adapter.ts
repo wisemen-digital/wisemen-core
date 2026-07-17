@@ -2,6 +2,7 @@
 /* eslint-disable require-await */
 import type { Field } from 'payload'
 
+import { t } from '#i18n/index.ts'
 import type {
   TranslationAdapter,
   TranslationAdapterArgs,
@@ -19,17 +20,17 @@ export const GOOGLE_TRANSLATE_ADAPTER_KEY = 'google'
 export const GOOGLE_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
     name: 'apiKey',
-    label: 'API key',
+    label: t('general.api_key'),
     type: 'text',
   },
   {
     name: 'apiURL',
-    label: 'API URL',
+    label: t('general.api_url'),
     type: 'text',
   },
   {
     name: 'fallbackApiURL',
-    label: 'Fallback API URL',
+    label: t('general.fallback_api_url'),
     type: 'text',
   },
 ]
@@ -196,5 +197,5 @@ export const googleTranslateAdapterDefinition: TranslationAdapterDefinition<Goog
   create: (options) => createGoogleTranslateAdapter(options),
   fields: GOOGLE_TRANSLATE_ADAPTER_FIELDS,
   key: GOOGLE_TRANSLATE_ADAPTER_KEY,
-  label: 'Google Translate',
+  label: t('general.google_translate'),
 }

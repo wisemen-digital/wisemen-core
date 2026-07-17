@@ -3,6 +3,7 @@ import type {
   Field,
   GroupField,
 } from 'payload'
+import { t } from './i18n/index.ts'
 
 import { CTA_EVENTS } from '#cta.field.ts'
 import { getLinkField } from '#link.field.ts'
@@ -31,18 +32,18 @@ export function getNavLinkField({
       name: 'navType',
       defaultValue: 'link',
       enumName: 'nav_link_type',
-      label: 'Type',
+      label: t('general.type'),
       options: [
         {
-          label: 'Link',
+          label: t('general.link'),
           value: 'link',
         },
         {
-          label: 'Event',
+          label: t('general.event'),
           value: 'event',
         },
         {
-          label: 'Dropdown',
+          label: t('general.dropdown'),
           value: 'dropdown',
         },
       ],
@@ -79,14 +80,14 @@ export function getNavLinkField({
           name: 'navType',
           defaultValue: 'link',
           enumName: 'nav_link_type',
-          label: 'Type',
+          label: t('general.type'),
           options: [
             {
-              label: 'Link',
+              label: t('general.link'),
               value: 'link',
             },
             {
-              label: 'Event',
+              label: t('general.event'),
               value: 'event',
             },
           ],
@@ -95,7 +96,7 @@ export function getNavLinkField({
         },
         {
           name: 'label',
-          label: 'Label',
+          label: t('general.label'),
           localized: isTranslatable,
           required: true,
           type: 'text',
@@ -122,7 +123,7 @@ export function getNavLinkField({
           type: 'select',
         },
       ],
-      label: 'Links',
+      label: t('general.links'),
       required: true,
       type: 'array',
     },

@@ -3,6 +3,8 @@ import type { CollectionConfig } from 'payload'
 
 import type { GetSettingsCollectionDependencies } from '#collections/settings.collection.ts'
 
+import { t } from './i18n/index.ts'
+
 export function getSettingsLegalPagesCollection({
   access, hooks,
 }: GetSettingsCollectionDependencies): CollectionConfig {
@@ -15,31 +17,31 @@ export function getSettingsLegalPagesCollection({
             fields: [
               getSimpleRichTextField({
                 name: 'termsAndConditions',
-                label: 'Terms & Conditions content',
+                label: t('general.terms_conditions_content'),
                 localized: true,
               }),
             ],
-            label: 'Terms & Conditions',
+            label: t('general.terms_conditions'),
           },
           {
             fields: [
               getSimpleRichTextField({
                 name: 'cookiePolicy',
-                label: 'Cookie Policy content',
+                label: t('general.cookie_policy_content'),
                 localized: true,
               }),
             ],
-            label: 'Cookie Policy',
+            label: t('general.cookie_policy'),
           },
           {
             fields: [
               getSimpleRichTextField({
                 name: 'privacyPolicy',
-                label: 'Privacy Policy content',
+                label: t('general.privacy_policy_content'),
                 localized: true,
               }),
             ],
-            label: 'Privacy Policy',
+            label: t('general.privacy_policy'),
           },
         ],
         type: 'tabs',
@@ -47,8 +49,8 @@ export function getSettingsLegalPagesCollection({
     ],
     hooks: hooks?.settingsLegalPages,
     labels: {
-      plural: 'Legal pages',
-      singular: 'Legal pages',
+      plural: t('general.legal_pages'),
+      singular: t('general.legal_pages'),
     },
     slug: 'settingsLegalPages',
   }
