@@ -4,6 +4,12 @@
 
 
 
+
+## 0.1.2
+<sub>2026-07-17</sub>
+
+- [#1464](https://github.com/wisemen-digital/wisemen-core/pull/1464)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed branded sidebar/topbar colors not updating instantly when toggling between light and dark mode.
+
 ## 0.1.1
 <sub>2026-07-15</sub>
 
