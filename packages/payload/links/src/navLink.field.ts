@@ -3,10 +3,11 @@ import type {
   Field,
   GroupField,
 } from 'payload'
-import { t } from './i18n/index.ts'
 
 import { CTA_EVENTS } from '#cta.field.ts'
 import { getLinkField } from '#link.field.ts'
+
+import { t } from './i18n/index.ts'
 
 export interface GetNavLinkFieldOptions {
   hasDropdownLinks?: boolean
