@@ -23,6 +23,12 @@
 
 
 
+
+## 1.15.1
+<sub>2026-07-17</sub>
+
+- [#1457](https://github.com/wisemen-digital/wisemen-core/pull/1457)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix isCurrentContextOnly and currentContextOnly props both being required
+
 ## 1.15.0
 <sub>2026-07-16</sub>
 
