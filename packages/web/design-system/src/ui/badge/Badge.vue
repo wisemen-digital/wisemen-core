@@ -38,15 +38,23 @@ const props = withDefaults(defineProps<BadgeProps>(), {
 })
 
 type ResolvedLeft
-  = { color?: BadgeColor
+  = {
+    color?: BadgeColor
     icon: Component
-    type: 'icon' }
-    | { color?: BadgeColor
-      type: 'dot' }
-      | { name: string
-        src?: string | null
-        type: 'avatar' }
-        | { type: 'none' }
+    type: 'icon'
+  }
+  | {
+    color?: BadgeColor
+    type: 'dot'
+  }
+  | {
+    name: string
+    src?: string | null
+    type: 'avatar'
+  }
+  | {
+    type: 'none'
+  }
 
 const resolvedLeft = computed<ResolvedLeft>(() => {
   if (props.left != null) {

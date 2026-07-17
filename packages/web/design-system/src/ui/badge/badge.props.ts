@@ -27,14 +27,20 @@ export interface BadgeDotConfig {
  * Structured content displayed on the left of the label, mirroring `MenuItemConfig.left`.
  */
 export type BadgeLeftConfig
-  = { color?: BadgeColor
+  = {
+    color?: BadgeColor
     icon: Component
-    type: 'icon' }
-    | { color?: BadgeColor
-      type: 'dot' }
-      | { name: string
-        src?: string | null
-        type: 'avatar' }
+    type: 'icon'
+  }
+  | {
+    color?: BadgeColor
+    type: 'dot'
+  }
+  | {
+    name: string
+    src?: string | null
+    type: 'avatar'
+  }
 
 export interface BadgeProps {
   /**
