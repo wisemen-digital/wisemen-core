@@ -58,6 +58,7 @@
   "component.date_range_picker.preset.this_week": "This week",
   "component.date_range_picker.preset.this_year": "This year",
   "component.date_range_picker.preset.today": "Today",
+  "component.date_range_picker.preset.tomorrow": "Tomorrow",
   "component.date_range_picker.preset.yesterday": "Yesterday",
   "component.date_range_picker.previous_month": "Previous month",
   "component.dialog.cancel": "Cancel",

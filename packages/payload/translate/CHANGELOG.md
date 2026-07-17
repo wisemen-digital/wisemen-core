@@ -1,6 +1,12 @@
 # Changelog
 
 
+
+## 0.0.3
+<sub>2026-07-17</sub>
+
+- [#1465](https://github.com/wisemen-digital/wisemen-core/pull/1465)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added localized admin labels for the admin dashboard
+
 ## 0.0.2
 <sub>2026-07-07</sub>
 

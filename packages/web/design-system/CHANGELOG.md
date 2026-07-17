@@ -23,6 +23,22 @@
 
 
 
+
+
+## 1.16.0
+<sub>2026-07-17</sub>
+
+- [#1458](https://github.com/wisemen-digital/wisemen-core/pull/1458)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added Badge left config, isDisabled and iconColor props, a neutral color, and deprecated the outline variant and the icon/dot/avatar props.
+- [#1460](https://github.com/wisemen-digital/wisemen-core/pull/1460)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added a 'Tomorrow' preset to the date range field.
+- [#1459](https://github.com/wisemen-digital/wisemen-core/pull/1459)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed NumberField incorrectly parsing values like "0,11111" as thousands instead of decimals.
+- [#1460](https://github.com/wisemen-digital/wisemen-core/pull/1460)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the dialog close button and header/footer separators never rendering due to a broken deprecated-prop fallback.
+- [#1464](https://github.com/wisemen-digital/wisemen-core/pull/1464)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed branded MainLayout showing no background in dark mode.
+
+## 1.15.1
+<sub>2026-07-17</sub>
+
+- [#1457](https://github.com/wisemen-digital/wisemen-core/pull/1457)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix isCurrentContextOnly and currentContextOnly props both being required
+
 ## 1.15.0
 <sub>2026-07-16</sub>
 
