@@ -1,4 +1,4 @@
-import { Readable } from 'node:stream'
+import { Readable, Transform, TransformCallback } from 'node:stream'
 
 export interface CSVRow<K extends string> {
   line: number
@@ -6,8 +6,6 @@ export interface CSVRow<K extends string> {
 }
 
 const DEFAULT_DELIMITER = ';'
-const DEFAULT_BATCH_SIZE = 100
-const DEFAULT_MAX_CHUNK_BYTES = 64 * 1024
 
 interface CSVOptions {
   /**
@@ -24,21 +22,7 @@ interface EncodeCsvOptions<K extends string> extends CSVOptions {
   columns?: readonly K[]
 }
 
-interface EncodeStreamCSVOptions<K extends string> extends EncodeCsvOptions<K> {
-  /** 
-   * The amount of lines yielded to the readable per yield. Lines are buffered
-   * internally until this amount is reached, or the last line has been encoded.
-   * Must be > 0.
-   */
-  batchSize?: number
-  /** 
-   * The amount of bytes maximally yielded to the returned Readable. 
-   * Buffers line internally until the bytes have been exceeded.
-   * Must be > 0.
-   */
-  maxChunkBytes?: number
-}
-
+interface EncodeStreamCSVOptions<K extends string> extends EncodeCsvOptions<K> {}
 
 export class CSV {
   /**
@@ -151,55 +135,77 @@ export class CSV {
       AsyncIterable<Record<K, string | null | undefined>>,
     options?: EncodeStreamCSVOptions<K>
   ): Readable {
-    const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
-    const batchSize = options?.batchSize ?? DEFAULT_BATCH_SIZE
-    const maxChunkBytes = options?.maxChunkBytes ?? DEFAULT_MAX_CHUNK_BYTES
+    return Readable.from(data).pipe(new CSVEncodeTransform(options))
+  }
 
-    let keys: readonly K[] | null = options?.columns ?? null
+  /**
+   * Create a transform stream that encodes row objects into CSV text.
+   * @param options CSV delimiter and header options.
+   * @returns A transform stream that writes objects and emits CSV chunks.
+   */
+  static encodeTransform<K extends string>(
+    options?: EncodeStreamCSVOptions<K>
+  ): CSVEncodeTransform<K> {
+    return new CSVEncodeTransform(options)
+  }
+}
 
-    const iterator = (async function* () {
-      let headerWritten = false
-      let lineCount = 0
-      let chunkBytes = 0
-      let lines: string[] = []
+type CSVValue = string | null | undefined
 
-      function writeHeader (headerKeys: readonly K[]): void {
-        const header = headerKeys.map(k => escape(k, delimiter)).join(delimiter) + '\n'
-        lines.push(header)
-        chunkBytes += Buffer.byteLength(header)
-        headerWritten = true
+export class CSVEncodeTransform<K extends string> extends Transform {
+  private readonly delimiter: string
+
+  private keys: readonly K[] | null
+  private headerWritten = false
+
+  constructor(options?: EncodeStreamCSVOptions<K>) {
+    super({
+      writableObjectMode: true,
+      readableObjectMode: false
+    })
+
+    this.delimiter = options?.delimiter ?? DEFAULT_DELIMITER
+    this.keys = options?.columns ?? null
+  }
+
+  override _transform(
+    row: Record<K, CSVValue>,
+    _encoding: BufferEncoding,
+    callback: TransformCallback
+  ): void {
+    try {
+      if (!this.headerWritten) {
+        this.keys = this.keys ?? (Object.keys(row) as K[])
+        this.writeHeader(this.keys)
       }
 
-      for await (const row of data) {
-        if (!headerWritten) {
-          keys = keys ?? (Object.keys(row) as K[])
-          writeHeader(keys)
-        }
+      const line = this.keys!
+        .map((key) => escape(row[key] ?? '', this.delimiter))
+        .join(this.delimiter) + '\n'
 
-        const line = keys!.map(key => escape(row[key] ?? '', delimiter)).join(delimiter) + '\n'
-        lines.push(line)
-        lineCount++
-        chunkBytes += Buffer.byteLength(line)
+      this.push(line)
+      callback()
+    } catch (error) {
+      callback(error instanceof Error ? error : new Error(String(error)))
+    }
+  }
 
-        if (lineCount >= batchSize || chunkBytes >= maxChunkBytes) {
-          yield lines.join('')
-
-          lines = []
-          lineCount = 0
-          chunkBytes = 0
-        }
+  override _flush(callback: TransformCallback): void {
+    try {
+      if (!this.headerWritten && this.keys !== null) {
+        this.writeHeader(this.keys)
       }
 
-      if (!headerWritten && keys !== null) {
-        writeHeader(keys)
-      }
+      callback()
+    } catch (error) {
+      callback(error instanceof Error ? error : new Error(String(error)))
+    }
+  }
 
-      if (lines.length > 0) {
-        yield lines.join('')
-      }
-    })()
-
-    return Readable.from(iterator)
+  private writeHeader(keys: readonly K[]): void {
+    const header = keys.map((k) => escape(k, this.delimiter)).join(this.delimiter) + '\n'
+    this.push(header)
+    this.headerWritten = true
   }
 }
 

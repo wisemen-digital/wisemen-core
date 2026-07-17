@@ -45,9 +45,7 @@ describe('CSV util integration', () => {
     const entityStream = await queryBuilder.stream()
 
     const stream = CSV.encodeStream(entityStream, {
-      columns: ['name', 'age', 'note'],
-      batchSize: 1,
-      maxChunkBytes: Number.MAX_SAFE_INTEGER
+      columns: ['name', 'age', 'note']
     })
 
     let rawText = ''
