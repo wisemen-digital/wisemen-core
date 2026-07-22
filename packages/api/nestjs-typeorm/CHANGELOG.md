@@ -3,6 +3,12 @@
 
 
 
+
+## 1.2.2
+<sub>2026-07-22</sub>
+
+- [#1471](https://github.com/wisemen-digital/wisemen-core/pull/1471)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: expose insert types
+
 ## 1.2.1
 <sub>2026-07-15</sub>
 
