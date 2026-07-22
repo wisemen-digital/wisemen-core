@@ -5,6 +5,12 @@
 
 
 
+
+## 0.2.0
+<sub>2026-07-22</sub>
+
+- [#1474](https://github.com/wisemen-digital/wisemen-core/pull/1474)  *(minor)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added verifier service
+
 ## 0.1.1
 <sub>2026-07-17</sub>
 
