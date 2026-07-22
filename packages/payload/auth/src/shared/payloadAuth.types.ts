@@ -74,6 +74,11 @@ export interface CreateZitadelUserHookParams<TUser extends BaseUserRecord & Type
    */
   operationsToCreate?: Array<'create' | 'update'>
   shouldSkip?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
+  /**
+   * URL used in ZITADEL's email verification message. It may contain
+   * `{{.UserID}}`, `{{.OrgID}}`, and `{{.Code}}` placeholders.
+   */
+  verificationUrlTemplate?: string
 }
 
 export interface CreatePayloadCollectionAuthParams {
@@ -106,6 +111,11 @@ export interface CreateAuthUserHookParams<TUser extends BaseUserRecord & TypeWit
   /** @default ['create'] */
   operationsToCreate?: Array<'create' | 'update'>
   shouldSkip?: (args: Parameters<CollectionAfterChangeHook<TUser>>[0]) => boolean
+  /**
+   * URL used in ZITADEL's email verification message. It may contain
+   * `{{.UserID}}`, `{{.OrgID}}`, and `{{.Code}}` placeholders.
+   */
+  verificationUrlTemplate?: string
 }
 
 export interface PayloadAuthProvider<TUser extends BaseUserRecord & TypeWithID> {
@@ -130,6 +140,8 @@ export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & Ty
   tenantCollectionSlug: string
   tokenRefreshBufferMs?: number
   userCollectionSlug: string
+  /** URL used in ZITADEL's email-verification message. */
+  verificationUrlTemplate?: string
 }
 
 export interface PayloadAuthPluginResult {

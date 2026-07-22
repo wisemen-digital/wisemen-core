@@ -34,6 +34,7 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   tenantCollectionSlug,
   tokenRefreshBufferMs,
   userCollectionSlug,
+  verificationUrlTemplate,
 }: CreatePayloadAuthPluginParams<TUser>): PayloadAuthPluginResult {
   const strategy = provider.createStrategy({
     isUserAllowed,
@@ -55,6 +56,7 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   const userHook = provider.createUserHook({
     operationsToCreate,
     shouldSkip: shouldSkipUserSync,
+    verificationUrlTemplate,
   })
 
   const publicAuth = provider.getPublicConfig()

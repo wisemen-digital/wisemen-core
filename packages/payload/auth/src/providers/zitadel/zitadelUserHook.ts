@@ -57,6 +57,7 @@ export function createZitadelUserHook<TUser extends BaseUserRecordWithId>({
     'create',
   ],
   shouldSkip,
+  verificationUrlTemplate,
 }: CreateZitadelUserHookParams<TUser>): CollectionAfterChangeHook<TUser> {
   return async (args) => {
     if (!operationsToCreate.includes(args.operation)) {
@@ -93,7 +94,11 @@ export function createZitadelUserHook<TUser extends BaseUserRecordWithId>({
       body: JSON.stringify({
         email: {
           email,
-          sendCode: {},
+          sendCode: verificationUrlTemplate == null
+            ? {}
+            : {
+                urlTemplate: verificationUrlTemplate,
+              },
         },
         organization: {
           orgId: env.authOrganizationId,
