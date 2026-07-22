@@ -64,8 +64,8 @@ async function throwForResponse(response: Response, action: string): Promise<voi
  * Do not expose the service-user token to a browser.
  */
 export function createZitadelUserService(env: Pick<AuthEnv, 'authBaseUrl' | 'authOrganizationId' | 'authServiceUser'>) {
-  async function request<T>(path: string, options: RequestInit): Promise<T> {
-    const response = await fetch(`${baseUrl(env.authBaseUrl)}${path}`, {
+  async function requestResponse(path: string, options: RequestInit): Promise<Response> {
+    return await fetch(`${baseUrl(env.authBaseUrl)}${path}`, {
       ...options,
       headers: {
         'Authorization': `Bearer ${env.authServiceUser}`,
@@ -73,6 +73,10 @@ export function createZitadelUserService(env: Pick<AuthEnv, 'authBaseUrl' | 'aut
         ...options.headers,
       },
     })
+  }
+
+  async function request<T>(path: string, options: RequestInit): Promise<T> {
+    const response = await requestResponse(path, options)
 
     await throwForResponse(response, `ZITADEL ${options.method ?? 'GET'} ${path}`)
 
@@ -121,17 +125,38 @@ export function createZitadelUserService(env: Pick<AuthEnv, 'authBaseUrl' | 'aut
     },
 
     async setPassword(userId: string, params: SetZitadelPasswordParams): Promise<void> {
-      await request(`/v2/users/${encodeURIComponent(userId)}`, {
+      const encodedUserId = encodeURIComponent(userId)
+      const password = {
+        changeRequired: params.changeRequired ?? false,
+        password: params.password,
+      }
+      const updateResponse = await requestResponse(`/v2/users/${encodedUserId}`, {
         body: JSON.stringify({
           human: {
-            password: {
-              changeRequired: params.changeRequired ?? false,
-              password: params.password,
-            },
+            password,
           },
         }),
         method: 'PATCH',
       })
+
+      if (updateResponse.status !== 405) {
+        await throwForResponse(updateResponse, `ZITADEL PATCH /v2/users/${encodedUserId}`)
+
+        return
+      }
+
+      // Older ZITADEL instances do not expose UpdateUser (PATCH) yet. Their
+      // compatible User v2 endpoint accepts the human password directly.
+      const legacyUpdateResponse = await requestResponse(`/v2/users/human/${encodedUserId}`, {
+        body: JSON.stringify({
+          password: {
+            password,
+          },
+        }),
+        method: 'PUT',
+      })
+
+      await throwForResponse(legacyUpdateResponse, `ZITADEL PUT /v2/users/human/${encodedUserId}`)
     },
 
     async verifyEmail(userId: string, code: string): Promise<void> {
