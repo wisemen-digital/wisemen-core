@@ -1,7 +1,7 @@
 import { after, before, describe, it } from 'node:test'
 import { DateTimeRangeDto, plainDate, timestamp } from '@wisemen/datewise'
 import { expect } from 'expect'
-import { DataSource } from 'typeorm'
+import { Brackets, DataSource } from 'typeorm'
 import { matchTimestamp } from '#src/timestamp/match-timestamp.qb.js'
 import { TimestampFilter } from '#src/timestamp/timestamp-filter.js'
 import { TimestampOperation } from '#src/timestamp/timestamp-operation.js'
@@ -12,6 +12,8 @@ import { IntegrationTestSetup } from '../../tests/test-setup.js'
 const UUID_1 = '00000000-0000-0000-0000-000000000001'
 const UUID_2 = '00000000-0000-0000-0000-000000000002'
 const UUID_3 = '00000000-0000-0000-0000-000000000003'
+const DELETE_TEST_UUID_1 = '00000000-0000-0000-0000-000000000101'
+const DELETE_TEST_UUID_2 = '00000000-0000-0000-0000-000000000102'
 
 describe('matchTimestamp (query builder)', () => {
   const integrationTest = new IntegrationTestSetup()
@@ -86,6 +88,105 @@ describe('matchTimestamp (query builder)', () => {
     const result = matchTimestamp('e.timestamp', undefined)
 
     expect(result).toBeUndefined()
+  })
+
+  describe('query builder overrides', () => {
+    it('supports whereMatchTimestamp', async () => {
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .whereMatchTimestamp('e.timestamp', { operation: TimestampOperation.IS, value: '2024-01-15T12:30:00.000Z' })
+        .getMany()
+
+      expectIds(results, [2])
+    })
+
+    it('supports andWhereMatchTimestamp', async () => {
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.id >= :id', { id: 2 })
+        .andWhereMatchTimestamp('e.timestamp', { operation: TimestampOperation.SAME_OR_AFTER, value: '2024-02-01T00:00:00.000Z' })
+        .getMany()
+
+      expectIds(results, [3])
+    })
+
+    it('supports orWhereMatchTimestamp', async () => {
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.id = :id', { id: 1 })
+        .orWhereMatchTimestamp('e.timestamp', { operation: TimestampOperation.IS, value: '2024-02-01T00:00:00.000Z' })
+        .getMany()
+
+      expectIds(results, [1, 3])
+    })
+
+    it('does not add a clause when the override filter is undefined', async () => {
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.id = :id', { id: 2 })
+        .andWhereMatchTimestamp('e.timestamp', undefined)
+        .getMany()
+
+      expectIds(results, [2])
+    })
+
+    it('supports whereMatchTimestamp inside TypeORM brackets', async () => {
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where(new Brackets((qb) => {
+          qb.whereMatchTimestamp('e.timestamp', { operation: TimestampOperation.SAME_OR_BEFORE, value: '2024-01-15T12:30:00.000Z' })
+        }))
+        .getMany()
+
+      expectIds(results, [1, 2])
+    })
+
+    it('supports whereMatchTimestamp on delete query builders', async () => {
+      await seed(dataSource, {
+        id: 101,
+        uuid: DELETE_TEST_UUID_1,
+        amount: 40,
+        date: plainDate('2024-03-01'),
+        timestamp: timestamp('2024-03-01T00:00:00.000Z')
+      })
+      await seed(dataSource, {
+        id: 102,
+        uuid: DELETE_TEST_UUID_2,
+        amount: 50,
+        date: plainDate('2024-03-02'),
+        timestamp: timestamp('2024-03-02T00:00:00.000Z')
+      })
+
+      await dataSource.manager
+        .createQueryBuilder()
+        .delete()
+        .from(ScopedFilterTest)
+        .whereMatchTimestamp('timestamp', { operation: TimestampOperation.SAME_OR_AFTER, value: '2024-03-01T00:00:00.000Z' })
+        .execute()
+
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.id IN (:...ids)', { ids: [1, 2, 3, 101, 102] })
+        .getMany()
+
+      expectIds(results, [1, 2, 3])
+    })
+
+    it('supports whereMatchTimestamp on update query builders', async () => {
+      await dataSource.manager
+        .createQueryBuilder()
+        .update(ScopedFilterTest)
+        .set({ amount: 99 })
+        .whereMatchTimestamp('timestamp', { operation: TimestampOperation.SAME_OR_BEFORE, value: '2024-01-15T12:30:00.000Z' })
+        .execute()
+
+      const results = await dataSource.manager
+        .createQueryBuilder(ScopedFilterTest, 'e')
+        .where('e.amount = :amount', { amount: 99 })
+        .getMany()
+
+      expectIds(results, [1, 2])
+    })
   })
 
   async function findByTimestamp (filter: TimestampFilter): Promise<ScopedFilterTest[]> {
