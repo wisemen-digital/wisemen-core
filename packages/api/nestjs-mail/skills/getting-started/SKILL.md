@@ -38,7 +38,8 @@ your built application output.
 
 ```ts
 import { Injectable } from '@nestjs/common'
-import { HandlebarsRenderer, MailClient } from '@wisemen/nestjs-mail'
+import { HandlebarsRenderer } from '@wisemen/nestjs-handlebars'
+import { MailClient } from '@wisemen/nestjs-mail'
 
 @Injectable()
 export class SendTemplateMailUseCase {

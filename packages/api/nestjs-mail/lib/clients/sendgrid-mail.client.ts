@@ -5,8 +5,8 @@ import { MailClient, type SendMailOptions } from './mail.client.js'
 
 @Injectable()
 export class SendGridMailClient extends MailClient {
-  private readonly defaultFrom: string
-  private readonly headers: Record<string, string>
+  private defaultFrom: string
+  private headers: Record<string, string>
 
   constructor (
     options: SendGridMailClientOptions

@@ -7,7 +7,6 @@ export { SendGridMailClient } from './clients/sendgrid-mail.client.js'
 export { MailApiError } from './errors/mail-api.error.js'
 export { MailUnavailableError } from './errors/mail-unavailable.error.js'
 export { MailProvider } from './enums/mail-provider.enum.js'
-export { HandlebarsRenderer } from './modules/handlebars.renderer.js'
 export { MailModule } from './modules/mail.module.js'
 export {
   type MailClientOptions,

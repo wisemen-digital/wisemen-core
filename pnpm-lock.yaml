@@ -1874,6 +1874,34 @@ importers:
         specifier: catalog:build
         version: 4.21.0
 
+  packages/api/nestjs-handlebars:
+    dependencies:
+      '@nestjs/common':
+        specifier: catalog:backend-peer
+        version: 11.1.19(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      handlebars:
+        specifier: ^4.7.8
+        version: 4.7.9
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/nestjs-mail:
     dependencies:
       '@nestjs/common':
@@ -1882,12 +1910,12 @@ importers:
       '@wisemen/api-error':
         specifier: workspace:^
         version: link:../api-error
+      '@wisemen/nestjs-handlebars':
+        specifier: workspace:^
+        version: link:../nestjs-handlebars
       '@wisemen/pgboss-nestjs-job':
         specifier: workspace:*
         version: link:../pgboss-nestjs-job
-      handlebars:
-        specifier: ^4.7.8
-        version: 4.7.9
       mailpit-api:
         specifier: ^2.0.0
         version: 2.1.0

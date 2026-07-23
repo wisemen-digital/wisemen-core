@@ -7,7 +7,7 @@ import { SendHtmlMailJob, type SendHtmlMailJobData } from './send-html-mail.job.
 @PgBossJobHandler(SendHtmlMailJob)
 export class SendHtmlMailJobHandler extends JobHandler<SendHtmlMailJob> {
   constructor (
-    private readonly mailClient: MailClient
+    private mailClient: MailClient
   ) {
     super()
   }

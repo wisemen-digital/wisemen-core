@@ -5,7 +5,7 @@ Reusable NestJS mail infrastructure for Wisemen services.
 ## What it provides
 
 - `MailModule.forRoot()` and `MailModule.forRootAsync()` for DI-friendly mail client wiring
-- `HandlebarsRenderer` for `.hbs` template rendering
+- `HandlebarsRenderer` integration through `@wisemen/nestjs-handlebars`
 - Mail providers for MailPit, Scaleway, and SendGrid
 - Shared mail errors, enums, and message types
 
@@ -30,3 +30,5 @@ export class AppModule {}
 ```
 
 Project-specific policy belongs outside the package. In larger apps, use `forRootAsync()` and resolve the `client` options from environment variables, feature flags, secrets, or test doubles in your own factory.
+
+Install `@wisemen/nestjs-handlebars` alongside this package when you want to inject `HandlebarsRenderer` for template-based mail rendering.

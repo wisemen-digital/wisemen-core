@@ -1,7 +1,7 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common'
+import { HANDLEBARS_MODULE_OPTIONS, HandlebarsRenderer, type HandlebarsModuleOptions } from '@wisemen/nestjs-handlebars'
 import { createMailClient } from '../clients/mail-client.factory.js'
 import { MailClient } from '../clients/mail.client.js'
-import { HandlebarsRenderer } from './handlebars.renderer.js'
 import { MAIL_MODULE_OPTIONS } from './mail.module-definitions.js'
 import type { MailModuleAsyncOptions, MailModuleOptions } from './mail.module-options.js'
 
@@ -20,6 +20,7 @@ export class MailModule {
       providers: [
         this.createOptionsProvider(options),
         this.createMailClientProvider(),
+        this.createHandlebarsOptionsProvider(),
         HandlebarsRenderer
       ],
       exports: [
@@ -41,6 +42,16 @@ export class MailModule {
     return {
       provide: MailClient,
       useFactory: (options: MailModuleOptions) => createMailClient(options.client),
+      inject: [MAIL_MODULE_OPTIONS]
+    }
+  }
+
+  private static createHandlebarsOptionsProvider (): Provider {
+    return {
+      provide: HANDLEBARS_MODULE_OPTIONS,
+      useFactory: (options: MailModuleOptions): HandlebarsModuleOptions => ({
+        templateRootPath: options.templateRootPath
+      }),
       inject: [MAIL_MODULE_OPTIONS]
     }
   }

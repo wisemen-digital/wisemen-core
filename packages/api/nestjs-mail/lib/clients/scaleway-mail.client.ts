@@ -5,10 +5,10 @@ import { MailClient, type SendMailOptions } from './mail.client.js'
 
 @Injectable()
 export class ScalewayMailClient extends MailClient {
-  private readonly region: string
-  private readonly projectId: string
-  private readonly from: string
-  private readonly headers: Record<string, string>
+  private region: string
+  private projectId: string
+  private from: string
+  private headers: Record<string, string>
 
   constructor (
     options: ScalewayMailClientOptions

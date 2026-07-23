@@ -1,5 +1,5 @@
 {
-  "name": "@wisemen/nestjs-mail",
+  "name": "@wisemen/nestjs-handlebars",
   "version": "0.0.1",
   "publishConfig": {
     "access": "public"
@@ -8,8 +8,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
-    "dist/",
-    "skills/"
+    "dist/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
@@ -22,13 +21,10 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
-    "@nestjs/common": "catalog:backend-peer",
-    "@wisemen/api-error": "workspace:^",
-    "@wisemen/nestjs-handlebars": "workspace:^"
+    "@nestjs/common": "catalog:backend-peer"
   },
   "dependencies": {
-    "@wisemen/pgboss-nestjs-job": "workspace:*",
-    "mailpit-api": "^2.0.0"
+    "handlebars": "^4.7.8"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -43,6 +39,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-mail"
+    "directory": "packages/api/nestjs-handlebars"
   }
 }

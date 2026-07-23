@@ -7,8 +7,8 @@ import { MailClient, type MailAttachment, type SendMailOptions } from './mail.cl
 @Injectable()
 export class MailPitMailClient extends MailClient {
   private _client?: MailpitClient
-  private readonly defaultFrom: string
-  private readonly tag?: string
+  private defaultFrom: string
+  private tag?: string
 
   constructor (
     options: MailPitMailClientOptions
