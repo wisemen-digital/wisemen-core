@@ -53,6 +53,7 @@ export class SomeModule {}
 import { Injectable } from "@nestjs/common";
 import { FileStorageService } from "@wisemen/nestjs-file-storage";
 import { Readable } from "stream";
+import { pipeline } from "stream/promises";
 @Injectable()
 export class MyService {
   constructor(private fileStorage: FileStorage) {}
@@ -61,7 +62,11 @@ export class MyService {
   }
 
   async uploadStream(key: string, stream: Readable): Promise<void> {
-    await this.fileStorage.upload(key, stream);
+    await this.fileStorage.uploadStream(key, stream);
+  }
+
+  async pipelineToStorage(key: string, stream: Readable): Promise<void> {
+    await pipeline(stream, this.fileStorage.createUploadWritable(key));
   }
 }
 ```
@@ -71,6 +76,7 @@ export class MyService {
 - Create temporary upload/download URLs
 - Create temporary preview URLs for inline browser rendering
 - Upload file using buffers or streams
+- Create a writable upload stream for `pipeline(...)`-based uploads
 - Download file
 - Delete file
 
