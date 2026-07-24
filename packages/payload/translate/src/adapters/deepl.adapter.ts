@@ -15,6 +15,8 @@ export interface DeepLTranslateAdapterOptions {
 
 export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 
+const MAX_CONCURRENT_DEEPL_REQUESTS = 25
+
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
     name: 'apiKey',
@@ -29,8 +31,14 @@ export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
 ]
 
 export class DeepLTranslateAdapter implements TranslationAdapter {
+  private activeRequests = 0
   private readonly apiKey?: string
   private readonly apiURL: string
+  private readonly pendingRequests: Array<{
+    args: TranslationAdapterArgs
+    reject: (reason?: unknown) => void
+    resolve: (value: string) => void
+  }> = []
 
   public constructor({
     apiKey, apiURL = 'https://api.deepl.com/v2/translate',
@@ -49,15 +57,29 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
       .join('-')
   }
 
-  public async translate({
+  private processPendingRequests(): void {
+    while (this.activeRequests < MAX_CONCURRENT_DEEPL_REQUESTS && this.pendingRequests.length > 0) {
+      const pendingRequest = this.pendingRequests.shift()
+
+      if (!pendingRequest) {
+        return
+      }
+
+      this.activeRequests += 1
+      void this.translateRequest(pendingRequest.args)
+        .then(pendingRequest.resolve, pendingRequest.reject)
+        .finally(() => {
+          this.activeRequests -= 1
+          this.processPendingRequests()
+        })
+    }
+  }
+
+  private async translateRequest({
     sourceLocale,
     targetLocale,
     text,
   }: TranslationAdapterArgs): Promise<string> {
-    if (!text.trim()) {
-      return text
-    }
-
     const response = await fetch(this.apiURL, {
       body: JSON.stringify({
         source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
@@ -90,6 +112,22 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     }
 
     return translatedText
+  }
+
+  public translate(args: TranslationAdapterArgs): Promise<string> {
+    if (!args.text.trim()) {
+      return Promise.resolve(args.text)
+    }
+
+    return new Promise((resolve, reject) => {
+      this.pendingRequests.push({
+        args,
+        reject,
+        resolve,
+      })
+
+      this.processPendingRequests()
+    })
   }
 }
 
