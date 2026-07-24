@@ -1,5 +1,11 @@
 # @wisemen/nestjs-file-storage
 
+
+## 0.3.1
+<sub>2026-07-24</sub>
+
+- [#1463](https://github.com/wisemen-digital/wisemen-core/pull/1463)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add createUploadWritable on file storage
+
 ## 0.3.0
 
 ### Minor Changes
