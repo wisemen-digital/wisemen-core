@@ -1,21 +1,6 @@
 import { trace, SpanStatusCode, Exception, Span } from '@opentelemetry/api'
 import { getOtelTracer } from './index.js'
 
-function setExceptionAttributes (span: Span, exception: unknown): void {
-  span.recordException(exception as Exception)
-  span.setAttribute('exceptions.captured', true)
-
-  if (exception instanceof Error) {
-    span.setAttribute('exceptions.message', exception.message)
-    span.setAttribute('exceptions.stacktrace', exception.stack ?? '')
-
-    const prototype = Object.getPrototypeOf(exception) as { constructor: { name: string } }
-    const className = prototype.constructor.name as string | undefined
-
-    span.setAttribute('exception.type', className ?? exception.name ?? 'unknown')
-  }
-}
-
 export function captureException (exception: unknown, message?: string): void {
   const activeSpan = trace.getActiveSpan()
 
@@ -41,4 +26,19 @@ export function captureException (exception: unknown, message?: string): void {
   })
 
   setExceptionAttributes(activeSpan, exception)
+}
+
+function setExceptionAttributes (span: Span, exception: unknown): void {
+  span.recordException(exception as Exception)
+  span.setAttribute('exceptions.captured', true)
+
+  if (exception instanceof Error) {
+    span.setAttribute('exceptions.message', exception.message)
+    span.setAttribute('exceptions.stacktrace', exception.stack ?? '')
+
+    const prototype = Object.getPrototypeOf(exception) as { constructor: { name: string } }
+    const className = prototype.constructor.name as string | undefined
+
+    span.setAttribute('exception.type', className ?? exception.name ?? 'unknown')
+  }
 }
