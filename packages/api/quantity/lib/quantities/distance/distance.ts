@@ -25,6 +25,10 @@ export class Distance extends Quantity<DistanceUnit, Distance> {
     return DistanceUnit.METER
   }
 
+  protected getUnits (): readonly DistanceUnit[] {
+    return Object.values(DistanceUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, fromUnit: DistanceUnit): number {
     return value * DISTANCE_MULTIPLIERS[fromUnit]
   }

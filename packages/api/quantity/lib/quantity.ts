@@ -2,13 +2,18 @@ import assert from 'assert'
 import { Rate } from './rate/rate.js'
 
 export type QuantityConstructor<U extends string, Q extends Quantity<U, Q>> = {
-  new (quantityOrValue: Q | number, unit?: U): Q
+  new(quantity: Q): Q
+  new(value: number, unit: U): Q
+  new(value: 0): Q
+  new(s: string): Q
 }
 
 export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
-  protected abstract getBaseUnit(): U
+  protected abstract getBaseUnit (): U
+  protected abstract getUnits (): readonly U[]
   protected abstract convertValueToBaseUnit (value: number, fromUnit: U): number
   protected abstract convertBaseUnitValueTo (value: number, toUnit: U): number
+
 
   readonly value: number
   readonly unit: U
@@ -16,13 +21,18 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   constructor (quantity: Q)
   constructor (value: number, unit: U)
   constructor (value: 0)
-  constructor (quantityOrValue: Q | number, unit?: U) {
+  constructor (s: string)
+  constructor (quantityOrValue: Q | number | string, unit?: U) {
     if (quantityOrValue instanceof Quantity) {
       this.value = quantityOrValue.value
       this.unit = quantityOrValue.unit
     } else if (quantityOrValue === 0) {
       this.value = 0
       this.unit = this.getBaseUnit()
+    } else if (typeof quantityOrValue === 'string') {
+      const parsedString = this.parseString(quantityOrValue, this.getUnits())
+      this.value = parsedString.value
+      this.unit = parsedString.unit
     } else {
       assert(unit !== undefined, 'Unit must be provided when constructing from a numeric value')
       this.value = quantityOrValue
@@ -31,7 +41,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   }
 
   private construct (quantityOrValue: Q | number, unit?: U): Q {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
     const Constructor = Object.getPrototypeOf(this).constructor as QuantityConstructor<U, Q>
 
     if (quantityOrValue instanceof Quantity) {
@@ -216,5 +226,23 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
     return quantities.reduce((min, quantity) =>
       quantity.valueOf() < min.valueOf() ? quantity : min
     )
+  }
+
+  protected parseString (s: string, units: readonly U[]): { value: number, unit: U } {
+    const unitsPattern = units.map(unit => Quantity.escapeRegex(unit)).join('|')
+    const pattern = new RegExp(`^(?<amount>[+-]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[+-]?\\d+)?)(?<unit>${unitsPattern})$`, 'u')
+    const match = pattern.exec(s)
+    const amount = match?.groups?.amount
+    const unit = match?.groups?.unit as U | undefined
+
+    if (amount === undefined || unit === undefined) {
+      throw new Error(`Invalid quantity string ${s}, expected <amount>(${units.join(' | ')})`)
+    }
+
+    return { value: Number(amount), unit }
+  }
+
+  private static escapeRegex (value: string): string {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   }
 }
