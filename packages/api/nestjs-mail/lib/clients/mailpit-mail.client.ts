@@ -58,7 +58,7 @@ export class MailPitMailClient extends MailClient {
 
   private mapAttachments (attachments: MailAttachment[]): MailpitAttachmentRequest[] {
     return attachments.map(attachment => ({
-      Filename: attachment.file.name,
+      Filename: `${attachment.file.name}.${attachment.file.ext}`,
       Content: attachment.buffer.toString('base64'),
       ContentType: this.getMimeTypeForAttachmentExt(attachment.file.ext)
     }))
