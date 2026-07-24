@@ -1,14 +1,14 @@
-import { BaseJob, type BaseJobData, PgBossJob } from '@wisemen/pgboss-nestjs-job'
+import { BaseJob,  PgBossJob } from '@wisemen/pgboss-nestjs-job'
 import { MAIL_QUEUE_NAME } from './mail-queue-name.js'
 
-export interface SendHtmlMailJobData extends BaseJobData {
+export interface SendHtmlMailJobData {
   from?: string
   to: string
   cc?: string
   bcc?: string
   replyTo?: string
   subject: string
-  data: BaseJobData
+  data: Record<string, unknown>
   text: string
   html: string
 }
