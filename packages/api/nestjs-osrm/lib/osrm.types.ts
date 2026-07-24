@@ -1,3 +1,6 @@
+/** [longitude, latitude]  */
+export type OsrmCoordinates =  [number, number]
+
 export type OsrmRouteAnnotation =
   | 'distance'
   | 'duration'
@@ -13,7 +16,6 @@ export interface OsrmRouteQueryOptions {
   overview?: 'simplified' | 'full' | false
   steps?: boolean
   annotations?: true | OsrmRouteAnnotation[]
-  geometries?: 'polyline' | 'polyline6' | 'geojson'
   continueStraight?: boolean
   skipWaypoints?: boolean
 }
@@ -31,20 +33,21 @@ export interface OsrmRouteResponse {
 
 export interface OsrmTableResponse {
   code: string
-  /** durations of routes in seconds */
+  /** durations of routes in seconds, null if no route exists */
   durations: Array<Array<number | null>>
-  /** distances of routes in meters */
+  /** distances of routes in meters, null if no route exists */
   distances?: Array<Array<number | null>>
   sources?: OsrmWaypoint[]
   destinations?: OsrmWaypoint[]
 }
 
 export interface OsrmTileResponse {
-  durations: number[][]
+  /** null if no route exists */
+  durations: (number | null)[][]
 }
 
 export interface OsrmWaypoint {
-  location: [number, number]
+  location: OsrmCoordinates
   name: string
   distance: number
   hint: string
@@ -60,7 +63,7 @@ export interface OsrmRoute {
 }
 
 export interface OsrmRouteGeometry {
-  coordinates: [number, number][]
+  coordinates: OsrmCoordinates[]
 }
 
 export interface OsrmRouteLeg {

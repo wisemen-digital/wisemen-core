@@ -39,10 +39,6 @@ export class ServiceOsrmClient implements OsrmClient {
       params.annotations = options.annotations === true ? 'true' : options.annotations.join(',')
     }
 
-    if (options.geometries != null) {
-      params.geometries = options.geometries
-    }
-
     if (options.continueStraight != null) {
       params.continue_straight = String(options.continueStraight)
     }
@@ -68,6 +64,7 @@ export class ServiceOsrmClient implements OsrmClient {
     coordinates: Coordinates[],
     options: OsrmTableQueryOptions = {}
   ): Promise<OsrmTableResponse> {
+
     const path = `table/v1/${this.profile}/${this.createCoordinatesPath(coordinates)}`
 
     const params: Record<string, string> = {}
@@ -101,9 +98,7 @@ export class ServiceOsrmClient implements OsrmClient {
       destinations: destinations.map((_, index) => index + 1)
     })
 
-    return {
-      durations: table.durations.map(row => row.map(duration => duration ?? 0))
-    }
+    return { durations: table.durations }
   }
 
   private async get<TResponse> (
