@@ -2,6 +2,12 @@
 
 
 
+
+## 0.0.4
+<sub>2026-07-24</sub>
+
+- [#1484](https://github.com/wisemen-digital/wisemen-core/pull/1484)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added a max concurrency on the deepl plugin to prevent 429
+
 ## 0.0.3
 <sub>2026-07-17</sub>
 
