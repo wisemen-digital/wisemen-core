@@ -3,6 +3,12 @@
 
 
 
+
+## 0.0.5
+<sub>2026-07-24</sub>
+
+- [#1487](https://github.com/wisemen-digital/wisemen-core/pull/1487)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Skip manually edited translation in translate mode
+
 ## 0.0.4
 <sub>2026-07-24</sub>
 
