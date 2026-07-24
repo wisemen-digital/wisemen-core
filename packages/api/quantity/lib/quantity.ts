@@ -41,8 +41,8 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   }
 
   private construct (quantityOrValue: Q | number, unit?: U): Q {
-
-    const Constructor = Object.getPrototypeOf(this).constructor as QuantityConstructor<U, Q>
+    const prototype = Object.getPrototypeOf(this) as { constructor: QuantityConstructor<U, Q> }
+    const Constructor = prototype.constructor
 
     if (quantityOrValue instanceof Quantity) {
       return new Constructor(quantityOrValue)
