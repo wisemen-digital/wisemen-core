@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pgboss-nestjs-job",
-  "version": "4.0.10",
+  "version": "5.0.0",
   "publishConfig": {
     "access": "public"
   },
