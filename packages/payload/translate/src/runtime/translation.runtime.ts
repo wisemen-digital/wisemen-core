@@ -6,10 +6,10 @@ import type {
 
 import { extractTranslationAdapterSettings } from '#settings/translation.settings.ts'
 import {
+  canTranslateStatus,
   isTranslationMode,
   resolveTranslationStatusMap,
   TRANSLATION_MODES,
-  TRANSLATION_STATUSES,
 } from '#status.ts'
 import {
   resolveFieldSelections,
@@ -229,7 +229,7 @@ export function createTranslationEndpointHandler({
       ? []
       : (translationMode === TRANSLATION_MODES.retranslate
           ? uniqueTargetLocales
-          : uniqueTargetLocales.filter((locale) => translationStatuses[locale] !== TRANSLATION_STATUSES.translated))
+          : uniqueTargetLocales.filter((locale) => canTranslateStatus(translationStatuses[locale])))
 
     if (eligibleTargetLocales.length === 0) {
       return Response.json({
