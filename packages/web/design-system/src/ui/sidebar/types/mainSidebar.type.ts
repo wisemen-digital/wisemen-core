@@ -8,6 +8,16 @@ export type MainSidebarCollapsedVariant = 'hidden' | 'minified'
 
 export interface DashboardSidebarNavSubItem {
   /**
+   * Optional status dot displayed at the end of the sub-item
+   */
+  hasStatusDot?: boolean
+  /**
+   * Optional badge displayed at the end of the sub-item
+   */
+  badge?: {
+    label: string
+  }
+  /**
    * Text label for the sub-item
    */
   label: string
@@ -19,9 +29,19 @@ export interface DashboardSidebarNavSubItem {
 
 interface DashboardSidebarNavLinkBase extends WithKeyboardShortcut {
   /**
+   * Optional status dot displayed at the end of the link. Ignored when the `#right` slot is used.
+   */
+  hasStatusDot?: boolean
+  /**
    * Optional function to determine if the link is active based on the current route
    */
   isActive?: (route: RouteLocationNormalized) => boolean
+  /**
+   * Optional badge displayed at the end of the link. Ignored when the `#right` slot is used.
+   */
+  badge?: {
+    label: string
+  }
   /**
    * Icon component to display alongside the label
    */

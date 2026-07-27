@@ -8,9 +8,11 @@ import {
   useRouter,
 } from 'vue-router'
 
+import MainSidebarNavigationLinkBadge from '@/ui/sidebar/components/MainSidebarNavigationLinkBadge.vue'
 import MainSidebarNavigationLinkButton from '@/ui/sidebar/components/MainSidebarNavigationLinkButton.vue'
 import MainSidebarNavigationLinkCollapsible from '@/ui/sidebar/components/MainSidebarNavigationLinkCollapsible.vue'
 import MainSidebarNavigationLinkPopover from '@/ui/sidebar/components/MainSidebarNavigationLinkPopover.vue'
+import MainSidebarNavigationLinkStatusDot from '@/ui/sidebar/components/MainSidebarNavigationLinkStatusDot.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import type {
   DashboardSidebarNavLink,
@@ -136,7 +138,13 @@ onMounted(() => {
     @click="onLinkClick"
   >
     <template #right>
-      <slot name="right" />
+      <slot name="right">
+        <MainSidebarNavigationLinkBadge
+          v-if="props.badge != null"
+          :label="props.badge.label"
+        />
+        <MainSidebarNavigationLinkStatusDot v-if="props.hasStatusDot" />
+      </slot>
     </template>
   </MainSidebarNavigationLinkButton>
 </template>
