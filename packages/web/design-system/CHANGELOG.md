@@ -25,6 +25,12 @@
 
 
 
+
+## 1.17.0
+<sub>2026-07-27</sub>
+
+- [#1494](https://github.com/wisemen-digital/wisemen-core/pull/1494)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added badge/count and status dot support to main sidebar navigation sub-items.
+
 ## 1.16.0
 <sub>2026-07-17</sub>
 
