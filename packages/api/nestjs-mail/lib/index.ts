@@ -17,7 +17,6 @@ export {
   type ScalewayMailClientOptions,
   type SendGridMailClientOptions
 } from './modules/mail.module-options.js'
-export { MAIL_QUEUE_NAME } from './queue/mail-queue-name.js'
 export { MailQueueModule } from './queue/mail-queue.module.js'
 export { type MailQueueModuleOptions } from './queue/mail-queue.module-options.js'
 export { SendHtmlMailJob, type SendHtmlMailJobData } from './queue/send-html-mail.job.js'

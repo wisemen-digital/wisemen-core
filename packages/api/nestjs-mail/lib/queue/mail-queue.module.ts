@@ -8,6 +8,10 @@ import { SendTemplateMailJob } from './send-template-mail.job.js'
 
 @Module({})
 export class MailQueueModule {
+  /**
+   * This method is only intended to be called once per app.
+   * Calling multiple times will result in the last queue name winning.
+   */
   static forRoot (options: MailQueueModuleOptions): DynamicModule {
     PgBossJob(options.queueName)(SendHtmlMailJob)
     PgBossJob(options.queueName)(SendTemplateMailJob)
