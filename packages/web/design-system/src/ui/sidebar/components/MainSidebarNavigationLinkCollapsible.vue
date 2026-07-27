@@ -9,7 +9,6 @@ import {
   ref,
   watch,
 } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
 
 import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
@@ -19,6 +18,7 @@ import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTr
 import MainSidebarNavigationLinkProvider from '@/ui/sidebar/components/MainSidebarNavigationLinkProvider.vue'
 import MainSidebarNavigationSubItem from '@/ui/sidebar/components/MainSidebarNavigationSubItem.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import type { DashboardSidebarNavSubItem } from '@/ui/sidebar/types/mainSidebar.type'
 
 interface Props {
   isSubItemsActive: boolean
@@ -26,10 +26,7 @@ interface Props {
   icon: Component
   keyboardShortcut?: KeyboardShortcut | null
   label: string
-  subItems: {
-    label: string
-    to: RouteLocationRaw
-  }[]
+  subItems: DashboardSidebarNavSubItem[]
 }
 
 const props = defineProps<Props>()
@@ -140,6 +137,8 @@ const navigationLinkGridTemplateColumns = `${sidebarIconCellSize} 1fr`
         <MainSidebarNavigationSubItem
           v-for="subItem in props.subItems"
           :key="subItem.label"
+          :badge="subItem.badge"
+          :has-status-dot="subItem.hasStatusDot"
           :label="subItem.label"
           :to="subItem.to"
         />
