@@ -3,6 +3,12 @@
 
 
 
+
+## 5.0.0
+<sub>2026-07-27</sub>
+
+- [#1500](https://github.com/wisemen-digital/wisemen-core/pull/1500)  *(major)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: app initialisation happens after bootstrap callback
+
 ## 4.1.3
 <sub>2026-07-10</sub>
 
