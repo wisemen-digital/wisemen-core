@@ -9,4 +9,8 @@ export interface MailQueueModuleOptions {
    * resolve dependencies such as `MailClient` and `HandlebarsRenderer`.
    */
   imports?: ModuleMetadata['imports']
+  /**
+   * The pgboss queue name on which the jobs will be declared.
+   */
+  queueName: string
 }
