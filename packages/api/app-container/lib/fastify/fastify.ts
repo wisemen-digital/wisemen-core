@@ -1,6 +1,5 @@
  
-import type { INestApplicationContext } from '@nestjs/common'
-import { FastifyAdapter } from '@nestjs/platform-fastify'
+import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 import type {
   FastifyInstance,
   FastifyReply,
@@ -17,12 +16,12 @@ export abstract class FastifyContainer {
   private state: State
   private server: FastifyInstance
 
-  protected nest?: INestApplicationContext
+  protected nest?: NestFastifyApplication
   protected getFastifyOptions (): ConstructorParameters<typeof FastifyAdapter<RawServerDefault>>[0] {
     return {}
   }
 
-  abstract bootstrap (app: FastifyAdapter): Promise<INestApplicationContext>
+  abstract bootstrap (app: FastifyAdapter): Promise<NestFastifyApplication>
 
   constructor () {
     this.state = 'starting'
@@ -55,6 +54,7 @@ export abstract class FastifyContainer {
     this.nest = await this.bootstrap(adapter)
 
     await this.nest.init()
+    await this.nest.getHttpAdapter().getInstance().ready()
 
     await this.server.listen({ port, host: '0.0.0.0' })
     console.log('server started')
