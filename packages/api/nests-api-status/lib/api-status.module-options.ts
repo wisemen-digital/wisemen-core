@@ -64,7 +64,8 @@ export interface ApiStatusControllerOptions {
 /**
  * Async registration options for `ApiStatusModule.forRootAsync(...)`.
  */
-export interface ApiStatusModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'>, ApiStatusControllerOptions {
+export interface ApiStatusModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
+  controller?: ApiStatusControllerOptions
   useFactory: (...args: unknown[]) => Promise<ApiStatusModuleOptions> | ApiStatusModuleOptions
   inject?: FactoryProvider['inject']
 }
@@ -76,7 +77,9 @@ export interface ResolvedApiStatusControllerOptions {
   isPublic: boolean
 }
 
-export function resolveApiStatusControllerOptions (options: ApiStatusControllerOptions = {}): ResolvedApiStatusControllerOptions {
+export function resolveApiStatusControllerOptions (
+  options: ApiStatusControllerOptions = {}
+): ResolvedApiStatusControllerOptions {
   return {
     route: options.route,
     swaggerTag: options.swaggerTag ?? 'API Status',

@@ -23,7 +23,7 @@ export class ApiStatusModule {
   }
 
   static forRootAsync (options: ApiStatusModuleAsyncOptions): DynamicModule {
-    const controllerOptions = resolveApiStatusControllerOptions(options)
+    const controllerOptions = resolveApiStatusControllerOptions(options.controller)
     const controller = createApiStatusController(controllerOptions)
 
     return {

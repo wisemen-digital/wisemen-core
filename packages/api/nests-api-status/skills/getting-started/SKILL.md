@@ -30,7 +30,9 @@ import { ApiStatusModule } from '@wisemen/nests-api-status'
         version: configService.getOrThrow('BUILD_NUMBER'),
         timestamp: configService.getOrThrow('BUILD_TIMESTAMP')
       }),
-      isPublic: true
+      controller: {
+        isPublic: true
+      }
     })
   ],
   exports: [ApiStatusModule]
