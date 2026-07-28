@@ -54,7 +54,7 @@ export async function generateAsyncApiYaml (api: AsyncAPIDefinition): Promise<st
       for (const message of operation.messages!) {
         const name = message.name
 
-        const { schemas } = generateSchema(message, apiDocs.components!.schemas!)
+        const { schemas } = generateSchema(message, apiDocs.components!.schemas)
         apiDocs.components!.schemas = schemas as Record<string, AsyncAPISchema>
 
         // Add the message itself
