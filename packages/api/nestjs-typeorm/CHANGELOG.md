@@ -4,6 +4,12 @@
 
 
 
+
+## 1.2.3
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
 ## 1.2.2
 <sub>2026-07-22</sub>
 
