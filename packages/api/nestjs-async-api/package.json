@@ -24,6 +24,7 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
+    "reflect-metadata": "catalog:backend",
     "change-case": "catalog:backend",
     "yaml": "catalog:backend",
     "@nestjs/swagger": "catalog:backend"

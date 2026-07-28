@@ -1,13 +1,11 @@
 import { globSync } from 'fs'
 import assert from 'assert'
-import { pathToFileURL } from 'url'
 import { resolve } from 'path'
+import { pathToFileURL } from 'url'
+import { generateSchema } from '@nestjs/swagger'
 import YAML from 'yaml'
-import { SchemaObjectFactory } from '@nestjs/swagger/dist/services/schema-object-factory.js'
-import { ModelPropertiesAccessor } from '@nestjs/swagger/dist/services/model-properties-accessor.js'
-import { SwaggerTypesMapper } from '@nestjs/swagger/dist/services/swagger-types-mapper.js'
 import { pascalCase } from 'change-case'
-import { AsyncAPIDocument, AsyncApiRef } from './async-api.types.js'
+import { AsyncAPIDocument, AsyncApiRef, AsyncAPISchema } from './async-api.types.js'
 import { AsyncAPIChannelDefinition, AsyncAPIDefinition } from './async-api-definition.types.js'
 import { isChannel } from './create-channel.js'
 
@@ -44,9 +42,6 @@ export async function generateAsyncApiYaml (api: AsyncAPIDefinition): Promise<st
     }
   }
 
-  const accessor = new ModelPropertiesAccessor()
-  const typeMapper = new SwaggerTypesMapper()
-
   for (const channelName in channels) {
     const channel = channels[channelName]
     const channelRef: AsyncApiRef = { $ref: '#/channels/' + channelName }
@@ -59,13 +54,8 @@ export async function generateAsyncApiYaml (api: AsyncAPIDefinition): Promise<st
       for (const message of operation.messages!) {
         const name = message.name
 
-        const factory = new SchemaObjectFactory(accessor, typeMapper)
-
-        factory.exploreModelSchema(
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-          message as unknown as Function,
-          apiDocs.components!.schemas!
-        )
+        const { schemas } = generateSchema(message, apiDocs.components!.schemas!)
+        apiDocs.components!.schemas = schemas as Record<string, AsyncAPISchema>
 
         // Add the message itself
         apiDocs.components!.messages![name] = {

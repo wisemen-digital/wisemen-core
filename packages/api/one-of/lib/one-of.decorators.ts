@@ -7,9 +7,7 @@ import {
   getSchemaPath
 } from '@nestjs/swagger'
 import { applyDecorators, Type } from '@nestjs/common'
-import { ReferenceObject } from '@nestjs/swagger/dist/interfaces/open-api-spec.interface.js'
 import { isFunction, isString } from '@nestjs/common/utils/shared.utils.js'
-import { ApiResponseCommonMetadata } from '@nestjs/swagger/dist/decorators/api-response.decorator.js'
 import { pascalCase } from './pascal-case.js'
 
 const SWAGGER_API_MODEL_PROPERTIES_ARRAY = 'swagger/apiModelPropertiesArray'
@@ -21,7 +19,8 @@ export const ONE_OF_DISCRIMINATED_TYPES = 'wisemen.one_of_discriminated_types'
 export const ONE_OF_DISCRIMINATED_RESPONSE = 'wisemen.one_of_discriminated_response'
 
 type OneOfDiscriminatedTypes = Map<string, ClassConstructor<unknown>>
-export type OneOfApiResponseOptions = Omit<ApiResponseCommonMetadata, 'type'>
+type ReferenceObject = { $ref: string }
+export type OneOfApiResponseOptions = Omit<Parameters<typeof ApiResponse>[0], 'schema' | 'type'>
 
 export function OneOfTypeApiProperty (): PropertyDecorator {
   return (target: object, propertyKey: string) => {
