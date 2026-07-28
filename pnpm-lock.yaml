@@ -1920,7 +1920,7 @@ importers:
         specifier: workspace:^
         version: link:../nestjs-handlebars
       '@wisemen/pgboss-nestjs-job':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../pgboss-nestjs-job
       mailpit-api:
         specifier: ^2.0.0

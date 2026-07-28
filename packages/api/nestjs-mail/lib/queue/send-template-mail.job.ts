@@ -1,5 +1,4 @@
-import { BaseJob, PgBossJob } from '@wisemen/pgboss-nestjs-job'
-import { MAIL_QUEUE_NAME } from './mail-queue-name.js'
+import { BaseJob } from '@wisemen/pgboss-nestjs-job'
 
 export interface SendTemplateMailJobData {
   from?: string
@@ -13,7 +12,6 @@ export interface SendTemplateMailJobData {
   htmlHbsFilePath: string
 }
 
-@PgBossJob(MAIL_QUEUE_NAME)
 export class SendTemplateMailJob extends BaseJob<SendTemplateMailJobData> {
   constructor (data: SendTemplateMailJobData) {
     super(data)
