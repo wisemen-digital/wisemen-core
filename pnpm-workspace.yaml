@@ -78,7 +78,7 @@ catalogs:
     "pg-query-stream": "4.16.0"
     "qs": ">=6.15.2"
     react: ^0.0.0
-    "redis": "5.11.0"
+    "redis": "^5.12.1"
     "reflect-metadata": "0.2.2"
     "rxjs": "7.8.2"
     "twilio": "5.13.1"
