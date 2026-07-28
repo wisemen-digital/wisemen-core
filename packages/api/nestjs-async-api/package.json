@@ -6,7 +6,7 @@
   },
   "type": "module",
   "exports": {
-    ".": "./dist/lib/index.js"
+    ".": "./dist/index.js"
   },
   "imports": {
     "#*": "./lib/*"
