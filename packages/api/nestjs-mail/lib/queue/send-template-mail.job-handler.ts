@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { HandlebarsRenderer } from '@wisemen/nestjs-handlebars'
-import { JobHandler, PgBossJobHandler } from '@wisemen/pgboss-nestjs-job'
+import { JobHandler } from '@wisemen/pgboss-nestjs-job'
 import { MailClient } from '../clients/mail.client.js'
 import { SendTemplateMailJob, type SendTemplateMailJobData } from './send-template-mail.job.js'
 
 @Injectable()
-@PgBossJobHandler(SendTemplateMailJob)
 export class SendTemplateMailJobHandler extends JobHandler<SendTemplateMailJob> {
   constructor (
     private mailClient: MailClient,
