@@ -30,22 +30,21 @@
   },
   "dependencies": {
     "pg-boss": "catalog:backend",
-    "@wisemen/nestjs-provider-explorer": "workspace:^",
-    "@wisemen/nestjs-typeorm": "workspace:*",
-    "@wisemen/opentelemetry": "workspace:*"
+    "@wisemen/nestjs-provider-explorer": "workspace:^"
   },
   "peerDependencies": {
+    "@wisemen/nestjs-typeorm": "workspace:^",
+    "@wisemen/opentelemetry": "workspace:^",
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
-    "@sentry/nestjs": "catalog:backend-peer",
     "colors": "catalog:backend-peer",
     "rxjs": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",
     "class-transformer": "catalog:backend-peer"
   },
   "devDependencies": {
-    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@wisemen/eslint-config-nestjs": "workspace:^",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
