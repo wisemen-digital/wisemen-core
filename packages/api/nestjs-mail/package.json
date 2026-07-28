@@ -24,10 +24,10 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
     "@wisemen/api-error": "workspace:^",
-    "@wisemen/nestjs-handlebars": "workspace:^"
+    "@wisemen/nestjs-handlebars": "workspace:^",
+    "@wisemen/pgboss-nestjs-job": "workspace:^"
   },
   "dependencies": {
-    "@wisemen/pgboss-nestjs-job": "workspace:*",
     "mailpit-api": "^2.0.0"
   },
   "devDependencies": {
