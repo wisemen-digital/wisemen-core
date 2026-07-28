@@ -21,10 +21,11 @@ Use this skill when the task is to add or refine a reusable package under `packa
 4. Keep package-local helpers private unless multiple files truly share them.
 5. Before committing, create or update a `.bumpy/*.md` file for the logical change.
 6. Use `pnpm bumpy add --packages "<pkg1>:<bump>,<pkg2>:<bump>" --message "<summary>" --name "<slug>"` for non-interactive runs, or update the existing bump file in place if the branch already has one for the same change.
-7. Choose bump levels deliberately: `major` for breaking API changes, `minor` for new user-facing capabilities, and `patch` for fixes, dependency updates, and internal refactors.
-8. Keep the bump message short and changelog-ready. Describe the user-facing impact, not the implementation detail.
-9. Add or update concise package docs only where the repo convention already expects them.
-10. Run focused validation for the package you touched.
+7. If the branch updates a shared workspace catalog or shared dependency version, include every affected publishable package that consumes that catalog entry, not just the files you edited directly.
+8. Choose bump levels deliberately: `major` for breaking API changes, `minor` for new user-facing capabilities, and `patch` for fixes, dependency updates, and internal refactors.
+9. Keep the bump message short and changelog-ready. Describe the user-facing impact, not the implementation detail.
+10. Add or update concise package docs only where the repo convention already expects them.
+11. Run focused validation for the package you touched.
 
 ## Defaults
 
@@ -38,3 +39,4 @@ Use this skill when the task is to add or refine a reusable package under `packa
 - Run focused `tsc`, `eslint`, and `oxlint` checks for the package.
 - If a package refactor changes exports or file splits, verify the barrel and module wiring explicitly.
 - Make sure the bump file still matches the final package scope and bump levels before staging the PR.
+- When shared catalog versions move, re-check the bump file against every workspace package that consumes those catalog entries.

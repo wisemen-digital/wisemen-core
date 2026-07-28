@@ -29,6 +29,7 @@ pnpm bumpy add --packages "<pkg1>:<bump>,<pkg2>:<bump>" --message "<summary>" --
 ```
 
 If the branch already has a bump file for the same change, update that file instead of creating a duplicate.
+If the branch changes shared workspace dependency catalogs, widen the bump file to every affected publishable package that consumes those updated entries.
 
 ## Pull Requests
 
