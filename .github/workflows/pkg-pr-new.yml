@@ -1,4 +1,3 @@
----
 name: PR Preview
 
 on:
@@ -36,8 +35,29 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Get changed packages
+        id: changed
+        run: |
+          pnpm turbo run build --filter='...[origin/main]' --dry=json > dry-run.json
+
+          # Extract unique package names from dry-run output
+          PACKAGES=$(jq -r '[.tasks[].package] | unique | .[]' dry-run.json)
+
+          echo "packages<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$PACKAGES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
       - name: Build packages
-        run: pnpm build
+        if: steps.changed.outputs.packages != ''
+        run: pnpm turbo run build --filter='...[origin/main]'
 
       - name: Publish PR previews
-        run: pnpm exec pkg-pr-new publish --compact --comment=update --commentWithSha --packageManager=pnpm --pnpm './packages/*/*'
+        if: steps.changed.outputs.packages != ''
+        run: |
+          PKGS=$(echo "${{ steps.changed.outputs.packages }}" | tr '\n' ' ')
+          pnpm exec pkg-pr-new publish \
+            --compact \
+            --comment=update \
+            --commentWithSha \
+            --packageManager=pnpm \
+            $PKGS
