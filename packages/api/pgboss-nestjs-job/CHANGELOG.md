@@ -3,6 +3,12 @@
 
 
 
+
+## 5.0.2
+<sub>2026-07-28</sub>
+
+- [#1506](https://github.com/wisemen-digital/wisemen-core/pull/1506)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: remove sentry dependency and move internal packages to peer dependency
+
 ## 5.0.1
 <sub>2026-07-28</sub>
 
