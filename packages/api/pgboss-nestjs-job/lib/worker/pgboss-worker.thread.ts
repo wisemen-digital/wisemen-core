@@ -1,6 +1,4 @@
- 
-import { captureException } from '@sentry/nestjs'
-import { getOtelTracer } from '@wisemen/opentelemetry'
+import { captureException, getOtelTracer } from '@wisemen/opentelemetry'
 import { propagation, context, SpanStatusCode, Context, trace } from '@opentelemetry/api'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
