@@ -1739,8 +1739,8 @@ importers:
         specifier: catalog:backend-peer
         version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@openfeature/go-feature-flag-provider':
-        specifier: 1.3.1
-        version: 1.3.1(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
+        specifier: 1.4.0
+        version: 1.4.0(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
       '@openfeature/nestjs-sdk':
         specifier: 0.2.7
         version: 0.2.7(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))(rxjs@7.8.2)
@@ -6819,11 +6819,11 @@ packages:
   '@openfeature/core@1.11.0':
     resolution: {integrity: sha512-P0u3/ht/oZCQT89fOed+laLk0kZR529a825cS02uPDglxXbE97irWYpDAeRGGVETIzKfuy+H2g8c3Ccv/tXJNQ==}
 
-  '@openfeature/go-feature-flag-provider@1.3.1':
-    resolution: {integrity: sha512-9aAJ0nta5ASj+z/suBRn1gpiPDYOOFh2h00fgIM7wwFzlqFBKWjIaDh9gHByYgkDeW9QFh8+G5O9zuDDZnb3kA==}
+  '@openfeature/go-feature-flag-provider@1.4.0':
+    resolution: {integrity: sha512-4IwyOUrYzUOKVtxyBcAP62yITQziWydqED7mra06+Xx6BIO+z6sAkJKbPzBPiNpelKKiFwt4rNsgkWS25w3JTQ==}
     peerDependencies:
       '@openfeature/core': ^1.9.1
-      '@openfeature/ofrep-provider': 0.2.4
+      '@openfeature/ofrep-provider': ^0.2.4
       '@openfeature/server-sdk': ^1.19.0
 
   '@openfeature/nestjs-sdk@0.2.7':
@@ -18904,7 +18904,7 @@ snapshots:
 
   '@openfeature/core@1.11.0': {}
 
-  '@openfeature/go-feature-flag-provider@1.3.1(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))':
+  '@openfeature/go-feature-flag-provider@1.4.0(@openfeature/core@1.11.0)(@openfeature/ofrep-provider@0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0)))(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))':
     dependencies:
       '@openfeature/core': 1.11.0
       '@openfeature/ofrep-provider': 0.2.4(@openfeature/core@1.11.0)(@openfeature/server-sdk@1.22.0(@openfeature/core@1.11.0))
