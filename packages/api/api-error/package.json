@@ -29,6 +29,9 @@
     "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer"
   },
+  "dependencies": {
+    "change-case": "catalog:backend"
+  },
   "devDependencies": {
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
