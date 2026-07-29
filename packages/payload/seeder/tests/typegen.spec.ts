@@ -26,9 +26,9 @@ describe('buildSeedRegistry', () => {
   ]
 
   it('augments SeedRegistry with sorted collection/global key unions', () => {
-    const out = buildSeedRegistry(definitions, '@repo/payload-seed')
+    const out = buildSeedRegistry(definitions, '@wisemen/payload-core-seeder')
 
-    expect(out).toContain('declare module \'@repo/payload-seed\'')
+    expect(out).toContain('declare module \'@wisemen/payload-core-seeder\'')
     expect(out).toContain('\'posts\': \'launch\'')
     expect(out).toContain('\'services\': \'consulting\' | \'implementation\'')
     expect(out).toContain('globals: \'site-settings\'')
