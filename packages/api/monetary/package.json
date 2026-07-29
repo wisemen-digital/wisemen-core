@@ -51,8 +51,5 @@
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/monetary"
-  },
-  "dependencies": {
-    "@wisemen/nestjs-typeorm": "workspace:*"
   }
 }
