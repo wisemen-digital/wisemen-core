@@ -6,7 +6,7 @@ import {
 } from './refs'
 import type { SeedDefinition } from './types'
 
-export const SEED_PACKAGE = '@repo/payload-seed'
+export const SEED_PACKAGE = '@wisemen/payload-core-seeder'
 
 const tokens = {
   file,
