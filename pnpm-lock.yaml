@@ -1978,13 +1978,13 @@ importers:
         specifier: catalog:backend-peer
         version: 1.9.1
       '@wisemen/api-error':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../api-error
       '@wisemen/nestjs-provider-explorer':
         specifier: workspace:^
         version: link:../nestjs-provider-explorer
       '@wisemen/opentelemetry':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../opentelemetry
       class-transformer:
         specifier: catalog:backend-peer

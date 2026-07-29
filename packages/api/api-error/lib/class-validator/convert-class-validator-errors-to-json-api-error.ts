@@ -1,36 +1,36 @@
 import { HttpStatus } from '@nestjs/common'
 import type { ValidationError } from 'class-validator'
 import { snakeCase } from 'change-case'
+import type { JsonApiErrorContent } from '../api-errors/json-api-error.type.js'
 import { JsonApiError } from '../api-errors/json-api-error.type.js'
 
-const BAD_REQUEST_STATUS = HttpStatus.BAD_REQUEST.toString()
+function convertValidationError (errors: ValidationError[], path = '$'): JsonApiErrorContent[] {
+  const convertedErrors: JsonApiErrorContent[] = []
 
-function getJsonPath (path: string, error: ValidationError): string {
-  if (error.property.length === 0) {
-    return path
+  for (const error of errors) {
+    const isArray = Array.isArray(error.target)
+    const jsonPath = path + (isArray ? `[${error.property}]` : `.${error.property}`)
+
+    if (error.children === undefined || error.children.length === 0) {
+      if (error.constraints !== undefined) {
+        const validationConstraintName = Object.keys(error.constraints)[0]
+
+        convertedErrors.push({
+          source: { pointer: jsonPath },
+          code: `validation_error.${snakeCase(validationConstraintName)}`,
+          detail: Object.values(error.constraints)[0]
+        })
+      }
+    } else {
+      convertedErrors.push(...convertValidationError(error.children, jsonPath))
+    }
   }
 
-  const isArrayItem = Array.isArray(error.target)
-
-  return path + (isArrayItem ? `[${error.property}]` : `.${error.property}`)
-}
-
-function convertValidationError (error: ValidationError, path: string): JsonApiError['errors'] {
-  const jsonPath = getJsonPath(path, error)
-  const constraintErrors = Object.entries(error.constraints ?? {}).map(([constraint, detail]) => ({
-    code: `validation_error.${snakeCase(constraint)}`,
-    detail,
-    source: { pointer: jsonPath },
-    status: BAD_REQUEST_STATUS
-  }))
-  const childErrors = (error.children ?? []).flatMap(child => convertValidationError(child, jsonPath))
-
-  return [...constraintErrors, ...childErrors]
+  return convertedErrors
 }
 
 export function convertClassValidatorErrorsToJsonApiError (errors: ValidationError[]): JsonApiError {
-  return new JsonApiError(
-    HttpStatus.BAD_REQUEST,
-    errors.flatMap(error => convertValidationError(error, '$'))
-  )
+  const errorContents = convertValidationError(errors)
+
+  return new JsonApiError(HttpStatus.BAD_REQUEST, errorContents)
 }

@@ -42,8 +42,7 @@ describe('convertClassValidatorErrorsToJsonApiError', () => {
       {
         code: 'validation_error.is_email',
         detail: 'email must be an email',
-        source: { pointer: '$.email' },
-        status: '400'
+        source: { pointer: '$.email' }
       }
     ])
   })
@@ -73,13 +72,12 @@ describe('convertClassValidatorErrorsToJsonApiError', () => {
       {
         code: 'validation_error.is_not_empty',
         detail: 'name should not be empty',
-        source: { pointer: '$.items[0].name' },
-        status: '400'
+        source: { pointer: '$.items[0].name' }
       }
     ])
   })
 
-  it('keeps multiple constraint errors for the same property', () => {
+  it('uses the first constraint error for a property', () => {
     const error = createValidationError({
       property: 'name',
       target: { name: '' },
@@ -95,14 +93,7 @@ describe('convertClassValidatorErrorsToJsonApiError', () => {
       {
         code: 'validation_error.is_not_empty',
         detail: 'name should not be empty',
-        source: { pointer: '$.name' },
-        status: '400'
-      },
-      {
-        code: 'validation_error.min_length',
-        detail: 'name must be longer than or equal to 3 characters',
-        source: { pointer: '$.name' },
-        status: '400'
+        source: { pointer: '$.name' }
       }
     ])
   })

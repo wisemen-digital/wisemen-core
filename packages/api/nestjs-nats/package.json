@@ -34,9 +34,9 @@
     "@nats-io/nkeys": "catalog:backend",
     "@nats-io/services": "catalog:backend",
     "@nats-io/transport-node": "catalog:backend",
-    "@wisemen/api-error": "workspace:*",
+    "@wisemen/api-error": "workspace:^",
     "@wisemen/nestjs-provider-explorer": "workspace:^",
-    "@wisemen/opentelemetry": "workspace:*"
+    "@wisemen/opentelemetry": "workspace:^"
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
