@@ -1,5 +1,5 @@
 {
-  "name": "@wisemen-core/payload-core-seeder",
+  "name": "@wisemen/payload-core-seeder",
   "version": "0.1.0",
   "private": false,
   "description": "PayloadCMS seeding with locales",
