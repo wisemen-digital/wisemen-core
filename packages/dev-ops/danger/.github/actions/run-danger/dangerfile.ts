@@ -3,8 +3,8 @@
 
 import * as path from 'path'
 import type { DangerDSLType } from 'danger'
-import type { DefaultConfig, Rule } from 'dist/lib/index.js'
-import { runDangerWithRules, defaultConfig } from 'dist/lib/index.js'
+import type { DefaultConfig, Rule } from 'lib/index.js'
+import { runDangerWithRules, defaultConfig } from 'lib/index.js'
 
 const cwd = process.cwd()
 
