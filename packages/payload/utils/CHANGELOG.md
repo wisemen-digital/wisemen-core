@@ -3,6 +3,12 @@
 
 
 
+
+## 0.0.5
+<sub>2026-07-29</sub>
+
+- [#1523](https://github.com/wisemen-digital/wisemen-core/pull/1523)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Fixed some references to @repo instead of the actual package
+
 ## 0.0.4
 <sub>2026-07-17</sub>
 
