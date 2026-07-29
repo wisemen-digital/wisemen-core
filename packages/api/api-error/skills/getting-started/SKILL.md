@@ -86,3 +86,4 @@ export class InvalidEmailError extends BadRequestApiError {
   - CompositeApiError
   - NotFoundCompositeApiError
   - BadRequestCompositeApiError
+  - convertClassValidatorErrorsToJsonApiError
