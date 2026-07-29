@@ -31,7 +31,6 @@
     "@nestjs/swagger": "catalog:backend-peer",
     "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer",
-    "@wisemen/nestjs-typeorm": "workspace:^",
     "typeorm": "catalog:backend-peer"
   },
   "devDependencies": {
