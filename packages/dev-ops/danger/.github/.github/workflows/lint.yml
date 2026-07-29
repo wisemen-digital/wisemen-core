@@ -1,0 +1,19 @@
+---
+name: Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  yaml-lint:
+    name: Lint YAML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lint
+        uses: wisemen-digital/devops-ga-lint-yaml@main

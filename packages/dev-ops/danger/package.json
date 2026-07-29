@@ -1,0 +1,35 @@
+{
+  "name": "@wisemen/danger",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": "Senne Van Reusel",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/danger"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint:eslint": "eslint",
+    "lint": "pnpm run lint:eslint"
+  },
+  "dependencies": {
+    "danger": "catalog:backend"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:^",
+    "eslint": "catalog:lint-api",
+    "eslint-plugin-import-typescript": "catalog:lint-api",
+    "typescript": "catalog:peer"
+  },
+  "peerDependencies": {
+    "danger": "catalog:backend"
+  }
+}
