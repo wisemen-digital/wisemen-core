@@ -5,39 +5,33 @@
  * It exports all rules, the rule runner, and configuration utilities.
  */
 
-import type { DangerDSLType } from 'danger';
+import type { DangerDSLType } from 'danger'
 
-import type { Rule, RuleResult, RuleContext } from './interface.js';
-import { isValidRule, createRule, BaseRule, ResultType } from './interface.js';
-import type { DefaultConfig, RuleConfigs, GlobalConfig, RuleConfig } from './config.js';
-import { defaultConfig, defaultRuleConfigs, mergeConfig } from './config.js';
+import type { Rule, RuleResult, RuleContext } from './interface.js'
+import { isValidRule, createRule, BaseRule, ResultType } from './interface.js'
+import type { DefaultConfig, RuleConfigs, GlobalConfig, RuleConfig } from './config.js'
+import { defaultConfig, defaultRuleConfigs, mergeConfig } from './config.js'
 
 // Import all built-in rules
-import { prSizeRule } from './rules/pr-size.js';
-import { requiredLabelsRule } from './rules/required-labels.js';
-import { noBigFilesRule } from './rules/no-big-files.js';
-import { conventionalCommitsRule } from './rules/conventional-commits.js';
-import { changelogUpdatedRule } from './rules/changelog.js';
+import { conventionalCommitsRule } from './rules/conventional-commits.js'
+import { changelogUpdatedRule } from './rules/changelog.js'
 
 // Danger injects `fail`/`warn`/`message` onto the process `global` at runtime rather than
 // exporting them as real module exports - importing them from 'danger' throws at runtime.
-type DangerReporterFn = (message: string, file?: string, line?: number) => void;
+type DangerReporterFn = (message: string, file?: string, line?: number) => void
 const dangerGlobals = globalThis as unknown as {
-  fail: DangerReporterFn;
-  warn: DangerReporterFn;
-  message: DangerReporterFn;
-};
+  fail: DangerReporterFn
+  warn: DangerReporterFn
+  message: DangerReporterFn
+}
 
 /**
  * All built-in rules
  */
 export const builtInRules: Record<string, Rule> = {
-  'pr-size': prSizeRule,
-  'required-labels': requiredLabelsRule,
-  'no-big-files': noBigFilesRule,
   'conventional-commits': conventionalCommitsRule,
   'changelog-updated': changelogUpdatedRule
-};
+}
 
 /**
  * Load local rules from a directory
@@ -45,24 +39,20 @@ export const builtInRules: Record<string, Rule> = {
  * @param directoryPath - Path to directory containing local rules
  * @returns Promise with object of rules
  */
-export async function loadLocalRules(directoryPath: string): Promise<Record<string, Rule>> {
-  const rules: Record<string, Rule> = {};
+export function loadLocalRules (directoryPath: string): Promise<Record<string, Rule>> {
+  const rules: Record<string, Rule> = {}
 
-  try {
-    // Try to use dynamic import for ESM modules
-    // This is a simplified implementation - in reality, you'd need to:
-    // 1. Read the directory
-    // 2. Import each .js or .ts file
-    // 3. Validate that it's a valid rule
+  // Try to use dynamic import for ESM modules
+  // This is a simplified implementation - in reality, you'd need to:
+  // 1. Read the directory
+  // 2. Import each .js or .ts file
+  // 3. Validate that it's a valid rule
 
-    // For now, we'll return an empty object
-    // A real implementation would use import() with dynamic paths
-    console.log(`Loading local rules from: ${directoryPath}`);
-  } catch (error) {
-    console.warn(`Failed to load local rules from ${directoryPath}:`, error);
-  }
+  // For now, we'll return an empty object
+  // A real implementation would use import() with dynamic paths
+  console.log(`Loading local rules from: ${directoryPath}`)
 
-  return rules;
+  return Promise.resolve(rules)
 }
 
 /**
@@ -70,26 +60,26 @@ export async function loadLocalRules(directoryPath: string): Promise<Record<stri
  * @param localRules - Object with local rules to include
  * @returns Object with all rules
  */
-export function getAllRules(localRules: Record<string, Rule> = {}): Record<string, Rule> {
-  return { ...builtInRules, ...localRules };
+export function getAllRules (localRules: Record<string, Rule> = {}): Record<string, Rule> {
+  return { ...builtInRules, ...localRules }
 }
 
 /**
  * Result of running all rules
  */
 export interface RuleRunnerResult {
-  ruleId: string;
-  ruleName: string;
-  result: RuleResult;
+  ruleId: string
+  ruleName: string
+  result: RuleResult
 }
 
 /**
  * Rule runner interface
  */
 export interface RuleRunner {
-  config: DefaultConfig;
-  run(danger: DangerDSLType, additionalRules?: Record<string, Rule>): Promise<RuleRunnerResult[]>;
-  reportResult(ruleId: string, ruleName: string, result: RuleResult): void;
+  config: DefaultConfig
+  run(danger: DangerDSLType, additionalRules?: Record<string, Rule>): Promise<RuleRunnerResult[]>
+  reportResult(ruleId: string, ruleName: string, result: RuleResult): void
 }
 
 /**
@@ -97,8 +87,8 @@ export interface RuleRunner {
  * @param config - Configuration to use
  * @returns Rule runner object
  */
-export function createRuleRunner(config: Partial<DefaultConfig> = {}): RuleRunner {
-  const mergedConfig = mergeConfig(config);
+export function createRuleRunner (config: Partial<DefaultConfig> = {}): RuleRunner {
+  const mergedConfig = mergeConfig(config)
 
   return {
     config: mergedConfig,
@@ -109,16 +99,17 @@ export function createRuleRunner(config: Partial<DefaultConfig> = {}): RuleRunne
      * @param additionalRules - Additional rules to include
      * @returns Promise with results
      */
-    async run(danger: DangerDSLType, additionalRules: Record<string, Rule> = {}): Promise<RuleRunnerResult[]> {
-      const allRules = getAllRules(additionalRules);
-      const results: RuleRunnerResult[] = [];
+    async run (this: RuleRunner, danger: DangerDSLType, additionalRules: Record<string, Rule> = {}):
+    Promise<RuleRunnerResult[]> {
+      const allRules = getAllRules(additionalRules)
+      const results: RuleRunnerResult[] = []
 
       for (const [ruleId, rule] of Object.entries(allRules)) {
-        const ruleConfig = { ...rule.defaultConfig, ...mergedConfig.rules?.[ruleId] };
+        const ruleConfig = { ...rule.defaultConfig, ...mergedConfig.rules?.[ruleId] }
 
         // Check if rule is enabled
         if (ruleConfig.enabled === false) {
-          continue;
+          continue
         }
 
         try {
@@ -126,31 +117,33 @@ export function createRuleRunner(config: Partial<DefaultConfig> = {}): RuleRunne
             danger,
             config: ruleConfig,
             globalConfig: mergedConfig
-          };
+          }
 
-          const result = await rule.run(context);
-          results.push({ ruleId, ruleName: rule.name, result });
+          const result = await rule.run(context)
+
+          results.push({ ruleId, ruleName: rule.name, result })
 
           // Report the result
-          this.reportResult(ruleId, rule.name, result);
+          this.reportResult(ruleId, rule.name, result)
         } catch (error: unknown) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          console.error(`Error running rule ${ruleId}:`, error);
+          const errorMessage = error instanceof Error ? error.message : String(error)
+
+          console.error(`Error running rule ${ruleId}:`, error)
 
           const result: RuleResult = {
             passed: false,
             message: `Error: ${errorMessage}`,
             type: ResultType.FAIL
-          };
+          }
 
-          results.push({ ruleId, ruleName: rule.name, result });
+          results.push({ ruleId, ruleName: rule.name, result })
 
           // Report the error so it actually surfaces on the PR instead of failing silently
-          this.reportResult(ruleId, rule.name, result);
+          this.reportResult(ruleId, rule.name, result)
         }
       }
 
-      return results;
+      return results
     },
 
     /**
@@ -159,21 +152,23 @@ export function createRuleRunner(config: Partial<DefaultConfig> = {}): RuleRunne
      * @param ruleName - The rule name
      * @param result - The rule result
      */
-    reportResult(ruleId: string, ruleName: string, result: RuleResult): void {
-      const msg = `[${ruleName}] ${result.message}`;
+    reportResult (_ruleId: string, ruleName: string, result: RuleResult): void {
+      const msg = `[${ruleName}] ${result.message}`
 
       switch (result.type) {
         case ResultType.FAIL:
-          dangerGlobals.fail(msg);
-          break;
+          dangerGlobals.fail(msg)
+
+          break
         case ResultType.WARN:
-          dangerGlobals.warn(msg);
-          break;
+          dangerGlobals.warn(msg)
+
+          break
         default:
-          dangerGlobals.message(msg);
+          dangerGlobals.message(msg)
       }
     }
-  };
+  }
 }
 
 /**
@@ -185,23 +180,24 @@ export function createRuleRunner(config: Partial<DefaultConfig> = {}): RuleRunne
  * @param localRules - Local rules to include (optional)
  * @returns Promise
  */
-export async function runDangerWithRules(
+export async function runDangerWithRules (
   danger: DangerDSLType,
   userConfig: Partial<DefaultConfig> = {},
   localRules: Record<string, Rule> = {}
 ): Promise<void> {
-  const runner = createRuleRunner(userConfig);
-  await runner.run(danger, localRules);
+  const runner = createRuleRunner(userConfig)
+
+  await runner.run(danger, localRules)
 }
 
 // Re-export everything for convenience
-export { defaultConfig, defaultRuleConfigs, mergeConfig };
-export type { DefaultConfig, GlobalConfig, RuleConfig, RuleConfigs };
-export { isValidRule, createRule, BaseRule, ResultType };
-export type { Rule, RuleResult, RuleContext };
+export { defaultConfig, defaultRuleConfigs, mergeConfig }
+export type { DefaultConfig, GlobalConfig, RuleConfig, RuleConfigs }
+export { isValidRule, createRule, BaseRule, ResultType }
+export type { Rule, RuleResult, RuleContext }
 
 // Export for CommonJS compatibility
-if (typeof module !== 'undefined' && module.exports) {
+if (typeof module !== 'undefined') {
   module.exports = {
     runDangerWithRules,
     createRuleRunner,
@@ -214,5 +210,5 @@ if (typeof module !== 'undefined' && module.exports) {
     isValidRule,
     createRule,
     BaseRule
-  };
+  }
 }

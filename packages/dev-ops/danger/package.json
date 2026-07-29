@@ -16,6 +16,8 @@
     "access": "public"
   },
   "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
     "lint:eslint": "eslint",
     "lint": "pnpm run lint:eslint"
   },
@@ -24,10 +26,10 @@
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
-    "@wisemen/eslint-config-nestjs": "workspace:^",
-    "eslint": "catalog:lint-api",
     "eslint-plugin-import-typescript": "catalog:lint-api",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "@wisemen/eslint-config-nestjs": "0.2.10",
+    "eslint": "9.39.4"
   },
   "peerDependencies": {
     "danger": "catalog:backend"

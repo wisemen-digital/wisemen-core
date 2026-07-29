@@ -1,26 +1,47 @@
 {
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": ".",
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "resolveJsonModule": true,
-    "types": ["node"],
-    "allowJs": true,
-    "strict": true,
-    "noImplicitThis": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "lib/*": ["./lib/*"]
+    },
     "declaration": true,
-    "incremental": true,
+    "target": "esnext",
+    "module": "NodeNext",
+    "types": [
+      "node",
+    ],
+    "moduleResolution": "nodenext",
+    "sourceMap": true,
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictNullChecks": true
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true
   },
-  "include": ["eslint.config.js", "./**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "./index.ts",
+    "./lib/**/*.ts",
+    "./**/*"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./dist",
+    "./lib/test-utils.ts",
+    "./lib/**/*.spec.ts"
+  ],
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "typedocOptions": {
+    "entryPoints": [
+      "./index.ts",
+      "./lib"
+    ],
+    "entryPointStrategy": "expand",
+    "out": "../../documentation/client"
+  }
 }

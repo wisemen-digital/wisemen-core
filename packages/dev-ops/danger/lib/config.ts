@@ -1,32 +1,32 @@
 /**
  * Default configuration for all rules
- * 
+ *
  * This configuration is used when no explicit configuration is provided.
  * Client repositories can override these defaults in their Dangerfile.
  */
 
 // Type for individual rule configuration
 export interface RuleConfig {
-  enabled?: boolean;
-  [key: string]: unknown;
+  enabled?: boolean
+  [key: string]: unknown
 }
 
 // Type for all rule configurations
 export interface RuleConfigs {
-  [ruleId: string]: RuleConfig;
+  [ruleId: string]: RuleConfig
 }
 
 // Type for global configuration
 export interface GlobalConfig {
-  failOnError?: boolean;
-  postReview?: boolean;
-  deleteOldComments?: boolean;
-  commentPrefix?: string;
+  failOnError?: boolean
+  postReview?: boolean
+  deleteOldComments?: boolean
+  commentPrefix?: string
 }
 
 // Type for full configuration
 export interface DefaultConfig extends GlobalConfig {
-  rules: RuleConfigs;
+  rules: RuleConfigs
 }
 
 // Default config for each built-in rule
@@ -40,7 +40,7 @@ export const defaultRuleConfigs = {
   'changelog-updated': {
     enabled: true
   }
-} as const;
+} as const
 
 /**
  * Global default configuration
@@ -54,7 +54,7 @@ export const defaultGlobalConfig: GlobalConfig = {
   deleteOldComments: true,
   // Prefix for Danger comments
   commentPrefix: '🚨 Danger'
-};
+}
 
 /**
  * Full default configuration
@@ -62,40 +62,40 @@ export const defaultGlobalConfig: GlobalConfig = {
 export const defaultConfig: DefaultConfig = {
   ...defaultGlobalConfig,
   rules: { ...defaultRuleConfigs }
-};
+}
 
 /**
  * Merge user config with defaults
  * @param userConfig - Partial configuration to merge with defaults
  * @returns Merged configuration
  */
-export function mergeConfig(userConfig: Partial<DefaultConfig> = {}): DefaultConfig {
-  const merged: DefaultConfig = { ...defaultConfig };
-  
+export function mergeConfig (userConfig: Partial<DefaultConfig> = {}): DefaultConfig {
+  const merged: DefaultConfig = { ...defaultConfig }
+
   // Merge global config
   if (userConfig.failOnError !== undefined) {
-    merged.failOnError = userConfig.failOnError;
+    merged.failOnError = userConfig.failOnError
   }
   if (userConfig.postReview !== undefined) {
-    merged.postReview = userConfig.postReview;
+    merged.postReview = userConfig.postReview
   }
   if (userConfig.deleteOldComments !== undefined) {
-    merged.deleteOldComments = userConfig.deleteOldComments;
+    merged.deleteOldComments = userConfig.deleteOldComments
   }
   if (userConfig.commentPrefix !== undefined) {
-    merged.commentPrefix = userConfig.commentPrefix;
+    merged.commentPrefix = userConfig.commentPrefix
   }
-  
+
   // Merge rule configs
   if (userConfig.rules) {
     for (const [ruleId, ruleConfig] of Object.entries(userConfig.rules)) {
-      if (merged.rules[ruleId]) {
-        merged.rules[ruleId] = { ...merged.rules[ruleId], ...ruleConfig };
+      if (ruleId in merged.rules) {
+        merged.rules[ruleId] = { ...merged.rules[ruleId], ...ruleConfig }
       } else {
-        merged.rules[ruleId] = ruleConfig as RuleConfig;
+        merged.rules[ruleId] = ruleConfig
       }
     }
   }
-  
-  return merged;
+
+  return merged
 }

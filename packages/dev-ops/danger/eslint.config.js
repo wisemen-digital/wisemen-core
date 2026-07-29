@@ -1,10 +1,12 @@
-/* oxlint-disable custom-rules/no-relative-import */
-import importX from './configs/imports.js'
-import defaultConfig from './configs/default.js'
+import eslintNestJSConfig from '@wisemen/eslint-config-nestjs'
 
-/**
- * @type {import('eslint').Linter.Config[]}
- */
-const config = [...defaultConfig, ...importX]
-
-export default config
+export default [
+  ...eslintNestJSConfig,
+  {
+    files: ['**/*.test.ts'],
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-floating-promises': 'off'
+    }
+  }
+]

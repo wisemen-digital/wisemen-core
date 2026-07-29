@@ -1,11 +1,11 @@
 /**
  * Rule Interface for Danger Rules
- * 
+ *
  * Each rule must conform to this interface to be compatible with the rules runner.
  */
 
-import type { DangerDSLType } from 'danger';
-import type { DefaultConfig, RuleConfig } from './config.js';
+import type { DangerDSLType } from 'danger'
+import type { DefaultConfig, RuleConfig } from './config.js'
 
 // Enum for rule result types
 export enum ResultType {
@@ -16,25 +16,25 @@ export enum ResultType {
 
 // Type for rule result
 export interface RuleResult {
-  passed: boolean;
-  message?: string;
-  type?: ResultType;
+  passed: boolean
+  message?: string
+  type?: ResultType
 }
 
 // Type for rule context
 export interface RuleContext {
-  danger: DangerDSLType;
-  config: RuleConfig;
-  globalConfig: DefaultConfig;
+  danger: DangerDSLType
+  config: RuleConfig
+  globalConfig: DefaultConfig
 }
 
 // Type for a rule
 export interface Rule {
-  id: string;
-  name: string;
-  description: string;
-  defaultConfig: RuleConfig;
-  run(context: RuleContext): Promise<RuleResult>;
+  id: string
+  name: string
+  description: string
+  defaultConfig: RuleConfig
+  run(context: RuleContext): Promise<RuleResult>
 }
 
 /**
@@ -42,10 +42,10 @@ export interface Rule {
  * This is optional - rules can be plain objects as long as they conform to the interface
  */
 export class BaseRule implements Rule {
-  id: string;
-  name: string;
-  description: string;
-  defaultConfig: RuleConfig;
+  id: string
+  name: string
+  description: string
+  defaultConfig: RuleConfig
 
   /**
    * @param id - Unique identifier
@@ -53,11 +53,11 @@ export class BaseRule implements Rule {
    * @param description - Description
    * @param defaultConfig - Default configuration
    */
-  constructor(id: string, name: string, description: string, defaultConfig: RuleConfig = {}) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.defaultConfig = defaultConfig;
+  constructor (id: string, name: string, description: string, defaultConfig: RuleConfig = {}) {
+    this.id = id
+    this.name = name
+    this.description = description
+    this.defaultConfig = defaultConfig
   }
 
   /**
@@ -65,8 +65,8 @@ export class BaseRule implements Rule {
    * @param context - The rule context
    * @returns Promise with the rule result
    */
-  async run(context: RuleContext): Promise<RuleResult> {
-    throw new Error(`Rule ${this.id} must implement run() method`);
+  run (_context: RuleContext): Promise<RuleResult> {
+    throw new Error(`Rule ${this.id} must implement run() method`)
   }
 }
 
@@ -79,7 +79,7 @@ export class BaseRule implements Rule {
  * @param defaultConfig - Default configuration for the rule
  * @returns A valid Rule object
  */
-export function createRule(
+export function createRule (
   id: string,
   name: string,
   description: string,
@@ -92,7 +92,7 @@ export function createRule(
     description,
     defaultConfig,
     run
-  };
+  }
 }
 
 /**
@@ -100,14 +100,14 @@ export function createRule(
  * @param rule - The rule to validate
  * @returns true if the rule is valid
  */
-export function isValidRule(rule: unknown): rule is Rule {
+export function isValidRule (rule: unknown): rule is Rule {
   return (
-    typeof rule === 'object' &&
-    rule !== null &&
-    typeof (rule as Rule).id === 'string' &&
-    typeof (rule as Rule).name === 'string' &&
-    typeof (rule as Rule).description === 'string' &&
-    typeof (rule as Rule).defaultConfig === 'object' &&
-    typeof (rule as Rule).run === 'function'
-  );
+    typeof rule === 'object'
+    && rule !== null
+    && typeof (rule as Rule).id === 'string'
+    && typeof (rule as Rule).name === 'string'
+    && typeof (rule as Rule).description === 'string'
+    && typeof (rule as Rule).defaultConfig === 'object'
+    && typeof (rule as Rule).run === 'function'
+  )
 }

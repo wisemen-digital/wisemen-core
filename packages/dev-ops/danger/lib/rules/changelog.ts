@@ -1,4 +1,5 @@
-import { createRule, ResultType } from '../interface.js';
+import type { GitHubPRDSL } from 'danger'
+import { createRule, ResultType } from 'lib/interface.js'
 
 const CHANGELOG_PATH = 'apps/api/CHANGELOG.md'
 
@@ -18,21 +19,23 @@ export const changelogUpdatedRule = createRule(
   'Changelog Updated',
   'Checks if the changelog file has been updated in the pull request',
   async ({ danger, config }) => {
-
     const changelogPath = (config.changelogPath as string | undefined) ?? CHANGELOG_PATH
-    const changeLogTemplate = (config.changelogEntryTemplate as string | undefined) ?? ENTRY_TEMPLATE
+    const changeLogTemplate = (config.changelogEntryTemplate as string | undefined)
+      ?? ENTRY_TEMPLATE
 
-    const { git, github } = danger;
-    const pr = github?.pr;
+    const { github } = danger
+    // `danger.github` is typed as always-present for DSL convenience, but is actually
+    // undefined when Danger isn't running against a GitHub PR.
+    const pr = github?.pr as GitHubPRDSL | undefined
 
-    if (!pr) {
-      return { passed: true, message: 'Not a pull request, skipping file size check' };
+    if (pr == null) {
+      return { passed: true, message: 'Not a pull request, skipping file size check' }
     }
 
-     const diff = await danger.git.diffForFile(changelogPath)
+    const diff = await danger.git.diffForFile(changelogPath)
 
     if (!diff) {
-      return { passed: false, message: `**CHANGELOG not updated.** Add an entry to \`${changelogPath}\`:\n\n` + changeLogTemplate, type: ResultType.FAIL };
+      return { passed: false, message: `**CHANGELOG not updated.** Add an entry to \`${changelogPath}\`:\n\n` + changeLogTemplate, type: ResultType.FAIL }
     }
 
     const [, latestEntry = ''] = diff.after.split(/^##\s+/m)
@@ -49,8 +52,8 @@ export const changelogUpdatedRule = createRule(
     }
 
     return { passed: true, message: 'CHANGELOG entry looks complete.' }
-  },{
+  }, {
     changelogPath: CHANGELOG_PATH,
     changelogEntryTemplate: ENTRY_TEMPLATE
   }
-);
+)

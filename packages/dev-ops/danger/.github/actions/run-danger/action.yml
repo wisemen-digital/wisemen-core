@@ -17,6 +17,6 @@ runs:
         fi
     - name: Run Danger
       shell: bash
-      run: danger ci --dangerfile ${{ github.action_path }}/Dangerfile.ts
+      run: danger ci --dangerfile ${{ github.action_path }}/dangerfile.ts
       env:
         GITHUB_TOKEN: ${{ inputs.github-access-token }}
