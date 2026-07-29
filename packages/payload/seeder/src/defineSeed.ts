@@ -8,11 +8,13 @@ import {
   ref,
 } from './refs'
 import type {
+  CollectionSeedData,
+  CollectionSeedDefinition,
   DefinitionFor,
-  ExactFor,
+  GlobalSeedData,
+  GlobalSeedDefinition,
   SeedDefinitionOptions,
   SeedTokens,
-  ShapeFor,
 } from './types'
 
 const tokens = {
@@ -20,9 +22,21 @@ const tokens = {
   ref,
 }
 
-export function defineSeed<TSlug extends CollectionSlug | GlobalSlug, const T extends ShapeFor<TSlug>>(
+export function defineSeed<TSlug extends CollectionSlug>(
   slug: TSlug,
-  build: (tokens: SeedTokens) => ExactFor<T, ShapeFor<TSlug>>,
+  build: (tokens: SeedTokens) => Array<CollectionSeedData<TSlug>>,
+  opts?: SeedDefinitionOptions,
+): CollectionSeedDefinition<TSlug>
+
+export function defineSeed<TSlug extends GlobalSlug>(
+  slug: TSlug,
+  build: (tokens: SeedTokens) => GlobalSeedData<TSlug>,
+  opts?: SeedDefinitionOptions,
+): GlobalSeedDefinition<TSlug>
+
+export function defineSeed<TSlug extends CollectionSlug | GlobalSlug>(
+  slug: TSlug,
+  build: (tokens: SeedTokens) => Array<CollectionSeedData<CollectionSlug>> | GlobalSeedData<GlobalSlug>,
   opts?: SeedDefinitionOptions,
 ): DefinitionFor<TSlug> {
   let built: unknown
