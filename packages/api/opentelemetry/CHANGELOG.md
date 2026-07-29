@@ -4,6 +4,12 @@
 
 
 
+
+## 0.2.7
+<sub>2026-07-29</sub>
+
+- [#1519](https://github.com/wisemen-digital/wisemen-core/pull/1519)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added correct semantic convention and added more error options
+
 ## 0.2.6
 <sub>2026-07-28</sub>
 
