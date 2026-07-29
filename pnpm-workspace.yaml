@@ -348,11 +348,13 @@ catalogs:
     "cookies-next": "6.1.1"
     "pkce-challenge": "6.0.0"
     "jose": "6.2.3"
+    react-dom: 19.2.7
   payload-peer:
     "@payloadcms/ui": ">=3.85.0"
     payload: ">=3.85.0"
     next: ">=16.2.6"
     react: ">=19.2.7"
+    react-dom: ">=19.2.7"
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"
