@@ -1,0 +1,52 @@
+<script setup lang="ts">
+import {
+  useDateTimeConfig,
+  useDateTimeFormat,
+} from '@wisemen/vue-core-dates'
+import { computed } from 'vue'
+
+import type { DataTableTimestampCell } from '@/ui/data-table/types/dataTableCell.type'
+
+const props = defineProps<DataTableTimestampCell>()
+
+const dateFormat = useDateTimeFormat()
+const dateConfig = useDateTimeConfig()
+
+function toYear(value: NonNullable<DataTableTimestampCell['value']>): string {
+  const zonedDateTime = value.toZonedDateTimeISO(dateConfig.timeZone.value)
+
+  return new Intl.DateTimeFormat(dateConfig.locale.value, {
+    timeZone: dateConfig.timeZone.value,
+    year: 'numeric',
+  }).format(zonedDateTime.epochMilliseconds)
+}
+
+const displayValue = computed<string>(() => {
+  if (props.value === null) {
+    return ''
+  }
+
+  if (props.isRelative === true) {
+    return dateFormat.toRelativeTime(props.value)
+  }
+
+  switch (props.granularity) {
+    case 'year':
+      return toYear(props.value)
+    case 'month':
+      return dateFormat.toMonthAndYear(props.value)
+    case 'day':
+      return dateFormat.toDate(props.value)
+    case 'second':
+      return dateFormat.toDateTime(props.value, true)
+    default:
+      return dateFormat.toDateTime(props.value, false)
+  }
+})
+</script>
+
+<template>
+  <span class="truncate text-xs text-primary tabular-nums">
+    {{ displayValue }}
+  </span>
+</template>

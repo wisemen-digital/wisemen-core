@@ -7,6 +7,7 @@ publicHoistPattern:
 
 catalog:
   "@tanstack/vue-hotkeys": ^0.10.0
+  "@tanstack/vue-table": ^8.21.3
   "@tanstack/vue-virtual": ^3.13.24
   "@wisemen/eslint-config-nestjs": ^1.1.1
   superjson: "2.2.6"
