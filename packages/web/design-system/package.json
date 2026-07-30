@@ -57,7 +57,7 @@
     "@tanstack/vue-virtual": "^3.0.0",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
-    "@wisemen/vue-core-actions": "workspace:^",
+    "@wisemen/vue-core-actions": "workspace:>=0.2.2",
     "@wisemen/vue-core-dates": "workspace:^",
     "formango": "workspace:^",
     "motion-v": "catalog:peer",
