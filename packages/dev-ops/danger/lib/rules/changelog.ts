@@ -1,5 +1,5 @@
 import type { GitHubPRDSL } from 'danger'
-import { createRule, ResultType } from 'lib/interface.js'
+import { createRule, ResultType } from '../interface.js'
 
 const CHANGELOG_PATH = 'apps/api/CHANGELOG.md'
 

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "noEmit": true,
     "declaration": false,
-    "incremental": false
+    "incremental": false,
+    "allowImportingTsExtensions": true
   },
   "include": ["dangerfile.ts"]
 }

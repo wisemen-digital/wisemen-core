@@ -11,9 +11,11 @@ runs:
     - name: Install @wisemen/danger (if not already in dependencies)
       shell: bash
       run: |
-        # Check if @wisemen/danger is already installed via pnpm
+        # danger's CLI bin must be a direct dependency of the consumer project -
+        # pnpm only links bins for direct deps into node_modules/.bin, so
+        # pnpm exec can't find it if it's only a transitive dep of @wisemen/danger.
         if ! pnpm list @wisemen/danger >/dev/null 2>&1; then
-          pnpm add @wisemen/danger
+          pnpm add danger @wisemen/danger
         fi
     - name: Run Danger
       shell: bash

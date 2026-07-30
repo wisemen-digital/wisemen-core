@@ -3,7 +3,7 @@
  * Checks if commit messages follow conventional commits convention
  */
 
-import { createRule, ResultType } from 'lib/interface.js'
+import { createRule, ResultType } from '../interface.js'
 
 // Regex pattern for conventional commits
 // format: <type>(<optional scope>): <description>
