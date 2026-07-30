@@ -1,11 +1,11 @@
 <script setup lang="ts" generic="TValue extends SelectValue | SelectValue[]">
-import { useBreakpoints } from '@vueuse/core'
 import {
   computed,
   watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useIsMobileViewport } from '@/composables/isMobileViewport.composable'
 import {
   AUTOCOMPLETE_INPUT_DEFAULTS,
   INPUT_DEFAULTS,
@@ -66,10 +66,7 @@ const {
 
 const i18n = useI18n()
 
-const screen = useBreakpoints({
-  md: 768,
-})
-const isMobileDrawer = screen.smaller('md')
+const isMobileDrawer = useIsMobileViewport()
 
 type SelectPopoverProps = Pick<
   PopoverProps,
@@ -173,6 +170,7 @@ useProvideSelectContext({
         :limit="props.limit"
         :has-virtual-scroll="props.hasVirtualScroll"
         :content-width-class="props.contentWidthClass"
+        :is-mobile-drawer="isMobileDrawer"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"
       />

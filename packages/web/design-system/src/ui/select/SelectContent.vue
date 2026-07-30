@@ -33,6 +33,7 @@ import { isMobileDevice } from '@/utils/device.util'
 const props = withDefaults(defineProps<SelectContentProps<TValue>>(), {
   hasVirtualScroll: false,
   isLoading: false,
+  isMobileDrawer: false,
   getItemKey: null,
   limit: null,
   search: null,
@@ -159,11 +160,13 @@ onBeforeUnmount(() => {
     :highlight-on-hover="true"
     :multiple="isMultiple(modelValue)"
     :selection-behavior="isMultiple(modelValue) ? 'toggle' : 'replace'"
-    :class="props.contentWidthClass"
-    class="
-      flex max-h-[min(var(--reka-popover-content-available-height),32rem)]
-      flex-col overflow-hidden
-    "
+    :class="[
+      props.contentWidthClass,
+      props.isMobileDrawer
+        ? 'max-h-full'
+        : 'max-h-[min(var(--reka-popover-content-available-height),32rem)]',
+    ]"
+    class="flex min-h-0 flex-col overflow-hidden"
   >
     <div
       v-if="props.search !== null"

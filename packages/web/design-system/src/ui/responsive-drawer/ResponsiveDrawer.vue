@@ -97,7 +97,7 @@ function onAutoFocusOnClose(event: Event): void {
             zIndex: drawerZIndex,
           }"
           class="
-            fixed inset-x-0 bottom-0 flex h-[95dvh] max-h-[95dvh] flex-col
+            fixed inset-x-0 bottom-0 flex max-h-[95dvh] flex-col
             will-change-transform outline-none
           "
           data-animation="drawer-content"
@@ -108,7 +108,7 @@ function onAutoFocusOnClose(event: Event): void {
         >
           <div
             class="
-              relative flex h-full flex-col overflow-hidden rounded-t-lg
+              relative flex max-h-full flex-col overflow-hidden rounded-t-lg
               border-x border-t border-secondary bg-primary
               pb-[env(safe-area-inset-bottom)] shadow-lg
             "

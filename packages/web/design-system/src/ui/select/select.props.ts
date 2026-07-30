@@ -102,4 +102,13 @@ export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pic
   | 'items'
   | 'limit'
   | 'search'
-> & { contentWidthClass?: string }
+> & {
+  /**
+   * When true, renders inline inside a `ResponsiveDrawer` instead of a positioned popover.
+   * The popover-only `--reka-popover-content-available-height` variable isn't available there,
+   * so the max-height needs a drawer-appropriate fallback.
+   * @default false
+   */
+  isMobileDrawer?: boolean
+  contentWidthClass?: string
+}
