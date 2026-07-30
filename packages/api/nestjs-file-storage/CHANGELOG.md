@@ -1,5 +1,17 @@
 # @wisemen/nestjs-file-storage
 
+
+
+## 0.3.2
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.3.1
+<sub>2026-07-24</sub>
+
+- [#1463](https://github.com/wisemen-digital/wisemen-core/pull/1463)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add createUploadWritable on file storage
+
 ## 0.3.0
 
 ### Minor Changes

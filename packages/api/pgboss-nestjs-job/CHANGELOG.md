@@ -1,5 +1,30 @@
 # @wisemen/pgboss-nestjs-job
 
+
+
+
+
+## 5.0.2
+<sub>2026-07-28</sub>
+
+- [#1506](https://github.com/wisemen-digital/wisemen-core/pull/1506)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: remove sentry dependency and move internal packages to peer dependency
+
+## 5.0.1
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 5.0.0
+<sub>2026-07-24</sub>
+
+- [#1490](https://github.com/wisemen-digital/wisemen-core/pull/1490)  *(major)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove serializable constraint from base job data
+- [#1490](https://github.com/wisemen-digital/wisemen-core/pull/1490)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove base job data
+
+## 4.0.10
+<sub>2026-07-13</sub>
+
+- [#1417](https://github.com/wisemen-digital/wisemen-core/pull/1417)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added a shared NestJS provider explorer package and migrated existing packages to use it.
+
 ## 4.0.9
 
 ### Patch Changes

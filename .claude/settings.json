@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "bumpy@vue-core-local": true
+  }
+}

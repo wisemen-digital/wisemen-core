@@ -1,6 +1,7 @@
 /* eslint-disable e18e/prefer-static-regex */
 import type { Field } from 'payload'
 
+import { t } from '#i18n/index.ts'
 import type {
   TranslationAdapter,
   TranslationAdapterArgs,
@@ -14,22 +15,30 @@ export interface DeepLTranslateAdapterOptions {
 
 export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 
+const MAX_CONCURRENT_DEEPL_REQUESTS = 25
+
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
     name: 'apiKey',
-    label: 'API key',
+    label: t('general.api_key'),
     type: 'text',
   },
   {
     name: 'apiURL',
-    label: 'API URL',
+    label: t('general.api_url'),
     type: 'text',
   },
 ]
 
 export class DeepLTranslateAdapter implements TranslationAdapter {
+  private activeRequests = 0
   private readonly apiKey?: string
   private readonly apiURL: string
+  private readonly pendingRequests: Array<{
+    args: TranslationAdapterArgs
+    reject: (reason?: unknown) => void
+    resolve: (value: string) => void
+  }> = []
 
   public constructor({
     apiKey, apiURL = 'https://api.deepl.com/v2/translate',
@@ -48,15 +57,29 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
       .join('-')
   }
 
-  public async translate({
+  private processPendingRequests(): void {
+    while (this.activeRequests < MAX_CONCURRENT_DEEPL_REQUESTS && this.pendingRequests.length > 0) {
+      const pendingRequest = this.pendingRequests.shift()
+
+      if (!pendingRequest) {
+        return
+      }
+
+      this.activeRequests += 1
+      void this.translateRequest(pendingRequest.args)
+        .then(pendingRequest.resolve, pendingRequest.reject)
+        .finally(() => {
+          this.activeRequests -= 1
+          this.processPendingRequests()
+        })
+    }
+  }
+
+  private async translateRequest({
     sourceLocale,
     targetLocale,
     text,
   }: TranslationAdapterArgs): Promise<string> {
-    if (!text.trim()) {
-      return text
-    }
-
     const response = await fetch(this.apiURL, {
       body: JSON.stringify({
         source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
@@ -90,6 +113,22 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
 
     return translatedText
   }
+
+  public translate(args: TranslationAdapterArgs): Promise<string> {
+    if (!args.text.trim()) {
+      return Promise.resolve(args.text)
+    }
+
+    return new Promise((resolve, reject) => {
+      this.pendingRequests.push({
+        args,
+        reject,
+        resolve,
+      })
+
+      this.processPendingRequests()
+    })
+  }
 }
 
 function sanitizeUrlInput(url: string): string {
@@ -104,5 +143,5 @@ export const deeplTranslateAdapterDefinition: TranslationAdapterDefinition<DeepL
   create: (options) => createDeepLTranslateAdapter(options),
   fields: DEEPL_TRANSLATE_ADAPTER_FIELDS,
   key: DEEPL_TRANSLATE_ADAPTER_KEY,
-  label: 'DeepL',
+  label: t('general.deep_l'),
 }

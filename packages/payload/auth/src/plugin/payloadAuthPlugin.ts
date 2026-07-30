@@ -25,28 +25,38 @@ function mergePublicAuthConfig(
 export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   isUserAllowed,
   authConfig,
+  canLogin,
   createFirstUser,
+  operationsToCreate,
   provider,
   shouldSkipUserSync,
+  strategyName,
   tenantCollectionSlug,
   tokenRefreshBufferMs,
   userCollectionSlug,
+  verificationUrlTemplate,
 }: CreatePayloadAuthPluginParams<TUser>): PayloadAuthPluginResult {
   const strategy = provider.createStrategy({
     isUserAllowed,
-    createFirstUser: createFirstUser ?? {
-      tenantCollectionSlug,
-      userData: ({
-        email,
-      }) => ({
-        email,
-      }),
-    },
+    canLogin,
+    createFirstUser: createFirstUser === false
+      ? undefined
+      : createFirstUser ?? {
+        tenantCollectionSlug,
+        userData: ({
+          email,
+        }) => ({
+          email,
+        }),
+      },
+    strategyName,
     userCollectionSlug,
   })
 
   const userHook = provider.createUserHook({
+    operationsToCreate,
     shouldSkip: shouldSkipUserSync,
+    verificationUrlTemplate,
   })
 
   const publicAuth = provider.getPublicConfig()

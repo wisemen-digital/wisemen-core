@@ -36,6 +36,8 @@ watch(chinContentRef, (el, _oldEl, onCleanup) => {
     return
   }
 
+  chinHeight.value = el.getBoundingClientRect().height
+
   const observer = new ResizeObserver((
     [
       entry,

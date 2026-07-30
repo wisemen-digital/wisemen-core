@@ -51,9 +51,6 @@ const iconClasses = computed(() => iconVariantStyle({
   variant: props.iconVariant,
 }))
 
-const hasSeparator = computed<boolean>(
-  () => props.showSeparator !== undefined ? props.showSeparator : props.hasSeparator,
-)
 const isDescriptionHidden = computed<boolean>(
   () => props.isDescriptionHidden || props.hideDescription === true,
 )
@@ -110,7 +107,7 @@ const dialogContext = useInjectDialogContext(null)
     </RowLayout>
 
     <UISeparator
-      v-if="hasSeparator"
+      v-if="props.hasSeparator"
       :class="
         dialogContext !== null && dialogContext.isScrolledToTop.value
           ? 'opacity-0'

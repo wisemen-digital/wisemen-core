@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/payload-core-auth",
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.2.1",
   "private": false,
   "imports": {
     "#*": "./src/*"

@@ -4,7 +4,10 @@ import {
   DropdownMenuSubContent as RekaDropdownMenuSubContent,
 } from 'reka-ui'
 
+import { useMenuAutoHighlight } from '@/composables/menuAutoHighlight.composable'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
+
+const menuAutoHighlight = useMenuAutoHighlight()
 </script>
 
 <template>
@@ -19,6 +22,7 @@ import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
           origin-(--reka-dropdown-menu-content-transform-origin)
           will-change-[transform,opacity]
         "
+        @open-auto-focus="menuAutoHighlight.onOpenAutoFocus"
       >
         <div
           class="

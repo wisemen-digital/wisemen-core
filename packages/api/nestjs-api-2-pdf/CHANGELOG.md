@@ -1,6 +1,18 @@
 # @wisemen/nestjs-api-2-pdf
 
 
+
+
+## 0.2.3
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.2.2
+<sub>2026-07-10</sub>
+
+- [#1393](https://github.com/wisemen-digital/wisemen-core/pull/1393)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - add optional ensureReachable option for url to pdf
+
 ## 0.2.1
 <sub>2026-06-16</sub>
 

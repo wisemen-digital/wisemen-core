@@ -3,6 +3,7 @@ import { useInfiniteScroll } from '@vueuse/core'
 import {
   computed,
   ref,
+  watch,
 } from 'vue'
 
 import { useTableColumnWidths } from '@/ui/table/composables/tableColumnWidths.composable'
@@ -84,6 +85,14 @@ useInfiniteScroll(scrollContainerEl, () => {
   offset: {
     bottom: 400,
   },
+})
+
+watch(isScrollableVertically, (canScrollVertically) => {
+  if (!canScrollVertically && props.isInitialized) {
+    props.onNextPage?.()
+  }
+}, {
+  immediate: true,
 })
 
 useProvideTableContext({

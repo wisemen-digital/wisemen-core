@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/opentelemetry",
-  "version": "0.2.3",
+  "version": "0.2.7",
   "publishConfig": {
     "access": "public"
   },
@@ -47,6 +47,7 @@
     "@opentelemetry/sdk-trace-base": "catalog:backend"
   },
   "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
     "@opentelemetry/api-logs": "catalog:backend-peer",
     "reflect-metadata": "catalog:backend-peer"

@@ -45,11 +45,31 @@ const propsData = [
     "type": "Component | null"
   },
   {
+    "description": "<p>The color of the icon. Overrides the color otherwise derived from <code>color</code>/<code>variant</code>.\nOnly applies to the deprecated <code>icon</code> prop — for <code>left</code>, set <code>color</code> on the icon config itself.</p>\n",
+    "name": "iconColor",
+    "required": false,
+    "type": "BadgeColor"
+  },
+  {
+    "default": "false",
+    "description": "<p>Whether the badge is disabled. Purely presentational — dims the badge and suppresses\nthe actions hover overlay. Badges are not interactive, so there is no <code>disabledReason</code>.</p>\n",
+    "name": "isDisabled",
+    "required": false,
+    "type": "boolean"
+  },
+  {
     "default": "null",
     "description": "<p>The text label displayed inside the badge.</p>\n",
     "name": "label",
     "required": false,
     "type": "string | null"
+  },
+  {
+    "default": "null",
+    "description": "<p>Content displayed on the left of the label. Supersedes <code>icon</code>, <code>dot</code>, and <code>avatar</code> when set.</p>\n",
+    "name": "left",
+    "required": false,
+    "type": "BadgeLeftConfig | null"
   },
   {
     "default": "null",
@@ -81,7 +101,7 @@ const propsData = [
   },
   {
     "default": "\"translucent\"",
-    "description": "<p>The visual style variant of the badge.</p>\n",
+    "description": "<p>The visual style variant of the badge.</p>\n<p><code>'outline'</code> is deprecated — prefer <code>'solid'</code> or <code>'translucent'</code>.</p>\n",
     "name": "variant",
     "required": false,
     "type": "\"translucent\" | \"outline\" | \"solid\""

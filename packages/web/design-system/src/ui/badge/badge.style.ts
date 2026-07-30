@@ -470,6 +470,41 @@ export const badgeVariants = tv({
       variant: 'translucent',
     },
 
+    // neutral — same look across all variants
+    {
+      class: {
+        base: 'border-secondary bg-primary',
+        dot: 'bg-fg-secondary',
+        icon: 'text-primary',
+        label: 'text-primary',
+        separator: 'bg-secondary',
+      },
+      color: 'neutral',
+      variant: 'outline',
+    },
+    {
+      class: {
+        base: 'border-secondary bg-primary',
+        dot: 'bg-fg-secondary',
+        icon: 'text-primary',
+        label: 'text-primary',
+        separator: 'bg-secondary',
+      },
+      color: 'neutral',
+      variant: 'solid',
+    },
+    {
+      class: {
+        base: 'border-secondary bg-primary',
+        dot: 'bg-fg-secondary',
+        icon: 'text-primary',
+        label: 'text-primary',
+        separator: 'bg-secondary',
+      },
+      color: 'neutral',
+      variant: 'translucent',
+    },
+
     // warning
     {
       class: {
@@ -532,7 +567,10 @@ export const badgeVariants = tv({
   slots: {
     actionsButton: '',
     actionsIcon: '',
-    base: 'group inline-flex items-center gap-sm overflow-hidden border',
+    base: `
+      group inline-flex items-center gap-sm overflow-hidden border
+      data-disabled:pointer-events-none data-disabled:opacity-50
+    `,
     dot: 'rounded-full',
     icon: '',
     label: 'font-medium',
@@ -572,6 +610,7 @@ export const badgeVariants = tv({
       error: {},
       gray: {},
       moss: {},
+      neutral: {},
       pink: {},
       purple: {},
       success: {},
@@ -598,3 +637,52 @@ export const badgeVariants = tv({
 })
 
 export type BadgeVariants = ReturnType<typeof badgeVariants>
+
+/**
+ * A standalone icon color variant, kept separate from `badgeVariants` because its
+ * `color`/`variant` compound variants would always win over an `icon` slot class set by a
+ * plain variant axis (tailwind-variants applies compound variants after variants). Mirrors
+ * `dotVariants` in `ui/dot/dot.style.ts`: a flat `color` axis with no compound variants to fight.
+ */
+export const badgeIconVariants = tv({
+  variants: {
+    color: {
+      blue: `
+        text-blue-400
+        dark:text-blue-500
+      `,
+      brand: `
+        text-brand-400
+        dark:text-brand-500
+      `,
+      error: `
+        text-error-400
+        dark:text-error-500
+      `,
+      gray: 'text-fg-secondary/85',
+      moss: `
+        text-moss-400
+        dark:text-moss-500
+      `,
+      neutral: 'text-primary',
+      pink: `
+        text-pink-400
+        dark:text-pink-500
+      `,
+      purple: `
+        text-purple-400
+        dark:text-purple-500
+      `,
+      success: `
+        text-success-400
+        dark:text-success-500
+      `,
+      warning: `
+        text-warning-400
+        dark:text-warning-500
+      `,
+    },
+  },
+})
+
+export type BadgeIconVariants = ReturnType<typeof badgeIconVariants>

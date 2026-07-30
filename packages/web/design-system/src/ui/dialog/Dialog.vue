@@ -30,11 +30,9 @@ const props = withDefaults(defineProps<DialogProps>(), {
 const emit = defineEmits<{
   'afterLeave': []
   'close': []
+  'escapeKeyDown': [event: KeyboardEvent]
   'update:isOpen': [value: boolean]
 }>()
-const hasCloseButton = computed<boolean>(
-  () => props.showCloseButton !== undefined ? props.showCloseButton : props.hasCloseButton,
-)
 const isClickOutsideDisabled = computed<boolean>(
   () => props.isClickOutsideDisabled || props.preventClickOutside === true,
 )
@@ -64,6 +62,8 @@ useProvideDialogContext({
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
+  emit('escapeKeyDown', event)
+
   if (isEscDisabled.value) {
     event.preventDefault()
   }
@@ -132,7 +132,7 @@ watch(isOpen, (isOpenValue) => {
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="hasCloseButton" />
+        <DialogCloseButton v-if="props.hasCloseButton" />
       </div>
 
       <DialogChin :chin="props.chin" />

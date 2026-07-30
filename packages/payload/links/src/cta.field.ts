@@ -7,6 +7,8 @@ import type {
 
 import { getLinkField } from '#link.field.ts'
 
+import { t } from './i18n/index.ts'
+
 export interface GetCtaFieldOptions {
   name: string
   condition?: Condition<any, any>
@@ -21,6 +23,7 @@ export function getCtaField({
   label,
 }: GetCtaFieldOptions): GroupField {
   const defaultEventOptions = getDefaultEventOptions()
+
   const fields: Field[] = [
     {
       name: 'label',
@@ -31,14 +34,14 @@ export function getCtaField({
       name: 'ctaVariant',
       defaultValue: 'primary',
       enumName: 'cta_variant',
-      label: 'Variant',
+      label: t('general.variant'),
       options: [
         {
-          label: 'Primary',
+          label: t('general.primary'),
           value: 'primary',
         },
         {
-          label: 'Secondary',
+          label: t('general.secondary'),
           value: 'secondary',
         },
       ],
@@ -48,14 +51,14 @@ export function getCtaField({
       name: 'ctaType',
       defaultValue: 'link',
       enumName: 'cta_type',
-      label: 'Type',
+      label: t('general.type'),
       options: [
         {
-          label: 'Link',
+          label: t('general.link'),
           value: 'link',
         },
         {
-          label: 'Event',
+          label: t('general.event'),
           value: 'event',
         },
       ],

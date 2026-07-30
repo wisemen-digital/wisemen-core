@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-nats",
-  "version": "1.1.0",
+  "version": "1.1.3",
   "publishConfig": {
     "access": "public"
   },
@@ -34,9 +34,9 @@
     "@nats-io/nkeys": "catalog:backend",
     "@nats-io/services": "catalog:backend",
     "@nats-io/transport-node": "catalog:backend",
-    "@wisemen/api-error": "workspace:*",
-    "@wisemen/opentelemetry": "workspace:*",
-    "change-case": "catalog:backend"
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/nestjs-provider-explorer": "workspace:^",
+    "@wisemen/opentelemetry": "workspace:^"
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",

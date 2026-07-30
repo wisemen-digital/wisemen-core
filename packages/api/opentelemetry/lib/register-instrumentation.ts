@@ -40,10 +40,8 @@ export function registerInstrumentation (
         suppressInternalInstrumentation: true
       }),
       new RedisInstrumentation({
-        responseHook: (span: Span, cmdName: string, cmdArgs: (string | Buffer)[]) => {
-          const spanName = `[Redis] ${cmdName} ${cmdArgs[0]?.toString() ?? ''}`
-
-          span.updateName(spanName)
+        responseHook: (span: Span, cmdName: string) => {
+          span.updateName(`[Redis] ${cmdName}`)
         },
         dbStatementSerializer: (cmdName, cmdArgs) => {
           const maxArgsLength = 100

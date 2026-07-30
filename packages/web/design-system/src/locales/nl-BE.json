@@ -58,6 +58,7 @@
   "component.date_range_picker.preset.this_week": "Deze week",
   "component.date_range_picker.preset.this_year": "Dit jaar",
   "component.date_range_picker.preset.today": "Vandaag",
+  "component.date_range_picker.preset.tomorrow": "Morgen",
   "component.date_range_picker.preset.yesterday": "Gisteren",
   "component.date_range_picker.previous_month": "Vorige maand",
   "component.dialog.cancel": "Annuleren",

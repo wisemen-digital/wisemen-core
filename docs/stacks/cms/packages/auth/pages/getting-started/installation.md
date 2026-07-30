@@ -81,18 +81,50 @@ That means the collection becomes externally authenticated instead of using Payl
 
 Attach `payloadAuth.userHook` to your user collection `afterChange` hooks.
 
-On user creation it:
+By default, on user creation it:
 
 - skips non-`create` operations
-- optionally skips users through `shouldSkipUserSync`
+- optionally skips users through `shouldSkipUserSync`, which receives the full
+  Payload `afterChange` hook arguments, including `doc` and `previousDoc`
 - checks whether the matching Zitadel user already exists
 - creates the Zitadel user when needed
 
+To also create a missing Zitadel user after a Payload update, set
+`operationsToCreate`. The hook uses the saved user document, so all user fields
+are available on update:
+
+```ts
+const payloadAuth = createPayloadAuthPlugin({
+  // ...
+  operationsToCreate: ['create', 'update'],
+})
+```
+
 ## First-user bootstrapping
 
-If you pass `createFirstUser`, the strategy can create the first tenant and first user when no users exist yet.
+By default, the strategy can create the first tenant and first user when no users exist yet. Pass a `createFirstUser` configuration to customize that flow, or pass `createFirstUser: false` to disable it explicitly.
 
 This is useful for fresh environments where the first admin authenticates through Zitadel before a Payload user record exists.
+
+## Login decisions and multiple strategies
+
+`isUserAllowed` remains a simple boolean check. Use `canLogin` when a valid
+Zitadel session should be rejected with an application-visible reason and HTTP
+status:
+
+```ts
+const payloadAuth = createPayloadAuthPlugin({
+  // ...
+  canLogin: (customer) => customer.status === 'approved'
+    ? { allowed: true }
+    : { allowed: false, reason: 'Your account is awaiting approval.', status: 403 },
+  createFirstUser: false,
+  strategyName: 'customer-zitadel',
+})
+```
+
+The default strategy name is `zitadel`. Set `strategyName` when more than one
+Zitadel-backed user collection is registered in the same Payload instance.
 
 ## Client and server helpers
 

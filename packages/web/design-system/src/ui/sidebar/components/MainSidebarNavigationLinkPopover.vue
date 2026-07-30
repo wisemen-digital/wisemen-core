@@ -6,7 +6,6 @@ import {
   HoverCardTrigger as RekaHoverCardTrigger,
 } from 'reka-ui'
 import type { Component } from 'vue'
-import type { RouteLocationRaw } from 'vue-router'
 
 import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
 import RowLayout from '@/ui/row-layout/RowLayout.vue'
@@ -14,16 +13,14 @@ import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTr
 import MainSidebarNavigationLinkProvider from '@/ui/sidebar/components/MainSidebarNavigationLinkProvider.vue'
 import MainSidebarNavigationSubItem from '@/ui/sidebar/components/MainSidebarNavigationSubItem.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import type { DashboardSidebarNavSubItem } from '@/ui/sidebar/types/mainSidebar.type'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 interface Props {
   isSubItemsActive: boolean
   icon: Component
   label: string
-  subItems: {
-    label: string
-    to: RouteLocationRaw
-  }[]
+  subItems: DashboardSidebarNavSubItem[]
 }
 
 const props = defineProps<Props>()
@@ -142,6 +139,8 @@ function togglePopover(): void {
                 <MainSidebarNavigationSubItem
                   v-for="subItem in props.subItems"
                   :key="subItem.label"
+                  :badge="subItem.badge"
+                  :has-status-dot="subItem.hasStatusDot"
                   :label="subItem.label"
                   :to="subItem.to"
                   :is-indented="false"

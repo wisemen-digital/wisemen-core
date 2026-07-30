@@ -3,6 +3,24 @@
 
 
 
+
+
+
+## 1.1.3
+<sub>2026-07-29</sub>
+
+- [#1518](https://github.com/wisemen-digital/wisemen-core/pull/1518)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add class-validator json api error conversion
+
+## 1.1.2
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 1.1.1
+<sub>2026-07-13</sub>
+
+- [#1417](https://github.com/wisemen-digital/wisemen-core/pull/1417)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added a shared NestJS provider explorer package and migrated existing packages to use it.
+
 ## 1.1.0
 <sub>2026-07-08</sub>
 

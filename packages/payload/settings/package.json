@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/payload-core-settings",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "private": false,
   "imports": {
     "#*": "./src/*"
@@ -38,15 +38,16 @@
     "@orpc/contract": "catalog:payload",
     "defu": "catalog:general",
     "payload": "catalog:payload",
-    "zod": "catalog:general",
-    "@wisemen/payload-core-links": "workspace:*"
+    "zod": "catalog:general"
   },
   "peerDependencies": {
     "payload": "catalog:payload-peer",
+    "@wisemen/payload-core-links": "workspace:^",
     "@wisemen/payload-core-utils": "workspace:^"
 
   },
   "devDependencies": {
+    "@wisemen/payload-core-links": "workspace:*",
     "@wisemen/payload-core-utils": "workspace:^",
     "@wisemen/eslint-config-vue": "catalog:lint-web",
     "eslint": "catalog:lint-web",

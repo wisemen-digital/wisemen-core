@@ -41,6 +41,7 @@ const props = withDefaults(defineProps<TableProps<TTableData>>(), {
   isSelectable: false,
   activeFilterCount: 0,
   getLink: null,
+  onRowClick: null,
 })
 
 const emit = defineEmits<{
@@ -48,6 +49,10 @@ const emit = defineEmits<{
   clearSearch: []
   select: [state: TableSelectionState<TItem>]
 }>()
+
+if (props.getLink !== null && props.onRowClick !== null) {
+  console.warn('[Table] `getLink` and `onRowClick` are mutually exclusive — a row supports only one interaction mode. `onRowClick` will be ignored for rows where `getLink` returns a value.')
+}
 
 const i18n = useI18n()
 
@@ -199,6 +204,7 @@ function onClearFiltersAndSearch(): void {
             :action-model="props.getActionModel?.(flatItems[row.index]!)"
             :item-key="props.getKey(flatItems[row.index]!)"
             :link="props.getLink?.(flatItems[row.index]!) ?? null"
+            :on-row-click="props.onRowClick === null ? null : () => props.onRowClick?.(flatItems[row.index]!)"
           >
             <TableBodyRowCheckboxCell
               v-if="props.isSelectable"
@@ -238,6 +244,7 @@ function onClearFiltersAndSearch(): void {
                 :action-model="props.getActionModel?.(item)"
                 :item-key="props.getKey(item)"
                 :link="props.getLink?.(item) ?? null"
+                :on-row-click="props.onRowClick === null ? null : () => props.onRowClick?.(item)"
               >
                 <TableBodyRowCheckboxCell
                   v-if="props.isSelectable"
@@ -268,6 +275,7 @@ function onClearFiltersAndSearch(): void {
               :action-model="props.getActionModel?.(item)"
               :item-key="props.getKey(item)"
               :link="props.getLink?.(item) ?? null"
+              :on-row-click="props.onRowClick === null ? null : () => props.onRowClick?.(item)"
             >
               <TableBodyRowCheckboxCell
                 v-if="props.isSelectable"

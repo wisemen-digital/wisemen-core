@@ -31,6 +31,7 @@ export type {
   PayloadLocale,
   PayloadUtilsConfig,
   PayloadUtilsPayload,
+  PayloadUtilsRegistry,
 } from '#payloadUtils.types.ts'
 
 const DEFAULT_LINKABLE_COLLECTIONS: CollectionSlug[] = [

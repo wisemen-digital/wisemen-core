@@ -1,6 +1,36 @@
 # Changelog
 
 
+
+
+
+
+
+## 0.0.7
+<sub>2026-07-29</sub>
+
+- *(patch)* Updated dependency `@wisemen/payload-core-utils` v0.0.5
+
+## 0.0.6
+<sub>2026-07-17</sub>
+
+- [#1469](https://github.com/wisemen-digital/wisemen-core/pull/1469)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Moved links to peer deps cuz thats what it needs to be
+
+## 0.0.5
+<sub>2026-07-17</sub>
+
+- [#1467](https://github.com/wisemen-digital/wisemen-core/pull/1467)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Updated overriden schema type to work correctly in payload-links
+
+## 0.0.4
+<sub>2026-07-17</sub>
+
+- [#1465](https://github.com/wisemen-digital/wisemen-core/pull/1465)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added localized admin labels for the admin dashboard
+
+## 0.0.3
+<sub>2026-07-13</sub>
+
+- [#1391](https://github.com/wisemen-digital/wisemen-core/pull/1391)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added type augmentation for linkable collections and events
+
 ## 0.0.2
 <sub>2026-07-08</sub>
 
