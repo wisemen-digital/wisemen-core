@@ -8,15 +8,15 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Install wisemen-danger-rules (if not already in dependencies)
+    - name: Install @wisemen/danger (if not already in dependencies)
       shell: bash
       run: |
-        # Check if wisemen-danger-rules is already installed via pnpm
-        if ! pnpm list wisemen-danger-rules >/dev/null 2>&1; then
-          pnpm add wisemen-danger-rules
+        # Check if @wisemen/danger is already installed via pnpm
+        if ! pnpm list @wisemen/danger >/dev/null 2>&1; then
+          pnpm add @wisemen/danger
         fi
     - name: Run Danger
       shell: bash
-      run: danger ci --dangerfile ${{ github.action_path }}/dangerfile.ts
+      run: pnpm exec danger ci --dangerfile ${{ github.action_path }}/dangerfile.ts
       env:
         GITHUB_TOKEN: ${{ inputs.github-access-token }}
