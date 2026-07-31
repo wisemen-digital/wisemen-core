@@ -6,8 +6,8 @@ description: Use when marking NestJS controllers or handlers as public and when 
 # @wisemen/nestjs-auth - Getting Started
 
 Use `Public()` to mark a controller or handler as public and
-`isPublicContext(context)` inside guards or interceptors to evaluate that
-metadata without depending on the raw metadata key.
+`isPublicContext(context)` inside guards or interceptors to evaluate the
+related metadata without depending on the raw metadata key.
 
 ## Mark Public Routes
 
