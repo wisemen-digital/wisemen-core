@@ -6,6 +6,12 @@
 
 
 
+
+## 1.1.4
+<sub>2026-07-31</sub>
+
+- [#1412](https://github.com/wisemen-digital/wisemen-core/pull/1412)  *(patch)* Thanks [@JonasVannieuwenhuijsen](https://github.com/JonasVannieuwenhuijsen)! - Added a way to publish on a stream
+
 ## 1.1.3
 <sub>2026-07-29</sub>
 

@@ -27,6 +27,12 @@
 
 
 
+
+## 1.18.1
+<sub>2026-07-31</sub>
+
+- [#1534](https://github.com/wisemen-digital/wisemen-core/pull/1534)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker and date range picker opening on a fully-disabled month when today's date (or the current value) falls before minDate or after maxDate; the calendar now opens clamped to the nearest selectable date.
+
 ## 1.18.0
 <sub>2026-07-31</sub>
 
