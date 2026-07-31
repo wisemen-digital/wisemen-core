@@ -4,14 +4,14 @@ export type { NatsApplicationModuleOptions } from './nats.module.js'
 export { NatsClientModule } from './nats.client.module.js'
 export type { NatsClientModuleOptions, NatsClientModuleAsyncOptions } from './nats.client.options.js'
 export { NatsPublisherModule } from './outbox/nats-publisher/nats-publisher.module.js'
-export type { NatsPublisherModuleOptions } from './outbox/nats-publisher/nats-publisher.module-options.js'
+export type { NatsPublisherModuleAsyncOptions, NatsPublisherModuleOptions } from './outbox/nats-publisher/nats-publisher.module-options.js'
 export {
   NatsPublisher,
   type NatsPublisherEventWithSubject,
   type NatsPublisherStreamEventWithSubject
 } from './outbox/nats-publisher/nats-publisher.js'
 export { NatsQueueModule } from './outbox/nats-queue.module.js'
-export type { NatsQueueModuleOptions } from './outbox/nats-queue.module-options.js'
+export type { NatsQueueModuleAsyncOptions, NatsQueueModuleOptions } from './outbox/nats-queue.module-options.js'
 export {
   PublishNatsEventJob,
   type NatsOutboxEvent
