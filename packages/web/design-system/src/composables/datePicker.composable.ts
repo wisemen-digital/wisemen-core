@@ -26,7 +26,19 @@ export function useDatePicker({
 
   const locale = computed<string>(() => configContext.dateLocale.value ?? navigator.language)
 
-  const initialDate = modelValue.value ?? Temporal.Now.plainDateISO()
+  function clampToSelectableRange(date: PlainDate): PlainDate {
+    if (minDate.value !== null && Temporal.PlainDate.compare(date, minDate.value) < 0) {
+      return minDate.value
+    }
+
+    if (maxDate.value !== null && Temporal.PlainDate.compare(date, maxDate.value) > 0) {
+      return maxDate.value
+    }
+
+    return date
+  }
+
+  const initialDate = clampToSelectableRange(modelValue.value ?? Temporal.Now.plainDateISO())
   const calendarPlaceholder = shallowRef<CalendarDate>(
     new CalendarDate(initialDate.year, initialDate.month, initialDate.day),
   )
