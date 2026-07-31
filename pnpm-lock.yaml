@@ -36,6 +36,9 @@ catalogs:
     '@nestjs/swagger':
       specifier: 11.4.6
       version: 11.4.6
+    '@opentelemetry/api':
+      specifier: 1.9.1
+      version: 1.9.1
     '@opentelemetry/exporter-logs-otlp-http':
       specifier: 0.217.0
       version: 0.217.0
@@ -1901,6 +1904,52 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
+  packages/api/nestjs-http-exception-filter:
+    dependencies:
+      reflect-metadata:
+        specifier: catalog:backend-peer
+        version: 0.2.2
+    devDependencies:
+      '@nestjs/common':
+        specifier: catalog:backend
+        version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core':
+        specifier: catalog:backend
+        version: 11.1.28(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.28)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@opentelemetry/api':
+        specifier: catalog:backend
+        version: 1.9.1
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/api-error':
+        specifier: workspace:*
+        version: link:../api-error
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      '@wisemen/opentelemetry':
+        specifier: workspace:*
+        version: link:../opentelemetry
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typeorm:
+        specifier: catalog:backend
+        version: 0.3.30(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.12.1(@opentelemetry/api@1.9.1))
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -10030,9 +10079,6 @@ packages:
 
   alien-signals@1.0.13:
     resolution: {integrity: sha512-OGj9yyTnJEttvzhTUWuscOvtqxq5vrhF7vL9oS0xJ2mK0ItPYP1/y+vCFebfxoEyAz0++1AIwJ5CMr+Fk3nDmg==}
-
-  alien-signals@3.0.3:
-    resolution: {integrity: sha512-2JXjom6R7ZwrISpUphLhf4htUq1aKRCennTJ6u9kFfr3sLmC9+I4CxxVi+McoFnIg+p1HnVrfLT/iCt4Dlz//Q==}
 
   alien-signals@3.2.1:
     resolution: {integrity: sha512-I8FjmltrfnDFoZedi5CG8DghVYNhzb/Ijluz7tCSJH0xpd0484Kowhbb1XDYOxfJpU1p5wnM2X54dA+IfGyD1g==}
@@ -22244,7 +22290,7 @@ snapshots:
       '@volar/language-core': 2.4.27
       '@vue/compiler-dom': 3.5.27
       '@vue/shared': 3.5.27
-      alien-signals: 3.0.3
+      alien-signals: 3.2.1
       muggle-string: 0.4.1
       path-browserify: 1.0.1
       picomatch: 4.0.4
@@ -22254,7 +22300,7 @@ snapshots:
       '@volar/language-core': 2.4.28
       '@vue/compiler-dom': 3.5.27
       '@vue/shared': 3.5.27
-      alien-signals: 3.0.3
+      alien-signals: 3.2.1
       muggle-string: 0.4.1
       path-browserify: 1.0.1
       picomatch: 4.0.4
@@ -22591,8 +22637,6 @@ snapshots:
   alien-signals@0.4.14: {}
 
   alien-signals@1.0.13: {}
-
-  alien-signals@3.0.3: {}
 
   alien-signals@3.2.1: {}
 
