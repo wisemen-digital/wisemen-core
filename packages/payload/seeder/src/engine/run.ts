@@ -149,6 +149,37 @@ function selectLocaleValue(value: unknown, locale: string, defaultLocale: string
   )
 }
 
+function preserveNestedIds(value: unknown, existing: unknown): unknown {
+  if (Array.isArray(value)) {
+    const existingItems = Array.isArray(existing) ? existing : []
+
+    return value.map((item, index) => preserveNestedIds(item, existingItems[index]))
+  }
+  if (!isRecord(value)) {
+    return value
+  }
+
+  const existingRecord = isRecord(existing) ? existing : undefined
+  const result: Record<string, unknown> = {
+    ...value,
+  }
+
+  if (existingRecord?.id !== undefined && result.id === undefined) {
+    result.id = existingRecord.id
+  }
+
+  for (const [
+    key,
+    entry,
+  ] of Object.entries(value)) {
+    if (Array.isArray(entry) || isRecord(entry)) {
+      result[key] = preserveNestedIds(entry, existingRecord?.[key])
+    }
+  }
+
+  return result
+}
+
 function discoverAssetCollections(payload: Payload): Map<string, AssetCollection> {
   const map = new Map<string, AssetCollection>()
 
@@ -654,10 +685,17 @@ export async function runSeed({
     // configured locale. This also keeps references stable across locales.
     for (const locale of locales) {
       try {
+        const existing = await payload.findByID({
+          id: doc.id,
+          collection: slug,
+          locale: defaultLocale,
+          ...baseArgs,
+        })
+
         await payload.update({
           id: doc.id,
           collection: slug,
-          data: dataForLocale(data, locale),
+          data: preserveNestedIds(dataForLocale(data, locale), existing) as Record<string, unknown>,
           locale,
           ...baseArgs,
         })
