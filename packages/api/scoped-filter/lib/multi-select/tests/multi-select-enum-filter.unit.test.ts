@@ -21,4 +21,17 @@ describe('MultiSelectEnumFilter unit tests', () => {
         const invalidErrors = await validate(invalidFilter)
         expect(invalidErrors).toHaveLength(1)
     })
+
+    it('accepts an empty values array', async () => {
+        enum X {
+            ALL = 'all',
+            NONE = 'none'
+        }
+
+        const ScopedXFilter =  buildMultiSelectEnumFilter(X, 'X')
+        const filter = new ScopedXFilter(MultiSelectOperation.INCLUDE, [])
+
+        const errors = await validate(filter)
+        expect(errors).toHaveLength(0)
+    })
 })

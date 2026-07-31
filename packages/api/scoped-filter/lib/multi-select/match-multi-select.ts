@@ -1,6 +1,6 @@
 import { MultiSelectOperation } from '#src/multi-select/multi-select-operation.js'
 import { MultiSelectFilter } from '#src/multi-select/multi-select-filter.js'
-import { Any, FindOperator, Not } from 'typeorm'
+import { Any, FindOperator, Not, Raw } from 'typeorm'
 
 /**  
  * Checks if the column matches any of the requested scoped values.
@@ -19,8 +19,12 @@ export function MatchMultiSelect<T> (
   if (filter === undefined || filter === null) {
     return undefined
   } else if (filter.operation === MultiSelectOperation.INCLUDE) {
-    return Any(filter.values)
+    return filter.values.length === 0
+      ? Raw(() => 'FALSE')
+      : Any(filter.values)
   } else if (filter.operation === MultiSelectOperation.EXCLUDE) {
-    return Not(Any(filter.values))
+    return filter.values.length === 0
+      ? Raw(() => 'TRUE')
+      : Not(Any(filter.values))
   }
 }
