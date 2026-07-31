@@ -8,6 +8,12 @@
 
 
 
+
+## 1.0.7
+<sub>2026-07-31</sub>
+
+- [#1529](https://github.com/wisemen-digital/wisemen-core/pull/1529)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: allow empty include and exclude lists
+
 ## 1.0.6
 <sub>2026-07-28</sub>
 

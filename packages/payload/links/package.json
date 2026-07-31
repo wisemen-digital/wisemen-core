@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/payload-core-links",
   "type": "module",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": false,
   "imports": {
     "#*": "./src/*"

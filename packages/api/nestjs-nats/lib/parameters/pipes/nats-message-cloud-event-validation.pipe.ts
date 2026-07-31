@@ -1,7 +1,7 @@
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
+import { convertClassValidatorErrorsToJsonApiError } from '@wisemen/api-error'
 import type { NatsPipeTransform } from './nats-pipe-transform.js'
-import { convertValidationErrorToJsonApiError } from '#src/validation/convert-validation-errors.js'
 import { CloudEvent } from '#src/cloud-event/cloud-event.js'
 
 /**
@@ -14,7 +14,7 @@ export class NatsMsgDataCloudEventValidationPipe implements NatsPipeTransform {
     const errors = await validate(cloudEvent, { whitelist: true, forbidNonWhitelisted: true })
 
     if (errors.length > 0) {
-      throw convertValidationErrorToJsonApiError(errors)
+      throw convertClassValidatorErrorsToJsonApiError(errors)
     }
 
     return cloudEvent.data

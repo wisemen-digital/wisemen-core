@@ -10,6 +10,7 @@ import TabsItemContent from './TabsItemContent.vue'
 
 const props = withDefaults(defineProps<TabsItemProps>(), {
   isDisabled: false,
+  config: null,
   count: null,
   disabledReason: null,
   icon: undefined,
@@ -30,6 +31,7 @@ const tabsContext = useInjectTabsContext()
         :class="tabsContext.variants.value.item()"
       >
         <TabsItemContent
+          :config="props.config"
           :count="props.count"
           :icon="props.icon"
           :is-label-hidden="props.isLabelHidden"

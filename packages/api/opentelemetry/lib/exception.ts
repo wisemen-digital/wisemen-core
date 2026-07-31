@@ -3,16 +3,20 @@ import { getOtelTracer } from './index.js'
 
 function setExceptionAttributes (span: Span, exception: unknown): void {
   span.recordException(exception as Exception)
-  span.setAttribute('exceptions.captured', true)
 
   if (exception instanceof Error) {
-    span.setAttribute('exceptions.message', exception.message)
-    span.setAttribute('exceptions.stacktrace', exception.stack ?? '')
+    span.setAttribute('exception.message', exception.message)
+    span.setAttribute('exception.stacktrace', exception.stack ?? '')
 
     const prototype = Object.getPrototypeOf(exception) as { constructor: { name: string } }
     const className = prototype.constructor.name as string | undefined
 
     span.setAttribute('exception.type', className ?? exception.name ?? 'unknown')
+  } else if (typeof exception === 'object' && exception !== null && 'message' in exception) {
+    span.setAttribute('exception.message', String((exception as { message: string }).message))
+    span.setAttribute('exception.type', 'object_error')
+  } else {
+    span.setAttribute('exception.type', 'unknown_error')
   }
 }
 
