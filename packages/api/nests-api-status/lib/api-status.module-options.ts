@@ -71,7 +71,7 @@ export interface ApiStatusModuleAsyncOptions extends Pick<ModuleMetadata, 'impor
 }
 
 export interface ResolvedApiStatusControllerOptions {
-  route?: string
+  route: string
   swaggerTag: string
   versioning: ApiStatusVersionValue
   isPublic: boolean
@@ -81,7 +81,7 @@ export function resolveApiStatusControllerOptions (
   options: ApiStatusControllerOptions = {}
 ): ResolvedApiStatusControllerOptions {
   return {
-    route: options.route,
+    route: options.route ?? '',
     swaggerTag: options.swaggerTag ?? 'API Status',
     versioning: options.versioning ?? VERSION_NEUTRAL,
     isPublic: options.isPublic ?? false

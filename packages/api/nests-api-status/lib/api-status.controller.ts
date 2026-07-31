@@ -8,7 +8,7 @@ import { GetApiInfoResponse } from './get-api-info.response.js'
 
 export function createApiStatusController (options: ResolvedApiStatusControllerOptions): Type<unknown> {
   @ApiTags(options.swaggerTag)
-  @Controller(options.route ?? '')
+  @Controller(options.route)
   class ApiStatusController {
     constructor (
       @Inject(API_STATUS_MODULE_OPTIONS)
