@@ -24,8 +24,8 @@ export class NatsPublisher {
   async publish<TEvent> (event: TEvent, onSubject: string): Promise<void>
   async publish<TEvent> (event: TEvent[], onSubject: string): Promise<void>
   async publish<TEvent> (events: NatsPublisherEventWithSubject<TEvent>[]): Promise<void>
-  async publish (
-    eventsOrEvent: unknown[] | unknown | NatsPublisherEventWithSubject[],
+  async publish<TEvent>(
+    eventsOrEvent: TEvent[] | TEvent | NatsPublisherEventWithSubject[],
     onSubject?: string
   ): Promise<void> {
     const events = Array.isArray(eventsOrEvent) ? eventsOrEvent : [eventsOrEvent]
@@ -58,8 +58,8 @@ export class NatsPublisher {
   async publishToStream<TEvent> (event: TEvent, onSubject: string, options?: NatsStreamPublishOptions): Promise<void>
   async publishToStream<TEvent> (event: TEvent[], onSubject: string, options?: NatsStreamPublishOptions): Promise<void>
   async publishToStream<TEvent> (events: NatsPublisherStreamEventWithSubject<TEvent>[]): Promise<void>
-  async publishToStream (
-    eventsOrEvent: unknown[] | unknown | NatsPublisherStreamEventWithSubject[],
+  async publishToStream<TEvent> (
+    eventsOrEvent: TEvent[] | TEvent | NatsPublisherStreamEventWithSubject[],
     onSubject?: string,
     options?: NatsStreamPublishOptions
   ): Promise<void> {
