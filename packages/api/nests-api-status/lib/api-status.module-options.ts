@@ -36,6 +36,7 @@ export interface ApiStatusControllerOptions {
    * Optional controller route segment.
    *
    * When omitted, the endpoint is mounted at the module root.
+   * Defaults to the base route of the API.
    */
   route?: string
 
