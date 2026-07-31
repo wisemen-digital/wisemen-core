@@ -2990,9 +2990,6 @@ importers:
       typescript:
         specifier: catalog:build
         version: 5.9.3
-      vite:
-        specifier: catalog:vite
-        version: 8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
       vue:
         specifier: catalog:vue
         version: 3.5.27(typescript@5.9.3)
@@ -16686,6 +16683,9 @@ packages:
   vue-component-type-helpers@3.3.8:
     resolution: {integrity: sha512-troqCMmQodQDqUqn63NQaFi+CDSclSe7sc8VEBFqf5GFLqmGR2Ph3P2WEC7qwpRVyEWsTi/aAr4vyOe/B1hU3g==}
 
+  vue-component-type-helpers@3.3.9:
+    resolution: {integrity: sha512-3c/UfMe0SqyEfcGTyH7mfshHagJ9QTCbppCb0/uGpHZpFug7+If3GeGZN7I0YheKEExemx3xldQPoO7PQSOLQg==}
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -22478,7 +22478,7 @@ snapshots:
       storybook: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       type-fest: 2.19.0
       vue: 3.5.27(typescript@5.9.3)
-      vue-component-type-helpers: 3.3.8
+      vue-component-type-helpers: 3.3.9
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.2.1(jiti@2.7.0))':
     dependencies:
@@ -24071,7 +24071,7 @@ snapshots:
       alien-signals: 3.2.1
       muggle-string: 0.4.1
       path-browserify: 1.0.1
-      picomatch: 4.0.5
+      picomatch: 4.0.4
 
   '@vue/reactivity@3.5.27':
     dependencies:
@@ -31106,7 +31106,7 @@ snapshots:
       esbuild: 0.28.1
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
-      postcss: 8.5.25
+      postcss: 8.5.15
       rollup: 4.60.3
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -31124,7 +31124,7 @@ snapshots:
       esbuild: 0.28.1
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
-      postcss: 8.5.25
+      postcss: 8.5.15
       rollup: 4.60.3
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -31140,8 +31140,8 @@ snapshots:
   vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3):
     dependencies:
       lightningcss: 1.32.0
-      picomatch: 4.0.5
-      postcss: 8.5.25
+      picomatch: 4.0.4
+      postcss: 8.5.15
       rolldown: 1.1.3
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -31157,8 +31157,8 @@ snapshots:
   vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3):
     dependencies:
       lightningcss: 1.32.0
-      picomatch: 4.0.5
-      postcss: 8.5.25
+      picomatch: 4.0.4
+      postcss: 8.5.15
       rolldown: 1.1.3
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -31314,6 +31314,8 @@ snapshots:
   vue-component-type-helpers@3.3.0: {}
 
   vue-component-type-helpers@3.3.8: {}
+
+  vue-component-type-helpers@3.3.9: {}
 
   vue-demi@0.14.10(vue@3.5.27(typescript@5.9.3)):
     dependencies:

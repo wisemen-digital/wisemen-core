@@ -221,17 +221,12 @@ export function createSubmissionsCollection(options: FormBuilderOptions): Collec
                 ],
                 type: 'select',
               },
-            ],
-            label: 'Processing',
-          },
-          {
-            fields: [
               {
                 name: 'internalNotes',
                 type: 'textarea',
               },
             ],
-            label: 'Internal notes',
+            label: 'Follow up',
           },
         ],
         type: 'tabs',

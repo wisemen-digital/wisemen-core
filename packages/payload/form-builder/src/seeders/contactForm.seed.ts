@@ -5,7 +5,6 @@ import {
 
 export const CONTACT_FORM_SEED_KEY = 'contact'
 
-/** A practical first form for new projects; customise labels and routing per project. */
 export const contactFormSeed: ReturnType<typeof defineSeed> = defineSeed('forms', () => [
   {
     title: {
