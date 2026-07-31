@@ -41,13 +41,26 @@ const selectedTab = ref<string>('tab1')
     >
       <TabsList>
         <TabsItem
-          :icon="User01Icon"
+          :config="{
+            left: {
+              icon: User01Icon,
+              type: 'icon',
+            },
+          }"
           label="General"
           value="tab1"
         />
         <TabsItem
-          :icon="Inbox02Icon"
-          :count="12"
+          :config="{
+            left: {
+              icon: Inbox02Icon,
+              type: 'icon',
+            },
+            indicator: {
+              value: 12,
+              type: 'count',
+            },
+          }"
           label="Members"
           value="tab2"
         />
@@ -58,8 +71,16 @@ const selectedTab = ref<string>('tab1')
           value="tab3"
         />
         <TabsItem
-          :icon="Settings01Icon"
-          :count="3"
+          :config="{
+            left: {
+              icon: Settings01Icon,
+              type: 'icon',
+            },
+            indicator: {
+              type: 'dot',
+              color: 'error',
+            },
+          }"
           label="Settings"
           value="tab4"
         />

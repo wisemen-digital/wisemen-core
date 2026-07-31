@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+
+## 0.8.5
+<sub>2026-07-31</sub>
+
+- [#1482](https://github.com/wisemen-digital/wisemen-core/pull/1482)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - release auth and api status
+
 ## 0.8.4
 <sub>2026-06-26</sub>
 

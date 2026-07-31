@@ -15,6 +15,7 @@ import TabsItemContent from './TabsItemContent.vue'
 
 const props = withDefaults(defineProps<TabsRouterLinkItemProps>(), {
   isDisabled: false,
+  config: null,
   count: null,
   disabledReason: null,
   icon: undefined,
@@ -49,6 +50,7 @@ const routeName = computed<string>(() => {
             :replace="true"
           >
             <TabsItemContent
+              :config="props.config"
               :count="props.count"
               :icon="props.icon"
               :is-label-hidden="props.isLabelHidden"

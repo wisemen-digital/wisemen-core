@@ -26,6 +26,15 @@
 
 
 
+
+## 1.18.0
+<sub>2026-07-31</sub>
+
+- [#1496](https://github.com/wisemen-digital/wisemen-core/pull/1496)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added a `config` prop to `TabsItem`/`TabsRouterLinkItem` for left content and a right-side indicator (count badge or dot, e.g. to flag a tab with a form error), matching `MenuItemConfig`'s API shape. The existing `icon`/`count` props are deprecated but still work.
+- [#1497](https://github.com/wisemen-digital/wisemen-core/pull/1497)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the detail pane's bordered variants clipping the sticky header and footer backgrounds to square corners instead of the pane's rounded border.
+- [#1498](https://github.com/wisemen-digital/wisemen-core/pull/1498)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker calendar opening on the current month instead of the month of the bound value.
+- [#1499](https://github.com/wisemen-digital/wisemen-core/pull/1499)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the Switch component shrinking when placed in a flex container with limited space.
+
 ## 1.17.0
 <sub>2026-07-27</sub>
 
