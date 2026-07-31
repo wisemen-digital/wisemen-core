@@ -5,6 +5,18 @@
 
 
 
+
+
+## 1.0.17
+<sub>2026-07-29</sub>
+
+- [#1520](https://github.com/wisemen-digital/wisemen-core/pull/1520)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Replace toString() in transformer with toISOString()
+
+## 1.0.16
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
 ## 1.0.15
 <sub>2026-07-14</sub>
 

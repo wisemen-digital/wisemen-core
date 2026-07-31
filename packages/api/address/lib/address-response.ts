@@ -3,6 +3,13 @@ import { CoordinatesResponse } from '@wisemen/coordinates'
 import { Address } from './address.js'
 
 export class AddressResponse {
+  static from (address: Address): AddressResponse
+  static from (address: null): null
+  static from (address: Address | null): AddressResponse | null
+  static from (address: Address | null): AddressResponse | null {
+    return address !== null ? new AddressResponse(address) : null
+  }
+
   @ApiProperty({ type: 'string', nullable: true })
   placeName: string | null
 
@@ -43,8 +50,6 @@ export class AddressResponse {
     this.streetName = address.streetName ?? null
     this.streetNumber = address.streetNumber ?? null
     this.unit = address.unit ?? null
-    this.coordinates = address.coordinates != null
-      ? new CoordinatesResponse(address.coordinates)
-      : null
+    this.coordinates = CoordinatesResponse.from(address.coordinates ?? null)
   }
 }

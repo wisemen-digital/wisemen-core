@@ -5,6 +5,12 @@
 
 
 
+
+## 0.0.8
+<sub>2026-07-28</sub>
+
+- *(patch)* Updated dependency `@wisemen/nestjs-domain-events` v0.0.7
+
 ## 0.0.7
 <sub>2026-07-15</sub>
 

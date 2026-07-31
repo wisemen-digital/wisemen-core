@@ -24,7 +24,6 @@ import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHe
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebarNavigationLinkBadge from '@/ui/sidebar/components/MainSidebarNavigationLinkBadge.vue'
-import MainSidebarNavigationLinkStatusDot from '@/ui/sidebar/components/MainSidebarNavigationLinkStatusDot.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
 import type {
@@ -64,6 +63,9 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Main',
     links: [
       {
+        badge: {
+          label: '10',
+        },
         icon: BarChartSquare02Icon,
         label: 'Dashboard',
         to: {
@@ -72,6 +74,7 @@ const navigation = computed<NavigationGroup[]>(() => ([
         type: 'link',
       },
       {
+        hasStatusDot: true,
         icon: Rows01Icon,
         label: 'Projects',
         to: {
@@ -90,12 +93,16 @@ const navigation = computed<NavigationGroup[]>(() => ([
             },
           },
           {
+            badge: {
+              label: '3',
+            },
             label: 'Analytics',
             to: {
               path: '/reports/analytics',
             },
           },
           {
+            hasStatusDot: true,
             label: 'Export',
             to: {
               path: '/reports/export',
@@ -217,11 +224,11 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
             :key="link.label"
             v-bind="link"
           >
-            <template #right>
-              <MainSidebarNavigationLinkBadge
-                label="10"
-              />
-              <MainSidebarNavigationLinkStatusDot />
+            <template
+              v-if="link.label === 'Documents'"
+              #right
+            >
+              <MainSidebarNavigationLinkBadge label="99+" />
             </template>
           </MainSidebarNavigationLink>
         </MainSidebarNavigationGroup>

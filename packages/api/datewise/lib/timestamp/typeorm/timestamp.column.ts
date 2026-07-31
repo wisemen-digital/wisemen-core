@@ -22,7 +22,7 @@ export class TimestampTransformer {
     if (value == null) {
       return value
     } else {
-      return value.toString()
+      return value.toISOString()
     }
   }
 }

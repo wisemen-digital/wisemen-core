@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { AsyncAPIChannelDefinition } from './async-api-definition.types.js'
 
 const CHANNEL_METADATA_KEY = 'async-api:channel'
