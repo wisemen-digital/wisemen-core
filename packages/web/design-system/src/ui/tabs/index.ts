@@ -4,6 +4,11 @@ export type {
   TabsProps as UITabsProps,
   TabsRouterLinkItemProps as UITabsRouterLinkItemProps,
 } from './tabs.props'
+export type {
+  TabsItemConfig as UITabsItemConfig,
+  TabsItemIndicatorConfig as UITabsItemIndicatorConfig,
+  TabsItemLeftConfig as UITabsItemLeftConfig,
+} from './tabs.type'
 export { default as UITabs } from './Tabs.vue'
 export { default as UITabsContent } from './TabsContent.vue'
 export { default as UITabsItem } from './TabsItem.vue'

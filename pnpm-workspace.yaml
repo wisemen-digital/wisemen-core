@@ -136,7 +136,7 @@ catalogs:
     "markdown-it": "14.2.0"
     oxc-minify: "0.117.0"
     "vitepress": "2.0.0-alpha.16"
-    "vue-component-meta": "3.2.2"
+    "vue-component-meta": "3.3.8"
   fonts:
     "@fontsource-variable/inter": "5.2.8"
   general:
