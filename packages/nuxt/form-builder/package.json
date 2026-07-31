@@ -1,0 +1,53 @@
+{
+  "name": "@wisemen/nuxt-core-form-builder",
+  "type": "module",
+  "version": "0.1.0",
+  "private": false,
+  "imports": { "#*": "./src/*" },
+  "repository": { "type": "git", "url": "https://github.com/wisemen-digital/wisemen-core", "directory": "packages/payload/nuxt/form-builder" },
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.d.ts"
+  },
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "typings": "./src/index.ts",
+  "sideEffects": false,
+  "files": ["src"],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepack": "pnpm build",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "type-check": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "@nuxt/ui": "catalog:",
+    "@vueuse/core": "catalog:peer",
+    "formango": "catalog:peer",
+    "motion-v": "catalog:peer",
+    "vue": "catalog:peer",
+    "zod": "catalog:peer"
+  },
+  "devDependencies": {
+    "@wisemen/payload-core-form-builder": "workspace:^",
+    "@nuxt/ui": "catalog:",
+    "@vitejs/plugin-vue": "catalog:vite",
+    "@vueuse/core": "catalog:vue",
+    "eslint": "catalog:lint-web",
+    "formango": "catalog:peer",
+    "motion-v": "catalog:peer",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build",
+    "vite": "catalog:vite",
+    "vue": "catalog:vue",
+    "vue-tsc": "catalog:vue",
+    "zod": "catalog:peer"
+  }
+}
