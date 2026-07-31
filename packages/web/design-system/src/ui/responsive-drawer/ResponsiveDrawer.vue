@@ -58,16 +58,6 @@ function onInteractOutside(event: CustomEvent): void {
 function onAutoFocusOnClose(event: Event): void {
   emit('autoFocusOnClose', event)
 }
-
-// onMounted(() => {
-//   useEventListener('focusin', (event) => {
-//     if (event.target instanceof HTMLInputElement) {
-//       event.preventDefault()
-//       event.stopPropagation()
-//       event.stopImmediatePropagation()
-//     }
-//   })
-// })
 </script>
 
 <template>
@@ -121,17 +111,7 @@ function onAutoFocusOnClose(event: Event): void {
               {{ props.title }}
             </RekaDrawerTitle>
 
-            <!--
-              Scopes swipe-to-dismiss to the handle — reka's pointer capture
-              otherwise steals clicks from non-button content (e.g. options).
-            -->
-            <div
-              class="contents"
-              @pointerdown.stop
-              @touchstart.stop
-            >
-              <slot name="content" />
-            </div>
+            <slot name="content" />
           </div>
         </RekaDrawerContent>
       </ThemeProvider>
