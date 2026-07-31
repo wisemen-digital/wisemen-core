@@ -22,6 +22,7 @@ export const createDetailPaneStyle = tv({
   variants: {
     variant: {
       'bordered-inline': {
+        content: 'rounded-lg',
         pane: `
           inset-y-2 right-2 rounded-lg border border-secondary shadow-floating
           max-md:inset-2! max-md:w-auto!
@@ -29,6 +30,7 @@ export const createDetailPaneStyle = tv({
         resizeHandle: '-inset-y-2',
       },
       'bordered-overlay': {
+        content: 'rounded-lg',
         pane: `
           inset-y-2 right-2 rounded-lg border border-secondary shadow-floating
           max-md:inset-2! max-md:w-auto!

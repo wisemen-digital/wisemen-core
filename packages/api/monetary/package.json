@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/monetary",
-  "version": "0.5.3",
+  "version": "0.5.6",
   "publishConfig": {
     "access": "public"
   },
@@ -51,8 +51,5 @@
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/monetary"
-  },
-  "dependencies": {
-    "@wisemen/nestjs-typeorm": "workspace:*"
   }
 }

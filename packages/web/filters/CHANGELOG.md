@@ -4,6 +4,12 @@
 
 
 
+
+## 10.0.2
+<sub>2026-07-23</sub>
+
+- [#1478](https://github.com/wisemen-digital/wisemen-core/pull/1478)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Increase the FiltersDialogDateRangeFilter width to avoid it being squashed
+
 ## 10.0.1
 <sub>2026-07-08</sub>
 

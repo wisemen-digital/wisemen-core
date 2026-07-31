@@ -2,6 +2,24 @@
 
 
 
+
+
+
+## 0.2.7
+<sub>2026-07-29</sub>
+
+- [#1519](https://github.com/wisemen-digital/wisemen-core/pull/1519)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added correct semantic convention and added more error options
+
+## 0.2.6
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.2.5
+<sub>2026-07-23</sub>
+
+- [#1477](https://github.com/wisemen-digital/wisemen-core/pull/1477)  *(patch)* Thanks [@daanpersoons](https://github.com/daanpersoons)! - drop Redis key from span name to prevent cardinality explosion
+
 ## 0.2.4
 <sub>2026-07-17</sub>
 

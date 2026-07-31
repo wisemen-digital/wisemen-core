@@ -69,20 +69,40 @@ onBeforeMount(() => {
       :orientation="props.orientation"
     >
       <TabsRouterLinkItem
-        :icon="User01Icon"
+        :config="{
+          left: {
+            icon: User01Icon,
+            type: 'icon',
+          },
+        }"
         :to="{ name: 'general' }"
         label="General"
       />
       <TabsRouterLinkItem
-        :icon="Inbox02Icon"
+        :config="{
+          left: {
+            icon: Inbox02Icon,
+            type: 'icon',
+          },
+          indicator: {
+            value: 12,
+            type: 'count',
+          },
+        }"
         :to="{ name: 'members' }"
-        :count="12"
         label="Members"
       />
       <TabsRouterLinkItem
-        :icon="Settings01Icon"
+        :config="{
+          left: {
+            icon: Settings01Icon,
+            type: 'icon',
+          },
+          indicator: {
+            type: 'dot',
+          },
+        }"
         :to="{ name: 'settings' }"
-        :count="3"
         label="Settings"
       />
     </TabsRouterLink>

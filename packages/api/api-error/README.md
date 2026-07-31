@@ -61,6 +61,21 @@ All errors automatically convert to JSON API format via the `toJsonApiError()` m
 }
 ```
 
+### Converting `class-validator` errors
+
+When validation is performed manually, use `convertClassValidatorErrorsToJsonApiError(...)` to turn `class-validator` output into a JSON:API-compatible bad request error:
+
+```typescript
+import { validate } from 'class-validator'
+import { convertClassValidatorErrorsToJsonApiError } from '@wisemen/api-error'
+
+const errors = await validate(dto)
+
+if (errors.length > 0) {
+  throw convertClassValidatorErrorsToJsonApiError(errors)
+}
+```
+
 ### Decorators
 
 - `@ApiErrorCode(code: string)` - Set the error code

@@ -1,12 +1,12 @@
 {
   "name": "@wisemen/nestjs-async-api",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "publishConfig": {
     "access": "public"
   },
   "type": "module",
   "exports": {
-    ".": "./dist/lib/index.js"
+    ".": "./dist/index.js"
   },
   "imports": {
     "#*": "./lib/*"
@@ -24,6 +24,7 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
+    "reflect-metadata": "catalog:backend",
     "change-case": "catalog:backend",
     "yaml": "catalog:backend",
     "@nestjs/swagger": "catalog:backend"

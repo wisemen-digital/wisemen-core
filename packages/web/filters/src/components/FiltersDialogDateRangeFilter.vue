@@ -50,7 +50,7 @@ function onClear(): void {
 </script>
 
 <template>
-  <UIDialog size="lg">
+  <UIDialog size="xl">
     <UIDialogHeader
       :title="props.filter.label"
       :hide-description="true"

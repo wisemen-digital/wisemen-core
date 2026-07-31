@@ -14,6 +14,7 @@ export {
   NotFoundCompositeApiError,
   BadRequestCompositeApiError
 } from './api-errors/index.js'
+export { convertClassValidatorErrorsToJsonApiError } from './class-validator/index.js'
 export {
   ApiErrorCode,
   ApiErrorMeta,

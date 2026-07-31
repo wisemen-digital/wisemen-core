@@ -1,4 +1,4 @@
-# `@repo/payload-translate`
+# `@wisemen/payload-core-translate`
 
 Payload plugin for translating documents with one or more adapters.
 
@@ -15,13 +15,19 @@ Payload plugin for translating documents with one or more adapters.
 This package is workspace-local, so you usually import it directly from the monorepo package:
 
 ```ts
-import { payloadTranslatePlugin, googleTranslateAdapterDefinition } from "@repo/payload-translate";
+import {
+  payloadTranslatePlugin,
+  googleTranslateAdapterDefinition,
+} from "@wisemen/payload-core-translate";
 ```
 
 ## Basic usage
 
 ```ts
-import { payloadTranslatePlugin, googleTranslateAdapterDefinition } from "@repo/payload-translate";
+import {
+  payloadTranslatePlugin,
+  googleTranslateAdapterDefinition,
+} from "@wisemen/payload-core-translate";
 
 export default buildConfig({
   plugins: [

@@ -41,16 +41,19 @@ Jane Doe;25
 ## Encode A CSV Stream
 
 ```ts
+import { pipeline } from 'node:stream/promises'
 import { CSV } from '@wisemen/csv'
 
-const stream = CSV.encodeStream(sourceRows, {
-  columns: ['name', 'age'],
-})
+await pipeline(
+  databaseQueryStream,
+  CSV.encodeTransform(), 
+  uploadWritable
+)
 ```
 
-Use the stream variant for HTTP downloads and large exports. The output still
-contains the header row first, but the CSV is emitted in chunks instead of one
-fully buffered string.
+Use the transform variant when rows already come from a readable object stream
+and need to be piped into another writable. Use `encodeStream()` when the source
+is an iterable or async iterable and you want a `Readable` returned directly.
 
 ## Encoding Rules To Rely On
 
@@ -60,21 +63,21 @@ fully buffered string.
 - `CSV.encode()` derives `columns` from the first record when they are omitted.
 - `CSV.encodeStream()` also derives `columns` from the first emitted record when
   they are omitted.
+- `CSV.encodeTransform()` derives `columns` from the first written record when
+  they are omitted.
 - `null` and `undefined` are encoded as empty fields.
 - Values containing the delimiter, `"` or a newline are wrapped in quotes.
 - Inner `"` characters are escaped as `""`.
 - `encode()` does not add a trailing newline after the last row.
-- `encodeStream()` writes `\n` after the header and after every emitted row.
+- `encodeStream()` and `encodeTransform()` write `\n` after the header and after
+  every emitted row.
 
 ## Stream-Specific Behavior
 
+- `encodeTransform()` returns a `Transform` with object-mode input and text
+  output.
 - `encodeStream()` accepts both `Iterable<Record<...>>` and
   `AsyncIterable<Record<...>>`.
-- `batchSize` controls how many data rows are buffered before a chunk is
-  yielded.
-- `maxChunkBytes` forces a chunk flush once the buffered CSV text reaches the
-  configured byte size.
-- If both limits are set, whichever limit is hit first flushes the chunk.
 - If the iterable is empty and `columns` are provided, the stream emits only the
   header row.
 - If the iterable is empty and `columns` are omitted, the stream emits nothing.

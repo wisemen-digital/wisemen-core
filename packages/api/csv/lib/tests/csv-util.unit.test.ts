@@ -1,4 +1,5 @@
 import { describe, it } from 'node:test'
+import { once } from 'node:events'
 import { Readable } from 'node:stream'
 import { CSV, CSVRow } from '../csv.util.js'
 import { expect } from 'expect'
@@ -204,54 +205,6 @@ describe('CSV util', () => {
       expect(rawText).toBe(`name,age\nJohn Doe,30\nJane Doe,25\n`)
     })
 
-    it('encodes a csv stream with batch size', async () => {
-      const data = [
-        { name: 'John Doe', age: '30' },
-        { name: 'Jane Doe', age: '25' },
-        { name: 'Jack Doe', age: '20' }
-      ]
-
-      const stream = CSV.encodeStream(data, { columns: ['name', 'age'], batchSize: 1, maxChunkBytes: Number.MAX_SAFE_INTEGER })
-
-      const chunks: string[] = []
-
-      for await (const chunk of stream) {
-        chunks.push(String(chunk))
-      }
-
-      expect(chunks).toEqual([
-        'name;age\nJohn Doe;30\n',
-        'Jane Doe;25\n',
-        'Jack Doe;20\n'
-      ])
-    })
-
-    it('encodes a csv stream with max chunk bytes', async () => {
-      const data = [
-        { name: 'John Doe', age: '30' },
-        { name: 'Jane Doe', age: '25' },
-        { name: 'Jack Doe', age: '20' }
-      ]
-
-      const stream = CSV.encodeStream(data, {
-        columns: ['name', 'age'],
-        maxChunkBytes: 20,
-        batchSize: Number.MAX_SAFE_INTEGER
-      })
-
-      const chunks: string[] = []
-
-      for await (const chunk of stream) {
-
-        chunks.push(String(chunk))
-      }
-
-      expect(chunks).toEqual([
-        'name;age\nJohn Doe;30\n',
-        'Jane Doe;25\nJack Doe;20\n'
-      ])
-    })
-
     it('quotes a value that contains the delimiter', async () => {
       const data = [{ name: 'Smith;Jones', note: 'hello' }]
       const stream = CSV.encodeStream(data, { columns: ['name', 'note'] })
@@ -311,6 +264,88 @@ describe('CSV util', () => {
       for await (const chunk of stream) rawText += String(chunk)
 
       expect(rawText).toBe('')
+    })
+
+    it('propagates source failures through the returned stream', async () => {
+      function* data (): Generator<Record<'name', string>> {
+        yield { name: 'John Doe' }
+        throw new Error('query failed')
+      }
+
+      const stream = CSV.encodeStream(data(), { columns: ['name'] })
+
+      await expect((async () => {
+        for await (const chunk of stream) {
+          void chunk
+        }
+      })()).rejects.toThrow('query failed')
+    })
+
+    it('destroys the hidden source when the returned stream is destroyed', async () => {
+      let sourceDestroyed = false
+
+      class PendingRowStream extends Readable {
+        private sentRow = false
+
+        constructor () {
+          super({ objectMode: true })
+        }
+
+        override _read (): void {
+          if (!this.sentRow) {
+            this.sentRow = true
+            this.push({ name: 'John Doe' })
+          }
+        }
+
+        override _destroy (error: Error | null, callback: (error?: Error | null) => void): void {
+          sourceDestroyed = true
+          callback(error)
+        }
+      }
+
+      const source = new PendingRowStream()
+      const stream = CSV.encodeStream(source, { columns: ['name'] })
+      const iterator = stream[Symbol.asyncIterator]()
+
+      await iterator.next()
+
+      const closed = once(stream, 'close')
+      stream.destroy()
+      await closed
+
+      expect(sourceDestroyed).toBe(true)
+    })
+  })
+
+  describe('encode transform', () => {
+    it('encodes row objects written through the transform', async () => {
+      const data = [
+        { name: 'John Doe', age: '30' },
+        { name: 'Jane Doe', age: '25' }
+      ]
+
+      const stream = Readable.from(data).pipe(CSV.encodeTransform({ columns: ['name', 'age'] }))
+      let rawText = ''
+
+      for await (const chunk of stream) {
+        rawText += String(chunk)
+      }
+
+      expect(rawText).toBe(`name;age\nJohn Doe;30\nJane Doe;25\n`)
+    })
+
+    it('emits only the header when ended without rows and columns are provided', async () => {
+      const transform = CSV.encodeTransform({ columns: ['name', 'age'] })
+      let rawText = ''
+
+      transform.end()
+
+      for await (const chunk of transform) {
+        rawText += String(chunk)
+      }
+
+      expect(rawText).toBe(`name;age\n`)
     })
   })
 
