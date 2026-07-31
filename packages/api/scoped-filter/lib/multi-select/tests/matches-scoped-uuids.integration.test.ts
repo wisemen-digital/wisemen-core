@@ -57,6 +57,19 @@ describe('MatchesScopedUuids', () => {
 
       expect(results.length).toBe(0)
     })
+
+    it('returns an empty result when the include filter has no values', async () => {
+      const filter: MultiSelectUuidFilter<string> = { operation: MultiSelectOperation.INCLUDE, values: [] }
+
+      const results = await dataSource.manager.find(ScopedFilterTest, {
+        where: {
+          id: In([1, 2, 3]),
+          uuid: MatchMultiSelect(filter)
+        }
+      })
+
+      expect(results.length).toBe(0)
+    })
   })
 
   describe('scope: exclude', () => {
@@ -77,6 +90,19 @@ describe('MatchesScopedUuids', () => {
     it('returns all rows when no rows match the exclusion', async () => {
       const nonExistentUuid = '00000000-0000-0000-0000-000000000099'
       const filter: MultiSelectUuidFilter<string> = { operation: MultiSelectOperation.EXCLUDE, values: [nonExistentUuid] }
+
+      const results = await dataSource.manager.find(ScopedFilterTest, {
+        where: {
+          id: In([1, 2, 3]),
+          uuid: MatchMultiSelect(filter)
+        }
+      })
+
+      expect(results.length).toBe(3)
+    })
+
+    it('returns all rows when the exclude filter has no values', async () => {
+      const filter: MultiSelectUuidFilter<string> = { operation: MultiSelectOperation.EXCLUDE, values: [] }
 
       const results = await dataSource.manager.find(ScopedFilterTest, {
         where: {

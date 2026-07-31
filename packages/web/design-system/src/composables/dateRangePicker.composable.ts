@@ -39,8 +39,20 @@ export function useDateRangePicker({
   })
   const isSingleMonth = screen.smaller('md')
 
+  function clampToSelectableRange(date: PlainDate): PlainDate {
+    if (minDate.value !== null && Temporal.PlainDate.compare(date, minDate.value) < 0) {
+      return minDate.value
+    }
+
+    if (maxDate.value !== null && Temporal.PlainDate.compare(date, maxDate.value) > 0) {
+      return maxDate.value
+    }
+
+    return date
+  }
+
   const todayDate = Temporal.Now.plainDateISO()
-  const initialDate = modelValue.value.from ?? todayDate
+  const initialDate = clampToSelectableRange(modelValue.value.from ?? todayDate)
   const calendarPlaceholder = shallowRef<CalendarDate>(
     new CalendarDate(initialDate.year, initialDate.month, 1),
   )
