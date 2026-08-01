@@ -1,9 +1,7 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common'
-import { PgBossScheduler } from '@wisemen/pgboss-nestjs-job'
-import { NatsPublisher } from './nats-publisher.js'
+import { NATS_PUBLISHER_SCHEDULER, NatsPublisher } from './nats-publisher.js'
 import type { NatsPublisherModuleAsyncOptions, NatsPublisherModuleOptions } from './nats-publisher.module-options.js'
 
-const NATS_PUBLISHER_MODULE_OPTIONS = 'wisemen.nats_publisher_module_options'
 
 @Module({})
 export class NatsPublisherModule {
@@ -18,27 +16,21 @@ export class NatsPublisherModule {
       module: NatsPublisherModule,
       imports: options.imports ?? [],
       providers: [
-        this.createOptionsProvider(options),
-        this.createSchedulerProvider(),
+        this.createSchedulerProvider(options),
         NatsPublisher
       ],
       exports: [NatsPublisher]
     }
   }
 
-  private static createOptionsProvider (options: NatsPublisherModuleAsyncOptions): Provider {
+  private static createSchedulerProvider (options: NatsPublisherModuleAsyncOptions): Provider {
     return {
-      provide: NATS_PUBLISHER_MODULE_OPTIONS,
-      useFactory: options.useFactory,
-      inject: options.inject ?? []
-    }
-  }
-
-  private static createSchedulerProvider (): Provider {
-    return {
-      provide: PgBossScheduler,
-      useFactory: (options: NatsPublisherModuleOptions) => options.scheduler,
-      inject: [NATS_PUBLISHER_MODULE_OPTIONS]
+      provide: NATS_PUBLISHER_SCHEDULER,
+      useFactory: async (...args: unknown[]) => {
+        const  resolvedOptions = await options.useFactory(...args)
+        return resolvedOptions.scheduler
+      },
+      inject: options.inject
     }
   }
 }

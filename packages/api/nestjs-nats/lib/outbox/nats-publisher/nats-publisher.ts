@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Inject, Injectable } from '@nestjs/common'
 import { PgBossScheduler } from '@wisemen/pgboss-nestjs-job'
 import { PublishNatsEventJob } from '../publish-nats-event/publish-nats-event.job.js'
 import { type NatsStreamPublishOptions, PublishNatsStreamEventJob } from '../publish-nats-stream-event/publish-nats-stream-event.job.js'
@@ -14,10 +14,12 @@ export type NatsPublisherStreamEventWithSubject<TEvent = unknown> = {
   options?: NatsStreamPublishOptions
 }
 
+export const NATS_PUBLISHER_SCHEDULER = 'wisemen.nats_publisher_scheduler'
+
 @Injectable()
 export class NatsPublisher {
   constructor (
-    private jobScheduler: PgBossScheduler
+    @Inject(NATS_PUBLISHER_SCHEDULER) private jobScheduler: PgBossScheduler
   ) {}
 
   /** Publishes the event asynchronously in a job */
