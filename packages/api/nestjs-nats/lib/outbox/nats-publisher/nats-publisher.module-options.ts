@@ -9,6 +9,11 @@ export interface NatsPublisherModuleOptions {
    * Scheduler used to enqueue NATS publish jobs.
    */
   scheduler: PgBossScheduler
+
+  /**
+   * The pgboss queue name on which the async publish jobs will be queued
+   */
+  queueName: string
 }
 
 /**
