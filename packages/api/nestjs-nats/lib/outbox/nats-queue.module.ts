@@ -1,12 +1,11 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common'
-import { NatsClient } from '../nats.client.js'
 import { PublishNatsEventJobHandler } from './publish-nats-event/publish-nats-event.handler.js'
 import { PublishNatsEventJob } from './publish-nats-event/publish-nats-event.job.js'
 import { PublishNatsStreamEventJobHandler } from './publish-nats-stream-event/publish-nats-stream-event.handler.js'
 import { PublishNatsStreamEventJob } from './publish-nats-stream-event/publish-nats-stream-event.job.js'
 import type { NatsQueueModuleAsyncOptions, NatsQueueModuleOptions } from './nats-queue.module-options.js'
 import { Bouncer, PgBossJob, PgBossJobHandler } from '@wisemen/pgboss-nestjs-job'
-import { NatsOutboxQueueBouncer } from '#src/outbox/nats-outbox.queue.bouncer.js'
+import { NATS_OUTBOX_QUEUE_BOUNCER_NATS_CLIENT, NatsOutboxQueueBouncer } from '#src/outbox/nats-outbox.queue.bouncer.js'
 
 const NATS_QUEUE_MODULE_OPTIONS = 'wisemen.nats_queue_module_options'
 const NATS_QUEUE_REGISTRATION = 'wisemen.nats_queue_registration'
@@ -60,7 +59,7 @@ export class NatsQueueModule {
 
   private static createNatsClientProvider (): Provider {
     return {
-      provide: NatsClient,
+      provide: NATS_OUTBOX_QUEUE_BOUNCER_NATS_CLIENT,
       useFactory: (options: NatsQueueModuleOptions) => options.natsClient,
       inject: [NATS_QUEUE_MODULE_OPTIONS]
     }

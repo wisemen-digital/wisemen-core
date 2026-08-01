@@ -6,6 +6,7 @@ import { PublishNatsStreamEventJob } from '#src/outbox/publish-nats-stream-event
 import { PgBossJob } from '@wisemen/pgboss-nestjs-job'
 
 const NATS_PUBLISHER_OPTIONS = 'wisemen.nats-publisher-options'
+const NATS_QUEUE_REGISTRATION = 'wisemen.nats_queue_registration'
 
 @Module({})
 export class NatsPublisherModule {
@@ -22,13 +23,17 @@ export class NatsPublisherModule {
       providers: [
         {
           provide: NATS_PUBLISHER_OPTIONS,
-          useFactory: async (...args: unknown[]) => {
-            const resolvedOptions = await options.useFactory(...args)
-            PgBossJob(resolvedOptions.queueName)(PublishNatsEventJob)
-            PgBossJob(resolvedOptions.queueName)(PublishNatsStreamEventJob)
-            return resolvedOptions
-          }, 
-          inject: options.inject
+          inject: options.inject,
+          useFactory: options.useFactory
+        },
+        {
+          provide: NATS_QUEUE_REGISTRATION,
+          inject: [NATS_PUBLISHER_OPTIONS],
+          useFactory: async (options: NatsPublisherModuleOptions) => {
+            PgBossJob(options.queueName)(PublishNatsEventJob)
+            PgBossJob(options.queueName)(PublishNatsStreamEventJob)
+            return true
+          },
         },
         {
           provide: NATS_PUBLISHER_SCHEDULER,
