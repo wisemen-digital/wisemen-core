@@ -29,7 +29,7 @@ export class NatsPublisherModule {
         {
           provide: NATS_QUEUE_REGISTRATION,
           inject: [NATS_PUBLISHER_OPTIONS],
-          useFactory: async (options: NatsPublisherModuleOptions) => {
+          useFactory: (options: NatsPublisherModuleOptions) => {
             PgBossJob(options.queueName)(PublishNatsEventJob)
             PgBossJob(options.queueName)(PublishNatsStreamEventJob)
             return true
