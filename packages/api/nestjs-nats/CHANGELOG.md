@@ -7,6 +7,13 @@
 
 
 
+
+## 1.2.0
+<sub>2026-08-02</sub>
+
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add nats publisher with async publish jobs
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add configurable NATS outbox modules
+
 ## 1.1.4
 <sub>2026-07-31</sub>
 
