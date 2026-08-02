@@ -2057,12 +2057,18 @@ importers:
       '@wisemen/api-error':
         specifier: workspace:^
         version: link:../api-error
+      '@wisemen/datewise':
+        specifier: workspace:^
+        version: link:../datewise
       '@wisemen/nestjs-provider-explorer':
         specifier: workspace:^
         version: link:../nestjs-provider-explorer
       '@wisemen/opentelemetry':
         specifier: workspace:^
         version: link:../opentelemetry
+      '@wisemen/pgboss-nestjs-job':
+        specifier: workspace:^
+        version: link:../pgboss-nestjs-job
       class-transformer:
         specifier: catalog:backend-peer
         version: 0.5.1

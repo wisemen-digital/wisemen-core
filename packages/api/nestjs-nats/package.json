@@ -35,6 +35,7 @@
     "@nats-io/services": "catalog:backend",
     "@nats-io/transport-node": "catalog:backend",
     "@wisemen/api-error": "workspace:^",
+    "@wisemen/datewise": "workspace:^",
     "@wisemen/nestjs-provider-explorer": "workspace:^",
     "@wisemen/opentelemetry": "workspace:^"
   },
@@ -43,6 +44,7 @@
     "@nestjs/config": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
+    "@wisemen/pgboss-nestjs-job": "workspace:^",
     "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer",
     "reflect-metadata": "catalog:backend-peer",
