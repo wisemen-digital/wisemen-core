@@ -7,6 +7,7 @@ export interface NatsSubscriberConfig extends Omit<SubscriptionOptions, 'callbac
   connectionOptions: NamedConnectionOptions
   subject: string
   name: string
+  maxInFlight?: number
 }
 
 export class NatsSubscriberManager {
@@ -23,8 +24,17 @@ export class NatsSubscriberManager {
 
     const connection = await this.connectionManager.connect(config.connectionOptions)
     const subject = config.subject.replaceAll(/:[\w]+/g, '*')
-    const rawSubscription = connection.subscribe(subject, config)
-    const subscription = new NatsSubscription(rawSubscription)
+
+    const {
+      connectionOptions: _connectionOptions,
+      subject: _subject,
+      name: _name,
+      maxInFlight,
+      ...subscriptionOptions
+    } = config
+    
+    const rawSubscription = connection.subscribe(subject, subscriptionOptions)
+    const subscription = new NatsSubscription(rawSubscription, { maxInFlight })
 
     Logger.log(`Subscribed to subject ${config.subject}`, 'NATS')
 
