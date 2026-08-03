@@ -66,4 +66,11 @@ export type AutocompleteContentProps<TValue extends AutocompleteValue> = Pick<
   | 'isLoading'
   | 'items'
   | 'searchMode'
-> & PopoverProps
+> & Partial<PopoverProps> & {
+  /**
+   * When true, renders inline inside a `ResponsiveDrawer` instead of a positioned popover,
+   * and renders its own search input at the top of the list.
+   * @default false
+   */
+  isMobileDrawer?: boolean
+}

@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="TValue extends AutocompleteValue">
 import {
   ComboboxContent as RekaComboboxContent,
+  ComboboxInput as RekaComboboxInput,
   ComboboxPortal as RekaComboboxPortal,
   injectComboboxRootContext,
 } from 'reka-ui'
@@ -13,15 +14,14 @@ import { useI18n } from 'vue-i18n'
 
 import type { AutocompleteContentProps } from '@/ui/autocomplete/autocomplete.props'
 import type { AutocompleteValue } from '@/ui/autocomplete/autocomplete.type'
-import AutocompleteLoading from '@/ui/autocomplete/AutocompleteLoading.vue'
-import AutocompleteOption from '@/ui/autocomplete/AutocompleteOption.vue'
+import AutocompleteOptionsList from '@/ui/autocomplete/AutocompleteOptionsList.vue'
 import { useAutocompleteSearch } from '@/ui/autocomplete/composables/autocompleteSearch.composable'
 import Scrollable from '@/ui/scrollable/Scrollable.vue'
-import { UISeparator } from '@/ui/separator'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<AutocompleteContentProps<TValue>>(), {
   isLoading: false,
+  isMobileDrawer: false,
   getItemKey: null,
   popoverAlign: 'center',
   popoverCollisionPadding: 8,
@@ -62,13 +62,20 @@ onBeforeUnmount(() => {
   }
 })
 
-function getItemKeyFor(value: NonNullable<TValue>): number | string {
-  return props.getItemKey?.(value) ?? JSON.stringify(value)
+function displayValueFn(value: TValue | null): string {
+  if (value == null) {
+    return ''
+  }
+
+  return props.displayFn(value as NonNullable<TValue>)
 }
 </script>
 
 <template>
-  <RekaComboboxPortal to="body">
+  <RekaComboboxPortal
+    v-if="!props.isMobileDrawer"
+    to="body"
+  >
     <ThemeProvider :as-child="true">
       <RekaComboboxContent
         :side="props.popoverSide"
@@ -99,33 +106,44 @@ function getItemKeyFor(value: NonNullable<TValue>): number | string {
             "
             @next="emit('nextPage')"
           >
-            <template
-              v-for="(item, index) of filteredItems"
-              :key="item.type === 'option' ? `option-${getItemKeyFor(item.value as NonNullable<TValue>)}` : `sep-${index}`"
-            >
-              <AutocompleteOption
-                v-if="item.type === 'option'"
-                :label="props.displayFn(item.value as NonNullable<TValue>)"
-                :value="item.value"
-              />
-
-              <UISeparator
-                v-else-if="item.type === 'separator'"
-                class="my-xs"
-              />
-            </template>
-
-            <AutocompleteLoading v-if="props.isLoading && filteredItems.length === 0" />
-
-            <span
-              v-else-if="!props.isLoading && filteredItems.length === 0"
-              class="block px-md pt-xs pb-sm text-xs text-disabled"
-            >
-              {{ i18n.t('component.autocomplete.no_results_found') }}
-            </span>
+            <AutocompleteOptionsList
+              :display-fn="props.displayFn"
+              :get-item-key="props.getItemKey"
+              :is-loading="props.isLoading"
+              :items="filteredItems"
+            />
           </Scrollable>
         </div>
       </RekaComboboxContent>
     </ThemeProvider>
   </RekaComboboxPortal>
+
+  <RekaComboboxContent
+    v-else
+    :hide-when-empty="false"
+    class="flex max-h-full min-h-0 flex-col overflow-hidden"
+  >
+    <div class="p-xs pb-none">
+      <RekaComboboxInput
+        :display-value="displayValueFn"
+        :placeholder="i18n.t('component.autocomplete.search_placeholder')"
+        class="
+          h-7 w-full rounded-sm bg-secondary px-md text-xs text-primary
+          outline-none
+        "
+      />
+    </div>
+
+    <Scrollable
+      class="min-h-0 grow p-xs"
+      @next="emit('nextPage')"
+    >
+      <AutocompleteOptionsList
+        :display-fn="props.displayFn"
+        :get-item-key="props.getItemKey"
+        :is-loading="props.isLoading"
+        :items="filteredItems"
+      />
+    </Scrollable>
+  </RekaComboboxContent>
 </template>
