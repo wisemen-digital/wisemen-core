@@ -71,8 +71,8 @@ export class NatsSubscription {
 
     for await (const message of this.subscription) {
       const handler = this.handleMessage(message)
-      void handler.finally(() => inFlight.delete(handler))
       inFlight.add(handler)
+      void handler.finally(() => inFlight.delete(handler))
 
       if(inFlight.size >= this.maxInFlight) {
         await Promise.race(inFlight) // wait for one handler to complete
