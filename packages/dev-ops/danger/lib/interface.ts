@@ -6,6 +6,7 @@
 
 import type { DangerDSLType } from 'danger'
 import type { DefaultConfig, RuleConfig } from './config.js'
+import type { ScopedFiles } from './scope.js'
 
 // Enum for rule result types
 export enum ResultType {
@@ -26,6 +27,12 @@ export interface RuleContext {
   danger: DangerDSLType
   config: RuleConfig
   globalConfig: DefaultConfig
+  /** Base path this rule is scoped to; `''` means the whole repo (root). */
+  scope: string
+  /** Git file lists pre-filtered to `scope`. Rules should read these instead of `danger.git.*`. */
+  scopedFiles: ScopedFiles
+  /** Whether any changed file falls under `scope`. Root scope is always `true`. */
+  hasChangesInScope: boolean
 }
 
 // Type for a rule

@@ -1,7 +1,7 @@
 import type { GitHubPRDSL } from 'danger'
 import { createRule, ResultType } from '../interface.js'
 
-const CHANGELOG_PATH = 'apps/api/CHANGELOG.md'
+const ROOT_CHANGELOG_PATH = 'CHANGELOG.md'
 
 const ENTRY_TEMPLATE
   = '```\n'
@@ -18,8 +18,10 @@ export const changelogUpdatedRule = createRule(
   'changelog-updated',
   'Changelog Updated',
   'Checks if the changelog file has been updated in the pull request',
-  async ({ danger, config }) => {
-    const changelogPath = (config.changelogPath as string | undefined) ?? CHANGELOG_PATH
+  async ({ danger, config, scope }) => {
+    // Default target is derived from scope: root -> CHANGELOG.md, apps/api -> apps/api/CHANGELOG.md
+    const defaultChangelogPath = scope === '' ? ROOT_CHANGELOG_PATH : `${scope}/CHANGELOG.md`
+    const changelogPath = (config.changelogPath as string | undefined) ?? defaultChangelogPath
     const changeLogTemplate = (config.changelogEntryTemplate as string | undefined)
       ?? ENTRY_TEMPLATE
 
@@ -53,7 +55,8 @@ export const changelogUpdatedRule = createRule(
 
     return { passed: true, message: 'CHANGELOG entry looks complete.' }
   }, {
-    changelogPath: CHANGELOG_PATH,
+    // No static `changelogPath` default here - it's derived from `scope` at run time
+    // (see above), and can still be overridden per-rule via config.
     changelogEntryTemplate: ENTRY_TEMPLATE
   }
 )

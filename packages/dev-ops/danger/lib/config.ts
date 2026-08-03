@@ -22,6 +22,13 @@ export interface GlobalConfig {
   postReview?: boolean
   deleteOldComments?: boolean
   commentPrefix?: string
+  /**
+   * Base path this config applies to, e.g. `apps/api`.
+   * Empty string / undefined means "whole repo" (root scope).
+   * Rules are only run when changed files fall under this path -
+   * see `lib/scope.ts` and `createRuleRunner.run` for enforcement.
+   */
+  scope?: string
 }
 
 // Type for full configuration
@@ -84,6 +91,9 @@ export function mergeConfig (userConfig: Partial<DefaultConfig> = {}): DefaultCo
   }
   if (userConfig.commentPrefix !== undefined) {
     merged.commentPrefix = userConfig.commentPrefix
+  }
+  if (userConfig.scope !== undefined) {
+    merged.scope = userConfig.scope
   }
 
   // Merge rule configs

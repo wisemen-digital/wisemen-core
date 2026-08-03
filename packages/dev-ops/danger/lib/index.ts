@@ -11,6 +11,8 @@ import type { Rule, RuleResult, RuleContext } from './interface.js'
 import { isValidRule, createRule, BaseRule, ResultType } from './interface.js'
 import type { DefaultConfig, RuleConfigs, GlobalConfig, RuleConfig } from './config.js'
 import { defaultConfig, defaultRuleConfigs, mergeConfig } from './config.js'
+import type { ScopedFiles } from './scope.js'
+import { getScopedFiles, isInScope } from './scope.js'
 
 // Import all built-in rules
 import { conventionalCommitsRule } from './rules/conventional-commits.js'
@@ -104,6 +106,10 @@ export function createRuleRunner (config: Partial<DefaultConfig> = {}): RuleRunn
       const allRules = getAllRules(additionalRules)
       const results: RuleRunnerResult[] = []
 
+      const scope = mergedConfig.scope ?? ''
+      const scopedFiles: ScopedFiles = getScopedFiles(danger, scope)
+      const hasChangesInScope = scopedFiles.all.length > 0
+
       for (const [ruleId, rule] of Object.entries(allRules)) {
         const ruleConfig = { ...rule.defaultConfig, ...mergedConfig.rules?.[ruleId] }
 
@@ -112,11 +118,20 @@ export function createRuleRunner (config: Partial<DefaultConfig> = {}): RuleRunn
           continue
         }
 
+        // Scoped rules (non-root) should only run when this PR actually touches
+        // their folder - e.g. an api-only rule must not fail a web-only PR.
+        if (scope !== '' && !hasChangesInScope) {
+          continue
+        }
+
         try {
           const context = {
             danger,
             config: ruleConfig,
-            globalConfig: mergedConfig
+            globalConfig: mergedConfig,
+            scope,
+            scopedFiles,
+            hasChangesInScope
           }
 
           const result = await rule.run(context)
@@ -195,6 +210,8 @@ export { defaultConfig, defaultRuleConfigs, mergeConfig }
 export type { DefaultConfig, GlobalConfig, RuleConfig, RuleConfigs }
 export { isValidRule, createRule, BaseRule, ResultType }
 export type { Rule, RuleResult, RuleContext }
+export { getScopedFiles, isInScope }
+export type { ScopedFiles }
 
 // Export for CommonJS compatibility
 if (typeof module !== 'undefined') {
@@ -209,6 +226,8 @@ if (typeof module !== 'undefined') {
     mergeConfig,
     isValidRule,
     createRule,
-    BaseRule
+    BaseRule,
+    getScopedFiles,
+    isInScope
   }
 }
