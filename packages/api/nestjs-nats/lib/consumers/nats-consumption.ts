@@ -72,7 +72,7 @@ export class NatsConsumption {
 
     for await (const message of this.messages) {
       const handler = this.handleMessage(message)
-      handler.finally(() => inFlight.delete(handler))
+      void handler.finally(() => inFlight.delete(handler))
       inFlight.add(handler)
 
       if(inFlight.size >= this.maxInFlight) {

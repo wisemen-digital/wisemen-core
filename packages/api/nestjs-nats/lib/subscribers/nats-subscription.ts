@@ -71,7 +71,7 @@ export class NatsSubscription {
 
     for await (const message of this.subscription) {
       const handler = this.handleMessage(message)
-      handler.finally(() => inFlight.delete(handler))
+      void handler.finally(() => inFlight.delete(handler))
       inFlight.add(handler)
 
       if(inFlight.size >= this.maxInFlight) {
