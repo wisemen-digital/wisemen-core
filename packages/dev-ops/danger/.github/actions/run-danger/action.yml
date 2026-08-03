@@ -8,13 +8,17 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Install @wisemen/danger (if not already in dependencies)
+    - name: Install danger + @wisemen/danger (if not already direct dependencies)
       shell: bash
       run: |
         # danger's CLI bin must be a direct dependency of the consumer project -
         # pnpm only links bins for direct deps into node_modules/.bin, so
         # pnpm exec can't find it if it's only a transitive dep of @wisemen/danger.
-        if ! pnpm list @wisemen/danger >/dev/null 2>&1; then
+        # Check the `danger` binary itself (not just whether @wisemen/danger is
+        # present) - a consumer can already depend on @wisemen/danger without
+        # `danger` being linked as a direct dep, which left `pnpm exec danger`
+        # unable to find the binary.
+        if ! pnpm exec danger --version >/dev/null 2>&1; then
           pnpm add danger @wisemen/danger
         fi
     - name: Run Danger
