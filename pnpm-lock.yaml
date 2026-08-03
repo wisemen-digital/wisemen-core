@@ -527,8 +527,8 @@ catalogs:
       specifier: ^8.2.0
       version: 8.2.0
     reka-ui:
-      specifier: ^2.9.7
-      version: 2.9.7
+      specifier: ^2.10.1
+      version: 2.10.1
     temporal-polyfill:
       specifier: ^0.3.0
       version: 0.3.0
@@ -764,8 +764,8 @@ catalogs:
       specifier: 3.0.4
       version: 3.0.4
     reka-ui:
-      specifier: 2.9.7
-      version: 2.9.7
+      specifier: 2.10.1
+      version: 2.10.1
     superjson:
       specifier: 2.2.6
       version: 2.2.6
@@ -2057,12 +2057,18 @@ importers:
       '@wisemen/api-error':
         specifier: workspace:^
         version: link:../api-error
+      '@wisemen/datewise':
+        specifier: workspace:^
+        version: link:../datewise
       '@wisemen/nestjs-provider-explorer':
         specifier: workspace:^
         version: link:../nestjs-provider-explorer
       '@wisemen/opentelemetry':
         specifier: workspace:^
         version: link:../opentelemetry
+      '@wisemen/pgboss-nestjs-job':
+        specifier: workspace:^
+        version: link:../pgboss-nestjs-job
       class-transformer:
         specifier: catalog:backend-peer
         version: 0.5.1
@@ -3344,7 +3350,7 @@ importers:
         version: 2.2.1(@vueuse/core@14.1.0(vue@3.5.27(typescript@5.9.3)))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vue@3.5.27(typescript@5.9.3))
       reka-ui:
         specifier: catalog:peer
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+        version: 2.10.1(vue@3.5.27(typescript@5.9.3))
       tailwind-variants:
         specifier: catalog:style
         version: 3.2.2(tailwind-merge@3.4.0)(tailwindcss@4.1.18)
@@ -3559,7 +3565,7 @@ importers:
         version: link:../formango
       reka-ui:
         specifier: catalog:vue
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+        version: 2.10.1(vue@3.5.27(typescript@5.9.3))
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
@@ -3789,7 +3795,7 @@ importers:
         version: 1.57.0
       reka-ui:
         specifier: catalog:vue
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+        version: 2.10.1(vue@3.5.27(typescript@5.9.3))
       storybook:
         specifier: catalog:storybook
         version: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -4266,7 +4272,7 @@ importers:
         version: 9.1.7
       reka-ui:
         specifier: catalog:vue
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+        version: 2.10.1(vue@3.5.27(typescript@5.9.3))
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
@@ -4385,7 +4391,7 @@ importers:
         version: 9.1.7
       reka-ui:
         specifier: catalog:vue
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+        version: 2.10.1(vue@3.5.27(typescript@5.9.3))
       tailwindcss:
         specifier: catalog:style
         version: 4.1.18
@@ -4522,7 +4528,7 @@ importers:
         version: 2.2.1(@vueuse/core@14.2.1(vue@3.5.27(typescript@5.9.3)))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vue@3.5.27(typescript@5.9.3))
       reka-ui:
         specifier: catalog:peer
-        version: 2.9.7(vue@3.5.27(typescript@5.9.3))
+        version: 2.10.1(vue@3.5.27(typescript@5.9.3))
       temporal-polyfill:
         specifier: catalog:peer
         version: 0.3.0
@@ -14191,8 +14197,8 @@ packages:
     resolution: {integrity: sha512-NgRBy2Nx/bE+9F27nVHnqcN5HjyLmecqsqx2PJHu3/IEtADD4WuxuXIVExD5PoSDFVrl78dOonfcOe5O+5nbzQ==}
     hasBin: true
 
-  reka-ui@2.9.7:
-    resolution: {integrity: sha512-aX7foYYR20v4+majO58OJJdBNfLMm0eJb448l9N4JVy8JB7GXOr4H/S4a+J1pkcoxZH8Cb7YHpJ855+miAm7sA==}
+  reka-ui@2.10.1:
+    resolution: {integrity: sha512-drcOQ4rQtDYAcGCsyQBqQg8QQ+H3B+zDaMJU0h8KPEPMa7g9BHu3zcOi4OB39XJSWizceFoNO0Z9tctSGLOXqg==}
     peerDependencies:
       vue: '>= 3.4.0'
 
@@ -27432,7 +27438,7 @@ snapshots:
     dependencies:
       jsesc: 3.1.0
 
-  reka-ui@2.9.7(vue@3.5.27(typescript@5.9.3)):
+  reka-ui@2.10.1(vue@3.5.27(typescript@5.9.3)):
     dependencies:
       '@floating-ui/dom': 1.7.6
       '@floating-ui/vue': 1.1.7(vue@3.5.27(typescript@5.9.3))
