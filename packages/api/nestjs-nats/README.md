@@ -57,8 +57,10 @@ export class MyNatsConnection {}
 import { NatsSubscriber, OnNatsMessage, NatsMessageData, NatsMsgDataJsonPipe } from '@wisemen/nestjs-nats'
 
 @NatsSubscriber((config) => ({
+  connection: MyNatsConnection,
   subject: 'my.subject',
   name: 'my-subscriber',
+  maxInFlight: 5,
 }))
 export class MySubscriber {
   @OnNatsMessage()
@@ -67,6 +69,9 @@ export class MySubscriber {
   }
 }
 ```
+
+`maxInFlight` limits how many messages a subscriber instance processes at the
+same time. It defaults to `1`, which preserves the existing one-by-one behavior.
 
 ### 4. Define a stream
 
@@ -113,6 +118,8 @@ import type { ConfigService } from '@nestjs/config'
   durable_name: 'orders-processor',
   filter_subject: 'orders.created',
   ack_policy: AckPolicy.Explicit,
+  maxInFlight: 5,
+  max_ack_pending: 5,
   // nakBackoff: 5000, // optional delay (ms) before a failed message is redelivered
 }))
 export class OrdersConsumer {
@@ -125,7 +132,10 @@ export class OrdersConsumer {
 
 Acknowledgement is handled for you: the message is `ack`-ed once the handler
 resolves, and `nak`-ed (redelivered, optionally after `nakBackoff` ms) if the
-handler throws. Register the consumer's module the same way as a subscriber:
+handler throws. `maxInFlight` defaults to `1`; if you raise it, set
+`max_ack_pending` to at least the same value so JetStream does not deliver more
+unacked messages than the handler pool can process. Register the consumer's
+module the same way as a subscriber:
 
 ```ts
 NatsModule.forRoot({
