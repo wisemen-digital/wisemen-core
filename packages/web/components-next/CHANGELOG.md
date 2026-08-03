@@ -3,6 +3,12 @@
 
 
 
+
+## 3.0.5
+<sub>2026-08-03</sub>
+
+- [#1531](https://github.com/wisemen-digital/wisemen-core/pull/1531)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make select and autocomplete popovers responsive on mobile. The popover will become a bottom drawer with the options
+
 ## 3.0.4
 <sub>2026-06-30</sub>
 
