@@ -8,6 +8,12 @@
 
 
 
+
+## 1.3.0
+<sub>2026-08-03</sub>
+
+- [#1542](https://github.com/wisemen-digital/wisemen-core/pull/1542)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add maxInFlight option for NATS handlers
+
 ## 1.2.0
 <sub>2026-08-02</sub>
 
