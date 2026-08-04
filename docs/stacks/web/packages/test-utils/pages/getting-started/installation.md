@@ -8,7 +8,7 @@ pnpm add -D @wisemen/vue-core-test-utils
 
 ```ts
 import {
+  MockResult,
   ServiceMock,
-  mockAsyncResult,
 } from '@wisemen/vue-core-test-utils'
 ```

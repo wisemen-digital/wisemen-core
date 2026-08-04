@@ -1,25 +1,21 @@
 # Async results
 
-Use the result helpers when a mocked API method returns a Wisemen `ApiResult` or paginated result.
+Use `MockResult` when a mocked API method returns a Wisemen `ApiResult` or paginated result.
 
 ```ts
-import {
-  mockAsyncPaginatedResult,
-  mockAsyncResult,
-  ServiceMock,
-} from '@wisemen/vue-core-test-utils'
+import { MockResult } from '@wisemen/vue-core-test-utils'
 
-const success = mockAsyncResult({ id: 'contact-1' })
-const page = mockAsyncPaginatedResult([{ id: 'contact-1' }])
-const emptyMutation = ServiceMock.toVoid()
+const success = MockResult.ok({ id: 'contact-1' })
+const page = MockResult.toOffsetPagination([{ id: 'contact-1' }])
+const emptyMutation = MockResult.toVoid()
 ```
 
-`mockAsyncResult` returns a successful `ApiResult`, `mockAsyncPaginatedResult` supplies the standard `data` and `meta` shape, and `ServiceMock.toVoid()` returns a successful `ApiResult<void>`.
+`MockResult.ok` returns a successful `ApiResult`, `MockResult.toOffsetPagination` supplies the standard `data` and `meta` shape, and `MockResult.toVoid()` returns a successful `ApiResult<void>`.
 
-The template uses `mockAsyncResult` for the contact detail query:
+The template uses `MockResult.ok` for the contact detail query:
 
 ```ts
-getContact: () => mockAsyncResult({
+getContact: () => MockResult.ok({
   uuid: contactUuid,
   isActive: true,
   email: 'ada@example.com',

@@ -3,12 +3,15 @@
 `ServiceMock.mock()` creates a typed module mock and wraps each configured method in a Vitest mock function.
 
 ```ts
-import { ServiceMock } from '@wisemen/vue-core-test-utils'
+import {
+  MockResult,
+  ServiceMock,
+} from '@wisemen/vue-core-test-utils'
 import type { ContactService } from '@/modules/contact/api/contact.service'
 
 const contactService = ServiceMock.mock<typeof ContactService>({
   methods: {
-    createContact: () => ServiceMock.toVoid(),
+    createContact: () => MockResult.toVoid(),
   },
   serviceName: 'ContactService',
   path: '@/modules/contact/api/contact.service',
@@ -24,7 +27,7 @@ This is the same pattern used by the template’s create-dialog test:
 ```ts
 const mockContactService = ServiceMock.mock<typeof ContactService>({
   methods: {
-    createContact: () => ServiceMock.toVoid(),
+    createContact: () => MockResult.toVoid(),
   },
   serviceName: 'ContactService',
   path: '@/modules/contact/api/contact.service',
@@ -40,7 +43,7 @@ const contactUuid = 'a0f2f9bb-5a80-4ddb-a315-dad9900f55aa' as ContactUuid
 
 const mockContactService = ServiceMock.mock<typeof ContactService>({
   methods: {
-    getContact: () => mockAsyncResult({
+    getContact: () => MockResult.ok({
       uuid: contactUuid,
       isActive: true,
       email: 'ada@example.com',
@@ -49,7 +52,7 @@ const mockContactService = ServiceMock.mock<typeof ContactService>({
       lastName: 'Lovelace',
       phoneNumber: null,
     }),
-    updateContact: () => ServiceMock.toVoid(),
+    updateContact: () => MockResult.toVoid(),
   },
   serviceName: 'ContactService',
   path: '@/modules/contact/api/contact.service',
