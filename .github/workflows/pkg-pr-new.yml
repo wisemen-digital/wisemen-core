@@ -42,8 +42,9 @@ jobs:
         run: |
           pnpm turbo run build --filter='...[origin/main]' --dry=json > dry-run.json
 
-          # pkg-pr-new accepts workspace directories, not package names.
-          PACKAGES=$(jq -r '[.tasks[].directory] | unique | .[]' dry-run.json)
+          # Publish only packages selected by the filter. The task graph also
+          # contains build dependencies, which pkg-pr-new should not publish.
+          PACKAGES=$(jq -r '[.packages[] as $package | select($package != "//") | .tasks[] | select(.package == $package) | .directory] | unique | .[]' dry-run.json)
 
           echo "packages<<EOF" >> "$GITHUB_OUTPUT"
           echo "$PACKAGES" >> "$GITHUB_OUTPUT"

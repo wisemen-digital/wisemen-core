@@ -1,0 +1,188 @@
+{
+  "id": "3HSDFwuBbquM7jnbrslh4BcI4Ra",
+  "version": "1",
+  "turboVersion": "2.9.14",
+  "monorepo": true,
+  "globalCacheInputs": {
+    "rootKey": "I can’t see ya, but I know you’re here",
+    "files": {},
+    "hashOfExternalDependencies": "50aa7243a15ae5d1",
+    "hashOfInternalDependencies": "",
+    "environmentVariables": {
+      "specified": {
+        "env": [],
+        "passThroughEnv": null
+      },
+      "configured": [],
+      "inferred": [],
+      "passthrough": null
+    },
+    "engines": null
+  },
+  "packages": [
+    "//",
+    "@wisemen/app-container"
+  ],
+  "envMode": "strict",
+  "frameworkInference": true,
+  "tasks": [
+    {
+      "taskId": "@wisemen/app-container#build",
+      "task": "build",
+      "package": "@wisemen/app-container",
+      "hash": "f4c36881b0d5f488",
+      "inputs": {
+        ".oxlintrc.json": "5a446cf82629b2a4ac2745e962fd55120e8139df",
+        "CHANGELOG.md": "b8685f927ca2e3c2e18288e5c64f7fec40cfda35",
+        "eslint.config.js": "633e220f3dba348351eaf62ca229073883c88345",
+        "examples/api.ts": "70865b4db2af265c69029e4b3c6d0f2d20073a1b",
+        "lib/express/express.ts": "008d12e081827b38c656a715552ebf552b48d100",
+        "lib/express/index.ts": "d9e7407123d31a8c58f329be6a745f22d88fe835",
+        "lib/express/job.ts": "87d2c329e0cfa64cef336e59712a8c4a008475bb",
+        "lib/express/worker.ts": "26c42f6855d9d45474429e256795450522183722",
+        "lib/fastify/fastify.ts": "6b4984cacd5cb1237f31948048f4dbd8d54298f4",
+        "lib/fastify/index.ts": "714e7a0dae90f9017c8ba1998aba4e93ce487f95",
+        "lib/fastify/job.ts": "fc36488b39fee2052b7b75419c4f5043aead1afd",
+        "lib/fastify/worker.ts": "29f07f428402068721c524c947ef4afcdb249a77",
+        "package.json": "365cb3de0103dc2acd5af8b949278b1c94e944fc",
+        "skills/getting-started/SKILL.md": "23d9e579b5e07e8e623ef30f4376504beefefa70",
+        "tsconfig.json": "78aa3e354d55f1d6b292530c47345cc942081427"
+      },
+      "hashOfExternalDependencies": "6ce5bdbbd6932079",
+      "cache": {
+        "local": false,
+        "remote": false,
+        "status": "MISS",
+        "timeSaved": 0
+      },
+      "command": "tsc",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "packages/api/app-container/.turbo/turbo-build.log",
+      "directory": "packages/api/app-container",
+      "dependencies": [
+        "@wisemen/eslint-config-nestjs#build"
+      ],
+      "dependents": [],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      }
+    },
+    {
+      "taskId": "@wisemen/eslint-config-nestjs#build",
+      "task": "build",
+      "package": "@wisemen/eslint-config-nestjs",
+      "hash": "b4a32700095be800",
+      "inputs": {
+        ".oxfmtrc.json": "518a81fccbd7489f9343991abc1375f8c42e9797",
+        ".oxlintrc.json": "66f2e1f829f0c539776d16ebe6129a65295ed452",
+        "CHANGELOG.md": "154c2261f3798eee9f1d65553e8c7d16a87b3217",
+        "configs/custom-rules.js": "fe3a2dc3a47cb655290c088e0a8d12cea6d7527b",
+        "configs/custom-rules.json": "45e60e4a472b43fe804387ea402d6712cff3333f",
+        "configs/default.js": "1bf5db0092908e0a10fb7a69259bb51d6257f553",
+        "configs/default.json": "26fdd6e164f54c1f9199a91bdf30d8b0a12e41a2",
+        "configs/imports.js": "3d305c2d2ef420c15448a5525f82270e176710fe",
+        "configs/imports.json": "c757468a3cea3311969cd16f88b6ac69970d1a8e",
+        "configs/overrides.js": "7561c1f9e6fa642aea476fbb0234bbb11562146d",
+        "configs/overrides.json": "3d88ef9e0f78a51a7e023a06644096d924347e6d",
+        "configs/style.js": "d93ef8c2483d48cc779114726af408c56c86a484",
+        "configs/style.json": "006a3475c9cf227ca1fb8b4cf25aa162ff0985c7",
+        "configs/unused-imports.js": "33ae1884b192e38393fbcea92ea793dee229bb00",
+        "configs/unused-imports.json": "813dbe12a3eb08a5c5516654177c008b69caadf0",
+        "custom-rules/check-api-property-types.js": "f7f64cafac303861f9e6e719a008c0de0fae0073",
+        "custom-rules/check-column-types.js": "d810d9bcb764d3eddca7a95d4924a0ff11d9e7b9",
+        "custom-rules/check-missing-translations.js": "553af4ffc8bec4283e20d7ee76e328ca10001c37",
+        "custom-rules/no-relative-parent-imports.js": "e97a34cfe798b371504fe58e1c90b96549843728",
+        "custom-rules/plugin.js": "66e931831fc73939c8e8de7608c43eab8f2b6b1c",
+        "custom-rules/tests/no-relative-parent-imports.test.js": "cad4be4cee1f9fadab27db9cda506ca5a5875600",
+        "eslint.config.js": "e6e24538d504e547ed98ad69af8375f538c1d975",
+        "package.json": "7fad5e1d264eedd45e3ed0792bb61a29a6267c48",
+        "tsconfig.json": "b5314bb09edc03816474b9303aad7ec41f34f23c"
+      },
+      "hashOfExternalDependencies": "bcb743cc8ae04021",
+      "cache": {
+        "local": false,
+        "remote": false,
+        "status": "MISS",
+        "timeSaved": 0
+      },
+      "command": "<NONEXISTENT>",
+      "cliArguments": [],
+      "outputs": [
+        "dist/**"
+      ],
+      "excludedOutputs": null,
+      "logFile": "packages/api/eslint-config-nestjs/.turbo/turbo-build.log",
+      "directory": "packages/api/eslint-config-nestjs",
+      "dependencies": [],
+      "dependents": [
+        "@wisemen/app-container#build"
+      ],
+      "with": [],
+      "resolvedTaskDefinition": {
+        "outputs": [
+          "dist/**"
+        ],
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [],
+        "outputLogs": "full",
+        "persistent": false,
+        "interruptible": false,
+        "env": [],
+        "passThroughEnv": null,
+        "interactive": false
+      },
+      "expandedOutputs": [],
+      "framework": "",
+      "envMode": "strict",
+      "environmentVariables": {
+        "specified": {
+          "env": [],
+          "passThroughEnv": null
+        },
+        "configured": [],
+        "inferred": [],
+        "passthrough": null
+      }
+    }
+  ],
+  "user": "",
+  "scm": {
+    "type": "git",
+    "sha": "2c18b826856e76a2b1aa0fdecc9b8e3e8e30e628",
+    "branch": "feature/only-preview-changes-packages"
+  }
+}
+
