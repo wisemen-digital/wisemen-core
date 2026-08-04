@@ -1,5 +1,8 @@
 <script setup lang="ts" generic="TItem">
-import type { Row } from '@tanstack/vue-table'
+import type {
+  Header,
+  Row,
+} from '@tanstack/vue-table'
 import { FlexRender } from '@tanstack/vue-table'
 import type { Component } from 'vue'
 import {
@@ -52,12 +55,6 @@ const i18n = useI18n()
 
 const scrollContainerEl = shallowRef<HTMLElement | null>(null)
 
-useProvideDataTableContext({
-  isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
-  isLastColumnSticky: computed(() => props.isLastColumnSticky),
-  sort: computed(() => props.sort),
-})
-
 // Computed directly from `props.data`, independent of TanStack's row model, so `hasSubComponent`
 // (needed by `useDataTable` for the grid template, below) has no circular dependency on `table`.
 const subComponentByItemKey = computed<Map<string, Component>>(() => {
@@ -87,14 +84,24 @@ const {
   gridTemplateColumns,
   pinFirstColumn,
   pinLastColumn,
+  setColumnSize,
   table,
 } = useDataTable({
   hasSubComponent,
+  isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isSelectable: computed(() => props.isSelectable),
   columns: computed(() => props.columns),
   data: computed(() => props.data),
   getKey: props.getKey,
   groupBy: computed(() => props.groupBy),
+})
+
+useProvideDataTableContext({
+  isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
+  isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
+  isLastColumnSticky: computed(() => props.isLastColumnSticky),
+  setColumnSize,
+  sort: computed(() => props.sort),
 })
 
 const isGroupingEnabled = computed<boolean>(() => props.groupBy !== null)
@@ -248,6 +255,7 @@ const groupedVirtualRowViewModels = computed<GroupedVirtualRowViewModel[]>(
 
 interface VisibleColumn {
   id: string
+  header: Header<TItem, unknown>
   headerLabel: string
 }
 
@@ -257,9 +265,10 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
     column,
   ]))
 
-  return table.getVisibleLeafColumns().map((column) => ({
-    id: column.id,
-    headerLabel: columnByKey.get(column.id)?.headerLabel ?? column.id,
+  return table.getFlatHeaders().map((header) => ({
+    id: header.column.id,
+    header,
+    headerLabel: columnByKey.get(header.column.id)?.headerLabel ?? header.column.id,
   }))
 })
 
@@ -345,6 +354,7 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
               v-for="(column, columnIndex) of visibleColumns"
               :key="column.id"
               :column-key="column.id"
+              :header="column.header"
               :is-first-column="!props.isSelectable && !hasSubComponent && columnIndex === 0"
               :is-last-column="columnIndex === visibleColumns.length - 1"
               :label="column.headerLabel"

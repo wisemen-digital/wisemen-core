@@ -44,7 +44,6 @@ export type {
 export { createCustomCell } from './types/dataTableCell.type'
 export type {
   DataTableColumn,
-  DataTableColumnSize,
   InferDataTableColumnKeys,
 } from './types/dataTableColumn.type'
 export { defineDataTableColumns } from './types/dataTableColumn.type'
