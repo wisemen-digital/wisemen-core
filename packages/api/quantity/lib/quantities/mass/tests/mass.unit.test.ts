@@ -93,4 +93,13 @@ void describe('Mass class', () => {
       })
     })
   })
+
+  void describe('Mass parsing', () => {
+    void it('parses mass strings', () => {
+      const mass = new Mass('-2.5kg')
+
+      expect(mass.value).toBe(-2.5)
+      expect(mass.unit).toBe(MassUnit.KILOGRAM)
+    })
+  })
 })

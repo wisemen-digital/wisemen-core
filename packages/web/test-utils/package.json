@@ -1,0 +1,55 @@
+{
+  "name": "@wisemen/vue-core-test-utils",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.0",
+  "private": false,
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/web/test"
+  },
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "pub:release": "pnpm publish --access public",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint .",
+    "test": "vitest --run",
+    "typecheck": "pnpm tsc"
+  },
+  "peerDependencies": {
+    "@wisemen/vue-core-api-utils": "workspace:^",
+    "vitest": "catalog:peer",
+    "vue": "catalog:peer"
+  },
+  "dependencies": {
+    "neverthrow": "catalog:general"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "@wisemen/vue-core-api-utils": "workspace:*",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build",
+    "vitest": "catalog:test",
+    "vue": "catalog:vue"
+  }
+}

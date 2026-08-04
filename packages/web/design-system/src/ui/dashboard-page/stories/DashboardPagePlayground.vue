@@ -240,7 +240,7 @@ const exampleAction = createAction({
           :is-detail-pane-open="true"
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
-            variant: 'full-height-inline',
+            variant: 'bordered-inline',
             storage: {
               key: 'detail-pane',
               strategy: 'localStorage',

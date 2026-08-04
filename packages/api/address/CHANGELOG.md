@@ -3,6 +3,12 @@
 
 
 
+
+## 0.5.0
+<sub>2026-07-29</sub>
+
+- [#1517](https://github.com/wisemen-digital/wisemen-core/pull/1517)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add AddressResponse.from factory
+
 ## 0.4.8
 <sub>2026-07-28</sub>
 

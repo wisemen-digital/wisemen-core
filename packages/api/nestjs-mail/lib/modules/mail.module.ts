@@ -4,6 +4,10 @@ import { createMailClient } from '../clients/mail-client.factory.js'
 import { MailClient } from '../clients/mail.client.js'
 import { MAIL_MODULE_OPTIONS } from './mail.module-definitions.js'
 import type { MailModuleAsyncOptions, MailModuleOptions } from './mail.module-options.js'
+import { PgBossJob } from '@wisemen/pgboss-nestjs-job'
+import { SendHtmlMailJob } from '../queue/send-html-mail.job.js'
+import { SendTemplateMailJob } from '../queue/send-template-mail.job.js'
+
 
 @Module({})
 export class MailModule {
@@ -21,6 +25,7 @@ export class MailModule {
         this.createOptionsProvider(options),
         this.createMailClientProvider(),
         this.createHandlebarsOptionsProvider(),
+        this.createRegisterQueueNameProvider(),
         HandlebarsRenderer
       ],
       exports: [
@@ -53,6 +58,18 @@ export class MailModule {
         templateRootPath: options.templateRootPath
       }),
       inject: [MAIL_MODULE_OPTIONS]
+    }
+  }
+
+  private static createRegisterQueueNameProvider (): Provider {
+    return {
+      provide: 'wisemen.register-mail-queue-name',
+      inject: [MAIL_MODULE_OPTIONS],
+      useFactory: (options: MailModuleOptions) => {
+        PgBossJob(options.queueName)(SendHtmlMailJob)
+        PgBossJob(options.queueName)(SendTemplateMailJob)
+        return true
+      },
     }
   }
 }

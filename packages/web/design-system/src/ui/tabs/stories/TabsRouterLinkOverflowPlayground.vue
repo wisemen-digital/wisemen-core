@@ -101,41 +101,84 @@ onBeforeMount(() => {
       :variant="props.variant"
     >
       <TabsRouterLinkItem
-        :icon="User01Icon"
+        :config="{
+          left: {
+            icon: User01Icon,
+            type: 'icon',
+          },
+        }"
         :to="{ name: 'overflow-general' }"
         label="General"
       />
       <TabsRouterLinkItem
-        :icon="Inbox02Icon"
+        :config="{
+          left: {
+            icon: Inbox02Icon,
+            type: 'icon',
+          },
+          indicator: {
+            value: 12,
+            type: 'count',
+          },
+        }"
         :to="{ name: 'overflow-members' }"
-        :count="12"
         label="Members"
       />
       <TabsRouterLinkItem
-        :icon="Users01Icon"
+        :config="{
+          left: {
+            icon: Users01Icon,
+            type: 'icon',
+          },
+        }"
         :to="{ name: 'overflow-teams' }"
         label="Teams"
       />
       <TabsRouterLinkItem
-        :icon="File05Icon"
+        :config="{
+          left: {
+            icon: File05Icon,
+            type: 'icon',
+          },
+          indicator: {
+            value: 5,
+            type: 'count',
+          },
+        }"
         :to="{ name: 'overflow-documents' }"
-        :count="5"
         label="Documents"
       />
       <TabsRouterLinkItem
-        :icon="CalendarIcon"
+        :config="{
+          left: {
+            icon: CalendarIcon,
+            type: 'icon',
+          },
+        }"
         :to="{ name: 'overflow-calendar' }"
         label="Calendar"
       />
       <TabsRouterLinkItem
-        :icon="LifeBuoy01Icon"
+        :config="{
+          left: {
+            icon: LifeBuoy01Icon,
+            type: 'icon',
+          },
+        }"
         :to="{ name: 'overflow-support' }"
         label="Support"
       />
       <TabsRouterLinkItem
-        :icon="Settings01Icon"
+        :config="{
+          left: {
+            icon: Settings01Icon,
+            type: 'icon',
+          },
+          indicator: {
+            type: 'dot',
+          },
+        }"
         :to="{ name: 'overflow-settings' }"
-        :count="3"
         label="Settings"
       />
     </TabsRouterLink>

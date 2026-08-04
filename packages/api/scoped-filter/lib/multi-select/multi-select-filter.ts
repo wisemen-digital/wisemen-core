@@ -1,5 +1,5 @@
 import { MultiSelectOperationApiProperty, MultiSelectOperation } from "#src/multi-select/multi-select-operation.js"
-import { ArrayMinSize, ArrayUnique, IsArray, IsEnum } from "class-validator"
+import { ArrayUnique, IsArray, IsEnum } from "class-validator"
 
 export interface MultiSelectFilter<T>{
     operation: MultiSelectOperation
@@ -34,7 +34,6 @@ export function buildMultiSelectFilter<T>(
     valueApiProperty(prototype, 'values')
     valueValidator(prototype, 'values')
     IsArray()(prototype, 'values')
-    ArrayMinSize(1)(prototype, 'values')
     ArrayUnique()(prototype, 'values')
 
     return C

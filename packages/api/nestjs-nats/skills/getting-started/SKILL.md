@@ -40,8 +40,10 @@ import { NatsConnection, NatsSubscriber, OnNatsMessage, NatsMessageData, NatsMsg
 export class MyNatsConnection {}
 
 @NatsSubscriber(() => ({
+  connection: MyNatsConnection,
   subject: 'my.subject',
-  name: 'my-subscriber'
+  name: 'my-subscriber',
+  maxInFlight: 5
 }))
 export class MySubscriber {
   @OnNatsMessage()
@@ -50,6 +52,12 @@ export class MySubscriber {
   }
 }
 ```
+
+`maxInFlight` limits how many messages a subscriber or consumer instance can
+process at once. It defaults to `1`, which preserves sequential handling.
+
+For JetStream consumers, set `max_ack_pending` to at least the same value when
+you raise `maxInFlight`.
 
 ## Register The Simple Client
 

@@ -4,7 +4,7 @@ import { Currency, CurrencyApiProperty } from './currency.enum.js'
 import { Monetary } from './monetary.js'
 import { Type } from 'class-transformer'
 
-export class MonetaryDto <C extends Currency> {
+export class MonetaryDto <C extends Currency = Currency> {
   @ApiProperty({ type: 'integer', example: 499 })
   @Type(() => Number)
   @IsInt()
@@ -42,7 +42,7 @@ export class MonetaryDto <C extends Currency> {
   }
 }
 
-export class MonetaryDtoBuilder <C extends Currency> {
+export class MonetaryDtoBuilder <C extends Currency = Currency> {
   private readonly dto: MonetaryDto<C>
 
   constructor (defaultCurrency: C) {

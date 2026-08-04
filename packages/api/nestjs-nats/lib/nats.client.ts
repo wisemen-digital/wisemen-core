@@ -1,6 +1,7 @@
 import { Inject, Injectable, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common'
 import { captureException } from '@wisemen/opentelemetry'
-import { type NatsConnection, type SubscriptionOptions, type Payload, connect, type Subscription, headers } from '@nats-io/transport-node'
+import { type NatsConnection, type SubscriptionOptions, type Payload, connect, type Subscription, headers, type MsgHdrs } from '@nats-io/transport-node'
+import { jetstream, type JetStreamPublishOptions, type PubAck } from '@nats-io/jetstream'
 import { propagation, context, type Context } from '@opentelemetry/api'
 import type { TraceContextCarrier } from '@wisemen/opentelemetry'
 import { NatsUnavailableError } from './errors/nats-unavailable.error.js'
@@ -51,8 +52,34 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
     return (await this.client()).subscribe(subject, opts)
   }
 
+  /**
+   * Publishes a message using plain, fire-and-forget core NATS. The message is not
+   * persisted and there is no acknowledgement from the server. Use
+   * {@link NatsClient.publishToStream} to publish into a JetStream stream instead.
+   */
   async publish (subject: string, message: Payload | undefined): Promise<void> {
-    const natsHeaders = headers()
+    const natsHeaders = this.buildTraceHeaders()
+
+    ;(await this.client()).publish(subject, message, { headers: natsHeaders })
+  }
+
+  /**
+   * Publishes a message onto a JetStream stream and waits for the server to acknowledge
+   * it. The subject must be captured by a stream on the server (created out-of-band or by
+   * the `NatsModule` framework); otherwise the server rejects the publish.
+   */
+  async publishToStream (
+    subject: string,
+    message: Payload | undefined,
+    options?: Partial<JetStreamPublishOptions>
+  ): Promise<PubAck> {
+    const natsHeaders = this.buildTraceHeaders(options?.headers)
+
+    return jetstream(await this.client()).publish(subject, message, { ...options, headers: natsHeaders })
+  }
+
+  private buildTraceHeaders (existing?: MsgHdrs): MsgHdrs {
+    const natsHeaders = existing ?? headers()
     const currentContext: Context = context.active()
     const traceContext: TraceContextCarrier = {}
 
@@ -65,7 +92,7 @@ export class NatsClient implements OnModuleInit, OnModuleDestroy {
       )
     }
 
-    (await this.client()).publish(subject, message, { headers: natsHeaders })
+    return natsHeaders
   }
 
   isConnected (): boolean {
