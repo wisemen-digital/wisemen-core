@@ -3,6 +3,12 @@
 
 
 
+
+## 0.2.3
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+
 ## 0.2.2
 <sub>2026-07-14</sub>
 
