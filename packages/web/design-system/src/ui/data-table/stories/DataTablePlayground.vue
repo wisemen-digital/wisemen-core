@@ -17,6 +17,14 @@ import { useSort } from '@/composables/sort.composable'
 import UIDataTable from '@/ui/data-table/components/DataTable.vue'
 import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
+import {
+  createDataTableBadgeCell,
+  createDataTableContactInfoCell,
+  createDataTableIdCell,
+  createDataTableNumberCell,
+  createDataTableTextCell,
+  createDataTableTimestampCell,
+} from '@/ui/data-table/types/dataTableColumn.type'
 import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 interface User {
@@ -150,98 +158,80 @@ const sortedData = computed<User[]>(() => {
 })
 
 const columns: DataTableColumn<User>[] = [
-  {
-    cell: (item) => ({
-      type: 'text',
-      value: item.name,
-    }),
-    cellType: 'text',
+  createDataTableTextCell({
     headerLabel: 'Name',
     key: 'name',
-  },
-  {
-    cell: (item) => ({
-      maxLength: 10,
-      type: 'id',
-      value: `usr_${item.id.padStart(8, '0')}`,
+    value: (item) => ({
+      value: item.name,
     }),
-    cellType: 'id',
+  }),
+  createDataTableIdCell({
     headerLabel: 'ID',
     key: 'id',
-  },
-  {
-    cell: (item) => ({
-      color: item.status === 'active' ? 'success' : 'gray',
-      label: item.status === 'active' ? 'Active' : 'Inactive',
-      type: 'badge',
-      variant: 'translucent',
+    value: (item) => ({
+      maxLength: 10,
+      value: `usr_${item.id.padStart(8, '0')}`,
     }),
-    cellType: 'badge',
+  }),
+  createDataTableBadgeCell({
     headerLabel: 'Status',
     key: 'status',
-  },
-  {
-    cell: (item) => ({
+    value: (item) => ({
+      color: item.status === 'active' ? 'success' : 'gray',
+      label: item.status === 'active' ? 'Active' : 'Inactive',
+      variant: 'translucent',
+    }),
+  }),
+  createDataTableNumberCell({
+    headerLabel: 'Balance',
+    key: 'balance',
+    value: (item) => ({
       fallback: '—',
       formatOptions: {
         currency: 'EUR',
         style: 'currency',
       },
-      type: 'number',
       value: item.balance,
     }),
-    cellType: 'number',
-    headerLabel: 'Balance',
-    key: 'balance',
-  },
-  {
-    cell: (item) => ({
-      type: 'text',
-      value: item.department,
-    }),
-    cellType: 'text',
+  }),
+  createDataTableTextCell({
     headerLabel: 'Department',
     key: 'department',
-  },
-  {
-    cell: (item) => ({
-      isRelative: true,
-      type: 'timestamp',
-      value: item.lastActiveAt,
+    value: (item) => ({
+      value: item.department,
     }),
-    cellType: 'timestamp',
+  }),
+  createDataTableTimestampCell({
     headerLabel: 'Last active',
     key: 'lastActiveAt',
-  },
-  {
-    cell: (item) => ({
-      granularity: 'day',
-      type: 'timestamp',
-      value: item.startDate,
+    value: (item) => ({
+      isRelative: true,
+      value: item.lastActiveAt,
     }),
-    cellType: 'timestamp',
+  }),
+  createDataTableTimestampCell({
     headerLabel: 'Start date',
     key: 'startDate',
-  },
-  {
-    cell: (item) => ({
-      email: item.email,
-      phoneNumber: item.phoneNumber,
-      type: 'contactInfo',
+    value: (item) => ({
+      granularity: 'day',
+      value: item.startDate,
     }),
-    cellType: 'contactInfo',
+  }),
+  createDataTableContactInfoCell({
     headerLabel: 'Contact',
     key: 'contact',
-  },
-  {
-    cell: (item) => ({
-      type: 'text',
-      value: item.manager,
+    value: (item) => ({
+      email: item.email,
+      phoneNumber: item.phoneNumber,
     }),
-    cellType: 'text',
+  }),
+  createDataTableTextCell({
     headerLabel: 'Manager',
     key: 'manager',
-  },
+    value: (item) => ({
+      value: item.manager,
+    }),
+  }),
 ]
 
 const mobileCard: DataTableMobileCardConfig = {

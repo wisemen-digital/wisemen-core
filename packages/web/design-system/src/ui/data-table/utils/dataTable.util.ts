@@ -20,7 +20,7 @@ export const DATA_TABLE_CELL_DEFAULT_WIDTH_PX: Record<DataTableCell['type'], num
   custom: 160,
   location: 180,
   number: 120,
-  text: 160,
+  text: 120,
   timestamp: 140,
 }
 

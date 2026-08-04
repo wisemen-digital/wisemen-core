@@ -43,9 +43,27 @@ export type {
 } from './types/dataTableCell.type'
 export { createCustomCell } from './types/dataTableCell.type'
 export type {
+  CreateDataTableBadgeCellOptions,
+  CreateDataTableContactInfoCellOptions,
+  CreateDataTableCustomCellOptions,
+  CreateDataTableIdCellOptions,
+  CreateDataTableLocationCellOptions,
+  CreateDataTableNumberCellOptions,
+  CreateDataTableTextCellOptions,
+  CreateDataTableTimestampCellOptions,
   DataTableColumn,
   InferDataTableColumnKeys,
 } from './types/dataTableColumn.type'
-export { defineDataTableColumns } from './types/dataTableColumn.type'
+export {
+  createDataTableBadgeCell,
+  createDataTableContactInfoCell,
+  createDataTableCustomCell,
+  createDataTableIdCell,
+  createDataTableLocationCell,
+  createDataTableNumberCell,
+  createDataTableTextCell,
+  createDataTableTimestampCell,
+  defineDataTableColumns,
+} from './types/dataTableColumn.type'
 export { DataTableUtil } from './utils/dataTable.util'
 export { getDataTableCellGroupingValue } from './utils/dataTableCellGroupingValue.util'

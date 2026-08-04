@@ -1,0 +1,149 @@
+# DataTable
+
+TanStack Table-based rework of the table system. Lives alongside the old `Table`/`TableRoot`
+(`ui/table/`), does not replace it — existing consumers migrate over time.
+
+Full historical reasoning (bugs found, alternatives rejected, why) lives in `CONTEXT.md`. This
+file is the condensed, decisions-only reference.
+
+## Core concepts
+
+- **Cell definition** — presentation-agnostic description of how one field renders. Same
+  definition is reused in the table body, the detail pane, and the mobile list. Types: `Text`,
+  `Number`, `Id`, `Location`, `ContactInfo`, `Badge`, `Timestamp`, `Custom` (via
+  `createCustomCell`).
+- **Column** — table-only wrapper around a Cell definition: header label, key, size, sort key.
+  The Cell definition itself knows nothing about headers/sizing/sorting.
+- **Column factories** — `createDataTableTextCell`, `createDataTableNumberCell`,
+  `createDataTableIdCell`, `createDataTableLocationCell`, `createDataTableContactInfoCell`,
+  `createDataTableBadgeCell`, `createDataTableTimestampCell`, `createDataTableCustomCell`. This
+  is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
+  the factory keeps them in sync structurally.
+
+## Column sizing
+
+- Every column gets a **fixed pixel width from first render** — no fluid/`fit-content()` sizing,
+  ever. Default width comes from a flat lookup table keyed by cell **type** only (not by that
+  cell's specific config).
+- Override the default via `size` on a column — a plain `number` (pixels).
+- The **last column always fills remaining space** (`FILL_SPACE_COLUMN`) — the one deliberate
+  exception to "every column is fixed." Keeps the table from leaving dead whitespace.
+- Manual drag-resize works on top of whichever width (default or overridden) a column starts at.
+- Minimum resize width = `max(DATA_TABLE_MIN_COLUMN_WIDTH_PX constant, that column's measured label width)`.
+  A column can never be dragged small enough to clip its own header label.
+- Resize state is **session-only** (in-memory) — no persistence, resets on reload.
+
+## Column resize
+
+- TanStack provides drag logic only (delta tracking, clamping, mousemove/mouseup) — DataTable
+  builds its own grip handle, matching the old `Table`'s handle for visual continuity.
+- `columnResizeMode: 'onChange'` — column grows/shrinks live while dragging (not on drop).
+- Double-click-to-fit-content is hand-rolled (measure at `max-content`, feed width back in) —
+  TanStack has no equivalent.
+- Resize handle is centered on the column boundary (half in each column), with `z-index`
+  elevation scoped to *this cell's own handle* being hovered or actively dragged — hovering a
+  neighboring cell does nothing.
+- Resizing never grows the table past its container — it only redistributes space between the
+  dragged column and the fill column.
+- `isColumnResizeDisabled` prop hides the handles and disables dragging entirely.
+
+## Rows & selection
+
+- **Row selection**: reuses the existing `TableSelectionState<T>` shape verbatim —
+  `{ type: 'includes' | 'excludes', items: T[] }`. `isSelectable` prop turns on the checkbox
+  column (desktop: always visible when enabled; mobile: hidden behind an explicit toggle, see
+  Mobile list below).
+- **Selection action bar**: `selectionActions: Action[]`, filtered through `resolveApplicable`.
+  Floating bar shown once ≥1 row is selected. Built from scratch (the old `Table`'s equivalent
+  prop was documented but never actually implemented).
+- **Active row**: one shared "current row" pointer (distinct from DOM focus). Hovering sets it;
+  arrow up/down (only while the detail pane is open) moves it. Moving the mouse off the table
+  entirely does not clear it.
+- **Sub component** (row expansion): `subComponent?: (item: TItem) => Component | null`. Return
+  `null` for a row → no expand chevron for that row at all. No separate "can expand" predicate —
+  the null return already says it. Independent from grouping (see below); a grouped row can still
+  have its own sub component.
+- **`getLink`**: `(item: TItem) => RegisteredRouteLocationRaw | null`. Powers the mobile list's
+  "Go to detail" button today; will be reused by the detail pane's Cmd+O later. Same shape as the
+  old `Table`.
+
+## Grouping
+
+- API: `groupBy?: string | [string, string] | null` — flat `data` in, DataTable groups
+  automatically. No pre-grouped data shape to construct (unlike the old `Table`'s
+  `TableGroupedData<T>[]`).
+- Max **two levels** (group + sub-group) — matches the old table's split, no deeper nesting.
+- Group header label is derived from the grouped column's own Cell definition rendering — no
+  separate label string to author.
+- `groupedColumnMode: false` — grouped column is *not* reordered to the front (TanStack's
+  default). DataTable renders its own group-header row instead.
+- Grouping and sub-component expansion are two independent mechanisms — see "Grouping vs. Sub
+  component" in `CONTEXT.md` for the full state-implementation split.
+- Row drag & drop is **benched** — no real use case yet, and conceptually conflicts with `sort`
+  (server-driven order) as two competing owners of row order. If ever needed: a *separate*
+  component (`DataTableOrderable`), not a mode on `DataTable`.
+
+## Virtualization
+
+- The flat list, grouped list, and mobile card list are all virtualized (three separate
+  composables — group headers/data rows/mobile cards all have different, and in the mobile
+  card's case *changing* (collapse/expand), heights, so both grouped and mobile use dynamic
+  measurement instead of one fixed row height).
+- Mobile list virtualization gives `DataTableMobileList` its own bounded, scrollable container
+  (it previously grew with page content) — a consumer relying on page-level scroll for the mobile
+  list needs to give `DataTable` an explicit height for this to engage.
+
+## Mobile list
+
+- Below a breakpoint, rows render as two-line/two-column cards instead of a grid row — driven by
+  a **container query on DataTable's own width**, not viewport size and not a JS `isMobile` prop.
+- 4 named slots for the collapsed card, configured via a single `mobileCard` prop (column keys),
+  **not** per-column config:
+  - `primary` (top-left, required — the row's main label)
+  - `secondary` (bottom-left, supporting text)
+  - `meta` (top-right, e.g. timestamp)
+  - `indicator` (bottom-right, e.g. status dot/badge)
+- Any column not referenced in `mobileCard` renders in the expanded card instead.
+- Selection is **off by default on mobile** — must be turned on via an explicit toggle button,
+  which then reveals a checkbox per card.
+- Grouped mobile list mirrors desktop's group rows as collapsible section headers, same
+  collapse/select-all-in-group behavior.
+
+## Detail pane
+
+- **Status: paused after design work — Phase 4 not implemented yet.**
+- Side panel showing every Cell definition for one row (including columns hidden from the table),
+  auto-generated from the row's own Column set. Closed via Escape or a close button.
+- Opens only via **Spacebar**, acting on whatever the active row is at that moment.
+- Once open: arrow up/down immediately move the active row *and* update the pane content. Hover
+  moves the active-row indicator but does *not* update the pane until Spacebar is pressed again —
+  deliberate asymmetry so idle mouse movement can never silently change what's shown.
+- Cmd+O navigates to the row's real detail page via the same `getLink` prop used elsewhere.
+- Desktop-only — the mobile list's tap-to-expand + "Go to detail" already covers the same need on
+  touch.
+- Built on top of the existing `DashboardPageDetailPane`, not a self-built panel — so it currently
+  expects to render inside a `DashboardPage`. A tracked future refactor would extract a standalone
+  primitive so DataTable doesn't need that ancestor.
+- When grouped, arrow up/down skip group header rows — they land only on real data rows.
+
+## Timestamp cell
+
+- Discriminated union: `{ isRelative: true }` ("3 hours ago", live) **or**
+  `{ granularity: 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year' }` (absolute, truncated)
+  — never both.
+
+## What's explicitly out of scope (for now)
+
+- Column resize/order persistence across reloads.
+- Drag-to-reorder rows (see Grouping section — would be a separate component).
+- Detail pane implementation (paused, design-only).
+- A third grouping level.
+
+## Where to look
+
+- `types/dataTable.props.ts` — full public prop list.
+- `types/dataTableColumn.type.ts` — column factories.
+- `types/dataTableCell.type.ts` — Cell definition types.
+- `utils/dataTable.util.ts` — sizing constants/helpers.
+- `composables/dataTable.composable.ts` — grouping/table setup.
+- `CONTEXT.md` (package root) — full reasoning, rejected alternatives, bugs found along the way.

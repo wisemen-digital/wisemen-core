@@ -311,7 +311,10 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
       :is-selectable="isMobileSelectModeOn"
       :mobile-card="props.mobileCard"
       :row-view-models="rowViewModels"
-      class="@md/data-table:hidden"
+      class="
+        min-h-0 flex-1
+        @md/data-table:hidden
+      "
       @toggle-expanded="toggleMobileCardExpanded"
       @toggle-group-selected="toggleGroup"
       @toggle-selected="toggleItem"
@@ -347,6 +350,7 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
 
             <div
               v-if="hasSubComponent"
+              class="flex h-10 items-center bg-secondary px-xl"
               role="columnheader"
             />
 
