@@ -42,8 +42,8 @@ jobs:
         run: |
           pnpm turbo run build --filter='...[origin/main]' --dry=json > dry-run.json
 
-          # Extract unique package names from dry-run output
-          PACKAGES=$(jq -r '[.tasks[].package] | unique | .[]' dry-run.json)
+          # pkg-pr-new accepts workspace directories, not package names.
+          PACKAGES=$(jq -r '[.tasks[].directory] | unique | .[]' dry-run.json)
 
           echo "packages<<EOF" >> "$GITHUB_OUTPUT"
           echo "$PACKAGES" >> "$GITHUB_OUTPUT"
