@@ -27,8 +27,6 @@ export abstract class FastifyContainer {
   constructor () {
     this.state = 'starting'
 
-    const x = 'test'
-
     this.enableShutdownHooks()
 
     void this._init()
