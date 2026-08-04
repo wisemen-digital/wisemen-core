@@ -25,10 +25,6 @@ export const TEST_UTILS_NAVIGATION: PackageDocNavigation = {
           text: 'Service mocks',
           link: '/web/packages/test-utils/pages/usage/service-mocks',
         },
-        {
-          text: 'Browser configuration',
-          link: '/web/packages/test-utils/pages/usage/browser-configuration',
-        },
       ],
     },
   ],

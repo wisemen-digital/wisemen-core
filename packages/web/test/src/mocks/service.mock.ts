@@ -1,6 +1,11 @@
 import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
+import {
+  mockAsyncPaginatedResult,
+  mockAsyncVoidResult,
+} from './asyncResult.mock'
+
 type ServiceMethodKeys<TService> = {
   [TKey in keyof TService]-?: TService[TKey] extends (...args: never[]) => Promise<unknown>
     ? TKey
@@ -44,7 +49,7 @@ export const ServiceMock = {
       method,
       result,
     ] of Object.entries(methods as Record<string, (() => unknown) | undefined>)) {
-      if (result === undefined) {
+      if (typeof result !== 'function') {
         continue
       }
 
@@ -61,4 +66,7 @@ export const ServiceMock = {
 
     return service as MockService<TService>
   },
+
+  toPaginatedResult: mockAsyncPaginatedResult,
+  toVoid: mockAsyncVoidResult,
 }

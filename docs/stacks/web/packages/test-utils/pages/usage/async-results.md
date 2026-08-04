@@ -15,3 +15,17 @@ const emptyMutation = ServiceMock.toVoid()
 ```
 
 `mockAsyncResult` returns a successful `ApiResult`, `mockAsyncPaginatedResult` supplies the standard `data` and `meta` shape, and `ServiceMock.toVoid()` returns a successful `ApiResult<void>`.
+
+The template uses `mockAsyncResult` for the contact detail query:
+
+```ts
+getContact: () => mockAsyncResult({
+  uuid: contactUuid,
+  isActive: true,
+  email: 'ada@example.com',
+  file: null,
+  firstName: 'Ada',
+  lastName: 'Lovelace',
+  phoneNumber: null,
+})
+```

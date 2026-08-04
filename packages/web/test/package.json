@@ -1,0 +1,60 @@
+{
+  "name": "@wisemen/vue-core-test-utils",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.mts",
+      "import": "./dist/browser.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "imports": {
+    "#*": "./src/*"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "pub:release": "pnpm publish --access public",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@vitejs/plugin-vue": "catalog:vue",
+    "@vitest/browser-playwright": "catalog:testing",
+    "@wisemen/vue-core-api-utils": "catalog:wisemen",
+    "neverthrow": "catalog:utilities",
+    "vite": "catalog:build",
+    "vitest": "catalog:testing",
+    "vue": "catalog:peer"
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "@vue/tsconfig": "catalog:build",
+    "@vitejs/plugin-vue": "catalog:vue",
+    "@vitest/browser-playwright": "catalog:testing",
+    "@wisemen/vue-core-api-utils": "catalog:wisemen",
+    "eslint": "catalog:lint-web",
+    "neverthrow": "catalog:utilities",
+    "typescript": "catalog:build",
+    "vite": "catalog:build",
+    "vitest": "catalog:testing",
+    "vue": "catalog:vue",
+    "vue-tsc": "catalog:build",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build"
+  }
+}

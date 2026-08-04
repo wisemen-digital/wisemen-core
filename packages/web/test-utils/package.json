@@ -36,10 +36,7 @@
     "typecheck": "pnpm tsc"
   },
   "peerDependencies": {
-    "@vitejs/plugin-vue": "catalog:peer",
-    "@vitest/browser-playwright": "catalog:peer",
     "@wisemen/vue-core-api-utils": "workspace:^",
-    "vite": "catalog:peer",
     "vitest": "catalog:peer",
     "vue": "catalog:peer"
   },
@@ -48,13 +45,10 @@
   },
   "devDependencies": {
     "@wisemen/eslint-config-vue": "workspace:*",
-    "@vitejs/plugin-vue": "catalog:vite",
-    "@vitest/browser-playwright": "catalog:test",
     "@wisemen/vue-core-api-utils": "workspace:*",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
-    "vite": "catalog:vite",
     "vitest": "catalog:test",
     "vue": "catalog:vue"
   }

@@ -7,6 +7,13 @@ export interface WebBrowserTestConfigOptions {
   include?: string[]
 }
 
+/**
+ * The standard Vitest Browser Mode configuration for Vue applications.
+ *
+ * Browser Mode uses a real Chromium instance through Playwright. It is still
+ * a component/integration test runner: it does not start the application or
+ * make network calls to a deployed environment.
+ */
 export function createWebBrowserTestConfig({
   alias,
   include = [
