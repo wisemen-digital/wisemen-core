@@ -127,4 +127,13 @@ void describe('Voltage class', () => {
       expect(json).toEqual({ value: 1.5, unit: VoltageUnit.VOLT })
     })
   })
+
+  void describe('Voltage parsing', () => {
+    void it('parses voltage strings', () => {
+      const voltage = new Voltage('1.5kV')
+
+      expect(voltage.value).toBe(1.5)
+      expect(voltage.unit).toBe(VoltageUnit.KILOVOLT)
+    })
+  })
 })

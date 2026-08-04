@@ -78,7 +78,7 @@ catalogs:
     "pg-query-stream": "4.16.0"
     "qs": ">=6.15.2"
     react: ^0.0.0
-    "redis": "5.11.0"
+    "redis": "^5.12.1"
     "reflect-metadata": "0.2.2"
     "rxjs": "7.8.2"
     "twilio": "5.13.1"
@@ -136,7 +136,7 @@ catalogs:
     "markdown-it": "14.2.0"
     oxc-minify: "0.117.0"
     "vitepress": "2.0.0-alpha.16"
-    "vue-component-meta": "3.2.2"
+    "vue-component-meta": "3.3.8"
   fonts:
     "@fontsource-variable/inter": "5.2.8"
   general:
@@ -219,22 +219,23 @@ catalogs:
   openapi:
     "@hey-api/openapi-ts": "0.94.5"
   peer:
+    "@vitest/browser-playwright": "^4.1.0"
     "@hey-api/openapi-ts": "^0.94.5"
     "@tanstack/vue-query": "^5.100.6"
     "@typescript-eslint/parser": "^8.59.0"
-    "@vitejs/plugin-vue": ">=6.0.3"
-    "eslint": ">=10.0.3"
+    "@vitejs/plugin-vue": "^6.0.3"
+    "eslint": "^10.0.3"
     formango: ^3.2.4
-    "libphonenumber-js": ">=1.12.35"
+    "libphonenumber-js": "^1.12.35"
     "motion-v": "^2.2.1"
     "neverthrow": "^8.2.0"
-    "reka-ui": "^2.9.7"
-    "tailwind-variants": ">=3.2.2"
+    "reka-ui": "^2.10.1"
+    "tailwind-variants": "^3.2.2"
     "temporal-polyfill": "^0.3.0"
     "typescript": "^5.9.3"
-    "vite": ">=7.3.1"
-    "vite-plugin-pwa": ">=0.20.2"
-    "vitest": ">=4.0.17"
+    "vite": "^7.3.1"
+    "vite-plugin-pwa": "^0.20.2"
+    "vitest": "^4.0.17"
     vue: "^3.5.27"
     "vue-i18n": "^11.2.8"
     "vue-router": "^4.6.4"
@@ -327,7 +328,7 @@ catalogs:
     "@wisemen/vue-core-api-utils": ^0.0.0
     "motion-v": "2.2.1"
     "pinia": "3.0.4"
-    "reka-ui": "2.9.7"
+    "reka-ui": "2.10.1"
     "superjson": "2.2.6"
     "vue": "3.5.27"
     "vue-i18n": "11.2.8"
@@ -348,11 +349,13 @@ catalogs:
     "cookies-next": "6.1.1"
     "pkce-challenge": "6.0.0"
     "jose": "6.2.3"
+    react-dom: 19.2.7
   payload-peer:
     "@payloadcms/ui": ">=3.85.0"
     payload: ">=3.85.0"
     next: ">=16.2.6"
     react: ">=19.2.7"
+    react-dom: ">=19.2.7"
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"

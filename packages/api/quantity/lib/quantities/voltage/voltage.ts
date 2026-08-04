@@ -12,6 +12,10 @@ export class Voltage extends Quantity<VoltageUnit, Voltage> {
     return VoltageUnit.VOLT
   }
 
+  protected getUnits (): readonly VoltageUnit[] {
+    return Object.values(VoltageUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, fromUnit: VoltageUnit): number {
     return value * VOLTAGE_MULTIPLIERS[fromUnit]
   }

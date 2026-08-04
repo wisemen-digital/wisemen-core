@@ -1,7 +1,7 @@
 import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
+import { convertClassValidatorErrorsToJsonApiError } from '@wisemen/api-error'
 import type { NatsPipeTransform } from './nats-pipe-transform.js'
-import { convertValidationErrorToJsonApiError } from '#src/validation/convert-validation-errors.js'
 import type { NatsParameterMetadata } from '#src/parameters/nats-parameter-metadata.js'
 
 export interface NatsMsgDataValidationPipeOptions {
@@ -27,7 +27,7 @@ export class NatsMsgDataValidationPipe implements NatsPipeTransform {
     const errors = await validate(instance, { whitelist: true, forbidNonWhitelisted: this.forbidNonWhitelisted })
 
     if (errors.length > 0) {
-      throw convertValidationErrorToJsonApiError(errors)
+      throw convertClassValidatorErrorsToJsonApiError(errors)
     }
 
     return instance

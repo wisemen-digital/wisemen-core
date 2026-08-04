@@ -5,6 +5,18 @@
 
 
 
+
+
+## 0.5.6
+<sub>2026-07-29</sub>
+
+- [#1516](https://github.com/wisemen-digital/wisemen-core/pull/1516)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: remove @wisemen/nestjs-typeorm dependency
+
+## 0.5.5
+<sub>2026-07-28</sub>
+
+- [#1512](https://github.com/wisemen-digital/wisemen-core/pull/1512)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add default type argument on monetary dto
+
 ## 0.5.4
 <sub>2026-07-28</sub>
 

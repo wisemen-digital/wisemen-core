@@ -21,6 +21,12 @@ export type GetItemKeyFn<
   TValue extends SelectValue | SelectValue[],
 > = (item: NonNullable<GetValue<TValue>>) => number | string
 
+/**
+ * The `PopoverProps` inherited below (`popoverSide`, `popoverAlign`, `popoverWidth`,
+ * `popoverCollisionPadding`, `disableSideFlip`, `prioritizePosition`, etc.) only apply
+ * to the desktop popover presentation. Below the `md` (768px) breakpoint the dropdown
+ * renders as a bottom drawer instead, and these props are ignored.
+ */
 export interface SelectProps<TValue extends SelectValue | SelectValue[]>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
@@ -96,4 +102,13 @@ export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pic
   | 'items'
   | 'limit'
   | 'search'
-> & { contentWidthClass?: string }
+> & {
+  /**
+   * When true, renders inline inside a `ResponsiveDrawer` instead of a positioned popover.
+   * The popover-only `--reka-popover-content-available-height` variable isn't available there,
+   * so the max-height needs a drawer-appropriate fallback.
+   * @default false
+   */
+  isMobileDrawer?: boolean
+  contentWidthClass?: string
+}

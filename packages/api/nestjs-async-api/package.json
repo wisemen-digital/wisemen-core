@@ -1,12 +1,12 @@
 {
   "name": "@wisemen/nestjs-async-api",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publishConfig": {
     "access": "public"
   },
   "type": "module",
   "exports": {
-    ".": "./dist/lib/index.js"
+    ".": "./dist/index.js"
   },
   "imports": {
     "#*": "./lib/*"

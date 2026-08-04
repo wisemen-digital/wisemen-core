@@ -48,6 +48,10 @@ export class Energy extends Quantity<EnergyUnit, Energy> {
     return EnergyUnit.JOULE
   }
 
+  protected getUnits (): readonly EnergyUnit[] {
+    return Object.values(EnergyUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, unit: EnergyUnit): number {
     return value * ENERGY_MULTIPLIERS[unit]
   }

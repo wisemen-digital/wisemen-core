@@ -3,6 +3,12 @@
 
 
 
+
+## 1.0.4
+<sub>2026-07-29</sub>
+
+- [#1508](https://github.com/wisemen-digital/wisemen-core/pull/1508)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump redis to 5.12.1
+
 ## 1.0.3
 <sub>2026-07-28</sub>
 

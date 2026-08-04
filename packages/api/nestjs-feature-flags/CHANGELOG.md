@@ -3,6 +3,12 @@
 
 
 
+
+## 0.0.6
+<sub>2026-07-28</sub>
+
+- [#1509](https://github.com/wisemen-digital/wisemen-core/pull/1509)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump @openfeature/go-feature-flag-provider to 1.4.0
+
 ## 0.0.5
 <sub>2026-07-28</sub>
 

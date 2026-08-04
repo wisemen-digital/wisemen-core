@@ -20,6 +20,10 @@ export class Speed extends Quantity<SpeedUnit, Speed> {
     return SpeedUnit.METER_PER_SECOND
   }
 
+  protected getUnits (): readonly SpeedUnit[] {
+    return Object.values(SpeedUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, fromUnit: SpeedUnit): number {
     return value * SPEED_MULTIPLIERS[fromUnit]
   }

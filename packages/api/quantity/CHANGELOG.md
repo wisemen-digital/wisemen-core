@@ -3,6 +3,12 @@
 
 
 
+
+## 0.9.3
+<sub>2026-07-31</sub>
+
+- [#1486](https://github.com/wisemen-digital/wisemen-core/pull/1486)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add support for parsing strings
+
 ## 0.9.2
 <sub>2026-07-28</sub>
 

@@ -6,6 +6,12 @@
 
 
 
+
+## 1.0.17
+<sub>2026-07-29</sub>
+
+- [#1520](https://github.com/wisemen-digital/wisemen-core/pull/1520)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Replace toString() in transformer with toISOString()
+
 ## 1.0.16
 <sub>2026-07-28</sub>
 

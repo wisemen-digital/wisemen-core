@@ -6,6 +6,10 @@ export class Temperature extends Quantity<TemperatureUnit, Temperature> {
     return TemperatureUnit.KELVIN
   }
 
+  protected getUnits (): readonly TemperatureUnit[] {
+    return Object.values(TemperatureUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, unit: TemperatureUnit): number {
     switch (unit) {
       case TemperatureUnit.KELVIN:
