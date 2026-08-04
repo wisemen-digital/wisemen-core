@@ -3,7 +3,6 @@ import type {
   Header,
   Row,
 } from '@tanstack/vue-table'
-import { FlexRender } from '@tanstack/vue-table'
 import type { Component } from 'vue'
 import {
   computed,
@@ -13,17 +12,14 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import type { RegisteredActionContext } from '@/register'
-import DataTableCell from '@/ui/data-table/components/DataTableCell.vue'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
-import DataTableCheckboxCell from '@/ui/data-table/components/DataTableCheckboxCell.vue'
-import DataTableExpandCell from '@/ui/data-table/components/DataTableExpandCell.vue'
+import DataTableDataRow from '@/ui/data-table/components/DataTableDataRow.vue'
 import DataTableGroupRow from '@/ui/data-table/components/DataTableGroupRow.vue'
 import DataTableHeaderCell from '@/ui/data-table/components/DataTableHeaderCell.vue'
 import DataTableHeaderCheckboxCell from '@/ui/data-table/components/DataTableHeaderCheckboxCell.vue'
 import DataTableMobileList from '@/ui/data-table/components/DataTableMobileList.vue'
-import DataTableRow from '@/ui/data-table/components/DataTableRow.vue'
 import DataTableSelectionActionBar from '@/ui/data-table/components/DataTableSelectionActionBar.vue'
-import DataTableSubComponentRow from '@/ui/data-table/components/DataTableSubComponentRow.vue'
+import DataTableVirtualRows from '@/ui/data-table/components/DataTableVirtualRows.vue'
 import { useDataTable } from '@/ui/data-table/composables/dataTable.composable'
 import { useDataTableGroupedVirtualScroller } from '@/ui/data-table/composables/dataTableGroupedVirtualScroller.composable'
 import { useDataTableVirtualScroller } from '@/ui/data-table/composables/dataTableVirtualScroller.composable'
@@ -253,6 +249,18 @@ const groupedVirtualRowViewModels = computed<GroupedVirtualRowViewModel[]>(
   })),
 )
 
+interface FlatVirtualRowViewModel {
+  key: string
+  viewModel: DataTableRowViewModel<TItem>
+}
+
+const flatVirtualRowViewModels = computed<FlatVirtualRowViewModel[]>(
+  () => flatVirtualRows.value.map((virtualRow) => ({
+    key: rows.value[virtualRow.index]!.id,
+    viewModel: rowViewModels.value[virtualRow.index]!,
+  })),
+)
+
 interface VisibleColumn {
   id: string
   header: Header<TItem, unknown>
@@ -370,13 +378,11 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
           class="contents"
           role="rowgroup"
         >
-          <template v-if="isGroupingEnabled">
-            <div
-              v-if="paddingBeforePx > 0"
-              :style="{ height: `${paddingBeforePx}px` }"
-              class="col-span-full"
-            />
-
+          <DataTableVirtualRows
+            v-if="isGroupingEnabled"
+            :padding-after-px="paddingAfterPx"
+            :padding-before-px="paddingBeforePx"
+          >
             <div
               v-for="entry of groupedVirtualRowViewModels"
               :key="entry.key"
@@ -401,96 +407,32 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
                 />
               </DataTableGroupRow>
 
-              <template v-else>
-                <DataTableRow>
-                  <DataTableCheckboxCell
-                    v-if="props.isSelectable"
-                    :is-checked="entry.viewModel.isSelected"
-                    @toggle="toggleItem(props.getKey(entry.row.original))"
-                  />
-
-                  <DataTableExpandCell
-                    v-if="hasSubComponent"
-                    :can-expand="entry.viewModel.canExpandSubComponent"
-                    :is-expanded="entry.viewModel.isSubComponentExpanded"
-                    @toggle="toggleSubComponent(entry.row.id)"
-                  />
-
-                  <DataTableCell
-                    v-for="(cell, cellIndex) of entry.row.getVisibleCells()"
-                    :key="cell.column.id"
-                    :is-first-column="!props.isSelectable && !hasSubComponent && cellIndex === 0"
-                    :is-last-column="cellIndex === entry.row.getVisibleCells().length - 1"
-                  >
-                    <FlexRender
-                      :props="cell.getContext()"
-                      :render="cell.column.columnDef.cell"
-                    />
-                  </DataTableCell>
-                </DataTableRow>
-
-                <DataTableSubComponentRow v-if="entry.viewModel.isSubComponentExpanded">
-                  <Component :is="entry.viewModel.subComponent" />
-                </DataTableSubComponentRow>
-              </template>
+              <DataTableDataRow
+                v-else
+                :has-sub-component="hasSubComponent"
+                :is-selectable="props.isSelectable"
+                :view-model="entry.viewModel"
+                @toggle-selected="toggleItem(props.getKey(entry.row.original))"
+                @toggle-sub-component="toggleSubComponent(entry.row.id)"
+              />
             </div>
+          </DataTableVirtualRows>
 
-            <div
-              v-if="paddingAfterPx > 0"
-              :style="{ height: `${paddingAfterPx}px` }"
-              class="col-span-full"
+          <DataTableVirtualRows
+            v-else
+            :padding-after-px="paddingAfterPx"
+            :padding-before-px="paddingBeforePx"
+          >
+            <DataTableDataRow
+              v-for="entry of flatVirtualRowViewModels"
+              :key="entry.key"
+              :has-sub-component="hasSubComponent"
+              :is-selectable="props.isSelectable"
+              :view-model="entry.viewModel"
+              @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+              @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
             />
-          </template>
-
-          <template v-else>
-            <div
-              v-if="paddingBeforePx > 0"
-              :style="{ height: `${paddingBeforePx}px` }"
-              class="col-span-full"
-            />
-
-            <template
-              v-for="virtualRow of flatVirtualRows"
-              :key="rows[virtualRow.index]!.id"
-            >
-              <DataTableRow>
-                <DataTableCheckboxCell
-                  v-if="props.isSelectable"
-                  :is-checked="rowViewModels[virtualRow.index]!.isSelected"
-                  @toggle="toggleItem(props.getKey(rows[virtualRow.index]!.original))"
-                />
-
-                <DataTableExpandCell
-                  v-if="hasSubComponent"
-                  :can-expand="rowViewModels[virtualRow.index]!.canExpandSubComponent"
-                  :is-expanded="rowViewModels[virtualRow.index]!.isSubComponentExpanded"
-                  @toggle="toggleSubComponent(rows[virtualRow.index]!.id)"
-                />
-
-                <DataTableCell
-                  v-for="(cell, cellIndex) of rows[virtualRow.index]!.getVisibleCells()"
-                  :key="cell.column.id"
-                  :is-first-column="!props.isSelectable && !hasSubComponent && cellIndex === 0"
-                  :is-last-column="cellIndex === rows[virtualRow.index]!.getVisibleCells().length - 1"
-                >
-                  <FlexRender
-                    :props="cell.getContext()"
-                    :render="cell.column.columnDef.cell"
-                  />
-                </DataTableCell>
-              </DataTableRow>
-
-              <DataTableSubComponentRow v-if="rowViewModels[virtualRow.index]!.isSubComponentExpanded">
-                <Component :is="rowViewModels[virtualRow.index]!.subComponent" />
-              </DataTableSubComponentRow>
-            </template>
-
-            <div
-              v-if="paddingAfterPx > 0"
-              :style="{ height: `${paddingAfterPx}px` }"
-              class="col-span-full"
-            />
-          </template>
+          </DataTableVirtualRows>
         </div>
       </div>
     </div>
