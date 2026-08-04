@@ -14,6 +14,7 @@ import { I18N_FACTORY_NAVIGATION } from './packages/i18n-factory/i18nFactory.nav
 import { PERMISSIONS_NAVIGATION } from './packages/permissions/permissions.navigation'
 import { PREFERENCES_NAVIGATION } from './packages/preferences/preferences.navigation'
 import { TELEMETRY_NAVIGATION } from './packages/telemetry/telemetry.navigation'
+import { TEST_UTILS_NAVIGATION } from './packages/test-utils/testUtils.navigation'
 import { TYPE_UTILS_NAVIGATION } from './packages/type-utils/typeUtils.navigation'
 import { UTILS_NAVIGATION } from './packages/utils/utils.navigation'
 import { ZOD_VALIDATION_NAVIGATION } from './packages/zod-validation/zodValidation.navigation'
@@ -52,6 +53,7 @@ export const PACKAGE_DOC_NAVIGATION: PackageDocNavigationGroup[] = [
     text: 'Observability',
     items: [
       TELEMETRY_NAVIGATION,
+      TEST_UTILS_NAVIGATION,
     ],
   },
   {

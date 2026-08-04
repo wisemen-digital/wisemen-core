@@ -322,6 +322,9 @@ catalogs:
     maska:
       specifier: ^3.2.0
       version: 3.2.0
+    neverthrow:
+      specifier: 8.2.0
+      version: 8.2.0
     pkce-challenge:
       specifier: 5.0.1
       version: 5.0.1
@@ -4581,6 +4584,43 @@ importers:
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)
+
+  packages/web/test-utils:
+    dependencies:
+      neverthrow:
+        specifier: catalog:general
+        version: 8.2.0
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: catalog:vite
+        version: 6.0.3(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
+      '@vitest/browser-playwright':
+        specifier: catalog:test
+        version: 4.1.0(playwright@1.57.0)(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vitest@4.1.0)
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@wisemen/vue-core-api-utils':
+        specifier: workspace:*
+        version: link:../api-utils
+      rimraf:
+        specifier: catalog:build
+        version: 6.1.3
+      tsdown:
+        specifier: catalog:build
+        version: 0.18.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vite:
+        specifier: catalog:vite
+        version: 8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
+      vitest:
+        specifier: catalog:test
+        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@25.3.0)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
 
   packages/web/type-utils:
     devDependencies:
@@ -15659,8 +15699,8 @@ packages:
   vue-component-type-helpers@3.3.0:
     resolution: {integrity: sha512-vwR8DDsBysI9NWXa0okPFpCcW+BUC3sPTuLBNo1faMzw4QWMFd+3/lFYFu29ZN0q+8UReXWJHEYesC9dcXYCLg==}
 
-  vue-component-type-helpers@3.3.8:
-    resolution: {integrity: sha512-troqCMmQodQDqUqn63NQaFi+CDSclSe7sc8VEBFqf5GFLqmGR2Ph3P2WEC7qwpRVyEWsTi/aAr4vyOe/B1hU3g==}
+  vue-component-type-helpers@3.3.9:
+    resolution: {integrity: sha512-3c/UfMe0SqyEfcGTyH7mfshHagJ9QTCbppCb0/uGpHZpFug7+If3GeGZN7I0YheKEExemx3xldQPoO7PQSOLQg==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -21119,7 +21159,7 @@ snapshots:
       storybook: 10.3.0(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       type-fest: 2.19.0
       vue: 3.5.27(typescript@5.9.3)
-      vue-component-type-helpers: 3.3.8
+      vue-component-type-helpers: 3.3.9
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.2.1(jiti@2.7.0))':
     dependencies:
@@ -22049,7 +22089,6 @@ snapshots:
       - msw
       - utf-8-validate
       - vite
-    optional: true
 
   '@vitest/browser@4.1.8(vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vitest@4.1.0)':
     dependencies:
@@ -22084,7 +22123,6 @@ snapshots:
       - msw
       - utf-8-validate
       - vite
-    optional: true
 
   '@vitest/coverage-v8@4.1.0(@vitest/browser@4.1.8(vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vitest@4.1.0))(vitest@4.1.0)':
     dependencies:
@@ -22177,7 +22215,6 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
-    optional: true
 
   '@vitest/pretty-format@3.2.4':
     dependencies:
@@ -29084,7 +29121,7 @@ snapshots:
 
   vue-component-type-helpers@3.3.0: {}
 
-  vue-component-type-helpers@3.3.8: {}
+  vue-component-type-helpers@3.3.9: {}
 
   vue-demi@0.14.10(vue@3.5.27(typescript@5.9.3)):
     dependencies:
