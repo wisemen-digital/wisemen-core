@@ -1,11 +1,13 @@
 packages:
   - docs
   - "packages/*/*"
+  - "packages/payload/nuxt/*"
 
 publicHoistPattern:
   - "*eslint*"
 
 catalog:
+  "@nuxt/ui": ">=4.0.0"
   "@tanstack/vue-hotkeys": ^0.10.0
   "@tanstack/vue-virtual": ^3.13.24
   "@wisemen/eslint-config-nestjs": ^1.1.1
@@ -227,6 +229,7 @@ catalogs:
     "@typescript-eslint/parser": "^8.59.0"
     "@vitejs/plugin-vue": "^6.0.3"
     "eslint": "^10.0.3"
+    "@vueuse/core": "^14.1.0"
     formango: ^3.2.4
     "libphonenumber-js": "^1.12.35"
     "motion-v": "^2.2.1"
