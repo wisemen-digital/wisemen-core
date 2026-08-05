@@ -111,6 +111,7 @@ useProvideDatePickerContext({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
     :is-label-hidden="props.isLabelHidden"
   >
     <template #label-left>
@@ -220,6 +221,7 @@ useProvideDatePickerContext({
             <DatePickerCalendarGrid
               v-for="month in grid"
               :key="month.value.toString()"
+              :get-day-config="props.getDayConfig"
               :month="month"
               :week-days="weekDays"
             />

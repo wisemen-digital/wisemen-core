@@ -1,6 +1,24 @@
 # @wisemen/vue-core-components
 
 
+
+
+
+## 3.0.5
+<sub>2026-08-03</sub>
+
+- [#1531](https://github.com/wisemen-digital/wisemen-core/pull/1531)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make select and autocomplete popovers responsive on mobile. The popover will become a bottom drawer with the options
+
+## 3.0.4
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
+## 3.0.3
+<sub>2026-06-30</sub>
+
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+
 ## 3.0.2
 <sub>2026-06-09</sub>
 

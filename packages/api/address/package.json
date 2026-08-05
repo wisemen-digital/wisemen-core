@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/address",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "publishConfig": {
     "access": "public"
   },
@@ -28,11 +28,9 @@
     "@nestjs/swagger": "catalog:backend-peer",
     "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer",
-    "typeorm": "catalog:backend-peer"
-  },
-  "dependencies": {
-    "@wisemen/coordinates": "workspace:*",
-    "@wisemen/validators": "workspace:*"
+    "typeorm": "catalog:backend-peer",
+    "@wisemen/coordinates": "workspace:^",
+    "@wisemen/validators": "workspace:^"
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:*",

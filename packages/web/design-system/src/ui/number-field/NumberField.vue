@@ -44,10 +44,10 @@ const props = withDefaults(defineProps<NumberFieldProps>(), {
   ...INPUT_META_DEFAULTS,
   ...INPUT_FIELD_DEFAULTS,
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  hasControls: false,
   formatOptions: null,
   max: null,
   min: null,
-  showControls: false,
   step: 1,
 })
 
@@ -64,8 +64,10 @@ const modelValue = defineModel<number | null>({
   required: true,
 })
 
+const hasControls = computed<boolean>(() => props.hasControls || props.showControls === true)
+
 const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle({
-  showControls: props.showControls,
+  hasControls: hasControls.value,
 }))
 
 // Since reka-ui's NumberField component only updates the modelValue on blur or enter key press,
@@ -183,6 +185,11 @@ function formatNumberDecimalSeparators(value: string): number {
     return Number(value.replaceAll(sep, ''))
   }
 
+  if (value.startsWith(`0${sep}`)) {
+    // Leading "0" before the separator → always decimal (e.g. "0,11111")
+    return Number(value.replace(sep, '.'))
+  }
+
   // Single separator: check digits after it
   const digitsAfter = value.slice(value.lastIndexOf(sep) + 1).replace(NON_DIGIT_REGEX, '')
 
@@ -225,6 +232,7 @@ watch(copiedModelValue, () => {
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />
@@ -262,7 +270,7 @@ watch(copiedModelValue, () => {
         <template #left>
           <slot name="left">
             <UIRowLayout
-              v-if="props.showControls"
+              v-if="hasControls"
               :class="numberFieldStyle.leftControl()"
               align="center"
             >
@@ -283,7 +291,7 @@ watch(copiedModelValue, () => {
         <template #right>
           <slot name="right">
             <UIRowLayout
-              v-if="props.showControls"
+              v-if="hasControls"
               :class="numberFieldStyle.rightControl()"
               align="center"
             >

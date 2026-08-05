@@ -1,5 +1,7 @@
 import type { PlainDate } from '@wisemen/vue-core-dates'
 
+import type { DayConfig } from '@/ui/date-field/dateField.type'
+
 export interface DateRangePickerProps {
   /**
    * The maximum selectable date.
@@ -14,6 +16,16 @@ export interface DateRangePickerProps {
   /**
    * Whether to show the presets sidebar.
    * @default true
+   */
+  hasPresets?: boolean
+  /**
+   * Returns a config to decorate a given calendar day (e.g. a colored dot for a birthday or holiday).
+   * Called once per rendered day. Return `null` for days that shouldn't be decorated.
+   */
+  getDayConfig?: (date: PlainDate) => DayConfig | null
+
+  /**
+   * @deprecated Use `hasPresets` instead.
    */
   showPresets?: boolean
 }

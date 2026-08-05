@@ -3,18 +3,18 @@ import { expect } from 'expect'
 import { validate } from 'class-validator'
 import { plainToInstance } from 'class-transformer'
 import { IsLocalizedString } from '#src/validators/is-localized-string.js'
-import { LocalizedStringCommand, LocalizedStringItemCommand } from '#src/localized-string.command.js'
+import { LocalizedStringDto, LocalizedStringItemDto } from '#src/localized-string.dto.js'
 
 class TestDtoNoOptions {
   @IsLocalizedString()
-  title: LocalizedStringCommand
+  title: LocalizedStringDto
 }
 
 class TestDtoRequiredLanguages {
   @IsLocalizedString({
     requiredLanguages: ['en', 'fr']
   })
-  title: LocalizedStringCommand
+  title: LocalizedStringDto
 }
 
 class TestDtoForbidNonRequired {
@@ -22,14 +22,14 @@ class TestDtoForbidNonRequired {
     requiredLanguages: ['en', 'fr'],
     forbidNonRequiredLanguages: true
   })
-  title: LocalizedStringCommand
+  title: LocalizedStringDto
 }
 
 class TestDtoOnlyRequired {
   @IsLocalizedString({
     requiredLanguages: ['en']
   })
-  title: LocalizedStringCommand
+  title: LocalizedStringDto
 }
 
 describe('IsLocalizedString validator', () => {
@@ -37,7 +37,7 @@ describe('IsLocalizedString validator', () => {
     it('validates a valid localized string', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = plainToInstance(LocalizedStringCommand, {
+      dto.title = plainToInstance(LocalizedStringDto, {
         items: [
           { locale: 'en', value: 'Hello' },
           { locale: 'fr', value: 'Bonjour' }
@@ -52,7 +52,7 @@ describe('IsLocalizedString validator', () => {
     it('validates with single language', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = plainToInstance(LocalizedStringCommand, {
+      dto.title = plainToInstance(LocalizedStringDto, {
         items: [{ locale: 'en', value: 'Hello' }]
       })
 
@@ -64,7 +64,7 @@ describe('IsLocalizedString validator', () => {
     it('validates with empty items array', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = plainToInstance(LocalizedStringCommand, { items: [] })
+      dto.title = plainToInstance(LocalizedStringDto, { items: [] })
 
       const errors = await validate(dto)
 
@@ -74,7 +74,7 @@ describe('IsLocalizedString validator', () => {
     it('fails when value is null', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = null as unknown as LocalizedStringCommand
+      dto.title = null as unknown as LocalizedStringDto
 
       const errors = await validate(dto)
 
@@ -84,7 +84,7 @@ describe('IsLocalizedString validator', () => {
     it('fails when value is undefined', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = undefined as unknown as LocalizedStringCommand
+      dto.title = undefined as unknown as LocalizedStringDto
 
       const errors = await validate(dto)
 
@@ -94,8 +94,8 @@ describe('IsLocalizedString validator', () => {
     it('fails when items is not an array', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = plainToInstance(LocalizedStringCommand, {
-        items: 'not an array' as unknown as LocalizedStringItemCommand[]
+      dto.title = plainToInstance(LocalizedStringDto, {
+        items: 'not an array' as unknown as LocalizedStringItemDto[]
       })
 
       const errors = await validate(dto)
@@ -284,7 +284,7 @@ describe('IsLocalizedString validator', () => {
   })
 
   describe('nested validation', () => {
-    it('validates nested LocalizedStringCommand structure', async () => {
+    it('validates nested LocalizedStringDto structure', async () => {
       const dto = plainToInstance(TestDtoNoOptions, {
         title: {
           items: [
@@ -304,7 +304,7 @@ describe('IsLocalizedString validator', () => {
         title: {
           items: [
             { locale: 'en', value: 'Hello' },
-            { locale: 123, value: 'Invalid' } as unknown as LocalizedStringItemCommand
+            { locale: 123, value: 'Invalid' } as unknown as LocalizedStringItemDto
           ]
         }
       })
@@ -317,10 +317,10 @@ describe('IsLocalizedString validator', () => {
     it('fails when nested items are missing required fields', async () => {
       const dto = new TestDtoNoOptions()
 
-      dto.title = plainToInstance(LocalizedStringCommand, {
+      dto.title = plainToInstance(LocalizedStringDto, {
         items: [
           { locale: 'en', value: 'Hello' },
-          { locale: 'fr' } as unknown as LocalizedStringItemCommand
+          { locale: 'fr' } as unknown as LocalizedStringItemDto
         ]
       })
 

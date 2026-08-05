@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { useId } from 'vue'
+import {
+  computed,
+  useId,
+} from 'vue'
 
 import { useUnsavedChanges } from '@/composables/unsaved-changes/unsavedChanges.composable'
 import { useProvideFormContext } from '@/ui/form/form.context'
@@ -7,11 +10,17 @@ import type { FormProps } from '@/ui/form/form.props'
 
 const props = withDefaults(defineProps<FormProps>(), {
   id: null,
+  isUnsavedChangesPromptEnabled: true,
+  promptOnUnsavedChanges: true,
 })
 
 const id = useId()
 
-if (props.promptOnUnsavedChanges) {
+const isUnsavedChangesPromptEnabled = computed<boolean>(
+  () => props.promptOnUnsavedChanges !== true ? false : props.isUnsavedChangesPromptEnabled,
+)
+
+if (isUnsavedChangesPromptEnabled.value) {
   useUnsavedChanges(props.form.isDirty)
 }
 

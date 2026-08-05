@@ -69,7 +69,7 @@ function onDragEnd(): void {
       />
 
       <UIActionDropdownMenu
-        :current-context-only="false"
+        :is-current-context-only="false"
         :actions="[saveToCurrentViewAction, createViewAction, revertToSavedViewAction]"
         popover-side="bottom"
         popover-align="end"

@@ -11,7 +11,6 @@ import {
   Motion,
   useReducedMotion,
 } from 'motion-v'
-import type { Component } from 'vue'
 import {
   computed,
   watch,
@@ -25,10 +24,12 @@ import MainSidebarHeaderLogoWithText from '@/ui/sidebar/components/MainSidebarHe
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebarNavigationLinkBadge from '@/ui/sidebar/components/MainSidebarNavigationLinkBadge.vue'
-import MainSidebarNavigationLinkStatusDot from '@/ui/sidebar/components/MainSidebarNavigationLinkStatusDot.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
-import type { MainSidebarCollapsedVariant } from '@/ui/sidebar/types/mainSidebar.type'
+import type {
+  DashboardSidebarNavLink,
+  MainSidebarCollapsedVariant,
+} from '@/ui/sidebar/types/mainSidebar.type'
 
 const props = withDefaults(defineProps<{
   collapsedVariant?: MainSidebarCollapsedVariant
@@ -52,14 +53,9 @@ watch(() => props.collapsedVariant, (value) => {
 
 const isReduceMotionEnabledOnDevice = useReducedMotion()
 
-export interface NavigationGroup {
+interface NavigationGroup {
   label: string
-  links: NavigationItem[]
-}
-export interface NavigationItem {
-  name: string
-  icon: Component
-  to: any
+  links: DashboardSidebarNavLink[]
 }
 
 const navigation = computed<NavigationGroup[]>(() => ([
@@ -67,18 +63,84 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Main',
     links: [
       {
-        name: 'Dashboard',
+        badge: {
+          label: '10',
+        },
         icon: BarChartSquare02Icon,
+        label: 'Dashboard',
         to: {
           path: '/',
         },
+        type: 'link',
       },
       {
-        name: 'Projects',
+        hasStatusDot: true,
         icon: Rows01Icon,
+        label: 'Projects',
         to: {
           path: '/projects',
         },
+        type: 'link',
+      },
+      {
+        icon: File05Icon,
+        label: 'Reports',
+        subItems: [
+          {
+            label: 'Overview',
+            to: {
+              path: '/reports',
+            },
+          },
+          {
+            badge: {
+              label: '3',
+            },
+            label: 'Analytics',
+            to: {
+              path: '/reports/analytics',
+            },
+          },
+          {
+            hasStatusDot: true,
+            label: 'Export',
+            to: {
+              path: '/reports/export',
+            },
+          },
+        ],
+        type: 'sub-items',
+      },
+      {
+        icon: CalendarIcon,
+        label: 'Archive',
+        subItems: [
+          {
+            label: 'All time',
+            to: {
+              path: '/archive',
+            },
+          },
+          {
+            label: 'This year',
+            to: {
+              path: '/archive/year',
+            },
+          },
+          {
+            label: 'This month',
+            to: {
+              path: '/archive/month',
+            },
+          },
+          {
+            label: 'This week',
+            to: {
+              path: '/archive/week',
+            },
+          },
+        ],
+        type: 'sub-items',
       },
     ],
   },
@@ -86,18 +148,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Other',
     links: [
       {
-        name: 'Documents',
         icon: File05Icon,
+        label: 'Documents',
         to: {
           path: '/others',
         },
+        type: 'link',
       },
       {
-        name: 'Calendar',
         icon: CalendarIcon,
+        label: 'Calendar',
         to: {
           path: '/other-projects',
         },
+        type: 'link',
       },
     ],
   },
@@ -108,18 +172,20 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
     label: '',
     links: [
       {
-        name: 'Support',
         icon: LifeBuoy01Icon,
+        label: 'Support',
         to: {
           path: '/support',
         },
+        type: 'link',
       },
       {
-        name: 'Settings',
         icon: Settings01Icon,
+        label: 'Settings',
         to: {
           path: '/test',
         },
+        type: 'link',
       },
     ],
   },
@@ -155,16 +221,14 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
         >
           <MainSidebarNavigationLink
             v-for="link in group.links"
-            :key="link.name"
-            :to="link.to"
-            :icon="link.icon"
-            :label="link.name"
+            :key="link.label"
+            v-bind="link"
           >
-            <template #right>
-              <MainSidebarNavigationLinkBadge
-                label="10"
-              />
-              <MainSidebarNavigationLinkStatusDot />
+            <template
+              v-if="link.label === 'Documents'"
+              #right
+            >
+              <MainSidebarNavigationLinkBadge label="99+" />
             </template>
           </MainSidebarNavigationLink>
         </MainSidebarNavigationGroup>
@@ -179,10 +243,8 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
         >
           <MainSidebarNavigationLink
             v-for="link in group.links"
-            :key="link.name"
-            :to="link.to"
-            :icon="link.icon"
-            :label="link.name"
+            :key="link.label"
+            v-bind="link"
           />
         </MainSidebarNavigationGroup>
         <MainSidebarFooterAccountCard

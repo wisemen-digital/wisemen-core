@@ -1,34 +1,31 @@
 <script setup lang="ts">
-import type { Component } from 'vue'
-import { computed } from 'vue'
-import type {
-  RouteLocationNormalized,
-  RouteLocationRaw,
-} from 'vue-router'
 import {
-  RouterLink,
+  computed,
+  onMounted,
+} from 'vue'
+import {
   useRoute,
+  useRouter,
 } from 'vue-router'
 
-import ActionTooltip from '@/ui/action-tooltip/ActionTooltip.vue'
-import ClickableElement from '@/ui/clickable-element/ClickableElement.vue'
-import type { KeyboardShortcut } from '@/ui/keyboard-shortcut/keyboardShortcut.type'
-import RowLayout from '@/ui/row-layout/RowLayout.vue'
-import MainSidebarFadeTransition from '@/ui/sidebar/components/MainSidebarFadeTransition.vue'
-import MainSidebarNavigationLinkProvider from '@/ui/sidebar/components/MainSidebarNavigationLinkProvider.vue'
+import MainSidebarNavigationLinkBadge from '@/ui/sidebar/components/MainSidebarNavigationLinkBadge.vue'
+import MainSidebarNavigationLinkButton from '@/ui/sidebar/components/MainSidebarNavigationLinkButton.vue'
+import MainSidebarNavigationLinkCollapsible from '@/ui/sidebar/components/MainSidebarNavigationLinkCollapsible.vue'
+import MainSidebarNavigationLinkPopover from '@/ui/sidebar/components/MainSidebarNavigationLinkPopover.vue'
+import MainSidebarNavigationLinkStatusDot from '@/ui/sidebar/components/MainSidebarNavigationLinkStatusDot.vue'
 import { useMainSidebar } from '@/ui/sidebar/mainSidebar.composable'
+import type {
+  DashboardSidebarNavLink,
+  SidebarNavLinkItem,
+  SidebarNavSubItemsItem,
+} from '@/ui/sidebar/types/mainSidebar.type'
 
-export interface Props {
-  isActive?: (route: RouteLocationNormalized) => boolean
-  icon: Component
-  keyboardShortcut?: KeyboardShortcut | null
-  label: string
-  to: RouteLocationRaw
-}
+export type Props = DashboardSidebarNavLink
 
 const props = withDefaults(defineProps<Props>(), {
   isActive: () => false,
   keyboardShortcut: null,
+  type: 'link',
 })
 
 const emit = defineEmits<{
@@ -39,21 +36,47 @@ const {
   isSidebarOpen,
   closeIfFloatingSidebar,
   collapsedVariant,
-  sidebarIconCellSize,
-  sidebarIconSize,
-  sidebarLinkHeight,
 } = useMainSidebar()
 
 const route = useRoute()
+const router = useRouter()
 
-function onClick(): void {
-  closeIfFloatingSidebar()
-  emit('click')
-}
+const hasSubItems = computed<boolean>(() => props.type === 'sub-items')
 
-const navigationLinkGridTemplateColumns = `${sidebarIconCellSize} 1fr`
+const subItemsProps = computed<SidebarNavSubItemsItem | null>(() =>
+  isSubItemsProps(props) ? props : null)
+
+const linkProps = computed<SidebarNavLinkItem | null>(() =>
+  isSubItemsProps(props) ? null : props)
+
+const usePopover = computed<boolean>(() =>
+  hasSubItems.value && !isSidebarOpen.value)
+
+const isSubItemsActive = computed<boolean>(() => {
+  if (props.isActive?.(route)) {
+    return true
+  }
+
+  return subItemsProps.value?.subItems.some((sub) => {
+    const resolved = router.resolve(sub.to)
+
+    if (resolved.name != null && resolved.name === route.name) {
+      return true
+    }
+
+    return resolved.path !== '/' && route.path.startsWith(resolved.path)
+  }) ?? false
+})
+
+const isPopoverOpen = defineModel<boolean>('isPopoverOpen', {
+  default: false,
+})
 
 const isTooltipDisabled = computed<boolean>(() => {
+  if (usePopover.value) {
+    return true
+  }
+
   if (collapsedVariant.value === 'hidden' && props.keyboardShortcut === null) {
     return true
   }
@@ -64,89 +87,64 @@ const isTooltipDisabled = computed<boolean>(() => {
 
   return false
 })
+
+function onLinkClick(): void {
+  closeIfFloatingSidebar()
+  emit('click')
+}
+
+function isSubItemsProps(item: DashboardSidebarNavLink): item is SidebarNavSubItemsItem {
+  return item.type === 'sub-items'
+}
+
+onMounted(() => {
+  if (!isSubItemsProps(props) && 'subItems' in props && props.subItems != null) {
+    console.warn(
+      '[MainSidebarNavigationLink] Received `subItems` but `type` is missing or set to \'link\'. '
+      + 'Set `type: \'sub-items\'` to render this item as an expandable group.',
+    )
+  }
+})
 </script>
 
 <template>
-  <ActionTooltip
-    :is-disabled="isTooltipDisabled"
+  <MainSidebarNavigationLinkPopover
+    v-if="usePopover && subItemsProps !== null"
+    v-model:is-popover-open="isPopoverOpen"
+    :icon="props.icon"
+    :is-sub-items-active="isSubItemsActive"
+    :label="props.label"
+    :sub-items="subItemsProps.subItems"
+  />
+
+  <MainSidebarNavigationLinkCollapsible
+    v-else-if="hasSubItems && subItemsProps !== null"
+    :icon="props.icon"
+    :is-sub-items-active="isSubItemsActive"
+    :is-tooltip-disabled="isTooltipDisabled"
     :keyboard-shortcut="props.keyboardShortcut"
     :label="props.label"
-    popover-side="right"
-  >
-    <ClickableElement>
-      <RouterLink
-        v-slot="{ isActive: isRouteActive }"
-        :to="props.to"
-        class="w-full"
-        @click="onClick"
-      >
-        <MainSidebarNavigationLinkProvider
-          :is-active="isRouteActive"
-        >
-          <div
-            :data-active="isRouteActive || props.isActive(route) || undefined"
-            :style="{
-              height: sidebarLinkHeight,
-              gridTemplateColumns: navigationLinkGridTemplateColumns,
-            }"
-            class="
-              group grid rounded-md duration-100
-              hover:bg-fg-primary/4
-              data-active:bg-fg-primary/4
-            "
-          >
-            <RowLayout
-              :style="{
-                width: sidebarIconCellSize,
-                height: sidebarIconCellSize,
-              }"
-              align="center"
-              justify="center"
-            >
-              <Component
-                :is="props.icon"
-                :style="{
-                  width: sidebarIconSize,
-                  height: sidebarIconSize,
-                }"
-                class="
-                  shrink-0 text-fg-quaternary duration-100
-                  group-data-active:text-fg-brand-primary
-                  dark:group-data-active:text-fg-primary
-                "
-              />
-            </RowLayout>
+    :sub-items="subItemsProps.subItems"
+  />
 
-            <MainSidebarFadeTransition>
-              <RowLayout
-                v-if="collapsedVariant !== 'minified' || isSidebarOpen"
-                align="center"
-                justify="between"
-                gap="md"
-                class="overflow-hidden pr-md"
-              >
-                <span
-                  class="
-                    truncate text-xs font-medium whitespace-nowrap
-                    text-secondary duration-100
-                    group-hover:text-primary
-                    group-data-active:text-brand-secondary
-                  "
-                >
-                  {{ props.label }}
-                </span>
-                <RowLayout
-                  gap="lg"
-                  align="center"
-                  class="shrink-0"
-                >
-                  <slot name="right" />
-                </RowLayout>
-              </RowLayout>
-            </MainSidebarFadeTransition>
-          </div>
-        </MainSidebarNavigationLinkProvider>
-      </RouterLink>
-    </ClickableElement>
-  </ActionTooltip>
+  <MainSidebarNavigationLinkButton
+    v-else-if="linkProps !== null"
+    :icon="props.icon"
+    :is-active="props.isActive"
+    :is-tooltip-disabled="isTooltipDisabled"
+    :keyboard-shortcut="props.keyboardShortcut"
+    :label="props.label"
+    :to="linkProps.to"
+    @click="onLinkClick"
+  >
+    <template #right>
+      <slot name="right">
+        <MainSidebarNavigationLinkBadge
+          v-if="props.badge != null"
+          :label="props.badge.label"
+        />
+        <MainSidebarNavigationLinkStatusDot v-if="props.hasStatusDot" />
+      </slot>
+    </template>
+  </MainSidebarNavigationLinkButton>
 </template>

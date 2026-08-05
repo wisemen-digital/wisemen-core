@@ -12,7 +12,7 @@ export { Bouncer } from './worker/pgboss-bouncer.decorator.js'
 export { PgBossJob } from './jobs/job.decorator.js'
 export { PgBossJobHandler } from './jobs/job.decorator.js'
 
-export { BaseJob, BaseJobData } from './jobs/base-job.js'
+export { BaseJob } from './jobs/base-job.js'
 export { JobHandler } from './jobs/job-handler.js'
 
 // Scheduling jobs

@@ -5,6 +5,7 @@ import { useContext } from '@/composables/context.composable'
 
 interface TableBodyRowContext {
   link: ComputedRef<RouteLocationRaw | null>
+  onClick: ComputedRef<(() => void) | null>
 }
 
 export const [

@@ -1,4 +1,4 @@
-import type { CountryCode } from 'libphonenumber-js'
+import type { CountryCode } from 'libphonenumber-js/max'
 
 import type {
   AutocompleteInput,

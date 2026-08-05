@@ -39,6 +39,11 @@ export interface Input extends DisabledWithReason {
 
 export interface InputWrapper extends DisabledWithReason {
   /**
+   * Determines whether the error message is visually hidden.
+   * @default false
+   */
+  isErrorMessageHidden?: boolean
+  /**
    * Whether the label and hint are displayed horizontally.
    * @default false
    */
@@ -70,8 +75,7 @@ export interface InputWrapper extends DisabledWithReason {
    */
   helpText?: string | null
   /**
-   * Determines whether to hide the error message visually.
-   * @default false
+   * @deprecated Use `isErrorMessageHidden` instead.
    */
   hideErrorMessage?: boolean
   /**
@@ -138,6 +142,7 @@ export const INPUT_DEFAULTS = {
 
 export const INPUT_META_DEFAULTS = {
   ...DISABLED_WITH_REASON_DEFAULTS,
+  isErrorMessageHidden: false,
   isHorizontal: false,
   isLabelHidden: false,
   isRequired: false,

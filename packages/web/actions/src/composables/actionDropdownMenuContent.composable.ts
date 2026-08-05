@@ -239,7 +239,7 @@ export function useActionDropdownMenuContent({
   const debouncedRefresh = useDebounceFn(() => {
     debouncedSearchInput.value = searchInput.value
     refreshActions()
-  }, 200)
+  }, 80)
 
   watch(searchInput, () => {
     subActionsMetaMap.value = {}

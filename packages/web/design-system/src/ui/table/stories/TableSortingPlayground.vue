@@ -37,9 +37,7 @@ const rawData: User[] = Array.from({
   status: i % 4 === 0 ? 'inactive' : 'active',
 }))
 
-type UserKey = keyof Omit<User, 'id'>
-
-const sort = useSort<UserKey>({
+const sort = useSort({
   keys: [
     'name',
     'email',

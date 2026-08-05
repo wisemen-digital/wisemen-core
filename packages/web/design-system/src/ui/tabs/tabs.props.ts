@@ -2,6 +2,7 @@ import type { Component } from 'vue'
 
 import type { RegisteredRouteLocationRaw } from '@/register'
 import type { DisabledWithReason } from '@/types/disabledWithReason.type'
+import type { TabsItemConfig } from '@/ui/tabs/tabs.type'
 
 export type TabsVariant = 'button-border' | 'button-brand' | 'underline'
 export type TabsHorizontalListPadding = 'lg' | 'md' | 'none' | 'sm' | 'xl'
@@ -17,7 +18,6 @@ export interface TabsProps {
    * @default 'horizontal'
    */
   orientation?: 'horizontal' | 'vertical'
-
   /**
    * Controls the horizontal padding of the scroll container. Only applies to the `underline` variant.
    */
@@ -36,7 +36,13 @@ export interface TabsItemProps extends DisabledWithReason {
    */
   isLabelHidden?: boolean
   /**
+   * Configuration object for the tab's left content and indicator.
+   */
+  config?: TabsItemConfig | null
+  /**
    * A count to display as a badge on the right side of the tab.
+   *
+   * @deprecated Use `config.indicator` instead.
    */
   count?: number | null
   /**
@@ -47,6 +53,8 @@ export interface TabsItemProps extends DisabledWithReason {
   disabledReason?: string | null
   /**
    * An optional icon to be displayed alongside the tab label.
+   *
+   * @deprecated Use `config.left` instead.
    */
   icon?: Component
   /**
@@ -79,7 +87,13 @@ export interface TabsRouterLinkItemProps extends DisabledWithReason {
    */
   isLabelHidden?: boolean
   /**
+   * Configuration object for the tab's left content and indicator.
+   */
+  config?: TabsItemConfig | null
+  /**
    * A count to display as a badge on the right side of the tab.
+   *
+   * @deprecated Use `config.indicator` instead.
    */
   count?: number | null
   /**
@@ -90,6 +104,8 @@ export interface TabsRouterLinkItemProps extends DisabledWithReason {
   disabledReason?: string | null
   /**
    * An optional icon to be displayed alongside the tab label.
+   *
+   * @deprecated Use `config.left` instead.
    */
   icon?: Component
   /**

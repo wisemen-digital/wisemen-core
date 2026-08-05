@@ -52,6 +52,7 @@ onBeforeUnmount(() => {
     ref="block"
     v-bind="attrs"
     :as-child="true"
+    class="shrink-0"
   >
     <slot />
   </Primitive>

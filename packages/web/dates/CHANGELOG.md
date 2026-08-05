@@ -1,5 +1,18 @@
 # @wisemen/vue-core-dates
 
+
+
+## 1.1.0
+<sub>2026-07-01</sub>
+
+- [#1337](https://github.com/wisemen-digital/wisemen-core/pull/1337)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add date format option to config
+- [#1336](https://github.com/wisemen-digital/wisemen-core/pull/1336)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add date format preference
+
+## 1.0.2
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
 ## 1.0.1
 
 ### Patch Changes

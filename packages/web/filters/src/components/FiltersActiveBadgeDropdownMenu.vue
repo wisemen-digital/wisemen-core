@@ -25,7 +25,7 @@ function onUpdateIsOpen(isOpen: boolean): void {
   else {
     setOpenFilter(null)
 
-    if (props.filter.isStatic !== true) {
+    if (props.filter.isPersistent !== true) {
       clearFilter(props.filter.key, true)
     }
   }
@@ -35,7 +35,8 @@ function onUpdateIsOpen(isOpen: boolean): void {
 <template>
   <UIActionDropdownMenu
     :parent-action="props.filter.action"
-    :current-context-only="true"
+    :is-current-context-only="true"
+    :fixed-content-position="true"
     popover-align="start"
     popover-side="bottom"
     @update:is-open="onUpdateIsOpen"

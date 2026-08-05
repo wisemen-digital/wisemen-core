@@ -13,10 +13,12 @@ import { PGBOSS_JOB_HANDLER, PGBOSS_QUEUE_NAME } from '../jobs/job.decorator.js'
 import { SerializedJob } from '../jobs/serialized-job.js'
 import { TraceContextCarrier } from '../jobs/trace-context-carrier.js'
 
+type QueueName = string
+
 @Injectable()
 export class PgBossScheduler {
   private readonly manager: EntityManager
-  private readonly jobStorage: AsyncLocalStorage<SerializedJob<BaseJob>[]>
+  private readonly jobStorage: AsyncLocalStorage<Map<QueueName, SerializedJob[]>>
 
   constructor (
     private boss: PgBossClient,
@@ -27,12 +29,12 @@ export class PgBossScheduler {
     this.jobStorage = new AsyncLocalStorage()
   }
 
-  async scheduleJob<T extends BaseJob>(job: T): Promise<void> {
+  async scheduleJob<T extends BaseJob> (job: T): Promise<void> {
     await this.scheduleJobs([job])
   }
 
   @Trace()
-  async scheduleJobs<T extends BaseJob>(jobs: T[]): Promise<void> {
+  async scheduleJobs<T extends BaseJob> (jobs: T[]): Promise<void> {
     const outputTraceContext: TraceContextCarrier = {}
 
     propagation.inject(context.active(), outputTraceContext)
@@ -42,7 +44,15 @@ export class PgBossScheduler {
     const storedJobs = this.jobStorage.getStore()
 
     if (storedJobs !== undefined) {
-      storedJobs.push(...serializedJobs)
+
+      for (const job of serializedJobs) {
+        const queueJobs = storedJobs.get(job.name)
+        if (queueJobs === undefined) {
+          storedJobs.set(job.name, [job])
+        } else {
+          queueJobs.push(job)
+        }
+      }
 
       return
     }
@@ -63,16 +73,16 @@ export class PgBossScheduler {
       return
     }
 
-    const capturedJobs: SerializedJob<BaseJob>[] = []
+    const capturedJobs: Map<QueueName, SerializedJob[]> = new Map()
 
     await this.jobStorage.run(capturedJobs, callback)
 
-    if (capturedJobs.length > 0) {
-      await this.insertJobs(capturedJobs)
+    for (const queueJobs  of capturedJobs.values()) {
+      await this.insertJobs(queueJobs)
     }
   }
 
-  private serializeJob<T extends BaseJob>(job: T, context: TraceContextCarrier): SerializedJob<T> {
+  private serializeJob<T extends BaseJob> (job: T, context: TraceContextCarrier): SerializedJob<T> {
     const queue = this.reflector.get<string>(PGBOSS_QUEUE_NAME, job.constructor)
     const className = this.reflector.get<string>(PGBOSS_JOB_HANDLER, job.constructor)
 
@@ -96,7 +106,7 @@ export class PgBossScheduler {
     }
   }
 
-  private async insertJobs <T extends BaseJob> (jobs: SerializedJob<T>[]): Promise<void> {
+  private async insertJobs<T extends BaseJob> (jobs: SerializedJob<T>[]): Promise<void> {
     if (jobs.length === 0) {
       return
     }

@@ -17,6 +17,16 @@ export type DisplayFn<
   TValue extends SelectValue | SelectValue[],
 > = (item: NonNullable<GetValue<TValue>>) => string
 
+export type GetItemKeyFn<
+  TValue extends SelectValue | SelectValue[],
+> = (item: NonNullable<GetValue<TValue>>) => number | string
+
+/**
+ * The `PopoverProps` inherited below (`popoverSide`, `popoverAlign`, `popoverWidth`,
+ * `popoverCollisionPadding`, `disableSideFlip`, `prioritizePosition`, etc.) only apply
+ * to the desktop popover presentation. Below the `md` (768px) breakpoint the dropdown
+ * renders as a bottom drawer instead, and these props are ignored.
+ */
 export interface SelectProps<TValue extends SelectValue | SelectValue[]>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
   /**
@@ -24,12 +34,22 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default false
    */
   hasVirtualScroll?: boolean | null
+  /**
+   * Whether to keep the dropdown open after selecting an option.
+   * @default null - will close on single select, stay open on multi select
+   */
+  isDropdownKeptOpenOnSelect?: boolean | null
+  /**
+   * Whether to hide the chevron trigger icon on the right side of the select.
+   * @default false
+   */
+  isTriggerHidden?: boolean
   contentWidthClass?: string
+
   /**
    * Function to display the item label.
    */
   displayFn: DisplayFn<TValue>
-
   /**
    * Maps a value to its visual config (avatar, icon, status, etc.).
    * Used both in the trigger to display the selected item and in each dropdown option.
@@ -39,12 +59,16 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    */
   getItemConfig?: ((value: NonNullable<GetValue<TValue>>) => MenuItemConfig | null) | null
   /**
+   * Returns a stable, unique key for an item. Defaults to `JSON.stringify(value)` when not provided.
+   * @default null
+   */
+  getItemKey?: GetItemKeyFn<TValue> | null
+  /**
    * The items to display in the select.
    */
   items: SelectItem<GetValue<TValue>>[]
   /**
-   * Whether to keep the dropdown open after selecting an option.
-   * @default null - will close on single select, stay open on multi select
+   * @deprecated Use `isDropdownKeptOpenOnSelect` instead.
    */
   keepDropdownOpenOnSelect?: boolean | null
   /**
@@ -52,6 +76,7 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
    * @default null
    */
   limit?: number | null
+
   /**
    * The search mode of the select.
    * - `local`: filtering is done on the client side
@@ -71,9 +96,19 @@ export interface SelectProps<TValue extends SelectValue | SelectValue[]>
 export type SelectContentProps<TValue extends SelectValue | SelectValue[]> = Pick<
   SelectProps<TValue>,
   | 'displayFn'
+  | 'getItemKey'
   | 'hasVirtualScroll'
   | 'isLoading'
   | 'items'
   | 'limit'
   | 'search'
-> & { contentWidthClass?: string }
+> & {
+  /**
+   * When true, renders inline inside a `ResponsiveDrawer` instead of a positioned popover.
+   * The popover-only `--reka-popover-content-available-height` variable isn't available there,
+   * so the max-height needs a drawer-appropriate fallback.
+   * @default false
+   */
+  isMobileDrawer?: boolean
+  contentWidthClass?: string
+}

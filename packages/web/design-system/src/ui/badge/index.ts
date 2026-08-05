@@ -2,6 +2,7 @@ export type {
   BadgeAvatarConfig as UIBadgeAvatarConfig,
   BadgeColor as UIBadgeColor,
   BadgeDotConfig as UIBadgeDotConfig,
+  BadgeLeftConfig as UIBadgeLeftConfig,
   BadgeProps as UIBadgeProps,
 } from './badge.props'
 export { default as UIBadge } from './Badge.vue'

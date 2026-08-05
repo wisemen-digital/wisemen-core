@@ -41,7 +41,12 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  isDropdownKeptOpenOnSelect: null,
+  isPrioritizedPosition: true,
+  isSideFlipDisabled: true,
+  isTriggerHidden: false,
   disableSideFlip: true,
+  getItemKey: null,
   keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
@@ -49,7 +54,6 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  prioritizePosition: true,
   search: null,
   size: 'md',
 })
@@ -129,6 +133,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
     :is-label-hidden="props.isLabelHidden"
     :for="id"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />
@@ -140,7 +145,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
 
     <FieldWrapper
       :icon-left="props.iconLeft"
-      :icon-right="ChevronDownIcon"
+      :icon-right="props.isTriggerHidden ? null : ChevronDownIcon"
       :is-loading="props.isLoading"
       :is-error="isError"
       :is-disabled="props.isDisabled"
@@ -237,7 +242,7 @@ const selectedOptionConfig = computed<MenuItemConfig | null>(() => {
             :aria-controls="`${id}-listbox`"
             role="combobox"
             class="
-              absolute inset-0 size-full outline-none
+              absolute inset-0 z-1 size-full outline-none
               disabled:cursor-not-allowed
             "
             data-field-wrapper

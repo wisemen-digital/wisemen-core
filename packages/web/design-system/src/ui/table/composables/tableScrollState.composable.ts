@@ -21,6 +21,14 @@ export function useTableScrollState() {
     const resizeObserver = new ResizeObserver(() => updateScrollState(el))
 
     resizeObserver.observe(el)
+
+    // `el.children[0]` is the grid content wrapper rendered by TableScrollContainer.vue.
+    const contentEl = el.children[0]
+
+    if (contentEl !== undefined) {
+      // Observe this for when inner content of the table changes
+      resizeObserver.observe(contentEl)
+    }
   }
 
   return {

@@ -2,6 +2,50 @@
 
 
 
+
+
+
+
+
+
+
+## 1.3.0
+<sub>2026-08-03</sub>
+
+- [#1542](https://github.com/wisemen-digital/wisemen-core/pull/1542)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add maxInFlight option for NATS handlers
+
+## 1.2.0
+<sub>2026-08-02</sub>
+
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add nats publisher with async publish jobs
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add configurable NATS outbox modules
+
+## 1.1.4
+<sub>2026-07-31</sub>
+
+- [#1412](https://github.com/wisemen-digital/wisemen-core/pull/1412)  *(patch)* Thanks [@JonasVannieuwenhuijsen](https://github.com/JonasVannieuwenhuijsen)! - Added a way to publish on a stream
+
+## 1.1.3
+<sub>2026-07-29</sub>
+
+- [#1518](https://github.com/wisemen-digital/wisemen-core/pull/1518)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add class-validator json api error conversion
+
+## 1.1.2
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 1.1.1
+<sub>2026-07-13</sub>
+
+- [#1417](https://github.com/wisemen-digital/wisemen-core/pull/1417)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added a shared NestJS provider explorer package and migrated existing packages to use it.
+
+## 1.1.0
+<sub>2026-07-08</sub>
+
+- [#1380](https://github.com/wisemen-digital/wisemen-core/pull/1380)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove `nkey` config on client, pass authenticator instead. Add optional callback on connection error.
+- [#1381](https://github.com/wisemen-digital/wisemen-core/pull/1381)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: handle service messages in parallel
+
 ## 1.0.0
 <sub>2026-06-25</sub>
 

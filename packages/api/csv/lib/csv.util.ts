@@ -1,6 +1,4 @@
-import { Readable } from 'node:stream'
-import readline from 'node:readline'
-import { CSVMissingColumnError } from './errors/csv-missing-column.error.js'
+import { Readable, Transform, TransformCallback } from 'node:stream'
 
 export interface CSVRow<K extends string> {
   line: number
@@ -8,171 +6,314 @@ export interface CSVRow<K extends string> {
 }
 
 const DEFAULT_DELIMITER = ';'
-const DEFAULT_BATCH_SIZE = 100
-const DEFAULT_MAX_CHUNK_BYTES = 64 * 1024
+
+interface CSVOptions {
+  /**
+   * The field separator used in the CSV payload.
+   */
+  delimiter?: string
+}
+
+interface EncodeCsvOptions<K extends string> extends CSVOptions {
+  /**
+    * The expected column order. When omitted during encoding, the header row is
+    * derived from the first record.
+    */
+  columns?: readonly K[]
+}
+
 
 export class CSV {
-  static decode <K extends string> (
+  /**
+   * Decode a CSV string into records keyed by the header row.
+   * @param csv the CSV payload to parse.
+   * @param options CSV delimiter and header options.
+   * @returns The decoded records.
+   */
+  static decode<K extends string> (
     csv: string,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-    }
+    options?: CSVOptions
   ): Array<Record<K, string>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
 
-    const [keys, ...data] = csv
-      .replace(/(\\r)/gm, '')
-      .replace(/(\r)/gm, '')
-      .replace(/(\\n)/gm, '\n')
-      .replace(/(\n)/gm, '\n')
-      .trim()
-      .split('\n')
-      .map(item => item.split(delimiter))
+    const records: string[][] = []
+    let buffer = csv
+    let end: number
 
-    const missingColumns = options?.columns?.filter(column => !keys.includes(column)) ?? []
-
-    if (missingColumns.length > 0) {
-      throw new CSVMissingColumnError(missingColumns)
+    while ((end = findRecordEnd(buffer)) !== -1) {
+      records.push(parseRecord(buffer.slice(0, end), delimiter))
+      buffer = buffer.slice(end + 1)
     }
 
-    return data.map(values =>
-      keys.reduce<Record<string, string>>((record, key, index) => ({
-        ...record,
-        [key]: values.at(index) ?? ''
-      }), {})
-    )
+    if (buffer.length > 0) {
+      records.push(parseRecord(buffer, delimiter))
+    }
+
+    if (records.length === 0) {
+      return []
+    }
+
+    const [header, ...rows] = records
+    const headerKeys = header.map(v => v.trim())
+
+    return rows.map(values => mapRecord(headerKeys as K[], values))
   }
 
-  static async* decodeStream<K extends string>(
+  /**
+   * Decode a readable CSV stream into row objects with source line metadata.
+   * @param stream the readable stream containing CSV chunks.
+   * @param options CSV delimiter and header options.
+   * @returns An async generator yielding parsed CSV rows.
+   */
+  static async* decodeStream<K extends string> (
     stream: Readable,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string,
-      crlfDelay?: number
-    }
+    options?: CSVOptions
   ): AsyncGenerator<CSVRow<K>> {
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
-    const crlfDelay = options?.crlfDelay ?? Infinity
 
-    const rl = readline.createInterface({
-      input: stream,
-      crlfDelay
-    })
-
-    let keys: K[] | null = null
+    let buffer = ''
     let lineNumber = 0
+    let keys: K[] | null = null
 
-    for await (const line of rl) {
-      lineNumber++
 
-      const sanitizedLine = line.trim()
-      const values = sanitizedLine.split(delimiter)
+    function* emit (text: string): Generator<CSVRow<K>> {
+      lineNumber += countChar(text, '\n') + 1
+      const values = parseRecord(text, delimiter)
 
       if (keys === null) {
-        const sanitizedKeys = values.map(value => value.trim())
-        const missingColumns = options?.columns?.filter(column =>
-          !sanitizedKeys.includes(column)
-        ) ?? []
-
-        if (missingColumns.length > 0) {
-          throw new CSVMissingColumnError(missingColumns)
-        }
-
-        keys = sanitizedKeys as K[]
-
-        continue
+        const headerKeys = values.map(v => v.trim())
+        keys = headerKeys as K[]
+        return
       }
 
-      const record = {} as Record<K, string>
-      keys.forEach((key, index) => {
-        record[key] = values[index] ?? ''
-      })
+      yield { line: lineNumber, data: mapRecord(keys, values) }
+    }
 
-      yield { line: lineNumber, data: record }
+    for await (const chunk of stream) {
+      buffer += String(chunk)
+      let end: number
+      while ((end = findRecordEnd(buffer)) !== -1) {
+        yield* emit(buffer.slice(0, end))
+        buffer = buffer.slice(end + 1)
+      }
+    }
+
+    if (buffer.length > 0) {
+      yield* emit(buffer)
     }
   }
 
-  static encode <K extends string> (
-    data: Array<Record<K, string>>,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-    }
+  /**
+   * Encode an array of records into a CSV.
+   * @param data the array of records, when no columns are specified the keys 
+   *  of the first object in the array are taken as the csv header row.
+   * @param options CSV delimiter and CSV header options.
+   * @returns The CSV as a string
+   */
+  static encode<K extends string> (
+    data: Array<Record<K, string | null | undefined>>,
+    options?: EncodeCsvOptions<K>
   ): string {
-    const keys = options?.columns ?? Object.keys(data[0])
     const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
+    const keys = (options?.columns ?? Object.keys(data[0])) as K[]
 
     return [
-      keys.join(delimiter),
-      ...data.map(item =>
-        keys.map(key => item[key as string] as string).join(delimiter)
-      )
+      keys.map(k => escape(k, delimiter)).join(delimiter),
+      ...data.map(row => keys.map(key => escape(row[key] ?? '', delimiter)).join(delimiter)),
     ].join('\n')
   }
 
-  static encodeStream<K extends string>(
-    data: Iterable<Record<K, string>> | AsyncIterable<Record<K, string>>,
-    options?: {
-      columns?: readonly K[]
-      delimiter?: string
-      batchSize?: number
-      maxChunkBytes?: number,
-
-    }
+  /**
+   * Encode records into a readable stream of CSV chunks.
+   * @param data the records to encode.
+   * @param options CSV delimiter, header, and chunking options.
+   * @returns A readable stream containing the encoded CSV.
+   */
+  static encodeStream<K extends string> (
+    data: Iterable<Record<K, string | null | undefined>> |
+      AsyncIterable<Record<K, string | null | undefined>>,
+    options?: EncodeCsvOptions<K>
   ): Readable {
-    const delimiter = options?.delimiter ?? DEFAULT_DELIMITER
-    const batchSize = Math.max(1, options?.batchSize ?? DEFAULT_BATCH_SIZE)
-    const maxChunkBytes = Math.max(1, options?.maxChunkBytes ?? DEFAULT_MAX_CHUNK_BYTES)
+    const source = data instanceof Readable ? data : Readable.from(data)
+    const transform = new CSVEncodeTransform(options)
 
-    let keys: readonly K[] | null = options?.columns ?? null
-
-    const iterator = (async function* () {
-      let headerWritten = false
-      let rowCount = 0
-      let chunkBytes = 0
-      let chunks: string[] = []
-
-      for await (const row of data) {
-        if (!headerWritten) {
-          keys = keys ?? (Object.keys(row) as K[])
-
-          const header =
-            keys.join(delimiter) + '\n'
-
-          chunks.push(header)
-          chunkBytes += Buffer.byteLength(header)
-
-          headerWritten = true
-        }
-
-        const line =
-          keys!
-            .map(key => row[key] ?? '')
-            .join(delimiter) + '\n'
-
-        chunks.push(line)
-
-        rowCount++
-        chunkBytes += Buffer.byteLength(line)
-
-        if (
-          rowCount >= batchSize ||
-          chunkBytes >= maxChunkBytes
-        ) {
-          yield chunks.join('')
-
-          chunks = []
-          rowCount = 0
-          chunkBytes = 0
-        }
+    const forwardSourceError = (error: Error): void => {
+      if (!transform.destroyed) {
+        transform.destroy(error)
       }
+    }
 
-      if (chunks.length > 0) {
-        yield chunks.join('')
+    const destroySource = (error?: Error): void => {
+      source.off('error', forwardSourceError)
+
+      if (!source.destroyed) {
+        source.destroy(error)
       }
-    })()
+    }
 
-    return Readable.from(iterator)
+    source.once('error', forwardSourceError)
+    transform.once('error', destroySource)
+    transform.once('close', () => { destroySource() })
+
+    source.pipe(transform)
+
+    return transform
   }
+
+  /**
+   * Create a transform stream that encodes row objects into CSV text.
+   * @param options CSV delimiter and header options.
+   * @returns A transform stream that writes objects and emits CSV chunks.
+   */
+  static encodeTransform<K extends string>(
+    options?: EncodeCsvOptions<K>
+  ): CSVEncodeTransform<K> {
+    return new CSVEncodeTransform(options)
+  }
+}
+
+type CSVValue = string | null | undefined
+
+export class CSVEncodeTransform<K extends string> extends Transform {
+  private readonly delimiter: string
+
+  private keys: readonly K[] | null
+  private headerWritten = false
+
+  constructor(options?: EncodeCsvOptions<K>) {
+    super({
+      writableObjectMode: true,
+      readableObjectMode: false
+    })
+
+    this.delimiter = options?.delimiter ?? DEFAULT_DELIMITER
+    this.keys = options?.columns ?? null
+  }
+
+  override _transform(
+    row: Record<K, CSVValue>,
+    _encoding: BufferEncoding,
+    callback: TransformCallback
+  ): void {
+    try {
+      if (!this.headerWritten) {
+        this.keys = this.keys ?? (Object.keys(row) as K[])
+        this.writeHeader(this.keys)
+      }
+
+      const line = this.keys!
+        .map((key) => escape(row[key] ?? '', this.delimiter))
+        .join(this.delimiter) + '\n'
+
+      this.push(line)
+      callback()
+    } catch (error) {
+      callback(error instanceof Error ? error : new Error(String(error)))
+    }
+  }
+
+  override _flush(callback: TransformCallback): void {
+    try {
+      if (!this.headerWritten && this.keys !== null) {
+        this.writeHeader(this.keys)
+      }
+
+      callback()
+    } catch (error) {
+      callback(error instanceof Error ? error : new Error(String(error)))
+    }
+  }
+
+  private writeHeader(keys: readonly K[]): void {
+    const header = keys.map((k) => escape(k, this.delimiter)).join(this.delimiter) + '\n'
+    this.push(header)
+    this.headerWritten = true
+  }
+}
+
+function findRecordEnd (buf: string): number {
+  let inQuotes = false
+  for (let i = 0; i < buf.length; i++) {
+    const ch = buf[i]
+    if (ch === '"') {
+      if (inQuotes && buf[i + 1] === '"') {
+        i++
+      } else {
+        inQuotes = !inQuotes
+      }
+    } else if (ch === '\n' && !inQuotes) {
+      return i
+    }
+  }
+  return -1
+}
+
+
+function parseRecord (text: string, delimiter: string): string[] {
+  const fields: string[] = []
+  let field = ''
+  let inQuotes = false
+  const delimiterLength = delimiter.length
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i]
+    if (inQuotes) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') {
+          field += '"'
+          i++
+        } else {
+          inQuotes = false
+        }
+      } else {
+        field += ch
+      }
+    } else if (ch === '"' && field === '') {
+      inQuotes = true
+    } else if (
+      delimiterLength > 0 &&
+      text.startsWith(delimiter, i)
+    ) {
+      fields.push(field)
+      field = ''
+      i += delimiterLength - 1
+    } else if (ch !== '\r') {
+      field += ch
+    }
+  }
+
+  fields.push(field)
+  return fields
+}
+
+function mapRecord<K extends string> (
+  keys: readonly K[],
+  values: string[]
+): Record<K, string> {
+  const data = {} as Record<K, string>
+
+  keys.forEach((key, index) => { data[key] = values[index] ?? '' })
+
+  return data
+}
+
+function escape (value: string, delimiter: string): string {
+  if (
+    value.includes(delimiter) ||
+    value.includes('"') ||
+    value.includes('\n') ||
+    value.includes('\r')
+  ) {
+    return `"${value.replace(/"/g, '""')}"`
+  }
+
+  return value
+}
+
+function countChar (text: string, ch: string): number {
+  let n = 0
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === ch) n++
+  }
+  return n
 }

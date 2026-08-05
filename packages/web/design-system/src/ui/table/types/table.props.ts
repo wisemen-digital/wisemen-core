@@ -25,6 +25,12 @@ export interface TableProps<TData extends TableData<unknown>> extends Omit<Table
    */
   isLoading: boolean
   /**
+   * When `true`, a checkbox column is prepended to the table, enabling row selection.
+   * Listen to the `select` emit to receive the current selection state as either an
+   * `includes` array (individual selections) or an `excludes` array (after select-all).
+   */
+  isSelectable?: boolean
+  /**
    * Column definitions that describe each column's header label, unique key, cell component,
    * optional size constraints, and optional per-column actions.
    */
@@ -57,6 +63,7 @@ export interface TableProps<TData extends TableData<unknown>> extends Omit<Table
    * Return `null` to disable linking for a specific row.
    * When using other interactable elements inside a cell, wrap them with `UITableCellInteractiveElement`
    * to prevent click events from triggering the row link.
+   * Mutually exclusive with `onRowClick` — a row supports only one interaction mode.
    */
   getLink?: ((item: InferTableItem<TData>) => RegisteredRouteLocationRaw | null) | null
   /**
@@ -64,4 +71,12 @@ export interface TableProps<TData extends TableData<unknown>> extends Omit<Table
    * add custom summary cells (e.g. totals) aligned with the table columns for grouped data.
    */
   groupHeaderCells?: (group: TableGroupedData<InferTableItem<TData>>) => Component[]
+  /**
+   * Called when a row is clicked, receiving that row's item. Makes the entire row clickable,
+   * using the same full-row overlay as `getLink`. Mutually exclusive with `getLink` — a row
+   * supports only one interaction mode.
+   * When using other interactable elements inside a cell, wrap them with `UITableCellInteractiveElement`
+   * to prevent click events from triggering the row handler.
+   */
+  onRowClick?: ((item: InferTableItem<TData>) => void) | null
 }

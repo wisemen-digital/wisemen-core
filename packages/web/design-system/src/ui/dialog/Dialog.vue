@@ -4,30 +4,41 @@ import {
   DialogOverlay as RekaDialogOverlay,
   DialogRoot as RekaDialogRoot,
 } from 'reka-ui'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+  watch,
+} from 'vue'
 
+import { useOverlayStack } from '@/composables/overlayStack.composable'
 import { useProvideDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogProps } from '@/ui/dialog/dialog.props'
 import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
 import DialogChin from '@/ui/dialog/DialogChin.vue'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
-import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
+  hasCloseButton: true,
+  isClickOutsideDisabled: false,
+  isEscDisabled: false,
   chin: null,
-  preventClickOutside: false,
-  preventEsc: false,
-  showCloseButton: true,
   size: 'md',
 })
 
 const emit = defineEmits<{
   'afterLeave': []
   'close': []
+  'escapeKeyDown': [event: KeyboardEvent]
   'update:isOpen': [value: boolean]
 }>()
+const isClickOutsideDisabled = computed<boolean>(
+  () => props.isClickOutsideDisabled || props.preventClickOutside === true,
+)
+const isEscDisabled = computed<boolean>(
+  () => props.isEscDisabled || props.preventEsc === true,
+)
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,
@@ -51,13 +62,15 @@ useProvideDialogContext({
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
-  if (props.preventEsc) {
+  emit('escapeKeyDown', event)
+
+  if (isEscDisabled.value) {
     event.preventDefault()
   }
 }
 
 function onPointerDownOutside(event: Event): void {
-  if (props.preventClickOutside) {
+  if (isClickOutsideDisabled.value) {
     event.preventDefault()
   }
 }
@@ -78,9 +91,17 @@ function onInteractOutside(event: CustomEvent): void {
   }
 }
 
-const overlay = useOverlay()
+const overlayStack = useOverlayStack()
 
-const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}`
+const dialogZIndex = ref<number>(0)
+
+watch(isOpen, (isOpenValue) => {
+  if (isOpenValue) {
+    dialogZIndex.value = overlayStack.registerOverlay()
+  }
+}, {
+  immediate: true,
+})
 </script>
 
 <template>
@@ -111,7 +132,7 @@ const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}
     >
       <div :class="style.content()">
         <slot />
-        <DialogCloseButton v-if="props.showCloseButton" />
+        <DialogCloseButton v-if="props.hasCloseButton" />
       </div>
 
       <DialogChin :chin="props.chin" />

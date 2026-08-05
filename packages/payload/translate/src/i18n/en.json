@@ -1,0 +1,15 @@
+{
+  "general.all_locales": "All locales",
+  "general.api_key": "API key",
+  "general.api_url": "API URL",
+  "general.automatically_translated": "Automatically translated",
+  "general.deep_l": "DeepL",
+  "general.fallback_api_url": "Fallback API URL",
+  "general.google_translate": "Google Translate",
+  "general.manually_edited": "Manually edited",
+  "general.not_translated": "Not translated",
+  "general.stale_translation": "Stale translation",
+  "general.translation_settings": "Translation settings",
+  "general.translation_status": "Translation status",
+  "general.translations": "Translations"
+}

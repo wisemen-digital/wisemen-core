@@ -1,6 +1,31 @@
 # @wisemen/nestjs-typeorm
 
 
+
+
+
+
+## 1.2.3
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 1.2.2
+<sub>2026-07-22</sub>
+
+- [#1471](https://github.com/wisemen-digital/wisemen-core/pull/1471)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: expose insert types
+
+## 1.2.1
+<sub>2026-07-15</sub>
+
+- [#1435](https://github.com/wisemen-digital/wisemen-core/pull/1435)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add entitymanager to readonly callback
+
+## 1.2.0
+<sub>2026-07-08</sub>
+
+- [#1217](https://github.com/wisemen-digital/wisemen-core/pull/1217)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add support for embedded and relations with insert type
+- [#1217](https://github.com/wisemen-digital/wisemen-core/pull/1217)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add support for embbeded and relations on entityInsert type
+
 ## 1.1.2
 <sub>2026-06-25</sub>
 

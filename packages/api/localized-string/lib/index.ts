@@ -1,5 +1,5 @@
 export * from './localized-string.js'
 export * from './localized-string.column.js'
-export * from './localized-string.command.js'
+export * from './localized-string.dto.js'
 export * from './validators/is-localized-string.js'
 export * from './validators/is-unique-language.js'

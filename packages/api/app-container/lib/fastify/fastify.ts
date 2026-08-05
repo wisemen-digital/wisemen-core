@@ -1,5 +1,5 @@
  
-import type { INestApplicationContext } from '@nestjs/common'
+import { INestApplicationContext } from '@nestjs/common'
 import { FastifyAdapter } from '@nestjs/platform-fastify'
 import type {
   FastifyInstance,
@@ -55,6 +55,7 @@ export abstract class FastifyContainer {
     this.nest = await this.bootstrap(adapter)
 
     await this.nest.init()
+    await this.server.ready()
 
     await this.server.listen({ port, host: '0.0.0.0' })
     console.log('server started')

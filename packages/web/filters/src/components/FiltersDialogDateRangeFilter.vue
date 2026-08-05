@@ -13,25 +13,31 @@ import {
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { DateRangeFilter } from '@/composables'
+import type {
+  DateRangeFilter,
+  DateRangeFilterValue,
+} from '@/composables'
 
 const props = defineProps<{
   filter: DateRangeFilter
-  initialValue: PlainDateRange
+  initialValue: DateRangeFilterValue
 }>()
 
 const emit = defineEmits<{
-  submit: [value: PlainDateRange]
+  submit: [value: DateRangeFilterValue]
 }>()
 
 const i18n = useI18n()
 
-const value = ref<PlainDateRange>(props.initialValue)
+const value = ref<PlainDateRange>(props.initialValue.value)
 
 function setFilter(): void {
-  emit('submit', value.value ?? {
-    from: null,
-    until: null,
+  emit('submit', {
+    operator: props.initialValue.operator,
+    value: value.value ?? {
+      from: null,
+      until: null,
+    },
   })
 }
 
@@ -44,7 +50,7 @@ function onClear(): void {
 </script>
 
 <template>
-  <UIDialog size="lg">
+  <UIDialog size="xl">
     <UIDialogHeader
       :title="props.filter.label"
       :hide-description="true"

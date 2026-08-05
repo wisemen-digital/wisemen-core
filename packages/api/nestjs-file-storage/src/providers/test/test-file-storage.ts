@@ -1,5 +1,6 @@
-import { Readable } from 'stream'
+import { Readable, Writable } from 'stream'
 import { Injectable } from '@nestjs/common'
+import { createUploadWritable } from '#src/providers/create-upload-writable.js'
 import { FileIndex, FileStorage } from '#src/providers/file-storage-provider.js'
 
 @Injectable()
@@ -43,8 +44,16 @@ export class TestFileStorage extends FileStorage {
     return Promise.resolve(Buffer.from('test'))
   }
 
-  uploadStream (_key: string, _stream: Readable): Promise<void> {
-    return Promise.resolve()
+  createUploadWritable (_key: string): Writable {
+    return createUploadWritable(async stream => {
+      await this.uploadStream('', stream)
+    })
+  }
+
+  async uploadStream (_key: string, stream: Readable): Promise<void> {
+    for await (const _chunk of stream) {
+      // Drain the stream so pipeline-based tests can complete against the test provider.
+    }
   }
 
   downloadStream (_key: string): Promise<Readable> {

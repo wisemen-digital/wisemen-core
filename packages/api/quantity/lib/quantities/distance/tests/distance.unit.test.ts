@@ -34,4 +34,13 @@ void describe('Distance class', () => {
       expect(r3).toBe(2)
     })
   })
+
+  void describe('Distance parsing', () => {
+    void it('parses distance strings', () => {
+      const distance = new Distance('12μm')
+
+      expect(distance.value).toBe(12)
+      expect(distance.unit).toBe(DistanceUnit.MICROMETER)
+    })
+  })
 })

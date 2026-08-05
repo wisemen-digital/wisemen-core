@@ -1,5 +1,18 @@
 # @wisemen/validators
 
+
+
+## 0.0.25
+<sub>2026-07-05</sub>
+
+- [#1300](https://github.com/wisemen-digital/wisemen-core/pull/1300)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add IsDateStringWithTimezone() validator
+
+## 0.0.24
+<sub>2026-06-30</sub>
+
+- [#1301](https://github.com/wisemen-digital/wisemen-core/pull/1301)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add new ValidateWhen which validates decorators based on callback result
+- [#1301](https://github.com/wisemen-digital/wisemen-core/pull/1301)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: rework how scoped filters work, add support for numbers, plain-date and timestamps
+
 ## 0.0.23
 
 ### Patch Changes

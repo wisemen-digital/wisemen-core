@@ -12,6 +12,7 @@ import BadgeGroup from '@/ui/badge/BadgeGroup.vue'
 
 const props = withDefaults(defineProps<{
   hasDot?: boolean
+  isDisabled?: boolean
   color?: BadgeColor
   label?: string | null
   rounded?: 'default' | 'full'
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<{
   variant?: 'outline' | 'solid' | 'translucent'
 }>(), {
   hasDot: false,
+  isDisabled: false,
   color: 'gray',
   label: 'Badge',
   rounded: 'default',
@@ -59,11 +61,11 @@ const colors: BadgeColor[] = [
   'success',
   'warning',
   'purple',
+  'neutral',
 ]
 
-const variants: Array<'outline' | 'solid' | 'translucent'> = [
+const variants: Array<'solid' | 'translucent'> = [
   'translucent',
-  'outline',
   'solid',
 ]
 </script>
@@ -78,6 +80,7 @@ const variants: Array<'outline' | 'solid' | 'translucent'> = [
         <Badge
           :color="props.color"
           :dot="props.hasDot ? {} : null"
+          :is-disabled="props.isDisabled"
           :label="props.label"
           :rounded="props.rounded"
           :size="props.size"
@@ -181,6 +184,76 @@ const variants: Array<'outline' | 'solid' | 'translucent'> = [
             src: 'https://i.pravatar.cc/150?img=3',
           }"
           label="With avatar image"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-medium text-secondary">
+        Disabled
+      </p>
+      <div class="flex items-center gap-3">
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :icon="Settings01Icon"
+          :is-disabled="true"
+          label="Disabled"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-medium text-secondary">
+        With icon color override
+      </p>
+      <div class="flex items-center gap-3">
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :icon="Settings01Icon"
+          icon-color="error"
+          label="Icon color override"
+        />
+        <Badge
+          :variant="props.variant"
+          :left="{ icon: Settings01Icon,
+                   color: 'error',
+                   type: 'icon' }"
+          color="gray"
+          label="Gray badge, colored icon"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-sm font-medium text-secondary">
+        With left config
+      </p>
+      <div class="flex items-center gap-3">
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :left="{
+            icon: Settings01Icon,
+            color: 'purple',
+            type: 'icon',
+          }"
+          label="Left icon"
+        />
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :left="{ color: 'pink',
+                   type: 'dot' }"
+          label="Left dot"
+        />
+        <Badge
+          :color="props.color"
+          :variant="props.variant"
+          :left="{ name: 'John Doe',
+                   type: 'avatar' }"
+          label="Left avatar"
         />
       </div>
     </div>
