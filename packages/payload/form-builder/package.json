@@ -8,7 +8,7 @@
   "exports": {
     ".": { "types": "./dist/index.d.mts", "import": "./dist/index.mjs" },
     "./admin": { "types": "./dist/admin/index.d.mts", "import": "./dist/admin/index.mjs" },
-    "./seeders/contact": { "types": "./dist/seeders/contactForm.seed.d.mts", "import": "./dist/seeders/contactForm.seed.mjs" }
+    "./seeders": { "types": "./dist/seeders/contactForm.seed.d.mts", "import": "./dist/seeders/contactForm.seed.mjs" }
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -28,6 +28,7 @@
   "peerDependencies": {
     "@payloadcms/ui": "catalog:payload-peer",
     "@wisemen/payload-core-utils": "workspace:^",
+    "@wisemen/payload-core-seeder": "workspace:^",
     "@orpc/contract": "catalog:payload",
     "payload": "catalog:payload-peer",
     "react": "catalog:payload-peer",
@@ -37,7 +38,6 @@
     "@payloadcms/ui": "catalog:payload",
     "@types/node": "catalog:types",
     "@types/react": "catalog:payload",
-    "@wisemen/payload-core-utils": "workspace:^",
     "@orpc/contract": "catalog:payload",
     "eslint": "catalog:lint-web",
     "payload": "catalog:payload",
@@ -45,6 +45,8 @@
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
+    "@wisemen/payload-core-utils": "workspace:^",
+    "@wisemen/eslint-config-vue": "workspace:^",
     "@wisemen/payload-core-seeder": "workspace:^",
     "zod": "catalog:general"
   }

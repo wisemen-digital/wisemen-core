@@ -1,3 +1,4 @@
+/* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
 import {
   defineSeed,
   ref,

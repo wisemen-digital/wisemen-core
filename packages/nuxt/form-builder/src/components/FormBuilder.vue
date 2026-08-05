@@ -10,14 +10,14 @@ import type { Field } from 'formango'
 import { useForm } from 'formango'
 import { ref } from 'vue'
 
-import { toFormField } from '#utils/toFormField.ts'
-import { toZodSchema } from '#utils/toZodSchema.ts'
-
 import type {
   FormSubmitHandler,
   FormValues,
   RenderableForm,
-} from '../types'
+} from '#types/types.ts'
+import { toFormField } from '#utils/toFormField.ts'
+import { toZodSchema } from '#utils/toZodSchema.ts'
+
 import FormButton from './FormButton.vue'
 import FormField from './FormField.vue'
 import FormRow from './FormRow.vue'
