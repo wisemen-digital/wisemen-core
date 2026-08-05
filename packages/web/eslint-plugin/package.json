@@ -53,7 +53,7 @@
     "ts-api-utils": "catalog:general"
   },
   "devDependencies": {
-    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "@wisemen/eslint-config-vue": "2.1.3",
     "eslint": "9.39.5",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
