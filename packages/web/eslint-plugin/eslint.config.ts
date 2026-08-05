@@ -18,6 +18,7 @@ export default [
   })),
   {
     rules: {
+      'pnpm/json-enforce-catalog': 'off',
       'ts/explicit-function-return-type': 'off',
     },
   },

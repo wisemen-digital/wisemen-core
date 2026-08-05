@@ -2,6 +2,9 @@ import type { LintConfig } from '@/types/lint.type.ts'
 
 export const unicornConfig: LintConfig = {
   name: 'unicorn',
+  files: [
+    '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}',
+  ],
   rules: {
     'unicorn/catch-error-name': [
       'error',
@@ -9,6 +12,7 @@ export const unicornConfig: LintConfig = {
     'unicorn/consistent-destructuring': 'error',
     'unicorn/consistent-empty-array-spread': 'error',
     'unicorn/consistent-existence-index-check': 'error',
+    'unicorn/consistent-function-scoping': 'error',
     'unicorn/error-message': 'error',
     'unicorn/expiring-todo-comments': 'error',
     'unicorn/explicit-length-check': 'error',

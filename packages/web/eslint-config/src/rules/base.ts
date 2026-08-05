@@ -27,12 +27,8 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
       'error',
       'all',
     ],
-    'node/prefer-global/process': 'off',
-    'node/prefer-global/buffer': 'off',
-    'pnpm/json-enforce-catalog': 'off',
-    'e18e/prefer-static-regex': 'off',
-    'vuejs-accessibility/label-has-for': 'off',
     'e18e/prefer-spread-syntax': 'off',
+    'e18e/prefer-static-regex': 'off',
     'func-style': [
       'error',
       'declaration',
@@ -53,6 +49,9 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
       'error',
     ],
     'no-nested-ternary': 'error',
+    'node/prefer-global/buffer': 'off',
+    'node/prefer-global/process': 'off',
+    'pnpm/json-enforce-catalog': 'off',
     'require-await': [
       'error',
     ],
@@ -73,11 +72,11 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
         },
       },
     ],
-
     'style/arrow-parens': [
       'error',
       'always',
     ],
+
     'style/object-curly-newline': [
       'error',
       {
@@ -103,7 +102,6 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
       'error',
     ],
     'ts/explicit-function-return-type': 'off',
-    'unicorn/consistent-function-scoping': 'error',
     'vue/attributes-order': [
       'error',
       {
@@ -146,16 +144,17 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
       },
     ],
     'vue/no-template-shadow': 'error',
-
     'vue/no-undef-components': [
       'error',
     ],
+
     'vue/object-property-newline': [
       'error',
       {
         allowAllPropertiesOnSameLine: false,
       },
     ],
+    'vuejs-accessibility/label-has-for': 'off',
   },
   stylistic: {
     indent: 2, // 4, or 'tab'

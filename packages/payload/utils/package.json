@@ -38,7 +38,7 @@
     "payload": "catalog:payload-peer"
   },
   "devDependencies": {
-    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint-web",
     "payload": "catalog:payload",
     "rimraf": "catalog:build",

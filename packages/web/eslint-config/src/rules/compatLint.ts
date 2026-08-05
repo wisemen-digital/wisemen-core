@@ -39,4 +39,9 @@ export const compatConfig: LintConfig[] = fixupConfigRules(compat.config({
     'sort-imports': 'off',
     'unused-imports/no-unused-imports': 'error',
   },
+})).map((config) => ({
+  ...config,
+  files: [
+    '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}',
+  ],
 })) as LintConfig[]

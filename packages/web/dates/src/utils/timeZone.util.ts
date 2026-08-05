@@ -11,7 +11,7 @@ export class TimeZoneUtil {
   }
 
   static getCurrentTimeZone(): TimeZone {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone
+    return new Intl.DateTimeFormat().resolvedOptions().timeZone
   }
 
   static getOffset(timeZone: TimeZone): string {

@@ -1,4 +1,3 @@
-/* eslint-disable e18e/prefer-static-regex */
 /* eslint-disable require-await */
 import type { Field } from 'payload'
 

@@ -10,7 +10,6 @@ import {
   i18nConfig,
 } from '#rules/i18n.ts'
 import { jsonConfig } from '#rules/json.ts'
-import { modulesConfig } from '#rules/modules.ts'
 import { pathConfig } from '#rules/path.ts'
 import { perfectionistConfig } from '#rules/perfectionist.ts'
 import { simpleSortConfig } from '#rules/simpleSort.ts'

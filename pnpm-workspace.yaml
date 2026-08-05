@@ -356,6 +356,8 @@ catalogs:
     next: ">=16.2.6"
     react: ">=19.2.7"
     react-dom: ">=19.2.7"
+  conflicts_lint-api_9_39_5:
+    eslint: 9.39.5
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"
@@ -398,7 +400,7 @@ catalogs:
   js-yaml@<=4.1.1: ^4.1.2
   multer@>=1.0.0 <2.2.0: ^2.2.0
   multer@>=2.0.0-alpha.1 <2.2.0: ^2.2.0
-  '@hey-api/openapi-ts@<0.97.3': ^0.97.3
+  "@hey-api/openapi-ts@<0.97.3": ^0.97.3
   dompurify@<3.3.2: ^3.3.2
   dompurify@<3.4.0: ^3.4.0
   dompurify@<3.4.7: ^3.4.7
@@ -430,4 +432,4 @@ allowBuilds:
   vue-demi: true
 
 minimumReleaseAgeExclude:
-  - '@hey-api/openapi-ts@0.97.3'
+  - "@hey-api/openapi-ts@0.97.3"

@@ -48,7 +48,7 @@ export function ensureTranslationSettingsFields({
         ...existingGroup.access,
         read: async (args) => await canAccessTranslation(access, {
           collectionSlug,
-          document: args.doc ? (args.doc as Record<string, unknown>) : undefined,
+          document: (args.doc as Record<string, unknown>) ?? undefined,
           req: args.req,
           translations,
         }),
@@ -81,7 +81,7 @@ export function createTranslationSettingsField({
       ? {
           read: async (args) => await canAccessTranslation(access, {
             collectionSlug,
-            document: args.doc ? (args.doc as Record<string, unknown>) : undefined,
+            document: (args.doc as Record<string, unknown>) ?? undefined,
             req: args.req,
             translations,
           }),
