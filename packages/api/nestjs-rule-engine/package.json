@@ -1,0 +1,60 @@
+{
+  "name": "@wisemen/nestjs-rule-engine",
+  "version": "0.0.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist/",
+    "skills/"
+  ],
+  "scripts": {
+    "lint:oxlint": "oxlint --type-aware lib/*.ts lib/typeorm",
+    "lint:eslint": "eslint lib/*.ts lib/typeorm",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
+    "prebuild": "rm -rf ./dist",
+    "clean": "rm -rf ./dist ./dist-tests",
+    "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --experimental-test-isolation=none --test ./dist/**/*.test.js",
+    "prerelease": "npm run build",
+    "release": "pnpx release-it"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@nestjs/swagger": "catalog:backend",
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:^",
+    "class-transformer": "catalog:backend",
+    "class-validator": "catalog:backend",
+    "eslint": "catalog:lint-api",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "reflect-metadata": "catalog:backend",
+    "typescript": "catalog:peer"
+  },
+  "author": "Kobe Kwanten",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-rule-engine"
+  }
+}
