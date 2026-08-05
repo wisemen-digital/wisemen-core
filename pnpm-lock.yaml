@@ -322,6 +322,9 @@ catalogs:
     maska:
       specifier: ^3.2.0
       version: 3.2.0
+    neverthrow:
+      specifier: 8.2.0
+      version: 8.2.0
     pkce-challenge:
       specifier: 5.0.1
       version: 5.0.1
@@ -4587,6 +4590,34 @@ importers:
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)
+
+  packages/web/test-utils:
+    dependencies:
+      neverthrow:
+        specifier: catalog:general
+        version: 8.2.0
+    devDependencies:
+      '@wisemen/eslint-config-vue':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@wisemen/vue-core-api-utils':
+        specifier: workspace:*
+        version: link:../api-utils
+      rimraf:
+        specifier: catalog:build
+        version: 6.1.3
+      tsdown:
+        specifier: catalog:build
+        version: 0.18.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(synckit@0.11.12)(typescript@5.9.3)(vue-tsc@3.2.2(typescript@5.9.3))
+      typescript:
+        specifier: catalog:build
+        version: 5.9.3
+      vitest:
+        specifier: catalog:test
+        version: 4.1.0(@opentelemetry/api@1.9.1)(@types/node@25.3.0)(@vitest/browser-playwright@4.1.0)(jsdom@27.4.0)(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))
+      vue:
+        specifier: catalog:vue
+        version: 3.5.27(typescript@5.9.3)
 
   packages/web/type-utils:
     devDependencies:
