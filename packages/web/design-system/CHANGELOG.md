@@ -27,6 +27,33 @@
 
 
 
+
+
+
+
+## 1.20.0
+<sub>2026-08-05</sub>
+
+- [#1547](https://github.com/wisemen-digital/wisemen-core/pull/1547)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - `DetailListGroupItem` now supports a `horizontalValueAlignment` prop (`start` | `end`) to align the value to the end of the row when laid out horizontally
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+- [#1549](https://github.com/wisemen-digital/wisemen-core/pull/1549)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fixed `Badge` separator spacing to scale with size instead of always using a fixed margin
+
+## 1.19.1
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+- [#1527](https://github.com/wisemen-digital/wisemen-core/pull/1527)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Breadcrumbs and global search are not hidden in the top bar for a improved mobile experience
+
+## 1.19.0
+<sub>2026-08-03</sub>
+
+- [#1531](https://github.com/wisemen-digital/wisemen-core/pull/1531)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make select and autocomplete popovers responsive on mobile. The popover will become a bottom drawer with the options
+
+## 1.18.1
+<sub>2026-07-31</sub>
+
+- [#1534](https://github.com/wisemen-digital/wisemen-core/pull/1534)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker and date range picker opening on a fully-disabled month when today's date (or the current value) falls before minDate or after maxDate; the calendar now opens clamped to the nearest selectable date.
+
 ## 1.18.0
 <sub>2026-07-31</sub>
 

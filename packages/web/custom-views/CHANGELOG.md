@@ -6,6 +6,24 @@
 
 
 
+
+
+
+## 1.0.4
+<sub>2026-08-05</sub>
+
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+
+## 1.0.3
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+
+## 1.0.2
+<sub>2026-08-03</sub>
+
+- [#1531](https://github.com/wisemen-digital/wisemen-core/pull/1531)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make select and autocomplete popovers responsive on mobile. The popover will become a bottom drawer with the options
+
 ## 1.0.1
 <sub>2026-07-08</sub>
 

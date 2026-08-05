@@ -36,6 +36,10 @@ export class Power extends Quantity<PowerUnit, Power> {
     return PowerUnit.WATT
   }
 
+  protected getUnits (): readonly PowerUnit[] {
+    return Object.values(PowerUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, unit: PowerUnit): number {
     return value * POWER_MULTIPLIERS[unit]
   }

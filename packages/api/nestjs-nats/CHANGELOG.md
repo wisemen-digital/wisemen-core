@@ -6,6 +6,25 @@
 
 
 
+
+
+
+## 1.3.0
+<sub>2026-08-03</sub>
+
+- [#1542](https://github.com/wisemen-digital/wisemen-core/pull/1542)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add maxInFlight option for NATS handlers
+
+## 1.2.0
+<sub>2026-08-02</sub>
+
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add nats publisher with async publish jobs
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add configurable NATS outbox modules
+
+## 1.1.4
+<sub>2026-07-31</sub>
+
+- [#1412](https://github.com/wisemen-digital/wisemen-core/pull/1412)  *(patch)* Thanks [@JonasVannieuwenhuijsen](https://github.com/JonasVannieuwenhuijsen)! - Added a way to publish on a stream
+
 ## 1.1.3
 <sub>2026-07-29</sub>
 

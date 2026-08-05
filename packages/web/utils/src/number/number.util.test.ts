@@ -23,7 +23,7 @@ describe('numberUtil', () => {
 
   describe('round', () => {
     it('rounds to the given decimal places', () => {
-      expect(NumberUtil.round(3.141_59, 2)).toBe(3.14)
+      expect(NumberUtil.round(3.14159, 2)).toBe(3.14)
     })
 
     it('rounds to zero decimal places by default', () => {

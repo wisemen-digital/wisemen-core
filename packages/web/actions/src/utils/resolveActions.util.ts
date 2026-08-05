@@ -163,16 +163,18 @@ function filterAndRank(candidates: Action[], ctx: ActionContext, parentAction?: 
       score,
     }) => score >= DEFAULT_MIN_APPLICABILITY_SCORE)
 
-    // Sort by descending score; when scores are within the threshold, group priority decides
+    // Sort by descending score-tier; within the same tier (scores rounded down
+    // to the nearest SCORE_GROUP_PRIORITY_THRESHOLD), group priority decides.
+    // Tiering rather than a pairwise "is the score close enough" check keeps
+    // the comparator transitive — a pairwise threshold check can chain into
+    // cycles (A beats B, B beats C, C beats A), which makes the sort order
+    // depend on the input array's order instead of the actions themselves.
     passing = passing.toSorted((a, b) => {
-      // Top-level actions always sort above lifted sub-actions
-      const aIsLifted = a.action.parentAction !== undefined ? 1 : 0
-      const bIsLifted = b.action.parentAction !== undefined ? 1 : 0
-
-      if (aIsLifted !== bIsLifted) {
-        return aIsLifted - bIsLifted
-      }
-
+      // Lifted sub-actions aren't ranked below top-level actions outright —
+      // PARENT_ACTION_SCORE_PENALTY already lowers their score, so they only
+      // out-rank a top-level action when they're a meaningfully better match
+      // (e.g. an exact/prefix hit on a lifted action should beat a weak
+      // fuzzy match on a top-level one).
       const aParent = a.action.parentAction ?? parentAction
       const bParent = b.action.parentAction ?? parentAction
       const aSelected = (aParent?.showSelectedSubActionsFirst !== false && resolveActionSelected(a.action, ctx)) ? 0 : 1
@@ -182,10 +184,14 @@ function filterAndRank(candidates: Action[], ctx: ActionContext, parentAction?: 
         return aSelected - bSelected
       }
 
-      const scoreDiff = b.score - a.score
+      // A small epsilon guards against floating-point rounding pushing a score
+      // that lands exactly on a tier boundary into the wrong tier
+      // (e.g. 0.30 / 0.05 evaluates to 5.999999999999999 in JS, not 6).
+      const aTier = Math.floor(a.score / SCORE_GROUP_PRIORITY_THRESHOLD + 1e-9)
+      const bTier = Math.floor(b.score / SCORE_GROUP_PRIORITY_THRESHOLD + 1e-9)
 
-      if (Math.abs(scoreDiff) > SCORE_GROUP_PRIORITY_THRESHOLD) {
-        return scoreDiff
+      if (aTier !== bTier) {
+        return bTier - aTier
       }
 
       const pa = resolveGroupPriority(a.action, ctx)
@@ -195,7 +201,7 @@ function filterAndRank(candidates: Action[], ctx: ActionContext, parentAction?: 
         return pa - pb
       }
 
-      return scoreDiff
+      return b.score - a.score
     })
 
     return passing.map((s) => s.action)

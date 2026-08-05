@@ -74,6 +74,6 @@ describe('after-seed listeners', () => {
       },
     } as never, {} as never, result)).resolves.toBeUndefined()
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('afterSeed listener \'boom\' failed: nope'))
-    expect(ok).toHaveBeenCalledOnce()
+    expect(ok).toHaveBeenCalledExactlyOnceWith()
   })
 })

@@ -1,5 +1,4 @@
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
-/* eslint-disable node/prefer-global/process */
 import type {
   App,
   CustomInspectorNode,
@@ -293,7 +292,6 @@ export function registerFormWithDevTools(form: Form<any>, name?: string) {
     })
 
     delete DEVTOOLS_FORMS.value[encodedForm]
-    // eslint-disable-next-line unicorn/no-array-for-each
     formFields.forEach((formFieldId: string) => {
       delete DEVTOOLS_FIELDS.value[formFieldId]
     })

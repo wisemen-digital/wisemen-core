@@ -25,6 +25,10 @@ export class Mass extends Quantity<MassUnit, Mass> {
     return MassUnit.KILOGRAM
   }
 
+  protected getUnits (): readonly MassUnit[] {
+    return Object.values(MassUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, fromUnit: MassUnit): number {
     return value * MASS_MULTIPLIERS[fromUnit]
   }

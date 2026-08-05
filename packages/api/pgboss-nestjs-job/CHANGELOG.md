@@ -4,6 +4,12 @@
 
 
 
+
+## 5.0.3
+<sub>2026-08-02</sub>
+
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: allow multiple types of queues to be inserted in one scheduler context
+
 ## 5.0.2
 <sub>2026-07-28</sub>
 

@@ -1,6 +1,5 @@
 import type { DateValue } from '@internationalized/date'
 import { CalendarDate } from '@internationalized/date'
-import { useBreakpoints } from '@vueuse/core'
 import type {
   PlainDate,
   PlainDateRange,
@@ -15,6 +14,7 @@ import {
   watch,
 } from 'vue'
 
+import { useIsMobileViewport } from '@/composables/isMobileViewport.composable'
 import { useInjectConfigContext } from '@/ui/config-provider/config.context'
 
 interface UseDateRangePickerOptions {
@@ -34,10 +34,7 @@ export function useDateRangePicker({
 
   const isInvalidRange = ref<boolean>(false)
 
-  const screen = useBreakpoints({
-    md: 768,
-  })
-  const isSingleMonth = screen.smaller('md')
+  const isSingleMonth = useIsMobileViewport()
 
   function clampToSelectableRange(date: PlainDate): PlainDate {
     if (minDate.value !== null && Temporal.PlainDate.compare(date, minDate.value) < 0) {
