@@ -2,7 +2,6 @@
 /* eslint-disable ts/no-empty-object-type */
 /* eslint-disable no-implicit-coercion */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable unicorn/no-keyword-prefix */
 
 const UUID_TEMPLATE = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
 const HEX_CHARS_REGEX = /[xy]/g

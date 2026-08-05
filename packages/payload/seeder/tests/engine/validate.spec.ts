@@ -63,7 +63,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).not.toThrowError()
+      })).not.toThrow()
   })
 
   it('flags a ref to a non-existent _key (dangling reference)', () => {
@@ -83,7 +83,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).toThrowError(/no seeded 'services' doc has _key 'ghost'/)
+      })).toThrow(/no seeded 'services' doc has _key 'ghost'/)
   })
 
   it('flags a ref to an unknown collection', () => {
@@ -103,7 +103,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).toThrowError(/unknown collection 'widgets'/)
+      })).toThrow(/unknown collection 'widgets'/)
   })
 
   it('allows a _file on an upload/asset collection', () => {
@@ -124,7 +124,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).not.toThrowError()
+      })).not.toThrow()
   })
 
   it('flags a _file on a collection that is neither upload nor a custom.seedAsset collection', () => {
@@ -143,7 +143,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).toThrowError(/not an upload collection or a custom\.seedAsset collection/)
+      })).toThrow(/not an upload collection or a custom\.seedAsset collection/)
   })
 
   it('flags a definition whose own collection slug is not in the config', () => {
@@ -160,7 +160,7 @@ describe('validateModel', () => {
         },
       ],
       globals: [],
-    })).toThrowError(
+    })).toThrow(
       /defineSeed\('widgets'\): no collection 'widgets' in the Payload config/,
     )
   })
@@ -174,7 +174,7 @@ describe('validateModel', () => {
           slug: 'footer',
         },
       ],
-    })).toThrowError(
+    })).toThrow(
       /defineSeed\('footer'\): no global 'footer' in the Payload config/,
     )
   })
@@ -203,7 +203,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).toThrowError(/media: duplicate _key 'dup'/)
+      })).toThrow(/media: duplicate _key 'dup'/)
   })
 
   it('flags duplicate _keys within a collection', () => {
@@ -225,7 +225,7 @@ describe('validateModel', () => {
           },
         ],
         globals: [],
-      })).toThrowError(/duplicate _key 'dup'/)
+      })).toThrow(/duplicate _key 'dup'/)
   })
 
   it('flags unknown record fields when fieldNames is supplied', () => {
@@ -262,7 +262,7 @@ describe('validateModel', () => {
           ],
           globals: [],
         },
-      })).toThrowError(/unknown field 'bogus'/)
+      })).toThrow(/unknown field 'bogus'/)
   })
 
   it('allows `_status` and known fields; skips the check without fieldNames', () => {
@@ -298,8 +298,8 @@ describe('validateModel', () => {
         fileCollections,
         globalSlugs,
         model,
-      })).not.toThrowError()
-    expect(() => run(model)).not.toThrowError() // no fieldNames → field check skipped
+      })).not.toThrow()
+    expect(() => run(model)).not.toThrow() // no fieldNames → field check skipped
   })
 
   it('aggregates multiple issues into one SeedValidationError', () => {

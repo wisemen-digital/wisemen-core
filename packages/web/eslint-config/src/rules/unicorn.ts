@@ -2,6 +2,9 @@ import type { LintConfig } from '@/types/lint.type.ts'
 
 export const unicornConfig: LintConfig = {
   name: 'unicorn',
+  files: [
+    '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}',
+  ],
   rules: {
     'unicorn/catch-error-name': [
       'error',
@@ -9,18 +12,18 @@ export const unicornConfig: LintConfig = {
     'unicorn/consistent-destructuring': 'error',
     'unicorn/consistent-empty-array-spread': 'error',
     'unicorn/consistent-existence-index-check': 'error',
+    'unicorn/consistent-function-scoping': 'error',
     'unicorn/error-message': 'error',
     'unicorn/expiring-todo-comments': 'error',
     'unicorn/explicit-length-check': 'error',
     'unicorn/no-anonymous-default-export': 'error',
-    'unicorn/no-array-for-each': 'error',
     'unicorn/no-array-method-this-argument': 'error',
     'unicorn/no-array-push-push': 'error',
     'unicorn/no-await-expression-member': 'error',
     'unicorn/no-await-in-promise-methods': 'error',
     'unicorn/no-empty-file': 'error',
     'unicorn/no-for-loop': 'error',
-    'unicorn/no-keyword-prefix': 'error',
+    'unicorn/no-keyword-prefix': 'off',
     'unicorn/no-nested-ternary': 'error',
     'unicorn/no-single-promise-in-promise-methods': 'error',
     'unicorn/no-unnecessary-await': 'error',

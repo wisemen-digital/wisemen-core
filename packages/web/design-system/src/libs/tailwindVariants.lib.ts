@@ -4,7 +4,6 @@ export const tv = createTV({
   twMerge: true,
   twMergeConfig: {
     extend: {
-      // eslint-disable-next-line unicorn/no-keyword-prefix
       classGroups: {
         'font-size': [
           {
