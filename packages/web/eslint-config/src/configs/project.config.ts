@@ -39,7 +39,6 @@ export async function projectConfig(config?: ProjectConfigOptions): Promise<Flat
     simpleSortConfig,
     vitestConfig,
     i18nConfig,
-    modulesConfig,
     pathConfig,
     wisemenConfig,
     ...jsonConfig,

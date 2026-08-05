@@ -27,6 +27,11 @@ export const baseConfig: OptionsConfig & Omit<TypedFlatConfigItem, 'files'> = {
       'error',
       'all',
     ],
+    'node/prefer-global/process': 'off',
+    'node/prefer-global/buffer': 'off',
+    'pnpm/json-enforce-catalog': 'off',
+    'e18e/prefer-static-regex': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
     'e18e/prefer-spread-syntax': 'off',
     'func-style': [
       'error',
