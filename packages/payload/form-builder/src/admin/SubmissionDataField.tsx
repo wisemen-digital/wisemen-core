@@ -1,3 +1,4 @@
+/* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
 'use client'
 
 import { useField } from '@payloadcms/ui'
@@ -7,9 +8,15 @@ import React from 'react'
 import type { SubmissionValue } from '#types.ts'
 
 function displayValue(value: SubmissionValue['value']): string {
-  if (value === null || value === undefined || value === '') { return '—' }
-  if (value === true) { return 'Yes' }
-  if (value === false) { return 'No' }
+  if (value === null || value === undefined || value === '') {
+    return '—'
+  }
+  if (value === true) {
+    return 'Yes'
+  }
+  if (value === false) {
+    return 'No'
+  }
 
   return Array.isArray(value) ? value.join(', ') : String(value)
 }

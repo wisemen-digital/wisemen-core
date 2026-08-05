@@ -1,9 +1,11 @@
+/* eslint-disable func-style */
 import type {
   CollectionAfterChangeHook,
   CollectionConfig,
 } from 'payload'
 
 import { formFieldBlocks } from '#fields.ts'
+import { createSubmissionWorkflowTab } from '#formSubmissions.shared.ts'
 import type {
   FormBuilderOptions,
   FormDocument,
@@ -112,16 +114,18 @@ export function createSubmissionsCollection(options: FormBuilderOptions): Collec
     operation,
     req,
   }) => {
-    if (operation !== 'create' || !options.onSubmission) { return doc }
+    if (operation !== 'create' || !options.onSubmission) {
+      return doc
+    }
 
-    const formRelation = doc.form as unknown
+    const formRelation = doc.form
     const formId = typeof formRelation === 'string'
       ? formRelation
-      : (typeof formRelation === 'object' && formRelation !== null && 'id' in formRelation
-          ? String(formRelation.id)
-          : undefined)
+      : formRelation.id
 
-    if (!formId) { return doc }
+    if (formId == null) {
+      return doc
+    }
 
     const form = await req.payload.findByID({
       id: formId,
@@ -197,36 +201,7 @@ export function createSubmissionsCollection(options: FormBuilderOptions): Collec
             label: 'Answers',
           },
           {
-            fields: [
-              {
-                name: 'state',
-                defaultValue: 'new',
-                options: [
-                  {
-                    label: 'New',
-                    value: 'new',
-                  },
-                  {
-                    label: 'In progress',
-                    value: 'in_progress',
-                  },
-                  {
-                    label: 'Done',
-                    value: 'done',
-                  },
-                  {
-                    label: 'Archived',
-                    value: 'archived',
-                  },
-                ],
-                type: 'select',
-              },
-              {
-                name: 'internalNotes',
-                type: 'textarea',
-              },
-            ],
-            label: 'Follow up',
+            ...createSubmissionWorkflowTab(),
           },
         ],
         type: 'tabs',

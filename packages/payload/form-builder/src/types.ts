@@ -2,6 +2,7 @@ import type {
   CollectionConfig,
   Payload,
   PayloadRequest,
+  TypedLocale,
 } from 'payload'
 
 export const FORM_FIELD_TYPES = [
@@ -81,4 +82,5 @@ export interface FormBuilderOptions {
 export interface SubmitFormInput {
   data: Record<string, unknown>
   form: string
+  locale: TypedLocale
 }

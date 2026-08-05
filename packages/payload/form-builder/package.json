@@ -27,19 +27,25 @@
   },
   "peerDependencies": {
     "@payloadcms/ui": "catalog:payload-peer",
+    "@wisemen/payload-core-utils": "workspace:^",
+    "@orpc/contract": "catalog:payload",
     "payload": "catalog:payload-peer",
-    "react": "catalog:payload-peer"
+    "react": "catalog:payload-peer",
+    "zod": "catalog:general"
   },
   "devDependencies": {
     "@payloadcms/ui": "catalog:payload",
     "@types/node": "catalog:types",
     "@types/react": "catalog:payload",
+    "@wisemen/payload-core-utils": "workspace:^",
+    "@orpc/contract": "catalog:payload",
     "eslint": "catalog:lint-web",
     "payload": "catalog:payload",
     "react": "catalog:payload",
     "rimraf": "catalog:build",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
-    "@wisemen/payload-core-seeder": "workspace:^"
+    "@wisemen/payload-core-seeder": "workspace:^",
+    "zod": "catalog:general"
   }
 }

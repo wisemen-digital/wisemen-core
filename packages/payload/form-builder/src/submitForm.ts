@@ -1,11 +1,6 @@
-import type {
-  Payload,
-  PayloadRequest,
-  TypedLocale,
-} from 'payload'
+import { getPayload } from '@wisemen/payload-core-utils'
 
 import type {
-  FormBuilderOptions,
   FormDocument,
   FormFieldDefinition,
   FormSubmissionDocument,
@@ -24,24 +19,34 @@ function asForm(document: unknown): FormDocument {
 }
 
 function normalizeValue(field: FormFieldDefinition, value: unknown): SubmissionValue['value'] {
-  if (value === undefined || value === null || value === '') { return null }
+  if (value === undefined || value === null || value === '') {
+    return null
+  }
   if (field.blockType === 'checkbox') {
-    if (typeof value !== 'boolean') { throw new TypeError(`${field.label} must be a boolean.`) }
+    if (typeof value !== 'boolean') {
+      throw new TypeError(`${field.label} must be a boolean.`)
+    }
 
     return value
   }
   if (field.blockType === 'number') {
     const number = typeof value === 'number' ? value : Number(value)
 
-    if (!Number.isFinite(number)) { throw new TypeError(`${field.label} must be a number.`) }
+    if (!Number.isFinite(number)) {
+      throw new TypeError(`${field.label} must be a number.`)
+    }
 
     return number
   }
-  if (typeof value !== 'string') { throw new TypeError(`${field.label} must be a string.`) }
+  if (typeof value !== 'string') {
+    throw new TypeError(`${field.label} must be a string.`)
+  }
   if ((field.blockType === 'select' || field.blockType === 'radio') && !field.options?.some((option) => option.value === value)) {
     throw new Error(`${field.label} has an invalid option.`)
   }
-  if (field.blockType === 'email' && !/^\S[^\s@]*@\S[^\s.]*\.\S+$/.test(value)) { throw new Error(`${field.label} must be a valid email address.`) }
+  if (field.blockType === 'email' && !/^\S[^\s@]*@\S[^\s.]*\.\S+$/.test(value)) {
+    throw new Error(`${field.label} must be a valid email address.`)
+  }
 
   return value
 }
@@ -58,7 +63,9 @@ function makeSubmissionValues(fields: FormFieldDefinition[], input: Record<strin
 
     const value = normalizeValue(field, input[field.name])
 
-    if (field.required && (value === null || value === false)) { throw new Error(`${field.label} is required.`) }
+    if (field.required && (value === null || value === false)) {
+      throw new Error(`${field.label} is required.`)
+    }
 
     return {
       name: field.name,
@@ -69,22 +76,18 @@ function makeSubmissionValues(fields: FormFieldDefinition[], input: Record<strin
 }
 
 export async function submitForm(
-  payload: Payload,
   input: SubmitFormInput,
-  options: FormBuilderOptions = {},
-  req?: PayloadRequest,
-  locale?: TypedLocale,
 ): Promise<FormSubmissionDocument> {
-  const formsSlug = options.formsSlug ?? 'forms'
-  const submissionsSlug = options.submissionsSlug ?? 'form-submissions'
+  const payload = await getPayload()
+  const formsSlug = 'forms'
+  const submissionsSlug = 'form-submissions'
   const bySlug = await payload.find({
-    collection: formsSlug as never,
+    collection: formsSlug,
     depth: 0,
     fallbackLocale: false,
     limit: 1,
-    locale,
+    locale: input.locale,
     overrideAccess: true,
-    req,
     where: {
       slug: {
         equals: input.form,
@@ -93,24 +96,22 @@ export async function submitForm(
   })
   const source = bySlug.docs[0] ?? await payload.findByID({
     id: input.form,
-    collection: formsSlug as never,
+    collection: formsSlug,
     depth: 0,
     fallbackLocale: false,
-    locale,
+    locale: input.locale,
     overrideAccess: true,
-    req,
   })
   const form = asForm(source)
   const values = makeSubmissionValues(form.fields, input.data)
   const submission = await payload.create({
-    collection: submissionsSlug as never,
+    collection: submissionsSlug,
     data: {
       submittedAt: new Date().toISOString(),
       data: values,
       form: form.id,
-    } as never,
+    },
     overrideAccess: true,
-    req,
   }) as FormSubmissionDocument
 
   return submission

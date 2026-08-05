@@ -9,8 +9,11 @@ export default defineConfig({
   external: [
     '@payloadcms/ui',
     '@wisemen/payload-core-seeder',
+    '@wisemen/payload-core-utils',
+    '@orpc/contract',
     'payload',
     'react',
+    'zod',
   ],
   format: [
     'esm',

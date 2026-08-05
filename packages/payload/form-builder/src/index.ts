@@ -2,6 +2,13 @@ export {
   createFormsCollection, createSubmissionsCollection,
 } from '#collections.ts'
 export { formFieldBlocks } from '#fields.ts'
+export { FORMS_CONTRACT } from '#forms.contract.ts'
+export {
+  createSubmissionWorkflowTab,
+  FORM_SUBMISSION_COLLECTION_SLUGS,
+  makeFieldsReadOnly,
+  submissionStateOptions,
+} from '#formSubmissions.shared.ts'
 export { formBuilderPlugin } from '#plugin.ts'
 export {
   CONTACT_FORM_SEED_KEY,
