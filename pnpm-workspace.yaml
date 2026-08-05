@@ -357,8 +357,6 @@ catalogs:
     next: ">=16.2.6"
     react: ">=19.2.7"
     react-dom: ">=19.2.7"
-  conflicts_lint-api_9_39_5:
-    eslint: 9.39.5
 
 "overrides":
   "axios@>=1.0.0 <1.12.0": ">=1.12.0"
