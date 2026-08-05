@@ -72,6 +72,7 @@ catalogs:
     "colors": "1.4.0"
     "dayjs": "1.11.20"
     "express": "5.2.1"
+    "jose": "6.2.5"
     "moment": "^2.30.1"
     "pg": "8.20.0"
     "pg-boss": "12.15.0"
