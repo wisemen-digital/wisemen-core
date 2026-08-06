@@ -25,7 +25,10 @@
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "reflect-metadata": "catalog:backend-peer"
+    "@nestjs/core": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "fastify": "catalog:backend-peer",
+    "@wisemen/api-error": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
