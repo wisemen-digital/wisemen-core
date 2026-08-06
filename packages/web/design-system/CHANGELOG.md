@@ -31,6 +31,12 @@
 
 
 
+
+## 1.20.1
+<sub>2026-08-06</sub>
+
+- [#1556](https://github.com/wisemen-digital/wisemen-core/pull/1556)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed NumberField not parsing unit, percent, or currency formatted values, causing edits to revert on blur.
+
 ## 1.20.0
 <sub>2026-08-05</sub>
 
