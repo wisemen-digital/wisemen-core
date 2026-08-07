@@ -101,8 +101,11 @@ export function createRuleRunner (config: Partial<DefaultConfig> = {}): RuleRunn
      * @param additionalRules - Additional rules to include
      * @returns Promise with results
      */
-    async run (this: RuleRunner, danger: DangerDSLType, additionalRules: Record<string, Rule> = {}):
-    Promise<RuleRunnerResult[]> {
+    async run (
+      this: RuleRunner,
+      danger: DangerDSLType,
+      additionalRules: Record<string, Rule> = {}
+    ): Promise<RuleRunnerResult[]> {
       const allRules = getAllRules(additionalRules)
       const results: RuleRunnerResult[] = []
 

@@ -5,6 +5,8 @@
  * Client repositories can override these defaults in their Dangerfile.
  */
 
+import { ResultType } from 'lib/interface.js'
+
 // Type for individual rule configuration
 export interface RuleConfig {
   enabled?: boolean
@@ -47,11 +49,14 @@ export const defaultRuleConfigs = {
   'conventional-commits': {
     enabled: false,
     types: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore'],
-    requireScope: false,
-    requireSubject: true
+    resultType: ResultType.FAIL,
+    checkTitle: true,
+    checkCommitMessages: false,
+    checkDescription: false
   },
   'changelog-updated': {
-    enabled: true
+    enabled: false,
+    resultType: ResultType.FAIL
   }
 } as const
 

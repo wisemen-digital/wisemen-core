@@ -68,7 +68,7 @@ repo.
 import type { DefaultConfig } from '@wisemen/danger'
 
 export function configureDanger (config: DefaultConfig): DefaultConfig {
-  config.rules['conventional-commits'] = { enabled: true, requireScope: true }
+  config.rules['conventional-commits'] = { enabled: true, checkCommitMessages: true }
 
   return config
 }

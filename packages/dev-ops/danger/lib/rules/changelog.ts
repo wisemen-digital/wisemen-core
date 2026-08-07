@@ -25,6 +25,8 @@ export const changelogUpdatedRule = createRule(
     const changeLogTemplate = (config.changelogEntryTemplate as string | undefined)
       ?? ENTRY_TEMPLATE
 
+    const resultType = config.resultType as ResultType
+
     const { github } = danger
     // `danger.github` is typed as always-present for DSL convenience, but is actually
     // undefined when Danger isn't running against a GitHub PR.
@@ -37,7 +39,7 @@ export const changelogUpdatedRule = createRule(
     const diff = await danger.git.diffForFile(changelogPath)
 
     if (!diff) {
-      return { passed: false, message: `**CHANGELOG not updated.** Add an entry to \`${changelogPath}\`:\n\n` + changeLogTemplate, type: ResultType.FAIL }
+      return { passed: false, message: `**CHANGELOG not updated.** Add an entry to \`${changelogPath}\`:\n\n` + changeLogTemplate, type: resultType }
     }
 
     const [, latestEntry = ''] = diff.after.split(/^##\s+/m)
@@ -49,7 +51,7 @@ export const changelogUpdatedRule = createRule(
         message: '**CHANGELOG entry incomplete.** The latest entry needs text under both a '
           + '`### Description` and a `### Migration` heading (use `None` if there is no migration):\n\n'
           + changeLogTemplate,
-        type: ResultType.FAIL
+        type: resultType
       }
     }
 
@@ -57,6 +59,7 @@ export const changelogUpdatedRule = createRule(
   }, {
     // No static `changelogPath` default here - it's derived from `scope` at run time
     // (see above), and can still be overridden per-rule via config.
-    changelogEntryTemplate: ENTRY_TEMPLATE
+    changelogEntryTemplate: ENTRY_TEMPLATE,
+    resultType: ResultType.FAIL
   }
 )

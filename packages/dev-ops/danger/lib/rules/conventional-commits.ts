@@ -1,8 +1,10 @@
 /**
  * Conventional Commits Rule
- * Checks if commit messages follow conventional commits convention
+ * Checks if the PR title, commit messages, and/or PR description follow the
+ * conventional commits convention. Each source is independently configurable.
  */
 
+import type { GitHubPRDSL } from 'danger'
 import { createRule, ResultType } from '../interface.js'
 
 // Regex pattern for conventional commits
@@ -10,72 +12,88 @@ import { createRule, ResultType } from '../interface.js'
 // examples: feat: add user authentication, fix(api): handle null values
 const conventionalCommitRegex = /^([a-z]+)(?:\(([^)]+)\))?:\s(.+)$/i
 
+function findConventionalCommitViolation (
+  subject: string,
+  validTypes: string[]
+): string | undefined {
+  const match = conventionalCommitRegex.exec(subject)
+
+  if (!match) {
+    return 'doesn\'t follow conventional commits format'
+  }
+
+  const [, type] = match
+  const commitType = type.toLowerCase()
+
+  if (!validTypes.includes(commitType)) {
+    return `has invalid type "${commitType}". Valid types: ${validTypes.join(', ')}`
+  }
+
+  return undefined
+}
+
 export const conventionalCommitsRule = createRule(
   'conventional-commits',
   'Conventional Commits',
-  'Checks if commit messages follow the conventional commits convention',
+  'Checks if the PR title, commit messages, and/or PR description follow the conventional commits convention',
   ({ danger, config }) => {
-    const { git } = danger
-    const commits = git.commits
+    const { git, github } = danger
 
-    if (commits.length === 0) {
-      return Promise.resolve({ passed: true, message: 'No commits to check' })
-    }
+    const validTypes = (config.types as string[]) ?? ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore']
+    const resultType = config.resultType as ResultType
 
-    const validTypes = (config.types as string[] | undefined) ?? ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore']
-    const requireScope = (config.requireScope as boolean | undefined) ?? false
-    const requireSubject = (config.requireSubject as boolean | undefined) ?? true
+    const checkTitle = config.checkTitle as boolean
+    const checkCommitMessages = config.checkCommitMessages as boolean
+    const checkDescription = config.checkDescription as boolean
 
     const violations: string[] = []
 
-    for (const commit of commits) {
-      const message = commit.message || ''
-      const subject = message.split('\n')[0] // Get first line
+    // `danger.github` is typed as always-present for DSL convenience, but is actually
+    // undefined when Danger isn't running against a GitHub PR.
+    const pr = github?.pr as GitHubPRDSL | undefined
 
-      const match = conventionalCommitRegex.exec(subject)
+    if (checkTitle && pr != null) {
+      const violation = findConventionalCommitViolation(pr.title, validTypes)
 
-      if (!match) {
-        violations.push(`Commit "${subject}" doesn't follow conventional commits format`)
-
-        continue
+      if (violation !== undefined) {
+        violations.push(`PR title "${pr.title}" ${violation}`)
       }
+    }
 
-      const [, type, scope, description] = match
-      const commitType = type.toLowerCase()
+    if (checkDescription && pr?.body != null && pr.body !== '') {
+      const subject = pr.body.split('\n')[0]
+      const violation = findConventionalCommitViolation(subject, validTypes)
 
-      // Check if type is valid
-      if (!validTypes.includes(commitType)) {
-        violations.push(`Commit "${subject}" has invalid type "${commitType}". Valid types: ${validTypes.join(', ')}`)
-
-        continue
+      if (violation !== undefined) {
+        violations.push(`PR description "${subject}" ${violation}`)
       }
+    }
 
-      // Check if scope is required but missing
-      if (requireScope && !scope) {
-        violations.push(`Commit "${subject}" is missing scope`)
+    if (checkCommitMessages) {
+      for (const commit of git.commits) {
+        const message = commit.message || ''
+        const subject = message.split('\n')[0] // Get first line
+        const violation = findConventionalCommitViolation(subject, validTypes)
 
-        continue
-      }
-
-      // Check if description is required but missing
-      if (requireSubject && !description.trim()) {
-        violations.push(`Commit "${subject}" is missing description`)
-
-        continue
+        if (violation !== undefined) {
+          violations.push(`Commit "${subject}" ${violation}`)
+        }
       }
     }
 
     if (violations.length === 0) {
-      return Promise.resolve({ passed: true, message: `All ${commits.length} commit(s) follow conventional commits` })
+      return Promise.resolve({ passed: true, message: 'All conventional commit checks passed' })
     }
 
     const message = violations.join('\n')
 
-    return Promise.resolve({ passed: false, message, type: ResultType.WARN })
+    return Promise.resolve({ passed: false, message, type: resultType })
   },
   {
     types: ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore'],
-    requireScope: false,
-    requireSubject: true
+    checkTitle: true,
+    checkCommitMessages: false,
+    checkDescription: false,
+    resultType: ResultType.FAIL
   }
 )
