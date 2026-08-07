@@ -32,6 +32,12 @@
 
 
 
+
+## 1.20.2
+<sub>2026-08-07</sub>
+
+- [#1559](https://github.com/wisemen-digital/wisemen-core/pull/1559)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed Dialog closing at the same time as a nested open Popover/Autocomplete on outside click, which caused a visible position jump when the popover was near a viewport edge.
+
 ## 1.20.1
 <sub>2026-08-06</sub>
 
