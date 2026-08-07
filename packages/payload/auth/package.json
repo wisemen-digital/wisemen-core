@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/payload-core-auth",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": false,
   "imports": {
     "#*": "./src/*"
@@ -60,7 +60,7 @@
     "@types/node": "catalog:types",
     "@types/react": "catalog:payload",
     "@wisemen/payload-core-utils": "workspace:^",
-    "@wisemen/eslint-config-vue": "catalog:lint-web",
+    "@wisemen/eslint-config-vue": "workspace:*",
     "eslint": "catalog:lint-web",
     "next": "catalog:payload",
     "payload": "catalog:payload",

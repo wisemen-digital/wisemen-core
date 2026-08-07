@@ -1,6 +1,12 @@
 # @wisemen/vue-core-permissions
 
 
+
+## 0.0.4
+<sub>2026-08-05</sub>
+
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+
 ## 0.0.3
 <sub>2026-06-30</sub>
 

@@ -1,4 +1,4 @@
-/* eslint-disable unicorn/no-keyword-prefix */
+/* eslint-disable unicorn/no-unreadable-array-destructuring */
 import deepClone from 'clone-deep'
 import type {
   ComputedRef,

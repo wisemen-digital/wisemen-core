@@ -44,13 +44,21 @@ const {
       </template>
 
       <template v-if="breadcrumbs.length > 0">
-        <h1 class="sr-only">
+        <h1
+          class="
+            ml-lg text-xs text-primary
+            md:sr-only
+          "
+        >
           {{ title }}
         </h1>
 
         <DashboardPageHeaderBreadcrumbs
           :breadcrumbs="breadcrumbs"
-          class="ml-lg"
+          class="
+            ml-lg hidden
+            md:flex
+          "
         />
       </template>
 
@@ -62,7 +70,12 @@ const {
       </h1>
     </div>
 
-    <div class="flex flex-1 items-center justify-center">
+    <div
+      class="
+        hidden flex-1 items-center justify-center
+        md:flex
+      "
+    >
       <TopBarCommandMenuSearch />
     </div>
 

@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/quantity",
-  "version": "0.9.2",
+  "version": "0.10.0",
   "publishConfig": {
     "access": "public"
   },
@@ -25,6 +25,7 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/swagger": "catalog:backend-peer",
+    "@wisemen/nestjs-typeorm": "workspace:^",
     "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer"
@@ -44,8 +45,5 @@
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/quantity"
-  },
-  "dependencies": {
-    "@wisemen/nestjs-typeorm": "workspace:*"
   }
 }

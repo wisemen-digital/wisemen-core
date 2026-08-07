@@ -3,6 +3,24 @@ export { NatsModule } from './nats.module.js'
 export type { NatsApplicationModuleOptions } from './nats.module.js'
 export { NatsClientModule } from './nats.client.module.js'
 export type { NatsClientModuleOptions, NatsClientModuleAsyncOptions } from './nats.client.options.js'
+export { NatsPublisherModule } from './outbox/nats-publisher/nats-publisher.module.js'
+export type { NatsPublisherModuleAsyncOptions, NatsPublisherModuleOptions } from './outbox/nats-publisher/nats-publisher.module-options.js'
+export {
+  NatsPublisher,
+  type NatsPublisherEventWithSubject,
+  type NatsPublisherStreamEventWithSubject
+} from './outbox/nats-publisher/nats-publisher.js'
+export { NatsQueueModule } from './outbox/nats-queue.module.js'
+export type { NatsQueueModuleAsyncOptions, NatsQueueModuleOptions } from './outbox/nats-queue.module-options.js'
+export {
+  PublishNatsEventJob,
+  type NatsOutboxEvent
+} from './outbox/publish-nats-event/publish-nats-event.job.js'
+export {
+  PublishNatsStreamEventJob,
+  type NatsStreamOutboxEvent,
+  type NatsStreamPublishOptions
+} from './outbox/publish-nats-stream-event/publish-nats-stream-event.job.js'
 
 // Simple client (fire-and-forget pub/sub)
 export { NatsClient } from './nats.client.js'

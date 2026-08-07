@@ -126,7 +126,7 @@ describe('buildGraph', () => {
             },
           ],
         }),
-      )).toThrowError(/cycle detected/i)
+      )).toThrow(/cycle detected/i)
   })
 
   it('handles a doc with no dependencies', () => {
@@ -303,6 +303,6 @@ describe('buildGraph', () => {
         {
           isRequired: () => true,
         },
-      )).toThrowError(/cycle detected/i)
+      )).toThrow(/cycle detected/i)
   })
 })

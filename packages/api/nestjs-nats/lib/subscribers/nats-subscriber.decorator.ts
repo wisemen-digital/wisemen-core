@@ -13,6 +13,13 @@ export interface NatsSubscriptionOptions extends Omit<SubscriptionOptions, 'call
   connection: ClassConstructor<unknown>
   subject: string
   name?: string
+  /**
+   * Maximum number of messages this subscriber instance may process concurrently.
+   *
+   * Defaults to `1`, which preserves sequential processing.
+   * Must be > 0.
+   */
+  maxInFlight?: number
 }
 
 export type NatsSubscriberConfigFunction = (configService: ConfigService) => NatsSubscriptionOptions

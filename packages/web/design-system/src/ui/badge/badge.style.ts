@@ -574,7 +574,7 @@ export const badgeVariants = tv({
     dot: 'rounded-full',
     icon: '',
     label: 'font-medium',
-    separator: 'mx-xs',
+    separator: '',
   },
   variants: {
     size: {
@@ -585,6 +585,7 @@ export const badgeVariants = tv({
         dot: 'size-1.5',
         icon: 'size-4',
         label: 'text-xs',
+        separator: 'mx-xs',
       },
       md: {
         actionsButton: 'mr-xs p-xxs',
@@ -593,6 +594,7 @@ export const badgeVariants = tv({
         dot: 'size-1.5',
         icon: 'size-3',
         label: 'text-xxs',
+        separator: 'mx-xs',
       },
       sm: {
         actionsButton: 'mr-xxs p-xxs',
@@ -601,6 +603,7 @@ export const badgeVariants = tv({
         dot: 'size-1',
         icon: 'size-3',
         label: 'text-xxs',
+        separator: 'mx-none',
       },
     },
 

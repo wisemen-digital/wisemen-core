@@ -79,6 +79,9 @@ export interface MailModuleOptions {
   templateRootPath?: string
   /** Concrete mail client configuration to register in Nest DI. */
   client: MailClientOptions
+
+  /** The pgboss queue name which is registered on the pgboss jobs that are part of this package */
+  queueName: string
 }
 
 /**
