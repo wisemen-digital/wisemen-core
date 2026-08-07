@@ -8,6 +8,12 @@
 // Type for individual rule configuration
 export interface RuleConfig {
   enabled?: boolean
+  /**
+   * Overrides the severity Danger reports when this rule fails.
+   * Has no effect when the rule passes, or when unset (the rule's own
+   * default `type` applies instead).
+   */
+  resultType?: 'warn' | 'message' | 'fail'
   [key: string]: unknown
 }
 
