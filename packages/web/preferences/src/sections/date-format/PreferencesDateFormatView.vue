@@ -36,6 +36,7 @@ const options = computed<PreferencesDropdownMenuOption<DateFormatPreference>[]>(
     hint: new Intl.DateTimeFormat(navigator.language, DATE_OPTIONS).format(exampleDate.epochMilliseconds),
     label: i18n.t('module.preferences.date_format.option.default'),
     value: 'locale-default',
+
   },
   ...FORMAT_LOCALES.map((locale) => ({
     hint: null,

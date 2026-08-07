@@ -16,6 +16,10 @@ export class Duration extends Quantity<DurationUnit, Duration> {
     return DurationUnit.SECONDS
   }
 
+  protected getUnits (): readonly DurationUnit[] {
+    return Object.values(DurationUnit)
+  }
+
   protected convertValueToBaseUnit (value: number, unit: DurationUnit): number {
     return value * DISTANCE_MULTIPLIERS[unit]
   }

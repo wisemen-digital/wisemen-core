@@ -1,4 +1,3 @@
-/* eslint-disable e18e/prefer-static-regex */
 import type { Field } from 'payload'
 
 import { t } from '#i18n/index.ts'

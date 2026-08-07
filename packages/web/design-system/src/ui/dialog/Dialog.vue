@@ -4,15 +4,20 @@ import {
   DialogOverlay as RekaDialogOverlay,
   DialogRoot as RekaDialogRoot,
 } from 'reka-ui'
-import { computed } from 'vue'
+import {
+  computed,
+  ref,
+  watch,
+} from 'vue'
 
+import { useOverlayStack } from '@/composables/overlayStack.composable'
 import { useProvideDialogContext } from '@/ui/dialog/dialog.context'
 import type { DialogProps } from '@/ui/dialog/dialog.props'
 import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
 import DialogChin from '@/ui/dialog/DialogChin.vue'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
-import { useOverlay } from '@/ui/dialog/dialogOverlay.composable'
+import { useDialogNestedLayerCount } from '@/ui/dialog/dialogNestedLayer.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -50,11 +55,20 @@ const {
   bodyRef,
 } = useDialogScroll()
 
+const {
+  hasOpenNestedLayer,
+  registerNestedLayer,
+  unregisterNestedLayer,
+} = useDialogNestedLayerCount()
+
 useProvideDialogContext({
+  hasOpenNestedLayer,
   isScrolledToBottom,
   isScrolledToTop,
   bodyRef,
+  registerNestedLayer,
   style,
+  unregisterNestedLayer,
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
@@ -78,6 +92,12 @@ function onOpenChange(value: boolean): void {
 }
 
 function onInteractOutside(event: CustomEvent): void {
+  if (hasOpenNestedLayer.value) {
+    event.preventDefault()
+
+    return
+  }
+
   if (!(event.target instanceof Element)) {
     return
   }
@@ -87,9 +107,17 @@ function onInteractOutside(event: CustomEvent): void {
   }
 }
 
-const overlay = useOverlay()
+const overlayStack = useOverlayStack()
 
-const dialogZIndex = `${40 + overlay.overlays.filter((d) => d.isMounted).length}`
+const dialogZIndex = ref<number>(0)
+
+watch(isOpen, (isOpenValue) => {
+  if (isOpenValue) {
+    dialogZIndex.value = overlayStack.registerOverlay()
+  }
+}, {
+  immediate: true,
+})
 </script>
 
 <template>

@@ -60,7 +60,7 @@ export function usePrefetchKeysetInfiniteQuery<
 
         const next = lastPage.getValue().meta.next
 
-        return (next === null || next === undefined) ? null : next as string
+        return (next as string) ?? null
       },
       initialPageParam: undefined as unknown as string | undefined,
       queryFn: async ({

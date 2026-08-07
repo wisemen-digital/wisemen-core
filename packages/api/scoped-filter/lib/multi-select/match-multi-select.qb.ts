@@ -149,9 +149,13 @@ export function matchMultiSelect<T extends ObjectLiteral, V> (
     qb.setParameter(paramName, filter.values)
 
     if (filter.operation === MultiSelectOperation.INCLUDE) {
-      return `${column} = ANY(:${paramName})`
+      return filter.values.length === 0
+        ? `FALSE`
+        : `${column} = ANY(:${paramName})`
     } else if (filter.operation === MultiSelectOperation.EXCLUDE) {
-      return `${column} != ALL(:${paramName})`
+      return filter.values.length === 0
+        ? `TRUE`
+        : `${column} != ALL(:${paramName})`
     } else {
       return exhaustiveCheck(filter.operation)
     }

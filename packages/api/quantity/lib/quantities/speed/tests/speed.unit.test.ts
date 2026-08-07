@@ -163,4 +163,13 @@ void describe('Speed class', () => {
       })
     })
   })
+
+  void describe('Speed parsing', () => {
+    void it('parses speed strings', () => {
+      const speed = new Speed('36km/h')
+
+      expect(speed.value).toBe(36)
+      expect(speed.unit).toBe(SpeedUnit.KILOMETER_PER_HOUR)
+    })
+  })
 })

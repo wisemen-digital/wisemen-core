@@ -65,4 +65,40 @@ void describe('Current class', () => {
       expect(c3.format('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3})).toBe('0.500 A')
     })
   })
+
+  void describe('Current parsing', () => {
+    void it('parses current strings with SI units', () => {
+      const current = new Current('10mA')
+
+      expect(current.value).toBe(10)
+      expect(current.unit).toBe(CurrentUnit.MILLIAMPERE)
+      expect(current.isEqualTo(0.01, CurrentUnit.AMPERE)).toBe(true)
+    })
+
+    void it('parses signed and decimal current strings', () => {
+      const current = new Current('-0.5A')
+
+      expect(current.value).toBe(-0.5)
+      expect(current.unit).toBe(CurrentUnit.AMPERE)
+    })
+
+    void it('parses current strings with unicode units', () => {
+      const current = new Current('12μA')
+
+      expect(current.value).toBe(12)
+      expect(current.unit).toBe(CurrentUnit.MICROAMPERE)
+    })
+
+    void it('parses current strings with larger SI units', () => {
+      const current = new Current('1.5kA')
+
+      expect(current.value).toBe(1.5)
+      expect(current.unit).toBe(CurrentUnit.KILOAMPERE)
+    })
+
+    void it('rejects invalid current strings', () => {
+      expect(() => new Current('invalid')).toThrow('Invalid quantity string invalid')
+      expect(() => new Current('10 A')).toThrow('Invalid quantity string 10 A')
+    })
+  })
 })

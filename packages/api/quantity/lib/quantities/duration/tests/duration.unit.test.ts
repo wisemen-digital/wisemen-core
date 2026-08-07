@@ -35,4 +35,13 @@ describe('Duration unit tests', () => {
       expect(duration.hours).toBe(1)
     })
   })
+
+  describe('parsing', () => {
+    it('parses duration strings', () => {
+      const duration = new Duration('2days')
+
+      expect(duration.value).toBe(2)
+      expect(duration.unit).toBe(DurationUnit.DAYS)
+    })
+  })
 })

@@ -8,8 +8,8 @@ const value = ref<Address | null>({
   bus: '',
   city: 'Amsterdam',
   coordinates: {
-    lat: 52.370_216_0,
-    lng: 4.895_168_0,
+    lat: 52.3702160,
+    lng: 4.8951680,
   },
   country: 'Netherlands',
   postalCode: '1012',

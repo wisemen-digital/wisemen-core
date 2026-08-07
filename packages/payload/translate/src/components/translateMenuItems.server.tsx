@@ -1,4 +1,3 @@
-/* eslint-disable e18e/prefer-static-regex */
 /* eslint-disable eslint-plugin-wisemen/explicit-function-return-type-with-regex */
 import { TranslateMenuItemsClient } from '@wisemen/payload-core-translate/client'
 import type { EditMenuItemsServerProps } from 'payload'

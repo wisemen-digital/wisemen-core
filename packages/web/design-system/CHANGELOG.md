@@ -26,6 +26,48 @@
 
 
 
+
+
+
+
+
+
+## 1.20.1
+<sub>2026-08-06</sub>
+
+- [#1556](https://github.com/wisemen-digital/wisemen-core/pull/1556)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed NumberField not parsing unit, percent, or currency formatted values, causing edits to revert on blur.
+
+## 1.20.0
+<sub>2026-08-05</sub>
+
+- [#1547](https://github.com/wisemen-digital/wisemen-core/pull/1547)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - `DetailListGroupItem` now supports a `horizontalValueAlignment` prop (`start` | `end`) to align the value to the end of the row when laid out horizontally
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+- [#1549](https://github.com/wisemen-digital/wisemen-core/pull/1549)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fixed `Badge` separator spacing to scale with size instead of always using a fixed margin
+
+## 1.19.1
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+- [#1527](https://github.com/wisemen-digital/wisemen-core/pull/1527)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Breadcrumbs and global search are not hidden in the top bar for a improved mobile experience
+
+## 1.19.0
+<sub>2026-08-03</sub>
+
+- [#1531](https://github.com/wisemen-digital/wisemen-core/pull/1531)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make select and autocomplete popovers responsive on mobile. The popover will become a bottom drawer with the options
+
+## 1.18.1
+<sub>2026-07-31</sub>
+
+- [#1534](https://github.com/wisemen-digital/wisemen-core/pull/1534)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker and date range picker opening on a fully-disabled month when today's date (or the current value) falls before minDate or after maxDate; the calendar now opens clamped to the nearest selectable date.
+
+## 1.18.0
+<sub>2026-07-31</sub>
+
+- [#1496](https://github.com/wisemen-digital/wisemen-core/pull/1496)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added a `config` prop to `TabsItem`/`TabsRouterLinkItem` for left content and a right-side indicator (count badge or dot, e.g. to flag a tab with a form error), matching `MenuItemConfig`'s API shape. The existing `icon`/`count` props are deprecated but still work.
+- [#1497](https://github.com/wisemen-digital/wisemen-core/pull/1497)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the detail pane's bordered variants clipping the sticky header and footer backgrounds to square corners instead of the pane's rounded border.
+- [#1498](https://github.com/wisemen-digital/wisemen-core/pull/1498)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker calendar opening on the current month instead of the month of the bound value.
+- [#1499](https://github.com/wisemen-digital/wisemen-core/pull/1499)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the Switch component shrinking when placed in a flex container with limited space.
+
 ## 1.17.0
 <sub>2026-07-27</sub>
 

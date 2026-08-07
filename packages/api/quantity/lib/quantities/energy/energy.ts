@@ -40,12 +40,20 @@ const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.ZETTAWATT_HOUR]: 3600 * 1e21,
   [EnergyUnit.YOTTAWATT_HOUR]: 3600 * 1e24,
   [EnergyUnit.RONNAWATT_HOUR]: 3600 * 1e27,
-  [EnergyUnit.QUETTAWATT_HOUR]: 3600 * 1e30
+  [EnergyUnit.QUETTAWATT_HOUR]: 3600 * 1e30,
+
+  // Thermochemical calorie: 1 cal = 4.184 J
+  [EnergyUnit.CALORIE]: 4.184,
+  [EnergyUnit.KILOCALORIE]: 4184
 }
 
 export class Energy extends Quantity<EnergyUnit, Energy> {
   protected getBaseUnit () {
     return EnergyUnit.JOULE
+  }
+
+  protected getUnits (): readonly EnergyUnit[] {
+    return Object.values(EnergyUnit)
   }
 
   protected convertValueToBaseUnit (value: number, unit: EnergyUnit): number {

@@ -39,7 +39,10 @@ export enum EnergyUnit {
   ZETTAWATT_HOUR = 'ZWh',
   YOTTAWATT_HOUR = 'YWh',
   RONNAWATT_HOUR = 'RWh',
-  QUETTAWATT_HOUR = 'QWh'
+  QUETTAWATT_HOUR = 'QWh',
+
+  CALORIE = 'cal',
+  KILOCALORIE = 'kcal'
 }
 
 export function EnergyUnitApiProperty (options?: ApiPropertyOptions): PropertyDecorator {

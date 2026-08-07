@@ -6,6 +6,7 @@ import type { Ref } from 'vue'
 import {
   computed,
   shallowRef,
+  watch,
 } from 'vue'
 
 import { useInjectConfigContext } from '@/ui/config-provider/config.context'
@@ -25,14 +26,34 @@ export function useDatePicker({
 
   const locale = computed<string>(() => configContext.dateLocale.value ?? navigator.language)
 
-  const todayDate = Temporal.Now.plainDateISO()
+  function clampToSelectableRange(date: PlainDate): PlainDate {
+    if (minDate.value !== null && Temporal.PlainDate.compare(date, minDate.value) < 0) {
+      return minDate.value
+    }
+
+    if (maxDate.value !== null && Temporal.PlainDate.compare(date, maxDate.value) > 0) {
+      return maxDate.value
+    }
+
+    return date
+  }
+
+  const initialDate = clampToSelectableRange(modelValue.value ?? Temporal.Now.plainDateISO())
   const calendarPlaceholder = shallowRef<CalendarDate>(
-    new CalendarDate(todayDate.year, todayDate.month, todayDate.day),
+    new CalendarDate(initialDate.year, initialDate.month, initialDate.day),
   )
 
   function setPlaceholder(date: CalendarDate): void {
     calendarPlaceholder.value = date
   }
+
+  watch(modelValue, (date) => {
+    if (date === null) {
+      return
+    }
+
+    calendarPlaceholder.value = new CalendarDate(date.year, date.month, date.day)
+  })
 
   function plainDateToCalendarDate(date: PlainDate): CalendarDate {
     return new CalendarDate(date.year, date.month, date.day)
