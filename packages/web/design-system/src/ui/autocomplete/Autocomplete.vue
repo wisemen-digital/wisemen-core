@@ -28,6 +28,7 @@ import type { AutocompleteProps } from '@/ui/autocomplete/autocomplete.props'
 import { createAutocompleteStyle } from '@/ui/autocomplete/autocomplete.style'
 import type { AutocompleteValue } from '@/ui/autocomplete/autocomplete.type'
 import AutocompleteContent from '@/ui/autocomplete/AutocompleteContent.vue'
+import { useRegisterAsDialogNestedLayer } from '@/ui/dialog/dialogNestedLayer.composable'
 import FieldWrapper from '@/ui/field-wrapper/FieldWrapper.vue'
 import InputWrapper from '@/ui/input-wrapper/InputWrapper.vue'
 import type { ResponsiveDrawerProps } from '@/ui/responsive-drawer/responsiveDrawer.props'
@@ -100,7 +101,11 @@ function displayValueFn(value: TValue | null): string {
 
 const valueLabel = computed<string>(() => displayValueFn(modelValue.value))
 
+useRegisterAsDialogNestedLayer(isOpen)
+
 function onOpenChange(isOpenValue: boolean): void {
+  isOpen.value = isOpenValue
+
   if (!isOpenValue) {
     emit('blur')
   }
