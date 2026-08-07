@@ -17,7 +17,6 @@ const props = withDefaults(defineProps<SegmentedControlItemProps>(), SEGMENTED_C
 
 const {
   isDescriptionCentered,
-  orientation,
   registerItem,
   unregisterItem,
   variants,
@@ -42,7 +41,6 @@ onBeforeUnmount(() => {
     <RekaRadioGroupItem
       :disabled="props.isDisabled"
       :value="props.value"
-      :data-orientation="orientation"
       :class="variants.item()"
     >
       <UIColumnLayout

@@ -12,11 +12,6 @@ export interface SegmentedControlSharedProps extends InputWrapper {
    */
   isDescriptionCentered?: boolean
   /**
-   * Controls the keyboard navigation direction of the segmented control.
-   * @default 'horizontal'
-   */
-  orientation?: 'horizontal' | 'vertical'
-  /**
    * The size of the segments. Matches the height of other form controls
    * (e.g. `TextField`, `Select`) when no item has a `description`.
    * @default 'md'
@@ -49,7 +44,6 @@ export interface SegmentedControlItemProps extends DisabledWithReason {
 const SEGMENTED_CONTROL_SHARED_DEFAULTS = {
   ...INPUT_META_DEFAULTS,
   isDescriptionCentered: false,
-  orientation: 'horizontal',
   size: 'md',
 } satisfies SegmentedControlSharedProps
 

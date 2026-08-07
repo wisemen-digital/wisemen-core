@@ -73,13 +73,12 @@ export function useSegmentedControlIndicator(
       return
     }
 
-    const isVertical = listEl.getAttribute('data-orientation') === 'vertical'
     const listRect = listEl.getBoundingClientRect()
     const itemRect = activeItem.getBoundingClientRect()
 
-    size.value = isVertical ? itemRect.height : itemRect.width
-    crossSize.value = isVertical ? itemRect.width : itemRect.height
-    position.value = isVertical ? itemRect.top - listRect.top : itemRect.left - listRect.left
+    size.value = itemRect.width
+    crossSize.value = itemRect.height
+    position.value = itemRect.left - listRect.left
     isReady.value = true
   }
 

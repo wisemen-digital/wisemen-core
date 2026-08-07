@@ -39,7 +39,6 @@ useProvideSegmentedControlGroupContext({
   isDescriptionCentered: computed<boolean>(() => props.isDescriptionCentered),
   isDisabled: computed<boolean>(() => props.isDisabled),
   modelValue,
-  orientation: computed<'horizontal' | 'vertical'>(() => props.orientation),
   registerItem,
   unregisterItem,
   variants,
@@ -66,10 +65,7 @@ useProvideSegmentedControlGroupContext({
       v-model="modelValue"
       :disabled="props.isDisabled"
     >
-      <div
-        :data-orientation="props.orientation"
-        :class="variants.list()"
-      >
+      <div :class="variants.list()">
         <slot />
       </div>
     </RekaCheckboxGroupRoot>

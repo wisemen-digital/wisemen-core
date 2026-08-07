@@ -2,10 +2,7 @@ import { tv } from '@/libs/tailwindVariants.lib'
 
 const segmentedControlSharedLabel = 'text-sm font-medium whitespace-nowrap'
 
-const segmentedControlSharedList = `
-  flex items-stretch gap-none rounded-xl bg-tertiary/60 p-xxs
-  data-[orientation=vertical]:flex-col
-`
+const segmentedControlSharedList = 'flex items-stretch gap-none rounded-xl bg-tertiary/60 p-xxs'
 
 const segmentedControlSharedVariants = {
   hasDescription: {
@@ -35,17 +32,9 @@ export const createSegmentedControlStyle = tv({
       group-data-active/segmented-control-item:text-brand-secondary
     `,
     indicator: `
-      absolute z-0 duration-200
-      group-data-[orientation=horizontal]:top-0.5
-      group-data-[orientation=horizontal]:left-0
-      group-data-[orientation=horizontal]:h-(--segmented-control-indicator-cross-size)
-      group-data-[orientation=horizontal]:w-(--segmented-control-indicator-size)
-      group-data-[orientation=horizontal]:translate-x-(--segmented-control-indicator-position)
-      group-data-[orientation=vertical]:top-0
-      group-data-[orientation=vertical]:left-0.5
-      group-data-[orientation=vertical]:h-(--segmented-control-indicator-size)
-      group-data-[orientation=vertical]:w-(--segmented-control-indicator-cross-size)
-      group-data-[orientation=vertical]:translate-y-(--segmented-control-indicator-position)
+      absolute top-0.5 left-0 z-0 h-(--segmented-control-indicator-cross-size)
+      w-(--segmented-control-indicator-size)
+      translate-x-(--segmented-control-indicator-position) duration-200
     `,
     indicatorInner: 'absolute inset-0.5 block rounded-lg bg-primary shadow-sm',
     item: `
@@ -62,13 +51,6 @@ export const createSegmentedControlStyle = tv({
       has-[+[data-active]]:after:opacity-0
       data-active:text-secondary
       data-active:after:opacity-0
-      data-[orientation=vertical]:w-full
-      data-[orientation=vertical]:after:inset-x-1.5
-      data-[orientation=vertical]:after:inset-y-auto
-      data-[orientation=vertical]:after:right-auto
-      data-[orientation=vertical]:after:bottom-0
-      data-[orientation=vertical]:after:h-px
-      data-[orientation=vertical]:after:w-auto
       dark:after:bg-tertiary
     `,
     label: segmentedControlSharedLabel,
@@ -107,14 +89,11 @@ export const createSegmentedControlGroupStyle = tv({
       aria-checked:text-secondary
       aria-checked:before:opacity-100
       aria-checked:after:opacity-0
-      data-[orientation=vertical]:w-full
-      data-[orientation=vertical]:after:inset-x-1.5
-      data-[orientation=vertical]:after:inset-y-auto
-      data-[orientation=vertical]:after:right-auto
-      data-[orientation=vertical]:after:bottom-0
-      data-[orientation=vertical]:after:h-px
-      data-[orientation=vertical]:after:w-auto
+      aria-checked:has-[+[aria-checked=true]]:before:right-0
+      aria-checked:has-[+[aria-checked=true]]:before:rounded-r-none
       dark:after:bg-tertiary
+      aria-checked:[[aria-checked=true]+&]:before:left-0
+      aria-checked:[[aria-checked=true]+&]:before:rounded-l-none
     `,
     label: segmentedControlSharedLabel,
     list: segmentedControlSharedList,

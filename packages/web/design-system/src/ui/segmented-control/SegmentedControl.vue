@@ -43,7 +43,6 @@ useProvideSegmentedControlContext({
   isDescriptionCentered: computed<boolean>(() => props.isDescriptionCentered),
   isDisabled: computed<boolean>(() => props.isDisabled),
   modelValue,
-  orientation: computed<'horizontal' | 'vertical'>(() => props.orientation),
   registerItem,
   unregisterItem,
   variants,
@@ -68,12 +67,10 @@ useProvideSegmentedControlContext({
     <RekaRadioGroupRoot
       :id="id"
       v-model="modelValue"
-      :orientation="props.orientation"
       :disabled="props.isDisabled"
     >
       <div
         ref="list"
-        :data-orientation="props.orientation"
         :class="variants.list()"
       >
         <slot />

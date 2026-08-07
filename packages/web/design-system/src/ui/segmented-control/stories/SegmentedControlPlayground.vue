@@ -12,7 +12,6 @@ const props = withDefaults(defineProps<SegmentedControlProps & {
   errorMessage: null,
   hint: null,
   label: null,
-  orientation: 'horizontal',
   size: 'md',
 })
 
@@ -30,7 +29,6 @@ const modelValue = defineModel<string>({
       :hint="props.hint"
       :is-disabled="props.isDisabled"
       :label="props.label"
-      :orientation="props.orientation"
       :size="props.size"
     >
       <SegmentedControlItem

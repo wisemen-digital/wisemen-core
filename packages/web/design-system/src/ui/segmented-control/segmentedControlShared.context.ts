@@ -8,7 +8,6 @@ export interface SegmentedControlSharedContext<TModelValue, TStyle> {
   isDescriptionCentered: ComputedRef<boolean>
   isDisabled: ComputedRef<boolean>
   modelValue: Ref<TModelValue>
-  orientation: ComputedRef<'horizontal' | 'vertical'>
   registerItem: (hasDescription: boolean) => void
   unregisterItem: (hasDescription: boolean) => void
   variants: ComputedRef<TStyle>

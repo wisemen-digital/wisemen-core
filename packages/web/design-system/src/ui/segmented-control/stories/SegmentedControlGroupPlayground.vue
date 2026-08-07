@@ -9,7 +9,6 @@ const props = withDefaults(defineProps<SegmentedControlGroupProps>(), {
   errorMessage: null,
   hint: null,
   label: null,
-  orientation: 'horizontal',
   size: 'md',
 })
 
@@ -58,7 +57,6 @@ const days = [
       :hint="props.hint"
       :is-disabled="props.isDisabled"
       :label="props.label"
-      :orientation="props.orientation"
       :size="props.size"
     >
       <SegmentedControlGroupItem

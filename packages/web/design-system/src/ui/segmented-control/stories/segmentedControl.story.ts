@@ -49,14 +49,6 @@ const meta = {
         disable: true,
       },
     },
-    orientation: {
-      control: 'select',
-      description: 'Arranges the segments horizontally or vertically',
-      options: [
-        'horizontal',
-        'vertical',
-      ],
-    },
     size: {
       control: 'select',
       description: 'Controls the height of the segments. Matches the height of other form controls (e.g. TextField, Select) when no segment has a description.',
@@ -86,7 +78,6 @@ export const Default: Story = {
     hint: null,
     label: 'Notifications',
     modelValue: 'email',
-    orientation: 'horizontal',
     size: 'md',
   },
   play: async ({
@@ -135,41 +126,6 @@ export const WithDescriptions: Story = {
     hint: null,
     label: 'Notifications',
     modelValue: 'email',
-    orientation: 'horizontal',
-    size: 'md',
-  },
-  render: (args) => ({
-    components: {
-      SegmentedControlPlayground,
-    },
-    setup() {
-      const modelValue = ref<string>('email')
-
-      return {
-        args,
-        modelValue,
-      }
-    },
-    template: `
-      <SegmentedControlPlayground
-        v-bind="args"
-        v-model="modelValue"
-      />
-    `,
-  }),
-}
-
-export const Vertical: Story = {
-  args: {
-    hasDescriptions: false,
-    isDescriptionCentered: false,
-    isDisabled: false,
-    disabledReason: null,
-    errorMessage: null,
-    hint: null,
-    label: 'Notifications',
-    modelValue: 'email',
-    orientation: 'vertical',
     size: 'md',
   },
   render: (args) => ({
@@ -203,7 +159,6 @@ export const Disabled: Story = {
     hint: null,
     label: 'Notifications',
     modelValue: 'email',
-    orientation: 'horizontal',
     size: 'md',
   },
   play: async ({
@@ -248,7 +203,6 @@ export const WithFieldProps: Story = {
     hint: 'Choose how you want to be notified',
     label: 'Notifications',
     modelValue: 'email',
-    orientation: 'horizontal',
     size: 'md',
   },
   render: (args) => ({
@@ -280,7 +234,6 @@ export const MultiSelect: Story = {
     hint: null,
     label: 'Available days',
     modelValue: 'monday',
-    orientation: 'horizontal',
     size: 'md',
   },
   play: async ({
@@ -322,7 +275,6 @@ export const MultiSelect: Story = {
         :error-message="args.errorMessage"
         :hint="args.hint"
         :label="args.label"
-        :orientation="args.orientation"
         :size="args.size"
         v-model="modelValue"
       />
@@ -339,7 +291,6 @@ export const AvailabilityPicker: Story = {
     hint: null,
     label: 'Beschikbaarheden',
     modelValue: 'monday',
-    orientation: 'horizontal',
     size: 'md',
   },
   render: (args) => ({
@@ -368,7 +319,6 @@ export const AvailabilityPicker: Story = {
         :error-message="args.errorMessage"
         :hint="args.hint"
         :label="args.label"
-        :orientation="args.orientation"
         :size="args.size"
         v-model="modelValue"
       />
