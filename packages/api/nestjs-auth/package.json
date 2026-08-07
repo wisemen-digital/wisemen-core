@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-auth",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -25,7 +25,10 @@
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "reflect-metadata": "catalog:backend-peer"
+    "@nestjs/core": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "fastify": "catalog:backend-peer",
+    "@wisemen/api-error": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",

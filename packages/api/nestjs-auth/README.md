@@ -51,3 +51,61 @@ export class AuthGuard implements CanActivate {
 
 `isPublicContext(...)` checks handler metadata first, then controller metadata,
 and falls back to `false` when neither is defined.
+
+## Register Basic Auth Definitions
+
+Import `BasicAuthModule.forRoot()` once to initialize the shared registry, then
+use `BasicAuthModule.forFeature(...)` or `BasicAuthModule.forFeatureAsync(...)`
+in feature-local modules to register the definitions they need close to their
+controllers.
+
+```ts
+import { Module } from '@nestjs/common'
+import { BasicAuthModule } from '@wisemen/nestjs-auth'
+
+@Module({
+  imports: [
+    BasicAuthModule.forRoot()
+  ]
+})
+export class ApiModule {}
+```
+
+```ts
+import { Module } from '@nestjs/common'
+import { BasicAuthModule } from '@wisemen/nestjs-auth'
+
+@Module({
+  imports: [
+    BasicAuthModule.forFeature({
+      docs: {
+        username: 'docs',
+        password: 'secret'
+      }
+    })
+  ]
+})
+export class DocsModule {}
+```
+
+```ts
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { BasicAuthModule } from '@wisemen/nestjs-auth'
+
+@Module({
+  imports: [
+    BasicAuthModule.forFeatureAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        docs: {
+          username: config.getOrThrow('DOCS_USERNAME'),
+          password: config.getOrThrow('DOCS_PASSWORD')
+        }
+      })
+    })
+  ]
+})
+export class DocsModule {}
+```
