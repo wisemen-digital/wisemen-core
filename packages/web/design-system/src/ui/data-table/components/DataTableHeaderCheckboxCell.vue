@@ -17,7 +17,10 @@ const i18n = useI18n()
 
 <template>
   <div
-    class="flex h-10 items-center bg-secondary px-xl"
+    class="
+      sticky top-0 z-20 flex h-10 items-center border-b border-secondary
+      bg-secondary px-xl
+    "
     role="columnheader"
   >
     <BaseCheckbox

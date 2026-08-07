@@ -8,7 +8,7 @@ import type {
 import { computed } from 'vue'
 
 export const DATA_TABLE_ROW_HEIGHT_IN_PX = 40
-export const DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX = 36
+export const DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX = 40
 
 /**
  * Virtualizes a flat, already-expansion-aware row sequence (`table.getRowModel().rows`,

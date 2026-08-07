@@ -7,12 +7,14 @@ import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 
 const props = withDefaults(defineProps<{
   isExpanded: boolean
+  isLast?: boolean
   isSelectable?: boolean
   isSelected?: boolean
   isSelectedIndeterminate?: boolean
   depth?: number
   label: string
 }>(), {
+  isLast: false,
   isSelectable: false,
   isSelected: false,
   isSelectedIndeterminate: false,
@@ -27,7 +29,7 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const indentStyle = computed<Record<string, string>>(() => ({
-  paddingLeft: `${1.25 + props.depth}rem`,
+  paddingLeft: `${1 + props.depth}rem`,
 }))
 </script>
 
@@ -36,13 +38,14 @@ const indentStyle = computed<Record<string, string>>(() => ({
     :class="{
       'bg-secondary': props.depth === 0,
       'bg-tertiary': props.depth > 0,
+      'border-b border-secondary': !props.isLast,
     }"
-    class="col-span-full grid grid-cols-subgrid border-b border-secondary"
+    class="col-span-full grid grid-cols-subgrid"
     role="row"
   >
     <div
       :style="indentStyle"
-      class="col-span-full flex h-9 items-center gap-xs pr-xl"
+      class="col-span-full flex h-10 items-center gap-xs pr-xl"
     >
       <BaseCheckbox
         v-if="props.isSelectable"

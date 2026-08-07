@@ -21,7 +21,9 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <DataTableRow>
+  <DataTableRow
+    :is-last="props.viewModel.isLast && !props.viewModel.isSubComponentExpanded"
+  >
     <DataTableCheckboxCell
       v-if="props.isSelectable"
       :is-checked="props.viewModel.isSelected"
@@ -48,7 +50,10 @@ const emit = defineEmits<{
     </DataTableCell>
   </DataTableRow>
 
-  <DataTableSubComponentRow v-if="props.viewModel.isSubComponentExpanded">
+  <DataTableSubComponentRow
+    v-if="props.viewModel.isSubComponentExpanded"
+    :is-last="props.viewModel.isLast"
+  >
     <Component :is="props.viewModel.subComponent" />
   </DataTableSubComponentRow>
 </template>

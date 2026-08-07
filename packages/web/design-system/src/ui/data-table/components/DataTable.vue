@@ -210,24 +210,29 @@ function getGroupRowLabelCell(row: Row<TItem>): DataTableCellDefinition | null {
   return column.cell(row.original)
 }
 
-const rowViewModels = computed<DataTableRowViewModel<TItem>[]>(() => table.getRowModel().rows.map((row) => {
-  const isGrouped = row.getIsGrouped()
-  const subComponent = isGrouped ? null : (subComponentByItemKey.value.get(props.getKey(row.original)) ?? null)
-  const groupItems = isGrouped ? row.getLeafRows().map((leafRow) => leafRow.original) : []
+const rowViewModels = computed<DataTableRowViewModel<TItem>[]>(() => {
+  const allRows = table.getRowModel().rows
 
-  return {
-    isGroupAllSelected: isGrouped && isGroupAllSelected(groupItems),
-    isGrouped,
-    isGroupIndeterminate: isGrouped && isGroupIndeterminate(groupItems),
-    isSelected: !isGrouped && isItemSelected(props.getKey(row.original)),
-    isSubComponentExpanded: expandedSubComponentRowIds.value.has(row.id),
-    canExpandSubComponent: subComponent !== null,
-    groupLabel: isGrouped ? String(row.groupingValue) : '',
-    groupLabelCell: isGrouped ? getGroupRowLabelCell(row) : null,
-    row,
-    subComponent,
-  }
-}))
+  return allRows.map((row, index) => {
+    const isGrouped = row.getIsGrouped()
+    const subComponent = isGrouped ? null : (subComponentByItemKey.value.get(props.getKey(row.original)) ?? null)
+    const groupItems = isGrouped ? row.getLeafRows().map((leafRow) => leafRow.original) : []
+
+    return {
+      isGroupAllSelected: isGrouped && isGroupAllSelected(groupItems),
+      isGrouped,
+      isGroupIndeterminate: isGrouped && isGroupIndeterminate(groupItems),
+      isLast: index === allRows.length - 1,
+      isSelected: !isGrouped && isItemSelected(props.getKey(row.original)),
+      isSubComponentExpanded: expandedSubComponentRowIds.value.has(row.id),
+      canExpandSubComponent: subComponent !== null,
+      groupLabel: isGrouped ? String(row.groupingValue) : '',
+      groupLabelCell: isGrouped ? getGroupRowLabelCell(row) : null,
+      row,
+      subComponent,
+    }
+  })
+})
 
 function toggleRowGroup(row: Row<TItem>): void {
   toggleGroup(row.getLeafRows().map((leafRow) => leafRow.original))
@@ -358,7 +363,10 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
 
             <div
               v-if="hasSubComponent"
-              class="flex h-10 items-center bg-secondary px-xl"
+              class="
+                sticky top-0 z-20 flex h-10 items-center border-b
+                border-secondary bg-secondary px-xl
+              "
               role="columnheader"
             />
 
@@ -394,6 +402,7 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
                 v-if="entry.viewModel.isGrouped"
                 :depth="entry.row.depth"
                 :is-expanded="entry.row.getIsExpanded()"
+                :is-last="entry.viewModel.isLast"
                 :is-selectable="props.isSelectable"
                 :is-selected="entry.viewModel.isGroupAllSelected"
                 :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate && !entry.viewModel.isGroupAllSelected"

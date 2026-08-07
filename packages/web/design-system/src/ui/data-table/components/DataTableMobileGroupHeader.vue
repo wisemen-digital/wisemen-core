@@ -27,7 +27,7 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const indentStyle = computed<Record<string, string>>(() => ({
-  paddingLeft: `${1.25 + props.depth}rem`,
+  paddingLeft: `${1 + props.depth}rem`,
 }))
 </script>
 

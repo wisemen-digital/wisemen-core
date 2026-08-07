@@ -7,6 +7,7 @@ export interface DataTableRowViewModel<TItem> {
   isGroupAllSelected: boolean
   isGrouped: boolean
   isGroupIndeterminate: boolean
+  isLast: boolean
   isSelected: boolean
   isSubComponentExpanded: boolean
   canExpandSubComponent: boolean

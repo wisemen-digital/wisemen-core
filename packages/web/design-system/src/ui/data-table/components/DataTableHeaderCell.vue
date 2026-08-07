@@ -109,12 +109,13 @@ const sortIcon = computed<Component | null>(() => {
   <div
     ref="cellEl"
     :class="{
-      'sticky left-0 z-2 border-r border-secondary': props.isFirstColumn && isFirstColumnSticky,
-      'sticky right-0 z-2 border-l border-secondary': props.isLastColumn && isLastColumnSticky,
+      'left-0 z-30 border-r border-secondary': props.isFirstColumn && isFirstColumnSticky,
+      'right-0 z-30 border-l border-secondary': props.isLastColumn && isLastColumnSticky,
       'z-40': isResizing,
     }"
     class="
-      relative flex h-10 items-center bg-secondary px-xl
+      sticky top-0 z-20 flex h-10 items-center border-b border-secondary
+      bg-secondary px-xl
       has-[.cursor-col-resize:hover]:z-40
     "
     role="columnheader"
