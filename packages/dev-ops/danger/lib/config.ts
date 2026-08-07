@@ -5,7 +5,7 @@
  * Client repositories can override these defaults in their Dangerfile.
  */
 
-import { ResultType } from 'lib/interface.js'
+import { ResultType } from './interface.js'
 
 // Type for individual rule configuration
 export interface RuleConfig {
