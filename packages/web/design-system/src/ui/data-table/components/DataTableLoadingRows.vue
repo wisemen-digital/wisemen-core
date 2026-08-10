@@ -25,20 +25,25 @@ function getWidth(rowIndex: number, colIndex: number): string {
 <template>
   <div
     :style="{ gridTemplateColumns }"
-    class="col-span-full grid w-full mask-b-to-transparent px-2xl"
+    class="col-span-full grid w-full mask-b-to-transparent"
   >
     <div
       v-for="i in SKELETON_ROW_COUNT"
       :key="i"
       :style="{ '--row-index': i - 1 }"
-      class="skeleton-row col-span-full grid grid-cols-subgrid items-center gap-xl py-lg"
+      :class="{ 'border-t border-secondary': i === 1 }"
+      class="skeleton-row col-span-full grid grid-cols-subgrid border-b border-secondary"
     >
-      <UISkeletonItem
+      <div
         v-for="col in props.columnCount"
         :key="col"
-        :style="{ maxWidth: getWidth(i - 1, col - 1) }"
-        class="h-4"
-      />
+        class="flex h-10 items-center px-xl"
+      >
+        <UISkeletonItem
+          :style="{ maxWidth: getWidth(i - 1, col - 1) }"
+          class="h-4 w-full"
+        />
+      </div>
     </div>
   </div>
 </template>
