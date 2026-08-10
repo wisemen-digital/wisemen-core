@@ -11,13 +11,20 @@ export const createBaseCheckboxStyle = tv({
       group-focus-visible/checkbox:group-data-invalid/checkbox:outline-error-600
       group-data-[state=checked]/checkbox:border-brand-600
       group-data-[state=checked]/checkbox:bg-brand-solid
+      group-data-[state=indeterminate]/checkbox:border-brand-600
+      group-data-[state=indeterminate]/checkbox:bg-brand-solid
       group-data-[state=checked]/checkbox:group-disabled/checkbox:border-disabled
+      group-data-[state=indeterminate]/checkbox:group-disabled/checkbox:border-disabled
       group-disabled/checkbox:group-data-[state=checked]/checkbox:bg-disabled-subtle
+      group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:bg-disabled-subtle
       group-data-invalid/checkbox:group-data-[state=checked]/checkbox:border-error
+      group-data-invalid/checkbox:group-data-[state=indeterminate]/checkbox:border-error
       group-data-invalid/checkbox:group-data-[state=checked]/checkbox:bg-error-solid
+      group-data-invalid/checkbox:group-data-[state=indeterminate]/checkbox:bg-error-solid
       group-data-invalid/checkbox:group-data-[state=unchecked]/checkbox:border-error
       not-group-disabled/checkbox:hover:border-primary
       not-group-disabled/checkbox:group-data-[state=checked]/checkbox:hover:border-brand-600
+      not-group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:hover:border-brand-600
       disabled:border-disabled
     `,
     indicator: `
