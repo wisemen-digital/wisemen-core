@@ -85,6 +85,30 @@ file is the condensed, decisions-only reference.
   "Go to detail" button today; will be reused by the detail pane's Cmd+O later. Same shape as the
   old `Table`.
 
+## Data lifecycle (loading, error, empty, infinite scroll)
+
+- **`isLoading`**: true while the initial fetch is in flight and `data` is still empty. Renders a
+  10-row skeleton in place of the rows (same visual as the old `Table`'s `TableLoading`).
+- **`isFetchingNextPage`**: true while a next-page fetch is in flight and rows already exist.
+  Renders the same skeleton, appended below the already-loaded rows instead of replacing them.
+- **`error`**: `ApiError | null`. When set, replaces the entire row area with the `#error` slot
+  (scoped prop `{ error }`) or, by default, `UIErrorState`. Takes priority over the empty state.
+- **Empty state**: shown when `data.length === 0 && !isLoading && error === null` — default
+  `UIEmptyState`, no slot override yet (DataTable has no filter/search prop surface to key a
+  "no results" variant off of, unlike the old `Table`).
+- **`onNextPage`**: called when the active scroll container (desktop flat, desktop grouped, or
+  mobile — whichever is actually mounted) nears its bottom, or immediately if the loaded rows
+  don't fill/overflow the container at all. `null`/omitted disables the trigger entirely — for
+  tables that load all their data client-side up front. One shared composable
+  (`useDataTableInfiniteScroll`) is called once per real scroll container (`DataTable.vue` for
+  desktop, `DataTableMobileList.vue` for mobile) — not per virtualizer, since the desktop flat and
+  grouped virtualizers both run against the same DOM element and only one is ever rendered.
+- **`totalCount`**: optional server-reported count matching the current filter. Only affects the
+  selection action bar's displayed number during select-all — without it, select-all shows
+  `data.length`, which climbs as more pages load in via `onNextPage` with no indication it was
+  never a stable total. Growing selection itself (newly-loaded rows automatically joining an
+  active select-all) is unchanged — this only fixes what number is displayed.
+
 ## Grouping
 
 - API: `groupBy?: string | [string, string] | null` — flat `data` in, DataTable groups
@@ -164,4 +188,5 @@ file is the condensed, decisions-only reference.
 - `types/dataTableCell.type.ts` — Cell definition types.
 - `utils/dataTable.util.ts` — sizing constants/helpers.
 - `composables/dataTable.composable.ts` — grouping/table setup.
+- `composables/dataTableInfiniteScroll.composable.ts` — shared scroll-near-bottom trigger.
 - `CONTEXT.md` (package root) — full reasoning, rejected alternatives, bugs found along the way.

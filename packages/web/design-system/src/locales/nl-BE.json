@@ -40,6 +40,8 @@
   "component.dashboard_page_header_sidebar_toggle.collapse": "Zijbalk inklappen",
   "component.dashboard_page_header_sidebar_toggle.expand": "Zijbalk uitklappen",
   "component.dashboard_page_loading_state.loading": "Laden",
+  "component.data_table.empty_state.no_data.description": "Er zijn nog geen items om weer te geven.",
+  "component.data_table.empty_state.no_data.title": "Geen gegevens",
   "component.data_table.mobile_list.cancel_select_label": "Annuleren",
   "component.data_table.mobile_list.select_label": "Selecteren",
   "component.data_table.selection_action_bar.selected_count": "1 geselecteerd | {count} geselecteerd",

@@ -8,6 +8,7 @@ import type { RegisteredRouteLocationRaw } from '@/register'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import DataTableMobileCard from '@/ui/data-table/components/DataTableMobileCard.vue'
 import DataTableMobileGroupHeader from '@/ui/data-table/components/DataTableMobileGroupHeader.vue'
+import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
 import { useDataTableMobileSlots } from '@/ui/data-table/composables/dataTableMobileSlots.composable'
 import { useDataTableMobileVirtualScroller } from '@/ui/data-table/composables/dataTableMobileVirtualScroller.composable'
 import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
@@ -22,10 +23,12 @@ const props = withDefaults(defineProps<{
   getKey: (item: TItem) => string
   getLink?: ((item: TItem) => RegisteredRouteLocationRaw | null) | null
   mobileCard: DataTableMobileCardConfig | null
+  onNextPage?: (() => void) | null
   rowViewModels: DataTableRowViewModel<TItem>[]
 }>(), {
   isSelectable: false,
   getLink: null,
+  onNextPage: null,
 })
 
 const emit = defineEmits<{
@@ -39,6 +42,8 @@ const {
 } = useDataTableMobileSlots(computed(() => props.columns), computed(() => props.mobileCard))
 
 const scrollContainerEl = shallowRef<HTMLElement | null>(null)
+
+useDataTableInfiniteScroll(scrollContainerEl, computed(() => props.onNextPage))
 
 const {
   measureRowElement,

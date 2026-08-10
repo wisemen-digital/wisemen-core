@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type {
   Action,
   ActionModel,
@@ -11,6 +12,7 @@ import {
   defineComponent,
   h,
   markRaw,
+  shallowRef,
 } from 'vue'
 
 import { useSort } from '@/composables/sort.composable'
@@ -44,10 +46,21 @@ interface User {
 
 const props = withDefaults(defineProps<{
   hasSubComponent?: boolean
+  // Simulates an always-loading table with no data yet — see `isSimulatingInfiniteScroll` for
+  // the interactive next-page-fetch demo instead.
+  isForcedLoading?: boolean
   isFirstColumnSticky?: boolean
   isLastColumnSticky?: boolean
   isNarrow?: boolean
+  // When `true`, `data` starts truncated to a small page and `onNextPage` reveals more of the
+  // 200-item mock dataset on a short delay, simulating a real paginated fetch — exercises
+  // `onNextPage`/`isFetchingNextPage` end to end instead of just their static visual states.
+  isSimulatingInfiniteScroll?: boolean
   isSelectable?: boolean
+  // Forces the empty state regardless of the mock dataset.
+  isSimulatingEmpty?: boolean
+  // Forces the error state regardless of loading/data.
+  isSimulatingError?: boolean
   // Pins the named columns left/right by key (`DataTableColumn.isSticky`), independent of
   // `isFirstColumnSticky`/`isLastColumnSticky` — demonstrates any combination of columns
   // sticking together as one contiguous region per side, with cumulative offsets, not just a
@@ -59,10 +72,14 @@ const props = withDefaults(defineProps<{
   groupBy?: 'department' | 'department+status' | 'status' | null
 }>(), {
   hasSubComponent: false,
+  isForcedLoading: false,
   isFirstColumnSticky: false,
   isLastColumnSticky: false,
   isNarrow: false,
+  isSimulatingInfiniteScroll: false,
   isSelectable: false,
+  isSimulatingEmpty: false,
+  isSimulatingError: false,
   stickyLeftColumnKeys: () => [],
   stickyRightColumnKeys: () => [],
   groupBy: null,
@@ -178,6 +195,37 @@ const sortedData = computed<User[]>(() => {
 
   return data.toSorted((a, b) => direction * String(a[activeSort.key]).localeCompare(String(b[activeSort.key])))
 })
+
+const INFINITE_SCROLL_PAGE_SIZE = 30
+const INFINITE_SCROLL_FETCH_DELAY_MS = 600
+
+const loadedCount = shallowRef<number>(INFINITE_SCROLL_PAGE_SIZE)
+const isFetchingNextPage = shallowRef<boolean>(false)
+
+const visibleData = computed<User[]>(() => (
+  props.isSimulatingEmpty
+    ? []
+    : (props.isSimulatingInfiniteScroll ? sortedData.value.slice(0, loadedCount.value) : sortedData.value)
+))
+
+const error = computed<ApiError | null>(() => (props.isSimulatingError ? new Error('Failed to load users.') : null))
+
+function onNextPage(): void {
+  if (
+    !props.isSimulatingInfiniteScroll
+    || isFetchingNextPage.value
+    || loadedCount.value >= sortedData.value.length
+  ) {
+    return
+  }
+
+  isFetchingNextPage.value = true
+
+  setTimeout(() => {
+    loadedCount.value = Math.min(loadedCount.value + INFINITE_SCROLL_PAGE_SIZE, sortedData.value.length)
+    isFetchingNextPage.value = false
+  }, INFINITE_SCROLL_FETCH_DELAY_MS)
+}
 
 // Sticky side (if any) is applied after the fact, keyed off each column's own `key` — see
 // `getStickySide` — rather than passed inline per factory call, so the Storybook "pinned
@@ -317,19 +365,23 @@ function subComponent(item: User) {
   >
     <UIDataTable
       :columns="columns"
-      :data="sortedData"
+      :data="visibleData"
+      :error="error"
       :get-action-model="getActionModel"
       :get-key="(item) => item.id"
       :get-link="getLink"
       :group-by="groupByProp"
+      :is-fetching-next-page="isFetchingNextPage"
       :is-first-column-sticky="props.isFirstColumnSticky"
-      :is-initialized="true"
       :is-last-column-sticky="props.isLastColumnSticky"
+      :is-loading="props.isForcedLoading"
       :is-selectable="props.isSelectable"
       :mobile-card="mobileCard"
+      :on-next-page="props.isSimulatingInfiniteScroll ? onNextPage : null"
       :selection-actions="selectionActions"
       :sort="sort"
       :sub-component="props.hasSubComponent ? subComponent : null"
+      :total-count="props.isSimulatingInfiniteScroll ? sortedData.length : null"
       class="min-h-0 flex-1"
       @select="onSelect"
     />

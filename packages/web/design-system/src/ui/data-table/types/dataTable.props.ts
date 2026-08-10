@@ -1,4 +1,5 @@
 import type { Action } from '@wisemen/vue-core-actions'
+import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Component } from 'vue'
 
 import type { Sort } from '@/composables/sort.composable'
@@ -28,14 +29,19 @@ export interface DataTableProps<TItem> {
    */
   isFirstColumnSticky?: boolean
   /**
-   * Whether the table has completed its initial data fetch. Controls whether the table
-   * renders its rows or a loading skeleton.
+   * Whether a next-page fetch (triggered via `onNextPage`) is in flight. Renders a trailing
+   * skeleton below the already-loaded rows, unlike `isLoading` which has no rows to show yet.
    */
-  isInitialized: boolean
+  isFetchingNextPage?: boolean
   /**
    * Makes the last column sticky (fixed) when horizontally scrolling.
    */
   isLastColumnSticky?: boolean
+  /**
+   * Whether the initial data fetch is in flight and `data` is not yet populated. Renders a
+   * skeleton in place of the rows.
+   */
+  isLoading?: boolean
   /**
    * When `true`, a checkbox column is prepended to the table, enabling row selection. Listen
    * to the `select` emit to receive the current selection state as either an `includes` array
@@ -51,6 +57,11 @@ export interface DataTableProps<TItem> {
    * The flat row data to render.
    */
   data: TItem[]
+  /**
+   * The current fetch error, if any. Replaces the row area with the `#error` slot (or the
+   * default `UIErrorState`) until cleared.
+   */
+  error?: ApiError | null
   /**
    * Maps a row item to the action context model used by the actions system, for the
    * selection action bar. Required when `selectionActions` is provided.
@@ -81,6 +92,12 @@ export interface DataTableProps<TItem> {
    */
   mobileCard?: DataTableMobileCardConfig | null
   /**
+   * Called when the user scrolls near the end of the loaded rows, or when the loaded rows
+   * don't fill the scroll container at all — the signal to fetch the next page. Pass `null`
+   * (default) when there is no next page, e.g. all data is already loaded client-side.
+   */
+  onNextPage?: (() => void) | null
+  /**
    * Actions shown in a floating bar once one or more rows are selected. Only actions that
    * resolve as applicable for the current selection are rendered.
    */
@@ -97,4 +114,11 @@ export interface DataTableProps<TItem> {
    * `null` for a given row to indicate it has no expand chevron at all.
    */
   subComponent?: ((item: TItem) => Component | null) | null
+  /**
+   * The total row count matching the current filter, if known server-side. Used only to
+   * display a correct, stable count in the selection action bar during select-all — without
+   * it, select-all shows the number of rows currently loaded, which climbs as more pages
+   * fetch in via `onNextPage`.
+   */
+  totalCount?: number | null
 }

@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="TItem">
+import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type {
   Header,
   Row,
@@ -16,30 +17,39 @@ import DataTableDataRow from '@/ui/data-table/components/DataTableDataRow.vue'
 import DataTableGroupRow from '@/ui/data-table/components/DataTableGroupRow.vue'
 import DataTableHeaderCell from '@/ui/data-table/components/DataTableHeaderCell.vue'
 import DataTableHeaderCheckboxCell from '@/ui/data-table/components/DataTableHeaderCheckboxCell.vue'
+import DataTableLoadingRows from '@/ui/data-table/components/DataTableLoadingRows.vue'
 import DataTableMobileList from '@/ui/data-table/components/DataTableMobileList.vue'
 import DataTableSelectionActionBar from '@/ui/data-table/components/DataTableSelectionActionBar.vue'
 import DataTableVirtualRows from '@/ui/data-table/components/DataTableVirtualRows.vue'
 import { useDataTable } from '@/ui/data-table/composables/dataTable.composable'
 import { useDataTableGroupedVirtualScroller } from '@/ui/data-table/composables/dataTableGroupedVirtualScroller.composable'
+import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
 import { useDataTableVirtualScroller } from '@/ui/data-table/composables/dataTableVirtualScroller.composable'
 import { useProvideDataTableContext } from '@/ui/data-table/context/dataTable.context'
 import type { DataTableProps } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableCell as DataTableCellDefinition } from '@/ui/data-table/types/dataTableCell.type'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
+import { UIEmptyState } from '@/ui/empty-state/index'
+import { UIErrorState } from '@/ui/error-state/index'
 import { useTableSelection } from '@/ui/table/composables/tableSelection.composable'
 import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isColumnResizeDisabled: false,
+  isFetchingNextPage: false,
   isFirstColumnSticky: true,
   isLastColumnSticky: false,
+  isLoading: false,
   isSelectable: false,
+  error: null,
   getActionModel: null,
   groupBy: null,
   mobileCard: null,
+  onNextPage: null,
   selectionActions: () => [],
   sort: null,
   subComponent: null,
+  totalCount: null,
 })
 
 const emit = defineEmits<{
@@ -49,6 +59,8 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const scrollContainerEl = shallowRef<HTMLElement | null>(null)
+
+useDataTableInfiniteScroll(scrollContainerEl, computed(() => props.onNextPage))
 
 // Computed directly from `props.data`, independent of TanStack's row model, so `hasSubComponent`
 // (needed by `useDataTable` for the grid template, below) has no circular dependency on `table`.
@@ -155,6 +167,13 @@ const {
 
 const selectedItems = computed<TItem[]>(
   () => props.data.filter((item) => isItemSelected(props.getKey(item))),
+)
+
+// While select-all is active, `props.totalCount` (the true server-side match count, if known)
+// takes over from the loaded-rows count — otherwise the displayed count would silently climb
+// as more pages load in via `onNextPage`, with no indication it was never a stable total.
+const selectedCount = computed<number>(
+  () => (isAllSelected.value && props.totalCount !== null ? props.totalCount : selectedItems.value.length),
 )
 
 const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
@@ -295,171 +314,206 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
     headerLabel: columnByKey.get(header.column.id)?.headerLabel ?? header.column.id,
   }))
 })
+
+// Matches the grid's actual track count — leading checkbox/expand tracks (not real TanStack
+// columns) plus one per real column — so `DataTableLoadingRows`'s subgrid rows span the full
+// width instead of leaving empty trailing tracks.
+const loadingRowColumnCount = computed<number>(
+  () => (props.isSelectable ? 1 : 0) + (hasSubComponent.value ? 1 : 0) + visibleColumns.value.length,
+)
 </script>
 
 <template>
   <div
     class="@container/data-table relative flex size-full min-w-0 flex-col"
   >
-    <div
-      v-if="props.isSelectable"
-      class="
-        flex items-center justify-end px-xl py-lg
-        @md/data-table:hidden
-      "
+    <slot
+      v-if="props.error !== null"
+      :error="(props.error as ApiError)"
+      name="error"
     >
-      <button
-        class="text-xs font-medium text-brand-primary outline-none"
-        type="button"
-        @click="toggleMobileSelectMode"
-      >
-        {{ isMobileSelectModeOn
-          ? i18n.t('component.data_table.mobile_list.cancel_select_label')
-          : i18n.t('component.data_table.mobile_list.select_label') }}
-      </button>
-    </div>
+      <UIErrorState
+        :error="props.error"
+        class="mx-auto h-full max-w-96 py-xl"
+      />
+    </slot>
 
-    <DataTableMobileList
-      :columns="props.columns"
-      :expanded-item-keys="expandedMobileCardKeys"
-      :get-key="props.getKey"
-      :get-link="props.getLink"
-      :is-item-selected="isItemSelected"
-      :is-selectable="isMobileSelectModeOn"
-      :mobile-card="props.mobileCard"
-      :row-view-models="rowViewModels"
-      class="
-        min-h-0 flex-1
-        @md/data-table:hidden
-      "
-      @toggle-expanded="toggleMobileCardExpanded"
-      @toggle-group-selected="toggleGroup"
-      @toggle-selected="toggleItem"
+    <UIEmptyState
+      v-else-if="props.data.length === 0 && !props.isLoading"
+      :title="i18n.t('component.data_table.empty_state.no_data.title')"
+      :description="i18n.t('component.data_table.empty_state.no_data.description')"
+      illustration="cloud-search"
+      class="mx-auto h-full max-w-96 py-xl"
     />
 
-    <div
-      ref="scrollContainerEl"
-      class="
-        hidden max-h-full w-full min-w-0 overflow-auto rounded-xl border
-        border-secondary contain-layout contain-paint
-        @md/data-table:block
-      "
-    >
+    <template v-else>
       <div
-        :style="{ gridTemplateColumns }"
-        class="grid w-max min-w-full"
-        role="table"
+        v-if="props.isSelectable"
+        class="
+          flex items-center justify-end px-xl py-lg
+          @md/data-table:hidden
+        "
+      >
+        <button
+          class="text-xs font-medium text-brand-primary outline-none"
+          type="button"
+          @click="toggleMobileSelectMode"
+        >
+          {{ isMobileSelectModeOn
+            ? i18n.t('component.data_table.mobile_list.cancel_select_label')
+            : i18n.t('component.data_table.mobile_list.select_label') }}
+        </button>
+      </div>
+
+      <DataTableMobileList
+        :columns="props.columns"
+        :expanded-item-keys="expandedMobileCardKeys"
+        :get-key="props.getKey"
+        :get-link="props.getLink"
+        :is-item-selected="isItemSelected"
+        :is-selectable="isMobileSelectModeOn"
+        :mobile-card="props.mobileCard"
+        :on-next-page="props.onNextPage"
+        :row-view-models="rowViewModels"
+        class="
+          min-h-0 flex-1
+          @md/data-table:hidden
+        "
+        @toggle-expanded="toggleMobileCardExpanded"
+        @toggle-group-selected="toggleGroup"
+        @toggle-selected="toggleItem"
+      />
+
+      <div
+        ref="scrollContainerEl"
+        class="
+          hidden max-h-full w-full min-w-0 overflow-auto rounded-xl border
+          border-secondary contain-layout contain-paint
+          @md/data-table:block
+        "
       >
         <div
-          class="contents"
-          role="rowgroup"
+          :style="{ gridTemplateColumns }"
+          class="grid w-max min-w-full"
+          role="table"
         >
           <div
             class="contents"
-            role="row"
-          >
-            <DataTableHeaderCheckboxCell
-              v-if="props.isSelectable"
-              :is-checked="isAllSelected"
-              :is-indeterminate="isIndeterminate && !isAllSelected"
-              @toggle="toggleAll"
-            />
-
-            <div
-              v-if="hasSubComponent"
-              :style="{
-                left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.expand}px` : undefined,
-              }"
-              :class="{
-                'z-30': isLeadingStickyRegionActive,
-              }"
-              class="
-                sticky top-0 z-20 flex h-10 items-center border-b
-                border-secondary bg-secondary px-xl
-              "
-              role="columnheader"
-            />
-
-            <DataTableHeaderCell
-              v-for="(column, columnIndex) of visibleColumns"
-              :key="column.id"
-              :column-key="column.id"
-              :header="column.header"
-              :is-last-column-overall="columnIndex === visibleColumns.length - 1"
-              :label="column.headerLabel"
-            />
-          </div>
-        </div>
-
-        <div
-          class="contents"
-          role="rowgroup"
-        >
-          <DataTableVirtualRows
-            v-if="isGroupingEnabled"
-            :padding-after-px="paddingAfterPx"
-            :padding-before-px="paddingBeforePx"
+            role="rowgroup"
           >
             <div
-              v-for="entry of groupedVirtualRowViewModels"
-              :key="entry.key"
-              :ref="measureRowElement"
-              :data-index="entry.index"
-              class="col-span-full grid grid-cols-subgrid"
+              class="contents"
+              role="row"
             >
-              <DataTableGroupRow
-                v-if="entry.viewModel.isGrouped"
-                :depth="entry.row.depth"
-                :is-expanded="entry.row.getIsExpanded()"
-                :is-last="entry.viewModel.isLast"
-                :is-selectable="props.isSelectable"
-                :is-selected="entry.viewModel.isGroupAllSelected"
-                :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate && !entry.viewModel.isGroupAllSelected"
-                :label="entry.viewModel.groupLabelCell === null ? entry.viewModel.groupLabel : ''"
-                @toggle="entry.row.toggleExpanded()"
-                @toggle-selected="toggleRowGroup(entry.row)"
-              >
-                <DataTableCellRenderer
-                  v-if="entry.viewModel.groupLabelCell !== null"
-                  :cell="entry.viewModel.groupLabelCell!"
-                />
-              </DataTableGroupRow>
+              <DataTableHeaderCheckboxCell
+                v-if="props.isSelectable"
+                :is-checked="isAllSelected"
+                :is-indeterminate="isIndeterminate && !isAllSelected"
+                @toggle="toggleAll"
+              />
 
+              <div
+                v-if="hasSubComponent"
+                :style="{
+                  left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.expand}px` : undefined,
+                }"
+                :class="{
+                  'z-30': isLeadingStickyRegionActive,
+                }"
+                class="
+                  sticky top-0 z-20 flex h-10 items-center border-b
+                  border-secondary bg-secondary px-xl
+                "
+                role="columnheader"
+              />
+
+              <DataTableHeaderCell
+                v-for="(column, columnIndex) of visibleColumns"
+                :key="column.id"
+                :column-key="column.id"
+                :header="column.header"
+                :is-last-column-overall="columnIndex === visibleColumns.length - 1"
+                :label="column.headerLabel"
+              />
+            </div>
+          </div>
+
+          <div
+            class="contents"
+            role="rowgroup"
+          >
+            <DataTableVirtualRows
+              v-if="isGroupingEnabled"
+              :padding-after-px="paddingAfterPx"
+              :padding-before-px="paddingBeforePx"
+            >
+              <div
+                v-for="entry of groupedVirtualRowViewModels"
+                :key="entry.key"
+                :ref="measureRowElement"
+                :data-index="entry.index"
+                class="col-span-full grid grid-cols-subgrid"
+              >
+                <DataTableGroupRow
+                  v-if="entry.viewModel.isGrouped"
+                  :depth="entry.row.depth"
+                  :is-expanded="entry.row.getIsExpanded()"
+                  :is-last="entry.viewModel.isLast"
+                  :is-selectable="props.isSelectable"
+                  :is-selected="entry.viewModel.isGroupAllSelected"
+                  :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate && !entry.viewModel.isGroupAllSelected"
+                  :label="entry.viewModel.groupLabelCell === null ? entry.viewModel.groupLabel : ''"
+                  @toggle="entry.row.toggleExpanded()"
+                  @toggle-selected="toggleRowGroup(entry.row)"
+                >
+                  <DataTableCellRenderer
+                    v-if="entry.viewModel.groupLabelCell !== null"
+                    :cell="entry.viewModel.groupLabelCell!"
+                  />
+                </DataTableGroupRow>
+
+                <DataTableDataRow
+                  v-else
+                  :has-sub-component="hasSubComponent"
+                  :is-selectable="props.isSelectable"
+                  :view-model="entry.viewModel"
+                  @toggle-selected="toggleItem(props.getKey(entry.row.original))"
+                  @toggle-sub-component="toggleSubComponent(entry.row.id)"
+                />
+              </div>
+            </DataTableVirtualRows>
+
+            <DataTableVirtualRows
+              v-else
+              :padding-after-px="paddingAfterPx"
+              :padding-before-px="paddingBeforePx"
+            >
               <DataTableDataRow
-                v-else
+                v-for="entry of flatVirtualRowViewModels"
+                :key="entry.key"
                 :has-sub-component="hasSubComponent"
                 :is-selectable="props.isSelectable"
                 :view-model="entry.viewModel"
-                @toggle-selected="toggleItem(props.getKey(entry.row.original))"
-                @toggle-sub-component="toggleSubComponent(entry.row.id)"
+                @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+                @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
               />
-            </div>
-          </DataTableVirtualRows>
+            </DataTableVirtualRows>
 
-          <DataTableVirtualRows
-            v-else
-            :padding-after-px="paddingAfterPx"
-            :padding-before-px="paddingBeforePx"
-          >
-            <DataTableDataRow
-              v-for="entry of flatVirtualRowViewModels"
-              :key="entry.key"
-              :has-sub-component="hasSubComponent"
-              :is-selectable="props.isSelectable"
-              :view-model="entry.viewModel"
-              @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
-              @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
+            <DataTableLoadingRows
+              v-if="props.isLoading || props.isFetchingNextPage"
+              :column-count="loadingRowColumnCount"
+              :grid-template-columns="gridTemplateColumns"
             />
-          </DataTableVirtualRows>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
 
     <DataTableSelectionActionBar
       v-if="props.isSelectable"
       :actions="props.selectionActions"
       :models="selectedActionModels"
-      :selected-count="selectedItems.length"
+      :selected-count="selectedCount"
     />
   </div>
 </template>
