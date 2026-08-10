@@ -47,6 +47,24 @@ file is the condensed, decisions-only reference.
   dragged column and the fill column.
 - `isColumnResizeDisabled` prop hides the handles and disables dragging entirely.
 
+## Sticky columns
+
+- `isFirstColumnSticky` defaults to **`true`** — the first column stays pinned while
+  horizontally scrolling unless explicitly disabled. `isLastColumnSticky` still defaults to
+  `false`.
+- Any column can pin by key via `isSticky: 'left' | 'right'` on its column definition (passed
+  to any `createDataTableXCell` factory), independent of `isFirstColumnSticky`/
+  `isLastColumnSticky`. Multiple columns pinned to the same side stick together as one
+  contiguous region, not independently — real TanStack column pinning
+  (`table.getLeftLeafColumns()`/`getRightLeafColumns()`), not a CSS trick limited to one column
+  per side.
+- When `isSelectable`/a `subComponent` is configured, the checkbox/expand leading columns
+  (which aren't real TanStack columns) join the sticky-left region automatically whenever
+  anything is pinned left — they scroll and stick together with the first data column, not
+  independently of it.
+- Only the outer edge of a multi-column sticky region gets a border (the rightmost column of a
+  sticky-left group, the leftmost of a sticky-right group) — not between every pinned column.
+
 ## Rows & selection
 
 - **Row selection**: reuses the existing `TableSelectionState<T>` shape verbatim —

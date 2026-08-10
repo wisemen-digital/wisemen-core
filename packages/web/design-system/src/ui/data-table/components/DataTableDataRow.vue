@@ -38,10 +38,9 @@ const emit = defineEmits<{
     />
 
     <DataTableCell
-      v-for="(cell, cellIndex) of props.viewModel.row.getVisibleCells()"
+      v-for="cell of props.viewModel.row.getVisibleCells()"
       :key="cell.column.id"
-      :is-first-column="!props.isSelectable && !props.hasSubComponent && cellIndex === 0"
-      :is-last-column="cellIndex === props.viewModel.row.getVisibleCells().length - 1"
+      :column-id="cell.column.id"
     >
       <FlexRender
         :props="cell.getContext()"

@@ -22,7 +22,9 @@ export interface DataTableProps<TItem> {
    */
   isColumnResizeDisabled?: boolean
   /**
-   * Makes the first column sticky (fixed) when horizontally scrolling.
+   * Makes the first column sticky (fixed) when horizontally scrolling. Defaults to `true` —
+   * pass `false` to opt out. Columns pinned individually via `DataTableColumn.isSticky: 'left'`
+   * stick together with the first column as one contiguous region, not independently of it.
    */
   isFirstColumnSticky?: boolean
   /**

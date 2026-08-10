@@ -7,6 +7,18 @@ interface DataTableContext {
   isColumnResizeDisabled: ComputedRef<boolean>
   isFirstColumnSticky: ComputedRef<boolean>
   isLastColumnSticky: ComputedRef<boolean>
+  /** Whether the checkbox/expand columns should render sticky (true once anything is pinned left). */
+  isLeadingStickyRegionActive: ComputedRef<boolean>
+  /** Left offset (px) for the checkbox/expand columns themselves. */
+  leadingStickyOffsetsPx: ComputedRef<{ checkbox: number, expand: number }>
+  /** Column id carrying the sticky-left group's trailing border, or `null` if none pinned. */
+  leftStickyBorderColumnId: ComputedRef<string | null>
+  /** Cumulative left offset (px) per real column pinned left, keyed by column id. */
+  leftStickyOffsetPxByColumnId: ComputedRef<Map<string, number>>
+  /** Mirrors `leftStickyBorderColumnId` for the right-pinned group. */
+  rightStickyBorderColumnId: ComputedRef<string | null>
+  /** Mirrors `leftStickyOffsetPxByColumnId` for the right edge. */
+  rightStickyOffsetPxByColumnId: ComputedRef<Map<string, number>>
   setColumnSize: (columnKey: string, widthPx: number) => void
   sort: ComputedRef<Sort | null>
 }

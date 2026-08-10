@@ -26,6 +26,13 @@ export interface DataTableColumn<TItem, TKey extends string = string> {
    */
   cellType: DataTableCell['type']
   headerLabel: string
+  /**
+   * Pins this column to the left or right edge when horizontally scrolling, alongside
+   * `DataTableProps.isFirstColumnSticky`/`isLastColumnSticky` — multiple columns pinned to the
+   * same side stick together as one contiguous region (e.g. the default-sticky first column
+   * plus any column pinned here by key), not independently.
+   */
+  isSticky?: 'left' | 'right'
   key: TKey
   /**
    * Fixed pixel width overriding this column's cell-type default. Manual drag-resize still
@@ -43,6 +50,7 @@ export type InferDataTableColumnKeys<T extends { key: string }[]> = T[number]['k
 
 interface DataTableColumnFactoryBaseOptions<TKey extends string> {
   headerLabel: string
+  isSticky?: 'left' | 'right'
   key: TKey
   size?: number
 }
@@ -62,6 +70,7 @@ export function createDataTableTextCell<TItem, TKey extends string>(
     }),
     cellType: 'text',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -82,6 +91,7 @@ export function createDataTableNumberCell<TItem, TKey extends string>(
     }),
     cellType: 'number',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -102,6 +112,7 @@ export function createDataTableIdCell<TItem, TKey extends string>(
     }),
     cellType: 'id',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -122,6 +133,7 @@ export function createDataTableLocationCell<TItem, TKey extends string>(
     }),
     cellType: 'location',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -142,6 +154,7 @@ export function createDataTableContactInfoCell<TItem, TKey extends string>(
     }),
     cellType: 'contactInfo',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -162,6 +175,7 @@ export function createDataTableBadgeCell<TItem, TKey extends string>(
     }),
     cellType: 'badge',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -183,6 +197,7 @@ export function createDataTableTimestampCell<TItem, TKey extends string>(
     }),
     cellType: 'timestamp',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }
@@ -206,6 +221,7 @@ export function createDataTableCustomCell<TItem, TKey extends string, TValue>(
     }),
     cellType: 'custom',
     headerLabel: options.headerLabel,
+    isSticky: options.isSticky,
     key: options.key,
     size: options.size,
   }

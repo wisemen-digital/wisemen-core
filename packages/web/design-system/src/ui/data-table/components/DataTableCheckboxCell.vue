@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
-import DataTableCell from '@/ui/data-table/components/DataTableCell.vue'
+import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = defineProps<{
   isChecked: boolean
@@ -14,12 +14,25 @@ const emit = defineEmits<{
 }>()
 
 const i18n = useI18n()
+
+const {
+  isLeadingStickyRegionActive, leadingStickyOffsetsPx,
+} = useInjectDataTableContext()
 </script>
 
 <template>
-  <DataTableCell
-    :is-first-column="true"
-    :is-last-column="false"
+  <div
+    :style="{
+      left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.checkbox}px` : undefined,
+    }"
+    :class="{
+      'sticky z-1': isLeadingStickyRegionActive,
+    }"
+    class="
+      flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
+      text-primary
+    "
+    role="cell"
   >
     <BaseCheckbox
       :model-value="props.isChecked"
@@ -28,5 +41,5 @@ const i18n = useI18n()
       :label="i18n.t('component.table.row.toggle_selection_action.name')"
       @update:model-value="emit('toggle')"
     />
-  </DataTableCell>
+  </div>
 </template>

@@ -16,8 +16,7 @@ import type { SortDirection } from '@/composables/sort.composable'
 import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = defineProps<{
-  isFirstColumn: boolean
-  isLastColumn: boolean
+  isLastColumnOverall: boolean
   columnKey: string
   header: Header<TItem, unknown>
   label: string
@@ -25,31 +24,33 @@ const props = defineProps<{
 
 const {
   isColumnResizeDisabled,
-  isFirstColumnSticky,
-  isLastColumnSticky,
+  leftStickyBorderColumnId,
+  leftStickyOffsetPxByColumnId,
+  rightStickyBorderColumnId,
+  rightStickyOffsetPxByColumnId,
   setColumnSize,
   sort,
 } = useInjectDataTableContext()
 
 const cellEl = useTemplateRef<HTMLElement>('cellEl')
 
-// The last column is never resizable, even if `header.column.getCanResize()` says otherwise —
-// it always stays the fluid fill column (`FILL_SPACE_COLUMN`), so DataTable never overflows its
-// container from a resize alone. See `CONTEXT.md` ("Column resize").
+// The fill column (last overall, not necessarily sticky-right) is never resizable.
 const isResizable = computed<boolean>(
-  () => !isColumnResizeDisabled.value && !props.isLastColumn && props.header.column.getCanResize(),
+  () => !isColumnResizeDisabled.value && !props.isLastColumnOverall && props.header.column.getCanResize(),
 )
+
+const leftOffsetPx = computed<number | null>(() => leftStickyOffsetPxByColumnId.value.get(props.columnKey) ?? null)
+const rightOffsetPx = computed<number | null>(() => rightStickyOffsetPxByColumnId.value.get(props.columnKey) ?? null)
+const isStickyLeft = computed<boolean>(() => leftOffsetPx.value !== null)
+const isStickyRight = computed<boolean>(() => rightOffsetPx.value !== null)
+const hasLeftBorder = computed<boolean>(() => props.columnKey === leftStickyBorderColumnId.value)
+const hasRightBorder = computed<boolean>(() => props.columnKey === rightStickyBorderColumnId.value)
 
 const isResizing = computed<boolean>(() => props.header.column.getIsResizing())
 
 function onResizeStart(event: MouseEvent | TouchEvent): void {
-  // TanStack's own `header.getSize()` (what `getResizeHandler()` captures internally as the
-  // drag's starting size) falls back to `defaultColumnSizing.size` (150px) for any column with
-  // no `columnSizing` entry yet — unrelated to this column's actual fluid CSS-rendered width.
-  // Without seeding the real width first, a column's very first resize jumps to ~150px on the
-  // first pixel of drag, before snapping back to tracking the cursor correctly. Every later
-  // resize of the same column is unaffected, since `columnSizing` already holds a real value
-  // by then. See `CONTEXT.md` ("Column resize — first-drag jump").
+  // Seeds the real current width before TanStack's own drag math kicks in — otherwise a
+  // column's first-ever resize jumps to TanStack's 150px default.
   if (cellEl.value !== null) {
     setColumnSize(props.columnKey, cellEl.value.getBoundingClientRect().width)
   }
@@ -57,9 +58,7 @@ function onResizeStart(event: MouseEvent | TouchEvent): void {
   props.header.getResizeHandler()(event)
 }
 
-// No TanStack equivalent — render at natural (`max-content`) width, measure it, feed that
-// number back in as a fixed size. Same "measure DOM, feed back as a fixed size" shape as the
-// current `Table`'s `fitColumnToContent`.
+// Double-click-to-fit: measure at natural width, feed it back in as a fixed size.
 async function onResizeFitToContent(): Promise<void> {
   const el = cellEl.value
 
@@ -108,9 +107,14 @@ const sortIcon = computed<Component | null>(() => {
 <template>
   <div
     ref="cellEl"
+    :style="{
+      left: isStickyLeft ? `${leftOffsetPx}px` : undefined,
+      right: isStickyRight ? `${rightOffsetPx}px` : undefined,
+    }"
     :class="{
-      'left-0 z-30 border-r border-secondary': props.isFirstColumn && isFirstColumnSticky,
-      'right-0 z-30 border-l border-secondary': props.isLastColumn && isLastColumnSticky,
+      'z-30': isStickyLeft || isStickyRight,
+      'border-r border-secondary': isStickyLeft && hasLeftBorder,
+      'border-l border-secondary': isStickyRight && hasRightBorder,
       'z-40': isResizing,
     }"
     class="

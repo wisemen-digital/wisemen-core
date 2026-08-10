@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ChevronRightIcon } from '@wisemen/vue-core-icons'
 
-import DataTableCell from '@/ui/data-table/components/DataTableCell.vue'
+import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = defineProps<{
   isExpanded: boolean
@@ -11,12 +11,25 @@ const props = defineProps<{
 const emit = defineEmits<{
   toggle: []
 }>()
+
+const {
+  isLeadingStickyRegionActive, leadingStickyOffsetsPx,
+} = useInjectDataTableContext()
 </script>
 
 <template>
-  <DataTableCell
-    :is-first-column="true"
-    :is-last-column="false"
+  <div
+    :style="{
+      left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.expand}px` : undefined,
+    }"
+    :class="{
+      'sticky z-1': isLeadingStickyRegionActive,
+    }"
+    class="
+      flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
+      text-primary
+    "
+    role="cell"
   >
     <button
       v-if="props.canExpand"
@@ -35,5 +48,5 @@ const emit = defineEmits<{
         class="size-3.5 text-tertiary duration-150"
       />
     </button>
-  </DataTableCell>
+  </div>
 </template>

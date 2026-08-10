@@ -2,6 +2,13 @@ import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
 
 export const DATA_TABLE_EXPAND_COLUMN_WIDTH = '2.5rem'
 export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH = '2.5rem'
+// Pixel equivalents of the two constants above (1rem = 16px in this design system's root font
+// size — see `tailwind-design-tokens.css`'s `--spacing-*` comments), needed because the sticky
+// left-offset calculation (`dataTable.composable.ts`'s `leftStickyOffsetPxByColumnId`) sums
+// pixel widths across the checkbox/expand columns and TanStack's own pixel `column.getSize()`
+// values — the two can't be summed while one side is a CSS rem string.
+export const DATA_TABLE_EXPAND_COLUMN_WIDTH_PX = 40
+export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX = 40
 
 // Absolute floor for manual drag-resize — no column can ever be dragged below this, regardless
 // of its cell type or declared `size`. Small enough to not be an obstacle for genuinely narrow
@@ -32,7 +39,7 @@ export class DataTableUtil {
     const columns = columnWidthsPx
       .map((widthPx, index) => (
         index === columnWidthsPx.length - 1
-          ? 'minmax(min-content, auto)'
+          ? 'minmax(0, auto)'
           : `${widthPx}px`
       ))
       .join(' ')

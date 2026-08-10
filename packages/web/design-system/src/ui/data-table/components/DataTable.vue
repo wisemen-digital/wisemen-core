@@ -7,7 +7,6 @@ import type { Component } from 'vue'
 import {
   computed,
   shallowRef,
-  watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -32,7 +31,7 @@ import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isColumnResizeDisabled: false,
-  isFirstColumnSticky: false,
+  isFirstColumnSticky: true,
   isLastColumnSticky: false,
   isSelectable: false,
   getActionModel: null,
@@ -78,13 +77,19 @@ const hasSubComponent = computed<boolean>(() => subComponentByItemKey.value.size
 
 const {
   gridTemplateColumns,
-  pinFirstColumn,
-  pinLastColumn,
+  isLeadingStickyRegionActive,
+  leadingStickyOffsetsPx,
+  leftStickyBorderColumnId,
+  leftStickyOffsetPxByColumnId,
+  rightStickyBorderColumnId,
+  rightStickyOffsetPxByColumnId,
   setColumnSize,
   table,
 } = useDataTable({
   hasSubComponent,
   isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
+  isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
+  isLastColumnSticky: computed(() => props.isLastColumnSticky),
   isSelectable: computed(() => props.isSelectable),
   columns: computed(() => props.columns),
   data: computed(() => props.data),
@@ -96,6 +101,12 @@ useProvideDataTableContext({
   isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
   isLastColumnSticky: computed(() => props.isLastColumnSticky),
+  isLeadingStickyRegionActive,
+  leadingStickyOffsetsPx,
+  leftStickyBorderColumnId,
+  leftStickyOffsetPxByColumnId,
+  rightStickyBorderColumnId,
+  rightStickyOffsetPxByColumnId,
   setColumnSize,
   sort: computed(() => props.sort),
 })
@@ -284,13 +295,6 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
     headerLabel: columnByKey.get(header.column.id)?.headerLabel ?? header.column.id,
   }))
 })
-
-watch(() => props.isFirstColumnSticky, pinFirstColumn, {
-  immediate: true,
-})
-watch(() => props.isLastColumnSticky, pinLastColumn, {
-  immediate: true,
-})
 </script>
 
 <template>
@@ -363,6 +367,12 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
 
             <div
               v-if="hasSubComponent"
+              :style="{
+                left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.expand}px` : undefined,
+              }"
+              :class="{
+                'z-30': isLeadingStickyRegionActive,
+              }"
               class="
                 sticky top-0 z-20 flex h-10 items-center border-b
                 border-secondary bg-secondary px-xl
@@ -375,8 +385,7 @@ watch(() => props.isLastColumnSticky, pinLastColumn, {
               :key="column.id"
               :column-key="column.id"
               :header="column.header"
-              :is-first-column="!props.isSelectable && !hasSubComponent && columnIndex === 0"
-              :is-last-column="columnIndex === visibleColumns.length - 1"
+              :is-last-column-overall="columnIndex === visibleColumns.length - 1"
               :label="column.headerLabel"
             />
           </div>

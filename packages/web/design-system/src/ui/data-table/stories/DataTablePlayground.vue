@@ -48,6 +48,14 @@ const props = withDefaults(defineProps<{
   isLastColumnSticky?: boolean
   isNarrow?: boolean
   isSelectable?: boolean
+  // Pins the named columns left/right by key (`DataTableColumn.isSticky`), independent of
+  // `isFirstColumnSticky`/`isLastColumnSticky` — demonstrates any combination of columns
+  // sticking together as one contiguous region per side, with cumulative offsets, not just a
+  // single pinned column. A key present in both arrays is a misuse of the control, not a
+  // supported combination — `columns` below resolves `left` first, so it would silently pin
+  // left; pick one side per column key.
+  stickyLeftColumnKeys?: string[]
+  stickyRightColumnKeys?: string[]
   groupBy?: 'department' | 'department+status' | 'status' | null
 }>(), {
   hasSubComponent: false,
@@ -55,8 +63,22 @@ const props = withDefaults(defineProps<{
   isLastColumnSticky: false,
   isNarrow: false,
   isSelectable: false,
+  stickyLeftColumnKeys: () => [],
+  stickyRightColumnKeys: () => [],
   groupBy: null,
 })
+
+function getStickySide(columnKey: string): 'left' | 'right' | undefined {
+  if (props.stickyLeftColumnKeys.includes(columnKey)) {
+    return 'left'
+  }
+
+  if (props.stickyRightColumnKeys.includes(columnKey)) {
+    return 'right'
+  }
+
+  return undefined
+}
 
 function onSelect(state: TableSelectionState<User>): void {
   // eslint-disable-next-line no-console
@@ -157,7 +179,13 @@ const sortedData = computed<User[]>(() => {
   return data.toSorted((a, b) => direction * String(a[activeSort.key]).localeCompare(String(b[activeSort.key])))
 })
 
-const columns: DataTableColumn<User>[] = [
+// Sticky side (if any) is applied after the fact, keyed off each column's own `key` — see
+// `getStickySide` — rather than passed inline per factory call, so the Storybook "pinned
+// left"/"pinned right" controls apply to any column by key without editing this list.
+// Declared as its own typed array (not inline in the `computed` below) so each
+// `createDataTableXCell` call still infers its `value` callback's `item` type from `User`
+// independently — folding this straight into a trailing `.map()` loses that per-call inference.
+const baseColumns: DataTableColumn<User>[] = [
   createDataTableTextCell({
     headerLabel: 'Name',
     key: 'name',
@@ -233,6 +261,11 @@ const columns: DataTableColumn<User>[] = [
     }),
   }),
 ]
+
+const columns = computed<DataTableColumn<User>[]>(() => baseColumns.map((column) => ({
+  ...column,
+  isSticky: getStickySide(column.key),
+})))
 
 const mobileCard: DataTableMobileCardConfig = {
   indicator: 'status',

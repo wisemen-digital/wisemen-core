@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
+import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = defineProps<{
   isChecked: boolean
@@ -13,10 +14,20 @@ const emit = defineEmits<{
 }>()
 
 const i18n = useI18n()
+
+const {
+  isLeadingStickyRegionActive, leadingStickyOffsetsPx,
+} = useInjectDataTableContext()
 </script>
 
 <template>
   <div
+    :style="{
+      left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.checkbox}px` : undefined,
+    }"
+    :class="{
+      'z-30': isLeadingStickyRegionActive,
+    }"
     class="
       sticky top-0 z-20 flex h-10 items-center border-b border-secondary
       bg-secondary px-xl

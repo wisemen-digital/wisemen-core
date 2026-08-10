@@ -27,7 +27,9 @@ import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type
 import {
   DATA_TABLE_CELL_DEFAULT_WIDTH_PX,
   DATA_TABLE_CHECKBOX_COLUMN_WIDTH,
+  DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX,
   DATA_TABLE_EXPAND_COLUMN_WIDTH,
+  DATA_TABLE_EXPAND_COLUMN_WIDTH_PX,
   DATA_TABLE_MIN_COLUMN_WIDTH_PX,
   DataTableUtil,
 } from '@/ui/data-table/utils/dataTable.util'
@@ -38,6 +40,8 @@ export type DataTableGroupBy = string | [string, string] | null
 export interface UseDataTableOptions<TItem> {
   hasSubComponent?: ComputedRef<boolean>
   isColumnResizeDisabled?: ComputedRef<boolean>
+  isFirstColumnSticky?: ComputedRef<boolean>
+  isLastColumnSticky?: ComputedRef<boolean>
   isSelectable?: ComputedRef<boolean>
   columns: ComputedRef<DataTableColumn<TItem>[]>
   data: ComputedRef<TItem[]>
@@ -47,7 +51,6 @@ export interface UseDataTableOptions<TItem> {
 
 export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   const columnVisibility = ref<VisibilityState>({})
-  const columnPinning = ref<ColumnPinningState>({})
   // Only ever seeded per-column the moment a user drags that column's resize handle — a column
   // with no entry here just reads its own `columnDef.size` (below), the cell-type default or
   // an explicit override. See `CONTEXT.md` ("Column sizing — fixed pixel default per cell type").
@@ -79,6 +82,43 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     minSize: DATA_TABLE_MIN_COLUMN_WIDTH_PX,
     size: column.size ?? DATA_TABLE_CELL_DEFAULT_WIDTH_PX[column.cellType],
   })))
+
+  // Derived, not settable — array order matters, since the offset computeds below sum
+  // cumulatively in this order (closest-to-edge first).
+  const columnPinning = computed<ColumnPinningState>(() => {
+    const firstColumnId = columnDefs.value[0]?.id
+    const lastColumnId = columnDefs.value.at(-1)?.id
+
+    const left = options.isFirstColumnSticky?.value === true && firstColumnId !== undefined
+      ? [
+          firstColumnId,
+        ]
+      : []
+    const right = options.isLastColumnSticky?.value === true && lastColumnId !== undefined
+      ? [
+          lastColumnId,
+        ]
+      : []
+
+    const keyPinnedRightIds: string[] = []
+
+    for (const column of options.columns.value) {
+      if (column.isSticky === 'left' && column.key !== firstColumnId) {
+        left.push(column.key)
+      }
+      else if (column.isSticky === 'right' && column.key !== lastColumnId) {
+        keyPinnedRightIds.push(column.key)
+      }
+    }
+
+    // Reversed: collected left-to-right, but `right` needs closest-to-the-edge first.
+    right.push(...keyPinnedRightIds.reverse())
+
+    return {
+      left,
+      right,
+    }
+  })
 
   const table = useVueTable({
     getRowId: (item) => options.getKey(item),
@@ -124,10 +164,8 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
         return grouping.value
       },
     },
-    onColumnPinningChange: (updaterOrValue) => {
-      columnPinning.value = typeof updaterOrValue === 'function'
-        ? updaterOrValue(columnPinning.value)
-        : updaterOrValue
+    onColumnPinningChange: () => {
+      // Pinning is derived, not user-draggable — ignore TanStack's own attempts to change it.
     },
     onColumnSizingChange: (updaterOrValue) => {
       columnSizing.value = typeof updaterOrValue === 'function'
@@ -149,40 +187,6 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
       // internal attempts to change it (e.g. via column grouping UI we don't expose).
     },
   })
-
-  function pinFirstColumn(isSticky: boolean): void {
-    const firstColumnId = columnDefs.value[0]?.id
-
-    if (firstColumnId === undefined) {
-      return
-    }
-
-    table.setColumnPinning((previous) => ({
-      ...previous,
-      left: isSticky
-        ? [
-            firstColumnId,
-          ]
-        : [],
-    }))
-  }
-
-  function pinLastColumn(isSticky: boolean): void {
-    const lastColumnId = columnDefs.value.at(-1)?.id
-
-    if (lastColumnId === undefined) {
-      return
-    }
-
-    table.setColumnPinning((previous) => ({
-      ...previous,
-      right: isSticky
-        ? [
-            lastColumnId,
-          ]
-        : [],
-    }))
-  }
 
   // Shared by two callers: double-click-to-fit (no TanStack equivalent — `DataTableHeaderCell`
   // measures its own rendered content width and hands it here) and drag-resize-start (seeding
@@ -215,10 +219,71 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     return DataTableUtil.columnSizesToGridTemplateColumns(columnWidthsPx, leadingColumnWidths)
   })
 
+  // Checkbox/expand aren't real TanStack columns, so their leading offset is tracked separately.
+  const leadingStickyOffsetsPx = computed<{ checkbox: number, expand: number }>(() => {
+    const isSelectable = options.isSelectable?.value ?? false
+
+    return {
+      checkbox: 0,
+      expand: isSelectable ? DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX : 0,
+    }
+  })
+
+  // True once at least one real column is pinned left.
+  const isLeadingStickyRegionActive = computed<boolean>(() => table.getLeftLeafColumns().length > 0)
+
+  // Cumulative left offset (px) per real pinned column, keyed by column id.
+  const leftStickyOffsetPxByColumnId = computed<Map<string, number>>(() => {
+    const offsetByColumnId = new Map<string, number>()
+    let offsetPx = 0
+
+    if (options.isSelectable?.value ?? false) {
+      offsetPx += DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX
+    }
+
+    if (options.hasSubComponent?.value ?? false) {
+      offsetPx += DATA_TABLE_EXPAND_COLUMN_WIDTH_PX
+    }
+
+    for (const column of table.getLeftLeafColumns()) {
+      offsetByColumnId.set(column.id, offsetPx)
+      offsetPx += column.getSize()
+    }
+
+    return offsetByColumnId
+  })
+
+  // Mirrors `leftStickyOffsetPxByColumnId`, from the right edge inward.
+  const rightStickyOffsetPxByColumnId = computed<Map<string, number>>(() => {
+    const offsetByColumnId = new Map<string, number>()
+    let offsetPx = 0
+
+    for (const column of table.getRightLeafColumns()) {
+      offsetByColumnId.set(column.id, offsetPx)
+      offsetPx += column.getSize()
+    }
+
+    return offsetByColumnId
+  })
+
+  // Column carrying the sticky-left group's trailing border — the rightmost pinned column.
+  const leftStickyBorderColumnId = computed<string | null>(
+    () => Array.from(leftStickyOffsetPxByColumnId.value.keys()).at(-1) ?? null,
+  )
+
+  // Mirrors `leftStickyBorderColumnId` for the right-pinned group.
+  const rightStickyBorderColumnId = computed<string | null>(
+    () => Array.from(rightStickyOffsetPxByColumnId.value.keys()).at(-1) ?? null,
+  )
+
   return {
     gridTemplateColumns,
-    pinFirstColumn,
-    pinLastColumn,
+    isLeadingStickyRegionActive,
+    leadingStickyOffsetsPx,
+    leftStickyBorderColumnId,
+    leftStickyOffsetPxByColumnId,
+    rightStickyBorderColumnId,
+    rightStickyOffsetPxByColumnId,
     setColumnSize,
     table,
   }
