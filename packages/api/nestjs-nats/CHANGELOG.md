@@ -9,6 +9,12 @@
 
 
 
+
+## 1.3.1
+<sub>2026-08-10</sub>
+
+- [#1569](https://github.com/wisemen-digital/wisemen-core/pull/1569)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Set mapping of server NKey from server name to server id
+
 ## 1.3.0
 <sub>2026-08-03</sub>
 
