@@ -1,42 +1,31 @@
-# .github/workflows/bumpy-check.yaml
-#
-# ⚠️ Uses `pull_request_target` so fork PR comments work — runs with write
-# perms and secrets, so it MUST NOT execute PR code (no `bun install`, no
-# PR-defined scripts). Bumpy only reads files; its version is resolved from
-# the base branch's package.json. See docs/github-actions.md for details.
 name: Bumpy Check
-on: pull_request_target
+
+on:
+  pull_request:
+    branches: [main]
 
 permissions:
-  pull-requests: write
   contents: read
+  pull-requests: write
 
 jobs:
   check:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - name: Install pnpm
         uses: pnpm/action-setup@v4
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          registry-url: "https://registry.npmjs.org"
-          cache: "pnpm"
-      # Resolve bumpy's version from the base branch (trusted) — not the PR's
-      # package.json (which a fork PR could swap to a malicious version).
-      # Change "main" to your base branch if different.
-      - name: Resolve bumpy version from base
+          registry-url: https://registry.npmjs.org
+      - name: Check package release entries
         run: |
-          git fetch origin main --depth=1
-          VERSION=$(git show "origin/main:package.json" \
-            | jq -r '.devDependencies["@varlock/bumpy"] // .dependencies["@varlock/bumpy"]' \
-            | sed 's/[\^~]//')
-          echo "BUMPY_VERSION=$VERSION" >> "$GITHUB_ENV"
-
-      - run: pnpx "@varlock/bumpy@$BUMPY_VERSION" ci check
+          BUMPY_VERSION=$(jq -r '.devDependencies["@varlock/bumpy"] // .dependencies["@varlock/bumpy"]' package.json | sed 's/[\^~]//')
+          pnpx "@varlock/bumpy@$BUMPY_VERSION" ci check --cwd .
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

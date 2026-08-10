@@ -246,8 +246,8 @@ catalogs:
       specifier: 10.1.0
       version: 10.1.0
     fledgling:
-      specifier: ^1.0.0
-      version: 1.0.0
+      specifier: ^1.2.1
+      version: 1.2.1
     husky:
       specifier: ^9.1.7
       version: 9.1.7
@@ -701,8 +701,8 @@ catalogs:
       specifier: ^0.0.29
       version: 0.0.29
     '@varlock/bumpy':
-      specifier: 1.13.1
-      version: 1.13.1
+      specifier: 1.18.1
+      version: 1.18.1
     release-it:
       specifier: 19.0.4
       version: 19.0.4
@@ -868,10 +868,10 @@ importers:
         version: 20.5.0
       '@varlock/bumpy':
         specifier: catalog:tooling
-        version: 1.13.1
+        version: 1.18.1
       fledgling:
         specifier: catalog:build
-        version: 1.0.0(cac@6.7.14)(citty@0.1.6)
+        version: 1.2.1(@gunshi/plugin-i18n@0.36.0)(cac@6.7.14)(citty@0.1.6)
       husky:
         specifier: catalog:build
         version: 9.1.7
@@ -5626,8 +5626,8 @@ packages:
   '@blazediff/core@1.9.1':
     resolution: {integrity: sha512-ehg3jIkYKulZh+8om/O25vkvSsXXwC+skXmyA87FFx6A/45eqOkZsBltMw/TVteb0mloiGT8oGRTcjRAz66zaA==}
 
-  '@bomb.sh/tab@0.0.16':
-    resolution: {integrity: sha512-xFtIH6JYVdXgkSft97gsQyJODZbjGXw+l+wkT06lBiBPuaF0CFYNulQNsgnYud7rURI7D4lyLmOQeAzRkvl1Fg==}
+  '@bomb.sh/tab@0.0.17':
+    resolution: {integrity: sha512-rGhqfWwaSF6qN5Gm5P9EH9eybrwLEowHTkV+wsRgFewT6aQCQWVWXLclVk0McgVIlWCGX+W9mYYC1Egsg+Znsw==}
     hasBin: true
     peerDependencies:
       cac: ^6.7.14
@@ -5650,16 +5650,8 @@ packages:
     peerDependencies:
       storybook: ^0.0.0-0 || ^10.1.0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0 || ^10.4.0-0
 
-  '@clack/core@1.4.1':
-    resolution: {integrity: sha512-FILJa1gGKEFTGZAJE9RpVhrjKz3c3h4ar60dSv6cGuDqufQ84YEIS3GAGvZiN+H6yaLbbvTFNejjCC4tXpZEuw==}
-    engines: {node: '>= 20.12.0'}
-
   '@clack/core@1.4.3':
     resolution: {integrity: sha512-/kr3UWNtdJfxZtPgDqUOmG2pvwlmcLGheex5yiZKdwbzZJxhV+HMNR9QNmyY5cGwTNV6LrR7Jtp+KjhUAP1qBQ==}
-    engines: {node: '>= 20.12.0'}
-
-  '@clack/prompts@1.5.1':
-    resolution: {integrity: sha512-zccHj2z2oCCO4yrDiRSlFOxWerGqRiysP7a5jPK6uoI9URKAquwY42Dd/iUP8JWHxEzdRe4TlbvZCo8z1/mhrw==}
     engines: {node: '>= 20.12.0'}
 
   '@clack/prompts@1.7.0':
@@ -6291,6 +6283,25 @@ packages:
     resolution: {integrity: sha512-rc1hOQtjIWGxcxpb9aHAfLpIctjEnsDehj0DAiVfBlmT84uvR0uUtN2hEi/ecvWVjXUGf5qPF4qEgiLOx1YIMQ==}
     engines: {node: '>=6'}
     hasBin: true
+
+  '@gunshi/plugin-completion@0.36.0':
+    resolution: {integrity: sha512-79EIxM3KIksBNHEzl1dW3ZQcjLuKxz2LYMK/gF/wRri+z/SlkqcpS3gqv/p3HiIK+2pegpTd5o5AKznko5kDXw==}
+    engines: {node: '>= 22'}
+    peerDependencies:
+      '@gunshi/plugin-i18n': 0.36.0
+
+  '@gunshi/plugin-i18n@0.36.0':
+    resolution: {integrity: sha512-T4IZh6lWApMiQ6UnBku5oGUgFgcv07GoZNF8v8aRoqcbmW9FQ6UVW8Em6s/oSFLMuIthR5B6OgcgI3ptZlgrZw==}
+    engines: {node: '>= 22'}
+    peerDependencies:
+      '@gunshi/plugin-global': 0.36.0
+    peerDependenciesMeta:
+      '@gunshi/plugin-global':
+        optional: true
+
+  '@gunshi/plugin@0.36.0':
+    resolution: {integrity: sha512-y0/lUz7k1kSF9pbINqmz1VoG7lkvMDzw/onbHtf0Ot2cteLQkncplJFLo1qQWterwtduYfRjYeYZRlj4kZc5pg==}
+    engines: {node: '>= 22'}
 
   '@hey-api/codegen-core@0.7.4':
     resolution: {integrity: sha512-DGd9yeSQzflOWO3Y5mt1GRXkXH9O/yIMgbxPjwLI3jwu/3nAjoXXD26lEeFb6tclYlg0JAqTIs5d930G/qxHeA==}
@@ -10023,8 +10034,8 @@ packages:
     peerDependencies:
       valibot: ^1.4.0
 
-  '@varlock/bumpy@1.13.1':
-    resolution: {integrity: sha512-gh5+uCONJGSt4E1OTAFnS1/lJnw6mbuOIzbrn/Xe6GcwWe6SlrmhSC3azQ1o7sVowA2c+yAF2izzHzevsDIOMg==}
+  '@varlock/bumpy@1.18.1':
+    resolution: {integrity: sha512-u6PHUr+laAgWWm/c3wdExHBCcvYkkTb+KsiRNR9GCFIbCDrCN9CyOZO/crtRZ5u4KWMKtUTeA7U/s+AA0k7Dcg==}
     hasBin: true
 
   '@vitejs/plugin-vue@6.0.3':
@@ -12013,8 +12024,8 @@ packages:
   flatted@3.4.2:
     resolution: {integrity: sha512-PjDse7RzhcPkIJwy5t7KPWQSZ9cAbzQXcafsetQoD7sOJRQlGikNbx7yZp2OotDnJyrDcbyRq3Ttb18iYOqkxA==}
 
-  fledgling@1.0.0:
-    resolution: {integrity: sha512-z9cqO3ks1Agji0sJ4Mh4GNmIhjCXR9MeJz4F0rzbYdQVcl0FvzHROF9IpJKqzLKn9IriVhUcoA+o3fEo3XHkUA==}
+  fledgling@1.2.1:
+    resolution: {integrity: sha512-2QTrlnTu5mWEgg8TcCUXw5ZmuuwbchbfD90mo9f9KRxVUNCEVBYOUumitdiWPygntzGt7CQ0SlDARvWIHxNxmg==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -12269,8 +12280,8 @@ packages:
     resolution: {integrity: sha512-5v6yZd4JK3eMI3FqqCouswVqwugaA9r4dNZB1wwcmrD02QkV5H0y7XBQW8QwQqEaZY1pM9aqORSORhJRdNK44Q==}
     engines: {node: '>=6.0'}
 
-  gunshi@0.34.0:
-    resolution: {integrity: sha512-X2iHMotAKK143WNWyatb1y+sBoIqIeXNNc9ul5oMVqyxTpN/8LVJ+YWQZ8wT35r8RzMFO3nUi+Fnt7c4QzE34g==}
+  gunshi@0.36.0:
+    resolution: {integrity: sha512-LJhM/2YiC4GfsaT2fnvccNkGXzbtMCBkgXpyLSM+1QVal2n7k8VJZol8qm1qgm2wmaQ6NBVmcGZIOkB/ms+6uQ==}
     engines: {node: '>= 22'}
 
   h3@2.0.1-rc.26:
@@ -17707,7 +17718,7 @@ snapshots:
 
   '@blazediff/core@1.9.1': {}
 
-  '@bomb.sh/tab@0.0.16(cac@6.7.14)(citty@0.1.6)':
+  '@bomb.sh/tab@0.0.17(cac@6.7.14)(citty@0.1.6)':
     optionalDependencies:
       cac: 6.7.14
       citty: 0.1.6
@@ -17726,20 +17737,8 @@ snapshots:
       - '@chromatic-com/cypress'
       - '@chromatic-com/playwright'
 
-  '@clack/core@1.4.1':
-    dependencies:
-      fast-wrap-ansi: 0.2.2
-      sisteransi: 1.0.5
-
   '@clack/core@1.4.3':
     dependencies:
-      fast-wrap-ansi: 0.2.2
-      sisteransi: 1.0.5
-
-  '@clack/prompts@1.5.1':
-    dependencies:
-      '@clack/core': 1.4.1
-      fast-string-width: 3.0.2
       fast-wrap-ansi: 0.2.2
       sisteransi: 1.0.5
 
@@ -18459,6 +18458,22 @@ snapshots:
       long: 5.3.2
       protobufjs: 7.6.4
       yargs: 17.7.2
+
+  '@gunshi/plugin-completion@0.36.0(@gunshi/plugin-i18n@0.36.0)(cac@6.7.14)(citty@0.1.6)':
+    dependencies:
+      '@bomb.sh/tab': 0.0.17(cac@6.7.14)(citty@0.1.6)
+      '@gunshi/plugin': 0.36.0
+      '@gunshi/plugin-i18n': 0.36.0
+    transitivePeerDependencies:
+      - cac
+      - citty
+      - commander
+
+  '@gunshi/plugin-i18n@0.36.0':
+    dependencies:
+      '@gunshi/plugin': 0.36.0
+
+  '@gunshi/plugin@0.36.0': {}
 
   '@hey-api/codegen-core@0.7.4(magicast@0.5.2)':
     dependencies:
@@ -22324,7 +22339,7 @@ snapshots:
     dependencies:
       valibot: 1.4.2(typescript@5.9.3)
 
-  '@varlock/bumpy@1.13.1': {}
+  '@varlock/bumpy@1.18.1': {}
 
   '@vitejs/plugin-vue@6.0.3(vite@7.3.6(@types/node@24.8.1)(jiti@2.7.0)(lightningcss@1.32.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))':
     dependencies:
@@ -24711,14 +24726,15 @@ snapshots:
 
   flatted@3.4.2: {}
 
-  fledgling@1.0.0(cac@6.7.14)(citty@0.1.6):
+  fledgling@1.2.1(@gunshi/plugin-i18n@0.36.0)(cac@6.7.14)(citty@0.1.6):
     dependencies:
-      '@bomb.sh/tab': 0.0.16(cac@6.7.14)(citty@0.1.6)
-      '@clack/prompts': 1.5.1
-      gunshi: 0.34.0
+      '@clack/prompts': 1.7.0
+      '@gunshi/plugin-completion': 0.36.0(@gunshi/plugin-i18n@0.36.0)(cac@6.7.14)(citty@0.1.6)
+      gunshi: 0.36.0
       picocolors: 1.1.1
       tinyglobby: 0.2.17
     transitivePeerDependencies:
+      - '@gunshi/plugin-i18n'
       - cac
       - citty
       - commander
@@ -24989,7 +25005,7 @@ snapshots:
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
 
-  gunshi@0.34.0: {}
+  gunshi@0.36.0: {}
 
   h3@2.0.1-rc.26(crossws@0.4.10(srvx@0.12.5)):
     dependencies:
