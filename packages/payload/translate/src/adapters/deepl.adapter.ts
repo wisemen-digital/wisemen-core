@@ -14,7 +14,10 @@ export interface DeepLTranslateAdapterOptions {
 
 export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 
-const MAX_CONCURRENT_DEEPL_REQUESTS = 25
+const MAX_CONCURRENT_DEEPL_REQUESTS = 5
+const MAX_RETRY_ATTEMPTS = 5
+const INITIAL_RETRY_DELAY_MS = 1000
+const MAX_RETRY_DELAY_MS = 16_000
 
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
@@ -79,38 +82,51 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     targetLocale,
     text,
   }: TranslationAdapterArgs): Promise<string> {
-    const response = await fetch(this.apiURL, {
-      body: JSON.stringify({
-        source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
-        target_lang: this.normalizeLocale(targetLocale),
-        text: [
-          text,
-        ],
-      }),
-      headers: {
-        'Authorization': `DeepL-Auth-Key ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
+    for (let attempt = 0; attempt <= MAX_RETRY_ATTEMPTS; attempt += 1) {
+      const response = await fetch(this.apiURL, {
+        body: JSON.stringify({
+          source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
+          target_lang: this.normalizeLocale(targetLocale),
+          text: [
+            text,
+          ],
+        }),
+        headers: {
+          'Authorization': `DeepL-Auth-Key ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
 
-    if (!response.ok) {
-      throw new Error(`DeepL Translate request failed with status ${response.status}.`)
+      if (response.ok) {
+        const result = await response.json() as {
+          translations?: {
+            text?: string
+          }[]
+        }
+
+        const translatedText = result.translations?.[0]?.text
+
+        if (!translatedText) {
+          throw new Error('DeepL Translate response did not contain translated text.')
+        }
+
+        return translatedText
+      }
+
+      if ((response.status === 429 || response.status === 500) && attempt < MAX_RETRY_ATTEMPTS) {
+        await wait(getRetryDelay(response.headers.get('retry-after'), attempt))
+
+        continue
+      }
+
+      const errorBody = await response.text().catch(() => '')
+      const errorDetails = errorBody ? `: ${errorBody}` : ''
+
+      throw new Error(`DeepL Translate request failed with status ${response.status}${errorDetails}.`)
     }
 
-    const result = await response.json() as {
-      translations?: {
-        text?: string
-      }[]
-    }
-
-    const translatedText = result.translations?.[0]?.text
-
-    if (!translatedText) {
-      throw new Error('DeepL Translate response did not contain translated text.')
-    }
-
-    return translatedText
+    throw new Error('DeepL Translate request failed after retrying.')
   }
 
   public translate(args: TranslationAdapterArgs): Promise<string> {
@@ -132,6 +148,22 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
 
 function sanitizeUrlInput(url: string): string {
   return url.replace(/\s+/g, '')
+}
+
+function getRetryDelay(retryAfter: string | null, attempt: number): number {
+  const retryAfterSeconds = Number(retryAfter)
+
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0) {
+    return retryAfterSeconds * 1000
+  }
+
+  return Math.min(INITIAL_RETRY_DELAY_MS * 2 ** attempt, MAX_RETRY_DELAY_MS)
+}
+
+function wait(delay: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay)
+  })
 }
 
 export function createDeepLTranslateAdapter(options: DeepLTranslateAdapterOptions = {}): TranslationAdapter {
