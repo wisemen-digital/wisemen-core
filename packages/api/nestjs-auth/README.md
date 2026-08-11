@@ -1,12 +1,20 @@
-# @wisemen/nestjs-auth
+# `@wisemen/nestjs-auth`
 
-Shared NestJS auth metadata helpers for marking routes as public and checking
-that metadata from an `ExecutionContext`.
+Shared NestJS auth helpers for public-route metadata and reusable HTTP basic
+auth.
 
-## Mark A Route As Public
+## What it provides
+
+- `Public()` and `isPublicContext(...)` for public-route metadata
+- `BasicAuthModule` for registering shared basic auth definitions
+- `@BasicAuth(name)` for guarding controllers and handlers
+- `createBasicAuthMiddleware(...)` and `createBasicAuthRequestHandler(...)` for
+  adapter-level protection
+
+## Mark Public Routes
 
 Use `Public()` on a controller or handler to mark it as public. Pass `false` to
-explicitly override public metadata inherited from a controller class.
+override public metadata inherited from a controller class.
 
 ```ts
 import { Controller, Get } from '@nestjs/common'
@@ -20,55 +28,30 @@ export class StatusController {
     return 'ok'
   }
 
-  @Get('private')
+  @Get('internal')
   @Public(false)
-  getPrivateStatus(): string {
-    return 'private'
+  getInternalStatus(): string {
+    return 'restricted'
   }
 }
 ```
 
-## Check Public Metadata
+Use `isPublicContext(...)` inside guards or interceptors so the application
+does not need to depend on the metadata key directly.
 
-Use `isPublicContext(...)` inside guards or interceptors so applications do not
-need to know the metadata key or reimplement the override semantics.
-
-```ts
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
-import { isPublicContext } from '@wisemen/nestjs-auth'
-
-@Injectable()
-export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    if (isPublicContext(context)) {
-      return true
-    }
-
-    return true
-  }
-}
-```
-
-`isPublicContext(...)` checks handler metadata first, then controller metadata,
-and falls back to `false` when neither is defined.
-
-## Register Basic Auth Definitions
+## Register And Use Basic Auth
 
 Import `BasicAuthModule.forRoot()` once to initialize the shared registry, then
-use `BasicAuthModule.forFeature(...)` or `BasicAuthModule.forFeatureAsync(...)`
-in feature-local modules to register the definitions they need close to their
-controllers.
+register feature-local definitions close to the routes that use them.
 
 ```ts
 import { Module } from '@nestjs/common'
 import { BasicAuthModule } from '@wisemen/nestjs-auth'
 
 @Module({
-  imports: [
-    BasicAuthModule.forRoot()
-  ]
+  imports: [BasicAuthModule.forRoot()]
 })
-export class ApiModule {}
+export class AppModule {}
 ```
 
 ```ts
@@ -76,36 +59,38 @@ import { Module } from '@nestjs/common'
 import { BasicAuthModule } from '@wisemen/nestjs-auth'
 
 @Module({
-  imports: [
-    BasicAuthModule.forFeature({
-      docs: {
-        username: 'docs',
-        password: 'secret'
-      }
-    })
-  ]
+  imports: [BasicAuthModule.forFeature({
+    docs: {
+      username: 'docs',
+      password: 'secret'
+    }
+  })]
 })
-export class DocsModule {}
+export class DocsAuthModule {}
 ```
+
+Protect handlers with `@BasicAuth(name)` once the matching definition is
+registered.
 
 ```ts
-import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { BasicAuthModule } from '@wisemen/nestjs-auth'
+import { Controller, Get } from '@nestjs/common'
+import { BasicAuth } from '@wisemen/nestjs-auth'
 
-@Module({
-  imports: [
-    BasicAuthModule.forFeatureAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        docs: {
-          username: config.getOrThrow('DOCS_USERNAME'),
-          password: config.getOrThrow('DOCS_PASSWORD')
-        }
-      })
-    })
-  ]
-})
-export class DocsModule {}
+@Controller('docs')
+export class DocsController {
+  @Get()
+  @BasicAuth('docs')
+  getDocs(): string {
+    return 'private docs'
+  }
+}
 ```
+
+Use `forFeatureAsync(...)` when credentials come from configuration or secrets.
+Definition names must stay unique unless they resolve to the same credentials.
+
+## Protect Adapter-Level Routes
+
+Use `createBasicAuthMiddleware(...)` in Nest middleware or
+`createBasicAuthRequestHandler(...)` when attaching handlers directly to the
+HTTP adapter.

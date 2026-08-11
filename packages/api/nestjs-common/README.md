@@ -1,111 +1,44 @@
-# @wisemen/nestjs-auth
+# `@wisemen/nestjs-common`
 
-Shared NestJS auth metadata helpers for marking routes as public and checking
-that metadata from an `ExecutionContext`.
+Small shared TypeScript helpers used across Wisemen NestJS packages.
 
-## Mark A Route As Public
+## What it provides
 
-Use `Public()` on a controller or handler to mark it as public. Pass `false` to
-explicitly override public metadata inherited from a controller class.
+- `parseEnvList(...)` for comma-separated environment variables
+- `toBoolean(...)` for strict boolean coercion
+- `Uuid<Brand>` and `generateUuid<Brand>()` for branded UUID strings
+- `exhaustiveCheck(...)` for unreachable branches in exhaustive switches
 
-```ts
-import { Controller, Get } from '@nestjs/common'
-import { Public } from '@wisemen/nestjs-auth'
-
-@Controller('status')
-export class StatusController {
-  @Get()
-  @Public()
-  getStatus(): string {
-    return 'ok'
-  }
-
-  @Get('private')
-  @Public(false)
-  getPrivateStatus(): string {
-    return 'private'
-  }
-}
-```
-
-## Check Public Metadata
-
-Use `isPublicContext(...)` inside guards or interceptors so applications do not
-need to know the metadata key or reimplement the override semantics.
+## Usage
 
 ```ts
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
-import { isPublicContext } from '@wisemen/nestjs-auth'
+import {
+  exhaustiveCheck,
+  generateUuid,
+  parseEnvList,
+  toBoolean,
+  type Uuid
+} from '@wisemen/nestjs-common'
 
-@Injectable()
-export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    if (isPublicContext(context)) {
-      return true
-    }
+const allowedOrigins = parseEnvList(process.env.CORS_ALLOWED_ORIGINS)
+const enableDocs = toBoolean(process.env.ENABLE_DOCS ?? 'false')
 
-    return true
+type UserUuid = Uuid<'user'>
+const userUuid = generateUuid<UserUuid>()
+
+type DeliveryState = 'pending' | 'sent'
+
+function toLabel(state: DeliveryState): string {
+  switch (state) {
+    case 'pending':
+      return 'Pending'
+    case 'sent':
+      return 'Sent'
+    default:
+      return exhaustiveCheck(state)
   }
 }
 ```
 
-`isPublicContext(...)` checks handler metadata first, then controller metadata,
-and falls back to `false` when neither is defined.
-
-## Register Basic Auth Definitions
-
-Import `BasicAuthModule.forRoot()` once to initialize the shared registry, then
-use `BasicAuthModule.forFeature(...)` or `BasicAuthModule.forFeatureAsync(...)`
-in feature-local modules to register the definitions they need close to their
-controllers.
-
-```ts
-import { Module } from '@nestjs/common'
-import { BasicAuthModule } from '@wisemen/nestjs-auth'
-
-@Module({
-  imports: [
-    BasicAuthModule.forRoot()
-  ]
-})
-export class ApiModule {}
-```
-
-```ts
-import { Module } from '@nestjs/common'
-import { BasicAuthModule } from '@wisemen/nestjs-auth'
-
-@Module({
-  imports: [
-    BasicAuthModule.forFeature({
-      docs: {
-        username: 'docs',
-        password: 'secret'
-      }
-    })
-  ]
-})
-export class DocsModule {}
-```
-
-```ts
-import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { BasicAuthModule } from '@wisemen/nestjs-auth'
-
-@Module({
-  imports: [
-    BasicAuthModule.forFeatureAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        docs: {
-          username: config.getOrThrow('DOCS_USERNAME'),
-          password: config.getOrThrow('DOCS_PASSWORD')
-        }
-      })
-    })
-  ]
-})
-export class DocsModule {}
-```
+`toBoolean(...)` only accepts `true`, `false`, `'true'`, or `'false'`. Use it
+when invalid configuration should fail fast instead of being silently coerced.

@@ -1,71 +1,63 @@
 ---
 name: getting-started
-description: Use when marking NestJS controllers or handlers as public and when checking public-route metadata in guards.
+description: Use when attaching Swagger UI and OpenAPI endpoints to a NestJS app with optional basic auth and OpenID Connect configuration through @wisemen/nestjs-swagger.
 ---
 
-# @wisemen/nestjs-auth - Getting Started
+# @wisemen/nestjs-swagger - Getting Started
 
-Use `Public()` to mark a controller or handler as public and
-`isPublicContext(context)` inside guards or interceptors to evaluate the
-related metadata without depending on the raw metadata key.
+Use this package to expose Swagger UI in a NestJS app without rewriting the
+same bootstrap and auth wiring in each service.
 
-## Mark Public Routes
+## Register The Module
 
-Apply `Public()` at the class or method level. `Public(false)` explicitly marks
-the target as non-public and overrides a `Public()` annotation applied higher in
-the controller hierarchy.
-
-```ts
-import { Controller, Get } from '@nestjs/common'
-import { Public } from '@wisemen/nestjs-auth'
-
-@Public()
-@Controller('status')
-export class StatusController {
-  @Get('internal')
-  @Public(false)
-  getInternalStatus(): string {
-    return 'restricted'
-  }
-}
-```
-
-Use `Public(false)` only when you intentionally need a method-level override.
-
-## Check Public Metadata In A Guard
-
-Use `isPublicContext(...)` from a guard instead of reading metadata keys
-directly.
+Import `SwaggerModule.forRoot()` so the OAuth2 redirect controller is present.
+If the docs should be protected, register the matching `BasicAuthModule`
+definition too.
 
 ```ts
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable
-} from '@nestjs/common'
-import { isPublicContext } from '@wisemen/nestjs-auth'
-import { AuthContext } from '#src/modules/auth/auth.context.js'
+import { Module } from '@nestjs/common'
+import { BasicAuthModule } from '@wisemen/nestjs-auth'
+import { SwaggerModule } from '@wisemen/nestjs-swagger'
 
-@Injectable()
-export class AuthGuard implements CanActivate {
-  constructor (
-    private readonly authContext: AuthContext
-  ) {}
-
-  canActivate (context: ExecutionContext): boolean {
-    if (isPublicContext(context)) {
-      return true
-    }
-
-    this.authContext.getAuthOrFail()
-
-    return true
-  }
-}
+@Module({
+  imports: [
+    BasicAuthModule.forRoot(),
+    BasicAuthModule.forFeature({
+      docs: {
+        username: 'docs',
+        password: 'secret'
+      }
+    }),
+    SwaggerModule.forRoot()
+  ]
+})
+export class AppModule {}
 ```
 
-`isPublicContext(...)` mirrors Nest's "handler overrides controller" behavior:
+## Attach Swagger Endpoints
 
-- handler metadata wins when defined
-- controller metadata is used when the handler has no public metadata
-- the default is `false`
+Call `SwaggerModule.attachSwaggerEndpoints(...)` during bootstrap.
+
+```ts
+import { NestFactory } from '@nestjs/core'
+import { SwaggerModule } from '@wisemen/nestjs-swagger'
+import { AppModule } from './app.module.js'
+
+const app = await NestFactory.create(AppModule)
+
+await SwaggerModule.attachSwaggerEndpoints(app, {
+  route: '/api/docs',
+  servers: ['http://localhost:3000'],
+  basicAuth: 'docs',
+  oidcUrl: 'https://auth.example.com/.well-known/openid-configuration'
+})
+```
+
+The package exposes the base docs route together with `/latest` and `/all`
+variants and their JSON endpoints.
+
+## Configure OAuth2 Login
+
+Use `oidcUrl` to discover authorization settings automatically. Set
+`redirectServer` when Swagger UI should point its OAuth2 redirect flow at a
+specific public origin.

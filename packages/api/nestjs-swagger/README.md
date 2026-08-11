@@ -1,111 +1,67 @@
-# @wisemen/nestjs-auth
+# `@wisemen/nestjs-swagger`
 
-Shared NestJS auth metadata helpers for marking routes as public and checking
-that metadata from an `ExecutionContext`.
+Shared NestJS Swagger wiring for Wisemen APIs, including optional HTTP basic
+auth and OpenID Connect support.
 
-## Mark A Route As Public
+## What it provides
 
-Use `Public()` on a controller or handler to mark it as public. Pass `false` to
-explicitly override public metadata inherited from a controller class.
+- `SwaggerModule.forRoot()` to register the OAuth2 redirect controller
+- `SwaggerModule.attachSwaggerEndpoints(...)` to attach Swagger UI and JSON docs
+- optional docs protection through `@wisemen/nestjs-auth`
+- optional OpenID Connect discovery for OAuth2 authorization code flows
 
-```ts
-import { Controller, Get } from '@nestjs/common'
-import { Public } from '@wisemen/nestjs-auth'
+## Usage
 
-@Controller('status')
-export class StatusController {
-  @Get()
-  @Public()
-  getStatus(): string {
-    return 'ok'
-  }
-
-  @Get('private')
-  @Public(false)
-  getPrivateStatus(): string {
-    return 'private'
-  }
-}
-```
-
-## Check Public Metadata
-
-Use `isPublicContext(...)` inside guards or interceptors so applications do not
-need to know the metadata key or reimplement the override semantics.
-
-```ts
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
-import { isPublicContext } from '@wisemen/nestjs-auth'
-
-@Injectable()
-export class AuthGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
-    if (isPublicContext(context)) {
-      return true
-    }
-
-    return true
-  }
-}
-```
-
-`isPublicContext(...)` checks handler metadata first, then controller metadata,
-and falls back to `false` when neither is defined.
-
-## Register Basic Auth Definitions
-
-Import `BasicAuthModule.forRoot()` once to initialize the shared registry, then
-use `BasicAuthModule.forFeature(...)` or `BasicAuthModule.forFeatureAsync(...)`
-in feature-local modules to register the definitions they need close to their
-controllers.
+Register the module once so the OAuth2 redirect endpoint is available.
 
 ```ts
 import { Module } from '@nestjs/common'
 import { BasicAuthModule } from '@wisemen/nestjs-auth'
+import { SwaggerModule } from '@wisemen/nestjs-swagger'
 
 @Module({
   imports: [
-    BasicAuthModule.forRoot()
-  ]
-})
-export class ApiModule {}
-```
-
-```ts
-import { Module } from '@nestjs/common'
-import { BasicAuthModule } from '@wisemen/nestjs-auth'
-
-@Module({
-  imports: [
+    BasicAuthModule.forRoot(),
     BasicAuthModule.forFeature({
       docs: {
         username: 'docs',
         password: 'secret'
       }
-    })
+    }),
+    SwaggerModule.forRoot()
   ]
 })
-export class DocsModule {}
+export class AppModule {}
 ```
+
+Attach the docs during bootstrap.
 
 ```ts
-import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { BasicAuthModule } from '@wisemen/nestjs-auth'
+import { NestFactory } from '@nestjs/core'
+import { SwaggerModule } from '@wisemen/nestjs-swagger'
+import { AppModule } from './app.module.js'
 
-@Module({
-  imports: [
-    BasicAuthModule.forFeatureAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        docs: {
-          username: config.getOrThrow('DOCS_USERNAME'),
-          password: config.getOrThrow('DOCS_PASSWORD')
-        }
-      })
-    })
-  ]
+const app = await NestFactory.create(AppModule)
+
+await SwaggerModule.attachSwaggerEndpoints(app, {
+  route: '/api/docs',
+  servers: ['http://localhost:3000'],
+  basicAuth: 'docs',
+  oidcUrl: 'https://auth.example.com/.well-known/openid-configuration',
+  additionalScopes: {
+    'api:write': 'Write access'
+  }
 })
-export class DocsModule {}
 ```
+
+With that setup, the package registers the main Swagger UI route together with
+versioned docs endpoints such as `/api/docs/latest` and `/api/docs/all`.
+
+## OpenID Connect Notes
+
+Set `oidcUrl` to load the authorization and token endpoints from discovery. Use
+`redirectServer` when Swagger UI should build its OAuth2 redirect URL from a
+specific public origin.
+
+`SwaggerModule.forRoot(...)` must be registered on the server that exposes the
+`/api/oauth2-redirect` route.

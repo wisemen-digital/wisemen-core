@@ -1,71 +1,67 @@
 ---
 name: getting-started
-description: Use when marking NestJS controllers or handlers as public and when checking public-route metadata in guards.
+description: Use when parsing comma-separated env vars, coercing boolean config values, generating branded UUIDs, or asserting exhaustive TypeScript switches with @wisemen/nestjs-common.
 ---
 
-# @wisemen/nestjs-auth - Getting Started
+# @wisemen/nestjs-common - Getting Started
 
-Use `Public()` to mark a controller or handler as public and
-`isPublicContext(context)` inside guards or interceptors to evaluate the
-related metadata without depending on the raw metadata key.
+Use these helpers instead of rewriting small config and type-safety utilities in
+each backend package.
 
-## Mark Public Routes
+## Parse Environment Lists
 
-Apply `Public()` at the class or method level. `Public(false)` explicitly marks
-the target as non-public and overrides a `Public()` annotation applied higher in
-the controller hierarchy.
+Use `parseEnvList(...)` for comma-separated environment variables. It trims
+entries and drops empty values.
 
 ```ts
-import { Controller, Get } from '@nestjs/common'
-import { Public } from '@wisemen/nestjs-auth'
+import { parseEnvList } from '@wisemen/nestjs-common'
 
-@Public()
-@Controller('status')
-export class StatusController {
-  @Get('internal')
-  @Public(false)
-  getInternalStatus(): string {
-    return 'restricted'
+const scopes = parseEnvList(process.env.AUTH_SCOPES)
+```
+
+## Parse Strict Booleans
+
+Use `toBoolean(...)` when configuration should accept only real booleans or the
+strings `'true'` and `'false'`.
+
+```ts
+import { toBoolean } from '@wisemen/nestjs-common'
+
+const isEnabled = toBoolean(process.env.FEATURE_ENABLED ?? 'false')
+```
+
+`toBoolean(...)` throws for any other value.
+
+## Brand UUID Strings
+
+Use `Uuid<Brand>` and `generateUuid<Brand>()` when a package wants nominal UUID
+types instead of plain strings.
+
+```ts
+import { generateUuid, type Uuid } from '@wisemen/nestjs-common'
+
+type ContactUuid = Uuid<'contact'>
+
+const contactUuid = generateUuid<ContactUuid>()
+```
+
+## Assert Exhaustive Branches
+
+Use `exhaustiveCheck(...)` in the default branch of exhaustive switches.
+
+```ts
+import { exhaustiveCheck } from '@wisemen/nestjs-common'
+
+type Status = 'draft' | 'published'
+
+function toLabel(status: Status): string {
+  switch (status) {
+    case 'draft':
+      return 'Draft'
+    case 'published':
+      return 'Published'
+    default:
+      return exhaustiveCheck(status)
   }
 }
 ```
-
-Use `Public(false)` only when you intentionally need a method-level override.
-
-## Check Public Metadata In A Guard
-
-Use `isPublicContext(...)` from a guard instead of reading metadata keys
-directly.
-
-```ts
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable
-} from '@nestjs/common'
-import { isPublicContext } from '@wisemen/nestjs-auth'
-import { AuthContext } from '#src/modules/auth/auth.context.js'
-
-@Injectable()
-export class AuthGuard implements CanActivate {
-  constructor (
-    private readonly authContext: AuthContext
-  ) {}
-
-  canActivate (context: ExecutionContext): boolean {
-    if (isPublicContext(context)) {
-      return true
-    }
-
-    this.authContext.getAuthOrFail()
-
-    return true
-  }
-}
-```
-
-`isPublicContext(...)` mirrors Nest's "handler overrides controller" behavior:
-
-- handler metadata wins when defined
-- controller metadata is used when the handler has no public metadata
-- the default is `false`
