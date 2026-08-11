@@ -81,9 +81,30 @@ file is the condensed, decisions-only reference.
   `null` for a row → no expand chevron for that row at all. No separate "can expand" predicate —
   the null return already says it. Independent from grouping (see below); a grouped row can still
   have its own sub component.
-- **`getLink`**: `(item: TItem) => RegisteredRouteLocationRaw | null`. Powers the mobile list's
-  "Go to detail" button today; will be reused by the detail pane's Cmd+O later. Same shape as the
-  old `Table`.
+
+## Row actions & click
+
+- **`row`**: `(item: TItem) => { onClick?: () => void, model: RegisteredActionContext['models'][number], actions: { inline: Action[], more: Action[] } } | null`.
+  One function replaces the old `getLink`/`getActionModel` top-level props — everything about a
+  row's click/navigation and actions is resolved once, from the same item, in one place. Return
+  `null` for a row with no click target/actions at all.
+- **`onClick`**: drives the desktop whole-row click target (a per-cell click-catcher underneath
+  every cell's content, so real interactive content inside a cell still takes priority — see
+  `DataTableCell.vue`) and the mobile card's "Go to detail" button (expanded-card only, unchanged
+  visually from the old `getLink`-driven version).
+- **`actions.inline`**: always-visible icon buttons in a trailing actions column. Rendered via
+  `UIActionTrigger`, so `isApplicable`/`disabledReason`/execution state are the same as any other
+  registry-driven action, not hand-rolled.
+- **`actions.more`**: behind a `⋯` overflow dropdown in the same trailing column, and doubles as
+  the row's right-click context menu content (`UIActionContextMenu` wraps the row, fed
+  `actions.inline` + `actions.more` combined).
+- **`model`**: the Action registry context (`RegisteredActionContext['models'][number]`) actions
+  resolve applicability against — also feeds the selection action bar (replaces the old
+  `getActionModel` prop).
+- **Trailing actions column**: a hand-appended, non-TanStack grid track (mirrors the leading
+  checkbox/expand columns) — not a real pinned TanStack column, so it never participates in
+  resize/reorder/visibility. Its width is always reserved once `row` is set at all, even for a
+  specific row whose own `row(item)` resolves to no actions, so column edges stay aligned.
 
 ## Data lifecycle (loading, error, empty, infinite scroll)
 
@@ -160,7 +181,7 @@ file is the condensed, decisions-only reference.
 - Once open: arrow up/down immediately move the active row *and* update the pane content. Hover
   moves the active-row indicator but does *not* update the pane until Spacebar is pressed again —
   deliberate asymmetry so idle mouse movement can never silently change what's shown.
-- Cmd+O navigates to the row's real detail page via the same `getLink` prop used elsewhere.
+- Cmd+O navigates to the row's real detail page via the active row's `row(item).onClick`.
 - Desktop-only — the mobile list's tap-to-expand + "Go to detail" already covers the same need on
   touch.
 - Built on top of the existing `DashboardPageDetailPane`, not a self-built panel — so it currently
@@ -186,7 +207,10 @@ file is the condensed, decisions-only reference.
 - `types/dataTable.props.ts` — full public prop list.
 - `types/dataTableColumn.type.ts` — column factories.
 - `types/dataTableCell.type.ts` — Cell definition types.
+- `types/dataTableRowConfig.type.ts` — the `row` prop's return shape.
 - `utils/dataTable.util.ts` — sizing constants/helpers.
 - `composables/dataTable.composable.ts` — grouping/table setup.
 - `composables/dataTableInfiniteScroll.composable.ts` — shared scroll-near-bottom trigger.
+- `components/DataTableRow.vue` — right-click context menu, trailing actions cell wiring.
+- `components/DataTableRowActionsCell.vue` — inline/overflow action rendering.
 - `CONTEXT.md` (package root) — full reasoning, rejected alternatives, bugs found along the way.

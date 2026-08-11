@@ -20,6 +20,9 @@ const STICKY_COLUMN_KEY_OPTIONS = [
 const meta = {
   title: 'Components/DataTable',
   argTypes: {
+    hasRowActions: {
+      control: 'boolean',
+    },
     hasSubComponent: {
       control: 'boolean',
     },
@@ -77,6 +80,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -94,6 +98,7 @@ export const Default: Story = {
 
 export const StickyColumns: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
     isForcedLoading: false,
@@ -116,6 +121,7 @@ export const StickyColumns: Story = {
 // Status, not three independently-bordered columns.
 export const StickyColumnByKey: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
     isForcedLoading: false,
@@ -140,6 +146,7 @@ export const StickyColumnByKey: Story = {
 // single boundary border, while the columns between them scroll normally.
 export const StickyColumnsBothSides: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
     isForcedLoading: false,
@@ -161,6 +168,7 @@ export const StickyColumnsBothSides: Story = {
 
 export const Grouped: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -178,6 +186,7 @@ export const Grouped: Story = {
 
 export const GroupedTwoLevels: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -195,6 +204,7 @@ export const GroupedTwoLevels: Story = {
 
 export const SubComponent: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: true,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -212,6 +222,7 @@ export const SubComponent: Story = {
 
 export const Selectable: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -229,6 +240,7 @@ export const Selectable: Story = {
 
 export const SelectableGrouped: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -246,6 +258,7 @@ export const SelectableGrouped: Story = {
 
 export const Mobile: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -263,6 +276,7 @@ export const Mobile: Story = {
 
 export const MobileSelectable: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -284,6 +298,7 @@ export const MobileSelectable: Story = {
 // shows the true 200 total instead of just the currently-loaded page count.
 export const InfiniteScroll: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
     isForcedLoading: false,
@@ -302,6 +317,7 @@ export const InfiniteScroll: Story = {
 // No data has arrived yet — renders the skeleton in place of rows, header still visible.
 export const Loading: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: true,
@@ -321,6 +337,7 @@ export const Loading: Story = {
 // `#error` slot).
 export const ErrorState: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -339,6 +356,7 @@ export const ErrorState: Story = {
 // The fetch succeeded but matched nothing — renders the default `UIEmptyState`.
 export const Empty: Story = {
   args: {
+    hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
     isForcedLoading: false,
@@ -346,6 +364,27 @@ export const Empty: Story = {
     isNarrow: false,
     isSelectable: false,
     isSimulatingEmpty: true,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    groupBy: null,
+  },
+}
+
+// Each row resolves a `row()` config: a click handler (logged to the console), a "View" inline
+// icon button, and a "Delete" action behind the trailing `⋯` overflow menu — hover a row to
+// reveal both, or right-click anywhere on the row for the same actions in a context menu.
+export const RowActions: Story = {
+  args: {
+    hasRowActions: true,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
     stickyLeftColumnKeys: [],

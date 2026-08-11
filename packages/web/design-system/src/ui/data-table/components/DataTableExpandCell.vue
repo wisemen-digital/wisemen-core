@@ -28,6 +28,8 @@ const {
     class="
       flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
       text-primary
+      group-hover/row:bg-secondary
+      group-has-focus-visible/row:bg-secondary
     "
     role="cell"
   >

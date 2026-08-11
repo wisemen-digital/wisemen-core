@@ -25,6 +25,8 @@ import {
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import {
+  DATA_TABLE_ACTIONS_COLUMN_WIDTH,
+  DATA_TABLE_ACTIONS_COLUMN_WIDTH_PX,
   DATA_TABLE_CELL_DEFAULT_WIDTH_PX,
   DATA_TABLE_CHECKBOX_COLUMN_WIDTH,
   DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX,
@@ -38,6 +40,7 @@ import { getDataTableCellGroupingValue } from '@/ui/data-table/utils/dataTableCe
 export type DataTableGroupBy = string | [string, string] | null
 
 export interface UseDataTableOptions<TItem> {
+  hasRowActions?: ComputedRef<boolean>
   hasSubComponent?: ComputedRef<boolean>
   isColumnResizeDisabled?: ComputedRef<boolean>
   isFirstColumnSticky?: ComputedRef<boolean>
@@ -216,7 +219,13 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
       leadingColumnWidths.push(DATA_TABLE_EXPAND_COLUMN_WIDTH)
     }
 
-    return DataTableUtil.columnSizesToGridTemplateColumns(columnWidthsPx, leadingColumnWidths)
+    const trailingColumnWidths: string[] = []
+
+    if (options.hasRowActions?.value ?? false) {
+      trailingColumnWidths.push(DATA_TABLE_ACTIONS_COLUMN_WIDTH)
+    }
+
+    return DataTableUtil.columnSizesToGridTemplateColumns(columnWidthsPx, leadingColumnWidths, trailingColumnWidths)
   })
 
   // Checkbox/expand aren't real TanStack columns, so their leading offset is tracked separately.
@@ -253,10 +262,12 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     return offsetByColumnId
   })
 
-  // Mirrors `leftStickyOffsetPxByColumnId`, from the right edge inward.
+  // Mirrors `leftStickyOffsetPxByColumnId`, from the right edge inward — starting past the
+  // trailing actions column (not a real TanStack column) so a right-pinned data column never
+  // sits underneath it.
   const rightStickyOffsetPxByColumnId = computed<Map<string, number>>(() => {
     const offsetByColumnId = new Map<string, number>()
-    let offsetPx = 0
+    let offsetPx = options.hasRowActions?.value ?? false ? DATA_TABLE_ACTIONS_COLUMN_WIDTH_PX : 0
 
     for (const column of table.getRightLeafColumns()) {
       offsetByColumnId.set(column.id, offsetPx)

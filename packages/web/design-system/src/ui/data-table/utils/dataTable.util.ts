@@ -2,13 +2,18 @@ import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
 
 export const DATA_TABLE_EXPAND_COLUMN_WIDTH = '2.5rem'
 export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH = '2.5rem'
-// Pixel equivalents of the two constants above (1rem = 16px in this design system's root font
+// Wide enough for two icon buttons (inline action + the `⋯` overflow trigger) — matches the
+// old `Table`'s actions cell width.
+export const DATA_TABLE_ACTIONS_COLUMN_WIDTH = '5rem'
+// Pixel equivalents of the constants above (1rem = 16px in this design system's root font
 // size — see `tailwind-design-tokens.css`'s `--spacing-*` comments), needed because the sticky
-// left-offset calculation (`dataTable.composable.ts`'s `leftStickyOffsetPxByColumnId`) sums
-// pixel widths across the checkbox/expand columns and TanStack's own pixel `column.getSize()`
-// values — the two can't be summed while one side is a CSS rem string.
+// offset calculations (`dataTable.composable.ts`'s `leftStickyOffsetPxByColumnId`/
+// `rightStickyOffsetPxByColumnId`) sum pixel widths across the checkbox/expand/actions columns
+// and TanStack's own pixel `column.getSize()` values — the two can't be summed while one side
+// is a CSS rem string.
 export const DATA_TABLE_EXPAND_COLUMN_WIDTH_PX = 40
 export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX = 40
+export const DATA_TABLE_ACTIONS_COLUMN_WIDTH_PX = 80
 
 // Absolute floor for manual drag-resize — no column can ever be dragged below this, regardless
 // of its cell type or declared `size`. Small enough to not be an obstacle for genuinely narrow
@@ -35,6 +40,7 @@ export class DataTableUtil {
   static columnSizesToGridTemplateColumns(
     columnWidthsPx: number[],
     leadingColumnWidths: string[] = [],
+    trailingColumnWidths: string[] = [],
   ): string {
     const columns = columnWidthsPx
       .map((widthPx, index) => (
@@ -47,6 +53,7 @@ export class DataTableUtil {
     return [
       ...leadingColumnWidths,
       columns,
+      ...trailingColumnWidths,
     ].join(' ')
   }
 }

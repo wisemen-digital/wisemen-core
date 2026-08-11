@@ -2,6 +2,7 @@ import type { Row } from '@tanstack/vue-table'
 import type { Component } from 'vue'
 
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
+import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
 
 export interface DataTableRowViewModel<TItem> {
   isGroupAllSelected: boolean
@@ -14,5 +15,6 @@ export interface DataTableRowViewModel<TItem> {
   groupLabel: string
   groupLabelCell: DataTableCell | null
   row: Row<TItem>
+  rowConfig: DataTableRowConfig | null
   subComponent: Component | null
 }

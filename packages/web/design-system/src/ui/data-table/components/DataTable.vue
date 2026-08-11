@@ -42,10 +42,10 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isLoading: false,
   isSelectable: false,
   error: null,
-  getActionModel: null,
   groupBy: null,
   mobileCard: null,
   onNextPage: null,
+  row: null,
   selectionActions: () => [],
   sort: null,
   subComponent: null,
@@ -87,6 +87,11 @@ const subComponentByItemKey = computed<Map<string, Component>>(() => {
 // returns `null` (e.g. gated by some other condition) should not see a reserved, empty column.
 const hasSubComponent = computed<boolean>(() => subComponentByItemKey.value.size > 0)
 
+// Static per-table, not per-row — the trailing actions column's width is always reserved
+// once `row` is configured at all, so column edges stay aligned even for rows whose own
+// `row(item)` resolves to no actions.
+const hasRowActions = computed<boolean>(() => props.row !== null)
+
 const {
   gridTemplateColumns,
   isLeadingStickyRegionActive,
@@ -98,6 +103,7 @@ const {
   setColumnSize,
   table,
 } = useDataTable({
+  hasRowActions,
   hasSubComponent,
   isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
@@ -177,7 +183,7 @@ const selectedCount = computed<number>(
 )
 
 const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
-  const models = selectedItems.value.map((item) => props.getActionModel?.(item))
+  const models = selectedItems.value.map((item) => props.row?.(item)?.model)
 
   return models.filter((model): model is RegisteredActionContext['models'][number] => model != null)
 })
@@ -259,6 +265,7 @@ const rowViewModels = computed<DataTableRowViewModel<TItem>[]>(() => {
       groupLabel: isGrouped ? String(row.groupingValue) : '',
       groupLabelCell: isGrouped ? getGroupRowLabelCell(row) : null,
       row,
+      rowConfig: isGrouped ? null : (props.row?.(row.original) ?? null),
       subComponent,
     }
   })
@@ -315,11 +322,14 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
   }))
 })
 
-// Matches the grid's actual track count — leading checkbox/expand tracks (not real TanStack
-// columns) plus one per real column — so `DataTableLoadingRows`'s subgrid rows span the full
-// width instead of leaving empty trailing tracks.
+// Matches the grid's actual track count — leading checkbox/expand and trailing actions tracks
+// (none of which are real TanStack columns) plus one per real column — so
+// `DataTableLoadingRows`'s subgrid rows span the full width instead of leaving empty tracks.
 const loadingRowColumnCount = computed<number>(
-  () => (props.isSelectable ? 1 : 0) + (hasSubComponent.value ? 1 : 0) + visibleColumns.value.length,
+  () => (props.isSelectable ? 1 : 0)
+    + (hasSubComponent.value ? 1 : 0)
+    + (hasRowActions.value ? 1 : 0)
+    + visibleColumns.value.length,
 )
 </script>
 
@@ -369,11 +379,11 @@ const loadingRowColumnCount = computed<number>(
         :columns="props.columns"
         :expanded-item-keys="expandedMobileCardKeys"
         :get-key="props.getKey"
-        :get-link="props.getLink"
         :is-item-selected="isItemSelected"
         :is-selectable="isMobileSelectModeOn"
         :mobile-card="props.mobileCard"
         :on-next-page="props.onNextPage"
+        :row="props.row"
         :row-view-models="rowViewModels"
         class="
           min-h-0 flex-1
@@ -435,6 +445,15 @@ const loadingRowColumnCount = computed<number>(
                 :is-last-column-overall="columnIndex === visibleColumns.length - 1"
                 :label="column.headerLabel"
               />
+
+              <div
+                v-if="hasRowActions"
+                class="
+                  sticky top-0 right-0 z-20 flex h-10 items-center border-b
+                  border-l border-secondary bg-secondary px-xl
+                "
+                role="columnheader"
+              />
             </div>
           </div>
 
@@ -474,6 +493,7 @@ const loadingRowColumnCount = computed<number>(
 
                 <DataTableDataRow
                   v-else
+                  :has-row-actions="hasRowActions"
                   :has-sub-component="hasSubComponent"
                   :is-selectable="props.isSelectable"
                   :view-model="entry.viewModel"
@@ -491,6 +511,7 @@ const loadingRowColumnCount = computed<number>(
               <DataTableDataRow
                 v-for="entry of flatVirtualRowViewModels"
                 :key="entry.key"
+                :has-row-actions="hasRowActions"
                 :has-sub-component="hasSubComponent"
                 :is-selectable="props.isSelectable"
                 :view-model="entry.viewModel"

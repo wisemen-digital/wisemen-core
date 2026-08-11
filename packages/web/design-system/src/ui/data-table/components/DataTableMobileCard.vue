@@ -6,8 +6,7 @@ import {
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import type { RegisteredRouteLocationRaw } from '@/register'
-import Link from '@/ui/button/link/Link.vue'
+import { UIButton } from '@/ui/button'
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
@@ -26,14 +25,14 @@ const props = withDefaults(defineProps<{
   isSelected?: boolean
   hiddenCells: DataTableMobileCardCell[]
   indicatorCell: DataTableCell | null
-  link?: RegisteredRouteLocationRaw | null
   metaCell: DataTableCell | null
+  onClick?: (() => void) | null
   primaryCell: DataTableCell | null
   secondaryCell: DataTableCell | null
 }>(), {
   isSelectable: false,
   isSelected: false,
-  link: null,
+  onClick: null,
 })
 
 const emit = defineEmits<{
@@ -123,13 +122,13 @@ const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || pr
         />
       </UIDetailListGroupItem>
 
-      <Link
-        v-if="props.link !== null"
-        :to="props.link"
+      <UIButton
+        v-if="props.onClick !== null"
         :icon-right="ArrowUpRightIcon"
         :label="i18n.t('component.table.row.view_details_label')"
         size="sm"
         variant="secondary"
+        @click="props.onClick"
       />
     </div>
   </div>

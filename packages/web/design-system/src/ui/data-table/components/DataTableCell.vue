@@ -5,8 +5,10 @@ import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.con
 
 const props = withDefaults(defineProps<{
   columnId?: string | null
+  onRowClick?: (() => void) | null
 }>(), {
   columnId: null,
+  onRowClick: null,
 })
 
 const {
@@ -41,11 +43,24 @@ const hasRightBorder = computed<boolean>(() => props.columnId !== null && props.
       'sticky z-1 border-l border-secondary': isStickyRight && hasRightBorder,
     }"
     class="
-      flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
-      text-primary
+      relative flex h-10 items-center overflow-hidden bg-primary px-xl
+      text-xs text-primary
+      group-hover/row:bg-secondary
+      group-has-focus-visible/row:bg-secondary
     "
     role="cell"
   >
-    <slot />
+    <!-- Row click catcher, repeated per cell; content below is pointer-events-none so it falls through. -->
+    <button
+      v-if="props.onRowClick !== null"
+      class="absolute inset-0 z-0"
+      tabindex="-1"
+      type="button"
+      @click="props.onRowClick"
+    />
+
+    <div class="pointer-events-none relative z-1 flex size-full items-center">
+      <slot />
+    </div>
   </div>
 </template>

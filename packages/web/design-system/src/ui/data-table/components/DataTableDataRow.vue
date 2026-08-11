@@ -9,6 +9,7 @@ import DataTableSubComponentRow from '@/ui/data-table/components/DataTableSubCom
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
 
 const props = defineProps<{
+  hasRowActions: boolean
   hasSubComponent: boolean
   isSelectable: boolean
   viewModel: DataTableRowViewModel<TItem>
@@ -22,7 +23,12 @@ const emit = defineEmits<{
 
 <template>
   <DataTableRow
+    :has-row-actions="props.hasRowActions"
+    :inline-actions="props.viewModel.rowConfig?.actions.inline ?? []"
     :is-last="props.viewModel.isLast && !props.viewModel.isSubComponentExpanded"
+    :model="props.viewModel.rowConfig?.model ?? null"
+    :more-actions="props.viewModel.rowConfig?.actions.more ?? []"
+    :on-row-click="props.viewModel.rowConfig?.onClick ?? null"
   >
     <DataTableCheckboxCell
       v-if="props.isSelectable"
@@ -41,6 +47,7 @@ const emit = defineEmits<{
       v-for="cell of props.viewModel.row.getVisibleCells()"
       :key="cell.column.id"
       :column-id="cell.column.id"
+      :on-row-click="props.viewModel.rowConfig?.onClick ?? null"
     >
       <FlexRender
         :props="cell.getContext()"

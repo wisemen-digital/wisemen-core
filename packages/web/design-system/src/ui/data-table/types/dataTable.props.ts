@@ -3,12 +3,9 @@ import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Component } from 'vue'
 
 import type { Sort } from '@/composables/sort.composable'
-import type {
-  RegisteredActionContext,
-  RegisteredRouteLocationRaw,
-} from '@/register'
 import type { DataTableGroupBy } from '@/ui/data-table/composables/dataTable.composable'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
+import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
 
 export interface DataTableMobileCardConfig {
   indicator?: string
@@ -63,20 +60,9 @@ export interface DataTableProps<TItem> {
    */
   error?: ApiError | null
   /**
-   * Maps a row item to the action context model used by the actions system, for the
-   * selection action bar. Required when `selectionActions` is provided.
-   */
-  getActionModel?: ((item: TItem) => RegisteredActionContext['models'][number]) | null
-  /**
    * Returns a stable, unique key for a row item. Used to track rows across re-renders.
    */
   getKey: (item: TItem) => string
-  /**
-   * Maps a row item to a route location. Used by the mobile list's expanded-card "Go to
-   * detail" button, and will be reused by the detail pane's Cmd+O once that ships. Return
-   * `null` to disable navigation for a specific row.
-   */
-  getLink?: ((item: TItem) => RegisteredRouteLocationRaw | null) | null
   /**
    * Groups rows by this column's value, rendering a collapsible group header row above each
    * distinct value. Pass a two-element tuple to additionally sub-group within each group by a
@@ -97,6 +83,15 @@ export interface DataTableProps<TItem> {
    * (default) when there is no next page, e.g. all data is already loaded client-side.
    */
   onNextPage?: (() => void) | null
+  /**
+   * Per-row click/navigation and actions, resolved from the row's own item. `onClick` drives
+   * the whole-row click target (desktop) and the mobile card's "Go to detail" button; `model`
+   * feeds the Action registry's applicability checks (also used for the selection action bar);
+   * `actions.inline` render as always-visible icon buttons in the trailing actions column,
+   * `actions.more` sit behind its `⋯` overflow menu and the row's right-click context menu.
+   * Return `null` for a row with no click target/actions at all.
+   */
+  row?: ((item: TItem) => DataTableRowConfig | null) | null
   /**
    * Actions shown in a floating bar once one or more rows are selected. Only actions that
    * resolve as applicable for the current selection are rendered.

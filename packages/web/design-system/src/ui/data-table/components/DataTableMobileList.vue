@@ -4,7 +4,6 @@ import {
   shallowRef,
 } from 'vue'
 
-import type { RegisteredRouteLocationRaw } from '@/register'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import DataTableMobileCard from '@/ui/data-table/components/DataTableMobileCard.vue'
 import DataTableMobileGroupHeader from '@/ui/data-table/components/DataTableMobileGroupHeader.vue'
@@ -13,6 +12,7 @@ import { useDataTableMobileSlots } from '@/ui/data-table/composables/dataTableMo
 import { useDataTableMobileVirtualScroller } from '@/ui/data-table/composables/dataTableMobileVirtualScroller.composable'
 import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
+import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
 
 const props = withDefaults(defineProps<{
@@ -21,14 +21,14 @@ const props = withDefaults(defineProps<{
   columns: DataTableColumn<TItem>[]
   expandedItemKeys: Set<string>
   getKey: (item: TItem) => string
-  getLink?: ((item: TItem) => RegisteredRouteLocationRaw | null) | null
   mobileCard: DataTableMobileCardConfig | null
   onNextPage?: (() => void) | null
+  row?: ((item: TItem) => DataTableRowConfig | null) | null
   rowViewModels: DataTableRowViewModel<TItem>[]
 }>(), {
   isSelectable: false,
-  getLink: null,
   onNextPage: null,
+  row: null,
 })
 
 const emit = defineEmits<{
@@ -115,7 +115,7 @@ const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
             :is-expanded="props.expandedItemKeys.has(entry.itemKey)"
             :is-selectable="props.isSelectable"
             :is-selected="props.isItemSelected(entry.itemKey)"
-            :link="props.getLink?.(entry.viewModel.row.original) ?? null"
+            :on-click="props.row?.(entry.viewModel.row.original)?.onClick ?? null"
             @toggle-expanded="emit('toggleExpanded', entry.itemKey)"
             @toggle-selected="emit('toggleSelected', entry.itemKey)"
           />

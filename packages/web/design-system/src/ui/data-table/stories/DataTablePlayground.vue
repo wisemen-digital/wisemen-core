@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { ApiError } from '@wisemen/vue-core-api-utils'
-import type {
-  Action,
-  ActionModel,
-} from '@wisemen/vue-core-actions'
+import type { Action } from '@wisemen/vue-core-actions'
 import { createAction } from '@wisemen/vue-core-actions'
-import { Trash01Icon } from '@wisemen/vue-core-icons'
+import {
+  EyeIcon,
+  Trash01Icon,
+} from '@wisemen/vue-core-icons'
 import { Temporal } from 'temporal-polyfill'
 import {
   computed,
@@ -27,6 +27,7 @@ import {
   createDataTableTextCell,
   createDataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableColumn.type'
+import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
 import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 interface User {
@@ -45,6 +46,7 @@ interface User {
 }
 
 const props = withDefaults(defineProps<{
+  hasRowActions?: boolean
   hasSubComponent?: boolean
   // Simulates an always-loading table with no data yet — see `isSimulatingInfiniteScroll` for
   // the interactive next-page-fetch demo instead.
@@ -71,6 +73,7 @@ const props = withDefaults(defineProps<{
   stickyRightColumnKeys?: string[]
   groupBy?: 'department' | 'department+status' | 'status' | null
 }>(), {
+  hasRowActions: false,
   hasSubComponent: false,
   isForcedLoading: false,
   isFirstColumnSticky: false,
@@ -115,16 +118,42 @@ const selectionActions: Action[] = [
   }),
 ]
 
-function getActionModel(item: User): ActionModel {
+function row(item: User): DataTableRowConfig {
   return {
-    key: item.id,
-    modelName: 'user',
-  }
-}
-
-function getLink(item: User) {
-  return {
-    path: `/users/${item.id}`,
+    onClick: () => {
+      // eslint-disable-next-line no-console
+      console.log('[DataTablePlayground] row clicked', item.id)
+    },
+    model: {
+      key: item.id,
+      modelName: 'user',
+    },
+    actions: {
+      inline: [
+        createAction({
+          id: `view-user-${item.id}`,
+          name: () => 'View',
+          availableWhenUnauthenticated: true,
+          execute: () => {
+            // eslint-disable-next-line no-console
+            console.log('[DataTablePlayground] view action executed', item.id)
+          },
+          icon: () => EyeIcon,
+        }),
+      ],
+      more: [
+        createAction({
+          id: `delete-user-${item.id}`,
+          name: () => 'Delete',
+          availableWhenUnauthenticated: true,
+          execute: () => {
+            // eslint-disable-next-line no-console
+            console.log('[DataTablePlayground] delete action executed', item.id)
+          },
+          icon: () => Trash01Icon,
+        }),
+      ],
+    },
   }
 }
 
@@ -367,9 +396,7 @@ function subComponent(item: User) {
       :columns="columns"
       :data="visibleData"
       :error="error"
-      :get-action-model="getActionModel"
       :get-key="(item) => item.id"
-      :get-link="getLink"
       :group-by="groupByProp"
       :is-fetching-next-page="isFetchingNextPage"
       :is-first-column-sticky="props.isFirstColumnSticky"
@@ -378,6 +405,7 @@ function subComponent(item: User) {
       :is-selectable="props.isSelectable"
       :mobile-card="mobileCard"
       :on-next-page="props.isSimulatingInfiniteScroll ? onNextPage : null"
+      :row="props.hasRowActions ? row : null"
       :selection-actions="selectionActions"
       :sort="sort"
       :sub-component="props.hasSubComponent ? subComponent : null"
