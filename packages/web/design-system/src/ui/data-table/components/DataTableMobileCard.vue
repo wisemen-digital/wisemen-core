@@ -3,6 +3,7 @@ import {
   ArrowUpRightIcon,
   ChevronDownIcon,
 } from '@wisemen/vue-core-icons'
+import type { Component } from 'vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -29,10 +30,12 @@ const props = withDefaults(defineProps<{
   onClick?: (() => void) | null
   primaryCell: DataTableCell | null
   secondaryCell: DataTableCell | null
+  subComponent?: Component | null
 }>(), {
   isSelectable: false,
   isSelected: false,
   onClick: null,
+  subComponent: null,
 })
 
 const emit = defineEmits<{
@@ -43,6 +46,7 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || props.indicatorCell !== null)
+const canExpand = computed<boolean>(() => props.hiddenCells.length > 0 || props.subComponent !== null)
 </script>
 
 <template>
@@ -61,9 +65,13 @@ const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || pr
       />
 
       <button
-        class="flex flex-1 items-start gap-md text-left outline-none"
+        :disabled="!canExpand"
+        class="
+          flex flex-1 items-start gap-md text-left outline-none
+          disabled:cursor-default
+        "
         type="button"
-        @click="emit('toggleExpanded')"
+        @click="canExpand && emit('toggleExpanded')"
       >
         <div class="min-w-0 flex-1">
           <div
@@ -98,6 +106,7 @@ const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || pr
         </div>
 
         <ChevronDownIcon
+          v-if="canExpand"
           :class="{
             '-rotate-90': !props.isExpanded,
           }"
@@ -107,7 +116,7 @@ const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || pr
     </div>
 
     <div
-      v-if="props.isExpanded"
+      v-if="props.isExpanded && canExpand"
       class="flex flex-col gap-lg px-xl pb-lg pl-11"
     >
       <UIDetailListGroupItem
@@ -121,6 +130,11 @@ const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || pr
           class="text-xs text-primary"
         />
       </UIDetailListGroupItem>
+
+      <Component
+        :is="props.subComponent"
+        v-if="props.subComponent !== null"
+      />
 
       <UIButton
         v-if="props.onClick !== null"

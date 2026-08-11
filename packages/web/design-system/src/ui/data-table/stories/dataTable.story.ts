@@ -220,6 +220,27 @@ export const SubComponent: Story = {
   },
 }
 
+// Same subComponent content as the desktop story, on the mobile card layout — expand a card to
+// see the columns not slotted into mobileCard, followed by the subComponent content, both inside
+// the same expanded area behind one chevron.
+export const SubComponentMobile: Story = {
+  args: {
+    hasRowActions: false,
+    hasSubComponent: true,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: true,
+    isSelectable: false,
+    isSimulatingEmpty: false,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    groupBy: null,
+  },
+}
+
 export const Selectable: Story = {
   args: {
     hasRowActions: false,

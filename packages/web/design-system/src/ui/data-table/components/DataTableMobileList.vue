@@ -116,6 +116,7 @@ const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
             :is-selectable="props.isSelectable"
             :is-selected="props.isItemSelected(entry.itemKey)"
             :on-click="props.row?.(entry.viewModel.row.original)?.onClick ?? null"
+            :sub-component="entry.viewModel.subComponent"
             @toggle-expanded="emit('toggleExpanded', entry.itemKey)"
             @toggle-selected="emit('toggleSelected', entry.itemKey)"
           />

@@ -171,6 +171,10 @@ file is the condensed, decisions-only reference.
   which then reveals a checkbox per card.
 - Grouped mobile list mirrors desktop's group rows as collapsible section headers, same
   collapse/select-all-in-group behavior.
+- **`subComponent` on mobile**: shares the same expand chevron/state as the unslotted-column
+  reveal above — no second trigger. Expanded area shows unslotted columns first, then
+  `subComponent`'s content. The chevron itself only appears when there's something to reveal —
+  unslotted columns, `subComponent(item)` returning non-`null`, or both.
 
 ## Detail pane
 
