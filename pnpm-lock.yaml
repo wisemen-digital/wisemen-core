@@ -1607,6 +1607,43 @@ importers:
         specifier: catalog:peer
         version: 5.9.3
 
+  packages/api/nestjs-api-status:
+    dependencies:
+      '@wisemen/nestjs-auth':
+        specifier: workspace:^
+        version: link:../nestjs-auth
+      reflect-metadata:
+        specifier: catalog:backend-peer
+        version: 0.2.2
+    devDependencies:
+      '@nestjs/common':
+        specifier: catalog:backend
+        version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: catalog:backend
+        version: 11.4.6(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/nestjs-async-api:
     dependencies:
       '@nestjs/swagger':
@@ -1658,6 +1695,30 @@ importers:
       reflect-metadata:
         specifier: catalog:backend-peer
         version: 0.2.2
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
+  packages/api/nestjs-common:
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -2249,6 +2310,58 @@ importers:
         specifier: catalog:peer
         version: 5.9.3
 
+  packages/api/nestjs-swagger:
+    dependencies:
+      '@nestjs/common':
+        specifier: catalog:backend-peer
+        version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core':
+        specifier: catalog:backend-peer
+        version: 11.1.28(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.28)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: catalog:backend-peer
+        version: 11.4.6(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@wisemen/api-error':
+        specifier: workspace:^
+        version: link:../api-error
+      '@wisemen/nestjs-auth':
+        specifier: workspace:^
+        version: link:../nestjs-auth
+      '@wisemen/nestjs-common':
+        specifier: workspace:^
+        version: link:../nestjs-common
+      '@wisemen/opentelemetry':
+        specifier: workspace:^
+        version: link:../opentelemetry
+      fastify:
+        specifier: catalog:backend-peer
+        version: 5.10.0
+      reflect-metadata:
+        specifier: catalog:backend-peer
+        version: 0.2.2
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/nestjs-tests:
     dependencies:
       '@wisemen/nestjs-domain-events':
@@ -2408,43 +2521,6 @@ importers:
         specifier: catalog:backend-peer
         version: 3.0.6(@babel/runtime@7.29.7)
     devDependencies:
-      '@types/node':
-        specifier: catalog:backend
-        version: 25.3.0
-      '@wisemen/eslint-config-nestjs':
-        specifier: workspace:*
-        version: link:../eslint-config-nestjs
-      eslint:
-        specifier: catalog:lint-api
-        version: 10.2.1(jiti@2.7.0)
-      expect:
-        specifier: catalog:test
-        version: 30.4.1
-      oxlint:
-        specifier: catalog:lint-api
-        version: 1.59.0(oxlint-tsgolint@0.20.0)
-      oxlint-tsgolint:
-        specifier: catalog:lint-api
-        version: 0.20.0
-      typescript:
-        specifier: catalog:peer
-        version: 5.9.3
-
-  packages/api/nests-api-status:
-    dependencies:
-      '@wisemen/nestjs-auth':
-        specifier: workspace:^
-        version: link:../nestjs-auth
-      reflect-metadata:
-        specifier: catalog:backend-peer
-        version: 0.2.2
-    devDependencies:
-      '@nestjs/common':
-        specifier: catalog:backend
-        version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/swagger':
-        specifier: catalog:backend
-        version: 11.4.6(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
       '@types/node':
         specifier: catalog:backend
         version: 25.3.0
