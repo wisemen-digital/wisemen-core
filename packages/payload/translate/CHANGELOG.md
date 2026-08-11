@@ -7,6 +7,12 @@
 
 
 
+
+## 0.0.9
+<sub>2026-08-11</sub>
+
+- [#1573](https://github.com/wisemen-digital/wisemen-core/pull/1573)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - More throtteling on deepl
+
 ## 0.0.8
 <sub>2026-08-10</sub>
 
