@@ -22,11 +22,12 @@ describe('the DeepL translation adapter', () => {
     vi.useFakeTimers()
 
     const deferredResponses: DeferredResponse[] = []
-    const fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>(() => new Promise<Response>((resolve) => {
-      deferredResponses.push({
-        resolve,
-      })
-    }))
+    const fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>(() =>
+      new Promise<Response>((resolve) => {
+        deferredResponses.push({
+          resolve,
+        })
+      }))
 
     vi.stubGlobal('fetch', fetchMock)
 
@@ -116,7 +117,11 @@ describe('the DeepL translation adapter', () => {
 function createTranslationResponse(text: string | string[]): Response {
   return {
     json: () => Promise.resolve({
-      translations: (Array.isArray(text) ? text : [text]).map((translation) => ({
+      translations: (Array.isArray(text)
+        ? text
+        : [
+            text,
+          ]).map((translation) => ({
         text: translation,
       })),
     }),

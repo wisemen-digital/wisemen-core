@@ -117,7 +117,9 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     while (this.pendingRequests.length > 0) {
       const nextRequest = this.pendingRequests[0]
 
-      if (!nextRequest || nextRequest.args.sourceLocale !== sourceLocale || nextRequest.args.targetLocale !== targetLocale) {
+      if (!nextRequest
+        || nextRequest.args.sourceLocale !== sourceLocale
+        || nextRequest.args.targetLocale !== targetLocale) {
         break
       }
 
@@ -171,7 +173,8 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
           }[]
         }
 
-        if (result.translations?.length !== requests.length || result.translations.some((translation) => !translation.text)) {
+        if (result.translations?.length !== requests.length
+          || result.translations.some((translation) => !translation.text)) {
           throw new Error('DeepL Translate response did not contain translated text.')
         }
 
