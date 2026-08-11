@@ -1,18 +1,20 @@
 <script setup lang="ts">
+import type { Action } from '@wisemen/vue-core-actions'
 import {
   ArrowUpRightIcon,
   ChevronDownIcon,
+  DotsVerticalIcon,
 } from '@wisemen/vue-core-icons'
 import type { Component } from 'vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { UIButton } from '@/ui/button'
+import type { RegisteredActionContext } from '@/register'
+import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu'
+import { UIButton, UIIconButton } from '@/ui/button'
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
-import { UIDetailListGroupItem } from '@/ui/detail-list'
-import DetailListGroupItemLabel from '@/ui/detail-list/DetailListGroupItemLabel.vue'
 
 export interface DataTableMobileCardCell {
   cell: DataTableCell
@@ -26,14 +28,20 @@ const props = withDefaults(defineProps<{
   isSelected?: boolean
   hiddenCells: DataTableMobileCardCell[]
   indicatorCell: DataTableCell | null
+  inlineActions?: Action[]
   metaCell: DataTableCell | null
+  model?: RegisteredActionContext['models'][number] | null
+  moreActions?: Action[]
   primaryCell: DataTableCell | null
   secondaryCell: DataTableCell | null
   subComponent?: Component | null
   onClick?: (() => void) | null
 }>(), {
+  inlineActions: () => [],
   isSelectable: false,
   isSelected: false,
+  model: null,
+  moreActions: () => [],
   subComponent: null,
   onClick: null,
 })
@@ -50,6 +58,8 @@ const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || pr
 // generic unslotted-column dump entirely rather than sitting alongside it.
 const visibleHiddenCells = computed<DataTableMobileCardCell[]>(() => (props.subComponent === null ? props.hiddenCells : []))
 const canExpand = computed<boolean>(() => props.hiddenCells.length > 0 || props.subComponent !== null)
+const allActions = computed<Action[]>(() => props.inlineActions.concat(props.moreActions))
+const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.value.length > 0)
 </script>
 
 <template>
@@ -120,33 +130,61 @@ const canExpand = computed<boolean>(() => props.hiddenCells.length > 0 || props.
 
     <div
       v-if="props.isExpanded && canExpand"
-      class="flex flex-col gap-lg px-xl pb-lg pl-11"
+      class="flex flex-col gap-lg px-xl pb-lg"
     >
-      <Component
-        v-if="props.subComponent !== null"
-        :is="props.subComponent"
-      />
-
-      <UIDetailListGroupItem
-        v-for="hiddenCell of visibleHiddenCells"
-        :key="hiddenCell.key"
-      >
-        <DetailListGroupItemLabel :label="hiddenCell.headerLabel" />
-
-        <DataTableCellRenderer
-          :cell="hiddenCell.cell"
-          class="text-xs text-primary"
+      <div class="divide-y divide-secondary rounded-lg border border-secondary">
+        <Component
+          v-if="props.subComponent !== null"
+          :is="props.subComponent"
+          class="p-md"
         />
-      </UIDetailListGroupItem>
 
-      <UIButton
-        v-if="props.onClick !== null"
-        :icon-right="ArrowUpRightIcon"
-        :label="i18n.t('component.table.row.view_details_label')"
-        size="sm"
-        variant="secondary"
-        @click="props.onClick"
-      />
+        <div
+          v-for="hiddenCell of visibleHiddenCells"
+          :key="hiddenCell.key"
+          class="flex items-center justify-between gap-md px-md py-sm"
+        >
+          <span class="text-xs text-tertiary">
+            {{ hiddenCell.headerLabel }}
+          </span>
+
+          <DataTableCellRenderer
+            :cell="hiddenCell.cell"
+            class="text-xs text-primary"
+          />
+        </div>
+
+        <div
+          v-if="hasFooter"
+          class="flex items-center gap-xs px-md py-sm"
+        >
+          <UIButton
+            v-if="props.onClick !== null"
+            :icon-right="ArrowUpRightIcon"
+            :label="i18n.t('component.table.row.view_details_label')"
+            size="sm"
+            variant="secondary"
+            @click="props.onClick"
+          />
+
+          <UIActionDropdownMenu
+            v-if="allActions.length > 0"
+            :actions="allActions"
+            :is-current-context-only="true"
+            :models="props.model === null ? [] : [props.model]"
+            popover-align="start"
+            popover-side="bottom"
+          >
+            <UIIconButton
+              :icon="DotsVerticalIcon"
+              :is-tooltip-disabled="true"
+              :label="i18n.t('component.data_table.row_actions_cell.label')"
+              size="sm"
+              variant="secondary"
+            />
+          </UIActionDropdownMenu>
+        </div>
+      </div>
     </div>
   </div>
 </template>

@@ -166,7 +166,9 @@ file is the condensed, decisions-only reference.
   - `secondary` (bottom-left, supporting text)
   - `meta` (top-right, e.g. timestamp)
   - `indicator` (bottom-right, e.g. status dot/badge)
-- Any column not referenced in `mobileCard` renders in the expanded card instead.
+- Any column not referenced in `mobileCard` renders in the expanded card instead, as a bordered,
+  divided list of label/value rows (not the `UIDetailListGroupItem` primitive — plain custom
+  markup, since none of the detail-list components provide a bordered-card look on their own).
 - Selection is **off by default on mobile** — must be turned on via an explicit toggle button,
   which then reveals a checkbox per card.
 - Grouped mobile list mirrors desktop's group rows as collapsible section headers, same
@@ -177,6 +179,10 @@ file is the condensed, decisions-only reference.
   showing alongside it — `subComponent` is a deliberate, curated view, not extra content to
   stack on top of the generic column dump. Rows with no `subComponent` still fall back to the
   unslotted-column list as before. The chevron appears whenever either has something to show.
+- **Row actions on mobile**: when `row(item)` resolves inline/more actions, a "View details"
+  button and a single `⋯` action-dropdown trigger (merging inline + more actions into one menu,
+  unlike desktop's separate inline-icon-buttons-plus-overflow) render as the last row inside the
+  same bordered card as the expanded fields — not as a separate floating row below it.
 
 ## Detail pane
 

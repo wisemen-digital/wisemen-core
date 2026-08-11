@@ -56,6 +56,7 @@ interface MobileVirtualRowViewModel {
   index: number
   itemKey: string
   key: string
+  rowConfig: DataTableRowConfig | null
   viewModel: DataTableRowViewModel<TItem>
 }
 
@@ -67,6 +68,7 @@ const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
       index: virtualItem.index,
       itemKey: viewModel.isGrouped ? '' : props.getKey(viewModel.row.original),
       key: String(virtualItem.key),
+      rowConfig: viewModel.isGrouped ? null : (props.row?.(viewModel.row.original) ?? null),
       viewModel,
     }
   }),
@@ -112,10 +114,13 @@ const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
           <DataTableMobileCard
             v-else
             v-bind="getMobileSlots(entry.viewModel.row.original)"
+            :inline-actions="entry.rowConfig?.actions.inline ?? []"
             :is-expanded="props.expandedItemKeys.has(entry.itemKey)"
             :is-selectable="props.isSelectable"
             :is-selected="props.isItemSelected(entry.itemKey)"
-            :on-click="props.row?.(entry.viewModel.row.original)?.onClick ?? null"
+            :model="entry.rowConfig?.model ?? null"
+            :more-actions="entry.rowConfig?.actions.more ?? []"
+            :on-click="entry.rowConfig?.onClick ?? null"
             :sub-component="entry.viewModel.subComponent"
             @toggle-expanded="emit('toggleExpanded', entry.itemKey)"
             @toggle-selected="emit('toggleSelected', entry.itemKey)"
