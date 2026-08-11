@@ -18,7 +18,9 @@ describe('the DeepL translation adapter', () => {
     vi.unstubAllGlobals()
   })
 
-  it('limits simultaneous DeepL requests to 5', async () => {
+  it('processes DeepL requests one at a time with a delay between requests', async () => {
+    vi.useFakeTimers()
+
     const deferredResponses: DeferredResponse[] = []
     const fetchMock = vi.fn(() => new Promise<Response>((resolve) => {
       deferredResponses.push({
@@ -31,11 +33,14 @@ describe('the DeepL translation adapter', () => {
     const adapter = new DeepLTranslateAdapter({
       apiKey: 'test-key',
     })
+    const secondAdapter = new DeepLTranslateAdapter({
+      apiKey: 'test-key',
+    })
     const translations = Array.from(
       {
         length: 6,
       },
-      (_, index) => adapter.translate(
+      (_, index) => (index % 2 === 0 ? adapter : secondAdapter).translate(
         {
           document: {},
           req: {} as never,
@@ -46,22 +51,22 @@ describe('the DeepL translation adapter', () => {
       ),
     )
 
-    expect(fetchMock).toHaveBeenCalledTimes(5)
+    await vi.advanceTimersByTimeAsync(0)
 
-    const initialResponses = deferredResponses.splice(0, 5)
+    expect(fetchMock).toHaveBeenCalledTimes(1)
 
-    for (const [
-      index,
-      response,
-    ] of initialResponses.entries()) {
-      response.resolve(createTranslationResponse(`Vertaling ${index}`))
+    for (let index = 0; index < 6; index += 1) {
+      const deferredResponse = deferredResponses.shift()
+
+      expect(deferredResponse).toBeDefined()
+      deferredResponse?.resolve(createTranslationResponse(`Vertaling ${index}`))
+
+      if (index < 5) {
+        await vi.advanceTimersByTimeAsync(500)
+      }
     }
 
-    await vi.waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledTimes(6)
-    })
-
-    deferredResponses[0]?.resolve(createTranslationResponse('Vertaling 5'))
+    expect(fetchMock).toHaveBeenCalledTimes(6)
 
     await expect(Promise.all(translations)).resolves.toEqual(
       Array.from(
@@ -83,7 +88,7 @@ describe('the DeepL translation adapter', () => {
     vi.stubGlobal('fetch', fetchMock)
 
     const adapter = new DeepLTranslateAdapter({
-      apiKey: 'test-key',
+      apiKey: 'retry-test-key',
     })
     const translation = adapter.translate({
       document: {},
@@ -92,6 +97,8 @@ describe('the DeepL translation adapter', () => {
       targetLocale: 'nl',
       text: 'Text',
     })
+
+    await vi.advanceTimersByTimeAsync(0)
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
 

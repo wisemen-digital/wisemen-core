@@ -14,10 +14,12 @@ export interface DeepLTranslateAdapterOptions {
 
 export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 
-const MAX_CONCURRENT_DEEPL_REQUESTS = 5
-const MAX_RETRY_ATTEMPTS = 5
+const MAX_CONCURRENT_DEEPL_REQUESTS = 1
+const INITIAL_REQUEST_INTERVAL_MS = 500
+const MAX_RETRY_ATTEMPTS = 8
 const INITIAL_RETRY_DELAY_MS = 1000
-const MAX_RETRY_DELAY_MS = 16_000
+const MAX_RETRY_DELAY_MS = 30_000
+const DEEPL_REQUEST_THROTTLES = new Map<string, DeepLRequestThrottle>()
 
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
@@ -42,6 +44,8 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     resolve: (value: string) => void
   }> = []
 
+  private readonly requestThrottle: DeepLRequestThrottle
+
   public constructor({
     apiKey, apiURL = 'https://api.deepl.com/v2/translate',
   }: DeepLTranslateAdapterOptions) {
@@ -49,6 +53,7 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     this.apiURL = typeof apiURL === 'string' && apiURL.trim().length > 0
       ? sanitizeUrlInput(apiURL)
       : 'https://api.deepl.com/v2/translate'
+    this.requestThrottle = getRequestThrottle(this.apiKey, this.apiURL)
   }
 
   private normalizeLocale(locale: string): string {
@@ -83,6 +88,8 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     text,
   }: TranslationAdapterArgs): Promise<string> {
     for (let attempt = 0; attempt <= MAX_RETRY_ATTEMPTS; attempt += 1) {
+      await this.requestThrottle.waitForRequestSlot()
+
       const response = await fetch(this.apiURL, {
         body: JSON.stringify({
           source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
@@ -115,7 +122,10 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
       }
 
       if ((response.status === 429 || response.status === 500) && attempt < MAX_RETRY_ATTEMPTS) {
-        await wait(getRetryDelay(response.headers.get('retry-after'), attempt))
+        const retryDelay = getRetryDelay(response.headers.get('retry-after'), attempt)
+
+        this.requestThrottle.increaseRequestInterval(retryDelay)
+        await wait(retryDelay)
 
         continue
       }
@@ -123,7 +133,9 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
       const errorBody = await response.text().catch(() => '')
       const errorDetails = errorBody ? `: ${errorBody}` : ''
 
-      throw new Error(`DeepL Translate request failed with status ${response.status}${errorDetails}.`)
+      const attempts = attempt + 1
+
+      throw new Error(`DeepL Translate request failed with status ${response.status} after ${attempts} attempt${attempts === 1 ? '' : 's'}${errorDetails}.`)
     }
 
     throw new Error('DeepL Translate request failed after retrying.')
@@ -144,6 +156,51 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
       this.processPendingRequests()
     })
   }
+}
+
+class DeepLRequestThrottle {
+  private nextRequestAt = 0
+  private previousRequestSlot: Promise<void> = Promise.resolve()
+  private requestIntervalMs = INITIAL_REQUEST_INTERVAL_MS
+
+  public increaseRequestInterval(interval: number): void {
+    this.requestIntervalMs = Math.max(this.requestIntervalMs, interval)
+  }
+
+  public async waitForRequestSlot(): Promise<void> {
+    const previousRequestSlot = this.previousRequestSlot
+    let releaseRequestSlot: () => void
+
+    this.previousRequestSlot = new Promise((resolve) => {
+      releaseRequestSlot = resolve
+    })
+
+    await previousRequestSlot
+
+    const delay = Math.max(this.nextRequestAt - Date.now(), 0)
+
+    if (delay > 0) {
+      await wait(delay)
+    }
+
+    this.nextRequestAt = Date.now() + this.requestIntervalMs
+    releaseRequestSlot!()
+  }
+}
+
+function getRequestThrottle(apiKey: string | undefined, apiURL: string): DeepLRequestThrottle {
+  const throttleKey = `${apiURL}:${apiKey ?? ''}`
+  const existingThrottle = DEEPL_REQUEST_THROTTLES.get(throttleKey)
+
+  if (existingThrottle) {
+    return existingThrottle
+  }
+
+  const throttle = new DeepLRequestThrottle()
+
+  DEEPL_REQUEST_THROTTLES.set(throttleKey, throttle)
+
+  return throttle
 }
 
 function sanitizeUrlInput(url: string): string {
