@@ -172,9 +172,11 @@ file is the condensed, decisions-only reference.
 - Grouped mobile list mirrors desktop's group rows as collapsible section headers, same
   collapse/select-all-in-group behavior.
 - **`subComponent` on mobile**: shares the same expand chevron/state as the unslotted-column
-  reveal above — no second trigger. Expanded area shows unslotted columns first, then
-  `subComponent`'s content. The chevron itself only appears when there's something to reveal —
-  unslotted columns, `subComponent(item)` returning non-`null`, or both.
+  reveal above — no second trigger. When `subComponent(item)` resolves to a component for a
+  row, its content **replaces** the unslotted-column list entirely for that row, rather than
+  showing alongside it — `subComponent` is a deliberate, curated view, not extra content to
+  stack on top of the generic column dump. Rows with no `subComponent` still fall back to the
+  unslotted-column list as before. The chevron appears whenever either has something to show.
 
 ## Detail pane
 

@@ -46,6 +46,9 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const hasTrailingContent = computed<boolean>(() => props.metaCell !== null || props.indicatorCell !== null)
+// subComponent, when provided for a row, is a deliberate curated view that replaces the
+// generic unslotted-column dump entirely rather than sitting alongside it.
+const visibleHiddenCells = computed<DataTableMobileCardCell[]>(() => (props.subComponent === null ? props.hiddenCells : []))
 const canExpand = computed<boolean>(() => props.hiddenCells.length > 0 || props.subComponent !== null)
 </script>
 
@@ -119,8 +122,13 @@ const canExpand = computed<boolean>(() => props.hiddenCells.length > 0 || props.
       v-if="props.isExpanded && canExpand"
       class="flex flex-col gap-lg px-xl pb-lg pl-11"
     >
+      <Component
+        v-if="props.subComponent !== null"
+        :is="props.subComponent"
+      />
+
       <UIDetailListGroupItem
-        v-for="hiddenCell of props.hiddenCells"
+        v-for="hiddenCell of visibleHiddenCells"
         :key="hiddenCell.key"
       >
         <DetailListGroupItemLabel :label="hiddenCell.headerLabel" />
@@ -130,11 +138,6 @@ const canExpand = computed<boolean>(() => props.hiddenCells.length > 0 || props.
           class="text-xs text-primary"
         />
       </UIDetailListGroupItem>
-
-      <Component
-        :is="props.subComponent"
-        v-if="props.subComponent !== null"
-      />
 
       <UIButton
         v-if="props.onClick !== null"
