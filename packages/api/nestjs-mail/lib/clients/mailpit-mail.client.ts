@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { MailpitClient, type MailpitAttachmentRequest, type MailpitEmailAddressRequest } from 'mailpit-api'
 import { MailUnavailableError } from '../errors/mail-unavailable.error.js'
 import type { MailPitMailClientOptions } from '../modules/mail.module-options.js'
-import { MailClient, type MailAttachment, type SendMailOptions } from './mail.client.js'
+import { MailClient, type MailAttachment, type SendMailOptions, type SentMail } from './mail.client.js'
 
 @Injectable()
 export class MailPitMailClient extends MailClient {
@@ -28,8 +28,8 @@ export class MailPitMailClient extends MailClient {
     return this._client
   }
 
-  async sendMail (options: SendMailOptions): Promise<void> {
-    await this.client.sendMessage({
+  async sendMail (options: SendMailOptions): Promise<SentMail[]> {
+    const response = await this.client.sendMessage({
       From: { Email: options.from ?? this.defaultFrom },
       To: this.mapToEmailAddressRequests(options.to),
       Cc: options.cc !== undefined ? this.mapToEmailAddressRequests(options.cc) : undefined,
@@ -45,6 +45,8 @@ export class MailPitMailClient extends MailClient {
         : undefined,
       Tags: this.tag !== undefined ? [this.tag] : undefined
     })
+
+    return [{ id: response.ID, recipients: this.getRecipients(options) }]
   }
 
   private mapToEmailAddressRequests (value: string | string[]): MailpitEmailAddressRequest[] {

@@ -1,4 +1,3 @@
-/* eslint-disable e18e/prefer-static-regex */
 import type { Field } from 'payload'
 
 import { t } from '#i18n/index.ts'
@@ -15,7 +14,12 @@ export interface DeepLTranslateAdapterOptions {
 
 export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 
-const MAX_CONCURRENT_DEEPL_REQUESTS = 25
+const MAX_CONCURRENT_DEEPL_REQUESTS = 1
+const INITIAL_REQUEST_INTERVAL_MS = 500
+const MAX_RETRY_ATTEMPTS = 8
+const INITIAL_RETRY_DELAY_MS = 1000
+const MAX_RETRY_DELAY_MS = 30_000
+const DEEPL_REQUEST_THROTTLES = new Map<string, DeepLRequestThrottle>()
 
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
@@ -40,6 +44,8 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     resolve: (value: string) => void
   }> = []
 
+  private readonly requestThrottle: DeepLRequestThrottle
+
   public constructor({
     apiKey, apiURL = 'https://api.deepl.com/v2/translate',
   }: DeepLTranslateAdapterOptions) {
@@ -47,6 +53,7 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     this.apiURL = typeof apiURL === 'string' && apiURL.trim().length > 0
       ? sanitizeUrlInput(apiURL)
       : 'https://api.deepl.com/v2/translate'
+    this.requestThrottle = getRequestThrottle(this.apiKey, this.apiURL)
   }
 
   private normalizeLocale(locale: string): string {
@@ -80,38 +87,58 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     targetLocale,
     text,
   }: TranslationAdapterArgs): Promise<string> {
-    const response = await fetch(this.apiURL, {
-      body: JSON.stringify({
-        source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
-        target_lang: this.normalizeLocale(targetLocale),
-        text: [
-          text,
-        ],
-      }),
-      headers: {
-        'Authorization': `DeepL-Auth-Key ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
+    for (let attempt = 0; attempt <= MAX_RETRY_ATTEMPTS; attempt += 1) {
+      await this.requestThrottle.waitForRequestSlot()
 
-    if (!response.ok) {
-      throw new Error(`DeepL Translate request failed with status ${response.status}.`)
+      const response = await fetch(this.apiURL, {
+        body: JSON.stringify({
+          source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
+          target_lang: this.normalizeLocale(targetLocale),
+          text: [
+            text,
+          ],
+        }),
+        headers: {
+          'Authorization': `DeepL-Auth-Key ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
+
+      if (response.ok) {
+        const result = await response.json() as {
+          translations?: {
+            text?: string
+          }[]
+        }
+
+        const translatedText = result.translations?.[0]?.text
+
+        if (!translatedText) {
+          throw new Error('DeepL Translate response did not contain translated text.')
+        }
+
+        return translatedText
+      }
+
+      if ((response.status === 429 || response.status === 500) && attempt < MAX_RETRY_ATTEMPTS) {
+        const retryDelay = getRetryDelay(response.headers.get('retry-after'), attempt)
+
+        this.requestThrottle.increaseRequestInterval(retryDelay)
+        await wait(retryDelay)
+
+        continue
+      }
+
+      const errorBody = await response.text().catch(() => '')
+      const errorDetails = errorBody ? `: ${errorBody}` : ''
+
+      const attempts = attempt + 1
+
+      throw new Error(`DeepL Translate request failed with status ${response.status} after ${attempts} attempt${attempts === 1 ? '' : 's'}${errorDetails}.`)
     }
 
-    const result = await response.json() as {
-      translations?: {
-        text?: string
-      }[]
-    }
-
-    const translatedText = result.translations?.[0]?.text
-
-    if (!translatedText) {
-      throw new Error('DeepL Translate response did not contain translated text.')
-    }
-
-    return translatedText
+    throw new Error('DeepL Translate request failed after retrying.')
   }
 
   public translate(args: TranslationAdapterArgs): Promise<string> {
@@ -131,8 +158,69 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
   }
 }
 
+class DeepLRequestThrottle {
+  private nextRequestAt = 0
+  private previousRequestSlot: Promise<void> = Promise.resolve()
+  private requestIntervalMs = INITIAL_REQUEST_INTERVAL_MS
+
+  public increaseRequestInterval(interval: number): void {
+    this.requestIntervalMs = Math.max(this.requestIntervalMs, interval)
+  }
+
+  public async waitForRequestSlot(): Promise<void> {
+    const previousRequestSlot = this.previousRequestSlot
+    let releaseRequestSlot: () => void
+
+    this.previousRequestSlot = new Promise((resolve) => {
+      releaseRequestSlot = resolve
+    })
+
+    await previousRequestSlot
+
+    const delay = Math.max(this.nextRequestAt - Date.now(), 0)
+
+    if (delay > 0) {
+      await wait(delay)
+    }
+
+    this.nextRequestAt = Date.now() + this.requestIntervalMs
+    releaseRequestSlot!()
+  }
+}
+
+function getRequestThrottle(apiKey: string | undefined, apiURL: string): DeepLRequestThrottle {
+  const throttleKey = `${apiURL}:${apiKey ?? ''}`
+  const existingThrottle = DEEPL_REQUEST_THROTTLES.get(throttleKey)
+
+  if (existingThrottle) {
+    return existingThrottle
+  }
+
+  const throttle = new DeepLRequestThrottle()
+
+  DEEPL_REQUEST_THROTTLES.set(throttleKey, throttle)
+
+  return throttle
+}
+
 function sanitizeUrlInput(url: string): string {
   return url.replace(/\s+/g, '')
+}
+
+function getRetryDelay(retryAfter: string | null, attempt: number): number {
+  const retryAfterSeconds = Number(retryAfter)
+
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0) {
+    return retryAfterSeconds * 1000
+  }
+
+  return Math.min(INITIAL_RETRY_DELAY_MS * 2 ** attempt, MAX_RETRY_DELAY_MS)
+}
+
+function wait(delay: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay)
+  })
 }
 
 export function createDeepLTranslateAdapter(options: DeepLTranslateAdapterOptions = {}): TranslationAdapter {

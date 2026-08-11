@@ -34,3 +34,6 @@ static
 # AI/agent working notes
 **/CONTEXT.md
 **/docs/adr/
+
+# Scratch playground for testing component combos, never committed
+**/src/_sandbox/

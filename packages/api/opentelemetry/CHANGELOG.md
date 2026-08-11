@@ -5,6 +5,12 @@
 
 
 
+
+## 0.2.8
+<sub>2026-08-07</sub>
+
+- [#1563](https://github.com/wisemen-digital/wisemen-core/pull/1563)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - release @wisemen/nestjs-throttler
+
 ## 0.2.7
 <sub>2026-07-29</sub>
 

@@ -4,6 +4,12 @@
 
 
 
+
+## 0.10.0
+<sub>2026-08-05</sub>
+
+- [#1550](https://github.com/wisemen-digital/wisemen-core/pull/1550)  *(minor)* Thanks [@DanneD-Wisemen](https://github.com/DanneD-Wisemen)! - Add calorie units to the `Energy` quantity: `CALORIE` (`cal`) and `KILOCALORIE` (`kcal`), using the thermochemical calorie (1 cal = 4.184 J). Joules were already supported.
+
 ## 0.9.3
 <sub>2026-07-31</sub>
 

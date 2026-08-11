@@ -89,6 +89,6 @@ describe('resolveTokens', () => {
   it('throws a contextual error for an unresolved ref', () => {
     expect(() => resolveTokens({
       r: ref('services', 'missing'),
-    }, ctx)).toThrowError(/unresolved ref\('services', 'missing'\)/)
+    }, ctx)).toThrow(/unresolved ref\('services', 'missing'\)/)
   })
 })

@@ -9,6 +9,7 @@ import {
 import { computed } from 'vue'
 
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
+import { useRegisterAsDialogNestedLayer } from '@/ui/dialog/dialogNestedLayer.composable'
 import type { PopoverProps } from '@/ui/popover/popover.props'
 import PopoverArrow from '@/ui/popover/PopoverArrow.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
@@ -40,6 +41,8 @@ const isOpen = defineModel<boolean>('isOpen', {
   default: false,
   required: false,
 })
+
+useRegisterAsDialogNestedLayer(isOpen)
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
   emit('escapeKeyDown', event)
