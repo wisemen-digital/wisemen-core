@@ -18,11 +18,11 @@ describe('the DeepL translation adapter', () => {
     vi.unstubAllGlobals()
   })
 
-  it('processes DeepL requests one at a time with a delay between requests', async () => {
+  it('batches compatible DeepL requests into one API call', async () => {
     vi.useFakeTimers()
 
     const deferredResponses: DeferredResponse[] = []
-    const fetchMock = vi.fn(() => new Promise<Response>((resolve) => {
+    const fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>(() => new Promise<Response>((resolve) => {
       deferredResponses.push({
         resolve,
       })
@@ -33,14 +33,11 @@ describe('the DeepL translation adapter', () => {
     const adapter = new DeepLTranslateAdapter({
       apiKey: 'test-key',
     })
-    const secondAdapter = new DeepLTranslateAdapter({
-      apiKey: 'test-key',
-    })
     const translations = Array.from(
       {
         length: 6,
       },
-      (_, index) => (index % 2 === 0 ? adapter : secondAdapter).translate(
+      (_, index) => adapter.translate(
         {
           document: {},
           req: {} as never,
@@ -54,19 +51,26 @@ describe('the DeepL translation adapter', () => {
     await vi.advanceTimersByTimeAsync(0)
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(JSON.parse(fetchMock.mock.calls[0]?.[1]?.body as string)).toMatchObject({
+      text: Array.from(
+        {
+          length: 6,
+        },
+        (_, index) => `Text ${index}`,
+      ),
+    })
 
-    for (let index = 0; index < 6; index += 1) {
-      const deferredResponse = deferredResponses.shift()
+    const deferredResponse = deferredResponses.shift()
 
-      expect(deferredResponse).toBeDefined()
-      deferredResponse?.resolve(createTranslationResponse(`Vertaling ${index}`))
-
-      if (index < 5) {
-        await vi.advanceTimersByTimeAsync(500)
-      }
-    }
-
-    expect(fetchMock).toHaveBeenCalledTimes(6)
+    expect(deferredResponse).toBeDefined()
+    deferredResponse?.resolve(createTranslationResponse(
+      Array.from(
+        {
+          length: 6,
+        },
+        (_, index) => `Vertaling ${index}`,
+      ),
+    ))
 
     await expect(Promise.all(translations)).resolves.toEqual(
       Array.from(
@@ -109,14 +113,12 @@ describe('the DeepL translation adapter', () => {
   })
 })
 
-function createTranslationResponse(text: string): Response {
+function createTranslationResponse(text: string | string[]): Response {
   return {
     json: () => Promise.resolve({
-      translations: [
-        {
-          text,
-        },
-      ],
+      translations: (Array.isArray(text) ? text : [text]).map((translation) => ({
+        text: translation,
+      })),
     }),
     ok: true,
   } as Response

@@ -14,12 +14,19 @@ export interface DeepLTranslateAdapterOptions {
 
 export const DEEPL_TRANSLATE_ADAPTER_KEY = 'deepl'
 
-const MAX_CONCURRENT_DEEPL_REQUESTS = 1
+const MAX_CONCURRENT_DEEPL_REQUESTS = 3
 const INITIAL_REQUEST_INTERVAL_MS = 500
 const MAX_RETRY_ATTEMPTS = 8
 const INITIAL_RETRY_DELAY_MS = 1000
 const MAX_RETRY_DELAY_MS = 30_000
+const MAX_REQUEST_BODY_SIZE_BYTES = 127 * 1024
 const DEEPL_REQUEST_THROTTLES = new Map<string, DeepLRequestThrottle>()
+
+interface PendingRequest {
+  args: TranslationAdapterArgs
+  reject: (reason?: unknown) => void
+  resolve: (value: string) => void
+}
 
 export const DEEPL_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
@@ -38,11 +45,8 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
   private activeRequests = 0
   private readonly apiKey?: string
   private readonly apiURL: string
-  private readonly pendingRequests: Array<{
-    args: TranslationAdapterArgs
-    reject: (reason?: unknown) => void
-    resolve: (value: string) => void
-  }> = []
+  private readonly pendingRequests: PendingRequest[] = []
+  private processingScheduled = false
 
   private readonly requestThrottle: DeepLRequestThrottle
 
@@ -56,25 +60,28 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     this.requestThrottle = getRequestThrottle(this.apiKey, this.apiURL)
   }
 
-  private normalizeLocale(locale: string): string {
-    return locale
-      .replaceAll('_', '-')
-      .split('-')
-      .map((segment, index) => index === 0 ? segment.toUpperCase() : segment.toUpperCase())
-      .join('-')
-  }
-
   private processPendingRequests(): void {
     while (this.activeRequests < MAX_CONCURRENT_DEEPL_REQUESTS && this.pendingRequests.length > 0) {
-      const pendingRequest = this.pendingRequests.shift()
+      const pendingRequests = this.takeNextBatch()
 
-      if (!pendingRequest) {
+      if (pendingRequests.length === 0) {
         return
       }
 
       this.activeRequests += 1
-      void this.translateRequest(pendingRequest.args)
-        .then(pendingRequest.resolve, pendingRequest.reject)
+      void this.translateRequest(pendingRequests.map((pendingRequest) => pendingRequest.args))
+        .then((translations) => {
+          for (const [
+            index,
+            pendingRequest,
+          ] of pendingRequests.entries()) {
+            pendingRequest.resolve(translations[index] as string)
+          }
+        }, (error: unknown) => {
+          for (const pendingRequest of pendingRequests) {
+            pendingRequest.reject(error)
+          }
+        })
         .finally(() => {
           this.activeRequests -= 1
           this.processPendingRequests()
@@ -82,22 +89,74 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
     }
   }
 
-  private async translateRequest({
-    sourceLocale,
-    targetLocale,
-    text,
-  }: TranslationAdapterArgs): Promise<string> {
+  private schedulePendingRequests(): void {
+    if (this.processingScheduled) {
+      return
+    }
+
+    this.processingScheduled = true
+    queueMicrotask(() => {
+      this.processingScheduled = false
+      this.processPendingRequests()
+    })
+  }
+
+  private takeNextBatch(): PendingRequest[] {
+    const firstRequest = this.pendingRequests.shift()
+
+    if (!firstRequest) {
+      return []
+    }
+
+    const pendingRequests = [
+      firstRequest,
+    ]
+    const sourceLocale = firstRequest.args.sourceLocale
+    const targetLocale = firstRequest.args.targetLocale
+
+    while (this.pendingRequests.length > 0) {
+      const nextRequest = this.pendingRequests[0]
+
+      if (!nextRequest || nextRequest.args.sourceLocale !== sourceLocale || nextRequest.args.targetLocale !== targetLocale) {
+        break
+      }
+
+      const requestBody = createRequestBody(sourceLocale, targetLocale, [
+        ...pendingRequests.map((pendingRequest) => pendingRequest.args.text),
+        nextRequest.args.text,
+      ])
+
+      if (getByteLength(requestBody) > MAX_REQUEST_BODY_SIZE_BYTES) {
+        break
+      }
+
+      pendingRequests.push(nextRequest)
+      this.pendingRequests.shift()
+    }
+
+    return pendingRequests
+  }
+
+  private async translateRequest(requests: TranslationAdapterArgs[]): Promise<string[]> {
+    const [
+      firstRequest,
+    ] = requests
+
+    if (!firstRequest) {
+      throw new Error('DeepL Translate request did not contain text.')
+    }
+
+    const requestBody = createRequestBody(
+      firstRequest.sourceLocale,
+      firstRequest.targetLocale,
+      requests.map((request) => request.text),
+    )
+
     for (let attempt = 0; attempt <= MAX_RETRY_ATTEMPTS; attempt += 1) {
       await this.requestThrottle.waitForRequestSlot()
 
       const response = await fetch(this.apiURL, {
-        body: JSON.stringify({
-          source_lang: sourceLocale ? this.normalizeLocale(sourceLocale) : undefined,
-          target_lang: this.normalizeLocale(targetLocale),
-          text: [
-            text,
-          ],
-        }),
+        body: requestBody,
         headers: {
           'Authorization': `DeepL-Auth-Key ${this.apiKey}`,
           'Content-Type': 'application/json',
@@ -112,13 +171,11 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
           }[]
         }
 
-        const translatedText = result.translations?.[0]?.text
-
-        if (!translatedText) {
+        if (result.translations?.length !== requests.length || result.translations.some((translation) => !translation.text)) {
           throw new Error('DeepL Translate response did not contain translated text.')
         }
 
-        return translatedText
+        return result.translations.map((translation) => translation.text as string)
       }
 
       if ((response.status === 429 || response.status === 500) && attempt < MAX_RETRY_ATTEMPTS) {
@@ -153,7 +210,7 @@ export class DeepLTranslateAdapter implements TranslationAdapter {
         resolve,
       })
 
-      this.processPendingRequests()
+      this.schedulePendingRequests()
     })
   }
 }
@@ -201,6 +258,24 @@ function getRequestThrottle(apiKey: string | undefined, apiURL: string): DeepLRe
   DEEPL_REQUEST_THROTTLES.set(throttleKey, throttle)
 
   return throttle
+}
+
+function createRequestBody(sourceLocale: string, targetLocale: string, text: string[]): string {
+  return JSON.stringify({
+    source_lang: sourceLocale ? normalizeLocale(sourceLocale) : undefined,
+    target_lang: normalizeLocale(targetLocale),
+    text,
+  })
+}
+
+function getByteLength(value: string): number {
+  return new TextEncoder().encode(value).byteLength
+}
+
+function normalizeLocale(locale: string): string {
+  return locale
+    .replaceAll('_', '-')
+    .toUpperCase()
 }
 
 function sanitizeUrlInput(url: string): string {
