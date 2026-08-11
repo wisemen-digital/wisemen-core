@@ -17,6 +17,7 @@ import type { CreateDialogStyle } from '@/ui/dialog/dialog.style'
 import { createDialogStyle } from '@/ui/dialog/dialog.style'
 import DialogChin from '@/ui/dialog/DialogChin.vue'
 import DialogCloseButton from '@/ui/dialog/DialogCloseButton.vue'
+import { useDialogNestedLayerCount } from '@/ui/dialog/dialogNestedLayer.composable'
 import { useDialogScroll } from '@/ui/dialog/dialogScroll.composable'
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -54,11 +55,20 @@ const {
   bodyRef,
 } = useDialogScroll()
 
+const {
+  hasOpenNestedLayer,
+  registerNestedLayer,
+  unregisterNestedLayer,
+} = useDialogNestedLayerCount()
+
 useProvideDialogContext({
+  hasOpenNestedLayer,
   isScrolledToBottom,
   isScrolledToTop,
   bodyRef,
+  registerNestedLayer,
   style,
+  unregisterNestedLayer,
 })
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
@@ -82,6 +92,12 @@ function onOpenChange(value: boolean): void {
 }
 
 function onInteractOutside(event: CustomEvent): void {
+  if (hasOpenNestedLayer.value) {
+    event.preventDefault()
+
+    return
+  }
+
   if (!(event.target instanceof Element)) {
     return
   }

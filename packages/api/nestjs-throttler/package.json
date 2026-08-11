@@ -1,6 +1,6 @@
 {
-  "name": "@wisemen/nestjs-mail",
-  "version": "0.2.0",
+  "name": "@wisemen/nestjs-throttler",
+  "version": "0.1.1",
   "publishConfig": {
     "access": "public"
   },
@@ -14,35 +14,38 @@
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
     "lint:eslint": "eslint lib",
-    "lint": "pnpm run lint:oxlint && pnpm run lint:eslint",
+    "lint": "npm run lint:oxlint && npm run lint:eslint",
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
+    "pretest": "npm run clean && npm run build",
+    "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "@wisemen/api-error": "workspace:^",
-    "@wisemen/nestjs-handlebars": "workspace:^",
-    "@wisemen/pgboss-nestjs-job": "workspace:^"
+    "@nestjs/core": "catalog:backend-peer",
+    "@wisemen/nestjs-redis": "workspace:^"
   },
   "dependencies": {
-    "mailpit-api": "^2.0.0"
+    "@nestjs/throttler": "catalog:backend"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
+    "@wisemen/api-error": "workspace:*",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "typescript": "catalog:peer"
   },
-  "author": "Wisemen",
+  "author": "Kobe Kwanten",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-mail"
+    "directory": "packages/api/nestjs-jwt-verifier"
   }
 }
