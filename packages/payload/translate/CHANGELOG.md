@@ -6,6 +6,12 @@
 
 
 
+
+## 0.0.8
+<sub>2026-08-10</sub>
+
+- [#1568](https://github.com/wisemen-digital/wisemen-core/pull/1568)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Retry throttled DeepL translations with exponential backoff.
+
 ## 0.0.7
 <sub>2026-08-05</sub>
 

@@ -2,6 +2,12 @@
 
 
 
+
+## 0.2.0
+<sub>2026-08-10</sub>
+
+- [#1564](https://github.com/wisemen-digital/wisemen-core/pull/1564)  *(minor)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Return provider message identifiers and their associated recipients when sending mail.
+
 ## 0.1.1
 <sub>2026-08-02</sub>
 
