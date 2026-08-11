@@ -50,14 +50,6 @@ const meta = {
     isSimulatingInfiniteScroll: {
       control: 'boolean',
     },
-    stickyLeftColumnKeys: {
-      control: 'check',
-      options: STICKY_COLUMN_KEY_OPTIONS,
-    },
-    stickyRightColumnKeys: {
-      control: 'check',
-      options: STICKY_COLUMN_KEY_OPTIONS,
-    },
     groupBy: {
       control: 'select',
       options: [
@@ -66,6 +58,14 @@ const meta = {
         'status',
         'department+status',
       ],
+    },
+    stickyLeftColumnKeys: {
+      control: 'check',
+      options: STICKY_COLUMN_KEY_OPTIONS,
+    },
+    stickyRightColumnKeys: {
+      control: 'check',
+      options: STICKY_COLUMN_KEY_OPTIONS,
     },
   },
   tags: [
@@ -90,9 +90,9 @@ export const Default: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -108,9 +108,9 @@ export const StickyColumns: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -131,11 +131,11 @@ export const StickyColumnByKey: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [
       'status',
     ],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -156,13 +156,13 @@ export const StickyColumnsBothSides: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [
       'status',
     ],
     stickyRightColumnKeys: [
       'balance',
     ],
-    groupBy: null,
   },
 }
 
@@ -178,9 +178,9 @@ export const Grouped: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: 'department',
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: 'department',
   },
 }
 
@@ -196,9 +196,9 @@ export const GroupedTwoLevels: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: 'department+status',
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: 'department+status',
   },
 }
 
@@ -214,9 +214,9 @@ export const SubComponent: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -235,9 +235,9 @@ export const SubComponentMobile: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -253,9 +253,9 @@ export const Selectable: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -271,9 +271,9 @@ export const SelectableGrouped: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: 'department',
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: 'department',
   },
 }
 
@@ -289,9 +289,9 @@ export const Mobile: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -307,9 +307,9 @@ export const MobileSelectable: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -329,9 +329,9 @@ export const InfiniteScroll: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: true,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -348,9 +348,9 @@ export const Loading: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -368,9 +368,9 @@ export const ErrorState: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: true,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -387,9 +387,9 @@ export const Empty: Story = {
     isSimulatingEmpty: true,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }
 
@@ -408,8 +408,8 @@ export const RowActions: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
-    groupBy: null,
   },
 }

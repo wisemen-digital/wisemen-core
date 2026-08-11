@@ -1,9 +1,9 @@
 <script setup lang="ts" generic="TItem">
-import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type {
   Header,
   Row,
 } from '@tanstack/vue-table'
+import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Component } from 'vue'
 import {
   computed,
@@ -44,12 +44,12 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   error: null,
   groupBy: null,
   mobileCard: null,
-  onNextPage: null,
   row: null,
   selectionActions: () => [],
   sort: null,
   subComponent: null,
   totalCount: null,
+  onNextPage: null,
 })
 
 const emit = defineEmits<{
@@ -93,13 +93,13 @@ const hasSubComponent = computed<boolean>(() => subComponentByItemKey.value.size
 const hasRowActions = computed<boolean>(() => props.row !== null)
 
 const {
-  gridTemplateColumns,
-  isLeadingStickyRegionActive,
-  leadingStickyOffsetsPx,
   leftStickyBorderColumnId,
   leftStickyOffsetPxByColumnId,
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
+  isLeadingStickyRegionActive,
+  gridTemplateColumns,
+  leadingStickyOffsetsPx,
   setColumnSize,
   table,
 } = useDataTable({
@@ -116,15 +116,15 @@ const {
 })
 
 useProvideDataTableContext({
+  leftStickyBorderColumnId,
+  leftStickyOffsetPxByColumnId,
+  rightStickyBorderColumnId,
+  rightStickyOffsetPxByColumnId,
   isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
   isLastColumnSticky: computed(() => props.isLastColumnSticky),
   isLeadingStickyRegionActive,
   leadingStickyOffsetsPx,
-  leftStickyBorderColumnId,
-  leftStickyOffsetPxByColumnId,
-  rightStickyBorderColumnId,
-  rightStickyOffsetPxByColumnId,
   setColumnSize,
   sort: computed(() => props.sort),
 })
@@ -480,7 +480,8 @@ const loadingRowColumnCount = computed<number>(
                   :is-last="entry.viewModel.isLast"
                   :is-selectable="props.isSelectable"
                   :is-selected="entry.viewModel.isGroupAllSelected"
-                  :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate && !entry.viewModel.isGroupAllSelected"
+                  :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate
+                    && !entry.viewModel.isGroupAllSelected"
                   :label="entry.viewModel.groupLabelCell === null ? entry.viewModel.groupLabel : ''"
                   @toggle="entry.row.toggleExpanded()"
                   @toggle-selected="toggleRowGroup(entry.row)"

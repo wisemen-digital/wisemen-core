@@ -22,13 +22,13 @@ const props = withDefaults(defineProps<{
   expandedItemKeys: Set<string>
   getKey: (item: TItem) => string
   mobileCard: DataTableMobileCardConfig | null
-  onNextPage?: (() => void) | null
   row?: ((item: TItem) => DataTableRowConfig | null) | null
   rowViewModels: DataTableRowViewModel<TItem>[]
+  onNextPage?: (() => void) | null
 }>(), {
   isSelectable: false,
-  onNextPage: null,
   row: null,
+  onNextPage: null,
 })
 
 const emit = defineEmits<{

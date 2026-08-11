@@ -20,16 +20,16 @@ export interface DataTableProps<TItem> {
    */
   isColumnResizeDisabled?: boolean
   /**
+   * Whether a next-page fetch (triggered via `onNextPage`) is in flight. Renders a trailing
+   * skeleton below the already-loaded rows, unlike `isLoading` which has no rows to show yet.
+   */
+  isFetchingNextPage?: boolean
+  /**
    * Makes the first column sticky (fixed) when horizontally scrolling. Defaults to `true` —
    * pass `false` to opt out. Columns pinned individually via `DataTableColumn.isSticky: 'left'`
    * stick together with the first column as one contiguous region, not independently of it.
    */
   isFirstColumnSticky?: boolean
-  /**
-   * Whether a next-page fetch (triggered via `onNextPage`) is in flight. Renders a trailing
-   * skeleton below the already-loaded rows, unlike `isLoading` which has no rows to show yet.
-   */
-  isFetchingNextPage?: boolean
   /**
    * Makes the last column sticky (fixed) when horizontally scrolling.
    */
@@ -78,12 +78,6 @@ export interface DataTableProps<TItem> {
    */
   mobileCard?: DataTableMobileCardConfig | null
   /**
-   * Called when the user scrolls near the end of the loaded rows, or when the loaded rows
-   * don't fill the scroll container at all — the signal to fetch the next page. Pass `null`
-   * (default) when there is no next page, e.g. all data is already loaded client-side.
-   */
-  onNextPage?: (() => void) | null
-  /**
    * Per-row click/navigation and actions, resolved from the row's own item. `onClick` drives
    * the whole-row click target (desktop) and the mobile card's "Go to detail" button; `model`
    * feeds the Action registry's applicability checks (also used for the selection action bar);
@@ -116,4 +110,10 @@ export interface DataTableProps<TItem> {
    * fetch in via `onNextPage`.
    */
   totalCount?: number | null
+  /**
+   * Called when the user scrolls near the end of the loaded rows, or when the loaded rows
+   * don't fill the scroll container at all — the signal to fetch the next page. Pass `null`
+   * (default) when there is no next page, e.g. all data is already loaded client-side.
+   */
+  onNextPage?: (() => void) | null
 }

@@ -32,7 +32,10 @@ function getWidth(rowIndex: number, colIndex: number): string {
       :key="i"
       :style="{ '--row-index': i - 1 }"
       :class="{ 'border-t border-secondary': i === 1 }"
-      class="skeleton-row col-span-full grid grid-cols-subgrid border-b border-secondary"
+      class="
+        custom-skeleton-row col-span-full grid grid-cols-subgrid border-b
+        border-secondary
+      "
     >
       <div
         v-for="col in props.columnCount"
@@ -49,7 +52,7 @@ function getWidth(rowIndex: number, colIndex: number): string {
 </template>
 
 <style scoped>
-.skeleton-row {
+.custom-skeleton-row {
   animation: skeleton-wave 1.8s ease-in-out infinite;
   animation-delay: calc(var(--row-index) * 80ms);
 }

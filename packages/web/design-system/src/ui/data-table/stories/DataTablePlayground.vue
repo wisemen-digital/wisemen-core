@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Action } from '@wisemen/vue-core-actions'
 import { createAction } from '@wisemen/vue-core-actions'
+import type { ApiError } from '@wisemen/vue-core-api-utils'
 import {
   EyeIcon,
   Trash01Icon,
@@ -48,21 +48,22 @@ interface User {
 const props = withDefaults(defineProps<{
   hasRowActions?: boolean
   hasSubComponent?: boolean
+  isFirstColumnSticky?: boolean
   // Simulates an always-loading table with no data yet — see `isSimulatingInfiniteScroll` for
   // the interactive next-page-fetch demo instead.
   isForcedLoading?: boolean
-  isFirstColumnSticky?: boolean
   isLastColumnSticky?: boolean
   isNarrow?: boolean
-  // When `true`, `data` starts truncated to a small page and `onNextPage` reveals more of the
-  // 200-item mock dataset on a short delay, simulating a real paginated fetch — exercises
-  // `onNextPage`/`isFetchingNextPage` end to end instead of just their static visual states.
-  isSimulatingInfiniteScroll?: boolean
   isSelectable?: boolean
   // Forces the empty state regardless of the mock dataset.
   isSimulatingEmpty?: boolean
   // Forces the error state regardless of loading/data.
   isSimulatingError?: boolean
+  // When `true`, `data` starts truncated to a small page and `onNextPage` reveals more of the
+  // 200-item mock dataset on a short delay, simulating a real paginated fetch — exercises
+  // `onNextPage`/`isFetchingNextPage` end to end instead of just their static visual states.
+  isSimulatingInfiniteScroll?: boolean
+  groupBy?: 'department' | 'department+status' | 'status' | null
   // Pins the named columns left/right by key (`DataTableColumn.isSticky`), independent of
   // `isFirstColumnSticky`/`isLastColumnSticky` — demonstrates any combination of columns
   // sticking together as one contiguous region per side, with cumulative offsets, not just a
@@ -71,21 +72,20 @@ const props = withDefaults(defineProps<{
   // left; pick one side per column key.
   stickyLeftColumnKeys?: string[]
   stickyRightColumnKeys?: string[]
-  groupBy?: 'department' | 'department+status' | 'status' | null
 }>(), {
   hasRowActions: false,
   hasSubComponent: false,
-  isForcedLoading: false,
   isFirstColumnSticky: false,
+  isForcedLoading: false,
   isLastColumnSticky: false,
   isNarrow: false,
-  isSimulatingInfiniteScroll: false,
   isSelectable: false,
   isSimulatingEmpty: false,
   isSimulatingError: false,
+  isSimulatingInfiniteScroll: false,
+  groupBy: null,
   stickyLeftColumnKeys: () => [],
   stickyRightColumnKeys: () => [],
-  groupBy: null,
 })
 
 function getStickySide(columnKey: string): 'left' | 'right' | undefined {
@@ -120,14 +120,6 @@ const selectionActions: Action[] = [
 
 function row(item: User): DataTableRowConfig {
   return {
-    onClick: () => {
-      // eslint-disable-next-line no-console
-      console.log('[DataTablePlayground] row clicked', item.id)
-    },
-    model: {
-      key: item.id,
-      modelName: 'user',
-    },
     actions: {
       inline: [
         createAction({
@@ -153,6 +145,14 @@ function row(item: User): DataTableRowConfig {
           icon: () => Trash01Icon,
         }),
       ],
+    },
+    model: {
+      key: item.id,
+      modelName: 'user',
+    },
+    onClick: () => {
+      // eslint-disable-next-line no-console
+      console.log('[DataTablePlayground] row clicked', item.id)
     },
   }
 }
@@ -231,11 +231,13 @@ const INFINITE_SCROLL_FETCH_DELAY_MS = 600
 const loadedCount = shallowRef<number>(INFINITE_SCROLL_PAGE_SIZE)
 const isFetchingNextPage = shallowRef<boolean>(false)
 
-const visibleData = computed<User[]>(() => (
-  props.isSimulatingEmpty
-    ? []
-    : (props.isSimulatingInfiniteScroll ? sortedData.value.slice(0, loadedCount.value) : sortedData.value)
-))
+const visibleData = computed<User[]>(() => {
+  if (props.isSimulatingEmpty) {
+    return []
+  }
+
+  return props.isSimulatingInfiniteScroll ? sortedData.value.slice(0, loadedCount.value) : sortedData.value
+})
 
 const error = computed<ApiError | null>(() => (props.isSimulatingError ? new Error('Failed to load users.') : null))
 

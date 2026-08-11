@@ -3,10 +3,10 @@ import type { Action } from '@wisemen/vue-core-actions'
 import { DotsVerticalIcon } from '@wisemen/vue-core-icons'
 import { useI18n } from 'vue-i18n'
 
+import type { RegisteredActionContext } from '@/register'
 import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu/index'
 import { UIActionTrigger } from '@/ui/action-trigger/index'
 import { UIIconButton } from '@/ui/button'
-import type { RegisteredActionContext } from '@/register'
 
 const props = defineProps<{
   inlineActions: Action[]
@@ -20,13 +20,13 @@ const i18n = useI18n()
 <template>
   <div
     class="
-      sticky right-0 z-1 flex h-10 items-center justify-end gap-xxs
-      border-l border-secondary bg-primary px-xl
+      sticky right-0 z-1 flex h-10 items-center justify-end gap-xxs border-l
+      border-secondary bg-primary px-xl
       not-has-data-[state=open]:group-hover/row:bg-secondary
       group-has-focus-visible/row:bg-secondary
     "
-    data-row-actions
     role="cell"
+    data-row-actions
   >
     <UIActionTrigger
       v-for="action of props.inlineActions"

@@ -27,8 +27,10 @@ const rightOffsetPx = computed<number | null>(
 
 const isStickyLeft = computed<boolean>(() => leftOffsetPx.value !== null)
 const isStickyRight = computed<boolean>(() => rightOffsetPx.value !== null)
-const hasLeftBorder = computed<boolean>(() => props.columnId !== null && props.columnId === leftStickyBorderColumnId.value)
-const hasRightBorder = computed<boolean>(() => props.columnId !== null && props.columnId === rightStickyBorderColumnId.value)
+const hasLeftBorder = computed<boolean>(() => props.columnId !== null
+  && props.columnId === leftStickyBorderColumnId.value)
+const hasRightBorder = computed<boolean>(() => props.columnId !== null
+  && props.columnId === rightStickyBorderColumnId.value)
 </script>
 
 <template>
@@ -43,8 +45,8 @@ const hasRightBorder = computed<boolean>(() => props.columnId !== null && props.
       'sticky z-1 border-l border-secondary': isStickyRight && hasRightBorder,
     }"
     class="
-      relative flex h-10 items-center overflow-hidden bg-primary px-xl
-      text-xs text-primary
+      relative flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
+      text-primary
       group-hover/row:bg-secondary
       group-has-focus-visible/row:bg-secondary
     "

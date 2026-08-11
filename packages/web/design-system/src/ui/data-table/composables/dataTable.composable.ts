@@ -229,7 +229,8 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   })
 
   // Checkbox/expand aren't real TanStack columns, so their leading offset is tracked separately.
-  const leadingStickyOffsetsPx = computed<{ checkbox: number, expand: number }>(() => {
+  const leadingStickyOffsetsPx = computed<{ checkbox: number
+    expand: number }>(() => {
     const isSelectable = options.isSelectable?.value ?? false
 
     return {
@@ -288,13 +289,13 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   )
 
   return {
-    gridTemplateColumns,
-    isLeadingStickyRegionActive,
-    leadingStickyOffsetsPx,
     leftStickyBorderColumnId,
     leftStickyOffsetPxByColumnId,
     rightStickyBorderColumnId,
     rightStickyOffsetPxByColumnId,
+    isLeadingStickyRegionActive,
+    gridTemplateColumns,
+    leadingStickyOffsetsPx,
     setColumnSize,
     table,
   }

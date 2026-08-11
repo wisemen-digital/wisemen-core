@@ -27,15 +27,15 @@ const props = withDefaults(defineProps<{
   hiddenCells: DataTableMobileCardCell[]
   indicatorCell: DataTableCell | null
   metaCell: DataTableCell | null
-  onClick?: (() => void) | null
   primaryCell: DataTableCell | null
   secondaryCell: DataTableCell | null
   subComponent?: Component | null
+  onClick?: (() => void) | null
 }>(), {
   isSelectable: false,
   isSelected: false,
-  onClick: null,
   subComponent: null,
+  onClick: null,
 })
 
 const emit = defineEmits<{

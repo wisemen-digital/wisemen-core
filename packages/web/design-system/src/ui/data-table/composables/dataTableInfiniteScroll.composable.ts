@@ -1,6 +1,12 @@
 import { useInfiniteScroll } from '@vueuse/core'
-import type { ComputedRef, Ref } from 'vue'
-import { ref, watch } from 'vue'
+import type {
+  ComputedRef,
+  Ref,
+} from 'vue'
+import {
+  ref,
+  watch,
+} from 'vue'
 
 /**
  * Triggers `onNextPage` when the given scroll container is scrolled near its bottom, and also
@@ -34,7 +40,9 @@ export function useDataTableInfiniteScroll(
     resizeObserver.observe(el)
 
     onCleanup(() => resizeObserver.disconnect())
-  }, { immediate: true })
+  }, {
+    immediate: true,
+  })
 
   useInfiniteScroll(scrollEl, () => onNextPage.value?.(), {
     offset: {
@@ -46,5 +54,7 @@ export function useDataTableInfiniteScroll(
     if (!canScrollVertically) {
       onNextPage.value?.()
     }
-  }, { immediate: true })
+  }, {
+    immediate: true,
+  })
 }

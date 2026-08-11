@@ -23,11 +23,11 @@ const props = defineProps<{
 }>()
 
 const {
-  isColumnResizeDisabled,
   leftStickyBorderColumnId,
   leftStickyOffsetPxByColumnId,
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
+  isColumnResizeDisabled,
   setColumnSize,
   sort,
 } = useInjectDataTableContext()
