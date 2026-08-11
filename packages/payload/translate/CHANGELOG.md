@@ -8,6 +8,12 @@
 
 
 
+
+## 0.0.10
+<sub>2026-08-11</sub>
+
+- [#1575](https://github.com/wisemen-digital/wisemen-core/pull/1575)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Deepl now bulks texts per locale to improve performance
+
 ## 0.0.9
 <sub>2026-08-11</sub>
 
