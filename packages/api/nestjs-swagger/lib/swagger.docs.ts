@@ -106,7 +106,12 @@ export class SwaggerDocs {
   }
 
 
-  private createSwaggerOperationId (controller: string, _method: string, version?: string): string {
+  private createSwaggerOperationId (
+    this: void, 
+    controller: string, 
+    _method: string, 
+    version?: string
+  ): string {
     let opId = controller.replace('Controller', '')
 
     if (version !== undefined) {
