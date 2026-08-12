@@ -48,13 +48,16 @@
     "cleanup": "rimraf dist/ node_modules/ .turbo/"
   },
   "peerDependencies": {
+    "@vueuse/router": "catalog:vue",
     "@wisemen/vue-core-actions": ">=0.2.1",
     "@wisemen/vue-core-dates": ">=1.1.0",
     "@wisemen/vue-core-design-system": ">=1.13.0",
     "@wisemen/vue-core-utils": ">=0.1.0",
     "@wisemen/vue-core-icons": ">=0.0.3",
     "formango": "workspace:^",
+    "temporal-polyfill": "catalog:peer",
     "vue": "catalog:peer",
+    "vue-router": "catalog:peer",
     "zod": "catalog:peer",
     "vue-i18n": "catalog:peer",
     "tailwindcss": "catalog:style",
@@ -70,6 +73,7 @@
     "@vitejs/plugin-vue": "catalog:vite",
     "@vue/test-utils": "catalog:test",
     "@vue/tsconfig": "catalog:vue",
+    "@vueuse/router": "catalog:vue",
     "formango": "workspace:*",
     "@wisemen/eslint-config-vue": "workspace:*",
     "@wisemen/vue-core-tailwind-config": "workspace:*",
@@ -80,6 +84,7 @@
     "@wisemen/vue-core-icons": "workspace:*",
     "eslint": "catalog:lint-web",
     "husky": "catalog:build",
+    "jsdom": "catalog:test",
     "tailwindcss": "catalog:style",
     "typescript": "catalog:build",
     "vite": "catalog:vite",
@@ -89,6 +94,7 @@
     "vue": "catalog:vue",
     "vue-i18n": "catalog:peer",
     "temporal-polyfill": "catalog:peer",
+    "vue-router": "catalog:peer",
     "vue-tsc": "catalog:vue"
   }
 }

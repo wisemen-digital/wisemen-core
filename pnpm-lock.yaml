@@ -3982,6 +3982,9 @@ importers:
       '@vue/tsconfig':
         specifier: catalog:vue
         version: 0.8.1(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
+      '@vueuse/router':
+        specifier: catalog:vue
+        version: 14.1.0(vue-router@4.6.4(vue@3.5.27(typescript@5.9.3)))(vue@3.5.27(typescript@5.9.3))
       '@wisemen/eslint-config-vue':
         specifier: workspace:*
         version: link:../eslint-config
@@ -4012,6 +4015,9 @@ importers:
       husky:
         specifier: catalog:build
         version: 9.1.7
+      jsdom:
+        specifier: catalog:test
+        version: 27.4.0
       pinia:
         specifier: catalog:vue
         version: 3.0.4(typescript@5.9.3)(vue@3.5.27(typescript@5.9.3))
@@ -4039,6 +4045,9 @@ importers:
       vue-i18n:
         specifier: catalog:peer
         version: 11.2.8(vue@3.5.27(typescript@5.9.3))
+      vue-router:
+        specifier: catalog:peer
+        version: 4.6.4(vue@3.5.27(typescript@5.9.3))
       vue-tsc:
         specifier: catalog:vue
         version: 3.2.2(typescript@5.9.3)
@@ -22591,8 +22600,8 @@ snapshots:
 
   '@typescript-eslint/project-service@8.58.0(typescript@5.9.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.59.0(typescript@5.9.3)
-      '@typescript-eslint/types': 8.59.0
+      '@typescript-eslint/tsconfig-utils': 8.66.0(typescript@5.9.3)
+      '@typescript-eslint/types': 8.66.0
       debug: 4.4.3
       typescript: 5.9.3
     transitivePeerDependencies:

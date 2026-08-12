@@ -15,7 +15,9 @@ import {
   FilterLinesIcon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
+import { useRouteQuery } from '@vueuse/router'
 import SuperJSON from 'superjson'
+import { Temporal } from 'temporal-polyfill'
 import type {
   Component,
   ComputedRef,
@@ -272,6 +274,13 @@ export type FilterValues<TF extends readonly Filter[]> = {
 interface Options<TFilters extends Filter[]> {
   actionGroup: ActionGroup
   filters: TFilters
+  /**
+   * Persists filter values in the URL query string, so they survive a page refresh or a shared link.
+   * Pass `true` to use the default query key (`'filters'`), or a string to use a custom key
+   * (e.g. to avoid a collision when a page has multiple `useFilters` instances).
+   * Disabled by default.
+   */
+  persistInUrl?: boolean | string
 }
 
 interface UseFiltersReturn<TFilters extends Filter[]> {
@@ -296,6 +305,16 @@ function isItemWithPagination(value: unknown): value is {
     && 'pagination' in value
 }
 
+const DEFAULT_ROUTE_QUERY_KEY = 'filters'
+
+function base64Encode(value: string): string {
+  return btoa(value)
+}
+
+function base64Decode(value: string): string {
+  return atob(value)
+}
+
 export function useFilters<TFilters extends Filter[]>(
   options: Options<TFilters>,
 ): UseFiltersReturn<TFilters> {
@@ -308,7 +327,16 @@ export function useFilters<TFilters extends Filter[]>(
 
   const id = useId()
 
-  const values = ref<FilterValues<TFilters>>(getDefaultValues())
+  const persistInUrl = options.persistInUrl ?? false
+  const routeQueryKey = typeof persistInUrl === 'string' ? persistInUrl : DEFAULT_ROUTE_QUERY_KEY
+
+  const routeQuery = persistInUrl === false
+    ? null
+    : useRouteQuery<string | null>(routeQueryKey, null, {
+        mode: 'replace',
+      })
+
+  const values = ref<FilterValues<TFilters>>(getInitialValues())
   const openFilterKey = ref<FilterKeys<TFilters> | null>(null)
 
   // Tracks the keys of currently active filters. Used to determine the order of the active filters.
@@ -583,6 +611,15 @@ export function useFilters<TFilters extends Filter[]>(
     immediate: true,
   })
 
+  // Keeps the URL query string in sync with the filter values, when `persistInUrl` is enabled.
+  if (routeQuery !== null) {
+    watch(values, (newValues) => {
+      routeQuery.value = serializeValues(newValues)
+    }, {
+      deep: true,
+    })
+  }
+
   /**
    * Determines whether a filter is considered "active."
    * A filter is active if its current value differs from its default or if it is currently open.
@@ -628,6 +665,124 @@ export function useFilters<TFilters extends Filter[]>(
 
       return acc
     }, {} as FilterValues<TFilters>)
+  }
+
+  /**
+   * Builds the initial filter values, restoring them from the URL query string when
+   * `persistInUrl` is enabled and the URL already contains a persisted state.
+   */
+  function getInitialValues(): FilterValues<TFilters> {
+    const defaultValues = getDefaultValues()
+
+    if (routeQuery === null || routeQuery.value === null) {
+      return defaultValues
+    }
+
+    const persistedValues = deserializeValues(routeQuery.value)
+
+    if (persistedValues === null) {
+      return defaultValues
+    }
+
+    return {
+      ...defaultValues,
+      ...persistedValues,
+    }
+  }
+
+  /**
+   * Serializes the current filter values into a URL-safe string.
+   */
+  function serializeValues(currentValues: FilterValues<TFilters>): string {
+    const serializable: Record<string, unknown> = {}
+
+    for (const filter of options.filters) {
+      serializable[filter.key] = serializeFilterValue(
+        filter,
+        (currentValues as Record<string, unknown>)[filter.key],
+      )
+    }
+
+    return base64Encode(JSON.stringify(serializable))
+  }
+
+  /**
+   * Restores filter values previously serialized by `serializeValues`.
+   * Returns null when the string can't be parsed (e.g. a tampered or stale URL).
+   */
+  function deserializeValues(raw: string): FilterValues<TFilters> | null {
+    try {
+      const parsed = JSON.parse(base64Decode(raw)) as Record<string, unknown>
+      const result: Record<string, unknown> = {}
+
+      for (const filter of options.filters) {
+        if (!(filter.key in parsed)) {
+          continue
+        }
+
+        result[filter.key] = deserializeFilterValue(filter, parsed[filter.key])
+      }
+
+      return result as FilterValues<TFilters>
+    }
+    catch {
+      return null
+    }
+  }
+
+  /**
+   * Converts a filter value to a JSON-safe representation.
+   * Only Date and DateRange filters need conversion, since their `PlainDate` values
+   * don't round-trip through `JSON.parse` on their own.
+   */
+  function serializeFilterValue(filter: Filter, value: unknown): unknown {
+    switch (filter.type) {
+      case FilterType.DATE: {
+        const dateValue = value as DateFilterValue
+
+        return {
+          operator: dateValue.operator,
+          value: dateValue.value?.toString() ?? null,
+        }
+      }
+      case FilterType.DATE_RANGE: {
+        const rangeValue = value as DateRangeFilterValue
+
+        return {
+          operator: rangeValue.operator,
+          value: {
+            from: rangeValue.value.from?.toString() ?? null,
+            until: rangeValue.value.until?.toString() ?? null,
+          },
+        }
+      }
+      default:
+        return value
+    }
+  }
+
+  /**
+   * Restores a filter value from its JSON-safe representation, reviving `PlainDate` values
+   * for Date and DateRange filters.
+   */
+  function deserializeFilterValue(filter: Filter, value: any): unknown {
+    switch (filter.type) {
+      case FilterType.DATE:
+        return {
+          operator: value.operator,
+          value: value.value === null ? null : Temporal.PlainDate.from(value.value),
+        }
+      case FilterType.DATE_RANGE:
+        return {
+          operator: value.operator,
+          value: {
+            from: value.value.from === null ? null : Temporal.PlainDate.from(value.value.from),
+            until: value.value.until === null ? null : Temporal.PlainDate.from(value.value.until),
+          },
+        }
+      default:
+        return value
+    }
   }
 
   /**
