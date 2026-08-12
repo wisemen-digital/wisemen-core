@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 
+
+## 0.0.3
+<sub>2026-08-12</sub>
+
+- [#1579](https://github.com/wisemen-digital/wisemen-core/pull/1579)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolved security vulnerabilities by updating axios, typeorm, next.js, and @hey-api/openapi-ts to patched versions
+
 ## 0.0.2
 <sub>2026-08-06</sub>
 
