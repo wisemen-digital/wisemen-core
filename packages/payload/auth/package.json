@@ -45,7 +45,7 @@
   "peerDependencies": {
     "@payloadcms/ui": "catalog:payload-peer",
     "@wisemen/payload-core-utils": "workspace:^",
-    "next": ">=16.2.6",
+    "next": ">=16.2.11",
     "payload": "catalog:payload-peer",
     "react": "catalog:payload-peer"
   },
