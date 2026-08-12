@@ -27,6 +27,8 @@
   },
   "peerDependencies": {
     "@nestjs/swagger": "catalog:backend-peer",
+    "@wisemen/pagination": "workspace:^",
+    "@wisemen/quantity": "workspace:^",
     "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer",
     "dayjs": "catalog:backend-peer",
@@ -49,9 +51,5 @@
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
     "directory": "packages/datewise"
-  },
-  "dependencies": {
-    "@wisemen/pagination": "workspace:*",
-    "@wisemen/quantity": "workspace:*"
   }
 }
