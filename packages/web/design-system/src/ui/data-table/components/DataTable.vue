@@ -22,7 +22,11 @@ import DataTableMobileList from '@/ui/data-table/components/DataTableMobileList.
 import DataTableSelectionActionBar from '@/ui/data-table/components/DataTableSelectionActionBar.vue'
 import DataTableVirtualRows from '@/ui/data-table/components/DataTableVirtualRows.vue'
 import { useDataTable } from '@/ui/data-table/composables/dataTable.composable'
-import { useDataTableGroupedVirtualScroller } from '@/ui/data-table/composables/dataTableGroupedVirtualScroller.composable'
+import {
+  DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX,
+  DATA_TABLE_ROW_HEIGHT_IN_PX,
+  useDataTableGroupedVirtualScroller,
+} from '@/ui/data-table/composables/dataTableGroupedVirtualScroller.composable'
 import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
 import { useDataTableVirtualScroller } from '@/ui/data-table/composables/dataTableVirtualScroller.composable'
 import { useProvideDataTableContext } from '@/ui/data-table/context/dataTable.context'
@@ -291,6 +295,19 @@ const groupedVirtualRowViewModels = computed<GroupedVirtualRowViewModel[]>(
   })),
 )
 
+// `position: sticky` has to live on this exact wrapper div — the one the virtualizer measures
+// and that carries `data-index` — rather than deeper inside `DataTableGroupRow`. Nesting the
+// sticky element one level inside an extra `display: grid` box (needed here only for dynamic
+// row-height measurement) breaks its sticky positioning context entirely; the working sticky
+// column headers have no such intermediate wrapper, which is why they stick correctly. Depth 0
+// sits right under the sticky column-header row (one DATA_TABLE_ROW_HEIGHT_IN_PX), depth 1 sits
+// under depth 0, and so on.
+function getGroupRowStickyStyle(row: Row<TItem>): Record<string, string> {
+  return {
+    top: `${DATA_TABLE_ROW_HEIGHT_IN_PX + row.depth * DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX}px`,
+  }
+}
+
 interface FlatVirtualRowViewModel {
   key: string
   viewModel: DataTableRowViewModel<TItem>
@@ -471,6 +488,10 @@ const loadingRowColumnCount = computed<number>(
                 :key="entry.key"
                 :ref="measureRowElement"
                 :data-index="entry.index"
+                :style="entry.viewModel.isGrouped ? getGroupRowStickyStyle(entry.row) : undefined"
+                :class="{
+                  'sticky z-10': entry.viewModel.isGrouped,
+                }"
                 class="col-span-full grid grid-cols-subgrid"
               >
                 <DataTableGroupRow

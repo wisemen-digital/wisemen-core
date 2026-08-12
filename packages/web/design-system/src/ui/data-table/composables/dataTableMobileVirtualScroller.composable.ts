@@ -7,6 +7,10 @@ import type {
 import { computed } from 'vue'
 
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
+import {
+  findMissingAncestorHeaderItems,
+  getPaddingBeforePxWithInjectedAncestors,
+} from '@/ui/data-table/utils/dataTableStickyGroupHeaders.util'
 
 export const DATA_TABLE_MOBILE_GROUP_HEADER_HEIGHT_IN_PX = 36
 export const DATA_TABLE_MOBILE_CARD_HEIGHT_IN_PX = 64
@@ -44,12 +48,35 @@ export function useDataTableMobileVirtualScroller<TItem>(
     overscan: 5,
   })))
 
-  const virtualItems = computed<VirtualItem[]>(() => virtualizer.value.getVirtualItems())
+  const rawVirtualItems = computed<VirtualItem[]>(() => virtualizer.value.getVirtualItems())
   const totalSizePx = computed<number>(() => virtualizer.value.getTotalSize())
 
-  const paddingBeforePx = computed<number>(() => virtualItems.value.at(0)?.start ?? 0)
+  // See `dataTableStickyGroupHeaders.util.ts` for why this is needed and how it works — in
+  // short, real `position: sticky` needs a group header's own row to stay mounted in the DOM
+  // for as long as it's the active ancestor of whatever's at the top of the viewport, which the
+  // virtualizer's normal render window (visible rows plus a small buffer) doesn't guarantee on
+  // its own once a header scrolls far enough away.
+  const injectedAncestorItems = computed<VirtualItem[]>(() => findMissingAncestorHeaderItems(
+    rawVirtualItems.value,
+    (index) => {
+      const viewModel = rowViewModels.value[index]
+
+      return viewModel !== undefined && viewModel.isGrouped ? viewModel.row.depth : null
+    },
+    (index) => virtualizer.value.measurementsCache[index],
+  ))
+
+  const virtualItems = computed<VirtualItem[]>(() => (
+    injectedAncestorItems.value.length === 0
+      ? rawVirtualItems.value
+      : [...injectedAncestorItems.value, ...rawVirtualItems.value]
+  ))
+
+  const paddingBeforePx = computed<number>(
+    () => getPaddingBeforePxWithInjectedAncestors(rawVirtualItems.value, injectedAncestorItems.value),
+  )
   const paddingAfterPx = computed<number>(() => {
-    const last = virtualItems.value.at(-1)
+    const last = rawVirtualItems.value.at(-1)
 
     return last != null ? totalSizePx.value - last.end : 0
   })

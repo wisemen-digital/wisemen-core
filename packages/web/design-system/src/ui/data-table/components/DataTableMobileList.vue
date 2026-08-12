@@ -8,8 +8,11 @@ import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRende
 import DataTableMobileCard from '@/ui/data-table/components/DataTableMobileCard.vue'
 import DataTableMobileGroupHeader from '@/ui/data-table/components/DataTableMobileGroupHeader.vue'
 import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
+import {
+  DATA_TABLE_MOBILE_GROUP_HEADER_HEIGHT_IN_PX,
+  useDataTableMobileVirtualScroller,
+} from '@/ui/data-table/composables/dataTableMobileVirtualScroller.composable'
 import { useDataTableMobileSlots } from '@/ui/data-table/composables/dataTableMobileSlots.composable'
-import { useDataTableMobileVirtualScroller } from '@/ui/data-table/composables/dataTableMobileVirtualScroller.composable'
 import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
@@ -73,6 +76,17 @@ const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
     }
   }),
 )
+
+// `position: sticky` has to live on this exact wrapper div — the one the virtualizer measures
+// and that carries `data-index` — not deeper inside `DataTableMobileGroupHeader`. See
+// `DataTable.vue`'s identical `getGroupRowStickyStyle` for why: nesting the sticky element one
+// level inside an extra box breaks its sticky positioning context. No sticky column-header row
+// exists on mobile, so depth 0 sits at `top: 0`.
+function getGroupRowStickyStyle(depth: number): Record<string, string> {
+  return {
+    top: `${depth * DATA_TABLE_MOBILE_GROUP_HEADER_HEIGHT_IN_PX}px`,
+  }
+}
 </script>
 
 <template>
@@ -93,6 +107,10 @@ const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
         <div
           :ref="measureRowElement"
           :data-index="entry.index"
+          :style="entry.viewModel.isGrouped ? getGroupRowStickyStyle(entry.viewModel.row.depth) : undefined"
+          :class="{
+            'sticky z-10 bg-primary': entry.viewModel.isGrouped,
+          }"
         >
           <DataTableMobileGroupHeader
             v-if="entry.viewModel.isGrouped"
