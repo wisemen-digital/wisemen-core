@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 
 
+
+## 0.2.0
+<sub>2026-08-12</sub>
+
+- *(minor)* Updated dependency `@wisemen/nestjs-auth` v0.2.0
+
 ## 0.1.0
 <sub>2026-08-06</sub>
 

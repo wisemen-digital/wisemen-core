@@ -8,6 +8,12 @@
 
 
 
+
+## 1.0.19
+<sub>2026-08-12</sub>
+
+- [#1582](https://github.com/wisemen-digital/wisemen-core/pull/1582)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - move wisemen dependencies to peer dependencies
+
 ## 1.0.18
 <sub>2026-08-12</sub>
 
