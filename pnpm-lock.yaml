@@ -2247,6 +2247,46 @@ importers:
         specifier: catalog:peer
         version: 5.9.3
 
+  packages/api/nestjs-rule-engine:
+    dependencies:
+      typeorm:
+        specifier: catalog:backend-peer
+        version: 1.0.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.12.1(@opentelemetry/api@1.9.1))
+    devDependencies:
+      '@nestjs/common':
+        specifier: catalog:backend
+        version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: catalog:backend
+        version: 11.4.6(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:^
+        version: link:../eslint-config-nestjs
+      class-transformer:
+        specifier: catalog:backend
+        version: 0.5.1
+      class-validator:
+        specifier: catalog:backend
+        version: 0.15.1
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      reflect-metadata:
+        specifier: catalog:backend
+        version: 0.2.2
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
   packages/api/nestjs-tests:
     dependencies:
       '@wisemen/nestjs-domain-events':
