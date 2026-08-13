@@ -54,6 +54,7 @@ function onClear(): void {
       <UIDatePicker
         v-model="value"
         class="p-none!"
+        :has-fixed-weeks="true"
       />
     </UIDialogBody>
 
