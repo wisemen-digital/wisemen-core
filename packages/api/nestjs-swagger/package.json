@@ -1,6 +1,6 @@
 {
-  "name": "@wisemen/nests-api-status",
-  "version": "0.0.1",
+  "name": "@wisemen/nestjs-swagger",
+  "version": "0.1.0",
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +17,7 @@
     "lint": "npm run lint:oxlint && npm run lint:eslint",
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
-    "build": "tsc",
+    "build": "tsc && cp lib/oauth2-redirect.html dist/oauth2-redirect.html",
     "pretest": "npm run clean && npm run build",
     "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
@@ -25,13 +25,16 @@
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
+    "@nestjs/core": "catalog:backend-peer",
     "@nestjs/swagger": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer",
+    "fastify": "catalog:backend-peer",
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/nestjs-common": "workspace:^",
     "@wisemen/nestjs-auth": "workspace:^",
-    "reflect-metadata": "catalog:backend-peer"
+    "@wisemen/opentelemetry": "workspace:^"
   },
   "devDependencies": {
-    "@nestjs/common": "catalog:backend",
-    "@nestjs/swagger": "catalog:backend",
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",
@@ -45,6 +48,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nests-api-status"
+    "directory": "packages/api/nestjs-swagger"
   }
 }

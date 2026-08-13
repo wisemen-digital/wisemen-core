@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/payload-core-auth",
   "type": "module",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "private": false,
   "imports": {
     "#*": "./src/*"
@@ -45,7 +45,7 @@
   "peerDependencies": {
     "@payloadcms/ui": "catalog:payload-peer",
     "@wisemen/payload-core-utils": "workspace:^",
-    "next": ">=16.2.6",
+    "next": ">=16.2.11",
     "payload": "catalog:payload-peer",
     "react": "catalog:payload-peer"
   },

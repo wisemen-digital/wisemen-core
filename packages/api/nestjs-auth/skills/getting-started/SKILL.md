@@ -1,19 +1,19 @@
 ---
 name: getting-started
-description: Use when marking NestJS controllers or handlers as public and when checking public-route metadata in guards.
+description: Use when marking NestJS routes as public or protecting controllers, handlers, and docs endpoints with shared basic auth from @wisemen/nestjs-auth.
 ---
 
 # @wisemen/nestjs-auth - Getting Started
 
-Use `Public()` to mark a controller or handler as public and
-`isPublicContext(context)` inside guards or interceptors to evaluate the
-related metadata without depending on the raw metadata key.
+Use this package for two separate concerns:
+
+- mark routes as public with `Public()`
+- protect routes with shared HTTP basic auth definitions
 
 ## Mark Public Routes
 
-Apply `Public()` at the class or method level. `Public(false)` explicitly marks
-the target as non-public and overrides a `Public()` annotation applied higher in
-the controller hierarchy.
+Apply `Public()` at the class or method level. `Public(false)` explicitly
+overrides a public controller annotation on a specific handler.
 
 ```ts
 import { Controller, Get } from '@nestjs/common'
@@ -30,42 +30,53 @@ export class StatusController {
 }
 ```
 
-Use `Public(false)` only when you intentionally need a method-level override.
-
-## Check Public Metadata In A Guard
-
-Use `isPublicContext(...)` from a guard instead of reading metadata keys
+Use `isPublicContext(...)` inside guards instead of reading metadata keys
 directly.
 
+## Register Basic Auth Definitions
+
+Import `BasicAuthModule.forRoot()` once in the application and
+`BasicAuthModule.forFeature(...)` or `forFeatureAsync(...)` in feature-local
+modules that own the credentials.
+
 ```ts
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable
-} from '@nestjs/common'
-import { isPublicContext } from '@wisemen/nestjs-auth'
-import { AuthContext } from '#src/modules/auth/auth.context.js'
+import { Module } from '@nestjs/common'
+import { BasicAuthModule } from '@wisemen/nestjs-auth'
 
-@Injectable()
-export class AuthGuard implements CanActivate {
-  constructor (
-    private readonly authContext: AuthContext
-  ) {}
+@Module({
+  imports: [
+    BasicAuthModule.forRoot(),
+    BasicAuthModule.forFeature({
+      docs: {
+        username: 'docs',
+        password: 'secret'
+      }
+    })
+  ]
+})
+export class DocsAuthModule {}
+```
 
-  canActivate (context: ExecutionContext): boolean {
-    if (isPublicContext(context)) {
-      return true
-    }
+## Protect Controllers And Handlers
 
-    this.authContext.getAuthOrFail()
+Use `@BasicAuth(name)` when a Nest controller or handler should require one of
+the registered definitions.
 
-    return true
+```ts
+import { Controller, Get } from '@nestjs/common'
+import { BasicAuth } from '@wisemen/nestjs-auth'
+
+@Controller('docs')
+export class DocsController {
+  @Get()
+  @BasicAuth('docs')
+  getDocs(): string {
+    return 'private docs'
   }
 }
 ```
 
-`isPublicContext(...)` mirrors Nest's "handler overrides controller" behavior:
+## Protect Adapter Routes
 
-- handler metadata wins when defined
-- controller metadata is used when the handler has no public metadata
-- the default is `false`
+Use `createBasicAuthRequestHandler(...)` when the route is attached directly to
+the underlying HTTP adapter instead of a Nest controller.
