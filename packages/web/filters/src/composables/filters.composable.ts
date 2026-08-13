@@ -1,3 +1,4 @@
+import { useRouteQuery } from '@vueuse/router'
 import type {
   Action,
   ActionGroup,
@@ -15,7 +16,6 @@ import {
   FilterLinesIcon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
-import { useRouteQuery } from '@vueuse/router'
 import SuperJSON from 'superjson'
 import { Temporal } from 'temporal-polyfill'
 import type {
