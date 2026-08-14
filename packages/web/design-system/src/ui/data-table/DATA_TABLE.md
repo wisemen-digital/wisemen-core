@@ -4,19 +4,21 @@ TanStack Table-based rework of the table system. Lives alongside the old `Table`
 (`ui/table/`), does not replace it — existing consumers migrate over time.
 
 Full historical reasoning (bugs found, alternatives rejected, why) lives in `CONTEXT.md`. This
-file is the condensed, decisions-only reference.
+file is the condensed, decisions-only reference. Porting an existing `Table` over?
+`MIGRATING_FROM_TABLE.md` covers the prop-by-prop delta and what has no equivalent.
 
 ## Core concepts
 
 - **Cell definition** — presentation-agnostic description of how one field renders. Same
   definition is reused in the table body, the detail pane, and the mobile list. Types: `Text`,
-  `Number`, `Id`, `Location`, `ContactInfo`, `Badge`, `Timestamp`, `Custom` (via
+  `Number`, `Id`, `Location`, `ContactInfo`, `Person`, `Badge`, `Timestamp`, `Custom` (via
   `createCustomCell`).
 - **Column** — table-only wrapper around a Cell definition: header label, key, size, sort key.
   The Cell definition itself knows nothing about headers/sizing/sorting.
 - **Column factories** — `createDataTableTextCell`, `createDataTableNumberCell`,
   `createDataTableIdCell`, `createDataTableLocationCell`, `createDataTableContactInfoCell`,
-  `createDataTableBadgeCell`, `createDataTableTimestampCell`, `createDataTableCustomCell`. This
+  `createDataTablePersonCell`, `createDataTableBadgeCell`, `createDataTableTimestampCell`,
+  `createDataTableCustomCell`. This
   is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
   the factory keeps them in sync structurally.
 
