@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { RegisteredActionContext } from '@/register'
 import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu'
+import AnimateHeight from '@/ui/animate-height/AnimateHeight.vue'
 import {
   UIButton,
   UIIconButton,
@@ -68,6 +69,9 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
 <template>
   <div class="border-b border-secondary">
     <div
+      :class="{
+        'hover:bg-secondary-hover': !props.isExpanded,
+      }"
       class="flex items-start gap-md px-xl py-lg"
       role="row"
     >
@@ -131,63 +135,70 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
       </button>
     </div>
 
-    <div
-      v-if="props.isExpanded && canExpand"
-      class="flex flex-col gap-lg px-xl pb-lg"
+    <AnimateHeight
+      v-if="canExpand"
+      :duration="0.15"
     >
-      <div class="divide-y divide-secondary rounded-lg border border-secondary">
-        <Component
-          :is="props.subComponent"
-          v-if="props.subComponent !== null"
-          class="p-md"
-        />
-
+      <div
+        v-if="props.isExpanded"
+        class="flex flex-col gap-lg px-xl pb-lg"
+      >
         <div
-          v-for="hiddenCell of visibleHiddenCells"
-          :key="hiddenCell.key"
-          class="flex items-center justify-between gap-md px-md py-sm"
+          class="divide-y divide-secondary rounded-lg border border-secondary"
         >
-          <span class="text-xs text-tertiary">
-            {{ hiddenCell.headerLabel }}
-          </span>
-
-          <DataTableCellRenderer
-            :cell="hiddenCell.cell"
-            class="text-xs text-primary"
-          />
-        </div>
-
-        <div
-          v-if="hasFooter"
-          class="flex items-center gap-xs px-md py-sm"
-        >
-          <UIButton
-            v-if="props.onClick !== null"
-            :icon-right="ArrowUpRightIcon"
-            :label="i18n.t('component.table.row.view_details_label')"
-            size="sm"
-            variant="secondary"
-            @click="props.onClick"
+          <Component
+            :is="props.subComponent"
+            v-if="props.subComponent !== null"
+            class="p-md"
           />
 
-          <UIActionDropdownMenu
-            v-if="allActions.length > 0"
-            :actions="allActions"
-            :is-current-context-only="true"
-            :models="props.model === null ? [] : [props.model]"
-            popover-align="start"
-            popover-side="bottom"
+          <div
+            v-for="hiddenCell of visibleHiddenCells"
+            :key="hiddenCell.key"
+            class="flex items-center justify-between gap-md px-md py-sm"
           >
-            <UIIconButton
-              :icon="DotsVerticalIcon"
-              :is-tooltip-disabled="true"
-              :label="i18n.t('component.data_table.row_actions_cell.label')"
+            <span class="shrink-0 text-xs text-tertiary">
+              {{ hiddenCell.headerLabel }}
+            </span>
+
+            <DataTableCellRenderer
+              :cell="hiddenCell.cell"
+              class="min-w-0 overflow-hidden text-xs text-primary"
+            />
+          </div>
+
+          <div
+            v-if="hasFooter"
+            class="flex items-center gap-xs px-md py-sm"
+          >
+            <UIButton
+              v-if="props.onClick !== null"
+              :icon-right="ArrowUpRightIcon"
+              :label="i18n.t('component.table.row.view_details_label')"
               size="sm"
               variant="secondary"
+              @click="props.onClick"
             />
-          </UIActionDropdownMenu>
+
+            <UIActionDropdownMenu
+              v-if="allActions.length > 0"
+              :actions="allActions"
+              :is-current-context-only="true"
+              :models="props.model === null ? [] : [props.model]"
+              popover-align="start"
+              popover-side="bottom"
+            >
+              <UIIconButton
+                :icon="DotsVerticalIcon"
+                :is-tooltip-disabled="true"
+                :label="i18n.t('component.data_table.row_actions_cell.label')"
+                size="sm"
+                variant="secondary"
+              />
+            </UIActionDropdownMenu>
+          </div>
         </div>
       </div>
-    </div>
+    </AnimateHeight>
   </div>
 </template>
