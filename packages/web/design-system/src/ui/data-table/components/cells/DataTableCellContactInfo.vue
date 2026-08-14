@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
   Globe01Icon,
-  Mail01Icon,
   Phone01Icon,
 } from '@wisemen/vue-core-icons'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
@@ -35,11 +34,6 @@ function formatPhoneNumber(value: string): string {
 }
 
 const rows = computed<ContactInfoRow[]>(() => [
-  {
-    icon: Mail01Icon,
-    key: 'email',
-    values: toList(props.email),
-  },
   {
     icon: Phone01Icon,
     key: 'phoneNumber',

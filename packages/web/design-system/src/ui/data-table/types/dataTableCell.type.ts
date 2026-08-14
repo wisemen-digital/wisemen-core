@@ -41,9 +41,16 @@ export interface DataTableLocationCell {
 }
 
 export interface DataTableContactInfoCell {
-  email?: string | string[]
   phoneNumber?: string | string[]
   website?: string | string[]
+}
+
+export interface DataTablePersonCell {
+  name: string | null
+  /** Falls back to initials generated from `name` when not provided. */
+  avatarUrl?: string | null
+  /** Secondary line under the name — a role, team or phone number. */
+  supportingText?: string | null
 }
 
 export type DataTableBadgeCell = Pick<
@@ -88,6 +95,9 @@ export type DataTableCell
   | ({
     type: 'number'
   } & DataTableNumberCell)
+  | ({
+    type: 'person'
+  } & DataTablePersonCell)
   | ({
     type: 'text'
   } & DataTableTextCell)

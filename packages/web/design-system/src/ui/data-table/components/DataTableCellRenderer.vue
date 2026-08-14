@@ -7,6 +7,7 @@ import DataTableCellContactInfo from '@/ui/data-table/components/cells/DataTable
 import DataTableCellId from '@/ui/data-table/components/cells/DataTableCellId.vue'
 import DataTableCellLocation from '@/ui/data-table/components/cells/DataTableCellLocation.vue'
 import DataTableCellNumber from '@/ui/data-table/components/cells/DataTableCellNumber.vue'
+import DataTableCellPerson from '@/ui/data-table/components/cells/DataTableCellPerson.vue'
 import DataTableCellText from '@/ui/data-table/components/cells/DataTableCellText.vue'
 import DataTableCellTimestamp from '@/ui/data-table/components/cells/DataTableCellTimestamp.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
@@ -47,6 +48,10 @@ const customComponent = computed<Component | null>(() => {
   />
   <DataTableCellContactInfo
     v-else-if="props.cell.type === 'contactInfo'"
+    v-bind="props.cell"
+  />
+  <DataTableCellPerson
+    v-else-if="props.cell.type === 'person'"
     v-bind="props.cell"
   />
   <DataTableCellBadge

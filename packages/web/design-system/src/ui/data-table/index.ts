@@ -3,6 +3,7 @@ export { default as UIDataTableCellContactInfo } from './components/cells/DataTa
 export { default as UIDataTableCellId } from './components/cells/DataTableCellId.vue'
 export { default as UIDataTableCellLocation } from './components/cells/DataTableCellLocation.vue'
 export { default as UIDataTableCellNumber } from './components/cells/DataTableCellNumber.vue'
+export { default as UIDataTableCellPerson } from './components/cells/DataTableCellPerson.vue'
 export { default as UIDataTableCellText } from './components/cells/DataTableCellText.vue'
 export { default as UIDataTableCellTimestamp } from './components/cells/DataTableCellTimestamp.vue'
 export { default as UIDataTable } from './components/DataTable.vue'
@@ -37,6 +38,7 @@ export type {
   DataTableLocationCell,
   DataTableLocationPrecision,
   DataTableNumberCell,
+  DataTablePersonCell,
   DataTableTextCell,
   DataTableTimestampCell,
   DataTableTimestampGranularity,
@@ -49,6 +51,7 @@ export type {
   CreateDataTableIdCellOptions,
   CreateDataTableLocationCellOptions,
   CreateDataTableNumberCellOptions,
+  CreateDataTablePersonCellOptions,
   CreateDataTableTextCellOptions,
   CreateDataTableTimestampCellOptions,
   DataTableColumn,
@@ -61,6 +64,7 @@ export {
   createDataTableIdCell,
   createDataTableLocationCell,
   createDataTableNumberCell,
+  createDataTablePersonCell,
   createDataTableTextCell,
   createDataTableTimestampCell,
   defineDataTableColumns,

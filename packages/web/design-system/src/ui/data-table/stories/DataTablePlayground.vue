@@ -21,9 +21,9 @@ import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import {
   createDataTableBadgeCell,
-  createDataTableContactInfoCell,
   createDataTableIdCell,
   createDataTableNumberCell,
+  createDataTablePersonCell,
   createDataTableTextCell,
   createDataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableColumn.type'
@@ -36,8 +36,8 @@ interface User {
   lastActiveAt: Temporal.Instant
   name: string
   balance: number
+  contactName: string
   department: string
-  email: string
   location: string
   manager: string
   phoneNumber: string
@@ -180,6 +180,19 @@ const LOCATIONS = [
   'Berlin, Germany',
   'Lisbon, Portugal',
 ]
+// Real-looking names, unlike the `User N` values the `Name` column sorts on — the person cell's
+// avatar derives its initials and color from the name, and `User N` would render every avatar
+// as a meaningless `U`.
+const CONTACT_NAMES = [
+  'Amelie Dubois',
+  'Bram Peeters',
+  'Chiara Rossi',
+  'Daan Vermeulen',
+  'Elena Novak',
+  'Felix Hartmann',
+  'Greta Lindqvist',
+  'Hugo Martins',
+]
 
 const now = Temporal.Now.instant()
 
@@ -195,8 +208,8 @@ const data: User[] = Array.from({
   }),
   name: `User ${i + 1}`,
   balance: (i % 17) * 1234.56,
+  contactName: CONTACT_NAMES[i % CONTACT_NAMES.length]!,
   department: DEPARTMENTS[i % DEPARTMENTS.length]!,
-  email: `user${i + 1}@example.com`,
   location: LOCATIONS[i % LOCATIONS.length]!,
   manager: `Manager ${(i % 12) + 1}`,
   phoneNumber: `+32 4${String(70 + (i % 20)).padStart(2, '0')} ${String(100_000 + i).slice(-6)}`,
@@ -327,12 +340,12 @@ const baseColumns: DataTableColumn<User>[] = [
       value: item.startDate,
     }),
   }),
-  createDataTableContactInfoCell({
+  createDataTablePersonCell({
     headerLabel: 'Contact',
     key: 'contact',
     value: (item) => ({
-      email: item.email,
-      phoneNumber: item.phoneNumber,
+      name: item.contactName,
+      supportingText: item.phoneNumber,
     }),
   }),
   createDataTableTextCell({

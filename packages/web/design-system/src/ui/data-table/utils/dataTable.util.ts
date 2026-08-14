@@ -30,6 +30,8 @@ export const DATA_TABLE_CELL_DEFAULT_WIDTH_PX: Record<DataTableCell['type'], num
   custom: 160,
   location: 180,
   number: 120,
+  // Avatar plus a name, wider than plain text since it carries both.
+  person: 200,
   text: 120,
   timestamp: 140,
 }

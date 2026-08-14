@@ -6,6 +6,7 @@ import type {
   DataTableIdCell,
   DataTableLocationCell,
   DataTableNumberCell,
+  DataTablePersonCell,
   DataTableTextCell,
   DataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableCell.type'
@@ -154,6 +155,27 @@ export function createDataTableContactInfoCell<TItem, TKey extends string>(
       ...options.value(item),
     }),
     cellType: 'contactInfo',
+    headerLabel: options.headerLabel,
+    key: options.key,
+    size: options.size,
+  }
+}
+
+export interface CreateDataTablePersonCellOptions<TItem, TKey extends string>
+  extends DataTableColumnFactoryBaseOptions<TKey> {
+  value: (item: TItem) => DataTablePersonCell
+}
+
+export function createDataTablePersonCell<TItem, TKey extends string>(
+  options: CreateDataTablePersonCellOptions<TItem, TKey>,
+): DataTableColumn<TItem, TKey> {
+  return {
+    isSticky: options.isSticky,
+    cell: (item) => ({
+      type: 'person',
+      ...options.value(item),
+    }),
+    cellType: 'person',
     headerLabel: options.headerLabel,
     key: options.key,
     size: options.size,
