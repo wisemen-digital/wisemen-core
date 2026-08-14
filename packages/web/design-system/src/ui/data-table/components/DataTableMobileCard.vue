@@ -11,7 +11,10 @@ import { useI18n } from 'vue-i18n'
 
 import type { RegisteredActionContext } from '@/register'
 import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu'
-import { UIButton, UIIconButton } from '@/ui/button'
+import {
+  UIButton,
+  UIIconButton,
+} from '@/ui/button'
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
@@ -37,9 +40,9 @@ const props = withDefaults(defineProps<{
   subComponent?: Component | null
   onClick?: (() => void) | null
 }>(), {
-  inlineActions: () => [],
   isSelectable: false,
   isSelected: false,
+  inlineActions: () => [],
   model: null,
   moreActions: () => [],
   subComponent: null,
@@ -134,8 +137,8 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
     >
       <div class="divide-y divide-secondary rounded-lg border border-secondary">
         <Component
-          v-if="props.subComponent !== null"
           :is="props.subComponent"
+          v-if="props.subComponent !== null"
           class="p-md"
         />
 
