@@ -27,9 +27,9 @@ export interface DataTableColumn<TItem, TKey extends string = string> {
   /**
    * The `Cell definition` type this column always renders. Declared explicitly (rather than
    * derived from calling `cell` on a row) so the column's default width is known immediately,
-   * even before any data has loaded — see `CONTEXT.md` ("Column sizing — fixed pixel default
-   * per cell type"). Always produced together with `cell` by the same `createXCell` factory
-   * (see `dataTableColumnFactories.ts`), so the two can never drift out of sync.
+   * even before any data has loaded. Always produced together with `cell` by the same
+   * `createXCell` factory (see `dataTableColumnFactories.ts`), so the two can never drift out
+   * of sync.
    */
   cellType: DataTableCell['type']
   headerLabel: string

@@ -202,7 +202,10 @@ const data: User[] = Array.from({
   phoneNumber: `+32 4${String(70 + (i % 20)).padStart(2, '0')} ${String(100_000 + i).slice(-6)}`,
   // eslint-disable-next-line no-nested-ternary
   role: i % 3 === 0 ? 'Admin' : (i % 3 === 1 ? 'Editor' : 'Viewer'),
-  status: i % 4 === 0 ? 'inactive' : 'active',
+  // `% 3`, not `% 4` — `DEPARTMENTS.length` is 4, and a same-period modulus would make status
+  // perfectly correlate with department (every department landing on exactly one status value),
+  // leaving only a single subgroup per department under `department+status` two-level grouping.
+  status: i % 3 === 0 ? 'inactive' : 'active',
 }))
 
 const sort = useSort<'name' | 'role' | 'status'>({

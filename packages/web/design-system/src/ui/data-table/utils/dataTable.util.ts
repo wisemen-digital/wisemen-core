@@ -18,13 +18,11 @@ export const DATA_TABLE_ACTIONS_COLUMN_WIDTH_PX = 80
 // Absolute floor for manual drag-resize — no column can ever be dragged below this, regardless
 // of its cell type or declared `size`. Small enough to not be an obstacle for genuinely narrow
 // columns ("Id"), large enough that a column can never be dragged fully behind its neighbor.
-// See `CONTEXT.md` ("Column resize — minimum width").
 export const DATA_TABLE_MIN_COLUMN_WIDTH_PX = 60
 
 // One flat pixel default per `Cell definition` type — not derived from that cell's own config
 // (e.g. `Timestamp`'s `isRelative` vs `granularity`, `Id`'s `maxLength` don't change this). A
-// column whose default is too narrow for its actual data overrides it via `size`. See
-// `CONTEXT.md` ("Column sizing — fixed pixel default per cell type").
+// column whose default is too narrow for its actual data overrides it via `size`.
 export const DATA_TABLE_CELL_DEFAULT_WIDTH_PX: Record<DataTableCell['type'], number> = {
   id: 100,
   badge: 100,

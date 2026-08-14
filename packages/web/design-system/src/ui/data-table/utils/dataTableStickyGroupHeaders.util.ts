@@ -1,126 +1,229 @@
-import type { VirtualItem } from '@tanstack/vue-virtual'
+/**
+ * Sticky group headers, per group, via native CSS `position: sticky` — see
+ * `chunkVirtualRowEntriesByGroup` below for the entry point.
+ *
+ * The depth-0 header (e.g. a department) and a nested depth-1 header (e.g. a status within
+ * that department) need DIFFERENT `position: sticky` containing-block scopes, not the same
+ * one — this is the key fact that makes the whole scheme work, discovered only after several
+ * single-scope structures each failed a different way:
+ *
+ * - Depth-0's containing block must span its ENTIRE top-level group (every subgroup inside
+ *   it), so there is only ever one depth-0 element for that whole group. It can neither be
+ *   duplicated (two sticky containers can't both claim to be "the" depth-0 for the same
+ *   group) nor disappear-and-reappear (its containing block never ends until the group itself
+ *   does, so it's always available to re-pin).
+ * - Depth-1's containing block must span only ITS OWN subgroup — this is what lets it release
+ *   cleanly the instant its subgroup ends and hand off to the next subgroup's own depth-1,
+ *   exactly like ordinary sequential sticky section headers already do. Giving depth-1 the
+ *   SAME (department-wide) scope as depth-0 was tried and rejected: it kept an
+ *   already-finished subgroup's header eligible to stay pinned far past its own content,
+ *   producing the same duplicate-header symptom this scheme exists to avoid.
+ *
+ * ```
+ * virtualizer's visible rows
+ *        │
+ *        ▼
+ * groupEntriesIntoTopLevelChunks   — bucket consecutive rows into one chunk per top-level
+ *        │                           group (e.g. one chunk per department) — this chunk is
+ *        │                           depth-0's containing block
+ *        ▼
+ * each top-level chunk's own entries are further split into sub-chunks by deepest active
+ * group (e.g. one sub-chunk per status within that department) — each sub-chunk is depth-1's
+ * containing block
+ *        │
+ *        ▼
+ * withMissingHeaderEntriesRestored   — is the top-level chunk's own depth-0 header, or a
+ *        │                             sub-chunk's own depth-1 header, missing (scrolled out
+ *        │                             of the virtualizer's render window)? if so, look it up
+ *        │                             directly (not limited by the virtualizer) and restore it
+ *        ▼
+ * chunks, each guaranteed to contain its own depth-0 header and every sub-chunk's own depth-1
+ * header
+ *        │
+ *        ▼
+ * template renders one <div> per top-level chunk (depth-0's sticky container), containing one
+ * <div> per sub-chunk (depth-1's sticky container)
+ * ```
+ */
+export interface ChunkableRowEntry {
+  topLevelGroupRowId: string
+  index: number
+}
+
+export interface RowSubChunk<TEntry extends ChunkableRowEntry> {
+  entries: TEntry[]
+  key: string
+}
+
+export interface RowChunk<TEntry extends ChunkableRowEntry> {
+  key: string
+  subChunks: RowSubChunk<TEntry>[]
+}
+
+function groupEntriesByKey<TEntry>(
+  entries: TEntry[],
+  getKey: (entry: TEntry) => string,
+): {
+  entries: TEntry[]
+  key: string
+}[] {
+  const groups: {
+    entries: TEntry[]
+    key: string
+  }[] = []
+
+  for (const entry of entries) {
+    const lastGroup = groups.at(-1)
+    const key = getKey(entry)
+    const canAppendToLastGroup = lastGroup !== undefined && lastGroup.key === key
+
+    if (canAppendToLastGroup) {
+      lastGroup.entries.push(entry)
+    }
+    else {
+      groups.push({
+        entries: [
+          entry,
+        ],
+        key,
+      })
+    }
+  }
+
+  return groups
+}
+
+export function groupEntriesIntoChunks<TEntry extends ChunkableRowEntry>(
+  entries: TEntry[],
+  getDeepestActiveGroupRowId: (entry: TEntry) => string,
+): RowChunk<TEntry>[] {
+  const topLevelGroups = groupEntriesByKey(entries, (entry) => entry.topLevelGroupRowId)
+
+  return topLevelGroups.map((topLevelGroup) => ({
+    key: topLevelGroup.key,
+    subChunks: groupEntriesByKey(topLevelGroup.entries, getDeepestActiveGroupRowId),
+  }))
+}
 
 /**
- * Finds a row's "active ancestor chain": walking backward from `beforeIndex`, the nearest
- * group-header row at each depth (0, 1, ...) that the row at `beforeIndex` sits inside of.
+ * A chunk's header row can scroll further above the viewport than the virtualizer's `overscan`
+ * setting keeps mounted in the DOM. Once that happens, `position: sticky` has nothing left to
+ * hold onto, and the header disappears instead of staying pinned. This walks backward through
+ * `getEntryAtIndex` (which must be backed by the complete, always-fully-populated row list —
+ * unlike the virtualizer's render window, which only has a small window of rows) starting from
+ * `startIndex`, to re-find the header row at `targetDepth` if it isn't already among
+ * `alreadyPresentEntries`, so it can be added back in even though the virtualizer itself dropped
+ * it.
  *
- * Why this works at all: the flattened+expanded row model always lists a group header
- * immediately before its own children, so scanning backward from any row and taking the first
- * group-header row you hit at each depth *is* that row's containing group at that depth —
- * depth 0 is the outermost group, depth 1 is the group nested one level inside it, and so on.
- * The scan stops as soon as it reaches a depth-0 header, since there's nothing shallower to find.
- *
- * Example: for a row list positioned as
- *   0: "Engineering" (group header, depth 0)
- *   1: "Inactive"    (group header, depth 1, nested inside Engineering)
- *   2: User 1
- *   3: User 5
- * calling this with `beforeIndex = 3` (User 5) returns `[1, 0]` — "Inactive" first (the
- * nearest one found), then "Engineering".
- *
- * Shared between desktop (`dataTableGroupedVirtualScroller.composable.ts`, rows are TanStack
- * `Row`s) and mobile (`dataTableMobileVirtualScroller.composable.ts`, rows are
- * `DataTableRowViewModel`s) — the two disagree on what a "row" object looks like, so this takes
- * a small `getGroupHeaderDepth` adapter instead of a row array directly: given an index, it
- * returns that row's depth if it's a group header, or `null` if it's an ordinary row.
+ * The walk stops once it crosses into a different top-level group (via `topLevelGroupRowId`) —
+ * a depth-1 header's own missing-header walk must never cross into a sibling subgroup or a
+ * different department, and a depth-0 header's walk never needs to look further back than its
+ * own top-level group's first row anyway.
  */
-function findAncestorHeaderIndexes(
-  beforeIndex: number,
-  getGroupHeaderDepth: (index: number) => number | null,
-): number[] {
-  const ancestorIndexes: number[] = []
-  const depthsAlreadyFound = new Set<number>()
+function findMissingHeaderEntry<TEntry extends ChunkableRowEntry>(
+  startIndex: number,
+  topLevelGroupRowId: string,
+  targetDepth: number,
+  alreadyPresentEntries: TEntry[],
+  getEntryAtIndex: (index: number) => TEntry,
+  getHeaderRowDepth: (entry: TEntry) => number | null,
+): TEntry | null {
+  const alreadyPresent = alreadyPresentEntries.some((entry) => getHeaderRowDepth(entry) === targetDepth)
 
-  for (let candidateIndex = beforeIndex - 1; candidateIndex >= 0; candidateIndex--) {
-    const candidateDepth = getGroupHeaderDepth(candidateIndex)
+  if (alreadyPresent) {
+    return null
+  }
 
-    if (candidateDepth === null) {
-      continue
-    }
+  for (let candidateIndex = startIndex; candidateIndex >= 0; candidateIndex--) {
+    const candidateEntry = getEntryAtIndex(candidateIndex)
 
-    // Already have the nearest header for this depth — a shallower depth might still be
-    // further back (e.g. we found depth 1 already, but still need depth 0), so keep scanning
-    // rather than stopping here.
-    if (depthsAlreadyFound.has(candidateDepth)) {
-      continue
-    }
-
-    depthsAlreadyFound.add(candidateDepth)
-    ancestorIndexes.push(candidateIndex)
-
-    // Depth 0 is the outermost possible group — once found, there's nothing shallower left to
-    // look for, so the scan can stop early instead of walking all the way back to index 0.
-    if (candidateDepth === 0) {
+    if (candidateEntry.topLevelGroupRowId !== topLevelGroupRowId) {
       break
     }
-  }
 
-  return ancestorIndexes
-}
-
-/**
- * Real `position: sticky` needs a group header's own row to stay mounted in the DOM for as long
- * as it's the active ancestor of whatever's at the top of the viewport. Left to itself, the
- * virtualizer only keeps a small contiguous window of rows mounted (the visible ones plus a
- * handful as a buffer on each side) — a header scrolled further away than that gets unmounted,
- * and once it's gone there's nothing left for `sticky` to hold onto: it disappears instead of
- * staying pinned.
- *
- * This finds whichever ancestor headers (see `findAncestorHeaderIndexes` above) are missing
- * from the virtualizer's normal render window and returns them so they can be added back in,
- * using `getKnownPosition` to place them at their real, already-known position (not a
- * re-estimated guess) — it's the *same* row every time, never swapped for a separate copy, so
- * `sticky` engages exactly on time and transitions smoothly rather than popping/jumping.
- */
-export function findMissingAncestorHeaderItems(
-  normallyRenderedItems: VirtualItem[],
-  getGroupHeaderDepth: (index: number) => number | null,
-  getKnownPosition: (index: number) => VirtualItem | undefined,
-): VirtualItem[] {
-  const firstRenderedIndex = normallyRenderedItems.at(0)?.index
-
-  // Nothing is rendered, or the very first row in the whole table is already visible — either
-  // way there's no ancestor further up that could need injecting.
-  if (firstRenderedIndex === undefined || firstRenderedIndex === 0) {
-    return []
-  }
-
-  const alreadyRenderedIndexes = new Set(normallyRenderedItems.map((item) => item.index))
-  const missingAncestorItems: VirtualItem[] = []
-
-  for (const ancestorIndex of findAncestorHeaderIndexes(firstRenderedIndex, getGroupHeaderDepth)) {
-    // This ancestor is already part of the virtualizer's normal render window (e.g. its header
-    // row happens to still be nearby) — nothing to inject, it's already showing up.
-    if (alreadyRenderedIndexes.has(ancestorIndex)) {
-      continue
-    }
-
-    const knownPosition = getKnownPosition(ancestorIndex)
-
-    if (knownPosition !== undefined) {
-      missingAncestorItems.push(knownPosition)
+    if (getHeaderRowDepth(candidateEntry) === targetDepth) {
+      return candidateEntry
     }
   }
 
-  // Rendered in index order (shallower depth first) so they read top-to-bottom the same way
-  // `findAncestorHeaderIndexes` conceptually nests them, even though it discovers them in the
-  // opposite order (nearest/deepest first).
-  return missingAncestorItems.sort((a, b) => a.index - b.index)
+  return null
 }
 
-/**
- * The injected ancestor items above now occupy real flow space immediately before the first
- * normally-rendered row — space the padding-before spacer previously accounted for as if
- * nothing rendered there at all. Shrink it by exactly their combined height so the total flow
- * height (spacer + injected ancestors + rendered rows) still matches the list's real total size
- * and nothing shifts.
- */
-export function getPaddingBeforePxWithInjectedAncestors(
-  normallyRenderedItems: VirtualItem[],
-  injectedAncestorItems: VirtualItem[],
-): number {
-  const basePaddingPx = normallyRenderedItems.at(0)?.start ?? 0
-  const injectedHeightPx = injectedAncestorItems.reduce((sum, item) => sum + item.size, 0)
+export function withMissingHeaderEntriesRestored<TEntry extends ChunkableRowEntry>(
+  chunk: RowChunk<TEntry>,
+  getEntryAtIndex: (index: number) => TEntry,
+  getHeaderRowDepth: (entry: TEntry) => number | null,
+): RowChunk<TEntry> {
+  const firstSubChunk = chunk.subChunks[0]!
+  const firstEntry = firstSubChunk.entries[0]!
 
-  return basePaddingPx - injectedHeightPx
+  const missingDepth0Entry = findMissingHeaderEntry(
+    firstEntry.index,
+    chunk.key,
+    0,
+    firstSubChunk.entries,
+    getEntryAtIndex,
+    getHeaderRowDepth,
+  )
+
+  const restoredSubChunks = chunk.subChunks.map((subChunk) => {
+    const subChunkFirstEntry = subChunk.entries[0]!
+    const missingDepth1Entry = findMissingHeaderEntry(
+      subChunkFirstEntry.index,
+      chunk.key,
+      1,
+      subChunk.entries,
+      getEntryAtIndex,
+      getHeaderRowDepth,
+    )
+
+    return missingDepth1Entry === null
+      ? subChunk
+      : {
+          ...subChunk,
+          entries: [
+            missingDepth1Entry,
+            ...subChunk.entries,
+          ],
+        }
+  })
+
+  if (missingDepth0Entry === null) {
+    return {
+      ...chunk,
+      subChunks: restoredSubChunks,
+    }
+  }
+
+  const [
+    firstRestoredSubChunk,
+    ...restRestoredSubChunks
+  ] = restoredSubChunks
+
+  return {
+    ...chunk,
+    subChunks: [
+      {
+        ...firstRestoredSubChunk!,
+        entries: [
+          missingDepth0Entry,
+          ...firstRestoredSubChunk!.entries,
+        ],
+      },
+      ...restRestoredSubChunks,
+    ],
+  }
+}
+
+export function chunkVirtualRowEntriesByGroup<TEntry extends ChunkableRowEntry>(
+  entries: TEntry[],
+  getEntryAtIndex: (index: number) => TEntry,
+  getHeaderRowDepth: (entry: TEntry) => number | null,
+  getDeepestActiveGroupRowId: (entry: TEntry) => string,
+): RowChunk<TEntry>[] {
+  const chunksWithoutMissingHeaders = groupEntriesIntoChunks(entries, getDeepestActiveGroupRowId)
+
+  return chunksWithoutMissingHeaders.map(
+    (chunk) => withMissingHeaderEntriesRestored(chunk, getEntryAtIndex, getHeaderRowDepth),
+  )
 }

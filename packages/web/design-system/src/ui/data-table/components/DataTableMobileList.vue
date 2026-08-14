@@ -8,11 +8,12 @@ import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRende
 import DataTableMobileCard from '@/ui/data-table/components/DataTableMobileCard.vue'
 import DataTableMobileGroupHeader from '@/ui/data-table/components/DataTableMobileGroupHeader.vue'
 import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
+import { useDataTableMobileSlots } from '@/ui/data-table/composables/dataTableMobileSlots.composable'
 import {
   DATA_TABLE_MOBILE_GROUP_HEADER_HEIGHT_IN_PX,
   useDataTableMobileVirtualScroller,
 } from '@/ui/data-table/composables/dataTableMobileVirtualScroller.composable'
-import { useDataTableMobileSlots } from '@/ui/data-table/composables/dataTableMobileSlots.composable'
+import { useDataTableStickyGroupChunks } from '@/ui/data-table/composables/dataTableStickyGroupChunks.composable'
 import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
@@ -51,42 +52,23 @@ useDataTableInfiniteScroll(scrollContainerEl, computed(() => props.onNextPage))
 const {
   measureRowElement,
   paddingAfterPx,
-  paddingBeforePx,
+  paddingBeforePx: paddingBeforePxFromVirtualizer,
   virtualItems,
 } = useDataTableMobileVirtualScroller(computed(() => props.rowViewModels), scrollContainerEl)
 
-interface MobileVirtualRowViewModel {
-  index: number
-  itemKey: string
-  key: string
-  rowConfig: DataTableRowConfig | null
-  viewModel: DataTableRowViewModel<TItem>
-}
-
-const virtualRowViewModels = computed<MobileVirtualRowViewModel[]>(
-  () => virtualItems.value.map((virtualItem) => {
-    const viewModel = props.rowViewModels[virtualItem.index]!
-
-    return {
-      index: virtualItem.index,
-      itemKey: viewModel.isGrouped ? '' : props.getKey(viewModel.row.original),
-      key: String(virtualItem.key),
-      rowConfig: viewModel.isGrouped ? null : (props.row?.(viewModel.row.original) ?? null),
-      viewModel,
-    }
-  }),
-)
-
-// `position: sticky` has to live on this exact wrapper div — the one the virtualizer measures
-// and that carries `data-index` — not deeper inside `DataTableMobileGroupHeader`. See
-// `DataTable.vue`'s identical `getGroupRowStickyStyle` for why: nesting the sticky element one
-// level inside an extra box breaks its sticky positioning context. No sticky column-header row
-// exists on mobile, so depth 0 sits at `top: 0`.
-function getGroupRowStickyStyle(depth: number): Record<string, string> {
-  return {
-    top: `${depth * DATA_TABLE_MOBILE_GROUP_HEADER_HEIGHT_IN_PX}px`,
-  }
-}
+const {
+  chunks: virtualRowChunks,
+  getChunkGroupHeaderEntry,
+  getSubChunkDataRowEntries,
+  getSubChunkSubgroupHeaderEntry,
+  paddingBeforePx,
+} = useDataTableStickyGroupChunks({
+  getRowAtIndex: (index) => props.rowViewModels[index]!.row,
+  getViewModelAtIndex: (index) => props.rowViewModels[index]!,
+  groupHeaderHeightPx: DATA_TABLE_MOBILE_GROUP_HEADER_HEIGHT_IN_PX,
+  paddingBeforePxFromVirtualizer,
+  virtualItems,
+})
 </script>
 
 <template>
@@ -100,51 +82,90 @@ function getGroupRowStickyStyle(depth: number): Record<string, string> {
         :style="{ height: `${paddingBeforePx}px` }"
       />
 
-      <template
-        v-for="entry of virtualRowViewModels"
-        :key="entry.key"
+      <div
+        v-for="chunk of virtualRowChunks"
+        :key="chunk.key"
+        class="relative"
       >
         <div
+          v-for="groupHeaderEntry of getChunkGroupHeaderEntry(chunk)"
+          :key="groupHeaderEntry.key"
           :ref="measureRowElement"
-          :data-index="entry.index"
-          :style="entry.viewModel.isGrouped ? getGroupRowStickyStyle(entry.viewModel.row.depth) : undefined"
-          :class="{
-            'sticky z-10 bg-primary': entry.viewModel.isGrouped,
-          }"
+          :data-index="groupHeaderEntry.index"
+          class="sticky top-0 z-20 bg-primary"
         >
           <DataTableMobileGroupHeader
-            v-if="entry.viewModel.isGrouped"
-            :depth="entry.viewModel.row.depth"
-            :is-expanded="entry.viewModel.row.getIsExpanded()"
+            :depth="0"
+            :is-expanded="groupHeaderEntry.viewModel.row.getIsExpanded()"
             :is-selectable="props.isSelectable"
-            :is-selected="entry.viewModel.isGroupAllSelected"
-            :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate && !entry.viewModel.isGroupAllSelected"
-            :label="entry.viewModel.groupLabelCell === null ? entry.viewModel.groupLabel : ''"
-            @toggle="entry.viewModel.row.toggleExpanded()"
-            @toggle-selected="emit('toggleGroupSelected', entry.viewModel.row.getLeafRows().map((leafRow) => leafRow.original))"
+            :is-selected="groupHeaderEntry.viewModel.isGroupAllSelected"
+            :is-selected-indeterminate="groupHeaderEntry.viewModel.isGroupIndeterminate
+              && !groupHeaderEntry.viewModel.isGroupAllSelected"
+            :label="groupHeaderEntry.viewModel.groupLabelCell === null
+              ? groupHeaderEntry.viewModel.groupLabel : ''"
+            @toggle="groupHeaderEntry.viewModel.row.toggleExpanded()"
+            @toggle-selected="emit('toggleGroupSelected', groupHeaderEntry.viewModel.row.getLeafRows().map((leafRow) => leafRow.original))"
           >
             <DataTableCellRenderer
-              v-if="entry.viewModel.groupLabelCell !== null"
-              :cell="entry.viewModel.groupLabelCell!"
+              v-if="groupHeaderEntry.viewModel.groupLabelCell !== null"
+              :cell="groupHeaderEntry.viewModel.groupLabelCell!"
             />
           </DataTableMobileGroupHeader>
-
-          <DataTableMobileCard
-            v-else
-            v-bind="getMobileSlots(entry.viewModel.row.original)"
-            :inline-actions="entry.rowConfig?.actions.inline ?? []"
-            :is-expanded="props.expandedItemKeys.has(entry.itemKey)"
-            :is-selectable="props.isSelectable"
-            :is-selected="props.isItemSelected(entry.itemKey)"
-            :model="entry.rowConfig?.model ?? null"
-            :more-actions="entry.rowConfig?.actions.more ?? []"
-            :on-click="entry.rowConfig?.onClick ?? null"
-            :sub-component="entry.viewModel.subComponent"
-            @toggle-expanded="emit('toggleExpanded', entry.itemKey)"
-            @toggle-selected="emit('toggleSelected', entry.itemKey)"
-          />
         </div>
-      </template>
+
+        <div
+          v-for="subChunk of chunk.subChunks"
+          :key="subChunk.key"
+          class="relative"
+        >
+          <div
+            v-for="subgroupHeaderEntry of getSubChunkSubgroupHeaderEntry(subChunk)"
+            :key="subgroupHeaderEntry.key"
+            :ref="measureRowElement"
+            :data-index="subgroupHeaderEntry.index"
+            class="sticky top-9 z-10 bg-primary"
+          >
+            <DataTableMobileGroupHeader
+              :depth="subgroupHeaderEntry.viewModel.row.depth"
+              :is-expanded="subgroupHeaderEntry.viewModel.row.getIsExpanded()"
+              :is-selectable="props.isSelectable"
+              :is-selected="subgroupHeaderEntry.viewModel.isGroupAllSelected"
+              :is-selected-indeterminate="subgroupHeaderEntry.viewModel.isGroupIndeterminate
+                && !subgroupHeaderEntry.viewModel.isGroupAllSelected"
+              :label="subgroupHeaderEntry.viewModel.groupLabelCell === null
+                ? subgroupHeaderEntry.viewModel.groupLabel : ''"
+              @toggle="subgroupHeaderEntry.viewModel.row.toggleExpanded()"
+              @toggle-selected="emit('toggleGroupSelected', subgroupHeaderEntry.viewModel.row.getLeafRows().map((leafRow) => leafRow.original))"
+            >
+              <DataTableCellRenderer
+                v-if="subgroupHeaderEntry.viewModel.groupLabelCell !== null"
+                :cell="subgroupHeaderEntry.viewModel.groupLabelCell!"
+              />
+            </DataTableMobileGroupHeader>
+          </div>
+
+          <div
+            v-for="entry of getSubChunkDataRowEntries(subChunk)"
+            :key="entry.key"
+            :ref="measureRowElement"
+            :data-index="entry.index"
+          >
+            <DataTableMobileCard
+              v-bind="getMobileSlots(entry.viewModel.row.original)"
+              :inline-actions="entry.viewModel.rowConfig?.actions.inline ?? []"
+              :is-expanded="props.expandedItemKeys.has(props.getKey(entry.viewModel.row.original))"
+              :is-selectable="props.isSelectable"
+              :is-selected="props.isItemSelected(props.getKey(entry.viewModel.row.original))"
+              :model="entry.viewModel.rowConfig?.model ?? null"
+              :more-actions="entry.viewModel.rowConfig?.actions.more ?? []"
+              :on-click="entry.viewModel.rowConfig?.onClick ?? null"
+              :sub-component="entry.viewModel.subComponent"
+              @toggle-expanded="emit('toggleExpanded', props.getKey(entry.viewModel.row.original))"
+              @toggle-selected="emit('toggleSelected', props.getKey(entry.viewModel.row.original))"
+            />
+          </div>
+        </div>
+      </div>
 
       <div
         v-if="paddingAfterPx > 0"

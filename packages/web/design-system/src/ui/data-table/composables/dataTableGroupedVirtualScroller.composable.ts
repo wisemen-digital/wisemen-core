@@ -7,11 +7,6 @@ import type {
 } from 'vue'
 import { computed } from 'vue'
 
-import {
-  findMissingAncestorHeaderItems,
-  getPaddingBeforePxWithInjectedAncestors,
-} from '@/ui/data-table/utils/dataTableStickyGroupHeaders.util'
-
 export const DATA_TABLE_ROW_HEIGHT_IN_PX = 40
 export const DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX = 40
 
@@ -48,35 +43,12 @@ export function useDataTableGroupedVirtualScroller<TItem>(
     overscan: 5,
   })))
 
-  const rawVirtualItems = computed<VirtualItem[]>(() => virtualizer.value.getVirtualItems())
+  const virtualItems = computed<VirtualItem[]>(() => virtualizer.value.getVirtualItems())
   const totalSizePx = computed<number>(() => virtualizer.value.getTotalSize())
 
-  // See `dataTableStickyGroupHeaders.util.ts` for why this is needed and how it works — in
-  // short, real `position: sticky` needs a group header's own row to stay mounted in the DOM
-  // for as long as it's the active ancestor of whatever's at the top of the viewport, which the
-  // virtualizer's normal render window (visible rows plus a small buffer) doesn't guarantee on
-  // its own once a header scrolls far enough away.
-  const injectedAncestorItems = computed<VirtualItem[]>(() => findMissingAncestorHeaderItems(
-    rawVirtualItems.value,
-    (index) => {
-      const row = rows.value[index]
-
-      return row !== undefined && row.getIsGrouped() ? row.depth : null
-    },
-    (index) => virtualizer.value.measurementsCache[index],
-  ))
-
-  const virtualItems = computed<VirtualItem[]>(() => (
-    injectedAncestorItems.value.length === 0
-      ? rawVirtualItems.value
-      : [...injectedAncestorItems.value, ...rawVirtualItems.value]
-  ))
-
-  const paddingBeforePx = computed<number>(
-    () => getPaddingBeforePxWithInjectedAncestors(rawVirtualItems.value, injectedAncestorItems.value),
-  )
+  const paddingBeforePx = computed<number>(() => virtualItems.value.at(0)?.start ?? 0)
   const paddingAfterPx = computed<number>(() => {
-    const last = rawVirtualItems.value.at(-1)
+    const last = virtualItems.value.at(-1)
 
     return last != null ? totalSizePx.value - last.end : 0
   })

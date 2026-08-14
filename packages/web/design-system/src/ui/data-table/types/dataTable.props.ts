@@ -67,7 +67,7 @@ export interface DataTableProps<TItem> {
    * Groups rows by this column's value, rendering a collapsible group header row above each
    * distinct value. Pass a two-element tuple to additionally sub-group within each group by a
    * second column — there is no third level. Groups default to expanded. Grouped rows and
-   * headers are virtualized (see `CONTEXT.md`), same as the flat, ungrouped list.
+   * headers are virtualized, same as the flat, ungrouped list.
    */
   groupBy?: DataTableGroupBy
   /**

@@ -23,11 +23,11 @@ import DataTableSelectionActionBar from '@/ui/data-table/components/DataTableSel
 import DataTableVirtualRows from '@/ui/data-table/components/DataTableVirtualRows.vue'
 import { useDataTable } from '@/ui/data-table/composables/dataTable.composable'
 import {
-  DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX,
   DATA_TABLE_ROW_HEIGHT_IN_PX,
   useDataTableGroupedVirtualScroller,
 } from '@/ui/data-table/composables/dataTableGroupedVirtualScroller.composable'
 import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
+import { useDataTableStickyGroupChunks } from '@/ui/data-table/composables/dataTableStickyGroupChunks.composable'
 import { useDataTableVirtualScroller } from '@/ui/data-table/composables/dataTableVirtualScroller.composable'
 import { useProvideDataTableContext } from '@/ui/data-table/context/dataTable.context'
 import type { DataTableProps } from '@/ui/data-table/types/dataTable.props'
@@ -149,13 +149,10 @@ const {
 const {
   measureRowElement,
   paddingAfterPx: groupedPaddingAfterPx,
-  paddingBeforePx: groupedPaddingBeforePx,
+  paddingBeforePx: groupedPaddingBeforePxFromVirtualizer,
   virtualItems: groupedVirtualRows,
 } = useDataTableGroupedVirtualScroller(rows, scrollContainerEl)
 
-const paddingBeforePx = computed<number>(
-  () => (isGroupingEnabled.value ? groupedPaddingBeforePx.value : flatPaddingBeforePx.value),
-)
 const paddingAfterPx = computed<number>(
   () => (isGroupingEnabled.value ? groupedPaddingAfterPx.value : flatPaddingAfterPx.value),
 )
@@ -192,8 +189,8 @@ const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
   return models.filter((model): model is RegisteredActionContext['models'][number] => model != null)
 })
 
-// Mobile-only: selection is off by default and toggled on explicitly (see `CONTEXT.md`),
-// separate from `props.isSelectable`'s always-on desktop checkbox column.
+// Mobile-only: selection is off by default and toggled on explicitly, separate from
+// `props.isSelectable`'s always-on desktop checkbox column.
 const isMobileSelectModeOn = shallowRef<boolean>(false)
 
 function toggleMobileSelectMode(): void {
@@ -216,7 +213,7 @@ function toggleMobileCardExpanded(key: string): void {
 }
 
 // Sub-component expand state is deliberately kept outside TanStack's own `expanded` state,
-// which is reserved for group-row collapse — see `CONTEXT.md`.
+// which is reserved for group-row collapse.
 const expandedSubComponentRowIds = shallowRef<Set<string>>(new Set())
 
 function toggleSubComponent(rowId: string): void {
@@ -279,34 +276,23 @@ function toggleRowGroup(row: Row<TItem>): void {
   toggleGroup(row.getLeafRows().map((leafRow) => leafRow.original))
 }
 
-interface GroupedVirtualRowViewModel {
-  index: number
-  key: number | string
-  row: Row<TItem>
-  viewModel: DataTableRowViewModel<TItem>
-}
+const {
+  chunks: groupedVirtualRowChunks,
+  getChunkGroupHeaderEntry,
+  getSubChunkDataRowEntries,
+  getSubChunkSubgroupHeaderEntry,
+  paddingBeforePx: groupedPaddingBeforePx,
+} = useDataTableStickyGroupChunks({
+  getRowAtIndex: (index) => rows.value[index]!,
+  getViewModelAtIndex: (index) => rowViewModels.value[index]!,
+  groupHeaderHeightPx: DATA_TABLE_ROW_HEIGHT_IN_PX,
+  paddingBeforePxFromVirtualizer: groupedPaddingBeforePxFromVirtualizer,
+  virtualItems: groupedVirtualRows,
+})
 
-const groupedVirtualRowViewModels = computed<GroupedVirtualRowViewModel[]>(
-  () => groupedVirtualRows.value.map((virtualRow) => ({
-    index: virtualRow.index,
-    key: String(virtualRow.key),
-    row: rows.value[virtualRow.index]!,
-    viewModel: rowViewModels.value[virtualRow.index]!,
-  })),
+const paddingBeforePx = computed<number>(
+  () => (isGroupingEnabled.value ? groupedPaddingBeforePx.value : flatPaddingBeforePx.value),
 )
-
-// `position: sticky` has to live on this exact wrapper div — the one the virtualizer measures
-// and that carries `data-index` — rather than deeper inside `DataTableGroupRow`. Nesting the
-// sticky element one level inside an extra `display: grid` box (needed here only for dynamic
-// row-height measurement) breaks its sticky positioning context entirely; the working sticky
-// column headers have no such intermediate wrapper, which is why they stick correctly. Depth 0
-// sits right under the sticky column-header row (one DATA_TABLE_ROW_HEIGHT_IN_PX), depth 1 sits
-// under depth 0, and so on.
-function getGroupRowStickyStyle(row: Row<TItem>): Record<string, string> {
-  return {
-    top: `${DATA_TABLE_ROW_HEIGHT_IN_PX + row.depth * DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX}px`,
-  }
-}
 
 interface FlatVirtualRowViewModel {
   key: string
@@ -484,44 +470,90 @@ const loadingRowColumnCount = computed<number>(
               :padding-before-px="paddingBeforePx"
             >
               <div
-                v-for="entry of groupedVirtualRowViewModels"
-                :key="entry.key"
-                :ref="measureRowElement"
-                :data-index="entry.index"
-                :style="entry.viewModel.isGrouped ? getGroupRowStickyStyle(entry.row) : undefined"
-                :class="{
-                  'sticky z-10': entry.viewModel.isGrouped,
-                }"
-                class="col-span-full grid grid-cols-subgrid"
+                v-for="chunk of groupedVirtualRowChunks"
+                :key="chunk.key"
+                class="relative col-span-full grid grid-cols-subgrid"
               >
-                <DataTableGroupRow
-                  v-if="entry.viewModel.isGrouped"
-                  :depth="entry.row.depth"
-                  :is-expanded="entry.row.getIsExpanded()"
-                  :is-last="entry.viewModel.isLast"
-                  :is-selectable="props.isSelectable"
-                  :is-selected="entry.viewModel.isGroupAllSelected"
-                  :is-selected-indeterminate="entry.viewModel.isGroupIndeterminate
-                    && !entry.viewModel.isGroupAllSelected"
-                  :label="entry.viewModel.groupLabelCell === null ? entry.viewModel.groupLabel : ''"
-                  @toggle="entry.row.toggleExpanded()"
-                  @toggle-selected="toggleRowGroup(entry.row)"
+                <div
+                  v-for="groupHeaderEntry of getChunkGroupHeaderEntry(chunk)"
+                  :key="groupHeaderEntry.key"
+                  :ref="measureRowElement"
+                  :data-index="groupHeaderEntry.index"
+                  class="
+                    sticky top-10 z-10 col-span-full grid grid-cols-subgrid
+                  "
                 >
-                  <DataTableCellRenderer
-                    v-if="entry.viewModel.groupLabelCell !== null"
-                    :cell="entry.viewModel.groupLabelCell!"
-                  />
-                </DataTableGroupRow>
+                  <DataTableGroupRow
+                    :depth="0"
+                    :is-expanded="groupHeaderEntry.viewModel.row.getIsExpanded()"
+                    :is-last="groupHeaderEntry.viewModel.isLast"
+                    :is-selectable="props.isSelectable"
+                    :is-selected="groupHeaderEntry.viewModel.isGroupAllSelected"
+                    :is-selected-indeterminate="groupHeaderEntry.viewModel.isGroupIndeterminate
+                      && !groupHeaderEntry.viewModel.isGroupAllSelected"
+                    :label="groupHeaderEntry.viewModel.groupLabelCell === null
+                      ? groupHeaderEntry.viewModel.groupLabel : ''"
+                    @toggle="groupHeaderEntry.viewModel.row.toggleExpanded()"
+                    @toggle-selected="toggleRowGroup(groupHeaderEntry.viewModel.row)"
+                  >
+                    <DataTableCellRenderer
+                      v-if="groupHeaderEntry.viewModel.groupLabelCell !== null"
+                      :cell="groupHeaderEntry.viewModel.groupLabelCell!"
+                    />
+                  </DataTableGroupRow>
+                </div>
 
-                <DataTableDataRow
-                  v-else
-                  :has-row-actions="hasRowActions"
-                  :has-sub-component="hasSubComponent"
-                  :is-selectable="props.isSelectable"
-                  :view-model="entry.viewModel"
-                  @toggle-selected="toggleItem(props.getKey(entry.row.original))"
-                  @toggle-sub-component="toggleSubComponent(entry.row.id)"
-                />
+                <div
+                  v-for="subChunk of chunk.subChunks"
+                  :key="subChunk.key"
+                  class="relative col-span-full grid grid-cols-subgrid"
+                >
+                  <div
+                    v-for="subgroupHeaderEntry of getSubChunkSubgroupHeaderEntry(subChunk)"
+                    :key="subgroupHeaderEntry.key"
+                    :ref="measureRowElement"
+                    :data-index="subgroupHeaderEntry.index"
+                    class="
+                      sticky top-20 z-5 col-span-full grid grid-cols-subgrid
+                    "
+                  >
+                    <DataTableGroupRow
+                      :depth="subgroupHeaderEntry.viewModel.row.depth"
+                      :is-expanded="subgroupHeaderEntry.viewModel.row.getIsExpanded()"
+                      :is-last="subgroupHeaderEntry.viewModel.isLast"
+                      :is-selectable="props.isSelectable"
+                      :is-selected="subgroupHeaderEntry.viewModel.isGroupAllSelected"
+                      :is-selected-indeterminate="subgroupHeaderEntry.viewModel.isGroupIndeterminate
+                        && !subgroupHeaderEntry.viewModel.isGroupAllSelected"
+                      :label="subgroupHeaderEntry.viewModel.groupLabelCell === null
+                        ? subgroupHeaderEntry.viewModel.groupLabel : ''"
+                      @toggle="subgroupHeaderEntry.viewModel.row.toggleExpanded()"
+                      @toggle-selected="toggleRowGroup(subgroupHeaderEntry.viewModel.row)"
+                    >
+                      <DataTableCellRenderer
+                        v-if="subgroupHeaderEntry.viewModel.groupLabelCell !== null"
+                        :cell="subgroupHeaderEntry.viewModel.groupLabelCell!"
+                      />
+                    </DataTableGroupRow>
+                  </div>
+
+                  <div
+                    v-for="entry of getSubChunkDataRowEntries(subChunk)"
+                    :key="entry.key"
+                    :ref="measureRowElement"
+                    :data-index="entry.index"
+                    class="col-span-full grid grid-cols-subgrid"
+                  >
+                    <DataTableDataRow
+                      :has-row-actions="hasRowActions"
+                      :has-sub-component="hasSubComponent"
+                      :is-selectable="props.isSelectable"
+                      :view-model="entry.viewModel"
+                      @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+                      @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
+                    />
+                  </div>
+                </div>
               </div>
             </DataTableVirtualRows>
 

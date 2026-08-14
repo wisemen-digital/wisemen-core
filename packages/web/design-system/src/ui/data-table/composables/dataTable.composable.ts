@@ -56,7 +56,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   const columnVisibility = ref<VisibilityState>({})
   // Only ever seeded per-column the moment a user drags that column's resize handle — a column
   // with no entry here just reads its own `columnDef.size` (below), the cell-type default or
-  // an explicit override. See `CONTEXT.md` ("Column sizing — fixed pixel default per cell type").
+  // an explicit override.
   const columnSizing = ref<ColumnSizingState>({})
   // Groups default to expanded, matching the current `Table`'s `isOpenByDefault: true` default.
   const expanded = ref<ExpandedState>(true)
@@ -128,7 +128,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     // Live resize while dragging, not just on release — matches the current `Table`'s
     // hand-rolled mousemove handler and the OS/spreadsheet drag-resize mental model. The
     // per-drag re-render cost this implies is bounded by virtualization capping rendered row
-    // count regardless of table width. See `CONTEXT.md` ("Column resize").
+    // count regardless of table width.
     columnResizeMode: 'onChange',
     get columns() {
       return columnDefs.value
@@ -148,7 +148,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     // silently desyncs any index-based rendering (header cells, resize handles, cell order) from
     // a consumer's declared `columns` order. DataTable renders its own explicit group-header row
     // (`DataTableGroupRow`) and has no use for TanStack also reordering the data columns, so this
-    // is disabled outright. See `CONTEXT.md` ("Grouping — column order").
+    // is disabled outright.
     groupedColumnMode: false,
     state: {
       get columnPinning() {
@@ -196,7 +196,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   // TanStack's `columnSizing` with the column's actual current width before the drag begins —
   // TanStack's own `header.getSize()` falls back to `defaultColumnSizing.size` (150px) for a
   // column with no entry yet, which would jump the column to 150px on its very first resize if
-  // not seeded first. See `CONTEXT.md` ("Column resize — first-drag jump").
+  // not seeded first.
   function setColumnSize(columnKey: string, widthPx: number): void {
     table.setColumnSizing((previous) => ({
       ...previous,
