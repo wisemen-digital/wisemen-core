@@ -40,15 +40,15 @@ const hasRightBorder = computed<boolean>(() => props.columnId !== null
       right: isStickyRight ? `${rightOffsetPx}px` : undefined,
     }"
     :class="{
-      'sticky z-1 border-r border-secondary': isStickyLeft && hasLeftBorder,
-      'sticky z-1': isStickyLeft && !hasLeftBorder,
-      'sticky z-1 border-l border-secondary': isStickyRight && hasRightBorder,
+      'sticky z-2': isStickyLeft || isStickyRight,
+      'border-r border-secondary': isStickyLeft && hasLeftBorder,
+      'border-l border-secondary': isStickyRight && hasRightBorder,
     }"
     class="
       relative flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
       text-primary
-      group-hover/row:bg-secondary
-      group-has-focus-visible/row:bg-secondary
+      group-hover/row:bg-secondary-hover
+      group-has-focus-visible/row:bg-tertiary
     "
     role="cell"
   >

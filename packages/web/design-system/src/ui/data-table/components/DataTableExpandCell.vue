@@ -23,13 +23,13 @@ const {
       left: isLeadingStickyRegionActive ? `${leadingStickyOffsetsPx.expand}px` : undefined,
     }"
     :class="{
-      'sticky z-1': isLeadingStickyRegionActive,
+      'sticky z-2': isLeadingStickyRegionActive,
     }"
     class="
       flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
       text-primary
-      group-hover/row:bg-secondary
-      group-has-focus-visible/row:bg-secondary
+      group-hover/row:bg-secondary-hover
+      group-has-focus-visible/row:bg-tertiary
     "
     role="cell"
   >

@@ -20,10 +20,10 @@ const i18n = useI18n()
 <template>
   <div
     class="
-      sticky right-0 z-1 flex h-10 items-center justify-end gap-xxs border-l
+      sticky right-0 z-2 flex h-10 items-center justify-end gap-xxs border-l
       border-secondary bg-primary px-xl
-      not-has-data-[state=open]:group-hover/row:bg-secondary
-      group-has-focus-visible/row:bg-secondary
+      not-has-data-[state=open]:group-hover/row:bg-secondary-hover
+      group-has-focus-visible/row:bg-tertiary
     "
     role="cell"
     data-row-actions
