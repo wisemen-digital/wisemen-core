@@ -171,6 +171,11 @@ export function createRuleRunner (config: Partial<DefaultConfig> = {}): RuleRunn
      * @param result - The rule result
      */
     reportResult (_ruleId: string, ruleName: string, result: RuleResult): void {
+      // Passing rules stay silent - only surface something when a rule actually fails/warns.
+      if (result.passed) {
+        return
+      }
+
       const msg = `[${ruleName}] ${result.message}`
 
       switch (result.type) {
