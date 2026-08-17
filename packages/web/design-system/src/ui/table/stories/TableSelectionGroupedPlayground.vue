@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { useActionManagerStore } from '@wisemen/vue-core-actions'
 import {
+  computed,
   defineComponent,
   h,
   markRaw,
-  ref,
 } from 'vue'
 
 import UITable from '@/ui/table/components/Table.vue'
@@ -12,7 +13,6 @@ import UITableBodyRowCellText from '@/ui/table/components/TableBodyRowCellText.v
 import type {
   TableColumn,
   TableGroupedData,
-  TableSelectionState,
 } from '@/ui/table/types/table.type'
 
 interface User {
@@ -115,24 +115,34 @@ const groupedData: TableGroupedData<User>[] = [
   },
 ]
 
-const selectionState = ref<TableSelectionState<User> | null>(null)
+const allUsers = groupedData.flatMap((group) => group.items)
 
-function onSelect(state: TableSelectionState<User>): void {
-  selectionState.value = state
-}
+const manager = useActionManagerStore()
+
+const selectedNames = computed<string[]>(() => {
+  const selection = manager.tableSelection
+
+  if (selection === null) {
+    return []
+  }
+
+  const keys = new Set(selection.items)
+
+  return allUsers.filter((item) => keys.has(item.id)).map((item) => item.name)
+})
 </script>
 
 <template>
   <div class="flex h-125 flex-col gap-4">
     <div
-      v-if="selectionState !== null"
+      v-if="manager.tableSelection !== null"
       class="
         rounded-sm border border-secondary bg-primary px-4 py-2 font-mono
         text-xs
       "
     >
-      <span class="font-semibold">{{ selectionState.type }}:</span>
-      {{ selectionState.items.map(u => u.name).join(', ') || '(none)' }}
+      <span class="font-semibold">{{ manager.tableSelection.type }}:</span>
+      {{ selectedNames.join(', ') || '(none)' }}
     </div>
 
     <UITable
@@ -143,7 +153,6 @@ function onSelect(state: TableSelectionState<User>): void {
       :is-fetching-next-page="false"
       :is-loading="false"
       selectable
-      @select="onSelect"
     />
   </div>
 </template>

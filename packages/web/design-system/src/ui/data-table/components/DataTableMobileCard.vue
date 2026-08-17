@@ -5,6 +5,10 @@ import {
   ChevronDownIcon,
   DotsVerticalIcon,
 } from '@wisemen/vue-core-icons'
+import {
+  AnimatePresence,
+  Motion,
+} from 'motion-v'
 import type { Component } from 'vue'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -78,17 +82,39 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
       :class="{
         'hover:bg-secondary-hover': !props.isExpanded,
       }"
-      class="flex items-start gap-md px-xl py-lg"
+      class="flex items-start px-xl py-lg"
       role="row"
     >
-      <BaseCheckbox
-        v-if="props.isSelectable"
-        :model-value="props.isSelected"
-        :is-label-hidden="true"
-        :label="i18n.t('component.table.row.toggle_selection_action.name')"
-        class="mt-xxs"
-        @update:model-value="emit('toggleSelected')"
-      />
+      <AnimatePresence :initial="false">
+        <Motion
+          v-if="props.isSelectable"
+          :initial="{
+            width: '0px',
+            opacity: 0,
+          }"
+          :animate="{
+            width: 'auto',
+            opacity: 1,
+          }"
+          :exit="{
+            width: '0px',
+            opacity: 0,
+          }"
+          :transition="{
+            duration: 0.2,
+            bounce: 0,
+            type: 'spring',
+          }"
+        >
+          <BaseCheckbox
+            :model-value="props.isSelected"
+            :is-label-hidden="true"
+            :label="i18n.t('component.table.row.toggle_selection_action.name')"
+            class="mt-xxs"
+            @update:model-value="emit('toggleSelected')"
+          />
+        </Motion>
+      </AnimatePresence>
 
       <button
         :disabled="!canExpand"

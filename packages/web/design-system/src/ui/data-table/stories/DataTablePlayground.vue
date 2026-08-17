@@ -3,6 +3,7 @@ import type { Action } from '@wisemen/vue-core-actions'
 import { createAction } from '@wisemen/vue-core-actions'
 import type { ApiError } from '@wisemen/vue-core-api-utils'
 import {
+  Copy01Icon,
   EyeIcon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
@@ -28,7 +29,6 @@ import {
   createDataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableColumn.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
-import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 interface User {
   id: string
@@ -100,19 +100,40 @@ function getStickySide(columnKey: string): 'left' | 'right' | undefined {
   return undefined
 }
 
-function onSelect(state: TableSelectionState<User>): void {
-  // eslint-disable-next-line no-console
-  console.log('[DataTablePlayground] selection changed', state)
-}
-
 const selectionActions: Action[] = [
+  createAction({
+    id: 'duplicate-selected-users',
+    name: () => 'Duplicate',
+    availableWhenUnauthenticated: true,
+    execute: (ctx) => {
+      if (ctx.tableSelection?.type === 'include') {
+        // eslint-disable-next-line no-console
+        console.log('Duplicate items:', ctx.tableSelection.items)
+      }
+      else {
+        // eslint-disable-next-line no-console
+        console.log('Duplicate items except:', ctx.tableSelection?.items)
+      }
+
+      ctx.clearTableSelection()
+    },
+    icon: () => Copy01Icon,
+  }),
   createAction({
     id: 'delete-selected-users',
     name: () => 'Delete',
     availableWhenUnauthenticated: true,
-    execute: () => {
-      // eslint-disable-next-line no-console
-      console.log('[DataTablePlayground] delete action executed')
+    execute: (ctx) => {
+      if (ctx.tableSelection?.type === 'include') {
+        // eslint-disable-next-line no-console
+        console.log('Delete items:', ctx.tableSelection.items)
+      }
+      else {
+        // eslint-disable-next-line no-console
+        console.log('Delete items except:', ctx.tableSelection?.items)
+      }
+
+      ctx.clearTableSelection()
     },
     icon: () => Trash01Icon,
   }),
@@ -199,7 +220,7 @@ const now = Temporal.Now.instant()
 const data: User[] = Array.from({
   length: 200,
 }, (_, i) => ({
-  id: String(i + 1),
+  id: `id-${String(i + 1)}`,
   startDate: now.subtract({
     hours: (i + 1) * 24 * 30,
   }),
@@ -429,7 +450,6 @@ function subComponent(item: User) {
       :sub-component="props.hasSubComponent ? subComponent : null"
       :total-count="props.isSimulatingInfiniteScroll ? sortedData.length : null"
       class="min-h-0 flex-1"
-      @select="onSelect"
     />
   </div>
 </template>

@@ -69,8 +69,9 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 
 ## Rows & selection
 
-- **Row selection**: reuses the existing `TableSelectionState<T>` shape verbatim —
-  `{ type: 'includes' | 'excludes', items: T[] }`. `isSelectable` prop turns on the checkbox
+- **Row selection**: state lives in `@wisemen/vue-core-actions`'s action manager store
+  (`useActionManagerStore().tableSelection`), shaped as `{ type: 'include' | 'exclude', items: string[] }`
+  (item keys, not full rows) — there is no `select` emit. `isSelectable` prop turns on the checkbox
   column (desktop: always visible when enabled; mobile: hidden behind an explicit toggle, see
   Mobile list below).
 - **Selection action bar**: `selectionActions: Action[]`, filtered through `resolveApplicable`.

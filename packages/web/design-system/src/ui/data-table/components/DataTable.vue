@@ -36,7 +36,6 @@ import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowVi
 import { UIEmptyState } from '@/ui/empty-state/index'
 import { UIErrorState } from '@/ui/error-state/index'
 import { useTableSelection } from '@/ui/table/composables/tableSelection.composable'
-import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isColumnResizeDisabled: false,
@@ -55,10 +54,6 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   totalCount: null,
   onNextPage: null,
 })
-
-const emit = defineEmits<{
-  select: [state: TableSelectionState<TItem>]
-}>()
 
 const i18n = useI18n()
 
@@ -163,13 +158,12 @@ const {
   isGroupIndeterminate,
   isIndeterminate,
   isItemSelected,
+  clearSelection,
   toggleAll,
   toggleGroup,
   toggleItem,
 } = useTableSelection(
-  computed(() => props.data),
   props.getKey,
-  (state) => emit('select', state),
 )
 
 const selectedItems = computed<TItem[]>(
@@ -589,6 +583,7 @@ const loadingRowColumnCount = computed<number>(
       :actions="props.selectionActions"
       :models="selectedActionModels"
       :selected-count="selectedCount"
+      @clear="clearSelection"
     />
   </div>
 </template>

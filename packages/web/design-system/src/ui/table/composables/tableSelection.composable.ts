@@ -1,60 +1,74 @@
-import type { ComputedRef } from 'vue'
+import type { TableSelectionState as ActionTableSelectionState } from '@wisemen/vue-core-actions'
+import { useActionManagerStore } from '@wisemen/vue-core-actions'
 import {
   computed,
-  ref,
-  watch,
+  onBeforeUnmount,
 } from 'vue'
 
-import type { TableSelectionState } from '@/ui/table/types/table.type'
+const EMPTY_SELECTION: ActionTableSelectionState = {
+  items: [],
+  type: 'include',
+}
 
 export function useTableSelection<T>(
-  allItems: ComputedRef<T[]>,
   getKey: (item: T) => string,
-  onSelect: (state: TableSelectionState<T>) => void,
 ) {
-  const mode = ref<'excludes' | 'includes'>('includes')
-  const keys = ref(new Set<string>())
+  const manager = useActionManagerStore()
 
-  const isAllSelected = computed<boolean>(() => mode.value === 'excludes' && keys.value.size === 0)
+  manager.setTableSelection(EMPTY_SELECTION)
 
-  const isIndeterminate = computed<boolean>(() => {
-    if (mode.value === 'includes') {
-      return keys.value.size > 0
-    }
+  function selection(): ActionTableSelectionState {
+    return manager.tableSelection ?? EMPTY_SELECTION
+  }
 
-    return keys.value.size > 0
-  })
+  function setSelection(next: ActionTableSelectionState): void {
+    manager.setTableSelection(next)
+  }
+
+  const isAllSelected = computed<boolean>(
+    () => selection().type === 'exclude' && selection().items.length === 0,
+  )
+
+  const isIndeterminate = computed<boolean>(() => selection().items.length > 0)
 
   function isItemSelected(key: string): boolean {
-    if (mode.value === 'includes') {
-      return keys.value.has(key)
-    }
+    const current = selection()
 
-    return !keys.value.has(key)
+    return current.type === 'include' ? current.items.includes(key) : !current.items.includes(key)
   }
 
   function toggleItem(key: string): void {
-    const updated = new Set(keys.value)
+    const current = selection()
+    const items = current.items.includes(key)
+      ? current.items.filter((item) => item !== key)
+      : [
+          ...current.items,
+          key,
+        ]
 
-    if (updated.has(key)) {
-      updated.delete(key)
-    }
-    else {
-      updated.add(key)
-    }
-
-    keys.value = updated
+    setSelection({
+      items,
+      type: current.type,
+    })
   }
 
   function toggleAll(): void {
     if (isAllSelected.value) {
-      mode.value = 'includes'
-      keys.value = new Set()
+      setSelection({
+        items: [],
+        type: 'include',
+      })
     }
     else {
-      mode.value = 'excludes'
-      keys.value = new Set()
+      setSelection({
+        items: [],
+        type: 'exclude',
+      })
     }
+  }
+
+  function clearSelection(): void {
+    manager.clearTableSelection()
   }
 
   function isGroupAllSelected(items: T[]): boolean {
@@ -68,54 +82,45 @@ export function useTableSelection<T>(
   }
 
   function toggleGroup(items: T[]): void {
+    const current = selection()
+    const groupKeys = items.map((item) => getKey(item))
+
     if (isGroupAllSelected(items)) {
-      const updated = new Set(keys.value)
-
-      if (mode.value === 'includes') {
-        for (const item of items) {
-          updated.delete(getKey(item))
-        }
-      }
-      else {
-        for (const item of items) {
-          updated.add(getKey(item))
-        }
-      }
-
-      keys.value = updated
+      setSelection(current.type === 'include'
+        ? {
+            items: current.items.filter((key) => !groupKeys.includes(key)),
+            type: current.type,
+          }
+        : {
+            items: [
+              ...new Set([
+                ...current.items,
+                ...groupKeys,
+              ]),
+            ],
+            type: current.type,
+          })
     }
     else {
-      const updated = new Set(keys.value)
-
-      if (mode.value === 'includes') {
-        for (const item of items) {
-          updated.add(getKey(item))
-        }
-      }
-      else {
-        for (const item of items) {
-          updated.delete(getKey(item))
-        }
-      }
-
-      keys.value = updated
+      setSelection(current.type === 'include'
+        ? {
+            items: [
+              ...new Set([
+                ...current.items,
+                ...groupKeys,
+              ]),
+            ],
+            type: current.type,
+          }
+        : {
+            items: current.items.filter((key) => !groupKeys.includes(key)),
+            type: current.type,
+          })
     }
   }
 
-  watch([
-    mode,
-    keys,
-  ], () => {
-    const currentKeys = keys.value
-    const currentMode = mode.value
-    const items = allItems.value.filter((item) => currentKeys.has(getKey(item)))
-
-    onSelect({
-      items,
-      type: currentMode,
-    })
-  }, {
-    deep: true,
+  onBeforeUnmount(() => {
+    manager.setTableSelection(null)
   })
 
   return {
@@ -124,6 +129,7 @@ export function useTableSelection<T>(
     isGroupIndeterminate,
     isIndeterminate,
     isItemSelected,
+    clearSelection,
     toggleAll,
     toggleGroup,
     toggleItem,
