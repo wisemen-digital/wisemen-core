@@ -2,6 +2,7 @@ import { DynamicModule, Global, Inject, Injectable, InjectionToken, Module, Opti
 import { BASIC_AUTH_DEFINITIONS, BasicAuthDefinitions } from './basic-auth.types.js'
 import { BasicAuthGuard } from './basic-auth.guard.js'
 import { BasicAuthRegistry } from './basic-auth.registry.js'
+import { BasicAuthService } from './basic-auth.service.js'
 
 const BASIC_AUTH_MODULE_DEFINITIONS = Symbol('wisemen.basic-auth-module-definitions')
 
@@ -87,11 +88,13 @@ export class BasicAuthModule {
           inject: [BasicAuthRegistry],
           useFactory: (registry: BasicAuthRegistry): BasicAuthDefinitions => registry.definitions
         },
+        BasicAuthService,
         BasicAuthDefinitionsRegistration,
         BasicAuthGuard
       ],
       exports: [
         BASIC_AUTH_DEFINITIONS,
+        BasicAuthService,
         BasicAuthGuard,
         BasicAuthRegistry
       ]
