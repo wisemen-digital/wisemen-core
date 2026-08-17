@@ -19,6 +19,12 @@ import {
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
+import {
+  UIDetailListGroup,
+  UIDetailListGroupItem,
+  UIDetailListGroupItemLabel,
+  UIDetailListGroupSeparator,
+} from '@/ui/detail-list'
 
 export interface DataTableMobileCardCell {
   cell: DataTableCell
@@ -152,20 +158,26 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
             class="p-md"
           />
 
-          <div
-            v-for="hiddenCell of visibleHiddenCells"
-            :key="hiddenCell.key"
-            class="flex items-center justify-between gap-md px-md py-sm"
+          <UIDetailListGroup
+            v-if="visibleHiddenCells.length > 0"
+            class="px-md py-sm"
           >
-            <span class="shrink-0 text-xs text-tertiary">
-              {{ hiddenCell.headerLabel }}
-            </span>
+            <template
+              v-for="(hiddenCell, hiddenCellIndex) of visibleHiddenCells"
+              :key="hiddenCell.key"
+            >
+              <UIDetailListGroupSeparator v-if="hiddenCellIndex > 0" />
 
-            <DataTableCellRenderer
-              :cell="hiddenCell.cell"
-              class="min-w-0 overflow-hidden text-xs text-primary"
-            />
-          </div>
+              <UIDetailListGroupItem horizontal-value-alignment="end">
+                <UIDetailListGroupItemLabel :label="hiddenCell.headerLabel" />
+
+                <DataTableCellRenderer
+                  :cell="hiddenCell.cell"
+                  class="min-w-0 overflow-hidden text-xs text-primary"
+                />
+              </UIDetailListGroupItem>
+            </template>
+          </UIDetailListGroup>
 
           <div
             v-if="hasFooter"
