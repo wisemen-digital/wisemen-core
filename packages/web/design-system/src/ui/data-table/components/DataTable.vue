@@ -188,6 +188,10 @@ const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
 const isMobileSelectModeOn = shallowRef<boolean>(false)
 
 function toggleMobileSelectMode(): void {
+  if (isMobileSelectModeOn.value) {
+    clearSelection()
+  }
+
   isMobileSelectModeOn.value = !isMobileSelectModeOn.value
 }
 
