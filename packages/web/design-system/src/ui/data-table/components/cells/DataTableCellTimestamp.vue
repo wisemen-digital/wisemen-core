@@ -6,6 +6,7 @@ import {
 import { computed } from 'vue'
 
 import type { DataTableTimestampCell } from '@/ui/data-table/types/dataTableCell.type'
+import { UITooltip } from '@/ui/tooltip'
 
 const props = defineProps<DataTableTimestampCell>()
 
@@ -43,10 +44,40 @@ const displayValue = computed<string>(() => {
       return dateFormat.toDateTime(props.value, false)
   }
 })
+
+const fullDateTime = computed<string | null>(() => {
+  if (props.value === null) {
+    return null
+  }
+
+  return dateFormat.toDateTime(props.value, true)
+})
 </script>
 
 <template>
-  <span class="truncate text-xs text-primary tabular-nums">
+  <UITooltip
+    v-if="props.isRelative === true && fullDateTime !== null"
+    popover-side="top"
+  >
+    <template #trigger>
+      <span
+        class="pointer-events-auto truncate text-xs text-primary tabular-nums"
+      >
+        {{ displayValue }}
+      </span>
+    </template>
+
+    <template #content>
+      <span class="flex px-sm py-xs text-xs text-secondary tabular-nums">
+        {{ fullDateTime }}
+      </span>
+    </template>
+  </UITooltip>
+
+  <span
+    v-else
+    class="truncate text-xs text-primary tabular-nums"
+  >
     {{ displayValue }}
   </span>
 </template>

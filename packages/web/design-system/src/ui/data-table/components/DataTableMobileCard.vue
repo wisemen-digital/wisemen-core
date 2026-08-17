@@ -76,7 +76,7 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
   <div class="border-b border-secondary">
     <div
       :class="{
-        'hover:bg-secondary-hover': !props.isExpanded,
+        'hover:bg-primary-hover': !props.isExpanded,
       }"
       class="flex items-start gap-md px-xl py-lg"
       role="row"

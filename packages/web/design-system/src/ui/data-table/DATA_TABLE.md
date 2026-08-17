@@ -208,6 +208,15 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 - Discriminated union: `{ isRelative: true }` ("3 hours ago", live) **or**
   `{ granularity: 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year' }` (absolute, truncated)
   — never both.
+- `isRelative` renders a hover tooltip with the full absolute date/time — the relative text stays
+  scannable while the exact value is always one hover away.
+- **Choosing granularity**: default to the coarsest granularity the use case actually needs, not
+  the finest one available. A "last active" or "created" column rarely needs seconds — `minute`
+  or `hour` reads cleaner and is usually enough context. Many date columns don't need a time
+  component at all (`day`/`month`/`year`); a column showing e.g. subscription renewals across
+  several years is often clearest at `month` or even `year` alone. Reach for `isRelative` when the
+  recency itself is the point ("last active 3 hours ago"); reach for a fixed `granularity` when the
+  precise date matters more than how long ago it was.
 
 ## What's explicitly out of scope (for now)
 

@@ -47,7 +47,7 @@ const hasRightBorder = computed<boolean>(() => props.columnId !== null
     class="
       relative flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
       text-primary
-      group-hover/row:bg-secondary-hover
+      group-hover/row:bg-primary-hover
       group-has-focus-visible/row:bg-tertiary
     "
     role="cell"

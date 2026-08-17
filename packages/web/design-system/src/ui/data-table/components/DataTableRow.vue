@@ -45,8 +45,6 @@ const allActions = computed<Action[]>(() => props.inlineActions.concat(props.mor
         }"
         class="
           group/row relative col-span-full grid grid-cols-subgrid bg-primary
-          hover:bg-secondary-hover
-          has-focus-visible:bg-tertiary
         "
         role="row"
       >

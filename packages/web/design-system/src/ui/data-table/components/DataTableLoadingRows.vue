@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { UISkeletonItem } from '@/ui/skeleton-item/index'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  isSelectable?: boolean
   columnCount: number
   gridTemplateColumns: string
-}>()
+}>(), {
+  isSelectable: false,
+})
 
 const SKELETON_ROW_COUNT = 10
 
@@ -19,6 +22,10 @@ const WIDTHS = [
 
 function getWidth(rowIndex: number, colIndex: number): string {
   return WIDTHS[(rowIndex * props.columnCount + colIndex) % WIDTHS.length]!
+}
+
+function isCheckboxColumn(colIndex: number): boolean {
+  return props.isSelectable && colIndex === 0
 }
 </script>
 
@@ -43,6 +50,11 @@ function getWidth(rowIndex: number, colIndex: number): string {
         class="flex h-10 items-center px-xl"
       >
         <UISkeletonItem
+          v-if="isCheckboxColumn(col - 1)"
+          class="size-4 shrink-0"
+        />
+        <UISkeletonItem
+          v-else
           :style="{ maxWidth: getWidth(i - 1, col - 1) }"
           class="h-4 w-full"
         />

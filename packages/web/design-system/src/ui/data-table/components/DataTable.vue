@@ -578,6 +578,7 @@ const loadingRowColumnCount = computed<number>(
               v-if="props.isLoading || props.isFetchingNextPage"
               :column-count="loadingRowColumnCount"
               :grid-template-columns="gridTemplateColumns"
+              :is-selectable="props.isSelectable"
             />
           </div>
         </div>

@@ -8,7 +8,6 @@ import {
 import type { Component } from 'vue'
 import {
   computed,
-  nextTick,
   useTemplateRef,
 } from 'vue'
 
@@ -58,26 +57,6 @@ function onResizeStart(event: MouseEvent | TouchEvent): void {
   props.header.getResizeHandler()(event)
 }
 
-// Double-click-to-fit: measure at natural width, feed it back in as a fixed size.
-async function onResizeFitToContent(): Promise<void> {
-  const el = cellEl.value
-
-  if (el === null) {
-    return
-  }
-
-  const previousWidth = el.style.width
-
-  el.style.width = 'max-content'
-  await nextTick()
-
-  const measuredWidth = el.getBoundingClientRect().width
-
-  el.style.width = previousWidth
-
-  setColumnSize(props.columnKey, measuredWidth)
-}
-
 const isSortable = computed<boolean>(() => sort.value?.existsSort(props.columnKey) ?? false)
 
 const sortDirection = computed<SortDirection | null>(() => {
@@ -119,8 +98,8 @@ const sortIcon = computed<Component | null>(() => {
     }"
     class="
       sticky top-0 z-20 flex h-10 items-center border-b border-secondary
-      bg-secondary px-xl
-      has-[.cursor-col-resize:hover]:z-40
+      bg-secondary px-xl transition-[z-index] delay-150 duration-0
+      has-[.cursor-col-resize:hover]:z-40 has-[.cursor-col-resize:hover]:delay-0
     "
     role="columnheader"
   >
@@ -154,7 +133,6 @@ const sortIcon = computed<Component | null>(() => {
       "
       @mousedown.prevent="onResizeStart"
       @touchstart.prevent="onResizeStart"
-      @dblclick.prevent="onResizeFitToContent"
     >
       <div
         :class="{
