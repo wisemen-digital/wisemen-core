@@ -83,7 +83,7 @@ useHotkey({
           :key="action.id"
           v-slot="{ canExecute, icon, isExecuting, keyboardShortcut, label }"
           :action="action"
-          :is-current-context-only="true"
+          :is-current-context-only="false"
           :models="props.models ?? []"
         >
           <UIIconButton

@@ -118,6 +118,9 @@ const selectionActions: Action[] = [
       ctx.clearTableSelection()
     },
     icon: () => Copy01Icon,
+    keyboardShortcut: {
+      key: 'D',
+    },
   }),
   createAction({
     id: 'delete-selected-users',
@@ -136,6 +139,9 @@ const selectionActions: Action[] = [
       ctx.clearTableSelection()
     },
     icon: () => Trash01Icon,
+    keyboardShortcut: {
+      key: 'Backspace',
+    },
   }),
 ]
 
