@@ -105,12 +105,12 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
             bounce: 0,
             type: 'spring',
           }"
+          class="flex h-text-sm items-center justify-center"
         >
           <BaseCheckbox
             :model-value="props.isSelected"
             :is-label-hidden="true"
             :label="i18n.t('component.table.row.toggle_selection_action.name')"
-            class="mt-xxs"
             @update:model-value="emit('toggleSelected')"
           />
         </Motion>
