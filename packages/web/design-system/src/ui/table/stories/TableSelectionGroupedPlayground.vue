@@ -109,6 +109,18 @@ const groupedData: TableGroupedData<User>[] = [
         email: 'frank@example.com',
         role: 'Viewer',
       },
+      {
+        id: '7',
+        name: 'Demarcus',
+        email: 'demarcus@example.com',
+        role: 'Viewer',
+      },
+      {
+        id: '8',
+        name: 'Shaniqua',
+        email: 'shaniqua@example.com',
+        role: 'Viewer',
+      },
     ],
     key: 'viewers',
     label: 'Viewers',
