@@ -95,8 +95,14 @@ export function useTableSelection<T>(
       if (fromIndex !== -1 && toIndex !== -1) {
         const start = Math.min(fromIndex, toIndex)
         const end = Math.max(fromIndex, toIndex)
+        const range = keys.slice(start, end + 1)
 
-        selectKeys(keys.slice(start, end + 1))
+        if (isItemSelected(key)) {
+          deselectKeys(range)
+        }
+        else {
+          selectKeys(range)
+        }
 
         return
       }
