@@ -213,6 +213,9 @@ const CONTACT_NAMES = [
   'Felix Hartmann',
   'Greta Lindqvist',
   'Hugo Martins',
+  'Demetrius Brown',
+  'Dyandre',
+  'Shaniqua Black',
 ]
 
 const now = Temporal.Now.instant()
