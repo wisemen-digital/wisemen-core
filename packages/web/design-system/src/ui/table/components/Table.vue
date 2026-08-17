@@ -86,6 +86,20 @@ const subGroupedItems = computed<TableSubGroupedData<TItem>[]>(
   () => props.data as unknown as TableSubGroupedData<TItem>[],
 )
 
+const orderedItemKeys = computed<string[]>(() => {
+  if (dataMode.value === 'flat') {
+    return flatItems.value.map((item) => props.getKey(item))
+  }
+
+  if (dataMode.value === 'grouped') {
+    return groupedItems.value.flatMap((group) => group.items.map((item) => props.getKey(item)))
+  }
+
+  return subGroupedItems.value.flatMap(
+    (group) => group.subGroups.flatMap((subGroup) => subGroup.items.map((item) => props.getKey(item))),
+  )
+})
+
 const columnSizes = computed<TableColumnSize[]>(() => (
   props.columns.map((column) => column.size ?? {
     max: '20rem',
@@ -111,7 +125,7 @@ const {
   toggleAll,
   toggleGroup,
   toggleItem,
-} = useTableSelection<TItem>(props.getKey)
+} = useTableSelection<TItem>(props.getKey, orderedItemKeys)
 
 useProvideTableSelectionContext({
   isAllSelected,

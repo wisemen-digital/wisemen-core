@@ -44,6 +44,7 @@
   "component.data_table.empty_state.no_data.title": "Geen gegevens",
   "component.data_table.mobile_list.cancel_select_label": "Annuleren",
   "component.data_table.mobile_list.select_label": "Selecteren",
+  "component.data_table.row.toggle_selection_action.name": "Selectie omschakelen",
   "component.data_table.row_actions_cell.label": "Rijacties",
   "component.data_table.selection_action_bar.selected_count": "1 geselecteerd | {count} geselecteerd",
   "component.date_picker.next_month": "Volgende maand",

@@ -132,6 +132,13 @@ const isGroupingEnabled = computed<boolean>(() => props.groupBy !== null)
 
 const rows = computed<Row<TItem>[]>(() => table.getRowModel().rows)
 
+// `rows` is already display-order flattened (group and leaf rows interleaved per TanStack's
+// expanded row model) — filtering out group rows leaves the leaf keys in on-screen order,
+// needed to resolve a shift-click range regardless of grouping.
+const orderedDataRowKeys = computed<string[]>(
+  () => rows.value.filter((row) => !row.getIsGrouped()).map((row) => row.id),
+)
+
 const {
   paddingAfterPx: flatPaddingAfterPx,
   paddingBeforePx: flatPaddingBeforePx,
@@ -164,6 +171,7 @@ const {
   toggleItem,
 } = useTableSelection(
   props.getKey,
+  orderedDataRowKeys,
 )
 
 const selectedItems = computed<TItem[]>(
@@ -225,6 +233,10 @@ function toggleSubComponent(rowId: string): void {
   }
 
   expandedSubComponentRowIds.value = updated
+}
+
+function toggleRowSelected(item: TItem, isRangeSelect: boolean): void {
+  toggleItem(props.getKey(item), isRangeSelect)
 }
 
 function getGroupRowLabelCell(row: Row<TItem>): DataTableCellDefinition | null {
@@ -547,7 +559,7 @@ const loadingRowColumnCount = computed<number>(
                       :has-sub-component="hasSubComponent"
                       :is-selectable="props.isSelectable"
                       :view-model="entry.viewModel"
-                      @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+                      @toggle-selected="toggleRowSelected(entry.viewModel.row.original, $event)"
                       @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
                     />
                   </div>
@@ -567,7 +579,7 @@ const loadingRowColumnCount = computed<number>(
                 :has-sub-component="hasSubComponent"
                 :is-selectable="props.isSelectable"
                 :view-model="entry.viewModel"
-                @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+                @toggle-selected="toggleRowSelected(entry.viewModel.row.original, $event)"
                 @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
               />
             </DataTableVirtualRows>
