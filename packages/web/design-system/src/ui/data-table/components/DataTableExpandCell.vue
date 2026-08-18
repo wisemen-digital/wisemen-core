@@ -43,7 +43,7 @@ const hasBorder = computed<boolean>(() => hasExpandOwnStickyBorder.value && isSc
       flex h-10 items-center justify-center overflow-hidden bg-primary px-sm
       text-xs text-primary
       group-hover/row:bg-primary-hover
-      group-has-focus-visible/row:bg-tertiary
+      group-has-focus-visible/row:bg-primary-hover
     "
     role="cell"
   >

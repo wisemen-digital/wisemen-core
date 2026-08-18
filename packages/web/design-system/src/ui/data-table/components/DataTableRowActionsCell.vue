@@ -31,7 +31,7 @@ const {
       sticky right-0 z-2 flex h-10 items-center justify-end gap-xxs bg-primary
       px-xl
       not-has-data-[state=open]:group-hover/row:bg-primary-hover
-      group-has-focus-visible/row:bg-tertiary
+      group-has-focus-visible/row:bg-primary-hover
     "
     role="cell"
     data-row-actions

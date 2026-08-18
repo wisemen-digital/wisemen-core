@@ -55,7 +55,7 @@ function onToggle(): void {
       flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
       text-primary
       group-hover/row:bg-primary-hover
-      group-has-focus-visible/row:bg-tertiary
+      group-has-focus-visible/row:bg-primary-hover
     "
     role="cell"
   >
