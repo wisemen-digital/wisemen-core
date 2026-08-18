@@ -36,6 +36,7 @@ import { useProvideDataTableContext } from '@/ui/data-table/context/dataTable.co
 import type { DataTableProps } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableCell as DataTableCellDefinition } from '@/ui/data-table/types/dataTableCell.type'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
+import { DataTableUtil } from '@/ui/data-table/utils/dataTable.util'
 import { UIEmptyState } from '@/ui/empty-state/index'
 import { UIErrorState } from '@/ui/error-state/index'
 import { useTableSelection } from '@/ui/table/composables/tableSelection.composable'
@@ -114,6 +115,7 @@ const {
   leadingStickyOffsetsPx,
   setColumnSize,
   table,
+  visualColumnOrderIds,
 } = useDataTable({
   hasRowActions,
   hasSubComponent,
@@ -329,7 +331,13 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
     column,
   ]))
 
-  return table.getFlatHeaders().map((header) => ({
+  const headersInVisualOrder = DataTableUtil.toVisualColumnOrder(
+    table.getFlatHeaders(),
+    (header) => header.column.id,
+    visualColumnOrderIds.value,
+  )
+
+  return headersInVisualOrder.map((header) => ({
     id: header.column.id,
     header,
     headerLabel: columnByKey.get(header.column.id)?.headerLabel ?? header.column.id,
@@ -563,6 +571,7 @@ const loadingRowColumnCount = computed<number>(
                       :has-sub-component="hasSubComponent"
                       :is-selectable="props.isSelectable"
                       :view-model="entry.viewModel"
+                      :visual-column-order-ids="visualColumnOrderIds"
                       @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
                       @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
                     />
@@ -583,6 +592,7 @@ const loadingRowColumnCount = computed<number>(
                 :has-sub-component="hasSubComponent"
                 :is-selectable="props.isSelectable"
                 :view-model="entry.viewModel"
+                :visual-column-order-ids="visualColumnOrderIds"
                 @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
                 @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
               />

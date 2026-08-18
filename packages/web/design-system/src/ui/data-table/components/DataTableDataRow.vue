@@ -1,6 +1,7 @@
 <script setup lang="ts" generic="TItem extends RowData">
 import type { RowData } from '@tanstack/vue-table'
 import { FlexRender } from '@tanstack/vue-table'
+import { computed } from 'vue'
 
 import DataTableCell from '@/ui/data-table/components/DataTableCell.vue'
 import DataTableCheckboxCell from '@/ui/data-table/components/DataTableCheckboxCell.vue'
@@ -8,18 +9,31 @@ import DataTableExpandCell from '@/ui/data-table/components/DataTableExpandCell.
 import DataTableRow from '@/ui/data-table/components/DataTableRow.vue'
 import DataTableSubComponentRow from '@/ui/data-table/components/DataTableSubComponentRow.vue'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
+import { DataTableUtil } from '@/ui/data-table/utils/dataTable.util'
 
 const props = defineProps<{
   hasRowActions: boolean
   hasSubComponent: boolean
   isSelectable: boolean
   viewModel: DataTableRowViewModel<TItem>
+  visualColumnOrderIds: string[]
 }>()
 
 const emit = defineEmits<{
   toggleSelected: []
   toggleSubComponent: []
 }>()
+
+// Body cells must render in the same visual (start-pinned, center, end-pinned) order as the
+// header cells and the CSS grid template — `row.getVisibleCells()` only ever returns declared
+// order, never pinning order. See `DataTableUtil.toVisualColumnOrder`.
+type VisibleCells = ReturnType<typeof props.viewModel.row.getVisibleCells>
+
+const cellsInVisualOrder = computed<VisibleCells>(() => DataTableUtil.toVisualColumnOrder(
+  props.viewModel.row.getVisibleCells(),
+  (cell) => cell.column.id,
+  props.visualColumnOrderIds,
+))
 </script>
 
 <template>
@@ -45,7 +59,7 @@ const emit = defineEmits<{
     />
 
     <DataTableCell
-      v-for="cell of props.viewModel.row.getVisibleCells()"
+      v-for="cell of cellsInVisualOrder"
       :key="cell.column.id"
       :column-id="cell.column.id"
       :model="props.viewModel.rowConfig?.model ?? null"

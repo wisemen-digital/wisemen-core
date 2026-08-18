@@ -230,8 +230,24 @@ export function useDataTable<TItem extends RowData>(options: UseDataTableOptions
     }))
   }
 
+  // Real (non-checkbox/expand/actions) column ids, in actual visual order — start-pinned first,
+  // then center (unpinned), then end-pinned — not TanStack's own declared/"flat" order. Every
+  // consumer that renders or sizes columns side by side (the grid template below, `DataTable.vue`'s
+  // header cells, `DataTableDataRow.vue`'s body cells) must share this exact order, or a pinned
+  // column's grid track and its visually-pulled-out `position: sticky` box desync — see
+  // `DataTableUtil.toVisualColumnOrder`, which every one of those consumers reorders through.
+  const visualColumnOrderIds = computed<string[]>(() => [
+    ...table.getStartLeafColumns(),
+    ...table.getCenterLeafColumns(),
+    ...table.getEndLeafColumns(),
+  ].map((column) => column.id))
+
   const gridTemplateColumns = computed<string>(() => {
-    const visibleColumns = table.getVisibleLeafColumns()
+    const visibleColumns = DataTableUtil.toVisualColumnOrder(
+      table.getVisibleLeafColumns(),
+      (column) => column.id,
+      visualColumnOrderIds.value,
+    )
 
     const columnWidthsPx = visibleColumns.map((column) => column.getSize())
 
@@ -341,5 +357,6 @@ export function useDataTable<TItem extends RowData>(options: UseDataTableOptions
     leadingStickyOffsetsPx,
     setColumnSize,
     table,
+    visualColumnOrderIds,
   }
 }

@@ -60,4 +60,32 @@ export class DataTableUtil {
       ...trailingColumnWidths,
     ].join(' ')
   }
+
+  /**
+   * Reorders any column-keyed list (real `Column`s, `Header`s, `Cell`s — anything `getColumnId`
+   * can pull a column id out of) to match visual order: start-pinned columns, then center
+   * (unpinned) columns, then end-pinned columns. Every consumer that renders or sizes columns
+   * side by side — the CSS grid template, header cells, body cells — needs this exact same
+   * order; TanStack's own "visible"/"flat" APIs (`getVisibleLeafColumns()`, `getFlatHeaders()`,
+   * `row.getVisibleCells()`) never reorder for pinning, they only ever return declared order.
+   * Rendering in declared order while pinned columns are visually pulled out via
+   * `position: sticky` leaves a column's real grid track sitting at its old declared position,
+   * with nothing telling the grid that track has moved — the exact bug this exists to prevent
+   * (a live column resize visibly opens a gap at the column's un-pinned position, since resizing
+   * changes that stale track's width while nothing is visually anchored there anymore).
+   */
+  static toVisualColumnOrder<TColumnLike>(
+    items: TColumnLike[],
+    getColumnId: (item: TColumnLike) => string,
+    orderedColumnIds: string[],
+  ): TColumnLike[] {
+    const itemByColumnId = new Map(items.map((item) => [
+      getColumnId(item),
+      item,
+    ]))
+
+    return orderedColumnIds
+      .map((columnId) => itemByColumnId.get(columnId))
+      .filter((item): item is TColumnLike => item !== undefined)
+  }
 }

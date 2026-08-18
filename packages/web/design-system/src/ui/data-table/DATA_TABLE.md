@@ -48,6 +48,11 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 - Resizing never grows the table past its container — it only redistributes space between the
   dragged column and the fill column.
 - `isColumnResizeDisabled` prop hides the handles and disables dragging entirely.
+- Grid tracks, header cells, and body cells all render in actual **visual** column order
+  (start-pinned, then center, then end-pinned) — never TanStack's own declared/"flat" order,
+  which never reorders for pinning. Resizing a pinned column's track (built from this visual
+  order) always matches where it visually renders; see "Sticky columns" below for why this
+  matters specifically during resize.
 
 ## Sticky columns
 
@@ -58,8 +63,13 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   to any `createDataTableXCell` factory), independent of `isFirstColumnSticky`/
   `isLastColumnSticky`. Multiple columns pinned to the same side stick together as one
   contiguous region, not independently — real TanStack column pinning
-  (`table.getLeftLeafColumns()`/`getRightLeafColumns()`), not a CSS trick limited to one column
+  (`table.getStartLeafColumns()`/`getEndLeafColumns()`), not a CSS trick limited to one column
   per side.
+- The CSS grid template, header cells, and body cells are all built from the same visual
+  column order (start-pinned → center → end-pinned), not TanStack's declared order — a pinned
+  column's grid track always lines up with where it actually renders. Without this, resizing a
+  pinned column visibly opened a gap at its un-pinned, declared position, since that stale
+  track's width would change while nothing was visually anchored there anymore.
 - When `isSelectable`/a `subComponent` is configured, the checkbox/expand leading columns
   (which aren't real TanStack columns) join the sticky-left region automatically whenever
   anything is pinned left — they scroll and stick together with the first data column, not
