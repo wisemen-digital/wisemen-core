@@ -2,12 +2,16 @@
 import type { Component } from 'vue'
 import { computed } from 'vue'
 
+import DataTableCellAvatar from '@/ui/data-table/components/cells/DataTableCellAvatar.vue'
 import DataTableCellBadge from '@/ui/data-table/components/cells/DataTableCellBadge.vue'
+import DataTableCellBadgeGroup from '@/ui/data-table/components/cells/DataTableCellBadgeGroup.vue'
+import DataTableCellBoolean from '@/ui/data-table/components/cells/DataTableCellBoolean.vue'
 import DataTableCellContactInfo from '@/ui/data-table/components/cells/DataTableCellContactInfo.vue'
+import DataTableCellCurrency from '@/ui/data-table/components/cells/DataTableCellCurrency.vue'
 import DataTableCellId from '@/ui/data-table/components/cells/DataTableCellId.vue'
 import DataTableCellLocation from '@/ui/data-table/components/cells/DataTableCellLocation.vue'
+import DataTableCellLongText from '@/ui/data-table/components/cells/DataTableCellLongText.vue'
 import DataTableCellNumber from '@/ui/data-table/components/cells/DataTableCellNumber.vue'
-import DataTableCellPerson from '@/ui/data-table/components/cells/DataTableCellPerson.vue'
 import DataTableCellText from '@/ui/data-table/components/cells/DataTableCellText.vue'
 import DataTableCellTimestamp from '@/ui/data-table/components/cells/DataTableCellTimestamp.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
@@ -50,12 +54,28 @@ const customComponent = computed<Component | null>(() => {
     v-else-if="props.cell.type === 'contactInfo'"
     v-bind="props.cell"
   />
-  <DataTableCellPerson
-    v-else-if="props.cell.type === 'person'"
+  <DataTableCellAvatar
+    v-else-if="props.cell.type === 'avatar'"
     v-bind="props.cell"
   />
   <DataTableCellBadge
     v-else-if="props.cell.type === 'badge'"
+    v-bind="props.cell"
+  />
+  <DataTableCellBadgeGroup
+    v-else-if="props.cell.type === 'badgeGroup'"
+    v-bind="props.cell"
+  />
+  <DataTableCellCurrency
+    v-else-if="props.cell.type === 'currency'"
+    v-bind="props.cell"
+  />
+  <DataTableCellBoolean
+    v-else-if="props.cell.type === 'boolean'"
+    v-bind="props.cell"
+  />
+  <DataTableCellLongText
+    v-else-if="props.cell.type === 'longText'"
     v-bind="props.cell"
   />
   <Component

@@ -28,6 +28,24 @@ export interface DataTableNumberCell {
   value: number | null
 }
 
+export interface DataTableCurrencyCell {
+  /** ISO 4217 currency code, e.g. `'EUR'`. */
+  currency: string
+  fallback?: string
+  value: number | null
+}
+
+export interface DataTableBooleanCell {
+  /** Required — color/icon alone don't convey meaning to screen readers. */
+  label: string
+  value: boolean | null
+}
+
+export interface DataTableLongTextCell {
+  fallback?: string
+  value: string | null
+}
+
 export interface DataTableIdCell {
   maxLength?: number
   value: string | null
@@ -41,15 +59,16 @@ export interface DataTableLocationCell {
 }
 
 export interface DataTableContactInfoCell {
+  email?: string | string[]
   phoneNumber?: string | string[]
   website?: string | string[]
 }
 
-export interface DataTablePersonCell {
-  name: string | null
-  /** Falls back to initials generated from `name` when not provided. */
+export interface DataTableAvatarCell {
+  /** Falls back to initials generated from `label` when not provided. */
   avatarUrl?: string | null
-  /** Secondary line under the name — a role, team or phone number. */
+  label: string | null
+  /** Secondary line under the label — a role, team or phone number. */
   supportingText?: string | null
 }
 
@@ -57,6 +76,11 @@ export type DataTableBadgeCell = Pick<
   BadgeProps,
   'color' | 'label' | 'left' | 'rounded' | 'size' | 'variant'
 >
+
+export interface DataTableBadgeGroupCell {
+  badges: DataTableBadgeCell[]
+  maxVisible?: number
+}
 
 export interface DataTableCustomCellConfig<TValue> {
   cellComponent: (value: TValue) => Component
@@ -81,11 +105,23 @@ export function createCustomCell<TValue>(
 
 export type DataTableCell
   = | ({
+    type: 'avatar'
+  } & DataTableAvatarCell)
+  | ({
     type: 'badge'
   } & DataTableBadgeCell)
   | ({
+    type: 'badgeGroup'
+  } & DataTableBadgeGroupCell)
+  | ({
+    type: 'boolean'
+  } & DataTableBooleanCell)
+  | ({
     type: 'contactInfo'
   } & DataTableContactInfoCell)
+  | ({
+    type: 'currency'
+  } & DataTableCurrencyCell)
   | ({
     type: 'id'
   } & DataTableIdCell)
@@ -93,11 +129,11 @@ export type DataTableCell
     type: 'location'
   } & DataTableLocationCell)
   | ({
+    type: 'longText'
+  } & DataTableLongTextCell)
+  | ({
     type: 'number'
   } & DataTableNumberCell)
-  | ({
-    type: 'person'
-  } & DataTablePersonCell)
   | ({
     type: 'text'
   } & DataTableTextCell)

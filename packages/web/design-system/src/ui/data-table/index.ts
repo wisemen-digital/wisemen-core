@@ -1,9 +1,13 @@
+export { default as UIDataTableCellAvatar } from './components/cells/DataTableCellAvatar.vue'
 export { default as UIDataTableCellBadge } from './components/cells/DataTableCellBadge.vue'
+export { default as UIDataTableCellBadgeGroup } from './components/cells/DataTableCellBadgeGroup.vue'
+export { default as UIDataTableCellBoolean } from './components/cells/DataTableCellBoolean.vue'
 export { default as UIDataTableCellContactInfo } from './components/cells/DataTableCellContactInfo.vue'
+export { default as UIDataTableCellCurrency } from './components/cells/DataTableCellCurrency.vue'
 export { default as UIDataTableCellId } from './components/cells/DataTableCellId.vue'
 export { default as UIDataTableCellLocation } from './components/cells/DataTableCellLocation.vue'
+export { default as UIDataTableCellLongText } from './components/cells/DataTableCellLongText.vue'
 export { default as UIDataTableCellNumber } from './components/cells/DataTableCellNumber.vue'
-export { default as UIDataTableCellPerson } from './components/cells/DataTableCellPerson.vue'
 export { default as UIDataTableCellText } from './components/cells/DataTableCellText.vue'
 export { default as UIDataTableCellTimestamp } from './components/cells/DataTableCellTimestamp.vue'
 export { default as UIDataTable } from './components/DataTable.vue'
@@ -29,42 +33,54 @@ export type {
   DataTableProps,
 } from './types/dataTable.props'
 export type {
+  DataTableAvatarCell,
   DataTableBadgeCell,
+  DataTableBadgeGroupCell,
+  DataTableBooleanCell,
   DataTableCell,
   DataTableContactInfoCell,
+  DataTableCurrencyCell,
   DataTableCustomCell,
   DataTableCustomCellConfig,
   DataTableIdCell,
   DataTableLocationCell,
   DataTableLocationPrecision,
+  DataTableLongTextCell,
   DataTableNumberCell,
-  DataTablePersonCell,
   DataTableTextCell,
   DataTableTimestampCell,
   DataTableTimestampGranularity,
 } from './types/dataTableCell.type'
 export { createCustomCell } from './types/dataTableCell.type'
 export type {
+  CreateDataTableAvatarCellOptions,
   CreateDataTableBadgeCellOptions,
+  CreateDataTableBadgeGroupCellOptions,
+  CreateDataTableBooleanCellOptions,
   CreateDataTableContactInfoCellOptions,
+  CreateDataTableCurrencyCellOptions,
   CreateDataTableCustomCellOptions,
   CreateDataTableIdCellOptions,
   CreateDataTableLocationCellOptions,
+  CreateDataTableLongTextCellOptions,
   CreateDataTableNumberCellOptions,
-  CreateDataTablePersonCellOptions,
   CreateDataTableTextCellOptions,
   CreateDataTableTimestampCellOptions,
   DataTableColumn,
   InferDataTableColumnKeys,
 } from './types/dataTableColumn.type'
 export {
+  createDataTableAvatarCell,
   createDataTableBadgeCell,
+  createDataTableBadgeGroupCell,
+  createDataTableBooleanCell,
   createDataTableContactInfoCell,
+  createDataTableCurrencyCell,
   createDataTableCustomCell,
   createDataTableIdCell,
   createDataTableLocationCell,
+  createDataTableLongTextCell,
   createDataTableNumberCell,
-  createDataTablePersonCell,
   createDataTableTextCell,
   createDataTableTimestampCell,
   defineDataTableColumns,

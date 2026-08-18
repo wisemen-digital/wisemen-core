@@ -39,8 +39,9 @@ a Cell definition**, and if no built-in cell type fits, a `custom` cell.
 Never hand-write `{ cell, cellType }` — always call a `createDataTableXCell` factory. The factory
 keeps the two in sync structurally; a hand-assembled pair can drift.
 
-Cell types available: `Text`, `Number`, `Id`, `Location`, `ContactInfo`, `Badge`, `Timestamp`,
-`Person`, `Custom`. See `types/dataTableCell.type.ts`.
+Cell types available: `Text`, `LongText`, `Number`, `Currency`, `Boolean`, `Id`, `Location`,
+`ContactInfo`, `Avatar`, `Badge`, `BadgeGroup`, `Timestamp`, `Custom`. See
+`types/dataTableCell.type.ts`.
 
 ## Prop mapping
 

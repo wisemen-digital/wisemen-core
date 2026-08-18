@@ -16,14 +16,22 @@ import {
 } from 'vue'
 
 import { useSort } from '@/composables/sort.composable'
+import type { Address } from '@/ui/address-autocomplete/addressAutocomplete.type'
+import type { BadgeColor } from '@/ui/badge/badge.props'
 import UIDataTable from '@/ui/data-table/components/DataTable.vue'
 import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import {
+  createDataTableAvatarCell,
   createDataTableBadgeCell,
+  createDataTableBadgeGroupCell,
+  createDataTableBooleanCell,
+  createDataTableContactInfoCell,
+  createDataTableCurrencyCell,
   createDataTableIdCell,
+  createDataTableLocationCell,
+  createDataTableLongTextCell,
   createDataTableNumberCell,
-  createDataTablePersonCell,
   createDataTableTextCell,
   createDataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableColumn.type'
@@ -35,18 +43,28 @@ interface User {
   id: string
   startDate: Temporal.Instant
   lastActiveAt: Temporal.Instant
+  isVerified: boolean | null
   name: string
+  address: Address
   balance: number
+  bio: string
   contactName: string
   department: string
-  location: string
+  email: string
   manager: string
   phoneNumber: string
   role: string
   status: 'active' | 'inactive'
+  tags: {
+    color?: BadgeColor
+    label: string
+  }[]
 }
 
 const props = withDefaults(defineProps<{
+  // Adds `cellTypeColumns` (Currency, Boolean, LongText, BadgeGroup, ContactInfo, Location) on
+  // top of `baseColumns` — used by the `CellTypes` story only.
+  hasCellTypes?: boolean
   hasRowActions?: boolean
   hasSubComponent?: boolean
   isFirstColumnSticky?: boolean
@@ -75,6 +93,7 @@ const props = withDefaults(defineProps<{
   stickyRightColumnKeys?: string[]
   variant?: 'contained' | 'full-page'
 }>(), {
+  hasCellTypes: false,
   hasRowActions: false,
   hasSubComponent: false,
   isFirstColumnSticky: false,
@@ -182,11 +201,65 @@ const DEPARTMENTS = [
   'Marketing',
   'Support',
 ]
-const LOCATIONS = [
-  'Antwerp, Belgium',
-  'Amsterdam, Netherlands',
-  'Berlin, Germany',
-  'Lisbon, Portugal',
+const ADDRESSES: Address[] = [
+  {
+    placeId: 'mock-antwerp',
+    bus: '',
+    city: 'Antwerp',
+    coordinates: {
+      lat: 51.2194,
+      lng: 4.4025,
+    },
+    country: 'Belgium',
+    postalCode: '2000',
+    street: 'Meir',
+    streetNumber: '78',
+  },
+  {
+    placeId: 'mock-amsterdam',
+    bus: '2',
+    city: 'Amsterdam',
+    coordinates: {
+      lat: 52.3676,
+      lng: 4.9041,
+    },
+    country: 'Netherlands',
+    postalCode: '1012',
+    street: 'Damrak',
+    streetNumber: '1',
+  },
+  {
+    placeId: 'mock-berlin',
+    bus: '',
+    city: 'Berlin',
+    coordinates: {
+      lat: 52.52,
+      lng: 13.405,
+    },
+    country: 'Germany',
+    postalCode: '10117',
+    street: 'Unter den Linden',
+    streetNumber: '5',
+  },
+  {
+    placeId: 'mock-lisbon',
+    bus: '',
+    city: 'Lisbon',
+    coordinates: {
+      lat: 38.7223,
+      lng: -9.1393,
+    },
+    country: 'Portugal',
+    postalCode: '1100',
+    street: 'Rua Augusta',
+    streetNumber: '12',
+  },
+]
+const BIOS = [
+  'Focused on scaling backend infrastructure and mentoring new engineers across the platform team.',
+  'Leads go-to-market strategy for the EMEA region, with a background in enterprise SaaS sales.',
+  'Passionate about accessible design systems and reducing onboarding friction for new hires.',
+  'Handles escalations from key accounts and coordinates cross-team incident response.',
 ]
 // Real-looking names, unlike the `User N` values the `Name` column sorts on — the person cell's
 // avatar derives its initials and color from the name, and `User N` would render every avatar
@@ -214,11 +287,15 @@ const data: User[] = Array.from({
   lastActiveAt: now.subtract({
     hours: i * 3,
   }),
+  // `null` for one in five rows — demonstrates the boolean cell's "unknown" state (no icon).
+  isVerified: i % 5 === 4 ? null : i % 2 === 0,
   name: `User ${i + 1}`,
+  address: ADDRESSES[i % ADDRESSES.length]!,
   balance: (i % 17) * 1234.56,
+  bio: BIOS[i % BIOS.length]!,
   contactName: CONTACT_NAMES[i % CONTACT_NAMES.length]!,
   department: DEPARTMENTS[i % DEPARTMENTS.length]!,
-  location: LOCATIONS[i % LOCATIONS.length]!,
+  email: `user${i + 1}@example.com`,
   manager: `Manager ${(i % 12) + 1}`,
   phoneNumber: `+32 4${String(70 + (i % 20)).padStart(2, '0')} ${String(100_000 + i).slice(-6)}`,
   // eslint-disable-next-line no-nested-ternary
@@ -227,6 +304,19 @@ const data: User[] = Array.from({
   // perfectly correlate with department (every department landing on exactly one status value),
   // leaving only a single subgroup per department under `department+status` two-level grouping.
   status: i % 3 === 0 ? 'inactive' : 'active',
+  tags: [
+    {
+      color: 'blue',
+      label: DEPARTMENTS[i % DEPARTMENTS.length]!,
+    },
+    {
+      color: i % 2 === 0 ? 'success' : 'gray',
+      label: i % 2 === 0 ? 'Full-time' : 'Contractor',
+    },
+    {
+      label: `Cohort ${(i % 5) + 1}`,
+    },
+  ],
 }))
 
 const sort = useSort<'name' | 'role' | 'status'>({
@@ -348,12 +438,11 @@ const baseColumns: DataTableColumn<User>[] = [
       value: item.startDate,
     }),
   }),
-  createDataTablePersonCell({
+  createDataTableAvatarCell({
     headerLabel: 'Contact',
     key: 'contact',
     value: (item) => ({
-      name: item.contactName,
-      supportingText: item.phoneNumber,
+      label: item.contactName,
     }),
   }),
   createDataTableTextCell({
@@ -365,7 +454,65 @@ const baseColumns: DataTableColumn<User>[] = [
   }),
 ]
 
-const columns = computed<DataTableColumn<User>[]>(() => baseColumns.map((column) => ({
+// Showcases every predefined cell type together — see the `CellTypes` story. Kept separate from
+// `baseColumns` (used by every other story) so the rest of the stories' column counts/order stay
+// unaffected by this batch's additions.
+const cellTypeColumns: DataTableColumn<User>[] = [
+  createDataTableCurrencyCell({
+    headerLabel: 'Balance (currency)',
+    key: 'balanceCurrency',
+    value: (item) => ({
+      currency: 'EUR',
+      fallback: '—',
+      value: item.balance,
+    }),
+  }),
+  createDataTableBooleanCell({
+    headerLabel: 'Verified',
+    key: 'isVerified',
+    value: (item) => ({
+      label: item.isVerified ? 'Verified' : 'Not verified',
+      value: item.isVerified,
+    }),
+  }),
+  createDataTableLongTextCell({
+    headerLabel: 'Bio',
+    key: 'bio',
+    value: (item) => ({
+      value: item.bio,
+    }),
+  }),
+  createDataTableBadgeGroupCell({
+    headerLabel: 'Tags',
+    key: 'tags',
+    value: (item) => ({
+      badges: item.tags,
+      maxVisible: 2,
+    }),
+  }),
+  createDataTableContactInfoCell({
+    headerLabel: 'Contact info',
+    key: 'contactInfo',
+    value: (item) => ({
+      email: item.email,
+      phoneNumber: item.phoneNumber,
+      website: 'https://example.com',
+    }),
+  }),
+  createDataTableLocationCell({
+    headerLabel: 'Location',
+    key: 'location',
+    value: (item) => ({
+      precision: 'municipality',
+      value: item.address,
+    }),
+  }),
+]
+
+const columns = computed<DataTableColumn<User>[]>(() => [
+  ...baseColumns,
+  ...(props.hasCellTypes ? cellTypeColumns : []),
+].map((column) => ({
   ...column,
   isSticky: getStickySide(column.key),
 })))
@@ -396,7 +543,7 @@ function makeSubComponent(item: User) {
         }, 'Location'),
         h('dd', {
           class: 'text-primary',
-        }, item.location),
+        }, item.address.city),
         h('dt', {
           class: 'text-tertiary',
         }, 'Phone'),

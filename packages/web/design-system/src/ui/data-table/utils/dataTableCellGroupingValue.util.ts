@@ -10,6 +10,8 @@ export function getDataTableCellGroupingValue(cell: DataTableCell): unknown {
   switch (cell.type) {
     case 'text':
     case 'number':
+    case 'currency':
+    case 'boolean':
     case 'id':
       return cell.value
     case 'timestamp':

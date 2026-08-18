@@ -29,13 +29,21 @@ export const DATA_TABLE_MIN_COLUMN_WIDTH_PX = 60
 // column whose default is too narrow for its actual data overrides it via `size`.
 export const DATA_TABLE_CELL_DEFAULT_WIDTH_PX: Record<DataTableCell['type'], number> = {
   id: 100,
+  // Avatar plus a label, wider than plain text since it carries both.
+  avatar: 200,
   badge: 100,
-  contactInfo: 200,
+  // Wider than a single badge to fit several inline.
+  badgeGroup: 200,
+  // Icon-only, no a11y label text rendered inline.
+  boolean: 80,
+  // Icon-only row (phone/email/website), narrower than the old inline-text layout.
+  contactInfo: 120,
+  currency: 120,
   custom: 160,
   location: 180,
+  // Wider than `text` since long text is the point.
+  longText: 240,
   number: 120,
-  // Avatar plus a name, wider than plain text since it carries both.
-  person: 200,
   text: 120,
   timestamp: 140,
 }

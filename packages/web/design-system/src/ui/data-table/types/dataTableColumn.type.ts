@@ -1,12 +1,16 @@
 import type {
+  DataTableAvatarCell,
   DataTableBadgeCell,
+  DataTableBadgeGroupCell,
+  DataTableBooleanCell,
   DataTableCell,
   DataTableContactInfoCell,
+  DataTableCurrencyCell,
   DataTableCustomCellConfig,
   DataTableIdCell,
   DataTableLocationCell,
+  DataTableLongTextCell,
   DataTableNumberCell,
-  DataTablePersonCell,
   DataTableTextCell,
   DataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableCell.type'
@@ -98,6 +102,69 @@ export function createDataTableNumberCell<TItem, TKey extends string>(
   }
 }
 
+export interface CreateDataTableCurrencyCellOptions<TItem, TKey extends string>
+  extends DataTableColumnFactoryBaseOptions<TKey> {
+  value: (item: TItem) => DataTableCurrencyCell
+}
+
+export function createDataTableCurrencyCell<TItem, TKey extends string>(
+  options: CreateDataTableCurrencyCellOptions<TItem, TKey>,
+): DataTableColumn<TItem, TKey> {
+  return {
+    isSticky: options.isSticky,
+    cell: (item) => ({
+      type: 'currency',
+      ...options.value(item),
+    }),
+    cellType: 'currency',
+    headerLabel: options.headerLabel,
+    key: options.key,
+    size: options.size,
+  }
+}
+
+export interface CreateDataTableBooleanCellOptions<TItem, TKey extends string>
+  extends DataTableColumnFactoryBaseOptions<TKey> {
+  value: (item: TItem) => DataTableBooleanCell
+}
+
+export function createDataTableBooleanCell<TItem, TKey extends string>(
+  options: CreateDataTableBooleanCellOptions<TItem, TKey>,
+): DataTableColumn<TItem, TKey> {
+  return {
+    isSticky: options.isSticky,
+    cell: (item) => ({
+      type: 'boolean',
+      ...options.value(item),
+    }),
+    cellType: 'boolean',
+    headerLabel: options.headerLabel,
+    key: options.key,
+    size: options.size,
+  }
+}
+
+export interface CreateDataTableLongTextCellOptions<TItem, TKey extends string>
+  extends DataTableColumnFactoryBaseOptions<TKey> {
+  value: (item: TItem) => DataTableLongTextCell
+}
+
+export function createDataTableLongTextCell<TItem, TKey extends string>(
+  options: CreateDataTableLongTextCellOptions<TItem, TKey>,
+): DataTableColumn<TItem, TKey> {
+  return {
+    isSticky: options.isSticky,
+    cell: (item) => ({
+      type: 'longText',
+      ...options.value(item),
+    }),
+    cellType: 'longText',
+    headerLabel: options.headerLabel,
+    key: options.key,
+    size: options.size,
+  }
+}
+
 export interface CreateDataTableIdCellOptions<TItem, TKey extends string>
   extends DataTableColumnFactoryBaseOptions<TKey> {
   value: (item: TItem) => DataTableIdCell
@@ -161,21 +228,21 @@ export function createDataTableContactInfoCell<TItem, TKey extends string>(
   }
 }
 
-export interface CreateDataTablePersonCellOptions<TItem, TKey extends string>
+export interface CreateDataTableAvatarCellOptions<TItem, TKey extends string>
   extends DataTableColumnFactoryBaseOptions<TKey> {
-  value: (item: TItem) => DataTablePersonCell
+  value: (item: TItem) => DataTableAvatarCell
 }
 
-export function createDataTablePersonCell<TItem, TKey extends string>(
-  options: CreateDataTablePersonCellOptions<TItem, TKey>,
+export function createDataTableAvatarCell<TItem, TKey extends string>(
+  options: CreateDataTableAvatarCellOptions<TItem, TKey>,
 ): DataTableColumn<TItem, TKey> {
   return {
     isSticky: options.isSticky,
     cell: (item) => ({
-      type: 'person',
+      type: 'avatar',
       ...options.value(item),
     }),
-    cellType: 'person',
+    cellType: 'avatar',
     headerLabel: options.headerLabel,
     key: options.key,
     size: options.size,
@@ -197,6 +264,27 @@ export function createDataTableBadgeCell<TItem, TKey extends string>(
       ...options.value(item),
     }),
     cellType: 'badge',
+    headerLabel: options.headerLabel,
+    key: options.key,
+    size: options.size,
+  }
+}
+
+export interface CreateDataTableBadgeGroupCellOptions<TItem, TKey extends string>
+  extends DataTableColumnFactoryBaseOptions<TKey> {
+  value: (item: TItem) => DataTableBadgeGroupCell
+}
+
+export function createDataTableBadgeGroupCell<TItem, TKey extends string>(
+  options: CreateDataTableBadgeGroupCellOptions<TItem, TKey>,
+): DataTableColumn<TItem, TKey> {
+  return {
+    isSticky: options.isSticky,
+    cell: (item) => ({
+      type: 'badgeGroup',
+      ...options.value(item),
+    }),
+    cellType: 'badgeGroup',
     headerLabel: options.headerLabel,
     key: options.key,
     size: options.size,

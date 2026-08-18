@@ -20,6 +20,9 @@ const STICKY_COLUMN_KEY_OPTIONS = [
 const meta = {
   title: 'Components/DataTable',
   argTypes: {
+    hasCellTypes: {
+      control: 'boolean',
+    },
     hasRowActions: {
       control: 'boolean',
     },
@@ -88,6 +91,7 @@ type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -107,6 +111,7 @@ export const Default: Story = {
 
 export const StickyColumns: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
@@ -131,6 +136,7 @@ export const StickyColumns: Story = {
 // Status, not three independently-bordered columns.
 export const StickyColumnByKey: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
@@ -157,6 +163,7 @@ export const StickyColumnByKey: Story = {
 // single boundary border, while the columns between them scroll normally.
 export const StickyColumnsBothSides: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
@@ -180,6 +187,7 @@ export const StickyColumnsBothSides: Story = {
 
 export const Grouped: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -199,6 +207,7 @@ export const Grouped: Story = {
 
 export const GroupedTwoLevels: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -218,6 +227,7 @@ export const GroupedTwoLevels: Story = {
 
 export const SubComponent: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: true,
     isFirstColumnSticky: false,
@@ -240,6 +250,7 @@ export const SubComponent: Story = {
 // the same expanded area behind one chevron.
 export const SubComponentMobile: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: true,
     isFirstColumnSticky: false,
@@ -259,6 +270,7 @@ export const SubComponentMobile: Story = {
 
 export const Selectable: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -278,6 +290,7 @@ export const Selectable: Story = {
 
 export const SelectableGrouped: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -297,6 +310,7 @@ export const SelectableGrouped: Story = {
 
 export const Mobile: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -316,6 +330,7 @@ export const Mobile: Story = {
 
 export const MobileSelectable: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -339,6 +354,7 @@ export const MobileSelectable: Story = {
 // shows the true 200 total instead of just the currently-loaded page count.
 export const InfiniteScroll: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: true,
@@ -359,6 +375,7 @@ export const InfiniteScroll: Story = {
 // No data has arrived yet — renders the skeleton in place of rows, header still visible.
 export const Loading: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -380,6 +397,7 @@ export const Loading: Story = {
 // `#error` slot).
 export const ErrorState: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -400,6 +418,7 @@ export const ErrorState: Story = {
 // The fetch succeeded but matched nothing — renders the default `UIEmptyState`.
 export const Empty: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -422,6 +441,7 @@ export const Empty: Story = {
 // reveal both, or right-click anywhere on the row for the same actions in a context menu.
 export const RowActions: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: true,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -444,6 +464,7 @@ export const RowActions: Story = {
 // content are unaffected; only the outer border/rounding differs from `Default`.
 export const FullPage: Story = {
   args: {
+    hasCellTypes: false,
     hasRowActions: false,
     hasSubComponent: false,
     isFirstColumnSticky: false,
@@ -458,5 +479,29 @@ export const FullPage: Story = {
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
     variant: 'full-page',
+  },
+}
+
+// Showcases every predefined cell type together (Currency, Boolean, LongText, BadgeGroup, the
+// Avatar-renamed Contact column, ContactInfo's icon-only popover redesign, and Location's
+// address-card popover) — appended on top of the base columns via `hasCellTypes`, see
+// `DataTablePlayground.vue`'s `cellTypeColumns`.
+export const CellTypes: Story = {
+  args: {
+    hasCellTypes: true,
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: false,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }

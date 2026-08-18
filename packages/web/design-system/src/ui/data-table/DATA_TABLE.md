@@ -11,14 +11,15 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 
 - **Cell definition** — presentation-agnostic description of how one field renders. Same
   definition is reused in the table body, the detail pane, and the mobile list. Types: `Text`,
-  `Number`, `Id`, `Location`, `ContactInfo`, `Person`, `Badge`, `Timestamp`, `Custom` (via
-  `createCustomCell`).
+  `LongText`, `Number`, `Currency`, `Boolean`, `Id`, `Location`, `ContactInfo`, `Avatar`, `Badge`,
+  `BadgeGroup`, `Timestamp`, `Custom` (via `createCustomCell`).
 - **Column** — table-only wrapper around a Cell definition: header label, key, size, sort key.
   The Cell definition itself knows nothing about headers/sizing/sorting.
-- **Column factories** — `createDataTableTextCell`, `createDataTableNumberCell`,
+- **Column factories** — `createDataTableTextCell`, `createDataTableLongTextCell`,
+  `createDataTableNumberCell`, `createDataTableCurrencyCell`, `createDataTableBooleanCell`,
   `createDataTableIdCell`, `createDataTableLocationCell`, `createDataTableContactInfoCell`,
-  `createDataTablePersonCell`, `createDataTableBadgeCell`, `createDataTableTimestampCell`,
-  `createDataTableCustomCell`. This
+  `createDataTableAvatarCell`, `createDataTableBadgeCell`, `createDataTableBadgeGroupCell`,
+  `createDataTableTimestampCell`, `createDataTableCustomCell`. This
   is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
   the factory keeps them in sync structurally.
 - **`variant`** — `'contained'` (default) wraps the desktop table in a rounded bordered card,
@@ -257,6 +258,65 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   several years is often clearest at `month` or even `year` alone. Reach for `isRelative` when the
   recency itself is the point ("last active 3 hours ago"); reach for a fixed `granularity` when the
   precise date matters more than how long ago it was.
+
+## ContactInfo cell
+
+- Icon-only row (phone/email/website), one icon per channel present in `value`. Opens a popover
+  (touch devices) or a hoverable tooltip (non-touch) listing that channel's value(s), each with a
+  copy button and a `tel:`/`mailto:` link (website has no "open" action of its own beyond the
+  copy). See `DataTableCellHoverPopover.vue` below.
+- Copy/call/mailto are plain local browser behavior (`useClipboard`, `tel:`/`mailto:` links) — no
+  Action registry involvement.
+
+## Location cell
+
+- The always-visible cell text is still `precision`-limited (`country` | `municipality` |
+  `streetAndNumber`), unchanged. Opens a popover/tooltip (see `DataTableCellHoverPopover.vue`
+  below) with the **full** formatted address (every `Address` field, not just the
+  `precision`-limited slice) plus an "Open in Google Maps" link built from `value.coordinates`.
+- No embedded map image — `AddressAutocompleteAdapter` has no map-rendering capability today; out
+  of scope until that adapter contract is extended separately.
+
+## Device-adaptive popover — `DataTableCellHoverPopover.vue`
+
+- Shared by the ContactInfo and Location cells (both need the same "extra detail on demand"
+  interaction). Same `#trigger`/`#content` slot content renders in a hover-triggered `Tooltip` on
+  non-touch devices, or a tap-triggered `Popover` on touch devices — detected via
+  `useIsTouchDevice` (`composables/useIsTouchDevice.composable.ts`,
+  `(hover: none) and (pointer: coarse)`).
+- Needed because both cells render identically inside mobile cards via the same
+  `DataTableCellRenderer` — there's no separate "desktop-only" surface to hardcode hover on, and
+  touch devices have no hover at all.
+- The `Tooltip` variant sets `isHoverableContentDisabled: false` so the pointer can move from the
+  trigger into the content to click the copy/call/maps-link buttons without it closing first.
+
+## Boolean cell
+
+- `value: boolean | null` renders a check/x icon (green/red); `null` renders nothing.
+- `label` is **required** — rendered as visually-hidden text next to the icon, since color/icon
+  alone isn't accessible.
+
+## Currency cell
+
+- `{ value, currency, fallback? }` — `currency` is an ISO 4217 code (e.g. `'EUR'`). Kept as its
+  own cell type rather than a `Number` formatting preset, for the same "clearer intent" reasoning
+  that keeps `Timestamp` distinct from `Text`.
+
+## LongText cell
+
+- Same truncate-with-ellipsis visual as `Text`, always wrapped in a tooltip revealing the full
+  value on hover (no truncation-detection — matches `Timestamp`'s relative-time tooltip
+  precedent). No expand-in-place, no multi-line reveal.
+
+## BadgeGroup cell
+
+- `{ badges: DataTableBadgeCell[], maxVisible? }` (default `maxVisible: 3`) — renders several
+  badges inline, truncating to `maxVisible` with a plain gray `+N` overflow badge for the rest.
+
+## Avatar cell
+
+- Renamed/generalized from `Person` — `{ label, avatarUrl?, supportingText? }`. `label` (not
+  `name`) so the same cell can represent a team, company, or vehicle, not only a person.
 
 ## What's explicitly out of scope (for now)
 
