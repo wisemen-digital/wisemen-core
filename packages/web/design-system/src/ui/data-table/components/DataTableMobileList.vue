@@ -1,4 +1,5 @@
-<script setup lang="ts" generic="TItem">
+<script setup lang="ts" generic="TItem extends RowData">
+import type { RowData } from '@tanstack/vue-table'
 import {
   computed,
   shallowRef,

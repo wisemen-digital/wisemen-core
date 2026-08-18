@@ -1,7 +1,8 @@
-<script setup lang="ts" generic="TItem">
+<script setup lang="ts" generic="TItem extends RowData">
 import type {
   Header,
   Row,
+  RowData,
 } from '@tanstack/vue-table'
 import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Component } from 'vue'
@@ -21,6 +22,7 @@ import DataTableLoadingRows from '@/ui/data-table/components/DataTableLoadingRow
 import DataTableMobileList from '@/ui/data-table/components/DataTableMobileList.vue'
 import DataTableSelectionActionBar from '@/ui/data-table/components/DataTableSelectionActionBar.vue'
 import DataTableVirtualRows from '@/ui/data-table/components/DataTableVirtualRows.vue'
+import type { DataTableFeatures } from '@/ui/data-table/composables/dataTable.composable'
 import { useDataTable } from '@/ui/data-table/composables/dataTable.composable'
 import {
   DATA_TABLE_ROW_HEIGHT_IN_PX,
@@ -144,7 +146,7 @@ useProvideDataTableContext({
 
 const isGroupingEnabled = computed<boolean>(() => props.groupBy !== null)
 
-const rows = computed<Row<TItem>[]>(() => table.getRowModel().rows)
+const rows = computed<Row<DataTableFeatures, TItem>[]>(() => table.getRowModel().rows)
 
 const {
   paddingAfterPx: flatPaddingAfterPx,
@@ -238,7 +240,7 @@ function toggleSubComponent(rowId: string): void {
   expandedSubComponentRowIds.value = updated
 }
 
-function getGroupRowLabelCell(row: Row<TItem>): DataTableCellDefinition | null {
+function getGroupRowLabelCell(row: Row<DataTableFeatures, TItem>): DataTableCellDefinition | null {
   const groupColumnId = row.groupingColumnId
 
   if (groupColumnId === undefined) {
@@ -281,7 +283,7 @@ const rowViewModels = computed<DataTableRowViewModel<TItem>[]>(() => {
   })
 })
 
-function toggleRowGroup(row: Row<TItem>): void {
+function toggleRowGroup(row: Row<DataTableFeatures, TItem>): void {
   toggleGroup(row.getLeafRows().map((leafRow) => leafRow.original))
 }
 
@@ -317,7 +319,7 @@ const flatVirtualRowViewModels = computed<FlatVirtualRowViewModel[]>(
 
 interface VisibleColumn {
   id: string
-  header: Header<TItem, unknown>
+  header: Header<DataTableFeatures, TItem, unknown>
   headerLabel: string
 }
 

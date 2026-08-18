@@ -1,5 +1,8 @@
-<script setup lang="ts" generic="TItem">
-import type { Header } from '@tanstack/vue-table'
+<script setup lang="ts" generic="TItem extends RowData">
+import type {
+  Header,
+  RowData,
+} from '@tanstack/vue-table'
 import {
   ArrowNarrowDownIcon,
   ArrowNarrowUpIcon,
@@ -12,12 +15,13 @@ import {
 } from 'vue'
 
 import type { SortDirection } from '@/composables/sort.composable'
+import type { DataTableFeatures } from '@/ui/data-table/composables/dataTable.composable'
 import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = defineProps<{
   isLastColumnOverall: boolean
   columnKey: string
-  header: Header<TItem, unknown>
+  header: Header<DataTableFeatures, TItem, unknown>
   label: string
 }>()
 

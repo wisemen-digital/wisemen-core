@@ -1,4 +1,5 @@
-<script setup lang="ts" generic="TItem">
+<script setup lang="ts" generic="TItem extends RowData">
+import type { RowData } from '@tanstack/vue-table'
 import { FlexRender } from '@tanstack/vue-table'
 
 import DataTableCell from '@/ui/data-table/components/DataTableCell.vue'
@@ -50,10 +51,7 @@ const emit = defineEmits<{
       :model="props.viewModel.rowConfig?.model ?? null"
       :on-row-click="props.viewModel.rowConfig?.onClick ?? null"
     >
-      <FlexRender
-        :props="cell.getContext()"
-        :render="cell.column.columnDef.cell"
-      />
+      <FlexRender :cell="cell" />
     </DataTableCell>
   </DataTableRow>
 

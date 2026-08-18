@@ -1,4 +1,7 @@
-import type { Row } from '@tanstack/vue-table'
+import type {
+  Row,
+  RowData,
+} from '@tanstack/vue-table'
 import type { VirtualItem } from '@tanstack/vue-virtual'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import type {
@@ -6,6 +9,8 @@ import type {
   Ref,
 } from 'vue'
 import { computed } from 'vue'
+
+import type { DataTableFeatures } from '@/ui/data-table/composables/dataTable.composable'
 
 export const DATA_TABLE_ROW_HEIGHT_IN_PX = 40
 export const DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX = 40
@@ -19,8 +24,8 @@ export const DATA_TABLE_GROUP_ROW_HEIGHT_IN_PX = 40
  * guess; `measureElement` (wired via the `measureRowElement` ref callback in the template)
  * corrects it after each row actually renders.
  */
-export function useDataTableGroupedVirtualScroller<TItem>(
-  rows: Ref<Row<TItem>[]>,
+export function useDataTableGroupedVirtualScroller<TItem extends RowData>(
+  rows: Ref<Row<DataTableFeatures, TItem>[]>,
   scrollEl: Ref<HTMLElement | null>,
 ): {
   measureRowElement: (el: ComponentPublicInstance | Element | null) => void

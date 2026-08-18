@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/vue-table'
 import type { VirtualItem } from '@tanstack/vue-virtual'
 import { useVirtualizer } from '@tanstack/vue-virtual'
 import type {
@@ -20,7 +21,7 @@ export const DATA_TABLE_MOBILE_CARD_HEIGHT_IN_PX = 64
  * changes (e.g. expand toggle). See `dataTableGroupedVirtualScroller.composable.ts`, which this
  * mirrors for the desktop grouped case.
  */
-export function useDataTableMobileVirtualScroller<TItem>(
+export function useDataTableMobileVirtualScroller<TItem extends RowData>(
   rowViewModels: Ref<DataTableRowViewModel<TItem>[]>,
   scrollEl: Ref<HTMLElement | null>,
 ): {

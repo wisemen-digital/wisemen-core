@@ -1,8 +1,12 @@
-import type { Row } from '@tanstack/vue-table'
+import type {
+  Row,
+  RowData,
+} from '@tanstack/vue-table'
 import type { VirtualItem } from '@tanstack/vue-virtual'
 import type { Ref } from 'vue'
 import { computed } from 'vue'
 
+import type { DataTableFeatures } from '@/ui/data-table/composables/dataTable.composable'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
 import type {
   RowChunk,
@@ -10,7 +14,7 @@ import type {
 } from '@/ui/data-table/utils/dataTableStickyGroupHeaders.util'
 import { chunkVirtualRowEntriesByGroup } from '@/ui/data-table/utils/dataTableStickyGroupHeaders.util'
 
-export interface GroupChunkEntry<TItem> {
+export interface GroupChunkEntry<TItem extends RowData> {
   topLevelGroupRowId: string
   index: number
   key: number | string
@@ -25,8 +29,8 @@ export interface GroupChunkEntry<TItem> {
  * and mobile group-header rows aren't the same height). See `dataTableStickyGroupHeaders.util.ts`
  * for why depth-0 and depth-1 need separate containing-block scopes in the first place.
  */
-export function useDataTableStickyGroupChunks<TItem>(options: {
-  getRowAtIndex: (index: number) => Row<TItem>
+export function useDataTableStickyGroupChunks<TItem extends RowData>(options: {
+  getRowAtIndex: (index: number) => Row<DataTableFeatures, TItem>
   getViewModelAtIndex: (index: number) => DataTableRowViewModel<TItem>
   groupHeaderHeightPx: number
   paddingBeforePxFromVirtualizer: Ref<number>
@@ -54,7 +58,7 @@ export function useDataTableStickyGroupChunks<TItem>(options: {
     return row.getIsExpanded() ? getDeepestActiveGroupRowId(index + 1) : row.id
   }
 
-  function getTopLevelGroupRowId(row: Row<TItem>): string {
+  function getTopLevelGroupRowId(row: Row<DataTableFeatures, TItem>): string {
     return row.getParentRows().at(0)?.id ?? row.id
   }
 

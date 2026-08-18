@@ -2,15 +2,22 @@ import type {
   ColumnDef,
   ColumnPinningState,
   ColumnSizingState,
+  ColumnVisibilityState,
   ExpandedState,
   GroupingState,
-  VisibilityState,
+  RowData,
 } from '@tanstack/vue-table'
 import {
-  getCoreRowModel,
-  getExpandedRowModel,
-  getGroupedRowModel,
-  useVueTable,
+  columnGroupingFeature,
+  columnPinningFeature,
+  columnResizingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
+  createExpandedRowModel,
+  createGroupedRowModel,
+  rowExpandingFeature,
+  tableFeatures,
+  useTable,
 } from '@tanstack/vue-table'
 import type {
   ComputedRef,
@@ -39,7 +46,27 @@ import { getDataTableCellGroupingValue } from '@/ui/data-table/utils/dataTableCe
 
 export type DataTableGroupBy = string | [string, string] | null
 
-export interface UseDataTableOptions<TItem> {
+// Only the features DataTable actually reads/writes: grouping + expanding (both driven by our
+// own `groupBy`/`subComponent` props, not TanStack's own UI), pinning (derived from
+// `isFirstColumnSticky`/`isLastColumnSticky`/`isSticky`, never user-draggable), sizing + resizing
+// (manual drag-resize), and visibility (idle today — see `DataTable.vue`'s `columnVisibility`
+// comment — kept registered since `state.columnVisibility` is already wired end to end for the
+// planned column-priority/responsive-hiding feature). No sorting feature: `Sort` is our own
+// composable, entirely outside TanStack's own sorting state.
+export const dataTableFeatures = tableFeatures({
+  columnGroupingFeature,
+  columnPinningFeature,
+  columnResizingFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
+  expandedRowModel: createExpandedRowModel(),
+  groupedRowModel: createGroupedRowModel(),
+  rowExpandingFeature,
+})
+
+export type DataTableFeatures = typeof dataTableFeatures
+
+export interface UseDataTableOptions<TItem extends RowData> {
   hasRowActions?: ComputedRef<boolean>
   hasSubComponent?: ComputedRef<boolean>
   isColumnResizeDisabled?: ComputedRef<boolean>
@@ -52,8 +79,8 @@ export interface UseDataTableOptions<TItem> {
   groupBy?: ComputedRef<DataTableGroupBy>
 }
 
-export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
-  const columnVisibility = ref<VisibilityState>({})
+export function useDataTable<TItem extends RowData>(options: UseDataTableOptions<TItem>) {
+  const columnVisibility = ref<ColumnVisibilityState>({})
   // Only ever seeded per-column the moment a user drags that column's resize handle — a column
   // with no entry here just reads its own `columnDef.size` (below), the cell-type default or
   // an explicit override.
@@ -75,7 +102,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
         ]
   })
 
-  const columnDefs = computed<ColumnDef<TItem>[]>(() => options.columns.value.map((column) => ({
+  const columnDefs = computed<ColumnDef<DataTableFeatures, TItem>[]>(() => options.columns.value.map((column) => ({
     id: column.key,
     accessorFn: (item): unknown => getDataTableCellGroupingValue(column.cell(item)),
     cell: (context): VNode => h(DataTableCellRenderer, {
@@ -87,43 +114,44 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   })))
 
   // Derived, not settable — array order matters, since the offset computeds below sum
-  // cumulatively in this order (closest-to-edge first).
+  // cumulatively in this order (closest-to-edge first). `start`/`end` are v9's logical rename of
+  // v8's `left`/`right` — this codebase is LTR-only today, so `start` === left, `end` === right.
   const columnPinning = computed<ColumnPinningState>(() => {
     const firstColumnId = columnDefs.value[0]?.id
     const lastColumnId = columnDefs.value.at(-1)?.id
 
-    const left = options.isFirstColumnSticky?.value === true && firstColumnId !== undefined
+    const start = options.isFirstColumnSticky?.value === true && firstColumnId !== undefined
       ? [
           firstColumnId,
         ]
       : []
-    const right = options.isLastColumnSticky?.value === true && lastColumnId !== undefined
+    const end = options.isLastColumnSticky?.value === true && lastColumnId !== undefined
       ? [
           lastColumnId,
         ]
       : []
 
-    const keyPinnedRightIds: string[] = []
+    const keyPinnedEndIds: string[] = []
 
     for (const column of options.columns.value) {
       if (column.isSticky === 'left' && column.key !== firstColumnId) {
-        left.push(column.key)
+        start.push(column.key)
       }
       else if (column.isSticky === 'right' && column.key !== lastColumnId) {
-        keyPinnedRightIds.push(column.key)
+        keyPinnedEndIds.push(column.key)
       }
     }
 
-    // Reversed: collected left-to-right, but `right` needs closest-to-the-edge first.
-    right.push(...keyPinnedRightIds.reverse())
+    // Reversed: collected left-to-right, but `end` needs closest-to-the-edge first.
+    end.push(...keyPinnedEndIds.reverse())
 
     return {
-      left,
-      right,
+      end,
+      start,
     }
   })
 
-  const table = useVueTable({
+  const table = useTable<DataTableFeatures, TItem>({
     getRowId: (item) => options.getKey(item),
     // Live resize while dragging, not just on release — matches the current `Table`'s
     // hand-rolled mousemove handler and the OS/spreadsheet drag-resize mental model. The
@@ -139,9 +167,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     get enableColumnResizing() {
       return !(options.isColumnResizeDisabled?.value ?? false)
     },
-    getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
-    getGroupedRowModel: getGroupedRowModel(),
+    features: dataTableFeatures,
     getRowCanExpand: (row) => row.getIsGrouped(),
     // TanStack's default (`'reorder'`) moves the grouped-by column to the front of every leaf
     // column list — `getVisibleLeafColumns()`, `getFlatHeaders()`, `row.getVisibleCells()` — which
@@ -243,7 +269,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   // checkbox always sticks regardless of `isFirstColumnSticky`, since selection should never be
   // able to scroll out of view.
   const isLeadingStickyRegionActive = computed<boolean>(
-    () => table.getLeftLeafColumns().length > 0 || (options.isSelectable?.value ?? false),
+    () => table.getStartLeafColumns().length > 0 || (options.isSelectable?.value ?? false),
   )
 
   // The checkbox column normally has no border of its own — the sticky-left region's trailing
@@ -255,7 +281,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
   const hasCheckboxOwnStickyBorder = computed<boolean>(
     () => (options.isSelectable?.value ?? false)
       && !(options.hasSubComponent?.value ?? false)
-      && table.getLeftLeafColumns().length === 0,
+      && table.getStartLeafColumns().length === 0,
   )
 
   // Cumulative left offset (px) per real pinned column, keyed by column id.
@@ -271,7 +297,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
       offsetPx += DATA_TABLE_EXPAND_COLUMN_WIDTH_PX
     }
 
-    for (const column of table.getLeftLeafColumns()) {
+    for (const column of table.getStartLeafColumns()) {
       offsetByColumnId.set(column.id, offsetPx)
       offsetPx += column.getSize()
     }
@@ -286,7 +312,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     const offsetByColumnId = new Map<string, number>()
     let offsetPx = options.hasRowActions?.value ?? false ? DATA_TABLE_ACTIONS_COLUMN_WIDTH_PX : 0
 
-    for (const column of table.getRightLeafColumns()) {
+    for (const column of table.getEndLeafColumns()) {
       offsetByColumnId.set(column.id, offsetPx)
       offsetPx += column.getSize()
     }
