@@ -13,6 +13,7 @@ import type { DataTableRowClick } from '@/ui/data-table/types/dataTableRowConfig
 const props = withDefaults(defineProps<{
   hasRowActions?: boolean
   isLast?: boolean
+  focusOnlyActions?: Action[]
   inlineActions?: Action[]
   model?: RegisteredActionContext['models'][number] | null
   moreActions?: Action[]
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   hasRowActions: false,
   isLast: false,
+  focusOnlyActions: () => [],
   inlineActions: () => [],
   model: null,
   moreActions: () => [],
@@ -38,7 +40,7 @@ const allActions = computed<Action[]>(() => props.inlineActions.concat(props.mor
     :models="props.model === null ? [] : [props.model]"
   >
     <UIActionFocus
-      :actions="allActions"
+      :actions="[...props.focusOnlyActions, ...allActions]"
       :models="props.model === null ? [] : [props.model]"
     >
       <div

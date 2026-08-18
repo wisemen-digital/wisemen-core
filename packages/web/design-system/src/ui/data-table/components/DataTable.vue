@@ -40,7 +40,6 @@ import { DataTableUtil } from '@/ui/data-table/utils/dataTable.util'
 import { UIEmptyState } from '@/ui/empty-state/index'
 import { UIErrorState } from '@/ui/error-state/index'
 import { useTableSelection } from '@/ui/table/composables/tableSelection.composable'
-import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isColumnResizeDisabled: false,
@@ -60,10 +59,6 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   variant: 'contained',
   onNextPage: null,
 })
-
-const emit = defineEmits<{
-  select: [state: TableSelectionState<TItem>]
-}>()
 
 const i18n = useI18n()
 
@@ -151,6 +146,13 @@ const isGroupingEnabled = computed<boolean>(() => props.groupBy !== null)
 
 const rows = computed<Row<DataTableFeatures, TItem>[]>(() => table.getRowModel().rows)
 
+// `rows` is already display-order flattened (group and leaf rows interleaved per TanStack's
+// expanded row model) — filtering out group rows leaves the leaf keys in on-screen order,
+// needed to resolve a shift-click range regardless of grouping.
+const orderedDataRowKeys = computed<string[]>(
+  () => rows.value.filter((row) => !row.getIsGrouped()).map((row) => row.id),
+)
+
 const {
   paddingAfterPx: flatPaddingAfterPx,
   paddingBeforePx: flatPaddingBeforePx,
@@ -177,13 +179,13 @@ const {
   isGroupIndeterminate,
   isIndeterminate,
   isItemSelected,
+  clearSelection,
   toggleAll,
   toggleGroup,
   toggleItem,
 } = useTableSelection(
-  computed(() => props.data),
   props.getKey,
-  (state) => emit('select', state),
+  orderedDataRowKeys,
 )
 
 const selectedItems = computed<TItem[]>(
@@ -197,6 +199,12 @@ const selectedCount = computed<number>(
   () => (isAllSelected.value && props.totalCount !== null ? props.totalCount : selectedItems.value.length),
 )
 
+// The selection action bar floats over the bottom of the table, so the scrollable content needs
+// reserved space at the end to keep the last row from being covered whenever it's shown.
+const hasVisibleSelectionActionBar = computed<boolean>(
+  () => props.isSelectable && selectedCount.value > 0,
+)
+
 const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
   const models = selectedItems.value.map((item) => props.row?.(item)?.model)
 
@@ -208,6 +216,10 @@ const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
 const isMobileSelectModeOn = shallowRef<boolean>(false)
 
 function toggleMobileSelectMode(): void {
+  if (isMobileSelectModeOn.value) {
+    clearSelection()
+  }
+
   isMobileSelectModeOn.value = !isMobileSelectModeOn.value
 }
 
@@ -241,6 +253,10 @@ function toggleSubComponent(rowId: string): void {
   }
 
   expandedSubComponentRowIds.value = updated
+}
+
+function toggleRowSelected(item: TItem, isRangeSelect: boolean): void {
+  toggleItem(props.getKey(item), isRangeSelect)
 }
 
 function getGroupRowLabelCell(row: Row<DataTableFeatures, TItem>): DataTableCellDefinition | null {
@@ -404,10 +420,10 @@ const loadingRowColumnCount = computed<number>(
     />
 
     <DataTableMobileList
-      v-else
       :columns="props.columns"
       :expanded-item-keys="expandedMobileCardKeys"
       :get-key="props.getKey"
+      :has-visible-selection-action-bar="hasVisibleSelectionActionBar"
       :is-item-selected="isItemSelected"
       :is-selectable="isMobileSelectModeOn"
       :mobile-card="props.mobileCard"
@@ -425,12 +441,9 @@ const loadingRowColumnCount = computed<number>(
 
     <div
       ref="scrollContainerEl"
-      :class="{
-        'rounded-xl border border-secondary': props.variant === 'contained',
-      }"
       class="
-        hidden max-h-full w-full min-w-0 overflow-auto contain-layout
-        contain-paint
+        hidden max-h-full w-full min-w-0 overflow-auto rounded-xl border
+        border-secondary contain-layout contain-paint
         @md/data-table:block
       "
     >
@@ -604,7 +617,7 @@ const loadingRowColumnCount = computed<number>(
                     :is-selectable="props.isSelectable"
                     :view-model="entry.viewModel"
                     :visual-column-order-ids="visualColumnOrderIds"
-                    @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+                    @toggle-selected="toggleRowSelected(entry.viewModel.row.original, $event)"
                     @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
                   />
                 </div>
@@ -625,7 +638,7 @@ const loadingRowColumnCount = computed<number>(
               :is-selectable="props.isSelectable"
               :view-model="entry.viewModel"
               :visual-column-order-ids="visualColumnOrderIds"
-              @toggle-selected="toggleItem(props.getKey(entry.viewModel.row.original))"
+              @toggle-selected="toggleRowSelected(entry.viewModel.row.original, $event)"
               @toggle-sub-component="toggleSubComponent(entry.viewModel.row.id)"
             />
           </DataTableVirtualRows>
@@ -645,6 +658,7 @@ const loadingRowColumnCount = computed<number>(
       :actions="props.selectionActions"
       :models="selectedActionModels"
       :selected-count="selectedCount"
+      @clear="clearSelection"
     />
   </div>
 </template>

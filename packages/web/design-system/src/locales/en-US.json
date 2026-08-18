@@ -52,6 +52,7 @@
   "component.data_table.empty_state.no_data.title": "No data",
   "component.data_table.mobile_list.cancel_select_label": "Cancel",
   "component.data_table.mobile_list.select_label": "Select",
+  "component.data_table.row.toggle_selection_action.name": "Toggle selection",
   "component.data_table.row_actions_cell.label": "Row actions",
   "component.data_table.selection_action_bar.selected_count": "1 selected | {count} selected",
   "component.date_picker.next_month": "Next month",

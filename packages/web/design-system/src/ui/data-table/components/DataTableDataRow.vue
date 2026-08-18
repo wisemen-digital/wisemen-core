@@ -1,7 +1,9 @@
 <script setup lang="ts" generic="TItem extends RowData">
 import type { RowData } from '@tanstack/vue-table'
 import { FlexRender } from '@tanstack/vue-table'
+import { createAction } from '@wisemen/vue-core-actions'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import DataTableCell from '@/ui/data-table/components/DataTableCell.vue'
 import DataTableCheckboxCell from '@/ui/data-table/components/DataTableCheckboxCell.vue'
@@ -20,7 +22,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  toggleSelected: []
+  toggleSelected: [isRangeSelect: boolean]
   toggleSubComponent: []
 }>()
 
@@ -34,10 +36,23 @@ const cellsInVisualOrder = computed<VisibleCells>(() => DataTableUtil.toVisualCo
   (cell) => cell.column.id,
   props.visualColumnOrderIds,
 ))
+
+const i18n = useI18n()
+
+const toggleSelectionAction = createAction({
+  id: 'data-table-row-toggle-selection',
+  isApplicable: (ctx) => props.isSelectable && ctx.menuType === undefined,
+  name: () => i18n.t('component.data_table.row.toggle_selection_action.name'),
+  execute: () => emit('toggleSelected', false),
+  keyboardShortcut: {
+    key: 'X',
+  },
+})
 </script>
 
 <template>
   <DataTableRow
+    :focus-only-actions="[toggleSelectionAction]"
     :has-row-actions="props.hasRowActions"
     :inline-actions="props.viewModel.rowConfig?.actions.inline ?? []"
     :is-last="props.viewModel.isLast && !props.viewModel.isSubComponentExpanded"
@@ -48,7 +63,7 @@ const cellsInVisualOrder = computed<VisibleCells>(() => DataTableUtil.toVisualCo
     <DataTableCheckboxCell
       v-if="props.isSelectable"
       :is-checked="props.viewModel.isSelected"
-      @toggle="emit('toggleSelected')"
+      @toggle="(isRangeSelect) => emit('toggleSelected', isRangeSelect)"
     />
 
     <DataTableExpandCell

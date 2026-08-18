@@ -78,7 +78,7 @@ const indentStyle = computed<Record<string, string>>(() => ({
           :class="{
             '-rotate-90': !props.isExpanded,
           }"
-          class="size-3.5 shrink-0 text-disabled duration-150"
+          class="size-3.5 shrink-0 text-disabled"
         />
 
         <span
