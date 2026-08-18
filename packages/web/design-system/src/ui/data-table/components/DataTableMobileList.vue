@@ -20,6 +20,7 @@ import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfi
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
 
 const props = withDefaults(defineProps<{
+  hasVisibleSelectionActionBar?: boolean
   isItemSelected: (key: string) => boolean
   isSelectable?: boolean
   columns: DataTableColumn<TItem>[]
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<{
   rowViewModels: DataTableRowViewModel<TItem>[]
   onNextPage?: (() => void) | null
 }>(), {
+  hasVisibleSelectionActionBar: false,
   isSelectable: false,
   row: null,
   onNextPage: null,
@@ -170,6 +172,11 @@ const {
       <div
         v-if="paddingAfterPx > 0"
         :style="{ height: `${paddingAfterPx}px` }"
+      />
+
+      <div
+        v-if="props.hasVisibleSelectionActionBar"
+        class="h-[calc(env(safe-area-inset-bottom)+4rem)]"
       />
     </div>
   </div>

@@ -32,7 +32,7 @@ export const createBaseCheckboxStyle = tv({
       group-disabled/checkbox:text-fg-disabled-subtle
     `,
     root: `
-      group/checkbox flex items-center justify-start outline-none
+      group/checkbox touch-hitbox flex items-center justify-start outline-none
       disabled:cursor-not-allowed
     `,
   },

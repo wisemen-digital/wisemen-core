@@ -185,6 +185,12 @@ const selectedCount = computed<number>(
   () => (isAllSelected.value && props.totalCount !== null ? props.totalCount : selectedItems.value.length),
 )
 
+// The selection action bar floats over the bottom of the table, so the scrollable content needs
+// reserved space at the end to keep the last row from being covered whenever it's shown.
+const hasVisibleSelectionActionBar = computed<boolean>(
+  () => props.isSelectable && selectedCount.value > 0,
+)
+
 const selectedActionModels = computed<RegisteredActionContext['models']>(() => {
   const models = selectedItems.value.map((item) => props.row?.(item)?.model)
 
@@ -392,6 +398,7 @@ const loadingRowColumnCount = computed<number>(
         :columns="props.columns"
         :expanded-item-keys="expandedMobileCardKeys"
         :get-key="props.getKey"
+        :has-visible-selection-action-bar="hasVisibleSelectionActionBar"
         :is-item-selected="isItemSelected"
         :is-selectable="isMobileSelectModeOn"
         :mobile-card="props.mobileCard"
@@ -417,6 +424,7 @@ const loadingRowColumnCount = computed<number>(
       >
         <div
           :style="{ gridTemplateColumns }"
+          :class="{ 'pb-[calc(env(safe-area-inset-bottom)+4rem)]': hasVisibleSelectionActionBar }"
           class="grid w-max min-w-full"
           role="table"
         >
