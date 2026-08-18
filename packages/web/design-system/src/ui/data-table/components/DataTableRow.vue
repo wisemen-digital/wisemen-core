@@ -38,7 +38,7 @@ const allActions = computed<Action[]>(() => props.inlineActions.concat(props.mor
     :models="props.model === null ? [] : [props.model]"
   >
     <UIActionFocus
-      :actions="props.focusOnlyActions"
+      :actions="[...props.focusOnlyActions, ...allActions]"
       :models="props.model === null ? [] : [props.model]"
     >
       <div
