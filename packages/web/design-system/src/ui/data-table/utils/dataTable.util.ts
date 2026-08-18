@@ -1,7 +1,11 @@
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
 
 export const DATA_TABLE_EXPAND_COLUMN_WIDTH = '2.5rem'
-export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH = '2.5rem'
+// Wider than a bare `size-4` checkbox (16px) plus `px-xl` (16px each side) would strictly need —
+// with the sticky-left border now always a possibility (see `hasCheckboxOwnStickyBorder`), the
+// checkbox needs real breathing room on its right side before that divider, not just enough to
+// fit.
+export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH = '3rem'
 // Wide enough for two icon buttons (inline action + the `⋯` overflow trigger) — matches the
 // old `Table`'s actions cell width.
 export const DATA_TABLE_ACTIONS_COLUMN_WIDTH = '5rem'
@@ -12,7 +16,7 @@ export const DATA_TABLE_ACTIONS_COLUMN_WIDTH = '5rem'
 // and TanStack's own pixel `column.getSize()` values — the two can't be summed while one side
 // is a CSS rem string.
 export const DATA_TABLE_EXPAND_COLUMN_WIDTH_PX = 40
-export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX = 40
+export const DATA_TABLE_CHECKBOX_COLUMN_WIDTH_PX = 48
 export const DATA_TABLE_ACTIONS_COLUMN_WIDTH_PX = 80
 
 // Absolute floor for manual drag-resize — no column can ever be dragged below this, regardless

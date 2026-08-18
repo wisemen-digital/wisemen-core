@@ -34,18 +34,28 @@ const indentStyle = computed<Record<string, string>>(() => ({
 </script>
 
 <template>
+  <!--
+    Not a grid/subgrid: `DataTableGroupRow` is always rendered inside an ancestor that's already
+    `col-span-full` (see `DataTable.vue`'s group-header wrapper), so this root doesn't need its own
+    subgrid to span the full row width — it renders exactly one child, never multiple column-track
+    items. Kept as a plain block deliberately: `position: sticky` only has a visible effect on a
+    box narrower than its scrolling container, and a `col-span-full grid-cols-subgrid` box is
+    already exactly as wide as the scrollable content — nothing for `left: 0` to "stick" against.
+    Mirrors `ui/table/components/TableBodyGroup.vue`'s working equivalent (a plain `flex` row, not
+    a grid item), rather than fighting sticky-inside-subgrid mechanics.
+  -->
   <div
     :class="{
       'bg-secondary': props.depth === 0,
       'bg-tertiary': props.depth > 0,
       'border-b border-secondary': !props.isLast,
     }"
-    class="col-span-full grid grid-cols-subgrid"
+    class="col-span-full flex h-10 items-center"
     role="row"
   >
     <div
       :style="indentStyle"
-      class="col-span-full flex h-10 items-center gap-xs pr-xl"
+      class="sticky left-0 flex w-max max-w-full items-center gap-xs pr-xl"
     >
       <BaseCheckbox
         v-if="props.isSelectable"
@@ -58,7 +68,7 @@ const indentStyle = computed<Record<string, string>>(() => ({
 
       <button
         class="
-          flex flex-1 items-center gap-xs text-left outline-none
+          flex items-center gap-xs text-left outline-none
           focus-visible:bg-tertiary
         "
         type="button"

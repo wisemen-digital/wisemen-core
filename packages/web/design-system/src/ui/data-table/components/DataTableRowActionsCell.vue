@@ -7,6 +7,7 @@ import type { RegisteredActionContext } from '@/register'
 import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu/index'
 import { UIActionTrigger } from '@/ui/action-trigger/index'
 import { UIIconButton } from '@/ui/button'
+import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = defineProps<{
   inlineActions: Action[]
@@ -15,13 +16,20 @@ const props = defineProps<{
 }>()
 
 const i18n = useI18n()
+
+const {
+  isScrolledFromRight,
+} = useInjectDataTableContext()
 </script>
 
 <template>
   <div
+    :class="{
+      'border-l border-secondary': isScrolledFromRight,
+    }"
     class="
-      sticky right-0 z-2 flex h-10 items-center justify-end gap-xxs border-l
-      border-secondary bg-primary px-xl
+      sticky right-0 z-2 flex h-10 items-center justify-end gap-xxs bg-primary
+      px-xl
       not-has-data-[state=open]:group-hover/row:bg-primary-hover
       group-has-focus-visible/row:bg-tertiary
     "

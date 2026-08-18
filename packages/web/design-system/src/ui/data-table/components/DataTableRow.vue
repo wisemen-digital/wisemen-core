@@ -7,6 +7,8 @@ import type { RegisteredActionContext } from '@/register'
 import { UIActionContextMenu } from '@/ui/action-context-menu/index'
 import { UIActionFocus } from '@/ui/action-focus/index'
 import DataTableRowActionsCell from '@/ui/data-table/components/DataTableRowActionsCell.vue'
+import DataTableRowClickCatcher from '@/ui/data-table/components/DataTableRowClickCatcher.vue'
+import type { DataTableRowClick } from '@/ui/data-table/types/dataTableRowConfig.type'
 
 const props = withDefaults(defineProps<{
   hasRowActions?: boolean
@@ -14,7 +16,7 @@ const props = withDefaults(defineProps<{
   inlineActions?: Action[]
   model?: RegisteredActionContext['models'][number] | null
   moreActions?: Action[]
-  onRowClick?: (() => void) | null
+  onRowClick?: DataTableRowClick | null
 }>(), {
   hasRowActions: false,
   isLast: false,
@@ -41,20 +43,24 @@ const allActions = computed<Action[]>(() => props.inlineActions.concat(props.mor
     >
       <div
         :class="{
-          'border-b border-secondary': !props.isLast,
+          'border-b border-secondary has-[[data-row-actions]_[data-state=open]]:border-secondary/25 data-[state=open]:border-secondary/25': !props.isLast,
         }"
         class="
           group/row relative col-span-full grid grid-cols-subgrid bg-primary
+          transition-[filter,opacity] duration-150
+          group-has-[[data-context-menu-trigger][data-state=open]]/body:opacity-25
+          group-has-[[data-row-actions]_[data-state=open]]/body:opacity-25
+          has-[[data-row-actions]_[data-state=open]]:opacity-100
+          data-[state=open]:opacity-100!
         "
         role="row"
       >
         <!-- Row-level keyboard tab stop — mouse clicks go through DataTableCell's own catchers. -->
-        <button
-          v-if="props.onRowClick !== null"
+        <DataTableRowClickCatcher
+          :is-row-level="true"
           :aria-label="i18n.t('component.table.row.view_details_label')"
-          class="pointer-events-none absolute inset-0 z-0 outline-none"
-          type="button"
-          @click="props.onRowClick"
+          :click="props.onRowClick"
+          :model="props.model"
         />
 
         <slot />

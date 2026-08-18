@@ -125,24 +125,26 @@ from the same item, by one function.
 
 function row(item: User): DataTableRowConfig | null {
   return {
-    onClick: () => router.push({ name: 'user-detail', params: { id: item.id } }),
+    onClick: createDataTableRowLinkClick({ name: 'user-detail', params: { id: item.id } }),
     model: { key: item.id, modelName: 'user' },
     actions: { inline: [viewAction(item)], more: [deleteAction(item)] },
   }
 }
 ```
 
-Two real behavior changes to be aware of:
+`onClick` is a typed `link | action` union (`DataTableRowClick`), built via
+`createDataTableRowLinkClick(to)`/`createDataTableRowActionClick(action)` — never construct it by
+hand. `createDataTableRowLinkClick` restores `getLink`'s real `<a>`/`RouterLink` rendering: rows
+support middle-click, cmd-click and "open in new tab" again, the same as the old `Table`. Use
+`createDataTableRowActionClick` instead when the click should run through the Action registry
+(`isApplicable`/`disabledReason`/execution state), the same resolution `actions.inline`/`.more`
+already get — not for plain non-navigational side effects, which don't need either variant (a row
+with no `onClick` at all just has no click target).
 
-1. **`getLink` has no direct replacement.** The old prop rendered a real `<a href>` via
-   `RegisteredRouteLocationRaw`, so rows supported middle-click, cmd-click and "open in new tab".
-   `row().onClick` is a click handler, so **those all stop working** — you `router.push` yourself.
-   If a table depends on open-in-new-tab, that's a genuine regression; raise it rather than
-   quietly shipping it.
-2. **`UITableCellInteractiveElement` is gone and unnecessary.** The old row-wide `<a>` overlay
-   meant interactive cell content had to be wrapped to stop click-through. `DataTable` puts a
-   click-catcher *underneath* each cell's content instead, so buttons and links inside a cell
-   already take priority. Drop the wrapper.
+One real behavior change to be aware of: **`UITableCellInteractiveElement` is gone and
+unnecessary.** The old row-wide `<a>` overlay meant interactive cell content had to be wrapped to
+stop click-through. `DataTable` puts a click-catcher *underneath* each cell's content instead, so
+buttons and links inside a cell already take priority. Drop the wrapper.
 
 Actions move from table-wide to per-row: `actions.inline` render as always-visible icon buttons
 in a trailing column, `actions.more` sit behind its `⋯` menu **and** become the row's right-click

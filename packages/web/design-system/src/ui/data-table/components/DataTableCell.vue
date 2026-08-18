@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import type { RegisteredActionContext } from '@/register'
+import DataTableRowClickCatcher from '@/ui/data-table/components/DataTableRowClickCatcher.vue'
 import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
+import type { DataTableRowClick } from '@/ui/data-table/types/dataTableRowConfig.type'
 
 const props = withDefaults(defineProps<{
   columnId?: string | null
-  onRowClick?: (() => void) | null
+  model?: RegisteredActionContext['models'][number] | null
+  onRowClick?: DataTableRowClick | null
 }>(), {
   columnId: null,
+  model: null,
   onRowClick: null,
 })
 
@@ -16,6 +21,8 @@ const {
   leftStickyOffsetPxByColumnId,
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
+  isScrolledFromLeft,
+  isScrolledFromRight,
 } = useInjectDataTableContext()
 
 const leftOffsetPx = computed<number | null>(
@@ -28,9 +35,11 @@ const rightOffsetPx = computed<number | null>(
 const isStickyLeft = computed<boolean>(() => leftOffsetPx.value !== null)
 const isStickyRight = computed<boolean>(() => rightOffsetPx.value !== null)
 const hasLeftBorder = computed<boolean>(() => props.columnId !== null
-  && props.columnId === leftStickyBorderColumnId.value)
+  && props.columnId === leftStickyBorderColumnId.value
+  && isScrolledFromLeft.value)
 const hasRightBorder = computed<boolean>(() => props.columnId !== null
-  && props.columnId === rightStickyBorderColumnId.value)
+  && props.columnId === rightStickyBorderColumnId.value
+  && isScrolledFromRight.value)
 </script>
 
 <template>
@@ -53,12 +62,9 @@ const hasRightBorder = computed<boolean>(() => props.columnId !== null
     role="cell"
   >
     <!-- Row click catcher, repeated per cell; content below is pointer-events-none so it falls through. -->
-    <button
-      v-if="props.onRowClick !== null"
-      class="absolute inset-0 z-0"
-      tabindex="-1"
-      type="button"
-      @click="props.onRowClick"
+    <DataTableRowClickCatcher
+      :click="props.onRowClick"
+      :model="props.model"
     />
 
     <div class="pointer-events-none relative z-1 flex size-full items-center">

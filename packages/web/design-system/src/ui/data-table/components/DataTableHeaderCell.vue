@@ -27,6 +27,8 @@ const {
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
   isColumnResizeDisabled,
+  isScrolledFromLeft,
+  isScrolledFromRight,
   setColumnSize,
   sort,
 } = useInjectDataTableContext()
@@ -42,8 +44,12 @@ const leftOffsetPx = computed<number | null>(() => leftStickyOffsetPxByColumnId.
 const rightOffsetPx = computed<number | null>(() => rightStickyOffsetPxByColumnId.value.get(props.columnKey) ?? null)
 const isStickyLeft = computed<boolean>(() => leftOffsetPx.value !== null)
 const isStickyRight = computed<boolean>(() => rightOffsetPx.value !== null)
-const hasLeftBorder = computed<boolean>(() => props.columnKey === leftStickyBorderColumnId.value)
-const hasRightBorder = computed<boolean>(() => props.columnKey === rightStickyBorderColumnId.value)
+const hasLeftBorder = computed<boolean>(
+  () => props.columnKey === leftStickyBorderColumnId.value && isScrolledFromLeft.value,
+)
+const hasRightBorder = computed<boolean>(
+  () => props.columnKey === rightStickyBorderColumnId.value && isScrolledFromRight.value,
+)
 
 const isResizing = computed<boolean>(() => props.header.column.getIsResizing())
 

@@ -26,6 +26,7 @@ import {
   DATA_TABLE_ROW_HEIGHT_IN_PX,
   useDataTableGroupedVirtualScroller,
 } from '@/ui/data-table/composables/dataTableGroupedVirtualScroller.composable'
+import { useDataTableHorizontalScrollState } from '@/ui/data-table/composables/dataTableHorizontalScrollState.composable'
 import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTableInfiniteScroll.composable'
 import { useDataTableStickyGroupChunks } from '@/ui/data-table/composables/dataTableStickyGroupChunks.composable'
 import { useDataTableVirtualScroller } from '@/ui/data-table/composables/dataTableVirtualScroller.composable'
@@ -66,6 +67,10 @@ const scrollContainerEl = shallowRef<HTMLElement | null>(null)
 
 useDataTableInfiniteScroll(scrollContainerEl, computed(() => props.onNextPage))
 
+const {
+  isScrolledFromLeft, isScrolledFromRight,
+} = useDataTableHorizontalScrollState(scrollContainerEl)
+
 // Computed directly from `props.data`, independent of TanStack's row model, so `hasSubComponent`
 // (needed by `useDataTable` for the grid template, below) has no circular dependency on `table`.
 const subComponentByItemKey = computed<Map<string, Component>>(() => {
@@ -101,6 +106,7 @@ const {
   leftStickyOffsetPxByColumnId,
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
+  hasCheckboxOwnStickyBorder,
   isLeadingStickyRegionActive,
   gridTemplateColumns,
   leadingStickyOffsetsPx,
@@ -124,10 +130,13 @@ useProvideDataTableContext({
   leftStickyOffsetPxByColumnId,
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
+  hasCheckboxOwnStickyBorder,
   isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
   isLastColumnSticky: computed(() => props.isLastColumnSticky),
   isLeadingStickyRegionActive,
+  isScrolledFromLeft,
+  isScrolledFromRight,
   leadingStickyOffsetsPx,
   setColumnSize,
   sort: computed(() => props.sort),
@@ -451,9 +460,12 @@ const loadingRowColumnCount = computed<number>(
 
               <div
                 v-if="hasRowActions"
+                :class="{
+                  'border-l border-secondary': isScrolledFromRight,
+                }"
                 class="
                   sticky top-0 right-0 z-20 flex h-10 items-center border-b
-                  border-l border-secondary bg-secondary px-xl
+                  border-secondary bg-secondary px-xl
                 "
                 role="columnheader"
               />
@@ -461,7 +473,7 @@ const loadingRowColumnCount = computed<number>(
           </div>
 
           <div
-            class="contents"
+            class="group/body contents"
             role="rowgroup"
           >
             <DataTableVirtualRows

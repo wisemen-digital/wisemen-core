@@ -64,8 +64,18 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   (which aren't real TanStack columns) join the sticky-left region automatically whenever
   anything is pinned left — they scroll and stick together with the first data column, not
   independently of it.
+- The checkbox column is **always sticky-left** whenever `isSelectable` is on — unconditionally,
+  even if `isFirstColumnSticky` is `false` and no column is pinned via `isSticky: 'left'`.
+  Selection should never be able to scroll out of view. When the checkbox ends up as the *only*
+  thing in the sticky-left region (nothing else pinned), it draws its own trailing border so it
+  still has a visible divider from the scrolling content next to it.
 - Only the outer edge of a multi-column sticky region gets a border (the rightmost column of a
   sticky-left group, the leftmost of a sticky-right group) — not between every pinned column.
+- A sticky region's edge border only shows once the table is actually scrolled away from that
+  edge — a table with pinned columns that never needs to scroll (nothing overflows) shows no
+  border at rest. Mirrors the old `Table`'s `isScrolledFromLeft`, mirrored for the right edge too
+  and applied everywhere a sticky/fixed edge draws a divider: real pinned columns, the checkbox's
+  own border, and the trailing actions column's border.
 
 ## Rows & selection
 
@@ -86,14 +96,18 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 
 ## Row actions & click
 
-- **`row`**: `(item: TItem) => { onClick?: () => void, model: RegisteredActionContext['models'][number], actions: { inline: Action[], more: Action[] } } | null`.
+- **`row`**: `(item: TItem) => { onClick?: DataTableRowClick | null, model: RegisteredActionContext['models'][number], actions: { inline: Action[], more: Action[] } } | null`.
   One function replaces the old `getLink`/`getActionModel` top-level props — everything about a
   row's click/navigation and actions is resolved once, from the same item, in one place. Return
   `null` for a row with no click target/actions at all.
-- **`onClick`**: drives the desktop whole-row click target (a per-cell click-catcher underneath
-  every cell's content, so real interactive content inside a cell still takes priority — see
-  `DataTableCell.vue`) and the mobile card's "Go to detail" button (expanded-card only, unchanged
-  visually from the old `getLink`-driven version).
+- **`onClick`**: a typed `{ type: 'link', to } | { type: 'action', action }` union — built via
+  `createDataTableRowLinkClick(to)`/`createDataTableRowActionClick(action)`, never by hand. The
+  `link` variant renders a real `RouterLink`/anchor (native cmd/middle-click, right-click-copy-link
+  all work); the `action` variant wraps a genuine `Action`, resolved through the same registry
+  (`isApplicable`/`disabledReason`/execution state) as `actions.inline`/`.more`. Drives the desktop
+  whole-row click target (a per-cell click-catcher underneath every cell's content, so real
+  interactive content inside a cell still takes priority — see `DataTableCell.vue`) and the mobile
+  card's "Go to detail" button (expanded-card only).
 - **`actions.inline`**: always-visible icon buttons in a trailing actions column. Rendered via
   `UIActionTrigger`, so `isApplicable`/`disabledReason`/execution state are the same as any other
   registry-driven action, not hand-rolled.
@@ -107,6 +121,10 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   checkbox/expand columns) — not a real pinned TanStack column, so it never participates in
   resize/reorder/visibility. Its width is always reserved once `row` is set at all, even for a
   specific row whose own `row(item)` resolves to no actions, so column edges stay aligned.
+- **Row fade when a menu is open**: opening any row's `⋯` overflow menu or right-click context
+  menu dims every other row (`opacity-25`), keeping visual focus on the row being acted on; that
+  row itself stays at full opacity. Pure CSS (`:has()` selectors keyed off the menu trigger's own
+  `data-state`), no JS state — ported verbatim from the old `Table`.
 
 ## Data lifecycle (loading, error, empty, infinite scroll)
 
@@ -142,6 +160,10 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   separate label string to author.
 - `groupedColumnMode: false` — grouped column is *not* reordered to the front (TanStack's
   default). DataTable renders its own group-header row instead.
+- The group header's checkbox + label/chevron stick to the scroll container's left edge together
+  (`sticky left-0`) whenever `isSelectable` is on — unconditional, not tied to any column being
+  pinned. The header is one continuous banner (not per-column cells like a data row), so it sticks
+  as a whole rather than only its checkbox.
 - Grouping and sub-component expansion are two independent mechanisms — see "Grouping vs. Sub
   component" in `CONTEXT.md` for the full state-implementation split.
 - Row drag & drop is **benched** — no real use case yet, and conceptually conflicts with `sort`

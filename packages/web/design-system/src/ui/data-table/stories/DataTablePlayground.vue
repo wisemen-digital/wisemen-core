@@ -28,6 +28,7 @@ import {
   createDataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableColumn.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
+import { createDataTableRowActionClick } from '@/ui/data-table/types/dataTableRowConfig.type'
 import type { TableSelectionState } from '@/ui/table/types/table.type'
 
 interface User {
@@ -150,10 +151,15 @@ function row(item: User): DataTableRowConfig {
       key: item.id,
       modelName: 'user',
     },
-    onClick: () => {
-      // eslint-disable-next-line no-console
-      console.log('[DataTablePlayground] row clicked', item.id)
-    },
+    onClick: createDataTableRowActionClick(createAction({
+      id: `row-click-user-${item.id}`,
+      name: () => 'Row click',
+      availableWhenUnauthenticated: true,
+      execute: () => {
+        // eslint-disable-next-line no-console
+        console.log('[DataTablePlayground] row clicked', item.id)
+      },
+    })),
   }
 }
 

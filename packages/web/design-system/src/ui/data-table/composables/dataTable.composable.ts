@@ -239,8 +239,24 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     }
   })
 
-  // True once at least one real column is pinned left.
-  const isLeadingStickyRegionActive = computed<boolean>(() => table.getLeftLeafColumns().length > 0)
+  // True once at least one real column is pinned left, or the checkbox column is present — the
+  // checkbox always sticks regardless of `isFirstColumnSticky`, since selection should never be
+  // able to scroll out of view.
+  const isLeadingStickyRegionActive = computed<boolean>(
+    () => table.getLeftLeafColumns().length > 0 || (options.isSelectable?.value ?? false),
+  )
+
+  // The checkbox column normally has no border of its own — the sticky-left region's trailing
+  // border is drawn by whichever real column (or the expand column) sits at the region's edge.
+  // When the checkbox is unconditionally sticky (above) but nothing else joins it — no expand
+  // column, no column actually pinned left — it's the last thing in the region and needs its own
+  // border, or the sticky checkbox would have no visible divider from the scrolling content next
+  // to it.
+  const hasCheckboxOwnStickyBorder = computed<boolean>(
+    () => (options.isSelectable?.value ?? false)
+      && !(options.hasSubComponent?.value ?? false)
+      && table.getLeftLeafColumns().length === 0,
+  )
 
   // Cumulative left offset (px) per real pinned column, keyed by column id.
   const leftStickyOffsetPxByColumnId = computed<Map<string, number>>(() => {
@@ -293,6 +309,7 @@ export function useDataTable<TItem>(options: UseDataTableOptions<TItem>) {
     leftStickyOffsetPxByColumnId,
     rightStickyBorderColumnId,
     rightStickyOffsetPxByColumnId,
+    hasCheckboxOwnStickyBorder,
     isLeadingStickyRegionActive,
     gridTemplateColumns,
     leadingStickyOffsetsPx,

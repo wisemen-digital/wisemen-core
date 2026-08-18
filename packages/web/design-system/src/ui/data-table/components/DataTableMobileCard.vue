@@ -11,14 +11,17 @@ import { useI18n } from 'vue-i18n'
 
 import type { RegisteredActionContext } from '@/register'
 import { UIActionDropdownMenu } from '@/ui/action-dropdown-menu'
+import { UIActionTrigger } from '@/ui/action-trigger'
 import AnimateHeight from '@/ui/animate-height/AnimateHeight.vue'
 import {
   UIButton,
   UIIconButton,
+  UILink,
 } from '@/ui/button'
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
 import DataTableCellRenderer from '@/ui/data-table/components/DataTableCellRenderer.vue'
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
+import type { DataTableRowClick } from '@/ui/data-table/types/dataTableRowConfig.type'
 import {
   UIDetailListGroup,
   UIDetailListGroupItem,
@@ -45,7 +48,7 @@ const props = withDefaults(defineProps<{
   primaryCell: DataTableCell | null
   secondaryCell: DataTableCell | null
   subComponent?: Component | null
-  onClick?: (() => void) | null
+  onClick?: DataTableRowClick | null
 }>(), {
   isSelectable: false,
   isSelected: false,
@@ -183,14 +186,32 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
             v-if="hasFooter"
             class="flex items-center gap-xs px-md py-sm"
           >
-            <UIButton
-              v-if="props.onClick !== null"
+            <UILink
+              v-if="props.onClick?.type === 'link'"
               :icon-right="ArrowUpRightIcon"
               :label="i18n.t('component.table.row.view_details_label')"
+              :to="props.onClick.to"
               size="sm"
               variant="secondary"
-              @click="props.onClick"
             />
+
+            <UIActionTrigger
+              v-else-if="props.onClick?.type === 'action'"
+              :action="props.onClick.action"
+              :is-current-context-only="true"
+              :models="props.model === null ? [] : [props.model]"
+            >
+              <template #default="{ canExecute, isExecuting }">
+                <UIButton
+                  :icon-right="ArrowUpRightIcon"
+                  :is-disabled="!canExecute"
+                  :is-loading="isExecuting"
+                  :label="i18n.t('component.table.row.view_details_label')"
+                  size="sm"
+                  variant="secondary"
+                />
+              </template>
+            </UIActionTrigger>
 
             <UIActionDropdownMenu
               v-if="allActions.length > 0"

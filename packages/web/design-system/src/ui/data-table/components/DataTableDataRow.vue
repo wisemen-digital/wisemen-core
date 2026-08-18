@@ -47,6 +47,7 @@ const emit = defineEmits<{
       v-for="cell of props.viewModel.row.getVisibleCells()"
       :key="cell.column.id"
       :column-id="cell.column.id"
+      :model="props.viewModel.rowConfig?.model ?? null"
       :on-row-click="props.viewModel.rowConfig?.onClick ?? null"
     >
       <FlexRender

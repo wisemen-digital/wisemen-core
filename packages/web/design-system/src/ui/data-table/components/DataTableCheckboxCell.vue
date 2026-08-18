@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
@@ -16,8 +17,13 @@ const emit = defineEmits<{
 const i18n = useI18n()
 
 const {
-  isLeadingStickyRegionActive, leadingStickyOffsetsPx,
+  hasCheckboxOwnStickyBorder,
+  isLeadingStickyRegionActive,
+  isScrolledFromLeft,
+  leadingStickyOffsetsPx,
 } = useInjectDataTableContext()
+
+const hasBorder = computed<boolean>(() => hasCheckboxOwnStickyBorder.value && isScrolledFromLeft.value)
 </script>
 
 <template>
@@ -27,6 +33,7 @@ const {
     }"
     :class="{
       'sticky z-2': isLeadingStickyRegionActive,
+      'border-r border-secondary': hasBorder,
     }"
     class="
       flex h-10 items-center overflow-hidden bg-primary px-xl text-xs
