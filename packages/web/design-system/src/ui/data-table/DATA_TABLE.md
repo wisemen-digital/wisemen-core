@@ -21,6 +21,11 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   `createDataTableCustomCell`. This
   is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
   the factory keeps them in sync structurally.
+- **`variant`** — `'contained'` (default) wraps the desktop table in a rounded bordered card,
+  matching the old `Table`'s default look; `'full-page'` drops the border/rounding for an
+  edge-to-edge table (e.g. when a page's own layout already provides the frame). Chrome only —
+  row height, row borders, and the mobile list (which has no border/rounding either way) are
+  unaffected.
 
 ## Column sizing
 
@@ -142,11 +147,14 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   10-row skeleton in place of the rows (same visual as the old `Table`'s `TableLoading`).
 - **`isFetchingNextPage`**: true while a next-page fetch is in flight and rows already exist.
   Renders the same skeleton, appended below the already-loaded rows instead of replacing them.
-- **`error`**: `ApiError | null`. When set, replaces the entire row area with the `#error` slot
-  (scoped prop `{ error }`) or, by default, `UIErrorState`. Takes priority over the empty state.
+- **`error`**: `ApiError | null`. When set, replaces the row/body area with the `#error` slot
+  (scoped prop `{ error }`) or, by default, `UIErrorState` — the header row and its columns stay
+  visible above it (desktop only; on mobile, which has no header row, the state replaces the
+  whole list). Takes priority over the empty state.
 - **Empty state**: shown when `data.length === 0 && !isLoading && error === null` — default
   `UIEmptyState`, no slot override yet (DataTable has no filter/search prop surface to key a
-  "no results" variant off of, unlike the old `Table`).
+  "no results" variant off of, unlike the old `Table`). Same header-stays-visible treatment as
+  the error state on desktop.
 - **`onNextPage`**: called when the active scroll container (desktop flat, desktop grouped, or
   mobile — whichever is actually mounted) nears its bottom, or immediately if the loaded rows
   don't fill/overflow the container at all. `null`/omitted disables the trigger entirely — for

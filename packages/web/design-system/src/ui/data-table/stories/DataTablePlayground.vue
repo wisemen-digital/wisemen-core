@@ -73,6 +73,7 @@ const props = withDefaults(defineProps<{
   // left; pick one side per column key.
   stickyLeftColumnKeys?: string[]
   stickyRightColumnKeys?: string[]
+  variant?: 'contained' | 'full-page'
 }>(), {
   hasRowActions: false,
   hasSubComponent: false,
@@ -87,6 +88,7 @@ const props = withDefaults(defineProps<{
   groupBy: null,
   stickyLeftColumnKeys: () => [],
   stickyRightColumnKeys: () => [],
+  variant: 'contained',
 })
 
 function getStickySide(columnKey: string): 'left' | 'right' | undefined {
@@ -434,6 +436,7 @@ function subComponent(item: User) {
       :sort="sort"
       :sub-component="props.hasSubComponent ? subComponent : null"
       :total-count="props.isSimulatingInfiniteScroll ? sortedData.length : null"
+      :variant="props.variant"
       class="min-h-0 flex-1"
       @select="onSelect"
     />

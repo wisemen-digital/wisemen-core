@@ -67,6 +67,14 @@ const meta = {
       control: 'check',
       options: STICKY_COLUMN_KEY_OPTIONS,
     },
+    variant: {
+      control: 'select',
+      description: 'Chrome only: \'contained\' wraps the table in a rounded bordered card, \'full-page\' renders edge-to-edge with no border/rounding.',
+      options: [
+        'contained',
+        'full-page',
+      ],
+    },
   },
   tags: [
     'autodocs',
@@ -93,6 +101,7 @@ export const Default: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -111,6 +120,7 @@ export const StickyColumns: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -136,6 +146,7 @@ export const StickyColumnByKey: Story = {
       'status',
     ],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -163,6 +174,7 @@ export const StickyColumnsBothSides: Story = {
     stickyRightColumnKeys: [
       'balance',
     ],
+    variant: 'contained',
   },
 }
 
@@ -181,6 +193,7 @@ export const Grouped: Story = {
     groupBy: 'department',
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -199,6 +212,7 @@ export const GroupedTwoLevels: Story = {
     groupBy: 'department+status',
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -217,6 +231,7 @@ export const SubComponent: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -238,6 +253,7 @@ export const SubComponentMobile: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -256,6 +272,7 @@ export const Selectable: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -274,6 +291,7 @@ export const SelectableGrouped: Story = {
     groupBy: 'department',
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -292,6 +310,7 @@ export const Mobile: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -310,6 +329,7 @@ export const MobileSelectable: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -332,6 +352,7 @@ export const InfiniteScroll: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -351,6 +372,7 @@ export const Loading: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -371,6 +393,7 @@ export const ErrorState: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -390,6 +413,7 @@ export const Empty: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
   },
 }
 
@@ -411,5 +435,28 @@ export const RowActions: Story = {
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],
+    variant: 'contained',
+  },
+}
+
+// 'full-page' drops the rounded border/card chrome for an edge-to-edge table — e.g. when a
+// page's own layout already provides the frame. Row height, row borders, and empty/error state
+// content are unaffected; only the outer border/rounding differs from `Default`.
+export const FullPage: Story = {
+  args: {
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: false,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'full-page',
   },
 }

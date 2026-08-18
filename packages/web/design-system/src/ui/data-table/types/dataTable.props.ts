@@ -111,6 +111,13 @@ export interface DataTableProps<TItem> {
    */
   totalCount?: number | null
   /**
+   * `'contained'` (default) wraps the table in a rounded card with its own border, matching the
+   * old `Table`'s default look. `'full-page'` drops the border/rounding for an edge-to-edge
+   * table, e.g. when a page's own layout already provides the frame. Chrome only — row height,
+   * borders between rows, and empty/error state content are unaffected by this prop.
+   */
+  variant?: 'contained' | 'full-page'
+  /**
    * Called when the user scrolls near the end of the loaded rows, or when the loaded rows
    * don't fill the scroll container at all — the signal to fetch the next page. Pass `null`
    * (default) when there is no next page, e.g. all data is already loaded client-side.
