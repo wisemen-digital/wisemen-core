@@ -281,11 +281,13 @@ export function useDataTable<TItem extends RowData>(options: UseDataTableOptions
     }
   })
 
-  // True once at least one real column is pinned left, or the checkbox column is present — the
-  // checkbox always sticks regardless of `isFirstColumnSticky`, since selection should never be
-  // able to scroll out of view.
+  // True once at least one real column is pinned left, or the checkbox/expand column is present —
+  // both always stick regardless of `isFirstColumnSticky`, since selection and row-expansion
+  // controls should never be able to scroll out of view.
   const isLeadingStickyRegionActive = computed<boolean>(
-    () => table.getStartLeafColumns().length > 0 || (options.isSelectable?.value ?? false),
+    () => table.getStartLeafColumns().length > 0
+      || (options.isSelectable?.value ?? false)
+      || (options.hasSubComponent?.value ?? false),
   )
 
   // The checkbox column normally has no border of its own — the sticky-left region's trailing
@@ -297,6 +299,14 @@ export function useDataTable<TItem extends RowData>(options: UseDataTableOptions
   const hasCheckboxOwnStickyBorder = computed<boolean>(
     () => (options.isSelectable?.value ?? false)
       && !(options.hasSubComponent?.value ?? false)
+      && table.getStartLeafColumns().length === 0,
+  )
+
+  // Mirrors `hasCheckboxOwnStickyBorder` for the expand column — it's the sticky region's trailing
+  // edge (and so needs its own border) whenever it's present and no real column is pinned left,
+  // regardless of whether the checkbox column precedes it.
+  const hasExpandOwnStickyBorder = computed<boolean>(
+    () => (options.hasSubComponent?.value ?? false)
       && table.getStartLeafColumns().length === 0,
   )
 
@@ -352,6 +362,7 @@ export function useDataTable<TItem extends RowData>(options: UseDataTableOptions
     rightStickyBorderColumnId,
     rightStickyOffsetPxByColumnId,
     hasCheckboxOwnStickyBorder,
+    hasExpandOwnStickyBorder,
     isLeadingStickyRegionActive,
     gridTemplateColumns,
     leadingStickyOffsetsPx,

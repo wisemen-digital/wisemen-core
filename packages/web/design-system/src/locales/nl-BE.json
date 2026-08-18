@@ -50,6 +50,8 @@
   "component.data_table.cell_location.open_in_google_maps_label": "Openen in Google Maps",
   "component.data_table.empty_state.no_data.description": "Er zijn nog geen items om weer te geven.",
   "component.data_table.empty_state.no_data.title": "Geen gegevens",
+  "component.data_table.expand_cell.collapse_label": "Rij inklappen",
+  "component.data_table.expand_cell.expand_label": "Rij uitklappen",
   "component.data_table.mobile_list.cancel_select_label": "Annuleren",
   "component.data_table.mobile_list.select_label": "Selecteren",
   "component.data_table.row.toggle_selection_action.name": "Selectie omschakelen",

@@ -50,6 +50,8 @@
   "component.data_table.cell_location.open_in_google_maps_label": "Open in Google Maps",
   "component.data_table.empty_state.no_data.description": "There are no items to display yet.",
   "component.data_table.empty_state.no_data.title": "No data",
+  "component.data_table.expand_cell.collapse_label": "Collapse row",
+  "component.data_table.expand_cell.expand_label": "Expand row",
   "component.data_table.mobile_list.cancel_select_label": "Cancel",
   "component.data_table.mobile_list.select_label": "Select",
   "component.data_table.row.toggle_selection_action.name": "Toggle selection",

@@ -17,6 +17,12 @@ interface DataTableContext {
    * column pinned left) — it needs its own trailing border since it's the whole sticky region.
    */
   hasCheckboxOwnStickyBorder: ComputedRef<boolean>
+  /**
+   * True when the expand column is sticky and no real column is pinned left — it's the trailing
+   * edge of the sticky region (whether or not the checkbox column precedes it) and needs its own
+   * border.
+   */
+  hasExpandOwnStickyBorder: ComputedRef<boolean>
   isColumnResizeDisabled: ComputedRef<boolean>
   isFirstColumnSticky: ComputedRef<boolean>
   isLastColumnSticky: ComputedRef<boolean>

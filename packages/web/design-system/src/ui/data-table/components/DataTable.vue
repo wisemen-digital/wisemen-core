@@ -106,6 +106,7 @@ const {
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
   hasCheckboxOwnStickyBorder,
+  hasExpandOwnStickyBorder,
   isLeadingStickyRegionActive,
   gridTemplateColumns,
   leadingStickyOffsetsPx,
@@ -131,6 +132,7 @@ useProvideDataTableContext({
   rightStickyBorderColumnId,
   rightStickyOffsetPxByColumnId,
   hasCheckboxOwnStickyBorder,
+  hasExpandOwnStickyBorder,
   isColumnResizeDisabled: computed(() => props.isColumnResizeDisabled),
   isFirstColumnSticky: computed(() => props.isFirstColumnSticky),
   isLastColumnSticky: computed(() => props.isLastColumnSticky),
@@ -370,6 +372,13 @@ const loadingRowColumnCount = computed<number>(
     + (hasRowActions.value ? 1 : 0)
     + visibleColumns.value.length,
 )
+
+// Whether the desktop table shows an overlay instead of rows — an empty/error state should always
+// stay centered on the visible viewport, never pushed off-center (or scrollable to) by a wide
+// header row that overflows the container.
+const hasDesktopOverlay = computed<boolean>(
+  () => props.error !== null || (props.data.length === 0 && !props.isLoading),
+)
 </script>
 
 <template>
@@ -441,12 +450,43 @@ const loadingRowColumnCount = computed<number>(
 
     <div
       ref="scrollContainerEl"
+      :class="{
+        'overflow-auto': !hasDesktopOverlay,
+        'overflow-hidden': hasDesktopOverlay,
+      }"
       class="
-        hidden max-h-full w-full min-w-0 overflow-auto rounded-xl border
+        relative hidden min-h-0 w-full min-w-0 flex-1 rounded-xl border
         border-secondary contain-layout contain-paint
         @md/data-table:block
       "
     >
+      <div
+        v-if="hasDesktopOverlay"
+        class="
+          absolute inset-x-0 top-10 bottom-0 z-10 flex items-center
+          justify-center bg-primary p-xl
+        "
+      >
+        <slot
+          v-if="props.error !== null"
+          :error="(props.error as ApiError)"
+          name="error"
+        >
+          <UIErrorState
+            :error="props.error"
+            class="max-w-96"
+          />
+        </slot>
+
+        <UIEmptyState
+          v-else
+          :title="i18n.t('component.data_table.empty_state.no_data.title')"
+          :description="i18n.t('component.data_table.empty_state.no_data.description')"
+          illustration="cloud-search"
+          class="max-w-96"
+        />
+      </div>
+
       <div
         :style="{ gridTemplateColumns }"
         class="grid w-max min-w-full"
@@ -474,6 +514,7 @@ const loadingRowColumnCount = computed<number>(
               }"
               :class="{
                 'z-30': isLeadingStickyRegionActive,
+                'border-r border-secondary': hasExpandOwnStickyBorder && isScrolledFromLeft,
               }"
               class="
                 sticky top-0 z-20 flex h-10 items-center border-b
@@ -506,32 +547,6 @@ const loadingRowColumnCount = computed<number>(
         </div>
 
         <div
-          v-if="props.error !== null"
-          class="col-span-full"
-          role="rowgroup"
-        >
-          <slot
-            :error="(props.error as ApiError)"
-            name="error"
-          >
-            <UIErrorState
-              :error="props.error"
-              class="mx-auto max-w-96 py-xl"
-            />
-          </slot>
-        </div>
-
-        <UIEmptyState
-          v-else-if="props.data.length === 0 && !props.isLoading"
-          :title="i18n.t('component.data_table.empty_state.no_data.title')"
-          :description="i18n.t('component.data_table.empty_state.no_data.description')"
-          illustration="cloud-search"
-          class="col-span-full mx-auto max-w-96 py-xl"
-          role="rowgroup"
-        />
-
-        <div
-          v-else
           class="group/body contents"
           role="rowgroup"
         >
