@@ -4,7 +4,6 @@ import type {
   Row,
   RowData,
 } from '@tanstack/vue-table'
-import type { ApiError } from '@wisemen/vue-core-api-utils'
 import type { Component } from 'vue'
 import {
   computed,
@@ -33,10 +32,14 @@ import { useDataTableInfiniteScroll } from '@/ui/data-table/composables/dataTabl
 import { useDataTableStickyGroupChunks } from '@/ui/data-table/composables/dataTableStickyGroupChunks.composable'
 import { useDataTableVirtualScroller } from '@/ui/data-table/composables/dataTableVirtualScroller.composable'
 import { useProvideDataTableContext } from '@/ui/data-table/context/dataTable.context'
-import type { DataTableProps } from '@/ui/data-table/types/dataTable.props'
+import type {
+  DataTableEmptyStateConfig,
+  DataTableProps,
+} from '@/ui/data-table/types/dataTable.props'
 import type { DataTableCell as DataTableCellDefinition } from '@/ui/data-table/types/dataTableCell.type'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
 import { DataTableUtil } from '@/ui/data-table/utils/dataTable.util'
+import type { EmptyStateProps } from '@/ui/empty-state/emptyState.props'
 import { UIEmptyState } from '@/ui/empty-state/index'
 import { UIErrorState } from '@/ui/error-state/index'
 import { useTableSelection } from '@/ui/table/composables/tableSelection.composable'
@@ -48,6 +51,7 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isLastColumnSticky: false,
   isLoading: false,
   isSelectable: false,
+  emptyState: () => ({}) satisfies DataTableEmptyStateConfig,
   error: null,
   groupBy: null,
   mobileCard: null,
@@ -61,6 +65,16 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
 })
 
 const i18n = useI18n()
+
+const emptyStateProps = computed<EmptyStateProps>(() => ({
+  title: props.emptyState.title ?? i18n.t('component.data_table.empty_state.no_data.title'),
+  description: props.emptyState.description
+    ?? i18n.t('component.data_table.empty_state.no_data.description'),
+  icon: props.emptyState.icon ?? null,
+  illustration: props.emptyState.illustration ?? (props.emptyState.icon != null ? null : 'cloud-search'),
+  primaryAction: props.emptyState.primaryAction ?? null,
+  secondaryAction: props.emptyState.secondaryAction ?? null,
+}))
 
 const scrollContainerEl = shallowRef<HTMLElement | null>(null)
 
@@ -407,25 +421,23 @@ const hasDesktopOverlay = computed<boolean>(
       </button>
     </div>
 
-    <slot
+    <UIErrorState
       v-if="props.error !== null"
-      :error="(props.error as ApiError)"
-      name="error"
-    >
-      <UIErrorState
-        :error="props.error"
-        class="
-          mx-auto h-full max-w-96 py-xl
-          @md/data-table:hidden
-        "
-      />
-    </slot>
+      :error="props.error"
+      class="
+        mx-auto h-full max-w-96 py-xl
+        @md/data-table:hidden
+      "
+    />
 
     <UIEmptyState
       v-else-if="props.data.length === 0 && !props.isLoading"
-      :title="i18n.t('component.data_table.empty_state.no_data.title')"
-      :description="i18n.t('component.data_table.empty_state.no_data.description')"
-      illustration="cloud-search"
+      :title="emptyStateProps.title"
+      :description="emptyStateProps.description"
+      :icon="emptyStateProps.icon"
+      :illustration="emptyStateProps.illustration"
+      :primary-action="emptyStateProps.primaryAction"
+      :secondary-action="emptyStateProps.secondaryAction"
       class="
         mx-auto h-full max-w-96 py-xl
         @md/data-table:hidden
@@ -459,7 +471,11 @@ const hasDesktopOverlay = computed<boolean>(
         'overflow-auto': !hasDesktopOverlay,
         'overflow-hidden': hasDesktopOverlay,
         'min-h-0 flex-1': props.variant === 'full-page',
-        'max-h-full': props.variant === 'contained',
+        'max-h-full': props.variant === 'contained' && !hasDesktopOverlay,
+        // The empty/error overlay is absolutely positioned (`top-10 bottom-0`) to keep the
+        // header visible above it — without a floor here, a `contained` table with zero rows
+        // has nothing but its 40px header to size against, leaving no room for the overlay.
+        'max-h-full min-h-64': props.variant === 'contained' && hasDesktopOverlay,
       }"
       class="
         relative hidden w-full min-w-0 rounded-xl border border-secondary
@@ -474,22 +490,20 @@ const hasDesktopOverlay = computed<boolean>(
           justify-center bg-primary p-xl
         "
       >
-        <slot
+        <UIErrorState
           v-if="props.error !== null"
-          :error="(props.error as ApiError)"
-          name="error"
-        >
-          <UIErrorState
-            :error="props.error"
-            class="max-w-96"
-          />
-        </slot>
+          :error="props.error"
+          class="max-w-96"
+        />
 
         <UIEmptyState
           v-else
-          :title="i18n.t('component.data_table.empty_state.no_data.title')"
-          :description="i18n.t('component.data_table.empty_state.no_data.description')"
-          illustration="cloud-search"
+          :title="emptyStateProps.title"
+          :description="emptyStateProps.description"
+          :icon="emptyStateProps.icon"
+          :illustration="emptyStateProps.illustration"
+          :primary-action="emptyStateProps.primaryAction"
+          :secondary-action="emptyStateProps.secondaryAction"
           class="max-w-96"
         />
       </div>

@@ -44,6 +44,9 @@ const meta = {
     isSelectable: {
       control: 'boolean',
     },
+    isSimulatingCustomEmptyState: {
+      control: 'boolean',
+    },
     isSimulatingEmpty: {
       control: 'boolean',
     },
@@ -426,6 +429,29 @@ export const Empty: Story = {
     isLastColumnSticky: false,
     isNarrow: false,
     isSelectable: false,
+    isSimulatingEmpty: true,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'contained',
+  },
+}
+
+// Overrides the default "No data" empty state via the `emptyState` prop (title, description,
+// illustration) — see `DataTablePlayground.vue`'s `emptyState` computed for the exact override.
+export const EmptyCustom: Story = {
+  args: {
+    hasCellTypes: false,
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingCustomEmptyState: true,
     isSimulatingEmpty: true,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,

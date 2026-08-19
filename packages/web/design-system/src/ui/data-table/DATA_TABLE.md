@@ -152,14 +152,17 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   10-row skeleton in place of the rows (same visual as the old `Table`'s `TableLoading`).
 - **`isFetchingNextPage`**: true while a next-page fetch is in flight and rows already exist.
   Renders the same skeleton, appended below the already-loaded rows instead of replacing them.
-- **`error`**: `ApiError | null`. When set, replaces the row/body area with the `#error` slot
-  (scoped prop `{ error }`) or, by default, `UIErrorState` — the header row and its columns stay
-  visible above it (desktop only; on mobile, which has no header row, the state replaces the
-  whole list). Takes priority over the empty state.
+- **`error`**: `ApiError | null`. When set, replaces the row/body area with `UIErrorState` — the
+  header row and its columns stay visible above it (desktop only; on mobile, which has no header
+  row, the state replaces the whole list). Takes priority over the empty state. Not customizable
+  beyond that — `UIErrorState` derives its own title/description from the error's shape (API error
+  status/detail, Zod validation error, or a generic fallback), so error display stays consistent
+  everywhere a DataTable is used rather than becoming a per-table copy decision.
 - **Empty state**: shown when `data.length === 0 && !isLoading && error === null` — default
-  `UIEmptyState`, no slot override yet (DataTable has no filter/search prop surface to key a
-  "no results" variant off of, unlike the old `Table`). Same header-stays-visible treatment as
-  the error state on desktop.
+  `UIEmptyState` with generic "No data" text, overridable per-table via the `emptyState` prop
+  (`{ title?, description?, icon?, illustration?, primaryAction?, secondaryAction? }`, all
+  optional — unset fields keep their default). Same header-stays-visible treatment as the error
+  state on desktop.
 - **`onNextPage`**: called when the active scroll container (desktop flat, desktop grouped, or
   mobile — whichever is actually mounted) nears its bottom, or immediately if the loaded rows
   don't fill/overflow the container at all. `null`/omitted disables the trigger entirely — for

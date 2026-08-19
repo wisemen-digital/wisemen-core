@@ -6,12 +6,39 @@ import type { Sort } from '@/composables/sort.composable'
 import type { DataTableGroupBy } from '@/ui/data-table/composables/dataTable.composable'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
+import type {
+  EmptyStateAction,
+  EmptyStateIllustration,
+} from '@/ui/empty-state/emptyState.props'
 
 export interface DataTableMobileCardConfig {
   indicator?: string
   primary: string
   secondary?: string
   meta?: string
+}
+
+export interface DataTableEmptyStateConfig {
+  /**
+   * @default component.data_table.empty_state.no_data.title
+   */
+  title?: string
+  /**
+   * @default component.data_table.empty_state.no_data.description
+   */
+  description?: string | null
+  /**
+   * Ignored when `illustration` is set.
+   * @default null
+   */
+  icon?: Component | null
+  /**
+   * Takes priority over `icon` when both are set.
+   * @default 'cloud-search'
+   */
+  illustration?: EmptyStateIllustration | null
+  primaryAction?: EmptyStateAction | null
+  secondaryAction?: EmptyStateAction | null
 }
 
 export interface DataTableProps<TItem> {
@@ -55,8 +82,16 @@ export interface DataTableProps<TItem> {
    */
   data: TItem[]
   /**
-   * The current fetch error, if any. Replaces the row area with the `#error` slot (or the
-   * default `UIErrorState`) until cleared.
+   * Overrides the empty state (`data.length === 0 && !isLoading && error === null`) shown in
+   * place of `UIEmptyState`'s default generic text/illustration. Any field left unset keeps its
+   * default.
+   */
+  emptyState?: DataTableEmptyStateConfig
+  /**
+   * The current fetch error, if any. Replaces the row area with `UIErrorState`, which derives
+   * its own title/description from the error's shape (API error status/detail, Zod validation
+   * error, or a generic fallback) — not independently overridable, so error display stays
+   * consistent everywhere a DataTable is used.
    */
   error?: ApiError | null
   /**
@@ -112,9 +147,11 @@ export interface DataTableProps<TItem> {
   totalCount?: number | null
   /**
    * `'contained'` (default) wraps the table in a rounded card with its own border, matching the
-   * old `Table`'s default look. `'full-page'` drops the border/rounding for an edge-to-edge
-   * table, e.g. when a page's own layout already provides the frame. Chrome only — row height,
-   * borders between rows, and empty/error state content are unaffected by this prop.
+   * old `Table`'s default look, and sizes the table to its content up to its parent's height —
+   * a short result set shrinks the table instead of stretching it to fill the parent.
+   * `'full-page'` drops the border/rounding for an edge-to-edge table and always stretches to
+   * fill its parent, e.g. when a page's own layout already provides the frame. Row height,
+   * borders between rows, and empty/error state content are unaffected by either variant.
    */
   variant?: 'contained' | 'full-page'
   /**

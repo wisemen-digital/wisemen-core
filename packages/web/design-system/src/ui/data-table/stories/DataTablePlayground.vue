@@ -20,7 +20,10 @@ import { useSort } from '@/composables/sort.composable'
 import type { Address } from '@/ui/address-autocomplete/addressAutocomplete.type'
 import type { BadgeColor } from '@/ui/badge/badge.props'
 import UIDataTable from '@/ui/data-table/components/DataTable.vue'
-import type { DataTableMobileCardConfig } from '@/ui/data-table/types/dataTable.props'
+import type {
+  DataTableEmptyStateConfig,
+  DataTableMobileCardConfig,
+} from '@/ui/data-table/types/dataTable.props'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import {
   createDataTableAvatarCell,
@@ -74,6 +77,9 @@ const props = withDefaults(defineProps<{
   isLastColumnSticky?: boolean
   isNarrow?: boolean
   isSelectable?: boolean
+  // With `isSimulatingEmpty`, overrides the empty state's title/description/illustration via the
+  // `emptyState` prop instead of leaving `UIDataTable`'s generic default.
+  isSimulatingCustomEmptyState?: boolean
   // Forces the empty state regardless of the mock dataset.
   isSimulatingEmpty?: boolean
   // Forces the error state regardless of loading/data.
@@ -101,6 +107,7 @@ const props = withDefaults(defineProps<{
   isLastColumnSticky: false,
   isNarrow: false,
   isSelectable: false,
+  isSimulatingCustomEmptyState: false,
   isSimulatingEmpty: false,
   isSimulatingError: false,
   isSimulatingInfiniteScroll: false,
@@ -385,6 +392,16 @@ const visibleData = computed<User[]>(() => {
 
 const error = computed<ApiError | null>(() => (props.isSimulatingError ? new Error('Failed to load users.') : null))
 
+const emptyState = computed<DataTableEmptyStateConfig | undefined>(() => (
+  props.isSimulatingCustomEmptyState
+    ? {
+        title: 'No team members yet',
+        description: 'Invite your first team member to get started.',
+        illustration: 'documents',
+      }
+    : undefined
+))
+
 function onNextPage(): void {
   if (
     !props.isSimulatingInfiniteScroll
@@ -598,6 +615,7 @@ function subComponent(item: User) {
     <UIDataTable
       :columns="columns"
       :data="visibleData"
+      :empty-state="emptyState"
       :error="error"
       :get-key="(item) => item.id"
       :group-by="groupByProp"
