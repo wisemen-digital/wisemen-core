@@ -457,7 +457,9 @@ const hasDesktopOverlay = computed<boolean>(
       :row-view-models="rowViewModels"
       :class="{
         'min-h-0 flex-1': props.variant === 'full-page',
-        'max-h-full': props.variant === 'contained',
+        // `min-h-1`: without a nonzero starting height, the virtualizer measures 0 and never
+        // renders a row to grow past it — see `dataTableMobileVirtualScroller.composable.ts`.
+        'max-h-full min-h-1': props.variant === 'contained',
       }"
       class="@md/data-table:hidden"
       @toggle-expanded="toggleMobileCardExpanded"
