@@ -1,5 +1,10 @@
 import type { DataTableCell } from '@/ui/data-table/types/dataTableCell.type'
 
+// Shown in place of a cell's value when it's `null` and no per-cell `fallback` was given — a
+// muted dash reads as "confirmed empty" rather than "still loading"/"broken", unlike rendering
+// nothing at all.
+export const DATA_TABLE_CELL_EMPTY_VALUE_FALLBACK = '–'
+
 export const DATA_TABLE_EXPAND_COLUMN_WIDTH = '2.5rem'
 // Wider than a bare `size-4` checkbox (16px) plus `px-xl` (16px each side) would strictly need —
 // with the sticky-left border now always a possibility (see `hasCheckboxOwnStickyBorder`), the

@@ -5,6 +5,7 @@ import {
 } from '@wisemen/vue-core-dates'
 import { computed } from 'vue'
 
+import DataTableCellEmptyValue from '@/ui/data-table/components/cells/DataTableCellEmptyValue.vue'
 import type { DataTableTimestampCell } from '@/ui/data-table/types/dataTableCell.type'
 import { UITooltip } from '@/ui/tooltip'
 
@@ -22,9 +23,9 @@ function toYear(value: NonNullable<DataTableTimestampCell['value']>): string {
   }).format(zonedDateTime.epochMilliseconds)
 }
 
-const displayValue = computed<string>(() => {
+const displayValue = computed<string | null>(() => {
   if (props.value === null) {
-    return ''
+    return null
   }
 
   if (props.isRelative === true) {
@@ -55,8 +56,13 @@ const fullDateTime = computed<string | null>(() => {
 </script>
 
 <template>
+  <DataTableCellEmptyValue
+    v-if="displayValue === null"
+    :value="props.fallback"
+  />
+
   <UITooltip
-    v-if="props.isRelative === true && fullDateTime !== null"
+    v-else-if="props.isRelative === true && fullDateTime !== null"
     popover-side="top"
   >
     <template #trigger>

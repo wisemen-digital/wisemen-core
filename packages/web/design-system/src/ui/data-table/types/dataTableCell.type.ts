@@ -9,10 +9,12 @@ export type DataTableTimestampGranularity = 'day' | 'hour' | 'minute' | 'month' 
 export type DataTableTimestampCell
   = | {
     isRelative: true
+    fallback?: string
     value: DateTimeInstant | null
   }
   | {
     isRelative?: false
+    fallback?: string
     granularity?: DataTableTimestampGranularity
     value: DateTimeInstant | null
   }
@@ -36,6 +38,7 @@ export interface DataTableCurrencyCell {
 }
 
 export interface DataTableBooleanCell {
+  fallback?: string
   /** Required — color/icon alone don't convey meaning to screen readers. */
   label: string
   value: boolean | null
@@ -47,6 +50,7 @@ export interface DataTableLongTextCell {
 }
 
 export interface DataTableIdCell {
+  fallback?: string
   maxLength?: number
   value: string | null
 }
@@ -54,6 +58,7 @@ export interface DataTableIdCell {
 export type DataTableLocationPrecision = 'country' | 'municipality' | 'streetAndNumber'
 
 export interface DataTableLocationCell {
+  fallback?: string
   precision: DataTableLocationPrecision
   value: Address | null
 }
@@ -67,6 +72,8 @@ export interface DataTableContactInfoCell {
 export interface DataTableAvatarCell {
   /** Falls back to initials generated from `label` when not provided. */
   avatarUrl?: string | null
+  /** Shown in place of the avatar/label when `label` is `null`. */
+  fallback?: string
   label: string | null
   /** Secondary line under the label — a role, team or phone number. */
   supportingText?: string | null
@@ -75,7 +82,10 @@ export interface DataTableAvatarCell {
 export type DataTableBadgeCell = Pick<
   BadgeProps,
   'color' | 'label' | 'left' | 'rounded' | 'size' | 'variant'
->
+> & {
+  /** Shown in place of the badge when `label` is `null`/empty. */
+  fallback?: string
+}
 
 export interface DataTableBadgeGroupCell {
   badges: DataTableBadgeCell[]

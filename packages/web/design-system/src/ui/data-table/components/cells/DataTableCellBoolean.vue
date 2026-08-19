@@ -4,18 +4,23 @@ import {
   XCloseIcon,
 } from '@wisemen/vue-core-icons'
 
+import DataTableCellEmptyValue from '@/ui/data-table/components/cells/DataTableCellEmptyValue.vue'
 import type { DataTableBooleanCell } from '@/ui/data-table/types/dataTableCell.type'
 
-defineProps<DataTableBooleanCell>()
+const props = defineProps<DataTableBooleanCell>()
 </script>
 
 <template>
+  <DataTableCellEmptyValue
+    v-if="props.value === null"
+    :value="props.fallback"
+  />
   <span
-    v-if="value !== null"
+    v-else
     class="flex items-center"
   >
     <CheckIcon
-      v-if="value"
+      v-if="props.value"
       aria-hidden="true"
       class="size-4 shrink-0 text-success-primary"
     />
@@ -25,6 +30,6 @@ defineProps<DataTableBooleanCell>()
       class="size-4 shrink-0 text-error-primary"
     />
 
-    <span class="sr-only">{{ label }}</span>
+    <span class="sr-only">{{ props.label }}</span>
   </span>
 </template>

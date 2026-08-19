@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { UILink } from '@/ui/button'
+import DataTableCellEmptyValue from '@/ui/data-table/components/cells/DataTableCellEmptyValue.vue'
 import DataTableCellHoverPopover from '@/ui/data-table/components/DataTableCellHoverPopover.vue'
 import type { DataTableLocationCell } from '@/ui/data-table/types/dataTableCell.type'
 
@@ -131,10 +132,8 @@ const googleMapsHref = computed<string | null>(() => {
     </template>
   </DataTableCellHoverPopover>
 
-  <span
+  <DataTableCellEmptyValue
     v-else
-    class="truncate text-xs text-primary"
-  >
-    {{ displayValue }}
-  </span>
+    :value="props.fallback"
+  />
 </template>

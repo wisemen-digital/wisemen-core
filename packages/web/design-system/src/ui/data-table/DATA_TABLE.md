@@ -296,9 +296,23 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 
 ## Boolean cell
 
-- `value: boolean | null` renders a check/x icon (green/red); `null` renders nothing.
+- `value: boolean | null` renders a check/x icon (green/red); `null` renders the shared empty-value
+  fallback (see "Empty values" below).
 - `label` is **required** — rendered as visually-hidden text next to the icon, since color/icon
   alone isn't accessible.
+
+## Empty values
+
+- Every Cell definition whose core value can be `null` (`Text`, `Number`, `Currency`, `LongText`,
+  `Timestamp`, `Id`, `Location`, `Boolean`, `Badge`, `Avatar`) accepts an optional
+  `fallback?: string`, rendered via the shared `DataTableCellEmptyValue.vue` (a muted, `text-tertiary`
+  dash — `DATA_TABLE_CELL_EMPTY_VALUE_FALLBACK` in `utils/dataTable.util.ts`) whenever the value is
+  `null`/empty and no `fallback` was given. This exists so a missing value always reads as
+  "confirmed empty," not as a layout bug or a stuck loading state — an unstyled blank cell (or, for
+  `Badge`, an empty rounded pill with no label) looks broken.
+- `ContactInfo` and `BadgeGroup` are the exception: an empty list of contact channels/badges is a
+  legitimately different state from a missing single value (there's no one "the value" to be
+  null), so they render nothing rather than a dash.
 
 ## Currency cell
 
