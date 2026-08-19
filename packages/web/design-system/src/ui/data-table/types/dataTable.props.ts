@@ -40,9 +40,9 @@ export interface DataTableProps<TItem> {
    */
   isLoading?: boolean
   /**
-   * When `true`, a checkbox column is prepended to the table, enabling row selection. Listen
-   * to the `select` emit to receive the current selection state as either an `includes` array
-   * (individual selections) or an `excludes` array (after select-all).
+   * When `true`, a checkbox column is prepended to the table, enabling row selection. There is
+   * no emit for the selection state — read it via `ctx.tableSelection` (`{ type: 'include' |
+   * 'exclude', items: string[] }`) inside a `selectionActions` action's `execute`/`isApplicable`.
    */
   isSelectable?: boolean
   /**

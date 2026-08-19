@@ -52,7 +52,7 @@ Cell types available: `Text`, `LongText`, `Number`, `Currency`, `Boolean`, `Id`,
 | `getKey` | `getKey` | Unchanged. |
 | `isLoading` | `isLoading` | Unchanged. |
 | `isFetchingNextPage` | `isFetchingNextPage` | Unchanged. |
-| `isSelectable` | `isSelectable` | Unchanged. `@select` emit is unchanged too. |
+| `isSelectable` | `isSelectable` | Unchanged prop. **No `@select` emit** — selection state is internal, surfaced only through `selectionActions`' action context (`ctx.tableSelection`/`ctx.clearTableSelection`). See "Selection" below. |
 | `error` | `error` | Unchanged, `#error` slot included. |
 | `onNextPage` | `onNextPage` | Unchanged. |
 | `sort` | `sort` | Unchanged — still `useSort`, still server-driven. |
@@ -67,7 +67,7 @@ Cell types available: `Text`, `LongText`, `Number`, `Currency`, `Boolean`, `Id`,
 | `activeFilterCount` | — | Same. |
 | `@clearFilters` / `@clearSearch` | — | Same. |
 | `headerActions` | — | Render your own toolbar above `DataTable`. |
-| `variant` | — | No `contained` / `full-page` variants. |
+| `variant` | `variant` | Unchanged — same `'contained'` (default) / `'full-page'` values, same chrome-only effect. |
 | `isCenteredHeaderContent` (column) | — | No per-column header alignment. |
 | `headerDescription` (column) | — | No header tooltip/description. |
 | `actionConfig` (column) | — | No per-column header actions. |
@@ -152,6 +152,49 @@ in a trailing column, `actions.more` sit behind its `⋯` menu **and** become th
 context menu. Reserve the trailing column's width by setting `row` at all — it stays reserved even
 for rows whose `row(item)` resolves no actions, so column edges stay aligned.
 
+## Selection: provide/inject → action context
+
+The old table exposed selection to descendants as a **provide/inject context**
+(`useProvideTableSelectionContext` / `useInjectTableSelectionContext`, in
+`ui/table/context/tableSelection.context.ts`) — something built inside the table's own component
+tree could inject it and read the live selection. `DataTable` has no such context, and (see the
+prop table above) **no `@select` emit either.** There is no way to read selection from outside the
+table other than through `selectionActions`.
+
+```ts
+// After — selection is read from the action context inside a selection action
+const selectionActions: Action[] = [
+  createAction({
+    id: 'delete-selected-users',
+    name: () => 'Delete',
+    execute: (ctx) => {
+      // `ctx.tableSelection` is `{ type: 'include' | 'exclude', items: string[] }` — the item
+      // keys returned by `getKey`, not the items themselves. `'include'` is an explicit set of
+      // selected keys; `'exclude'` is "all rows except these keys" (produced by select-all).
+      if (ctx.tableSelection?.type === 'include') {
+        deleteUsers(ctx.tableSelection.items)
+      }
+      else {
+        deleteAllUsersExcept(ctx.tableSelection?.items ?? [])
+      }
+
+      ctx.clearTableSelection()
+    },
+  }),
+]
+```
+
+- `ctx.tableSelection: TableSelectionState | null` and `ctx.clearTableSelection(): void` come from
+  `@wisemen/vue-core-actions`' `ActionContext` — available in every action's `execute`/
+  `isApplicable`, not just `selectionActions`.
+- There is no equivalent for reading selection *outside* an action at all. If something outside
+  `selectionActions` needs the current selection (e.g. a page-level "N selected" counter next to
+  the table), there is currently no supported way to get it — this is a real gap, not an oversight
+  to work around.
+- Selection state itself (which keys are selected) is still tracked internally the same way as
+  before — `useTableSelection` (`ui/table/composables/tableSelection.composable.ts`) — `DataTable`
+  just doesn't expose it via context anymore.
+
 ## Sizing
 
 The old sizing was a CSS min/max pair per column (`{ min: 'min-content', max: '20rem' }`),
@@ -160,10 +203,13 @@ mounted rows feed `fit-content()`, so scrolling visibly resized columns and then
 
 New rules:
 
-- Every column has a **fixed pixel width from first render**, defaulted per cell *type*.
+- Every column has a **fixed pixel width from first render**, defaulted per cell *type* (see
+  `DATA_TABLE_CELL_DEFAULT_WIDTH_PX` in `utils/dataTable.util.ts` for the exact per-type defaults).
 - Override with `size: number` (pixels). A `{ min, max }` object is not a valid value.
 - The **last column always fills** remaining space.
 - Drag-resize is session-only, same as before — still not persisted across reloads.
+- Drag-resize has a **hard floor of 60px** (`DATA_TABLE_MIN_COLUMN_WIDTH_PX`) — a column can never
+  be resized narrower than that, regardless of its cell type or declared `size`.
 
 ## Sticky columns
 
@@ -203,23 +249,27 @@ These have no replacement. None is a blocker on its own, but check your table do
   state and no filter prop surface. Its empty state has no slot override either.
 - **`headerActions` / `actionGroup` toolbar** — `TableRoot` rendered a toolbar. Render your own
   above `DataTable`; use `selectionActions` for the selection bar.
-- **`variant: 'contained' | 'full-page'`** — `DataTable` has one look.
+- **Reading selection outside an action** — the old provide/inject selection context is gone (see
+  "Selection" above) and there is no `@select` emit. If a consumer outside `selectionActions`
+  needs the live selection, there is currently no supported way to get it.
 - **Column header extras** — `headerDescription`, `isCenteredHeaderContent`, `actionConfig`.
 - **Detail pane** — designed, not implemented. Don't migrate *expecting* it.
 
 ## Suggested order
 
-1. Confirm nothing in "No equivalent" blocks you — especially `groupHeaderCells` and the
-   filter-aware empty state.
+1. Confirm nothing in "No equivalent" blocks you — especially `groupHeaderCells`, the
+   filter-aware empty state, and reading selection outside an action.
 2. Convert columns to factories. Start with `Text`/`Number`/`Timestamp`; reach for `Custom` via
-   `createCustomCell` only where no built-in fits.
+   `createDataTableCustomCell` only where no built-in fits.
 3. Flatten `data` and replace grouped shapes with `groupBy`.
 4. Collapse `getLink` / `onRowClick` / `getActionModel` / `actions` into one `row` resolver, and
    delete `UITableCellInteractiveElement` wrappers.
-5. Replace `size: { min, max }` with pixel `size`.
-6. Decide `isFirstColumnSticky` explicitly — it's `true` by default.
-7. Add `mobileCard`, and give the table a height if the page scrolled the list before.
-8. Check open-in-new-tab: if the table used `getLink`, that capability is gone.
+5. If the table used `actionGroup`/selection-aware actions, move that logic into `selectionActions`
+   and read the selection via `ctx.tableSelection` instead of the old context.
+6. Replace `size: { min, max }` with pixel `size`.
+7. Decide `isFirstColumnSticky` explicitly — it's `true` by default.
+8. Add `mobileCard`, and give the table a height if the page scrolled the list before.
+9. Check open-in-new-tab: if the table used `getLink`, that capability is gone.
 
 ## Reference
 
