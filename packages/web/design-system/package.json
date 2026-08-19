@@ -54,7 +54,7 @@
   },
   "peerDependencies": {
     "@internationalized/date": "catalog:date",
-    "@tanstack/vue-table": "^8.20.0",
+    "@tanstack/vue-table": "catalog:",
     "@tanstack/vue-virtual": "^3.0.0",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
