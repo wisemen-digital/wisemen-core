@@ -23,10 +23,13 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
   the factory keeps them in sync structurally.
 - **`variant`** — `'contained'` (default) wraps the desktop table in a rounded bordered card,
-  matching the old `Table`'s default look; `'full-page'` drops the border/rounding for an
-  edge-to-edge table (e.g. when a page's own layout already provides the frame). Chrome only —
-  row height, row borders, and the mobile list (which has no border/rounding either way) are
-  unaffected.
+  matching the old `Table`'s default look, and sizes the table to its content up to its parent's
+  height (`max-h-full`) — a short result set shrinks the table instead of stretching it to fill
+  the parent, matching the old `Table`'s `TableScrollContainer.vue` behavior. `'full-page'` drops
+  the border/rounding for an edge-to-edge table and always stretches to fill its parent
+  (`size-full`/`flex-1`), e.g. when a page's own layout already provides the frame and the table
+  should occupy the remaining viewport regardless of row count. Row height and row borders are
+  unaffected by either variant.
 
 ## Column sizing
 

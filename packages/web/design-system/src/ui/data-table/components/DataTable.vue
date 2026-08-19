@@ -383,7 +383,11 @@ const hasDesktopOverlay = computed<boolean>(
 
 <template>
   <div
-    class="@container/data-table relative flex size-full min-w-0 flex-col"
+    :class="{
+      'size-full': props.variant === 'full-page',
+      'max-h-full w-full': props.variant === 'contained',
+    }"
+    class="@container/data-table relative flex min-w-0 flex-col"
   >
     <div
       v-if="props.isSelectable"
@@ -439,10 +443,11 @@ const hasDesktopOverlay = computed<boolean>(
       :on-next-page="props.onNextPage"
       :row="props.row"
       :row-view-models="rowViewModels"
-      class="
-        min-h-0 flex-1
-        @md/data-table:hidden
-      "
+      :class="{
+        'min-h-0 flex-1': props.variant === 'full-page',
+        'max-h-full': props.variant === 'contained',
+      }"
+      class="@md/data-table:hidden"
       @toggle-expanded="toggleMobileCardExpanded"
       @toggle-group-selected="toggleGroup"
       @toggle-selected="toggleItem"
@@ -453,10 +458,12 @@ const hasDesktopOverlay = computed<boolean>(
       :class="{
         'overflow-auto': !hasDesktopOverlay,
         'overflow-hidden': hasDesktopOverlay,
+        'min-h-0 flex-1': props.variant === 'full-page',
+        'max-h-full': props.variant === 'contained',
       }"
       class="
-        relative hidden min-h-0 w-full min-w-0 flex-1 rounded-xl border
-        border-secondary contain-layout contain-paint
+        relative hidden w-full min-w-0 rounded-xl border border-secondary
+        contain-layout contain-paint
         @md/data-table:block
       "
     >
