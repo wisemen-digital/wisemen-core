@@ -5,18 +5,278 @@ settings:
   excludeLinksFromLockfile: false
 
 catalogs:
+  backend:
+    '@nats-io/jetstream':
+      specifier: ^3.3.1
+      version: 3.3.1
+    '@nats-io/jwt':
+      specifier: 0.0.10-5
+      version: 0.0.10-5
+    '@nats-io/kv':
+      specifier: ^3.3.1
+      version: 3.3.1
+    '@nats-io/nkeys':
+      specifier: ^2.0.3
+      version: 2.0.3
+    '@nats-io/services':
+      specifier: ^3.3.1
+      version: 3.3.1
+    '@nats-io/transport-node':
+      specifier: ^3.3.1
+      version: 3.3.1
+    '@nestjs/common':
+      specifier: 11.1.28
+      version: 11.1.28
+    '@nestjs/core':
+      specifier: 11.1.28
+      version: 11.1.28
+    '@nestjs/platform-fastify':
+      specifier: 11.1.28
+      version: 11.1.28
+    '@nestjs/swagger':
+      specifier: 11.4.6
+      version: 11.4.6
+    '@nestjs/throttler':
+      specifier: 6.5.0
+      version: 6.5.0
+    '@opentelemetry/api':
+      specifier: 1.9.1
+      version: 1.9.1
+    '@opentelemetry/exporter-logs-otlp-http':
+      specifier: 0.221.0
+      version: 0.221.0
+    '@opentelemetry/exporter-metrics-otlp-proto':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@opentelemetry/exporter-trace-otlp-http':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@opentelemetry/instrumentation':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@opentelemetry/instrumentation-aws-sdk':
+      specifier: 0.69.0
+      version: 0.69.0
+    '@opentelemetry/instrumentation-express':
+      specifier: 0.62.0
+      version: 0.62.0
+    '@opentelemetry/instrumentation-http':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@opentelemetry/instrumentation-nestjs-core':
+      specifier: 0.60.0
+      version: 0.60.0
+    '@opentelemetry/instrumentation-pg':
+      specifier: 0.66.0
+      version: 0.66.0
+    '@opentelemetry/instrumentation-redis':
+      specifier: 0.62.0
+      version: 0.62.0
+    '@opentelemetry/instrumentation-undici':
+      specifier: 0.24.0
+      version: 0.24.0
+    '@opentelemetry/resources':
+      specifier: 2.6.1
+      version: 2.6.1
+    '@opentelemetry/sdk-logs':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@opentelemetry/sdk-metrics':
+      specifier: 2.6.1
+      version: 2.6.1
+    '@opentelemetry/sdk-node':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@opentelemetry/sdk-trace-base':
+      specifier: 2.6.1
+      version: 2.6.1
+    '@sentry/types':
+      specifier: 10.47.0
+      version: 10.47.0
+    '@types/express':
+      specifier: 5.0.6
+      version: 5.0.6
+    '@types/node':
+      specifier: 25.3.0
+      version: 25.3.0
+    '@types/qs':
+      specifier: 6.14.0
+      version: 6.14.0
+    axios:
+      specifier: 1.19.0
+      version: 1.19.0
+    change-case:
+      specifier: 5.4.4
+      version: 5.4.4
+    class-transformer:
+      specifier: 0.5.1
+      version: 0.5.1
+    class-validator:
+      specifier: 0.15.1
+      version: 0.15.1
+    jose:
+      specifier: 6.2.5
+      version: 6.2.5
+    pg:
+      specifier: 8.20.0
+      version: 8.20.0
+    pg-boss:
+      specifier: 12.15.0
+      version: 12.15.0
+    pg-query-stream:
+      specifier: 4.16.0
+      version: 4.16.0
+    redis:
+      specifier: ^5.12.1
+      version: 5.12.1
+    reflect-metadata:
+      specifier: 0.2.2
+      version: 0.2.2
+    twilio:
+      specifier: 5.13.1
+      version: 5.13.1
+    typeorm:
+      specifier: ^0.3.31
+      version: 0.3.31
+    wkx:
+      specifier: 0.5.0
+      version: 0.5.0
+    yaml:
+      specifier: 2.8.3
+      version: 2.8.3
+  backend-peer:
+    '@aws-sdk/client-s3':
+      specifier: ^3.1023.0
+      version: 3.1023.0
+    '@aws-sdk/lib-storage':
+      specifier: ^3.1023.0
+      version: 3.1023.0
+    '@aws-sdk/s3-request-presigner':
+      specifier: ^3.1023.0
+      version: 3.1023.0
+    '@azure/storage-blob':
+      specifier: ^12.31.0
+      version: 12.31.0
+    '@nestjs/common':
+      specifier: ^11.1.28
+      version: 11.1.28
+    '@nestjs/config':
+      specifier: ^4.0.4
+      version: 4.0.4
+    '@nestjs/core':
+      specifier: ^11.1.28
+      version: 11.1.28
+    '@nestjs/platform-express':
+      specifier: ^11.1.28
+      version: 11.1.28
+    '@nestjs/swagger':
+      specifier: ^11.4.6
+      version: 11.4.6
+    '@nestjs/typeorm':
+      specifier: ^11.0.3
+      version: 11.0.3
+    '@opentelemetry/api':
+      specifier: ^1.9.1
+      version: 1.9.1
+    '@opentelemetry/api-logs':
+      specifier: 0.217.0
+      version: 0.217.0
+    '@sentry/node':
+      specifier: ^10.47.0
+      version: 10.47.0
+    '@sentry/tracing':
+      specifier: ^7.120.4
+      version: 7.120.4
+    axios:
+      specifier: ^1.19.0
+      version: 1.19.0
+    change-case:
+      specifier: ^5.4.4
+      version: 5.4.4
+    class-transformer:
+      specifier: ^0.5.1
+      version: 0.5.1
+    class-validator:
+      specifier: ^0.15.1
+      version: 0.15.1
+    colors:
+      specifier: ^1.4.0
+      version: 1.4.0
+    dayjs:
+      specifier: ^1.11.20
+      version: 1.11.21
+    express:
+      specifier: ^5.2.1
+      version: 5.2.1
+    fastify:
+      specifier: '>=5.8.5'
+      version: 5.10.0
+    moment:
+      specifier: ^2.30.1
+      version: 2.30.1
+    pg:
+      specifier: ^8.20.0
+      version: 8.20.0
+    qs:
+      specifier: ^6.15.2
+      version: 6.15.2
+    reflect-metadata:
+      specifier: ^0.2.2
+      version: 0.2.2
+    rxjs:
+      specifier: ^7.8.2
+      version: 7.8.2
+    typeorm:
+      specifier: ^1.1.0
+      version: 1.1.0
+    typesense:
+      specifier: ^3.0.6
+      version: 3.0.6
   build:
+    bumpp:
+      specifier: 11.0.1
+      version: 11.0.1
+    chalk:
+      specifier: 5.6.2
+      version: 5.6.2
+    commander:
+      specifier: 14.0.2
+      version: 14.0.2
+    cross-env:
+      specifier: 10.1.0
+      version: 10.1.0
+    fledgling:
+      specifier: ^1.2.1
+      version: 1.2.1
     husky:
       specifier: ^9.1.7
       version: 9.1.7
+    rimraf:
+      specifier: 6.1.3
+      version: 6.1.3
+    shx:
+      specifier: 0.4.0
+      version: 0.4.0
+    tsdown:
+      specifier: 0.18.4
+      version: 0.18.4
+    tsx:
+      specifier: 4.21.0
+      version: 4.21.0
+    turbo:
+      specifier: 2.9.14
+      version: 2.9.14
     typescript:
       specifier: 5.9.3
       version: 5.9.3
+  date:
+    '@internationalized/date':
+      specifier: 3.10.1
+      version: 3.10.1
   default:
     '@tanstack/vue-hotkeys':
       specifier: ^0.10.0
       version: 0.10.0
-<<<<<<< HEAD
     '@tanstack/vue-table':
       specifier: ^9.1.2
       version: 9.1.2
@@ -154,37 +414,332 @@ catalogs:
     typescript-eslint:
       specifier: 8.59.0
       version: 8.59.0
-=======
->>>>>>> 7be45e401d8036e4bbaeaad94206a4a92867618d
   lint-web:
+    '@antfu/eslint-config':
+      specifier: 9.2.0
+      version: 9.2.0
+    '@eslint/compat':
+      specifier: 2.0.3
+      version: 2.0.3
+    '@eslint/config-inspector':
+      specifier: 3.2.0
+      version: 3.2.0
+    '@eslint/eslintrc':
+      specifier: 3.3.6
+      version: 3.3.6
+    '@intlify/eslint-plugin-vue-i18n':
+      specifier: 4.5.1
+      version: 4.5.1
+    '@typescript-eslint/parser':
+      specifier: 8.66.0
+      version: 8.66.0
+    '@typescript-eslint/scope-manager':
+      specifier: 8.66.0
+      version: 8.66.0
+    '@typescript-eslint/type-utils':
+      specifier: 8.66.0
+      version: 8.66.0
+    '@typescript-eslint/utils':
+      specifier: 8.66.0
+      version: 8.66.0
+    '@vitest/eslint-plugin':
+      specifier: 1.6.26
+      version: 1.6.26
     eslint:
       specifier: 10.8.0
       version: 10.8.0
+    eslint-flat-config-utils:
+      specifier: 3.2.0
+      version: 3.2.0
+    eslint-plugin-better-tailwindcss:
+      specifier: 4.7.0
+      version: 4.7.0
+    eslint-plugin-check-file:
+      specifier: 3.3.2
+      version: 3.3.2
+    eslint-plugin-format:
+      specifier: 2.0.1
+      version: 2.0.1
+    eslint-plugin-import-newlines:
+      specifier: 2.0.0
+      version: 2.0.0
+    eslint-plugin-newline-destructuring:
+      specifier: 1.2.2
+      version: 1.2.2
+    eslint-plugin-path:
+      specifier: 2.1.0
+      version: 2.1.0
+    eslint-plugin-perfectionist:
+      specifier: 5.10.1
+      version: 5.10.1
+    eslint-plugin-project-structure:
+      specifier: 3.14.3
+      version: 3.14.3
+    eslint-plugin-require-explicit-generics:
+      specifier: 1.0.0
+      version: 1.0.0
+    eslint-plugin-simple-import-sort:
+      specifier: 14.0.0
+      version: 14.0.0
+    eslint-plugin-unused-imports:
+      specifier: 4.4.1
+      version: 4.4.1
+    eslint-plugin-vuejs-accessibility:
+      specifier: 2.5.0
+      version: 2.5.0
+    eslint-typegen:
+      specifier: 2.3.1
+      version: 2.3.1
+    globals:
+      specifier: 17.9.0
+      version: 17.9.0
+  openapi:
+    '@hey-api/openapi-ts':
+      specifier: 0.97.3
+      version: 0.97.3
+  payload:
+    '@orpc/contract':
+      specifier: 1.14.6
+      version: 1.14.6
+    '@payloadcms/ui':
+      specifier: 3.85.2
+      version: 3.85.2
+    '@types/react':
+      specifier: 19.2.17
+      version: 19.2.17
+    cookies-next:
+      specifier: 6.1.1
+      version: 6.1.1
+    jose:
+      specifier: 6.2.3
+      version: 6.2.3
+    next:
+      specifier: 16.2.11
+      version: 16.2.11
+    payload:
+      specifier: 3.85.2
+      version: 3.85.2
+    pkce-challenge:
+      specifier: 6.0.0
+      version: 6.0.0
+    react:
+      specifier: 19.2.7
+      version: 19.2.7
   peer:
+    '@hey-api/openapi-ts':
+      specifier: ^0.97.3
+      version: 0.97.3
+    '@tanstack/vue-query':
+      specifier: ^5.100.6
+      version: 5.100.6
+    '@typescript-eslint/parser':
+      specifier: ^8.59.0
+      version: 8.66.0
+    motion-v:
+      specifier: ^2.2.1
+      version: 2.2.1
+    neverthrow:
+      specifier: ^8.2.0
+      version: 8.2.0
+    reka-ui:
+      specifier: ^2.10.1
+      version: 2.10.1
     temporal-polyfill:
       specifier: ^0.3.0
       version: 0.3.0
+    typescript:
+      specifier: ^5.9.3
+      version: 5.9.3
+    vue:
+      specifier: ^3.5.27
+      version: 3.5.27
     vue-i18n:
       specifier: ^11.2.8
       version: 11.2.8
     vue-router:
       specifier: ^4.6.4
       version: 4.6.4
+    zod:
+      specifier: ^4.3.5
+      version: 4.3.5
+  stories:
+    '@histoire/plugin-vue':
+      specifier: 1.0.0-alpha.3
+      version: 1.0.0-alpha.3
+    histoire:
+      specifier: 1.0.0-beta.1
+      version: 1.0.0-beta.1
+  storybook:
+    '@chromatic-com/storybook':
+      specifier: 5.0.2
+      version: 5.0.2
+    '@storybook/addon-a11y':
+      specifier: 10.3.0
+      version: 10.3.0
+    '@storybook/addon-docs':
+      specifier: 10.3.0
+      version: 10.3.0
+    '@storybook/addon-vitest':
+      specifier: 10.2.1
+      version: 10.2.1
+    '@storybook/vue3':
+      specifier: 10.3.0
+      version: 10.3.0
+    '@storybook/vue3-vite':
+      specifier: 10.3.0
+      version: 10.3.0
+    eslint-plugin-storybook:
+      specifier: 10.2.13
+      version: 10.2.13
+    storybook:
+      specifier: 10.3.0
+      version: 10.3.0
+    vue-component-meta:
+      specifier: 3.2.6
+      version: 3.2.6
   style:
+    '@tailwindcss/postcss':
+      specifier: 4.1.18
+      version: 4.1.18
+    postcss:
+      specifier: 8.5.26
+      version: 8.5.26
+    postcss-prefix-selector:
+      specifier: 2.1.1
+      version: 2.1.1
+    sass:
+      specifier: 1.97.3
+      version: 1.97.3
+    tailwind-merge:
+      specifier: 3.4.0
+      version: 3.4.0
+    tailwind-variants:
+      specifier: 3.2.2
+      version: 3.2.2
     tailwindcss:
       specifier: 4.1.18
       version: 4.1.18
+  telemetry:
+    '@opentelemetry/api':
+      specifier: 1.9.1
+      version: 1.9.1
+    '@opentelemetry/api-logs':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/context-zone':
+      specifier: 2.7.1
+      version: 2.7.1
+    '@opentelemetry/core':
+      specifier: 2.8.0
+      version: 2.8.0
+    '@opentelemetry/exporter-logs-otlp-http':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/exporter-metrics-otlp-proto':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/exporter-trace-otlp-http':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/instrumentation':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/instrumentation-fetch':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/instrumentation-user-interaction':
+      specifier: 0.62.0
+      version: 0.62.0
+    '@opentelemetry/resources':
+      specifier: 2.7.1
+      version: 2.7.1
+    '@opentelemetry/sdk-logs':
+      specifier: 0.218.0
+      version: 0.218.0
+    '@opentelemetry/sdk-metrics':
+      specifier: 2.7.1
+      version: 2.7.1
+    '@opentelemetry/sdk-trace-base':
+      specifier: 2.7.1
+      version: 2.7.1
+    '@opentelemetry/sdk-trace-web':
+      specifier: 2.7.1
+      version: 2.7.1
   test:
+    '@vitest/browser-playwright':
+      specifier: 4.1.10
+      version: 4.1.10
+    '@vitest/coverage-v8':
+      specifier: 4.1.10
+      version: 4.1.10
     '@vue/test-utils':
       specifier: 2.4.6
       version: 2.4.6
+    expect:
+      specifier: 30.4.1
+      version: 30.4.1
+    jsdom:
+      specifier: 27.4.0
+      version: 27.4.0
+    playwright:
+      specifier: 1.57.0
+      version: 1.57.0
+    sinon:
+      specifier: 22.0.0
+      version: 22.0.0
     vitest:
       specifier: 4.1.10
       version: 4.1.10
+  tooling:
+    '@commitlint/cli':
+      specifier: 20.5.0
+      version: 20.5.0
+    '@commitlint/config-conventional':
+      specifier: 20.5.0
+      version: 20.5.0
+    '@release-it/keep-a-changelog':
+      specifier: 7.0.1
+      version: 7.0.1
+    '@tanstack/intent':
+      specifier: ^0.0.29
+      version: 0.0.29
+    '@varlock/bumpy':
+      specifier: 1.18.1
+      version: 1.18.1
+    release-it:
+      specifier: 19.0.4
+      version: 19.0.4
   types:
+    '@tsconfig/node18':
+      specifier: 18.2.4
+      version: 18.2.4
+    '@types/babel__traverse':
+      specifier: 7.28.0
+      version: 7.28.0
+    '@types/clone-deep':
+      specifier: 4.0.4
+      version: 4.0.4
+    '@types/ejs':
+      specifier: 3.1.5
+      version: 3.1.5
+    '@types/google.maps':
+      specifier: 3.58.1
+      version: 3.58.1
+    '@types/markdown-it':
+      specifier: 14.1.2
+      version: 14.1.2
+    '@types/minimist':
+      specifier: 1.2.5
+      version: 1.2.5
     '@types/node':
       specifier: 24.8.1
       version: 24.8.1
+    '@types/pluralize':
+      specifier: 0.0.33
+      version: 0.0.33
+    vue-component-type-helpers:
+      specifier: 3.3.0
+      version: 3.3.0
   vite:
     '@tailwindcss/vite':
       specifier: 4.1.18
@@ -198,22 +753,49 @@ catalogs:
     vite-plugin-dts:
       specifier: 4.5.4
       version: 4.5.4
+    vite-plugin-pwa:
+      specifier: 0.20.2
+      version: 0.20.2
   vue:
+    '@tanstack/vue-query':
+      specifier: 5.92.8
+      version: 5.92.8
+    '@vue/devtools-api':
+      specifier: ^6.6.4
+      version: 6.6.4
     '@vue/tsconfig':
       specifier: 0.8.1
       version: 0.8.1
+    '@vueuse/core':
+      specifier: 14.1.0
+      version: 14.1.0
     '@vueuse/router':
       specifier: 14.1.0
       version: 14.1.0
+    motion-v:
+      specifier: 2.2.1
+      version: 2.2.1
     pinia:
       specifier: 3.0.4
       version: 3.0.4
+    reka-ui:
+      specifier: 2.10.1
+      version: 2.10.1
     superjson:
       specifier: 2.2.6
       version: 2.2.6
     vue:
       specifier: 3.5.27
       version: 3.5.27
+    vue-i18n:
+      specifier: 11.2.8
+      version: 11.2.8
+    vue-router:
+      specifier: 4.6.4
+      version: 4.6.4
+    vue-sonner:
+      specifier: 2.0.9
+      version: 2.0.9
     vue-tsc:
       specifier: 3.2.2
       version: 3.2.2
@@ -3556,13 +4138,13 @@ importers:
     devDependencies:
       '@tailwindcss/vite':
         specifier: catalog:vite
-        version: 4.1.18(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))
+        version: 4.1.18(vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))
       '@types/node':
         specifier: catalog:types
         version: 24.8.1
       '@vitejs/plugin-vue':
         specifier: catalog:vite
-        version: 6.0.3(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))(vue@3.5.27(typescript@5.9.3))
+        version: 6.0.3(vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))
       '@vue/test-utils':
         specifier: catalog:test
         version: 2.4.6
@@ -3616,13 +4198,13 @@ importers:
         version: 5.9.3
       vite:
         specifier: catalog:vite
-        version: 8.1.0(@types/node@24.8.1)(jiti@2.7.0)
+        version: 8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
       vite-plugin-dts:
         specifier: catalog:vite
-        version: 4.5.4(@types/node@24.8.1)(typescript@5.9.3)(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))
+        version: 4.5.4(@types/node@24.8.1)(rollup@4.60.3)(typescript@5.9.3)(vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))
       vitest:
         specifier: catalog:test
-        version: 4.1.10(@types/node@24.8.1)(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))
+        version: 4.1.10(@opentelemetry/api@1.9.1)(@types/node@24.8.1)(@vitest/browser-playwright@4.1.10)(@vitest/coverage-v8@4.1.10)(jsdom@27.4.0)(vite@8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))
       vue:
         specifier: catalog:vue
         version: 3.5.27(typescript@5.9.3)
@@ -20161,12 +20743,6 @@ snapshots:
       picomatch: 2.3.2
       rollup: 2.80.0
 
-  '@rollup/pluginutils@5.4.0':
-    dependencies:
-      '@types/estree': 1.0.9
-      estree-walker: 2.0.2
-      picomatch: 4.0.4
-
   '@rollup/pluginutils@5.4.0(rollup@2.80.0)':
     dependencies:
       '@types/estree': 1.0.9
@@ -21019,13 +21595,6 @@ snapshots:
       tailwindcss: 4.1.18
       vite: 8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
 
-  '@tailwindcss/vite@4.1.18(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))':
-    dependencies:
-      '@tailwindcss/node': 4.1.18
-      '@tailwindcss/oxide': 4.1.18
-      tailwindcss: 4.1.18
-      vite: 8.1.0(@types/node@24.8.1)(jiti@2.7.0)
-
   '@tailwindcss/vite@4.1.18(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))':
     dependencies:
       '@tailwindcss/node': 4.1.18
@@ -21719,12 +22288,6 @@ snapshots:
       vite: 8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
       vue: 3.5.27(typescript@5.9.3)
 
-  '@vitejs/plugin-vue@6.0.3(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))(vue@3.5.27(typescript@5.9.3))':
-    dependencies:
-      '@rolldown/pluginutils': 1.0.0-beta.53
-      vite: 8.1.0(@types/node@24.8.1)(jiti@2.7.0)
-      vue: 3.5.27(typescript@5.9.3)
-
   '@vitejs/plugin-vue@6.0.3(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vue@3.5.27(typescript@5.9.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-beta.53
@@ -21845,14 +22408,6 @@ snapshots:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 8.1.0(@types/node@24.8.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)
-
-  '@vitest/mocker@4.1.10(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))':
-    dependencies:
-      '@vitest/spy': 4.1.10
-      estree-walker: 3.0.3
-      magic-string: 0.30.21
-    optionalDependencies:
-      vite: 8.1.0(@types/node@24.8.1)(jiti@2.7.0)
 
   '@vitest/mocker@4.1.10(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))':
     dependencies:
@@ -28441,25 +28996,6 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-plugin-dts@4.5.4(@types/node@24.8.1)(typescript@5.9.3)(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0)):
-    dependencies:
-      '@microsoft/api-extractor': 7.52.9(@types/node@24.8.1)
-      '@rollup/pluginutils': 5.4.0
-      '@volar/typescript': 2.4.28
-      '@vue/language-core': 2.2.0(typescript@5.9.3)
-      compare-versions: 6.1.1
-      debug: 4.4.3
-      kolorist: 1.8.0
-      local-pkg: 1.2.1
-      magic-string: 0.30.21
-      typescript: 5.9.3
-    optionalDependencies:
-      vite: 8.1.0(@types/node@24.8.1)(jiti@2.7.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - rollup
-      - supports-color
-
   vite-plugin-dts@4.5.4(@types/node@25.3.0)(rollup@4.60.3)(typescript@5.9.3)(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3)):
     dependencies:
       '@microsoft/api-extractor': 7.52.9(@types/node@25.3.0)
@@ -28542,18 +29078,6 @@ snapshots:
       terser: 5.49.0
       tsx: 4.22.4
       yaml: 2.8.3
-
-  vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0):
-    dependencies:
-      lightningcss: 1.32.0
-      picomatch: 4.0.4
-      postcss: 8.5.26
-      rolldown: 1.1.3
-      tinyglobby: 0.2.17
-    optionalDependencies:
-      '@types/node': 24.8.1
-      fsevents: 2.3.3
-      jiti: 2.7.0
 
   vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3):
     dependencies:
@@ -28680,33 +29204,6 @@ snapshots:
       '@vitest/browser-playwright': 4.1.10(playwright@1.57.0)(vite@8.1.0(@types/node@25.3.0)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.97.3)(terser@5.49.0)(tsx@4.22.4)(yaml@2.8.3))(vitest@4.1.10)
       '@vitest/coverage-v8': 4.1.10(@vitest/browser@4.1.10)(vitest@4.1.10)
       jsdom: 27.4.0
-    transitivePeerDependencies:
-      - msw
-
-  vitest@4.1.10(@types/node@24.8.1)(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0)):
-    dependencies:
-      '@vitest/expect': 4.1.10
-      '@vitest/mocker': 4.1.10(vite@8.1.0(@types/node@24.8.1)(jiti@2.7.0))
-      '@vitest/pretty-format': 4.1.10
-      '@vitest/runner': 4.1.10
-      '@vitest/snapshot': 4.1.10
-      '@vitest/spy': 4.1.10
-      '@vitest/utils': 4.1.10
-      es-module-lexer: 2.0.0
-      expect-type: 1.3.0
-      magic-string: 0.30.21
-      obug: 2.1.1
-      pathe: 2.0.3
-      picomatch: 4.0.4
-      std-env: 4.0.0
-      tinybench: 2.9.0
-      tinyexec: 1.0.4
-      tinyglobby: 0.2.17
-      tinyrainbow: 3.1.0
-      vite: 8.1.0(@types/node@24.8.1)(jiti@2.7.0)
-      why-is-node-running: 2.3.0
-    optionalDependencies:
-      '@types/node': 24.8.1
     transitivePeerDependencies:
       - msw
 
