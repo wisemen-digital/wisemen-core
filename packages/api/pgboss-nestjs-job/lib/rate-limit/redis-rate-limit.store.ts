@@ -7,20 +7,14 @@ export interface HeaderState {
   resetAt: Date | null
 }
 
-/**
- * Fallback TTL for mirrored header state when the reset time is unknown, so an
- * exhausted-without-reset response can't wedge the queue forever: the state
- * expires, the queue re-probes, and the fresh response updates it.
- */
+/** Fallback TTL when the reset time is unknown, so exhausted-without-reset can't wedge the queue. */
 const HEADER_STATE_FALLBACK_TTL_SECONDS = 60
 /** Small margin added past a known reset so state outlives the block it drives. */
 const HEADER_STATE_TTL_BUFFER_SECONDS = 5
 
 /**
- * Redis-backed rate-limit state, keyed by queue name. Every operation is
- * **fail-soft**: when Redis is unconfigured, not yet connected, or errors, reads
- * return an "allow" fallback and writes are dropped, so a Redis hiccup never
- * wedges a queue (rate limiting fails open).
+ * Redis-backed rate-limit state, keyed by queue name. Every op is fail-open: if Redis is
+ * unavailable, reads return an "allow" fallback and writes are dropped.
  */
 @Injectable()
 export class RedisRateLimitStore {
@@ -60,10 +54,8 @@ export class RedisRateLimitStore {
   }
 
   /**
-   * Fixed-window increment: `INCR` the counter and arm its TTL only on the first
-   * increment of a window. Both run in one `MULTI` with `EXPIRE ... NX`, so a
-   * crash can never leave a TTL-less counter that would block the queue forever.
-   * Returns the new count, or `null` when Redis is unavailable.
+   * Fixed-window `INCR`, arming the TTL only on the window's first increment. One `MULTI`
+   * with `EXPIRE NX`, so a crash cannot leave a TTL-less counter. `null` if unavailable.
    */
   async incrementWindow (key: string, windowSeconds: number): Promise<number | null> {
     return this.withClient(async (client) => {
@@ -90,10 +82,8 @@ export class RedisRateLimitStore {
 
   async setHeaderState (key: string, remaining: number, resetAt: Date | null): Promise<void> {
     await this.withClient(async (client) => {
-      // Always carry a TTL: a `remaining: 0` with no reset would otherwise block
-      // the queue forever (it stops fetching, so no later response ever clears
-      // the state). The TTL bounds that — the state self-heals and the queue
-      // re-probes.
+      // Always carry a TTL: `remaining: 0` with no reset would otherwise wedge the
+      // queue forever, since it stops fetching and no later response can clear it.
       await client.multi()
         .hSet(this.headerKey(key), {
           remaining: String(remaining),
@@ -135,10 +125,7 @@ export class RedisRateLimitStore {
     }, null)
   }
 
-  /**
-   * Block the key until `until`. Stored with a matching TTL so the cooldown
-   * self-clears even if nothing reads it again.
-   */
+  /** Block the key until `until`, with a matching TTL so the cooldown self-clears. */
   async setBlockedUntil (key: string, until: Date): Promise<void> {
     await this.withClient(async (client) => {
       const seconds = Math.ceil((until.getTime() - Date.now()) / 1000)

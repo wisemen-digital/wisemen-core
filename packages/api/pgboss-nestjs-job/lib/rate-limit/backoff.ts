@@ -1,10 +1,6 @@
 import { FailureBackoffOptions, RateLimitSignal } from './rate-limit-options.js'
 
-/**
- * Compute the instant a failure-backoff cooldown clears: honour the API's
- * `Retry-After` when present, otherwise fall back to the configured backoff,
- * capped by `maxBackoffSeconds` when set.
- */
+/** When a failure-backoff cooldown clears: `Retry-After` if given, else the configured backoff, capped. */
 export function nextBackoff (
   options: FailureBackoffOptions,
   signal: RateLimitSignal,

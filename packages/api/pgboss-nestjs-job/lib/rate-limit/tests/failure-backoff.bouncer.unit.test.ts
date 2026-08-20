@@ -10,6 +10,11 @@ class TestFailureBouncer extends FailureBackoffBouncer {
   protected readonly options = { backoffSeconds: 30, maxBackoffSeconds: 120 }
 }
 
+@Bouncer('failure-500-test')
+class SapStyleFailureBouncer extends FailureBackoffBouncer {
+  protected readonly options = { backoffSeconds: 30, throttleStatuses: [500] }
+}
+
 function makeBouncer (): { bouncer: TestFailureBouncer, store: FakeRateLimitStore } {
   const store = new FakeRateLimitStore()
 
@@ -51,5 +56,14 @@ describe('FailureBackoffBouncer', () => {
     await bouncer.onResponse(200, {})
 
     assert.equal(store.blocked.size, 0)
+  })
+
+  it('backs off on a configured non-429 status', async () => {
+    const store = new FakeRateLimitStore()
+    const bouncer = withStore(new SapStyleFailureBouncer(), store)
+
+    await bouncer.onResponse(500, {})
+
+    assert.equal(cooldownSeconds(store.blocked.get('failure-500-test')), 30)
   })
 })

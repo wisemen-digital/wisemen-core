@@ -4,13 +4,8 @@ import { RateLimitError } from './rate-limit.error.js'
 import { RateLimitBouncer } from './rate-limit.bouncer.js'
 
 /**
- * Register rate-limit accounting on a `@wisemen/node-fetch` client, feeding the
- * queue's `bouncer`. A client talks to exactly one rate-limited API, so its
- * bouncer is known at wiring time and bound directly — no async context needed.
- * `onRequest` runs before each request, `onResponse` on each response, `onError`
- * on a transport failure. A 429 records the cooldown (via `onResponse`) and then
- * throws {@link RateLimitError} so the job fails and is retried after the
- * cooldown clears.
+ * Register rate-limit accounting on a `@wisemen/node-fetch` client, bound to its queue's
+ * `bouncer`. A throttle records the cooldown, then throws {@link RateLimitError} to retry.
  */
 export function useRateLimiting (client: FetchClient, bouncer: RateLimitBouncer): void {
   client.interceptors.request.use(async (request) => {
@@ -24,8 +19,8 @@ export function useRateLimiting (client: FetchClient, bouncer: RateLimitBouncer)
 
     await bouncer.onResponse(response.status, headers)
 
-    if (response.status === 429) {
-      const signal: RateLimitSignal = { status: 429, throttled: true }
+    if (bouncer.isThrottleResponse(response.status, headers)) {
+      const signal: RateLimitSignal = { status: response.status, throttled: true }
       const retryAfter = headers['retry-after']
 
       if (retryAfter !== undefined) {
@@ -39,8 +34,7 @@ export function useRateLimiting (client: FetchClient, bouncer: RateLimitBouncer)
   })
 
   client.interceptors.error.use(async (error) => {
-    // A 429 throws RateLimitError from the response interceptor; if the client
-    // ever routed that here, it must not double-count as a transport error.
+    // The response interceptor already threw this; never double-count it as transport error.
     if (!(error instanceof RateLimitError)) {
       await bouncer.onError()
     }

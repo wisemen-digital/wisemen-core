@@ -4,10 +4,8 @@ import { RateLimitBouncer } from './rate-limit.bouncer.js'
 import { FailureBackoffOptions, RateLimitSignal } from './rate-limit-options.js'
 
 /**
- * Failure-backoff mode: we know nothing about the limit up front and only react
- * to failures. There is no proactive gate — the queue flows until a 429 or a
- * transport error sets a backoff cooldown, honoured by the base `blockedUntil`
- * check.
+ * Failure-backoff mode: nothing is known up front, so there is no proactive gate — the
+ * queue flows until a throttle or transport error sets a backoff cooldown.
  *
  * ```ts
  * @Bouncer(QueueName.FLAKY)
@@ -19,6 +17,10 @@ import { FailureBackoffOptions, RateLimitSignal } from './rate-limit-options.js'
 export abstract class FailureBackoffBouncer extends RateLimitBouncer {
   protected abstract readonly options: FailureBackoffOptions
 
+  protected override get throttleStatuses (): readonly number[] {
+    return this.options.throttleStatuses ?? super.throttleStatuses
+  }
+
   protected checkMode (): Promise<boolean> {
     // No proactive signal; gated purely by the universal blockedUntil cooldown.
     return Promise.resolve(true)
@@ -28,11 +30,11 @@ export abstract class FailureBackoffBouncer extends RateLimitBouncer {
     status: number,
     headers: Record<string, string | undefined>
   ): Promise<void> {
-    if (status !== 429) {
+    if (!this.isThrottleResponse(status, headers)) {
       return
     }
 
-    const signal: RateLimitSignal = { status: 429, throttled: true }
+    const signal: RateLimitSignal = { status, throttled: true }
     const retryAfter = parseRetryAfterSeconds(headers)
 
     if (retryAfter !== undefined) {

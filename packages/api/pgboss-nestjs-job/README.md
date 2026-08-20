@@ -218,11 +218,42 @@ constructor (private readonly bouncer: StripeBouncer) {
 ```
 
 The interceptor drives the bound bouncer on every call: static counts one request
-per call, header mirrors the reported budget, failure backs off on a 429 or
-transport error. A 429 records the cooldown and throws `RateLimitError` so the job
-is retried after the cooldown clears — make sure the queue has pg-boss retry
-configured. Because it counts every request through the client, all real API
+per call, header mirrors the reported budget, failure backs off on a throttled
+response or transport error. A throttled response records the cooldown and throws
+`RateLimitError` so the job is retried after the cooldown clears — make sure the
+queue has pg-boss retry configured. Because it counts every request through the client, all real API
 usage counts against the budget, not only calls made from that queue's jobs.
+
+**Not every API answers with a 429.** Throttling is `429` by default, but SAP and
+friends report it as a `503`, a `500`, sometimes even a `400`. Name the statuses
+that mean "slow down" in the options and every mode — plus the interceptor that
+throws `RateLimitError` — follows:
+
+```typescript
+@Bouncer(QueueName.SAP)
+export class SapBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 50, windowSeconds: 60, throttleStatuses: [503, 500] }
+}
+```
+
+`throttleStatuses` **replaces** the default rather than adding to it, so include
+`429` explicitly if the API uses both. When a status code alone cannot say it,
+override the decision instead — it is the single point every mode consults:
+
+```typescript
+@Bouncer(QueueName.SAP)
+export class SapBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 50, windowSeconds: 60 }
+
+  override isThrottleResponse (status: number, headers: Record<string, string | undefined>): boolean {
+    return status === 400 && headers['x-sap-throttled'] === 'true'
+  }
+}
+```
+
+The response body is deliberately not available here — the interceptor must not
+consume the stream. An API that only signals throttling in its payload should
+throw `RateLimitError` from its own client code.
 
 Notes:
 

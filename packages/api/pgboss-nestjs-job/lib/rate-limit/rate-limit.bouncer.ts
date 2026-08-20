@@ -4,20 +4,15 @@ import { getPgbossBouncerQueueName } from '../worker/pgboss-bouncer.decorator.js
 import { RedisRateLimitStore } from './redis-rate-limit.store.js'
 
 /**
- * Base for the rate-limit bouncers. A rate-limited queue's bouncer *is* its
- * limiter: `canProceed()` (the fetch gate) reads Redis; the transport hooks
- * (`onRequest`/`onResponse`/`onError`, driven by {@link useRateLimiting}) write
- * to Redis. State is keyed by the queue name from the `@Bouncer(name)` decorator.
- *
- * The store is **property-injected** on this base so concrete subclasses stay
- * boilerplate-free (a subclass with no constructor would otherwise emit no
- * constructor-injection metadata). Keep concrete bouncers default-scoped
- * (singleton): a static dependency tree lets `PgbossBouncerRegistry` reuse one
- * instance instead of resolving a fresh one per request.
+ * Base for the rate-limit bouncers: `canProceed()` gates on Redis state, the
+ * transport hooks write it. Keyed by the `@Bouncer(name)` queue. The store is
+ * property-injected so subclasses need no constructor; keep them singleton-scoped.
  */
 export abstract class RateLimitBouncer extends PgbossBouncer {
-  /** Fallback cooldown for a 429 with no `Retry-After`, for modes without their own backoff. */
+  /** Cooldown for a throttle with no `Retry-After`, for modes lacking their own backoff. */
   protected static readonly DEFAULT_COOLDOWN_SECONDS = 60
+  /** Statuses treated as throttling when a bouncer declares none of its own. */
+  protected static readonly DEFAULT_THROTTLE_STATUSES: readonly number[] = [429]
 
   @Inject(RedisRateLimitStore)
   protected readonly store!: RedisRateLimitStore
@@ -33,10 +28,7 @@ export abstract class RateLimitBouncer extends PgbossBouncer {
     return this.cachedKey
   }
 
-  /**
-   * Fetch gate. A `blockedUntil` cooldown (set by a 429) blocks every mode; the
-   * per-mode {@link checkMode} handles proactive gating.
-   */
+  /** Fetch gate: the shared `blockedUntil` cooldown blocks every mode, then {@link checkMode} gates. */
   async canProceed (): Promise<boolean> {
     const now = new Date()
     const blockedUntil = await this.store.getBlockedUntil(this.queueKey)
@@ -48,7 +40,22 @@ export abstract class RateLimitBouncer extends PgbossBouncer {
     return this.checkMode(now)
   }
 
-  /** Per-mode proactive gate, evaluated only when not on a 429 cooldown. */
+  // `options` stays off this base on purpose: an all-optional base type trips TS's
+  // weak-type check, forcing every concrete bouncer to annotate its options literal.
+  /** Statuses read as throttling; each mode overrides this to expose its options. */
+  protected get throttleStatuses (): readonly number[] {
+    return RateLimitBouncer.DEFAULT_THROTTLE_STATUSES
+  }
+
+  /**
+   * Is this a throttle? The one place every mode and {@link useRateLimiting} asks.
+   * No body by design — the interceptor must not consume the response stream.
+   */
+  isThrottleResponse (status: number, _headers: Record<string, string | undefined>): boolean {
+    return this.throttleStatuses.includes(status)
+  }
+
+  /** Per-mode proactive gate, evaluated only when not on a throttle cooldown. */
   protected abstract checkMode (now: Date): Promise<boolean>
 
   /** Block this queue for `seconds` from `now` (no-op when non-positive). */

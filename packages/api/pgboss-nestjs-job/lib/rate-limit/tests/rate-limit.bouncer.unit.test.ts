@@ -10,6 +10,20 @@ class TestBouncer extends StaticRateLimitBouncer {
   protected readonly options = { limit: 3, windowSeconds: 60 }
 }
 
+@Bouncer('custom-statuses-test')
+class CustomStatusBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 3, windowSeconds: 60, throttleStatuses: [503, 500] }
+}
+
+@Bouncer('override-test')
+class OverridingBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 3, windowSeconds: 60 }
+
+  override isThrottleResponse (status: number, headers: Record<string, string | undefined>): boolean {
+    return status === 400 && headers['x-sap-throttled'] === 'true'
+  }
+}
+
 describe('RateLimitBouncer (base behaviour)', () => {
   it('exposes the store as inherited Nest property-injection metadata', () => {
     // The crux of the DI design: @Inject on the abstract base must be visible
@@ -46,6 +60,31 @@ describe('RateLimitBouncer (base behaviour)', () => {
     const bouncer = withStore(new TestBouncer(), store)
 
     assert.equal(await bouncer.canProceed(), true)
+  })
+
+  it('treats only 429 as throttling by default', () => {
+    const bouncer = withStore(new TestBouncer(), new FakeRateLimitStore())
+
+    assert.equal(bouncer.isThrottleResponse(429, {}), true)
+    assert.equal(bouncer.isThrottleResponse(503, {}), false)
+    assert.equal(bouncer.isThrottleResponse(200, {}), false)
+  })
+
+  it('honours throttleStatuses for APIs that do not use 429', () => {
+    const bouncer = withStore(new CustomStatusBouncer(), new FakeRateLimitStore())
+
+    assert.equal(bouncer.isThrottleResponse(503, {}), true)
+    assert.equal(bouncer.isThrottleResponse(500, {}), true)
+    // Opting into other statuses replaces the default rather than adding to it.
+    assert.equal(bouncer.isThrottleResponse(429, {}), false)
+  })
+
+  it('lets a subclass override the decision entirely', () => {
+    const bouncer = withStore(new OverridingBouncer(), new FakeRateLimitStore())
+
+    assert.equal(bouncer.isThrottleResponse(400, { 'x-sap-throttled': 'true' }), true)
+    assert.equal(bouncer.isThrottleResponse(400, {}), false)
+    assert.equal(bouncer.isThrottleResponse(429, {}), false)
   })
 
   it('fails open when the store is unavailable', async () => {

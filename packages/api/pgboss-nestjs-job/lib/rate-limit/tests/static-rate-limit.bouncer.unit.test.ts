@@ -10,6 +10,11 @@ class TestStaticBouncer extends StaticRateLimitBouncer {
   protected readonly options = { limit: 3, windowSeconds: 60 }
 }
 
+@Bouncer('static-503-test')
+class SapStyleBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 3, windowSeconds: 60, throttleStatuses: [503] }
+}
+
 function makeBouncer (): { bouncer: TestStaticBouncer, store: FakeRateLimitStore } {
   const store = new FakeRateLimitStore()
 
@@ -54,6 +59,18 @@ describe('StaticRateLimitBouncer', () => {
 
     await bouncer.onResponse(200, {})
 
+    assert.equal(store.blocked.size, 0)
+  })
+
+  it('cools down on a configured non-429 status and ignores 429 once opted out', async () => {
+    const store = new FakeRateLimitStore()
+    const bouncer = withStore(new SapStyleBouncer(), store)
+
+    await bouncer.onResponse(503, {})
+    assert.ok(store.blocked.get('static-503-test') != null, '503 should have set a cooldown')
+
+    store.blocked.clear()
+    await bouncer.onResponse(429, {})
     assert.equal(store.blocked.size, 0)
   })
 })

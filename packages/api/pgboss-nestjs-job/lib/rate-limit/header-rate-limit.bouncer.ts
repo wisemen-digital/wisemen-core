@@ -3,10 +3,8 @@ import { RateLimitBouncer } from './rate-limit.bouncer.js'
 import { HeaderRateLimitOptions } from './rate-limit-options.js'
 
 /**
- * Header mode: mirror the API's own budget from response headers
- * (`X-RateLimit-Remaining` / `-Reset`, `Retry-After`). Blocks while the reported
- * remaining is exhausted and the reset is still in the future. A 429 forces a
- * cooldown on top.
+ * Header mode: mirror the API's own budget from its `X-RateLimit-*` headers, blocking
+ * while it reports nothing left. A throttled response forces a cooldown on top.
  *
  * ```ts
  * @Bouncer(QueueName.CUOPT)
@@ -17,6 +15,10 @@ import { HeaderRateLimitOptions } from './rate-limit-options.js'
  */
 export abstract class HeaderRateLimitBouncer extends RateLimitBouncer {
   protected abstract readonly options: HeaderRateLimitOptions
+
+  protected override get throttleStatuses (): readonly number[] {
+    return this.options.throttleStatuses ?? super.throttleStatuses
+  }
 
   protected async checkMode (now: Date): Promise<boolean> {
     const state = await this.store.getHeaderState(this.queueKey)
@@ -43,7 +45,7 @@ export abstract class HeaderRateLimitBouncer extends RateLimitBouncer {
       await this.store.setHeaderState(this.queueKey, signal.remaining, signal.resetAt ?? null)
     }
 
-    if (status === 429) {
+    if (this.isThrottleResponse(status, headers)) {
       await this.blockFor(
         parseRetryAfterSeconds(headers, this.options.retryAfterHeader) ??
           RateLimitBouncer.DEFAULT_COOLDOWN_SECONDS

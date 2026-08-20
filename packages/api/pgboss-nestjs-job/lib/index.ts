@@ -33,6 +33,7 @@ export { RedisRateLimitStore } from './rate-limit/redis-rate-limit.store.js'
 export { useRateLimiting } from './rate-limit/rate-limit.interceptors.js'
 export { RateLimitError } from './rate-limit/rate-limit.error.js'
 export {
+  RateLimitOptions,
   StaticRateLimitOptions,
   HeaderRateLimitOptions,
   FailureBackoffOptions,

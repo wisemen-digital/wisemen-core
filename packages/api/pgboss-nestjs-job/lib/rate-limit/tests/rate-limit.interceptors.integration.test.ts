@@ -31,6 +31,11 @@ class RecordingBouncer extends StaticRateLimitBouncer {
   }
 }
 
+@Bouncer('interceptor-503-test')
+class SapStyleBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 5, windowSeconds: 60, throttleStatuses: [503] }
+}
+
 function makeBouncer (): RecordingBouncer {
   return withStore(new RecordingBouncer(), new FakeRateLimitStore())
 }
@@ -62,6 +67,31 @@ describe('useRateLimiting (through a real node-fetch client)', () => {
     })
 
     assert.deepEqual(bouncer.calls, ['req', 'res:429'])
+  })
+
+  it('throws RateLimitError on the bouncer\'s configured status, not a hardcoded 429', async () => {
+    const bouncer = withStore(new SapStyleBouncer(), new FakeRateLimitStore())
+    const client = createClient({
+      fetch: () => Promise.resolve(new Response('overloaded', { status: 503 }))
+    })
+    useRateLimiting(client, bouncer)
+
+    await assert.rejects(client.get('https://api.test/thing'), (error: unknown) => {
+      assert.ok(error instanceof RateLimitError)
+      assert.equal(error.signal.status, 503)
+
+      return true
+    })
+  })
+
+  it('lets a 429 through when the bouncer does not treat it as throttling', async () => {
+    const bouncer = withStore(new SapStyleBouncer(), new FakeRateLimitStore())
+    const client = createClient({ fetch: () => Promise.resolve(new Response('nope', { status: 429 })) })
+    useRateLimiting(client, bouncer)
+
+    const res = await client.get('https://api.test/thing')
+
+    assert.equal(res.status, 429)
   })
 
   it('drives onError on a transport failure', async () => {

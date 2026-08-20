@@ -6,10 +6,8 @@ type RedisForRootOptions = Parameters<typeof RedisModule.forRoot>[0]
 type RedisForRootAsyncOptions = Parameters<typeof RedisModule.forRootAsync>[0]
 
 /**
- * Wires the Redis-backed rate-limit store. `@Global` so a consumer's `@Bouncer`
- * classes (declared in their own feature modules) can property-inject
- * `RedisRateLimitStore` without importing this module everywhere. It owns a
- * dedicated Redis connection via `@wisemen/nestjs-redis`.
+ * Wires the Redis-backed rate-limit store on its own connection. `@Global` so `@Bouncer`
+ * classes in feature modules can inject the store without importing this everywhere.
  *
  * ```ts
  * PgbossRateLimitModule.forRoot({ url: 'redis://localhost:6379' })

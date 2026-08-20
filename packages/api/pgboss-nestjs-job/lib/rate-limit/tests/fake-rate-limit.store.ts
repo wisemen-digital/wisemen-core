@@ -1,9 +1,8 @@
 import { HeaderState } from '../redis-rate-limit.store.js'
 
 /**
- * In-memory stand-in for {@link RedisRateLimitStore} used by the bouncer unit
- * tests. Set `unavailable = true` to simulate Redis being down (reads return the
- * fail-open fallback, writes are dropped), mirroring the real store's contract.
+ * In-memory stand-in for {@link RedisRateLimitStore}. Set `unavailable = true` to
+ * simulate Redis being down: reads return the fail-open fallback, writes are dropped.
  */
 export class FakeRateLimitStore {
   readonly counts = new Map<string, number>()

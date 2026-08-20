@@ -3,9 +3,8 @@ import { RateLimitBouncer } from './rate-limit.bouncer.js'
 import { StaticRateLimitOptions } from './rate-limit-options.js'
 
 /**
- * Static mode: a known budget (`limit` per `windowSeconds`). Counts one token
- * per outbound request in a fixed Redis window; blocks once the count reaches
- * the limit. A 429 additionally forces a cooldown (Retry-After or default).
+ * Static mode: a known budget (`limit` per `windowSeconds`), counted per request in a
+ * fixed Redis window. A throttled response forces a cooldown on top.
  *
  * ```ts
  * @Bouncer(QueueName.STRIPE)
@@ -16,6 +15,10 @@ import { StaticRateLimitOptions } from './rate-limit-options.js'
  */
 export abstract class StaticRateLimitBouncer extends RateLimitBouncer {
   protected abstract readonly options: StaticRateLimitOptions
+
+  protected override get throttleStatuses (): readonly number[] {
+    return this.options.throttleStatuses ?? super.throttleStatuses
+  }
 
   protected async checkMode (): Promise<boolean> {
     const count = await this.store.getCount(this.queueKey)
@@ -31,7 +34,7 @@ export abstract class StaticRateLimitBouncer extends RateLimitBouncer {
     status: number,
     headers: Record<string, string | undefined>
   ): Promise<void> {
-    if (status === 429) {
+    if (this.isThrottleResponse(status, headers)) {
       await this.blockFor(
         parseRetryAfterSeconds(headers) ?? RateLimitBouncer.DEFAULT_COOLDOWN_SECONDS
       )
