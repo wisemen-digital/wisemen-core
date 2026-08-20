@@ -10,6 +10,8 @@ import {
   DEFAULT_MAX_SUB_ACTIONS,
   DEFAULT_MIN_APPLICABILITY_SCORE,
   DEFAULT_MIN_SEARCH_INPUT_LENGTH,
+  DISABLED_GROUPING_SCORE_GROUP_PRIORITY_THRESHOLD,
+  SCORE_GROUP_PRIORITY_THRESHOLD,
 } from '#const/index.ts'
 import { setIsAuthenticated } from '#createActions.ts'
 import type { Action } from '#types/action.type.ts'
@@ -54,6 +56,32 @@ function makeCtx(overrides: Partial<ActionContext> = {}): ActionContext {
 
 function ids(actions: Action[]): string[] {
   return actions.map((action) => action.id)
+}
+
+// Regression scenario: searching "John" for a company named "John's" and a
+// user named "John Doe" score within the same tier, but by default the User
+// group's higher priority (lower number) pushes "John Doe" above "John's"
+// even though "John's" is the closer match.
+function makeJohnActions(): [Action, Action] {
+  const johnsCompany = makeAction({
+    id: 'johns-company',
+    name: 'John\'s',
+    group: {
+      priority: 10,
+    },
+  })
+  const johnDoeUser = makeAction({
+    id: 'john-doe-user',
+    name: 'John Doe',
+    group: {
+      priority: 1,
+    },
+  })
+
+  return [
+    johnsCompany,
+    johnDoeUser,
+  ]
 }
 
 describe('resolveApplicable', () => {
@@ -258,6 +286,115 @@ describe('applicableActions > sorting', () => {
       expect(ids(result)).toEqual([
         'top',
         'lifted',
+      ])
+    })
+  })
+
+  describe('isGroupingDisabled', () => {
+    it('lets group priority break a tie within the same score tier by default', async () => {
+      const result = await applicableActions(makeJohnActions(), makeCtx({
+        searchInput: 'John',
+      }))
+
+      expect(ids(result)).toEqual([
+        'john-doe-user',
+        'johns-company',
+      ])
+    })
+
+    it('still lets group priority break a near-tied score when isGroupingDisabled is true', async () => {
+      // "John's" and "John Doe" score within a few thousandths of each other
+      // (both are prefix matches, differing only by string length) — well
+      // inside DISABLED_GROUPING_SCORE_GROUP_PRIORITY_THRESHOLD, so group
+      // priority still decides even though grouping is disabled.
+      const result = await applicableActions(
+        makeJohnActions(),
+        makeCtx({
+          searchInput: 'John',
+        }),
+        undefined,
+        undefined,
+        true,
+      )
+
+      expect(ids(result)).toEqual([
+        'john-doe-user',
+        'johns-company',
+      ])
+    })
+
+    it('lets a real relevance gap win over group priority when isGroupingDisabled is true, unlike grouped mode', async () => {
+      // The gap between these scores is bigger than
+      // DISABLED_GROUPING_SCORE_GROUP_PRIORITY_THRESHOLD (so disabled mode
+      // treats them as different tiers and score wins), but still smaller
+      // than SCORE_GROUP_PRIORITY_THRESHOLD (so grouped mode treats them as
+      // tied and group priority wins instead).
+      const gap = (SCORE_GROUP_PRIORITY_THRESHOLD + DISABLED_GROUPING_SCORE_GROUP_PRIORITY_THRESHOLD) / 2
+
+      const betterScoreBadPriority = makeAction({
+        id: 'better-score-bad-priority',
+        group: {
+          priority: 99,
+        },
+        scoreOverride: 0.60 + gap,
+      })
+      const worseScoreGoodPriority = makeAction({
+        id: 'worse-score-good-priority',
+        group: {
+          priority: 1,
+        },
+        scoreOverride: 0.60,
+      })
+
+      const grouped = await applicableActions([
+        betterScoreBadPriority,
+        worseScoreGoodPriority,
+      ], makeCtx({
+        searchInput: 'x',
+      }))
+
+      expect(ids(grouped)).toEqual([
+        'worse-score-good-priority',
+        'better-score-bad-priority',
+      ])
+
+      const disabled = await applicableActions(
+        [
+          betterScoreBadPriority,
+          worseScoreGoodPriority,
+        ],
+        makeCtx({
+          searchInput: 'x',
+        }),
+        undefined,
+        undefined,
+        true,
+      )
+
+      expect(ids(disabled)).toEqual([
+        'better-score-bad-priority',
+        'worse-score-good-priority',
+      ])
+    })
+
+    it('still uses group priority to order the root menu (no search input) when disabled', async () => {
+      // Regression test: with no query, every action scores 1 (same tier), so
+      // group priority is the only ordering signal available. Bypassing it
+      // unconditionally collapsed the comparator to a no-op and left the root
+      // menu in arbitrary order.
+      const result = await applicableActions(
+        makeJohnActions(),
+        makeCtx({
+          searchInput: '',
+        }),
+        undefined,
+        undefined,
+        true,
+      )
+
+      expect(ids(result)).toEqual([
+        'john-doe-user',
+        'johns-company',
       ])
     })
   })

@@ -4,6 +4,7 @@ import {
   DEFAULT_MAX_SUB_ACTIONS,
   DEFAULT_MIN_APPLICABILITY_SCORE,
   DEFAULT_MIN_SEARCH_INPUT_LENGTH,
+  DISABLED_GROUPING_SCORE_GROUP_PRIORITY_THRESHOLD,
   PARENT_ACTION_SCORE_PENALTY,
   SCORE_GROUP_PRIORITY_THRESHOLD,
   SECONDARY_SCORE_WEIGHT,
@@ -27,6 +28,7 @@ export async function applicableActions(
   ctx: ActionContext,
   onUpdate?: (partial: Action[]) => void,
   parentAction?: Action,
+  isGroupingDisabled = false,
 ): Promise<Action[]> {
   const searchInputLength = ctx.searchInput.length
   const isSearching = searchInputLength >= 0
@@ -86,7 +88,7 @@ export async function applicableActions(
 
     if (asyncTasks.length > 0 && onUpdate !== undefined) {
       // Emit sync-only result immediately so the menu is not blank
-      onUpdate(filterAndRank(syncCandidates, ctx, parentAction))
+      onUpdate(filterAndRank(syncCandidates, ctx, parentAction, isGroupingDisabled))
 
       // Fire all async tasks in parallel; each one updates the list when it settles
       const allCandidates = [
@@ -97,10 +99,10 @@ export async function applicableActions(
         const lifted = await task()
 
         allCandidates.push(...lifted)
-        onUpdate(filterAndRank(allCandidates, ctx, parentAction))
+        onUpdate(filterAndRank(allCandidates, ctx, parentAction, isGroupingDisabled))
       }))
 
-      return filterAndRank(allCandidates, ctx, parentAction)
+      return filterAndRank(allCandidates, ctx, parentAction, isGroupingDisabled)
     }
 
     // No onUpdate: await everything synchronously (backwards-compatible)
@@ -115,10 +117,15 @@ export async function applicableActions(
     ]
   }
 
-  return filterAndRank(candidates, ctx, parentAction)
+  return filterAndRank(candidates, ctx, parentAction, isGroupingDisabled)
 }
 
-function filterAndRank(candidates: Action[], ctx: ActionContext, parentAction?: Action): Action[] {
+function filterAndRank(
+  candidates: Action[],
+  ctx: ActionContext,
+  parentAction?: Action,
+  isGroupingDisabled = false,
+): Action[] {
   const searchInputLength = ctx.searchInput.length
   const isSearching = searchInputLength >= 0
 
@@ -187,8 +194,14 @@ function filterAndRank(candidates: Action[], ctx: ActionContext, parentAction?: 
       // A small epsilon guards against floating-point rounding pushing a score
       // that lands exactly on a tier boundary into the wrong tier
       // (e.g. 0.30 / 0.05 evaluates to 5.999999999999999 in JS, not 6).
-      const aTier = Math.floor(a.score / SCORE_GROUP_PRIORITY_THRESHOLD + 1e-9)
-      const bTier = Math.floor(b.score / SCORE_GROUP_PRIORITY_THRESHOLD + 1e-9)
+      // Grouping-disabled uses a narrower tier so group priority still carries
+      // weight (breaking near-ties caused by score noise) without overriding
+      // a real relevance gap the way the wider grouped-mode tier does.
+      const tierThreshold = isGroupingDisabled
+        ? DISABLED_GROUPING_SCORE_GROUP_PRIORITY_THRESHOLD
+        : SCORE_GROUP_PRIORITY_THRESHOLD
+      const aTier = Math.floor(a.score / tierThreshold + 1e-9)
+      const bTier = Math.floor(b.score / tierThreshold + 1e-9)
 
       if (aTier !== bTier) {
         return bTier - aTier

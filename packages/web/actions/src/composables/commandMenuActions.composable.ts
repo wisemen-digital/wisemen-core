@@ -2,7 +2,10 @@ import {
   useDebounceFn,
   useInfiniteScroll,
 } from '@vueuse/core'
-import type { Ref } from 'vue'
+import type {
+  ComputedRef,
+  Ref,
+} from 'vue'
 import {
   computed,
   ref,
@@ -27,6 +30,14 @@ import {
 } from '#utils/subActions.util.ts'
 
 interface UseCommandMenuActionsOptions {
+  /**
+   * When true, results are ranked mostly by relevance score: `group.priority`
+   * only breaks ties within a much narrower score band than when grouping is
+   * enabled, so it still carries some weight without overriding a real
+   * relevance gap. Use together with rendering the command menu as a flat
+   * (ungrouped) list.
+   */
+  isGroupingDisabled: ComputedRef<boolean>
   actionsSnapshot: Action[]
   focusedModelsSnapshot: ActionModel[]
   listboxContentRef: Ref<{ $el: HTMLElement } | null>
@@ -37,6 +48,7 @@ interface UseCommandMenuActionsOptions {
 }
 
 export function useCommandMenuActions({
+  isGroupingDisabled,
   actionsSnapshot,
   focusedModelsSnapshot,
   listboxContentRef,
@@ -92,7 +104,7 @@ export function useCommandMenuActions({
         if (id === refreshId && partial.length > 0) {
           resolvedActions.value = partial
         }
-      }, navStack.value.at(-1)?.parentAction)
+      }, navStack.value.at(-1)?.parentAction, isGroupingDisabled.value)
 
       if (id === refreshId) {
         resolvedActions.value = updatedActions
@@ -124,6 +136,10 @@ export function useCommandMenuActions({
     })
 
     debouncedRefresh()
+  })
+
+  watch(isGroupingDisabled, () => {
+    refreshActions()
   })
 
   // After the action list changes, ensure a highlighted item always exists
