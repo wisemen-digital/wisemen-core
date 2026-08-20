@@ -220,9 +220,22 @@ constructor (private readonly bouncer: StripeBouncer) {
 The interceptor drives the bound bouncer on every call: static counts one request
 per call, header mirrors the reported budget, failure backs off on a throttled
 response or transport error. A throttled response records the cooldown and throws
-`RateLimitError` so the job is retried after the cooldown clears — make sure the
-queue has pg-boss retry configured. Because it counts every request through the client, all real API
-usage counts against the budget, not only calls made from that queue's jobs.
+`RateLimitError` so the job is retried after the cooldown clears. Because it counts
+every request through the client, all real API usage counts against the budget, not
+only calls made from that queue's jobs.
+
+**Retries are what make the cooldown work**, and pg-boss already provides them:
+every queue defaults to `retryLimit: 2`, which jobs inherit unless they override it
+— so a throttled job gets three attempts out of the box. Two things to know:
+
+- **A busy queue may want more.** Each attempt is spent on a throttle it may hit
+  again once the cooldown clears, so a queue that is throttled often can exhaust
+  three attempts and fail the job. Raise it per queue (`createQueue`/`updateQueue`
+  with `retryLimit`, optionally `retryBackoff`) or per job via its options.
+- **Never set `retryLimit: 0` on a rate-limited queue.** pg-boss retries only while
+  `retry_count < retry_limit`, so with `0` the *first* throttle fails the job for
+  good. The cooldown is still recorded — the API stays protected — but the job is
+  lost unless the queue has a dead-letter queue.
 
 **Not every API answers with a 429.** Throttling is `429` by default, but SAP and
 friends report it as a `503`, a `500`, sometimes even a `400`. Name the statuses
