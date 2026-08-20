@@ -85,5 +85,13 @@ export {
   createDataTableTimestampCell,
   defineDataTableColumns,
 } from './types/dataTableColumn.type'
+export type {
+  DataTableRowClick,
+  DataTableRowConfig,
+} from './types/dataTableRowConfig.type'
+export {
+  createDataTableRowActionClick,
+  createDataTableRowLinkClick,
+} from './types/dataTableRowConfig.type'
 export { DataTableUtil } from './utils/dataTable.util'
 export { getDataTableCellGroupingValue } from './utils/dataTableCellGroupingValue.util'
