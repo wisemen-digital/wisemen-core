@@ -1,7 +1,7 @@
 import { nextBackoff } from './backoff.js'
 import { parseRetryAfterSeconds } from './parse-rate-limit-headers.js'
 import { RateLimitBouncer } from './rate-limit.bouncer.js'
-import { FailureBackoffOptions, RateLimitSignal } from './rate-limit-options.js'
+import { FailureBackoffOptions, RateLimitOptions, RateLimitSignal } from './rate-limit-options.js'
 
 /**
  * Failure-backoff mode: nothing is known up front, so there is no proactive gate — the
@@ -17,8 +17,8 @@ import { FailureBackoffOptions, RateLimitSignal } from './rate-limit-options.js'
 export abstract class FailureBackoffBouncer extends RateLimitBouncer {
   protected abstract readonly options: FailureBackoffOptions
 
-  protected override get throttleStatuses (): readonly number[] {
-    return this.options.throttleStatuses ?? super.throttleStatuses
+  protected get sharedOptions (): RateLimitOptions {
+    return this.options
   }
 
   protected checkMode (): Promise<boolean> {

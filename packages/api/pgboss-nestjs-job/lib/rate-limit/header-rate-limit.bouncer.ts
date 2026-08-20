@@ -1,6 +1,6 @@
 import { parseRateLimitHeaders, parseRetryAfterSeconds } from './parse-rate-limit-headers.js'
 import { RateLimitBouncer } from './rate-limit.bouncer.js'
-import { HeaderRateLimitOptions } from './rate-limit-options.js'
+import { HeaderRateLimitOptions, RateLimitOptions } from './rate-limit-options.js'
 
 /**
  * Header mode: mirror the API's own budget from its `X-RateLimit-*` headers, blocking
@@ -16,8 +16,8 @@ import { HeaderRateLimitOptions } from './rate-limit-options.js'
 export abstract class HeaderRateLimitBouncer extends RateLimitBouncer {
   protected abstract readonly options: HeaderRateLimitOptions
 
-  protected override get throttleStatuses (): readonly number[] {
-    return this.options.throttleStatuses ?? super.throttleStatuses
+  protected get sharedOptions (): RateLimitOptions {
+    return this.options
   }
 
   protected async checkMode (now: Date): Promise<boolean> {

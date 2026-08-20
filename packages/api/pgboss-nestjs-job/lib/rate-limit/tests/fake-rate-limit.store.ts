@@ -2,13 +2,17 @@ import { HeaderState } from '../redis-rate-limit.store.js'
 
 /**
  * In-memory stand-in for {@link RedisRateLimitStore}. Set `unavailable = true` to
- * simulate Redis being down: reads return the fail-open fallback, writes are dropped.
+ * simulate Redis being down: reads fall back to allow, writes are dropped.
  */
 export class FakeRateLimitStore {
   readonly counts = new Map<string, number>()
   readonly headerStates = new Map<string, HeaderState>()
   readonly blocked = new Map<string, Date>()
   unavailable = false
+
+  isAvailable (): boolean {
+    return !this.unavailable
+  }
 
   incrementWindow (key: string): Promise<number | null> {
     if (this.unavailable) {

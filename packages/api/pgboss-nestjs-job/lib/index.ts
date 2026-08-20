@@ -32,6 +32,7 @@ export { FailureBackoffBouncer } from './rate-limit/failure-backoff.bouncer.js'
 export { RedisRateLimitStore } from './rate-limit/redis-rate-limit.store.js'
 export { useRateLimiting } from './rate-limit/rate-limit.interceptors.js'
 export { RateLimitError } from './rate-limit/rate-limit.error.js'
+export { StoreUnavailablePolicy } from './rate-limit/rate-limit-options.js'
 export {
   RateLimitOptions,
   StaticRateLimitOptions,

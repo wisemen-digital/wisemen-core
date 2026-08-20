@@ -10,6 +10,10 @@ describe('RedisRateLimitStore — fail-open (no Redis needed)', () => {
   // fall back to allow/no-op rather than propagate.
   const store = new RedisRateLimitStore(new RedisClient({ url: 'redis://127.0.0.1:6379' }))
 
+  it('reports itself unavailable instead of throwing', () => {
+    assert.equal(store.isAvailable(), false)
+  })
+
   it('reads return allow fallbacks', async () => {
     assert.equal(await store.getCount('k'), 0)
     assert.equal(await store.getBlockedUntil('k'), null)
@@ -38,6 +42,10 @@ describe('RedisRateLimitStore — live', { skip: url == null }, () => {
   after(async () => {
     await client.client.del([`ratelimit:${key}:count`, `ratelimit:${key}:header`, `ratelimit:${key}:blocked`])
     await client.onModuleDestroy()
+  })
+
+  it('reports itself available once connected', () => {
+    assert.equal(store.isAvailable(), true)
   })
 
   it('increments a fixed window and arms a TTL that is not extended by later increments', async () => {

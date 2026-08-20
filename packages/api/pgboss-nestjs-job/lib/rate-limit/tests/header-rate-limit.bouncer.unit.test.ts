@@ -2,12 +2,18 @@ import 'reflect-metadata'
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { Bouncer } from '../../worker/pgboss-bouncer.decorator.js'
+import { StoreUnavailablePolicy } from '../rate-limit-options.js'
 import { HeaderRateLimitBouncer } from '../header-rate-limit.bouncer.js'
 import { FakeRateLimitStore, withStore } from './fake-rate-limit.store.js'
 
 @Bouncer('header-test')
 class TestHeaderBouncer extends HeaderRateLimitBouncer {
   protected readonly options = {}
+}
+
+@Bouncer('header-closed-test')
+class FailClosedHeaderBouncer extends HeaderRateLimitBouncer {
+  protected readonly options = { onStoreUnavailable: StoreUnavailablePolicy.BLOCK }
 }
 
 function makeBouncer (): { bouncer: TestHeaderBouncer, store: FakeRateLimitStore } {
@@ -21,6 +27,17 @@ describe('HeaderRateLimitBouncer', () => {
     const { bouncer } = makeBouncer()
 
     assert.equal(await bouncer.canProceed(), true)
+  })
+
+  it('tells "no state yet" apart from "store unavailable" when opted to block', async () => {
+    const store = new FakeRateLimitStore()
+    const bouncer = withStore(new FailClosedHeaderBouncer(), store)
+
+    // No state and a healthy store: nothing is known, so work flows.
+    assert.equal(await bouncer.canProceed(), true)
+
+    store.unavailable = true
+    assert.equal(await bouncer.canProceed(), false)
   })
 
   it('proceeds while remaining > 0', async () => {

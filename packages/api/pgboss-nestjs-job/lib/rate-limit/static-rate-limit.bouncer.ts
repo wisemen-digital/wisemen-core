@@ -1,6 +1,6 @@
 import { parseRetryAfterSeconds } from './parse-rate-limit-headers.js'
 import { RateLimitBouncer } from './rate-limit.bouncer.js'
-import { StaticRateLimitOptions } from './rate-limit-options.js'
+import { RateLimitOptions, StaticRateLimitOptions } from './rate-limit-options.js'
 
 /**
  * Static mode: a known budget (`limit` per `windowSeconds`), counted per request in a
@@ -16,8 +16,8 @@ import { StaticRateLimitOptions } from './rate-limit-options.js'
 export abstract class StaticRateLimitBouncer extends RateLimitBouncer {
   protected abstract readonly options: StaticRateLimitOptions
 
-  protected override get throttleStatuses (): readonly number[] {
-    return this.options.throttleStatuses ?? super.throttleStatuses
+  protected get sharedOptions (): RateLimitOptions {
+    return this.options
   }
 
   protected async checkMode (): Promise<boolean> {

@@ -1,3 +1,11 @@
+/** What a bouncer does when Redis cannot answer. */
+export enum StoreUnavailablePolicy {
+  /** Let work through unprotected (default): a Redis outage never stalls a queue. */
+  ALLOW = 'allow',
+  /** Hold the queue: for APIs that ban rather than throttle, stalling beats flooding. */
+  BLOCK = 'block'
+}
+
 /** Options shared by every rate-limit mode. */
 export interface RateLimitOptions {
   /**
@@ -5,6 +13,8 @@ export interface RateLimitOptions {
    * For what a status cannot express, override `RateLimitBouncer.isThrottleResponse`.
    */
   throttleStatuses?: number[]
+  /** What to do when Redis cannot answer. Defaults to {@link StoreUnavailablePolicy.ALLOW}. */
+  onStoreUnavailable?: StoreUnavailablePolicy
 }
 
 /** Options for {@link StaticRateLimitBouncer}: a fixed budget per rolling window. */

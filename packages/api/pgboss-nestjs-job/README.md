@@ -255,10 +255,36 @@ The response body is deliberately not available here — the interceptor must no
 consume the stream. An API that only signals throttling in its payload should
 throw `RateLimitError` from its own client code.
 
+**Choose what happens when Redis is down.** Rate limiting **fails open** by
+default: if Redis cannot answer, the gate allows and the queue runs at pg-boss
+speed. That keeps queues moving, but for an API that bans rather than throttles
+(OSRM and friends) flooding it is worse than stalling. Such a queue can opt to
+fail closed:
+
+```typescript
+@Bouncer(QueueName.OSRM)
+export class OsrmBouncer extends StaticRateLimitBouncer {
+  protected readonly options = {
+    limit: 20,
+    windowSeconds: 60,
+    onStoreUnavailable: StoreUnavailablePolicy.BLOCK
+  }
+}
+```
+
+The choice is per queue, because it depends on the API: `BLOCK` holds the queue
+for as long as Redis is unreachable (jobs stay queued and resume afterwards),
+`ALLOW` (default) keeps it running unprotected. Note this is only about Redis
+being unreachable — a reachable Redis always enforces the real limit.
+
+The check happens once per poll, so a connection that drops mid-poll can let that
+one batch through even under `BLOCK`; the next poll sees Redis is gone and holds.
+Exposure is bounded by `batchSize × workers`, the same bound as counter lag below.
+
 Notes:
 
-- **Fail-open:** if Redis is unavailable, bouncers allow work through rather than
-  wedge the queue.
+- **Fail-open by default:** if Redis is unavailable, bouncers allow work through
+  rather than wedge the queue — see `onStoreUnavailable` above to invert that.
 - Keep rate-limit bouncers **default-scoped** (singleton) — do not mark them
   `TRANSIENT`/`REQUEST`.
 - Header mode treats the reset header as **epoch seconds**; APIs that send

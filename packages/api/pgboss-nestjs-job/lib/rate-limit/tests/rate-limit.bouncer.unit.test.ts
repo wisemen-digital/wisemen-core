@@ -2,12 +2,18 @@ import 'reflect-metadata'
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { Bouncer } from '../../worker/pgboss-bouncer.decorator.js'
+import { StoreUnavailablePolicy } from '../rate-limit-options.js'
 import { StaticRateLimitBouncer } from '../static-rate-limit.bouncer.js'
 import { FakeRateLimitStore, withStore } from './fake-rate-limit.store.js'
 
 @Bouncer('base-test')
 class TestBouncer extends StaticRateLimitBouncer {
   protected readonly options = { limit: 3, windowSeconds: 60 }
+}
+
+@Bouncer('fail-closed-test')
+class FailClosedBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 3, windowSeconds: 60, onStoreUnavailable: StoreUnavailablePolicy.BLOCK }
 }
 
 @Bouncer('custom-statuses-test')
@@ -93,5 +99,24 @@ describe('RateLimitBouncer (base behaviour)', () => {
     const bouncer = withStore(new TestBouncer(), store)
 
     assert.equal(await bouncer.canProceed(), true)
+  })
+
+  it('holds the queue when the store is unavailable and the bouncer opted to block', async () => {
+    const store = new FakeRateLimitStore()
+    store.unavailable = true
+    const bouncer = withStore(new FailClosedBouncer(), store)
+
+    assert.equal(await bouncer.canProceed(), false)
+  })
+
+  it('a fail-closed bouncer still proceeds normally while the store answers', async () => {
+    const store = new FakeRateLimitStore()
+    const bouncer = withStore(new FailClosedBouncer(), store)
+
+    assert.equal(await bouncer.canProceed(), true)
+
+    // ...and still enforces the budget rather than blocking everything.
+    store.counts.set('fail-closed-test', 3)
+    assert.equal(await bouncer.canProceed(), false)
   })
 })

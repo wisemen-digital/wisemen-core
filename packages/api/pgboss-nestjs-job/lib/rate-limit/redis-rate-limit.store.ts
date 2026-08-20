@@ -13,14 +13,24 @@ const HEADER_STATE_FALLBACK_TTL_SECONDS = 60
 const HEADER_STATE_TTL_BUFFER_SECONDS = 5
 
 /**
- * Redis-backed rate-limit state, keyed by queue name. Every op is fail-open: if Redis is
- * unavailable, reads return an "allow" fallback and writes are dropped.
+ * Redis-backed rate-limit state, keyed by queue name. Every op is fail-soft: if Redis is
+ * unavailable, reads return an "allow" fallback and writes are dropped. Bouncers that
+ * must not run unprotected check {@link isAvailable} first.
  */
 @Injectable()
 export class RedisRateLimitStore {
   private readonly logger = new Logger(RedisRateLimitStore.name)
 
   constructor (private readonly redis: RedisClient) {}
+
+  /** Whether Redis can answer right now; `.client` throws when it was never initialised. */
+  isAvailable (): boolean {
+    try {
+      return this.redis.client.isReady
+    } catch {
+      return false
+    }
+  }
 
   private countKey (key: string): string {
     return `ratelimit:${key}:count`
@@ -47,7 +57,7 @@ export class RedisRateLimitStore {
 
       return await action(client)
     } catch (error) {
-      this.logger.warn(`Redis rate-limit op failed; failing open: ${(error as Error).message}`)
+      this.logger.warn(`Redis rate-limit op failed; falling back to allow: ${(error as Error).message}`)
 
       return fallback
     }
