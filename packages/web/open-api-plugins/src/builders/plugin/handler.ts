@@ -31,7 +31,6 @@ export function handler({
 }): void {
   const rawSchemas: Record<string, IR.SchemaObject> = {}
 
-  // eslint-disable-next-line unicorn/no-array-for-each
   plugin.forEach('schema', (event) => {
     rawSchemas[event.name] = event.schema
   })

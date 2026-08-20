@@ -1,10 +1,11 @@
+import { fixupConfigRules } from '@eslint/compat'
 import { FlatCompat } from '@eslint/eslintrc'
 
 import type { LintConfig } from '@/types/lint.type.ts'
 
 const compat = new FlatCompat()
 
-export const compatConfig: LintConfig[] = compat.config({
+export const compatConfig: LintConfig[] = fixupConfigRules(compat.config({
   plugins: [
     'check-file',
     'newline-destructuring',
@@ -38,4 +39,9 @@ export const compatConfig: LintConfig[] = compat.config({
     'sort-imports': 'off',
     'unused-imports/no-unused-imports': 'error',
   },
-})
+})).map((config) => ({
+  ...config,
+  files: [
+    '**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,vue}',
+  ],
+})) as LintConfig[]

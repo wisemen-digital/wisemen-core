@@ -29,6 +29,40 @@
 
 
 
+
+
+
+
+
+## 1.21.0
+<sub>2026-08-12</sub>
+
+- [#1562](https://github.com/wisemen-digital/wisemen-core/pull/1562)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Added `UISegmentedControl`/`UISegmentedControlItem` (single-select, with an animated sliding highlight) and `UISegmentedControlGroup`/`UISegmentedControlGroupItem` (multi-select), a pill-shaped alternative to `RadioGroup`/`CheckboxGroup` with optional secondary description text per item.
+
+## 1.20.2
+<sub>2026-08-07</sub>
+
+- [#1559](https://github.com/wisemen-digital/wisemen-core/pull/1559)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed Dialog closing at the same time as a nested open Popover/Autocomplete on outside click, which caused a visible position jump when the popover was near a viewport edge.
+
+## 1.20.1
+<sub>2026-08-06</sub>
+
+- [#1556](https://github.com/wisemen-digital/wisemen-core/pull/1556)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed NumberField not parsing unit, percent, or currency formatted values, causing edits to revert on blur.
+
+## 1.20.0
+<sub>2026-08-05</sub>
+
+- [#1547](https://github.com/wisemen-digital/wisemen-core/pull/1547)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - `DetailListGroupItem` now supports a `horizontalValueAlignment` prop (`start` | `end`) to align the value to the end of the row when laid out horizontally
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+- [#1549](https://github.com/wisemen-digital/wisemen-core/pull/1549)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fixed `Badge` separator spacing to scale with size instead of always using a fixed margin
+
+## 1.19.1
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+- [#1527](https://github.com/wisemen-digital/wisemen-core/pull/1527)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Breadcrumbs and global search are not hidden in the top bar for a improved mobile experience
+
 ## 1.19.0
 <sub>2026-08-03</sub>
 

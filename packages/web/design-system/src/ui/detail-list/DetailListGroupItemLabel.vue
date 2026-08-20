@@ -21,7 +21,10 @@ const props = withDefaults(defineProps<{
 <template>
   <UIRowLayout
     gap="xxs"
-    class="w-28 shrink-0"
+    class="
+      min-w-28 shrink-0
+      @[15rem]:group-data-[orientation=horizontal]/detail-list-group-item:group-data-[horizontal-value-alignment=start]/detail-list-group-item:max-w-28
+    "
   >
     <div
       v-if="props.icon !== null || props.avatar !== null"
