@@ -156,6 +156,16 @@ export class FutureInfinity implements Timestamp {
     return Infinity
   }
 
+  isoWeekday (): number
+  isoWeekday (day: number): this
+  isoWeekday (day?: number): number | this {
+    if (day !== undefined) {
+      return this
+    }
+
+    throw new Error('cannot access ISO weekday on future infinity')
+  }
+
   isBefore (): boolean {
     return false
   }

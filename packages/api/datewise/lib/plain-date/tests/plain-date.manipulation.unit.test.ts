@@ -119,6 +119,18 @@ describe('PlainDate manipulation', () => {
       expect(endOfIsoWeek.isoWeek()).toBe(date.isoWeek())
     })
 
+    it('isoWeekday(day) changes the date to the requested ISO weekday within the same ISO week', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const monday = date.isoWeekday(1)
+      const sunday = date.isoWeekday(7)
+
+      expect(monday.isSame(new DayjsPlainDate('2024-12-30'))).toBe(true)
+      expect(sunday.isSame(new DayjsPlainDate('2025-01-05'))).toBe(true)
+      expect(monday.isoWeek()).toBe(date.isoWeek())
+      expect(sunday.isoWeek()).toBe(date.isoWeek())
+      expect(date.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
     it('startOf and endOf isoWeek keep ISO week boundaries across year changes', () => {
       const date = new DayjsPlainDate('2025-12-31')
       const startOfIsoWeek = date.startOf('isoWeek')

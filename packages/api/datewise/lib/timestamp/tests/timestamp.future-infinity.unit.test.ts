@@ -8,6 +8,20 @@ import { initDayjs } from '../../common/init-dayjs.js'
 describe('FutureInfinity timestamp', () => {
   before(() => initDayjs())
 
+  describe('isoWeekday', () => {
+    it('throws when accessing the ISO weekday', () => {
+      expect(() => new FutureInfinity().isoWeekday()).toThrow()
+    })
+
+    it('remains FutureInfinity when changing the ISO weekday', () => {
+      const futureInfinity = new FutureInfinity()
+      const result = futureInfinity.isoWeekday(7)
+
+      expect(result).toBe(futureInfinity)
+      expect(result.isFutureInfinity()).toBe(true)
+    })
+  })
+
   describe('until', () => {
     it('returns zero duration when compared to itself', () => {
       const futureInfinity = new FutureInfinity()
