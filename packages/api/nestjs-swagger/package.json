@@ -17,7 +17,7 @@
     "lint": "npm run lint:oxlint && npm run lint:eslint",
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
-    "build": "tsc && cp lib/oauth2-redirect.html dist/oauth2-redirect.html",
+    "build": "tsc && node ./scripts/copy-assets.mjs",
     "pretest": "npm run clean && npm run build",
     "test": "node --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
@@ -34,7 +34,11 @@
     "@wisemen/nestjs-auth": "workspace:^",
     "@wisemen/opentelemetry": "workspace:^"
   },
+  "dependencies": {
+    "swagger-ui-dist": "5.32.8"
+  },
   "devDependencies": {
+    "@nestjs/platform-fastify": "catalog:backend",
     "@types/node": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:*",
     "eslint": "catalog:lint-api",

@@ -11,3 +11,5 @@ export const SWAGGER_HTTP_METHODS = [
     "patch",
     "query"
 ]
+
+export const SWAGGER_CONTROLLER_OPTIONS = Symbol('wisemen.swagger.controller.options')

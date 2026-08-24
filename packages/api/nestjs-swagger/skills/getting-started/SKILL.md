@@ -6,13 +6,13 @@ description: Use when attaching Swagger UI and OpenAPI endpoints to a NestJS app
 # @wisemen/nestjs-swagger - Getting Started
 
 Use this package to expose Swagger UI in a NestJS app without rewriting the
-same bootstrap and auth wiring in each service.
+same controller, static asset, and auth wiring in each service.
 
 ## Register The Module
 
-Import `SwaggerModule.forRoot()` so the OAuth2 redirect controller is present.
-If the docs should be protected, register the matching `BasicAuthModule`
-definition too.
+Import `SwaggerModule.forRoot()` so the Swagger controller and OAuth2 redirect
+route are present. If the docs should be protected, register the matching
+`BasicAuthModule` definition too.
 
 ```ts
 import { Module } from '@nestjs/common'
@@ -28,15 +28,21 @@ import { SwaggerModule } from '@wisemen/nestjs-swagger'
         password: 'secret'
       }
     }),
-    SwaggerModule.forRoot()
+    SwaggerModule.forRoot({
+      controller: {
+        route: '/api/docs',
+        basicAuth: 'docs',
+        outputDir: './var/swagger'
+      }
+    })
   ]
 })
 export class AppModule {}
 ```
 
-## Attach Swagger Endpoints
+## Write Swagger JSON Docs
 
-Call `SwaggerModule.attachSwaggerEndpoints(...)` during bootstrap.
+Call `SwaggerModule.writeSwaggerJsonDocs(...)` during bootstrap or build-time.
 
 ```ts
 import { NestFactory } from '@nestjs/core'
@@ -45,16 +51,15 @@ import { AppModule } from './app.module.js'
 
 const app = await NestFactory.create(AppModule)
 
-await SwaggerModule.attachSwaggerEndpoints(app, {
-  route: '/api/docs',
+await SwaggerModule.writeSwaggerJsonDocs(app, {
   servers: ['http://localhost:3000'],
-  basicAuth: 'docs',
   oidcUrl: 'https://auth.example.com/.well-known/openid-configuration'
 })
 ```
 
-The package exposes the base docs route together with `/latest` and `/all`
-variants and their JSON endpoints.
+The package serves the base docs route together with `/latest` and `/all`
+variants and their JSON endpoints from the generated files once the docs have
+been written.
 
 ## Configure OAuth2 Login
 

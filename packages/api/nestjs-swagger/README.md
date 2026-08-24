@@ -1,12 +1,12 @@
 # `@wisemen/nestjs-swagger`
 
 Shared NestJS Swagger wiring for Wisemen APIs, including optional HTTP basic
-auth and OpenID Connect support.
+auth, OpenID Connect support, static Swagger UI assets, and JSON doc export.
 
 ## What it provides
 
 - `SwaggerModule.forRoot()` to register the OAuth2 redirect controller
-- `SwaggerModule.attachSwaggerEndpoints(...)` to attach Swagger UI and JSON docs
+- `SwaggerModule.writeSwaggerJsonDocs(...)` to generate static Swagger docs on disk
 - optional docs protection through `@wisemen/nestjs-auth`
 - optional OpenID Connect discovery for OAuth2 authorization code flows
 
@@ -28,13 +28,19 @@ import { SwaggerModule } from '@wisemen/nestjs-swagger'
         password: 'secret'
       }
     }),
-    SwaggerModule.forRoot()
+    SwaggerModule.forRoot({
+      controller: {
+        route: '/api/docs',
+        basicAuth: 'docs',
+        outputDir: './var/swagger'
+      }
+    })
   ]
 })
 export class AppModule {}
 ```
 
-Attach the docs during bootstrap.
+Write the docs during bootstrap.
 
 ```ts
 import { NestFactory } from '@nestjs/core'
@@ -43,10 +49,8 @@ import { AppModule } from './app.module.js'
 
 const app = await NestFactory.create(AppModule)
 
-await SwaggerModule.attachSwaggerEndpoints(app, {
-  route: '/api/docs',
+await SwaggerModule.writeSwaggerJsonDocs(app, {
   servers: ['http://localhost:3000'],
-  basicAuth: 'docs',
   oidcUrl: 'https://auth.example.com/.well-known/openid-configuration',
   additionalScopes: {
     'api:write': 'Write access'
@@ -54,8 +58,36 @@ await SwaggerModule.attachSwaggerEndpoints(app, {
 })
 ```
 
-With that setup, the package registers the main Swagger UI route together with
-versioned docs endpoints such as `/api/docs/latest` and `/api/docs/all`.
+Configure the docs routes on the module itself.
+
+```ts
+import { Module } from '@nestjs/common'
+import { BasicAuthModule } from '@wisemen/nestjs-auth'
+import { SwaggerModule } from '@wisemen/nestjs-swagger'
+
+@Module({
+  imports: [
+    BasicAuthModule.forRoot(),
+    BasicAuthModule.forFeature({
+      docs: {
+        username: 'docs',
+        password: 'secret'
+      }
+    }),
+    SwaggerModule.forRoot({
+      controller: {
+        route: '/api/docs',
+        basicAuth: 'docs'
+      }
+    })
+  ]
+})
+export class AppModule {}
+```
+
+With that setup, the package serves the main Swagger UI route together with
+versioned docs endpoints such as `/api/docs/latest`, `/api/docs/all`, and the
+matching JSON routes from the generated files in `./var/swagger`.
 
 ## OpenID Connect Notes
 

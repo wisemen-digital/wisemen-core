@@ -1,17 +1,5 @@
 
 export interface SwaggerDocsOptions {
-  /**
-   * Applies a `@wisemen/nestjs-auth` basic auth middleware set.
-   * Defaults to no basic auth.
-   */
-  basicAuth?: string
-
-  /**
-   * The base route to attach the swagger routes on.
-   * Defaults to `/api/docs`
-   */
-  route?: string
-
   /** 
    * Endpoint where OIDC configuration can be discovered
    * @see https://connect2id.com/products/server/docs/api/discovery#metadata
@@ -52,8 +40,7 @@ export interface SwaggerDocsOptions {
   additionalScopes?: Record<string, string>
 }
 
-export class SwaggerConfig {
-  readonly route: string
+export class SwaggerDocsConfig {
   readonly oidcUrl: string | undefined
   readonly oidcTimeout: number
   readonly redirectServer: string | undefined
@@ -61,7 +48,6 @@ export class SwaggerConfig {
   readonly additionalScopes: Record<string,string> | undefined
 
   constructor(options: SwaggerDocsOptions) {
-    this.route = options.route ?? '/api/docs'
     this.oidcUrl = options.oidcUrl
     this.oidcTimeout = options.oidcTimeout ?? 5000 //ms
     this.redirectServer = options.redirectServer

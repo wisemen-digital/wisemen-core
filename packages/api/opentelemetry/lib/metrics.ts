@@ -1,7 +1,7 @@
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+import { metrics } from '@opentelemetry/api'
 import { resourceFromAttributes } from '@opentelemetry/resources'
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { MeterProvider, PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 
 export interface OpentelemetryMetricsConfig {
   serviceName: string
@@ -15,9 +15,33 @@ export interface OpentelemetryMetricsConfig {
   attributes?: Record<string, string>
 }
 
+export interface OpentelemetryMetricsSdk {
+  start(): void
+  shutdown(): Promise<void>
+  forceFlush(): Promise<void>
+}
+
+class MetricsSdk implements OpentelemetryMetricsSdk {
+  constructor (
+    private readonly meterProvider: MeterProvider
+  ) {}
+
+  start (): void {
+    metrics.setGlobalMeterProvider(this.meterProvider)
+  }
+
+  shutdown (): Promise<void> {
+    return this.meterProvider.shutdown()
+  }
+
+  forceFlush (): Promise<void> {
+    return this.meterProvider.forceFlush()
+  }
+}
+
 export function configureOpentelemetryMetrics (
   config: OpentelemetryMetricsConfig
-): NodeSDK | null {
+): OpentelemetryMetricsSdk | null {
   if (config.url == null || config.url === '') {
     return null
   }
@@ -31,12 +55,14 @@ export function configureOpentelemetryMetrics (
     exportTimeoutMillis: config.config?.exportTimeoutMillis ?? 10000
   })
 
-  return new NodeSDK({
+  const meterProvider = new MeterProvider({
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
       'deployment.environment': config.env,
       ...config.attributes
     }),
-    metricReader
+    readers: [metricReader]
   })
+
+  return new MetricsSdk(meterProvider)
 }

@@ -29,6 +29,8 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
+    "@opentelemetry/api": "catalog:backend-peer",
+    "@opentelemetry/api-logs": "catalog:backend-peer",
     "@opentelemetry/exporter-logs-otlp-http": "catalog:backend",
     "@opentelemetry/exporter-metrics-otlp-proto": "catalog:backend",
     "@opentelemetry/exporter-trace-otlp-http": "catalog:backend",
@@ -44,12 +46,11 @@
     "@opentelemetry/sdk-logs": "catalog:backend",
     "@opentelemetry/sdk-metrics": "catalog:backend",
     "@opentelemetry/sdk-node": "catalog:backend",
+    "@opentelemetry/sdk-trace-node": "catalog:backend",
     "@opentelemetry/sdk-trace-base": "catalog:backend"
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "@opentelemetry/api": "catalog:backend-peer",
-    "@opentelemetry/api-logs": "catalog:backend-peer",
     "reflect-metadata": "catalog:backend-peer"
   },
   "devDependencies": {

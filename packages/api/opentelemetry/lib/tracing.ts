@@ -1,7 +1,7 @@
-import { NodeSDK } from '@opentelemetry/sdk-node'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { BatchSpanProcessor, BufferConfig } from '@opentelemetry/sdk-trace-base'
+import { NodeTracerProvider } from '@opentelemetry/sdk-trace-node'
 
 export interface OpentelemetryTracingConfig {
   serviceName: string
@@ -12,7 +12,28 @@ export interface OpentelemetryTracingConfig {
   attributes?: Record<string, string>
 }
 
-export function configureOpentelemetryTracing (config: OpentelemetryTracingConfig): NodeSDK | null {
+
+class TracingSdk  {
+  constructor (
+    private readonly tracerProvider: NodeTracerProvider
+  ) {}
+
+  start (): void {
+    this.tracerProvider.register()
+  }
+
+  shutdown (): Promise<void> {
+    return this.tracerProvider.shutdown()
+  }
+
+  forceFlush (): Promise<void> {
+    return this.tracerProvider.forceFlush()
+  }
+}
+
+export function configureOpentelemetryTracing (
+  config: OpentelemetryTracingConfig
+): TracingSdk | null {
   if (config.url == null || config.url === '') {
     return null
   }
@@ -22,9 +43,7 @@ export function configureOpentelemetryTracing (config: OpentelemetryTracingConfi
     headers: config.headers
   })
 
-  const sdk = new NodeSDK({
-    traceExporter,
-    autoDetectResources: false,
+  const tracerProvider = new NodeTracerProvider({
     spanProcessors: [
       new BatchSpanProcessor(traceExporter, {
         maxQueueSize: config.buffer?.maxQueueSize ?? 2048,
@@ -40,5 +59,5 @@ export function configureOpentelemetryTracing (config: OpentelemetryTracingConfi
     })
   })
 
-  return sdk
+  return new TracingSdk(tracerProvider)
 }
