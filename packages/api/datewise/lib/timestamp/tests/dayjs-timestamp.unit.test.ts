@@ -21,6 +21,26 @@ describe('DayjsTimestamp', () => {
     expect(utcTs.format()).toBe('2025-12-10T11:00:00Z')
   })
 
+  describe('isoWeekday', () => {
+    it('returns the ISO weekday', () => {
+      const ts = timestamp('2025-01-01T12:34:56.789Z')
+
+      expect(ts.isoWeekday()).toBe(3)
+    })
+
+    it('changes to the requested ISO weekday within the same ISO week and preserves the time', () => {
+      const ts = timestamp('2025-01-01T12:34:56.789Z')
+      const monday = ts.isoWeekday(1)
+      const sunday = ts.isoWeekday(7)
+
+      expect(monday.toISOString()).toBe('2024-12-30T12:34:56.789Z')
+      expect(sunday.toISOString()).toBe('2025-01-05T12:34:56.789Z')
+      expect(monday.isoWeekday()).toBe(1)
+      expect(sunday.isoWeekday()).toBe(7)
+      expect(ts.toISOString()).toBe('2025-01-01T12:34:56.789Z')
+    })
+  })
+
   describe('time conversion methods', () => {
     it('getTime returns milliseconds since Unix Epoch', () => {
       const ts = timestamp('2025-01-01T00:00:00Z')

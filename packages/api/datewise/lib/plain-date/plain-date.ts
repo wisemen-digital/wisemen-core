@@ -102,12 +102,28 @@ export interface PlainDate {
   isFriday(): boolean
   isSaturday(): boolean
   isSunday(): boolean
-  /** @returns Returns numbers from 1 (Monday) to 7 (Sunday). */
+
+  /** 
+   * @returns Returns numbers from 1 (Monday) to 7 (Sunday).
+  */
   isoWeekday(): number
-  /** @returns Returns the ISO week number (1–53). */
+
+  /** 
+   * @param day a number in 1 (Monday) to 7 (Sunday).
+   * @returns A new plain date with the changed iso weekday. 
+   */
+  isoWeekday(day: number): PlainDate
+
+  /** 
+   * @returns Returns the ISO week number (1–53).
+   */
   isoWeek(): number
-  /** @returns Returns whether the ISO week number is odd or even. */
+
+  /** 
+   * @returns Returns whether the ISO week number is odd or even.
+   */
   isoWeekParity(): IsoWeekParity
+
   isInfinity(): boolean
   valueOf(): string
 }

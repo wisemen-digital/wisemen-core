@@ -232,6 +232,16 @@ export class DayjsTimestamp implements Timestamp {
     return this.value.utcOffset()
   }
 
+  isoWeekday (): number
+  isoWeekday (day: number): DayjsTimestamp
+  isoWeekday (day?: number): number | DayjsTimestamp {
+    if (day === undefined) {
+      return this.value.isoWeekday()
+    }
+
+    return new DayjsTimestamp(this.value.isoWeekday(day))
+  }
+
   isBefore (other: TimestampInput, unit?: OpUnitType): boolean {
     other = factory(other)
 

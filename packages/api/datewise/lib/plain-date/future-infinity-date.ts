@@ -189,7 +189,13 @@ export class FutureInfinityDate implements PlainDate {
     throw new Error('cannot access day of week of +infinity')
   }
 
-  isoWeekday (): number {
+  isoWeekday(): number
+  isoWeekday(day: number): FutureInfinityDate
+  isoWeekday (day?: number): number  | FutureInfinityDate{
+    if(day !== undefined) {
+      return this
+    }
+    
     throw new Error('cannot access ISO weekday of +infinity')
   }
 
