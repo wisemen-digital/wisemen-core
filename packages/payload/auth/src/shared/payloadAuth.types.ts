@@ -5,6 +5,11 @@ import type {
   TypeWithID,
 } from 'payload'
 
+import type {
+  IsAllowedPrivateAccess,
+  PayloadAccessControl,
+} from '#shared/accessControl.ts'
+
 export interface BaseUserRecord {
   email?: string | null
   firstName?: string | null
@@ -125,7 +130,12 @@ export interface PayloadAuthProvider<TUser extends BaseUserRecord & TypeWithID> 
   getPublicConfig: () => PublicAuthConfig
 }
 
-export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & TypeWithID> {
+export interface CreatePayloadAuthPluginParams<
+  TUser extends BaseUserRecord & TypeWithID,
+  TCollectionSlug extends string = string,
+> {
+  /** Used by the auth plugin's reusable collection access controls. */
+  isAllowedPrivateAccess: IsAllowedPrivateAccess<TUser, TCollectionSlug>
   isUserAllowed: (user: TUser) => boolean
   authConfig?: Omit<CreatePayloadCollectionAuthParams, 'strategy'>
   canLogin?: (user: TUser) => CanLoginResult | Promise<CanLoginResult>
@@ -145,6 +155,7 @@ export interface CreatePayloadAuthPluginParams<TUser extends BaseUserRecord & Ty
 }
 
 export interface PayloadAuthPluginResult {
+  accessControl: PayloadAccessControl<any>
   auth: PublicAuthConfig
   createCollectionAuth: (overrides?: Omit<CreatePayloadCollectionAuthParams, 'strategy'>) => ReturnType<typeof import('#plugin/payloadCollectionAuth.ts').createPayloadCollectionAuth>
   getCallbackViewProps: (overrides?: Partial<PublicAuthConfig>) => {
