@@ -130,6 +130,14 @@ describe('PastInfinityDate', () => {
     it('throws when accessing the ISO weekday', () => {
       expect(() => new PastInfinityDate().isoWeekday()).toThrow()
     })
+
+    it('remains PastInfinityDate when changing the ISO weekday', () => {
+      const date = new PastInfinityDate()
+      const result = date.isoWeekday(1)
+
+      expect(result).toBe(date)
+      expect(result.isPastInfinity()).toBe(true)
+    })
   })
 
   describe('isoWeek', () => {

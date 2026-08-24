@@ -286,7 +286,15 @@ export class DayjsPlainDate implements PlainDate {
     return this.isoWeekday() === 7
   }
 
-  isoWeekday (): number {
+
+
+  isoWeekday (): number
+  isoWeekday (day: number): PlainDate
+  isoWeekday (day?: number): number | PlainDate{
+    if(day !== undefined) {
+      return new DayjsPlainDate(this.date.isoWeekday(day))
+    }
+    
     return this.date.isoWeekday()
   }
 

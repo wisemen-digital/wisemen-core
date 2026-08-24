@@ -91,6 +91,15 @@ export interface Timestamp {
   toISOString(): string
   toString(): string
   utcOffset(): number
+  /**
+   * @returns Returns numbers from 1 (Monday) to 7 (Sunday).
+   */
+  isoWeekday(): number
+  /**
+   * @param day a number in 1 (Monday) to 7 (Sunday).
+   * @returns A new timestamp with the changed ISO weekday.
+   */
+  isoWeekday(day: number): Timestamp
   isBefore(other: TimestampInput, unit?: OpUnitType): boolean
   isAfter(other: TimestampInput, unit?: OpUnitType): boolean
   isSame(other: TimestampInput, unit?: OpUnitType): boolean
