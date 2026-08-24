@@ -9,6 +9,12 @@
 
 
 
+
+## 1.0.20
+<sub>2026-08-24</sub>
+
+- [#1596](https://github.com/wisemen-digital/wisemen-core/pull/1596)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add isoWeekday method to change isoWeekday of timestamp and plaindate
+
 ## 1.0.19
 <sub>2026-08-12</sub>
 
