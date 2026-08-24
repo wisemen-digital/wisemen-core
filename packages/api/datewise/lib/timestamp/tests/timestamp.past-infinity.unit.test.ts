@@ -20,6 +20,15 @@ describe('PastInfinity timestamp', () => {
       expect(result).toBe(pastInfinity)
       expect(result.isPastInfinity()).toBe(true)
     })
+
+    it('remains PastInfinity for next and previous ISO weekday operations', () => {
+      const pastInfinity = new PastInfinity()
+
+      expect(pastInfinity.nextIsoWeekday(1)).toBe(pastInfinity)
+      expect(pastInfinity.nextOrSameIsoWeekday(2)).toBe(pastInfinity)
+      expect(pastInfinity.previousIsoWeekday(3)).toBe(pastInfinity)
+      expect(pastInfinity.previousOrSameIsoWeekday(4)).toBe(pastInfinity)
+    })
   })
 
   describe('until', () => {
