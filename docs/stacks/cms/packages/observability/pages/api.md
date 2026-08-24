@@ -11,6 +11,7 @@ All APIs are exported from `@wisemen/payload-core-observability`.
 | Export | Purpose |
 | --- | --- |
 | `initializeLogging(options)` | Initializes Evlog with environment, service, redaction, and sampling configuration. |
+| `createApplicationLogger()` | Creates one application Evlog event tagged with `eventSource: 'application'`. |
 | `resolveLoggingSampling(slowRequest, overrides)` | Returns the resolved Evlog sampling policy. Useful for testing configuration. |
 | `resolveSlowRequestOptions(options)` | Applies the 3-second default and validates the duration. |
 | `getSlowRequestOptions()` | Returns the current resolved slow-event threshold. |
@@ -19,7 +20,8 @@ All APIs are exported from `@wisemen/payload-core-observability`.
 | `SLOW_REQUEST_KEEP_MS` | Default slow-event threshold: `3000`. |
 
 `InitializeLoggingOptions` requires `service`, and accepts `environment`,
-`sampling`, and `slowRequest.durationMs`.
+`sampling`, and `slowRequest.durationMs`. `ApplicationLogFields` describes the
+standard `eventSource` field on application events.
 
 ## Payload jobs
 

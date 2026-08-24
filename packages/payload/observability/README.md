@@ -32,6 +32,35 @@ export default withJobLogging(tasks, 'task')
 and `limitLoggingValue()` only bounds size and depth before values are attached
 to an event.
 
+## Application events
+
+Use `createApplicationLogger()` for an application-level event. It creates a
+new Evlog event with `eventSource: 'application'`, retains the shared Evlog
+configuration, and does not share mutable event context between concurrent
+operations. Add structured context only when it is useful.
+
+```ts
+import { createApplicationLogger } from '@wisemen/payload-core-observability'
+
+const log = createApplicationLogger()
+
+try {
+  log.set({
+    invoiceId,
+    operation: 'invoice.send',
+  })
+  log.info('Sending invoice')
+  await sendInvoice(invoiceId)
+}
+catch (error) {
+  log.error(error instanceof Error ? error : String(error))
+  throw error
+}
+finally {
+  log.emit()
+}
+```
+
 ## oRPC
 
 ```ts

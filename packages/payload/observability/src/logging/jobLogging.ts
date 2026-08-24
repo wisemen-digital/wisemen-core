@@ -71,10 +71,9 @@ function wrapJobLoggingDefinition<TDefinition extends JobDefinition>(
 
   return {
     ...definition,
-    handler: async (arguments_: JobLoggingArguments): Promise<unknown> => {
-      const {
-        input, job,
-      } = arguments_
+    handler: async ({
+      input, job,
+    }: JobLoggingArguments): Promise<unknown> => {
       const log = createLogger<JobLogFields>()
 
       log.set({
@@ -91,7 +90,10 @@ function wrapJobLoggingDefinition<TDefinition extends JobDefinition>(
       })
 
       try {
-        return await handler(arguments_)
+        return await handler({
+          input,
+          job,
+        })
       }
       catch (error) {
         log.error(error instanceof Error ? error : String(error))

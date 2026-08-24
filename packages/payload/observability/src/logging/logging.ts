@@ -2,7 +2,10 @@ import type {
   LoggerConfig,
   SamplingConfig,
 } from 'evlog'
-import { initLogger } from 'evlog'
+import {
+  createLogger,
+  initLogger,
+} from 'evlog'
 
 export const SLOW_REQUEST_KEEP_MS = 3000
 
@@ -36,6 +39,10 @@ export interface InitializeLoggingOptions {
   slowRequest?: Partial<SlowRequestOptions>
 }
 
+export interface ApplicationLogFields {
+  eventSource: 'application'
+}
+
 /** Configure Evlog sampling and redaction for request-wide events. */
 export function initializeLogging({
   environment = 'development',
@@ -56,6 +63,20 @@ export function initializeLogging({
   }
 
   initLogger(config)
+}
+
+/**
+ * Create one Evlog event for application code using the package's shared
+ * configuration. Call `emit()` after the operation completes.
+ */
+export function createApplicationLogger() {
+  const log = createLogger<ApplicationLogFields & Record<string, unknown>>()
+
+  log.set({
+    eventSource: 'application',
+  })
+
+  return log
 }
 
 /** Resolve default sampling while allowing each service to override its policy. */
