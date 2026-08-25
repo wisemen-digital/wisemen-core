@@ -109,10 +109,22 @@ const subComponentByItemKey = computed<Map<string, Component>>(() => {
 // returns `null` (e.g. gated by some other condition) should not see a reserved, empty column.
 const hasSubComponent = computed<boolean>(() => subComponentByItemKey.value.size > 0)
 
-// Static per-table, not per-row — the trailing actions column's width is always reserved
-// once `row` is configured at all, so column edges stay aligned even for rows whose own
-// `row(item)` resolves to no actions.
-const hasRowActions = computed<boolean>(() => props.row !== null)
+// A row's own `row(item).actions` return value (not just whether the `row` prop function is
+// set) determines whether the actions column exists at all — a consumer using `row` only for
+// `onClick`/`model`, with no row ever carrying actions, should not see a reserved, empty column.
+// Computed directly from `props.data`, independent of TanStack's row model, so `hasRowActions`
+// (needed by `useDataTable` for the grid template, below) has no circular dependency on `table`.
+const hasRowActions = computed<boolean>(() => {
+  if (props.row === null) {
+    return false
+  }
+
+  return props.data.some((item) => {
+    const actions = props.row?.(item)?.actions
+
+    return (actions?.inline.length ?? 0) > 0 || (actions?.more.length ?? 0) > 0
+  })
+})
 
 const {
   leftStickyBorderColumnId,
