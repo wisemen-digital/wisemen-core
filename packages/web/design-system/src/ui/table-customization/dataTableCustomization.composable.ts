@@ -8,33 +8,20 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
 import { useOverlay } from '@/ui/dialog/index'
-import type { TableColumn } from '@/ui/table/types/table.type'
+import type { TableColumnState } from '@/ui/table-customization/tableCustomization.composable'
 import TableCustomizationDialog from '@/ui/table-customization/TableCustomizationDialog.vue'
 
-/**
- * The only shape `TableCustomizationDialog.vue` actually reads off a column — shared so both
- * `useTableCustomizeColumns` (old `Table`, `TableColumn`) and `useDataTableCustomizeColumns`
- * (new `DataTable`, `DataTableColumn`) can drive the same dialog without casting either column
- * type through `unknown`.
- */
-export interface TableCustomizationColumn {
-  headerLabel: string
-  key: string
-}
-
-export interface TableColumnState {
-  isVisible: boolean
-  column: TableCustomizationColumn
-}
-
-interface UseTableCustomizeColumnsOptions<T, TKey extends string> {
+interface UseDataTableCustomizeColumnsOptions<T, TKey extends string> {
   actionGroup: ActionGroup
-  availableColumns: ComputedRef<TableColumn<T, TKey>[]>
+  availableColumns: ComputedRef<DataTableColumn<T, TKey>[]>
   initialState?: TKey[]
 }
 
-export function useTableCustomizeColumns<T, TKey extends string>(options: UseTableCustomizeColumnsOptions<T, TKey>) {
+export function useDataTableCustomizeColumns<T, TKey extends string>(
+  options: UseDataTableCustomizeColumnsOptions<T, TKey>,
+) {
   const i18n = useI18n()
   const overlay = useOverlay()
   const dialog = overlay.create(TableCustomizationDialog)
@@ -46,7 +33,7 @@ export function useTableCustomizeColumns<T, TKey extends string>(options: UseTab
         options.initialState === undefined
         || options.initialState.length === 0
         || options.initialState.includes(col.key),
-        column: col as TableColumn<unknown>,
+        column: col,
       }))
       .sort((a, b) => {
         if (options.initialState === undefined || options.initialState.length === 0) {
@@ -70,15 +57,15 @@ export function useTableCustomizeColumns<T, TKey extends string>(options: UseTab
       }),
   )
 
-  const customizedColumns = computed<TableColumn<T, TKey>[]>(
+  const customizedColumns = computed<DataTableColumn<T, TKey>[]>(
     () =>
       columnStates.value
         .filter((state) => state.isVisible)
-        .map((state) => state.column) as TableColumn<T, TKey>[],
+        .map((state) => state.column as DataTableColumn<T, TKey>),
   )
 
   const customizeTableAction = createAction({
-    id: 'table-customization-dialog',
+    id: 'data-table-customization-dialog',
     name: () => i18n.t('component.table_customization.action.name'),
     execute: () => {
       dialog.open({
@@ -109,7 +96,7 @@ export function useTableCustomizeColumns<T, TKey extends string>(options: UseTab
     columnStates.value = options.availableColumns.value
       .map((col) => ({
         isVisible: state.length === 0 || state.includes(col.key),
-        column: col as TableColumn<unknown>,
+        column: col,
       }))
       .sort((a, b) => {
         if (state.length === 0) {
