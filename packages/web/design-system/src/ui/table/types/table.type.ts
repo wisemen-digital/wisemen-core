@@ -80,13 +80,3 @@ export type InferTableItem<T>
         : never
 
 export type InferTableColumnKeys<T extends { key: string }[]> = T[number]['key']
-
-export type TableSelectionState<T>
-  = | {
-    items: T[]
-    type: 'excludes'
-  }
-  | {
-    items: T[]
-    type: 'includes'
-  }

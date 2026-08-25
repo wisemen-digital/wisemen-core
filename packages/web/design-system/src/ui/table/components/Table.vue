@@ -31,7 +31,6 @@ import type {
   TableColumnSize,
   TableData,
   TableGroupedData,
-  TableSelectionState,
   TableSubGroupedData,
 } from '@/ui/table/types/table.type'
 
@@ -47,7 +46,6 @@ const props = withDefaults(defineProps<TableProps<TTableData>>(), {
 const emit = defineEmits<{
   clearFilters: []
   clearSearch: []
-  select: [state: TableSelectionState<TItem>]
 }>()
 
 if (props.getLink !== null && props.onRowClick !== null) {
@@ -88,16 +86,17 @@ const subGroupedItems = computed<TableSubGroupedData<TItem>[]>(
   () => props.data as unknown as TableSubGroupedData<TItem>[],
 )
 
-const allCurrentItems = computed<TItem[]>(() => {
+const orderedItemKeys = computed<string[]>(() => {
   if (dataMode.value === 'flat') {
-    return flatItems.value
+    return flatItems.value.map((item) => props.getKey(item))
   }
+
   if (dataMode.value === 'grouped') {
-    return groupedItems.value.flatMap((g) => g.items)
+    return groupedItems.value.flatMap((group) => group.items.map((item) => props.getKey(item)))
   }
 
   return subGroupedItems.value.flatMap(
-    (g) => g.subGroups.flatMap((s) => s.items),
+    (group) => group.subGroups.flatMap((subGroup) => subGroup.items.map((item) => props.getKey(item))),
   )
 })
 
@@ -126,11 +125,7 @@ const {
   toggleAll,
   toggleGroup,
   toggleItem,
-} = useTableSelection(
-  allCurrentItems,
-  (item) => props.getKey(item),
-  (state) => emit('select', state),
-)
+} = useTableSelection<TItem>(props.getKey, orderedItemKeys)
 
 useProvideTableSelectionContext({
   isAllSelected,

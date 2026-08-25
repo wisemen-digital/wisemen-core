@@ -277,6 +277,9 @@ catalogs:
     '@tanstack/vue-hotkeys':
       specifier: ^0.10.0
       version: 0.10.0
+    '@tanstack/vue-table':
+      specifier: ^9.1.2
+      version: 9.1.2
     '@tanstack/vue-virtual':
       specifier: ^3.13.24
       version: 3.13.24
@@ -3966,6 +3969,9 @@ importers:
       '@tanstack/vue-hotkeys':
         specifier: 'catalog:'
         version: 0.10.0(vue@3.5.27(typescript@5.9.3))
+      '@tanstack/vue-table':
+        specifier: 'catalog:'
+        version: 9.1.2(vue@3.5.27(typescript@5.9.3))
       '@tanstack/vue-virtual':
         specifier: 'catalog:'
         version: 3.13.24(vue@3.5.27(typescript@5.9.3))
@@ -9757,6 +9763,10 @@ packages:
   '@tanstack/store@0.11.0':
     resolution: {integrity: sha512-WlzzCt3xi0G6pCAJu1U+2jiECwabETDpQDi3hfkFZvJii9AuZqEKbOiVarX1/bWhTNjU486yQtJCCasi/0q+Cw==}
 
+  '@tanstack/table-core@9.1.2':
+    resolution: {integrity: sha512-ONpWQeass1sfg80CWF1NSwQ8r3GiqxA2lT/EdqIcrDEPZ0Z+0mM94eQoFYLPN0Kztzj8TQVb2+PrSZSItqA61g==}
+    engines: {node: '>=20'}
+
   '@tanstack/virtual-core@3.14.0':
     resolution: {integrity: sha512-JLANqGy/D6k4Ujmh8Tr25lGimuOXNiaVyXaCAZS0W+1390sADdGnyUdSWNIfd49gebtIxGMij4IktRVzrdr12Q==}
 
@@ -9792,6 +9802,12 @@ packages:
     peerDependenciesMeta:
       '@vue/composition-api':
         optional: true
+
+  '@tanstack/vue-table@9.1.2':
+    resolution: {integrity: sha512-CJNFrB0ehPT/iQYpl+bAx0ddbGTZGum91nEtqLhX5DMYeROSfcn7gIHAMs98ACBI+4OoZTHHrqZN1UzhKjz+Eg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      vue: '>=3.2'
 
   '@tanstack/vue-virtual@3.13.24':
     resolution: {integrity: sha512-A0k2qF0zFSUStXSZkGXABouXr2Tw2Ztl/cVIYG9qy84uR8W7UNjAcX3DvzBS3YnDcwvLxab8v7dbmYBZ39itDA==}
@@ -22188,6 +22204,10 @@ snapshots:
 
   '@tanstack/store@0.11.0': {}
 
+  '@tanstack/table-core@9.1.2':
+    dependencies:
+      '@tanstack/store': 0.11.0
+
   '@tanstack/virtual-core@3.14.0': {}
 
   '@tanstack/vue-hotkeys@0.10.0(vue@3.5.27(typescript@5.9.3))':
@@ -22219,6 +22239,12 @@ snapshots:
       '@tanstack/store': 0.11.0
       vue: 3.5.27(typescript@5.9.3)
       vue-demi: 0.14.10(vue@3.5.27(typescript@5.9.3))
+
+  '@tanstack/vue-table@9.1.2(vue@3.5.27(typescript@5.9.3))':
+    dependencies:
+      '@tanstack/store': 0.11.0
+      '@tanstack/table-core': 9.1.2
+      vue: 3.5.27(typescript@5.9.3)
 
   '@tanstack/vue-virtual@3.13.24(vue@3.5.27(typescript@5.9.3))':
     dependencies:
