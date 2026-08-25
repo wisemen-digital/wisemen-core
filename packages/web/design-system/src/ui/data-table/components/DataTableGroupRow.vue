@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import BaseCheckbox from '@/ui/checkbox/base/BaseCheckbox.vue'
+import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 
 const props = withDefaults(defineProps<{
   isExpanded: boolean
@@ -28,9 +29,17 @@ const emit = defineEmits<{
 
 const i18n = useI18n()
 
+const {
+  variant,
+} = useInjectDataTableContext()
+
 const indentStyle = computed<Record<string, string>>(() => ({
   paddingLeft: `${1 + props.depth}rem`,
 }))
+
+// `full-page` has no container border to close off the table's bottom edge, so its last row
+// keeps its own bottom border — `contained`'s container border already does that job.
+const hasBottomBorder = computed<boolean>(() => !props.isLast || variant.value === 'full-page')
 </script>
 
 <template>
@@ -48,7 +57,7 @@ const indentStyle = computed<Record<string, string>>(() => ({
     :class="{
       'bg-secondary': props.depth === 0,
       'bg-tertiary': props.depth > 0,
-      'border-b border-secondary': !props.isLast,
+      'border-b border-secondary': hasBottomBorder,
     }"
     class="col-span-full flex h-10 items-center"
     role="row"

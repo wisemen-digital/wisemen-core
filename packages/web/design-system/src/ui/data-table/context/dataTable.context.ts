@@ -41,6 +41,11 @@ interface DataTableContext {
     expand: number }>
   setColumnSize: (columnKey: string, widthPx: number) => void
   sort: ComputedRef<Sort | null>
+  /**
+   * `full-page` has no container border to close off the table's bottom edge, so its last row
+   * keeps its own bottom border — unlike `contained`, where the container border already does it.
+   */
+  variant: ComputedRef<'contained' | 'full-page'>
 }
 
 export const [

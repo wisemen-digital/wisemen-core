@@ -8,6 +8,7 @@ import { UIActionContextMenu } from '@/ui/action-context-menu/index'
 import { UIActionFocus } from '@/ui/action-focus/index'
 import DataTableRowActionsCell from '@/ui/data-table/components/DataTableRowActionsCell.vue'
 import DataTableRowClickCatcher from '@/ui/data-table/components/DataTableRowClickCatcher.vue'
+import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
 import type { DataTableRowClick } from '@/ui/data-table/types/dataTableRowConfig.type'
 
 const props = withDefaults(defineProps<{
@@ -30,7 +31,15 @@ const props = withDefaults(defineProps<{
 
 const i18n = useI18n()
 
+const {
+  variant,
+} = useInjectDataTableContext()
+
 const allActions = computed<Action[]>(() => props.inlineActions.concat(props.moreActions))
+
+// `full-page` has no container border to close off the table's bottom edge, so its last row
+// keeps its own bottom border — `contained`'s container border already does that job.
+const hasBottomBorder = computed<boolean>(() => !props.isLast || variant.value === 'full-page')
 </script>
 
 <template>
@@ -45,7 +54,7 @@ const allActions = computed<Action[]>(() => props.inlineActions.concat(props.mor
     >
       <div
         :class="{
-          'border-b border-secondary has-[[data-row-actions]_[data-state=open]]:border-secondary/25 data-[state=open]:border-secondary/25': !props.isLast,
+          'border-b border-secondary has-[[data-row-actions]_[data-state=open]]:border-secondary/25 data-[state=open]:border-secondary/25': hasBottomBorder,
         }"
         class="
           group/row relative col-span-full grid grid-cols-subgrid bg-primary

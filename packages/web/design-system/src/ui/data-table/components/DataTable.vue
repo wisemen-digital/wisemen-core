@@ -168,6 +168,7 @@ useProvideDataTableContext({
   leadingStickyOffsetsPx,
   setColumnSize,
   sort: computed(() => props.sort),
+  variant: computed(() => props.variant),
 })
 
 const isGroupingEnabled = computed<boolean>(() => props.groupBy !== null)
