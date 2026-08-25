@@ -478,9 +478,10 @@ const hasDesktopOverlay = computed<boolean>(
         // header visible above it — without a floor here, a `contained` table with zero rows
         // has nothing but its 40px header to size against, leaving no room for the overlay.
         'max-h-full min-h-64': props.variant === 'contained' && hasDesktopOverlay,
+        'rounded-xl border border-secondary': props.variant === 'contained',
       }"
       class="
-        relative hidden w-full min-w-0 rounded-xl border border-secondary
+        relative hidden w-full min-w-0
         contain-layout contain-paint
         @md/data-table:block
       "
