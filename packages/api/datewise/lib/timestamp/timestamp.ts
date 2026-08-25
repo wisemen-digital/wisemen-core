@@ -5,6 +5,7 @@ import { PlainDate } from '../plain-date/plain-date.js'
 import { PlainTime } from '../plain-time/plain-time.js'
 import { Month } from '../common/month.js'
 import { TimezoneInput } from '../common/timezone.js'
+import { IsoWeekday } from '#src/common/iso-weekday.js'
 
 export interface ILocale {
   name: string
@@ -91,15 +92,64 @@ export interface Timestamp {
   toISOString(): string
   toString(): string
   utcOffset(): number
+
   /**
    * @returns Returns numbers from 1 (Monday) to 7 (Sunday).
    */
-  isoWeekday(): number
+  isoWeekday(): IsoWeekday
+
   /**
    * @param day a number in 1 (Monday) to 7 (Sunday).
    * @returns A new timestamp with the changed ISO weekday.
    */
-  isoWeekday(day: number): Timestamp
+  isoWeekday(day: IsoWeekday): Timestamp
+
+  /**
+   * Get a new timestamp with the next occurrence of the target weekday.
+   * 
+   * Advances to the next week when the target weekday has already occurred in the week
+   * of this timestamp or when the target weekday is the weekday of this timestamp.
+   * 
+   * @param day the ISO weekday to target
+   * @returns a new timestamp
+   */
+  nextIsoWeekday(day: IsoWeekday): Timestamp
+  
+  /**
+   * Get a new timestamp with the next occurrence of the target weekday,
+   * keeping the current timestamp when it already falls on that weekday.
+   *
+   * Advances to the next week only when the target weekday has already occurred
+   * in the week of this timestamp.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new timestamp
+   */
+  nextOrSameIsoWeekday(day: IsoWeekday): Timestamp
+
+  /**
+   * Get a new timestamp with the previous occurrence of the target weekday.
+   *
+   * Moves to the previous week when the target weekday occurs later in the week
+   * of this timestamp or when the target weekday is the weekday of this timestamp.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new timestamp
+   */
+  previousIsoWeekday(day: IsoWeekday): Timestamp
+
+  /**
+   * Get a new timestamp with the previous occurrence of the target weekday,
+   * keeping the current timestamp when it already falls on that weekday.
+   *
+   * Moves to the previous week only when the target weekday occurs later in the
+   * week of this timestamp.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new timestamp
+   */
+  previousOrSameIsoWeekday(day: IsoWeekday): Timestamp
+
   isBefore(other: TimestampInput, unit?: OpUnitType): boolean
   isAfter(other: TimestampInput, unit?: OpUnitType): boolean
   isSame(other: TimestampInput, unit?: OpUnitType): boolean

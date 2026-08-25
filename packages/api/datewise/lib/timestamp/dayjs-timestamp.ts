@@ -10,6 +10,13 @@ import { TimezoneInput } from '../common/timezone.js'
 import { factory } from './timestamp.factory.js'
 import { ILocale, Timestamp, TimestampInput } from './timestamp.js'
 import { mapLocale } from '#src/common/map-locale.js'
+import {
+  getNextIsoWeekDate,
+  getNextOrSameIsoWeekDate,
+  getPreviousIsoWeekDate,
+  getPreviousOrSameIsoWeekDate,
+  IsoWeekday
+} from '#src/common/iso-weekday.js'
 
 export class DayjsTimestamp implements Timestamp {
   private value: dayjs.Dayjs
@@ -232,14 +239,30 @@ export class DayjsTimestamp implements Timestamp {
     return this.value.utcOffset()
   }
 
-  isoWeekday (): number
-  isoWeekday (day: number): DayjsTimestamp
-  isoWeekday (day?: number): number | DayjsTimestamp {
+  isoWeekday (): IsoWeekday
+  isoWeekday (day: IsoWeekday): DayjsTimestamp
+  isoWeekday (day?: IsoWeekday): IsoWeekday | DayjsTimestamp {
     if (day === undefined) {
-      return this.value.isoWeekday()
+      return this.value.isoWeekday() as IsoWeekday
     }
 
     return new DayjsTimestamp(this.value.isoWeekday(day))
+  }
+
+  nextIsoWeekday (day: IsoWeekday): DayjsTimestamp {
+    return new DayjsTimestamp(getNextIsoWeekDate(this.value, day))
+  }
+
+  nextOrSameIsoWeekday (day: IsoWeekday): DayjsTimestamp {
+    return new DayjsTimestamp(getNextOrSameIsoWeekDate(this.value, day))
+  }
+
+  previousIsoWeekday (day: IsoWeekday): DayjsTimestamp {
+    return new DayjsTimestamp(getPreviousIsoWeekDate(this.value, day))
+  }
+
+  previousOrSameIsoWeekday (day: IsoWeekday): DayjsTimestamp {
+    return new DayjsTimestamp(getPreviousOrSameIsoWeekDate(this.value, day))
   }
 
   isBefore (other: TimestampInput, unit?: OpUnitType): boolean {

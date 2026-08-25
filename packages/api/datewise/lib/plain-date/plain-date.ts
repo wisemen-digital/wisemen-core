@@ -7,6 +7,7 @@ import { Timestamp } from '../timestamp/timestamp.js'
 import { PlainDateObject } from './plain-date-object.js'
 import { PlainDateUnit, ReachablePlainDateUnit, DiffPlainDateUnit } from './plain-date.units.js'
 import { IsoWeekParity } from './iso-week-parity.js'
+import { IsoWeekday } from '#src/common/iso-weekday.js'
 
 export type PlainDateInput
   = Dayjs
@@ -106,13 +107,59 @@ export interface PlainDate {
   /** 
    * @returns Returns numbers from 1 (Monday) to 7 (Sunday).
   */
-  isoWeekday(): number
+  isoWeekday(): IsoWeekday
 
   /** 
    * @param day a number in 1 (Monday) to 7 (Sunday).
    * @returns A new plain date with the changed iso weekday. 
    */
-  isoWeekday(day: number): PlainDate
+  isoWeekday(day: IsoWeekday): PlainDate
+
+  /**
+   * Get a new plain date with the next occurrence of the target weekday.
+   *
+   * Advances to the next week when the target weekday has already occurred in the
+   * week of this date or when the target weekday is the weekday of this date.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new plain date
+   */
+  nextIsoWeekday(day: IsoWeekday): PlainDate
+
+  /**
+   * Get a new plain date with the next occurrence of the target weekday,
+   * keeping the current date when it already falls on that weekday.
+   *
+   * Advances to the next week only when the target weekday has already occurred
+   * in the week of this date.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new plain date
+   */
+  nextOrSameIsoWeekday(day: IsoWeekday): PlainDate
+
+  /**
+   * Get a new plain date with the previous occurrence of the target weekday.
+   *
+   * Moves to the previous week when the target weekday occurs later in the week
+   * of this date or when the target weekday is the weekday of this date.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new plain date
+   */
+  previousIsoWeekday(day: IsoWeekday): PlainDate
+
+  /**
+   * Get a new plain date with the previous occurrence of the target weekday,
+   * keeping the current date when it already falls on that weekday.
+   *
+   * Moves to the previous week only when the target weekday occurs later in the
+   * week of this date.
+   *
+   * @param day the ISO weekday to target
+   * @returns a new plain date
+   */
+  previousOrSameIsoWeekday(day: IsoWeekday): PlainDate
 
   /** 
    * @returns Returns the ISO week number (1–53).
