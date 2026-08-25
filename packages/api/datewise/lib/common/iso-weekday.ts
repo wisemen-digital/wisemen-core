@@ -3,13 +3,13 @@ import { ApiProperty } from '@nestjs/swagger'
 import type dayjs from 'dayjs'
 
 export const IsoWeekday = {
-  MONDAY: 1,
-  TUESDAY: 2,
-  WEDNESDAY: 3,
-  THURSDAY: 4,
-  FRIDAY: 5,
-  SATURDAY: 6,
-  SUNDAY: 7
+  MONDAY: 1 as IsoWeekday,
+  TUESDAY: 2 as IsoWeekday,
+  WEDNESDAY: 3 as IsoWeekday,
+  THURSDAY: 4 as IsoWeekday,
+  FRIDAY: 5 as IsoWeekday,
+  SATURDAY: 6 as IsoWeekday,
+  SUNDAY: 7 as IsoWeekday
 }
 
 export type IsoWeekday = 1 | 2 | 3 | 4 | 5 | 6 | 7
