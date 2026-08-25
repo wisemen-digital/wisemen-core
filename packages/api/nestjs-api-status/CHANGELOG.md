@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 
 
+
+## 0.0.1
+<sub>2026-08-24</sub>
+
+- [#1591](https://github.com/wisemen-digital/wisemen-core/pull/1591)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Initial release
+
 ## 0.2.0
 <sub>2026-08-12</sub>
 

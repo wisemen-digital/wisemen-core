@@ -37,8 +37,9 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   ever. Default width comes from a flat lookup table keyed by cell **type** only (not by that
   cell's specific config).
 - Override the default via `size` on a column — a plain `number` (pixels).
-- The **last column always fills remaining space** (`FILL_SPACE_COLUMN`) — the one deliberate
-  exception to "every column is fixed." Keeps the table from leaving dead whitespace.
+- The **last column always fills remaining space** (`minmax(0, auto)` in the grid template) — the
+  one deliberate exception to "every column is fixed." Keeps the table from leaving dead
+  whitespace.
 - Manual drag-resize works on top of whichever width (default or overridden) a column starts at.
 - Minimum resize width = `max(DATA_TABLE_MIN_COLUMN_WIDTH_PX constant, that column's measured label width)`.
   A column can never be dragged small enough to clip its own header label.
@@ -106,9 +107,6 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 - **Selection action bar**: `selectionActions: Action[]`, filtered through `resolveApplicable`.
   Floating bar shown once ≥1 row is selected. Built from scratch (the old `Table`'s equivalent
   prop was documented but never actually implemented).
-- **Active row**: one shared "current row" pointer (distinct from DOM focus). Hovering sets it;
-  arrow up/down (only while the detail pane is open) moves it. Moving the mouse off the table
-  entirely does not clear it.
 - **Sub component** (row expansion): `subComponent?: (item: TItem) => Component | null`. Return
   `null` for a row → no expand chevron for that row at all. No separate "can expand" predicate —
   the null return already says it. Independent from grouping (see below); a grouped row can still
@@ -139,8 +137,9 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   `getActionModel` prop).
 - **Trailing actions column**: a hand-appended, non-TanStack grid track (mirrors the leading
   checkbox/expand columns) — not a real pinned TanStack column, so it never participates in
-  resize/reorder/visibility. Its width is always reserved once `row` is set at all, even for a
-  specific row whose own `row(item)` resolves to no actions, so column edges stay aligned.
+  resize/reorder/visibility. Its width is only reserved when at least one row's own
+  `row(item).actions` actually resolves to inline/more actions — a consumer using `row` solely for
+  `onClick`/`model`, with no row ever carrying actions, sees no reserved, empty column.
 - **Row fade when a menu is open**: opening any row's `⋯` overflow menu or right-click context
   menu dims every other row (`opacity-25`), keeping visual focus on the row being acted on; that
   row itself stays at full opacity. Pure CSS (`:has()` selectors keyed off the menu trigger's own
@@ -236,9 +235,12 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
 
 ## Detail pane
 
-- **Status: paused after design work — Phase 4 not implemented yet.**
+- **Status: paused after design work — Phase 4 not implemented yet.** None of the below exists in
+  code yet, including the "active row" pointer itself — this section is design intent only.
 - Side panel showing every Cell definition for one row (including columns hidden from the table),
   auto-generated from the row's own Column set. Closed via Escape or a close button.
+- **Active row**: one shared "current row" pointer (distinct from DOM focus), set by hovering.
+  Moving the mouse off the table entirely does not clear it.
 - Opens only via **Spacebar**, acting on whatever the active row is at that moment.
 - Once open: arrow up/down immediately move the active row *and* update the pane content. Hover
   moves the active-row indicator but does *not* update the pane until Spacebar is pressed again —

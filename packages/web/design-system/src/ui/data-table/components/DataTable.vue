@@ -494,8 +494,7 @@ const hasDesktopOverlay = computed<boolean>(
         'rounded-xl border border-secondary': props.variant === 'contained',
       }"
       class="
-        relative hidden w-full min-w-0
-        contain-layout contain-paint
+        relative hidden w-full min-w-0 contain-layout contain-paint
         @md/data-table:block
       "
     >
