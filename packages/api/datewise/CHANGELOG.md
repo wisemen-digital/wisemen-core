@@ -11,6 +11,12 @@
 
 
 
+
+## 1.1.1
+<sub>2026-08-25</sub>
+
+- [#1602](https://github.com/wisemen-digital/wisemen-core/pull/1602)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: type IsoWeekday constants as IsoWeekday
+
 ## 1.1.0
 <sub>2026-08-25</sub>
 
