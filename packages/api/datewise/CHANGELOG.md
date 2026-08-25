@@ -10,6 +10,12 @@
 
 
 
+
+## 1.1.0
+<sub>2026-08-25</sub>
+
+- [#1599](https://github.com/wisemen-digital/wisemen-core/pull/1599)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add ISO weekday navigation helpers
+
 ## 1.0.20
 <sub>2026-08-24</sub>
 
