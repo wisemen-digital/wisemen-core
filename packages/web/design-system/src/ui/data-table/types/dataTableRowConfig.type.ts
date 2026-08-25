@@ -36,10 +36,10 @@ export function createDataTableRowActionClick(action: Action): DataTableRowClick
 }
 
 export interface DataTableRowConfig {
-  actions: {
+  actions?: {
     inline: Action[]
     more: Action[]
-  }
+  } | null
   model: RegisteredActionContext['models'][number]
   onClick?: DataTableRowClick | null
 }

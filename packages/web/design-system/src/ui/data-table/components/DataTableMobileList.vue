@@ -155,12 +155,12 @@ const {
           >
             <DataTableMobileCard
               v-bind="getMobileSlots(entry.viewModel.row.original)"
-              :inline-actions="entry.viewModel.rowConfig?.actions.inline ?? []"
+              :inline-actions="entry.viewModel.rowConfig?.actions?.inline ?? []"
               :is-expanded="props.expandedItemKeys.has(props.getKey(entry.viewModel.row.original))"
               :is-selectable="props.isSelectable"
               :is-selected="props.isItemSelected(props.getKey(entry.viewModel.row.original))"
               :model="entry.viewModel.rowConfig?.model ?? null"
-              :more-actions="entry.viewModel.rowConfig?.actions.more ?? []"
+              :more-actions="entry.viewModel.rowConfig?.actions?.more ?? []"
               :on-click="entry.viewModel.rowConfig?.onClick ?? null"
               :sub-component="entry.viewModel.subComponent"
               @toggle-expanded="emit('toggleExpanded', props.getKey(entry.viewModel.row.original))"

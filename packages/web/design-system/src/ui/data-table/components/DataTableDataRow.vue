@@ -54,10 +54,10 @@ const toggleSelectionAction = createAction({
   <DataTableRow
     :focus-only-actions="[toggleSelectionAction]"
     :has-row-actions="props.hasRowActions"
-    :inline-actions="props.viewModel.rowConfig?.actions.inline ?? []"
+    :inline-actions="props.viewModel.rowConfig?.actions?.inline ?? []"
     :is-last="props.viewModel.isLast && !props.viewModel.isSubComponentExpanded"
     :model="props.viewModel.rowConfig?.model ?? null"
-    :more-actions="props.viewModel.rowConfig?.actions.more ?? []"
+    :more-actions="props.viewModel.rowConfig?.actions?.more ?? []"
     :on-row-click="props.viewModel.rowConfig?.onClick ?? null"
   >
     <DataTableCheckboxCell
