@@ -94,6 +94,20 @@ export default buildConfig({
 The plugin emits Evlog audit events, so it works with `createS3AuditDrain()`
 through the `auditDrain` option above.
 
+The Payload plugin binds the request actor before each Payload operation. A
+custom audit in any hook can therefore use the normal application logger
+without handling users or anonymous callers.
+
+```ts
+const log = createApplicationLogger()
+
+log.audit({
+  action: 'page.publish',
+  target: { type: 'pages', id: String(doc.id) },
+})
+log.emit()
+```
+
 ## Application events
 
 Use `createApplicationLogger()` for an application-level event. It creates a

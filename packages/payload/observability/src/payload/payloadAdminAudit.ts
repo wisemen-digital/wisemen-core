@@ -1,10 +1,11 @@
-import { audit } from 'evlog'
 import type {
   Config,
   PayloadRequest,
   Plugin,
 } from 'payload'
 
+import { createApplicationLogger } from '#logging/logging.ts'
+import { bindPayloadAuditActor } from '#payload/payloadAuditContext.ts'
 export interface PayloadAdminAuditOptions {
   /** Include successful collection and global reads. @default true */
   includeReads?: boolean
@@ -32,6 +33,14 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
       ...collection,
       hooks: {
         ...collection.hooks,
+        beforeOperation: [
+          ({
+            req,
+          }) => {
+            bindPayloadAuditActor(req)
+          },
+          ...(collection.hooks?.beforeOperation ?? []),
+        ],
         afterChange: [
           ...(collection.hooks?.afterChange ?? []),
           ({
@@ -42,7 +51,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
             if (shouldAudit(req)) {
               emitAudit({
                 action: `payload.collection.${collection.slug}.${operation}`,
-                req,
                 target: {
                   id: String(doc.id),
                   type: collection.slug,
@@ -61,7 +69,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
             if (shouldAudit(req)) {
               emitAudit({
                 action: `payload.collection.${collection.slug}.delete`,
-                req,
                 target: {
                   id: String(doc.id),
                   type: collection.slug,
@@ -82,14 +89,13 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
                   ...req,
                   user,
                 })) {
+                  bindPayloadAuditActor(req, user)
                   emitAudit({
                     action: `payload.collection.${collection.slug}.login`,
-                    req,
                     target: {
                       id: String(user.id),
                       type: collection.slug,
                     },
-                    user,
                   })
                 }
 
@@ -106,7 +112,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
                 if (shouldAudit(req)) {
                   emitAudit({
                     action: `payload.collection.${collection.slug}.logout`,
-                    req,
                     target: {
                       id: String(req.user?.id),
                       type: collection.slug,
@@ -125,7 +130,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
                 if (shouldAudit(req)) {
                   emitAudit({
                     action: `payload.collection.${collection.slug}.read`,
-                    req,
                     target: {
                       id: String(doc.id),
                       type: collection.slug,
@@ -143,6 +147,14 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
       ...global,
       hooks: {
         ...global.hooks,
+        beforeOperation: [
+          ({
+            req,
+          }) => {
+            bindPayloadAuditActor(req)
+          },
+          ...(global.hooks?.beforeOperation ?? []),
+        ],
         afterChange: [
           ...(global.hooks?.afterChange ?? []),
           ({
@@ -151,7 +163,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
             if (shouldAudit(req)) {
               emitAudit({
                 action: `payload.global.${global.slug}.update`,
-                req,
                 target: {
                   id: global.slug,
                   type: 'global',
@@ -171,7 +182,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
                 if (shouldAudit(req)) {
                   emitAudit({
                     action: `payload.global.${global.slug}.read`,
-                    req,
                     target: {
                       id: global.slug,
                       type: 'global',
@@ -190,34 +200,23 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
 
 interface EmitAuditOptions {
   action: string
-  req: PayloadRequest
   target: {
     id: string
     type: string
   }
-  user?: PayloadRequest['user']
 }
 
 function emitAudit({
   action,
-  req,
   target,
-  user = req.user,
 }: EmitAuditOptions): void {
-  audit({
+  const log = createApplicationLogger()
+
+  log.audit({
     action,
-    actor: user == null
-      ? {
-          id: 'anonymous',
-          displayName: 'Anonymous request',
-          type: 'api',
-        }
-      : {
-          id: String(user.id),
-          type: 'user',
-        },
     target,
   })
+  log.emit()
 }
 
 function isHttpRequest(req: PayloadRequest): boolean {
