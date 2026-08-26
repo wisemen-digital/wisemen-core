@@ -6,6 +6,12 @@
 
 
 
+
+## 0.2.0
+<sub>2026-08-26</sub>
+
+- *(minor)* Updated dependency `@wisemen/opentelemetry` v0.3.0
+
 ## 0.1.0
 <sub>2026-08-25</sub>
 
