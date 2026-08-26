@@ -1,33 +1,30 @@
-import {
-  audit,
-  auditDiff,
-  auditRedactPreset,
-} from 'evlog'
+import { audit } from 'evlog'
 import type {
   Config,
   PayloadRequest,
   Plugin,
 } from 'payload'
 
-import { limitLoggingValue } from '#logging/logging.ts'
-
 export interface PayloadAdminAuditOptions {
+  /** Include successful collection and global reads. @default true */
+  includeReads?: boolean
   /**
-   * Return false to skip a request. By default, only authenticated HTTP
-   * requests are audited; local API calls from jobs, seeders, and hooks are not.
+   * Return false to skip a request. By default, every HTTP mutation is audited;
+   * local API calls from jobs, seeders, and hooks are not.
    */
   shouldAudit?: (req: PayloadRequest) => boolean
 }
 
 /**
- * Audit successful Payload CMS mutations made by authenticated users.
+ * Audit successful Payload CMS and API mutations.
  *
  * Covers create, update, and delete operations on every collection, global
  * updates, and successful collection-auth logins/logouts. Events are emitted
  * through Evlog's audit helper, so an `auditDrain` receives them automatically.
  */
 export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugin {
-  const shouldAudit = options.shouldAudit ?? isAuthenticatedHttpRequest
+  const shouldAudit = options.shouldAudit ?? isHttpRequest
+  const includeReads = options.includeReads ?? true
 
   return (config) => ({
     ...config,
@@ -40,14 +37,11 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
           ({
             doc,
             operation,
-            previousDoc,
             req,
           }) => {
             if (shouldAudit(req)) {
               emitAudit({
                 action: `payload.collection.${collection.slug}.${operation}`,
-                after: doc,
-                before: operation === 'create' ? undefined : previousDoc,
                 req,
                 target: {
                   id: String(doc.id),
@@ -67,7 +61,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
             if (shouldAudit(req)) {
               emitAudit({
                 action: `payload.collection.${collection.slug}.delete`,
-                before: doc,
                 req,
                 target: {
                   id: String(doc.id),
@@ -123,6 +116,27 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
               },
             ]
           : collection.hooks?.afterLogout,
+        afterRead: includeReads
+          ? [
+              ...(collection.hooks?.afterRead ?? []),
+              ({
+                doc, req,
+              }) => {
+                if (shouldAudit(req)) {
+                  emitAudit({
+                    action: `payload.collection.${collection.slug}.read`,
+                    req,
+                    target: {
+                      id: String(doc.id),
+                      type: collection.slug,
+                    },
+                  })
+                }
+
+                return doc
+              },
+            ]
+          : collection.hooks?.afterRead,
       },
     })),
     globals: config.globals?.map((global) => ({
@@ -132,15 +146,11 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
         afterChange: [
           ...(global.hooks?.afterChange ?? []),
           ({
-            doc,
-            previousDoc,
-            req,
+            doc, req,
           }) => {
             if (shouldAudit(req)) {
               emitAudit({
                 action: `payload.global.${global.slug}.update`,
-                after: doc,
-                before: previousDoc,
                 req,
                 target: {
                   id: global.slug,
@@ -152,6 +162,27 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
             return doc
           },
         ],
+        afterRead: includeReads
+          ? [
+              ...(global.hooks?.afterRead ?? []),
+              ({
+                doc, req,
+              }) => {
+                if (shouldAudit(req)) {
+                  emitAudit({
+                    action: `payload.global.${global.slug}.read`,
+                    req,
+                    target: {
+                      id: global.slug,
+                      type: 'global',
+                    },
+                  })
+                }
+
+                return doc
+              },
+            ]
+          : global.hooks?.afterRead,
       },
     })),
   }) as Config
@@ -159,8 +190,6 @@ export function payloadAdminAudit(options: PayloadAdminAuditOptions = {}): Plugi
 
 interface EmitAuditOptions {
   action: string
-  after?: unknown
-  before?: unknown
   req: PayloadRequest
   target: {
     id: string
@@ -171,33 +200,26 @@ interface EmitAuditOptions {
 
 function emitAudit({
   action,
-  after,
-  before,
   req,
   target,
   user = req.user,
 }: EmitAuditOptions): void {
-  if (user == null) {
-    return
-  }
-
   audit({
     action,
-    actor: {
-      id: String(user.id),
-      type: 'user',
-    },
-    changes: auditDiff(
-      limitLoggingValue(before),
-      limitLoggingValue(after),
-      {
-        redactPaths: auditRedactPreset.paths,
-      },
-    ),
+    actor: user == null
+      ? {
+          id: 'anonymous',
+          displayName: 'Anonymous request',
+          type: 'api',
+        }
+      : {
+          id: String(user.id),
+          type: 'user',
+        },
     target,
   })
 }
 
-function isAuthenticatedHttpRequest(req: PayloadRequest): boolean {
-  return req.user != null && req.payloadAPI !== 'local'
+function isHttpRequest(req: PayloadRequest): boolean {
+  return req.payloadAPI !== 'local'
 }

@@ -36,8 +36,10 @@ to an event.
 
 `createS3AuditDrain()` uses Evlog's `auditOnly()` helper, so it archives only
 events created with Evlog audit helpers. It keeps normal logs on stdout and
-writes a gzipped NDJSON object per pod per hour. Keys are unique, so multiple
-Kubernetes replicas never append to or overwrite the same object.
+writes a gzipped NDJSON object per pod per hour at
+`audit/<environment>/<date>-<hour>-<pod>-<batch>.ndjson.gz`. Keys are
+unique, so multiple Kubernetes replicas never append to or overwrite the same
+object.
 
 ```ts
 import {
@@ -68,10 +70,14 @@ object rather than losing audit events.
 
 ## Payload admin audit plugin
 
-Add `payloadAdminAudit()` to the Payload plugin list to record successful,
-authenticated admin/API mutations. It covers collection creates, updates, and
-deletes; global updates; and collection-auth logins/logouts. Local API calls
-from workers, seeders, and hooks are excluded by default.
+Add `payloadAdminAudit()` to the Payload plugin list to record successful
+admin/API operations. It covers collection creates, updates, deletes, and
+reads; global updates and reads; and collection-auth logins/logouts.
+Unauthenticated HTTP requests are included with
+`actor: { type: 'api', id: 'anonymous' }`; local API calls from workers,
+seeders, and hooks are excluded by default. Audit events intentionally do not
+include document values or diffs. Set `includeReads: false` if read volume is
+not useful for your audit policy.
 
 ```ts
 import { payloadAdminAudit } from '@wisemen/payload-core-observability'
@@ -84,8 +90,7 @@ export default buildConfig({
 ```
 
 The plugin emits Evlog audit events, so it works with `createS3AuditDrain()`
-through the `auditDrain` option above. Diffs are bounded and redact the strict
-Evlog audit field set before they leave the process.
+through the `auditDrain` option above.
 
 ## Application events
 

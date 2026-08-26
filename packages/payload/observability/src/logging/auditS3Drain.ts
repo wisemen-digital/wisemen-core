@@ -83,7 +83,6 @@ export function createS3AuditDrain(options: S3AuditDrainOptions): S3AuditDrain {
       environment: options.environment,
       podName,
       prefix,
-      service: options.service,
     })
     const body = gzipSync(`${events.map((event) => JSON.stringify(event)).join('\n')}\n`)
 
@@ -113,7 +112,6 @@ interface S3KeyOptions {
   environment: string
   podName: string
   prefix: string
-  service: string
 }
 
 function buildS3Key({
@@ -121,19 +119,19 @@ function buildS3Key({
   environment,
   podName,
   prefix,
-  service,
 }: S3KeyOptions): string {
   const hour = date.toISOString().slice(0, 13)
 
   return [
     prefix,
-    `service=${sanitizeKeySegment(service)}`,
-    `environment=${sanitizeKeySegment(environment)}`,
-    `date=${hour.slice(0, 10)}`,
-    `hour=${hour.slice(11, 13)}`,
-    `pod=${podName}`,
-    `batch=${crypto.randomUUID()}.ndjson.gz`,
-  ].join('/')
+    sanitizeKeySegment(environment),
+    [
+      hour.slice(0, 10),
+      hour.slice(11, 13),
+      podName,
+      crypto.randomUUID(),
+    ].join('-'),
+  ].join('/') + '.ndjson.gz'
 }
 
 function sanitizeKeySegment(value: string): string {

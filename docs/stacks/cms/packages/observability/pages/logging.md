@@ -95,17 +95,20 @@ process.once('SIGTERM', () => void auditDrain.flush())
 process.once('SIGINT', () => void auditDrain.flush())
 ```
 
-The drain uploads compressed NDJSON about once per hour for each pod. Every
+The drain uploads compressed NDJSON about once per hour for each pod at
+`audit/<environment>/<date>-<hour>-<pod>-<batch>.ndjson.gz`. Every
 object gets a unique key, so replicas never coordinate through a shared file.
 It retries uploads five times. The `maxBatchSize` safety ceiling defaults to
 100,000 events; reaching it creates an extra object instead of dropping audits.
 
 ## Payload admin audit
 
-Add the Payload audit plugin to record authenticated CMS/API mutations in the
-S3 audit archive. It covers collection creates, updates, and deletes; global
-updates; and collection-auth logins/logouts. Local API calls from workers,
-seeders, and hooks are excluded by default.
+Add the Payload audit plugin to record CMS/API operations in the S3 audit
+archive. It covers collection creates, updates, deletes, and reads; global
+updates and reads; and collection-auth logins/logouts. Unauthenticated HTTP
+requests are recorded with `actor: { type: 'api', id: 'anonymous' }`; local
+API calls from workers, seeders, and hooks are excluded by default. Events do
+not include document values or diffs.
 
 ```ts
 import { payloadAdminAudit } from '@wisemen/payload-core-observability'
