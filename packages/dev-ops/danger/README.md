@@ -12,21 +12,21 @@ The action installs its own dependencies, but you can also add the package direc
 pnpm add -D danger @wisemen/danger
 ```
 
-## Usage in your workflow
+## Usage
 
-```yaml
-- uses: wisemen-digital/wisemen-core/packages/dev-ops/danger/.github/actions/run-danger@main
-  with:
-    github-access-token: ${{ secrets.GITHUB_TOKEN }}
-```
+Danger already runs for you as part of the [general project "build & test"
+workflow](https://github.com/wisemen-digital/devops-github-actions/blob/v1/Docs/project-build-and-test.md) -
+there's no need to add anything to your own workflows.
 
 This runs once per PR and posts a single combined comment - see "Scoped configuration" below
 for how a monorepo splits its rules across root/api/web without multiple workflow runs.
 
 ## Configuring rules
 
-Add a `dangerfile.ts` (or `.js`) at your repo root. Export `configureDanger` to tweak global
-config, and/or `rules` to add project-specific rules:
+By default, no rules are enabled - Danger runs but posts nothing (see "Built-in rules" below
+for the full list, which will grow over time). Add a `dangerfile.ts` (or `.js`) at your repo
+root to enable/disable rules or add your own. Export `configureDanger` to tweak global config
+and toggle rules, and/or `rules` to add project-specific rules:
 
 ```ts
 // dangerfile.ts
@@ -92,7 +92,10 @@ if you need something else.
 
 ## Built-in rules
 
-- `changelog-updated` (enabled by default) - fails if the scope's `CHANGELOG.md` wasn't
-  updated with a complete `### Description` / `### Migration` entry.
-- `conventional-commits` (disabled by default) - warns on commits that don't follow
+All built-in rules are disabled by default - enable the ones you want via `config.rules` in
+`configureDanger` (see "Configuring rules" above).
+
+- `changelog-updated` - fails if the scope's `CHANGELOG.md` wasn't updated with a complete
+  `### Description` / `### Migration` entry.
+- `conventional-commits` - warns on commits that don't follow
   [Conventional Commits](https://www.conventionalcommits.org/).
