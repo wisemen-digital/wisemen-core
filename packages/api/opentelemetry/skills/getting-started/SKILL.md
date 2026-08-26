@@ -9,6 +9,29 @@ description: OpenTelemetry for NestJS applications. Use when distributed tracing
 import { configureOpentelemetryTracing, configureOpentelemetryMetrics, Trace, captureException, getOtelTracer, registerInstrumentation, OpenTelemetryLogger } from '@wisemen/opentelemetry' 
 ```
 
+### Startup configuration
+
+Pass all runtime values explicitly when starting tracing or metrics. The package
+does not read environment variables.
+
+```ts
+import {
+  getOtlpExporterHeaders,
+  startOpentelemetryTracing
+} from '@wisemen/opentelemetry'
+
+startOpentelemetryTracing({
+  enabled: true,
+  serviceName: 'api',
+  env: 'production',
+  url: 'https://signoz.example/v1/traces',
+  headers: getOtlpExporterHeaders({
+    auth: 'basic',
+    key: 'token'
+  })
+})
+```
+
 
 ### Add @Trace() to methods that require a new spans. Use when starting a significant call to for example an external system or subsystem.
 
@@ -30,4 +53,3 @@ try {
   captureException(error, 'Failed to process payment')
 }
 ```
-
