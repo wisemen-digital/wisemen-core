@@ -66,6 +66,27 @@ The drain retries failed uploads five times. `maxBatchSize` defaults to
 100,000: it is a safety limit, so exceptionally busy pods create an extra
 object rather than losing audit events.
 
+## Payload admin audit plugin
+
+Add `payloadAdminAudit()` to the Payload plugin list to record successful,
+authenticated admin/API mutations. It covers collection creates, updates, and
+deletes; global updates; and collection-auth logins/logouts. Local API calls
+from workers, seeders, and hooks are excluded by default.
+
+```ts
+import { payloadAdminAudit } from '@wisemen/payload-core-observability'
+
+export default buildConfig({
+  plugins: [
+    payloadAdminAudit(),
+  ],
+})
+```
+
+The plugin emits Evlog audit events, so it works with `createS3AuditDrain()`
+through the `auditDrain` option above. Diffs are bounded and redact the strict
+Evlog audit field set before they leave the process.
+
 ## Application events
 
 Use `createApplicationLogger()` for an application-level event. It creates a

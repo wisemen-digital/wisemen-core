@@ -3244,7 +3244,7 @@ importers:
   packages/payload/observability:
     dependencies:
       '@aws-sdk/client-s3':
-        specifier: catalog:backend-peer
+        specifier: ^3.1023.0
         version: 3.1023.0
       '@opentelemetry/api':
         specifier: ^1.9.1

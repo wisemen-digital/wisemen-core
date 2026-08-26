@@ -100,6 +100,23 @@ object gets a unique key, so replicas never coordinate through a shared file.
 It retries uploads five times. The `maxBatchSize` safety ceiling defaults to
 100,000 events; reaching it creates an extra object instead of dropping audits.
 
+## Payload admin audit
+
+Add the Payload audit plugin to record authenticated CMS/API mutations in the
+S3 audit archive. It covers collection creates, updates, and deletes; global
+updates; and collection-auth logins/logouts. Local API calls from workers,
+seeders, and hooks are excluded by default.
+
+```ts
+import { payloadAdminAudit } from '@wisemen/payload-core-observability'
+
+export default buildConfig({
+  plugins: [
+    payloadAdminAudit(),
+  ],
+})
+```
+
 ## Redaction and bounded values
 
 Evlog applies the package's redaction configuration to nested fields matching:
