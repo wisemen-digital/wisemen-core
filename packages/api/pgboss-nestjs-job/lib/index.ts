@@ -22,3 +22,10 @@ export { PgBossScheduler } from './scheduler/pgboss-scheduler.js'
 // Client
 export { PgBossClientModule } from './client/pgboss-client.module.js'
 export { PgBossClient } from './client/pgboss-client.js'
+
+// Metrics
+export { PgbossMetricsModule } from './metrics/pgboss-metrics.module.js'
+export type {
+  PgbossMetricsModuleAsyncOptions,
+  PgbossMetricsModuleOptions
+} from './metrics/pgboss-metrics.module-options.js'
