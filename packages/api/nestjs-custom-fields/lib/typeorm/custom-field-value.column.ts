@@ -24,7 +24,7 @@ export function CustomFieldValueColumn(options?: Omit<ColumnOptions, 'type' | 't
   })
 }
 
-class CustomFieldValueTransformer implements ValueTransformer {
+export class CustomFieldValueTransformer implements ValueTransformer {
   private plainDateTransformer: PlainDateTransformer
   private timestampTransformer: TimestampTransformer
 
