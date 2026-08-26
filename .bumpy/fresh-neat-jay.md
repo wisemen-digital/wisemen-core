@@ -2,4 +2,4 @@
 "@wisemen/nestjs-custom-fields": major
 ---
 
-Simplif value column transformer and add signature overloads
+Simplify value column transformer and add signature overloads
