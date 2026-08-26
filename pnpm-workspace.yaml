@@ -72,6 +72,7 @@ catalogs:
     "class-transformer": "0.5.1"
     "class-validator": "0.15.1"
     "colors": "1.4.0"
+    "danger": "13.0.10"
     "dayjs": "1.11.20"
     "express": "5.2.1"
     "jose": "6.2.5"
@@ -424,6 +425,7 @@ allowBuilds:
   "@nestjs/core": true
   "@parcel/watcher": true
   "@scarf/scarf": true
+  core-js: true
   esbuild: true
   protobufjs: true
   sharp: true
