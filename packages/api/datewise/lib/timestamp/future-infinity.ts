@@ -8,6 +8,7 @@ import { Month } from '../common/month.js'
 import { TimezoneInput } from '../common/timezone.js'
 import { ILocale, Timestamp, TimestampInput } from './timestamp.js'
 import { factory } from './timestamp.factory.js'
+import { IsoWeekday } from '#src/common/iso-weekday.js'
 
 export class FutureInfinity implements Timestamp {
   clone (): this {
@@ -154,6 +155,32 @@ export class FutureInfinity implements Timestamp {
 
   utcOffset (): number {
     return Infinity
+  }
+
+  isoWeekday (): IsoWeekday
+  isoWeekday (day: IsoWeekday): this
+  isoWeekday (day?: IsoWeekday): IsoWeekday | this {
+    if (day !== undefined) {
+      return this
+    }
+
+    throw new Error('cannot access ISO weekday on future infinity')
+  }
+
+  nextIsoWeekday (_day: IsoWeekday): this {
+    return this
+  }
+
+  nextOrSameIsoWeekday (_day: IsoWeekday): this {
+    return this
+  }
+
+  previousIsoWeekday (_day: IsoWeekday): this {
+    return this
+  }
+
+  previousOrSameIsoWeekday (_day: IsoWeekday): this {
+    return this
   }
 
   isBefore (): boolean {
