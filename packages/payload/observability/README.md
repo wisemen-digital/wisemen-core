@@ -32,6 +32,40 @@ export default withJobLogging(tasks, 'task')
 and `limitLoggingValue()` only bounds size and depth before values are attached
 to an event.
 
+## Hourly audit archive in S3
+
+`createS3AuditDrain()` uses Evlog's `auditOnly()` helper, so it archives only
+events created with Evlog audit helpers. It keeps normal logs on stdout and
+writes a gzipped NDJSON object per pod per hour. Keys are unique, so multiple
+Kubernetes replicas never append to or overwrite the same object.
+
+```ts
+import {
+  createS3AuditDrain,
+  initializeLogging,
+} from '@wisemen/payload-core-observability'
+
+const auditDrain = createS3AuditDrain({
+  bucket: process.env.AUDIT_S3_BUCKET!,
+  endpoint: process.env.AUDIT_S3_ENDPOINT, // optional S3-compatible endpoint
+  environment: process.env.NODE_ENV ?? 'development',
+  podName: process.env.HOSTNAME,
+  service: 'cms',
+})
+
+initializeLogging({
+  auditDrain,
+  service: 'cms',
+})
+
+process.once('SIGTERM', () => void auditDrain.flush())
+process.once('SIGINT', () => void auditDrain.flush())
+```
+
+The drain retries failed uploads five times. `maxBatchSize` defaults to
+100,000: it is a safety limit, so exceptionally busy pods create an extra
+object rather than losing audit events.
+
 ## Application events
 
 Use `createApplicationLogger()` for an application-level event. It creates a

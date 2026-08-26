@@ -1,9 +1,11 @@
 import type {
+  DrainFn,
   LoggerConfig,
   SamplingConfig,
 } from 'evlog'
 import {
   createLogger,
+  drainPlugin,
   initLogger,
 } from 'evlog'
 
@@ -33,6 +35,8 @@ export const loggingRedaction = {
 }
 
 export interface InitializeLoggingOptions {
+  /** A dedicated sink for audit events. Normal application logs still use stdout. */
+  auditDrain?: DrainFn
   environment?: string
   sampling?: SamplingConfig
   service: string
@@ -45,6 +49,7 @@ export interface ApplicationLogFields {
 
 /** Configure Evlog sampling and redaction for request-wide events. */
 export function initializeLogging({
+  auditDrain,
   environment = 'development',
   sampling,
   service,
@@ -60,6 +65,11 @@ export function initializeLogging({
     pretty: environment !== 'production',
     redact: loggingRedaction,
     sampling: resolveLoggingSampling(slowRequestOptions, sampling),
+    plugins: auditDrain
+      ? [
+          drainPlugin('wisemen-audit-drain', auditDrain),
+        ]
+      : undefined,
   }
 
   initLogger(config)
