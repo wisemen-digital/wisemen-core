@@ -5,6 +5,12 @@
 
 
 
+
+## 1.0.0
+<sub>2026-08-26</sub>
+
+- [#1608](https://github.com/wisemen-digital/wisemen-core/pull/1608)  *(major)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Simplify value column transformer and add signature overloads
+
 ## 0.0.6
 <sub>2026-08-26</sub>
 
