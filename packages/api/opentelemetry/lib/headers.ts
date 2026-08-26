@@ -1,5 +1,5 @@
 export interface OtelAuth  {
-  type: 'basic' | string | undefined
+  type: string | undefined
   key: string | undefined
 }
 
