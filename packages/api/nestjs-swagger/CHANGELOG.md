@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## 0.2.0
+<sub>2026-08-26</sub>
+
+- *(minor)* Updated dependency `@wisemen/opentelemetry` v0.3.0
+
 ## 0.1.0
 <sub>2026-08-12</sub>
 

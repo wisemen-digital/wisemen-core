@@ -6,6 +6,12 @@
 
 
 
+
+## 0.3.0
+<sub>2026-08-26</sub>
+
+- [#1610](https://github.com/wisemen-digital/wisemen-core/pull/1610)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added explicit OpenTelemetry tracing, metrics, and SigNoz exporter configuration helpers.
+
 ## 0.2.8
 <sub>2026-08-07</sub>
 
