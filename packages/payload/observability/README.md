@@ -40,7 +40,8 @@ writes a gzipped NDJSON object per pod per hour at
 `audit/<environment>/<date>-<hour>-<pod>-<batch>.ndjson.gz`. Keys are
 unique, so multiple Kubernetes replicas never append to or overwrite the same
 object. The object has no HTTP `Content-Encoding` header, so downloading it
-from an S3 console preserves a valid `.gz` file.
+from an S3 console preserves a valid `.gz` file. It is served as an attachment
+with `application/gzip` so browsers do not treat it as plain NDJSON.
 
 ```ts
 import {
