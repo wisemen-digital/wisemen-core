@@ -2775,9 +2775,15 @@ importers:
       '@wisemen/nestjs-provider-explorer':
         specifier: workspace:^
         version: link:../nestjs-provider-explorer
+      '@wisemen/nestjs-redis':
+        specifier: workspace:^
+        version: link:../nestjs-redis
       '@wisemen/nestjs-typeorm':
         specifier: workspace:^
         version: link:../nestjs-typeorm
+      '@wisemen/node-fetch':
+        specifier: workspace:^
+        version: link:../node-fetch
       '@wisemen/opentelemetry':
         specifier: workspace:^
         version: link:../opentelemetry
@@ -2812,6 +2818,9 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      reflect-metadata:
+        specifier: catalog:backend-peer
+        version: 0.2.2
       typescript:
         specifier: catalog:peer
         version: 5.9.3

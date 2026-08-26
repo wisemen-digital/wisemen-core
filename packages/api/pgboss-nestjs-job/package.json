@@ -30,7 +30,9 @@
   },
   "dependencies": {
     "pg-boss": "catalog:backend",
-    "@wisemen/nestjs-provider-explorer": "workspace:^"
+    "@wisemen/nestjs-provider-explorer": "workspace:^",
+    "@wisemen/nestjs-redis": "workspace:^",
+    "@wisemen/node-fetch": "workspace:^"
   },
   "peerDependencies": {
     "@wisemen/nestjs-typeorm": "workspace:^",
@@ -41,9 +43,11 @@
     "colors": "catalog:backend-peer",
     "rxjs": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",
-    "class-transformer": "catalog:backend-peer"
+    "class-transformer": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer"
   },
   "devDependencies": {
+    "reflect-metadata": "catalog:backend-peer",
     "@wisemen/eslint-config-nestjs": "workspace:^",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",

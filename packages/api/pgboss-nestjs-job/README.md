@@ -162,3 +162,146 @@ export class CuoptWorkerBouncer extends QueueBouncer {
   }
 }
 ```
+
+#### Rate-limited queues
+
+When a queue's jobs call an external API that is rate limited, give the queue a
+**rate-limit bouncer**. It reuses the `QueueBouncer` fetch-gate above — when the
+limit is reached the worker simply stops polling, so jobs wait in `created`
+instead of failing and burning retries — and keeps its state in Redis (shared
+across worker instances) via `@wisemen/nestjs-redis`.
+
+Use one dedicated queue per rate-limited API (the queue name is the limit key).
+Register the module once at the app root:
+
+```typescript
+PgbossRateLimitModule.forRoot({ url: process.env.REDIS_URL })
+// or forRootAsync({ inject: [ConfigService], useFactory: (c) => ({ url: c.getOrThrow('REDIS_URL') }) })
+```
+
+Then pick the base class that matches how much you know about the limit and
+declare a bouncer for the queue:
+
+```typescript
+// STATIC — a known budget (N requests per window)
+@Bouncer(QueueName.STRIPE)
+export class StripeBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 100, windowSeconds: 60 }
+}
+
+// HEADERS — the API reports its own budget via X-RateLimit-* / Retry-After
+@Bouncer(QueueName.CUOPT)
+export class CuoptBouncer extends HeaderRateLimitBouncer {
+  protected readonly options = {} // optional custom header names
+}
+
+// FAILURE — nothing is known up front; back off only after a 429 / error
+@Bouncer(QueueName.FLAKY)
+export class FlakyBouncer extends FailureBackoffBouncer {
+  protected readonly options = { backoffSeconds: 30, maxBackoffSeconds: 300 }
+}
+```
+
+Register the bouncer as a provider in its queue's module (same as any
+`QueueBouncer`). The `RedisRateLimitStore` is injected automatically.
+
+**Feed usage back from the transport.** All three modes learn from the actual
+HTTP traffic, so wrap the `@wisemen/node-fetch` client that talks to the API with
+`useRateLimiting`. A client talks to exactly one rate-limited API, so bind that
+queue's bouncer directly — inject it (it is a provider) and pass it in:
+
+```typescript
+constructor (private readonly bouncer: StripeBouncer) {
+  this.client = createClient({ baseUrl: 'https://api.stripe.com' })
+  useRateLimiting(this.client, this.bouncer)
+}
+```
+
+The interceptor drives the bound bouncer on every call: static counts one request
+per call, header mirrors the reported budget, failure backs off on a throttled
+response or transport error. A throttled response records the cooldown and throws
+`RateLimitError` so the job is retried after the cooldown clears. Because it counts
+every request through the client, all real API usage counts against the budget, not
+only calls made from that queue's jobs.
+
+**Retries are what make the cooldown work**, and pg-boss already provides them:
+every queue defaults to `retryLimit: 2`, which jobs inherit unless they override it
+— so a throttled job gets three attempts out of the box. Two things to know:
+
+- **A busy queue may want more.** Each attempt is spent on a throttle it may hit
+  again once the cooldown clears, so a queue that is throttled often can exhaust
+  three attempts and fail the job. Raise it per queue (`createQueue`/`updateQueue`
+  with `retryLimit`, optionally `retryBackoff`) or per job via its options.
+- **Never set `retryLimit: 0` on a rate-limited queue.** pg-boss retries only while
+  `retry_count < retry_limit`, so with `0` the *first* throttle fails the job for
+  good. The cooldown is still recorded — the API stays protected — but the job is
+  lost unless the queue has a dead-letter queue.
+
+**Not every API answers with a 429.** Throttling is `429` by default, but SAP and
+friends report it as a `503`, a `500`, sometimes even a `400`. Name the statuses
+that mean "slow down" in the options and every mode — plus the interceptor that
+throws `RateLimitError` — follows:
+
+```typescript
+@Bouncer(QueueName.SAP)
+export class SapBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 50, windowSeconds: 60, throttleStatuses: [503, 500] }
+}
+```
+
+`throttleStatuses` **replaces** the default rather than adding to it, so include
+`429` explicitly if the API uses both. When a status code alone cannot say it,
+override the decision instead — it is the single point every mode consults:
+
+```typescript
+@Bouncer(QueueName.SAP)
+export class SapBouncer extends StaticRateLimitBouncer {
+  protected readonly options = { limit: 50, windowSeconds: 60 }
+
+  override isThrottleResponse (status: number, headers: Record<string, string | undefined>): boolean {
+    return status === 400 && headers['x-sap-throttled'] === 'true'
+  }
+}
+```
+
+The response body is deliberately not available here — the interceptor must not
+consume the stream. An API that only signals throttling in its payload should
+throw `RateLimitError` from its own client code.
+
+**Choose what happens when Redis is down.** Rate limiting **fails open** by
+default: if Redis cannot answer, the gate allows and the queue runs at pg-boss
+speed. That keeps queues moving, but for an API that bans rather than throttles
+(OSRM and friends) flooding it is worse than stalling. Such a queue can opt to
+fail closed:
+
+```typescript
+@Bouncer(QueueName.OSRM)
+export class OsrmBouncer extends StaticRateLimitBouncer {
+  protected readonly options = {
+    limit: 20,
+    windowSeconds: 60,
+    onStoreUnavailable: StoreUnavailablePolicy.BLOCK
+  }
+}
+```
+
+The choice is per queue, because it depends on the API: `BLOCK` holds the queue
+for as long as Redis is unreachable (jobs stay queued and resume afterwards),
+`ALLOW` (default) keeps it running unprotected. Note this is only about Redis
+being unreachable — a reachable Redis always enforces the real limit.
+
+The check happens once per poll, so a connection that drops mid-poll can let that
+one batch through even under `BLOCK`; the next poll sees Redis is gone and holds.
+Exposure is bounded by `batchSize × workers`, the same bound as counter lag below.
+
+Notes:
+
+- **Fail-open by default:** if Redis is unavailable, bouncers allow work through
+  rather than wedge the queue — see `onStoreUnavailable` above to invert that.
+- Keep rate-limit bouncers **default-scoped** (singleton) — do not mark them
+  `TRANSIENT`/`REQUEST`.
+- Header mode treats the reset header as **epoch seconds**; APIs that send
+  delta-seconds need a custom adapter.
+- Enforcement is per-queue (no per-tenant sub-keys), and a poll can fetch a batch
+  before the counter updates, so overshoot is bounded by `batchSize × workers` —
+  lower `batchSize` on hot queues if needed.
