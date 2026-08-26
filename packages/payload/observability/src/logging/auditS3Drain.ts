@@ -89,9 +89,11 @@ export function createS3AuditDrain(options: S3AuditDrainOptions): S3AuditDrain {
     await client.send(new PutObjectCommand({
       Body: body,
       Bucket: options.bucket,
-      ContentEncoding: 'gzip',
       ContentType: 'application/x-ndjson',
       Key: key,
+      Metadata: {
+        compression: 'gzip',
+      },
     }))
   })
 

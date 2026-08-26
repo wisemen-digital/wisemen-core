@@ -39,7 +39,8 @@ events created with Evlog audit helpers. It keeps normal logs on stdout and
 writes a gzipped NDJSON object per pod per hour at
 `audit/<environment>/<date>-<hour>-<pod>-<batch>.ndjson.gz`. Keys are
 unique, so multiple Kubernetes replicas never append to or overwrite the same
-object.
+object. The object has no HTTP `Content-Encoding` header, so downloading it
+from an S3 console preserves a valid `.gz` file.
 
 ```ts
 import {
@@ -49,7 +50,7 @@ import {
 
 const auditDrain = createS3AuditDrain({
   bucket: process.env.AUDIT_S3_BUCKET!,
-  endpoint: process.env.AUDIT_S3_ENDPOINT, // optional S3-compatible endpoint
+  endpoint: process.env.AUDIT_S3_ENDPOINT,
   environment: process.env.NODE_ENV ?? 'development',
   podName: process.env.HOSTNAME,
   service: 'cms',
