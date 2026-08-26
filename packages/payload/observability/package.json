@@ -48,7 +48,7 @@
   "peerDependencies": {
     "@orpc/otel": "^1.15.0",
     "@orpc/server": "^1.15.0",
-    "payload": "catalog:payload-peer"
+    "payload": "^3.0.0"
   },
   "devDependencies": {
     "@orpc/otel": "^1.15.0",

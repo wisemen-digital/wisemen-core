@@ -17,9 +17,15 @@ const HOUR_MS = 60 * 60 * 1000
 export interface S3AuditDrainOptions {
   bucket: string
   client?: S3Client
+  credentials?: {
+    accessKeyId: string
+    secretAccessKey: string
+  }
   endpoint?: string
   environment: string
   forcePathStyle?: boolean
+  /** Maximum time an audit event stays buffered before upload. @default 1 hour */
+  intervalMs?: number
   /**
    * Safety ceiling for one S3 object. Reaching it creates another object
    * before the hour ends instead of dropping audit events.
@@ -47,6 +53,7 @@ export interface S3AuditDrain extends DrainFn {
  */
 export function createS3AuditDrain(options: S3AuditDrainOptions): S3AuditDrain {
   const client = options.client ?? new S3Client({
+    credentials: options.credentials,
     endpoint: options.endpoint,
     forcePathStyle: options.forcePathStyle,
     region: options.region ?? 'us-east-1',
@@ -55,7 +62,7 @@ export function createS3AuditDrain(options: S3AuditDrainOptions): S3AuditDrain {
   const prefix = options.prefix?.replace(/^\/+|\/+$/g, '') || 'audit'
   const pipeline = createDrainPipeline<DrainContext>({
     batch: {
-      intervalMs: HOUR_MS,
+      intervalMs: options.intervalMs ?? HOUR_MS,
       size: options.maxBatchSize ?? 100_000,
     },
     maxBufferSize: options.maxBatchSize ?? 100_000,
