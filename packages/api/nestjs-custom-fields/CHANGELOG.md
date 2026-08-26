@@ -4,6 +4,12 @@
 
 
 
+
+## 0.0.6
+<sub>2026-08-26</sub>
+
+- [#1607](https://github.com/wisemen-digital/wisemen-core/pull/1607)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Expose CustomFieldValueTransformer
+
 ## 0.0.5
 <sub>2026-07-28</sub>
 
