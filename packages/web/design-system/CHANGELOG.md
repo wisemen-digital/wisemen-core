@@ -37,6 +37,12 @@
 
 
 
+
+## 1.22.3
+<sub>2026-08-27</sub>
+
+- [#1628](https://github.com/wisemen-digital/wisemen-core/pull/1628)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the TopBar actions area claiming half the header width even when empty, starving the title of space on mobile.
+
 ## 1.22.2
 <sub>2026-08-27</sub>
 
