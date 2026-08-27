@@ -4,6 +4,24 @@
 
 
 
+
+
+
+## 1.0.1
+<sub>2026-08-27</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.26
+
+## 1.0.0
+<sub>2026-08-26</sub>
+
+- [#1608](https://github.com/wisemen-digital/wisemen-core/pull/1608)  *(major)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Simplify value column transformer and add signature overloads
+
+## 0.0.6
+<sub>2026-08-26</sub>
+
+- [#1607](https://github.com/wisemen-digital/wisemen-core/pull/1607)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Expose CustomFieldValueTransformer
+
 ## 0.0.5
 <sub>2026-07-28</sub>
 

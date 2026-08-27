@@ -4,7 +4,7 @@ import { DurationUnit } from './duration-unit.enum.js'
 
 export function DurationColumn (
   storeAsUnit: DurationUnit,
-  options?: QuantityColumnOptions<DurationUnit, Duration>
+  options?: QuantityColumnOptions<Duration>
 ) {
   return QuantityColumn(Duration, storeAsUnit, options)
 }

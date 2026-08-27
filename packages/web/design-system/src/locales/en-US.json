@@ -84,6 +84,7 @@
   "component.form_dialog.unsaved_changes": "You have unsaved changes",
   "component.form_file_upload.action.add_files": "Add files",
   "component.form_file_upload.action.delete": "Delete",
+  "component.form_file_upload.action.download": "Download",
   "component.form_file_upload.action.hide_clipboard_suggestion": "Hide clipboard suggestion",
   "component.form_file_upload.action.replace": "Replace",
   "component.form_file_upload.action.upload": "Upload",

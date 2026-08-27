@@ -72,6 +72,7 @@ catalogs:
     "class-transformer": "0.5.1"
     "class-validator": "0.15.1"
     "colors": "1.4.0"
+    "danger": "13.0.10"
     "dayjs": "1.11.20"
     "express": "5.2.1"
     "jose": "6.2.5"
@@ -110,9 +111,9 @@ catalogs:
     "class-transformer": "^0.5.1"
     "class-validator": "^0.15.1"
     "colors": "^1.4.0"
-    "dayjs": "^1.11.20"
+    "dayjs": "^1.11.21"
     "express": "^5.2.1"
-    "fastify": ">=5.8.5"
+    "fastify": "^5.10.0"
     "moment": "^2.30.1"
     "pg": "^8.20.0"
     "qs": "^6.15.2"
@@ -226,7 +227,7 @@ catalogs:
     "@vitest/browser-playwright": "^4.1.10"
     "@hey-api/openapi-ts": "^0.97.3"
     "@tanstack/vue-query": "^5.100.6"
-    "@typescript-eslint/parser": "^8.59.0"
+    "@typescript-eslint/parser": "^8.66.0"
     "@vitejs/plugin-vue": "^6.0.3"
     "eslint": "^10.0.3"
     formango: ^3.2.4
@@ -424,6 +425,7 @@ allowBuilds:
   "@nestjs/core": true
   "@parcel/watcher": true
   "@scarf/scarf": true
+  core-js: true
   esbuild: true
   protobufjs: true
   sharp: true

@@ -4,7 +4,7 @@ import { Mass } from './mass.js'
 
 export function MassColumn (
   storeAsUnit: MassUnit,
-  options?: QuantityColumnOptions<MassUnit, Mass>
+  options?: QuantityColumnOptions<Mass>
 ) {
   return QuantityColumn(Mass, storeAsUnit, options)
 }

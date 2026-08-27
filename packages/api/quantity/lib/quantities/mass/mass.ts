@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { MassUnit } from './mass-unit.enum.js'
 
 const MASS_MULTIPLIERS: Record<MassUnit, number> = {
@@ -20,7 +20,15 @@ const MASS_MULTIPLIERS: Record<MassUnit, number> = {
   [MassUnit.OUNCE]: 0.028349523125
 }
 
-export class Mass extends Quantity<MassUnit, Mass> {
+export class Mass extends ScalableQuantity<MassUnit, Mass, Mass> {
+  protected getQuantity() {
+    return Mass
+  }
+
+  protected getDelta() {
+    return Mass
+  }
+
   protected getBaseUnit () {
     return MassUnit.KILOGRAM
   }

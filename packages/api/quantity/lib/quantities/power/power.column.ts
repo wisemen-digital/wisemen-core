@@ -4,7 +4,7 @@ import { Power } from './power.js'
 
 export function PowerColumn (
   storeAsUnit: PowerUnit,
-  options?: QuantityColumnOptions<PowerUnit, Power>
+  options?: QuantityColumnOptions<Power>
 ) {
   return QuantityColumn(Power, storeAsUnit, options)
 }

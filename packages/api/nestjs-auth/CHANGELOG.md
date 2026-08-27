@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 
 
+
+## 0.2.1
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
 ## 0.2.0
 <sub>2026-08-12</sub>
 
