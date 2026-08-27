@@ -2,6 +2,27 @@
 
 This package provides NestJS integration for PgBoss job queuing and processing.
 
+## Metrics
+
+Register `PgbossMetricsModule` in the application that exposes metrics. Provide the queues
+that should be reported (including queues with no pending jobs) and the TypeORM data source
+that contains the `pgboss` schema.
+
+```ts
+@Module({
+  imports: [
+    PgbossMetricsModule.forRootAsync({
+      inject: [DataSource],
+      useFactory: (dataSource: DataSource) => ({
+        dataSource,
+        queueNames: ['email', 'notifications']
+      })
+    })
+  ]
+})
+export class MetricsModule {}
+```
+
 ## Scheduling Jobs
 
 To schedule jobs, you can use the `PgBossScheduler` which provides methods to schedule jobs to be processed by workers.
