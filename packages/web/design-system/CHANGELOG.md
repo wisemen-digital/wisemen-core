@@ -35,6 +35,12 @@
 
 
 
+
+## 1.22.1
+<sub>2026-08-27</sub>
+
+- [#1617](https://github.com/wisemen-digital/wisemen-core/pull/1617)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Addition of download button on Form File Upload
+
 ## 1.22.0
 <sub>2026-08-25</sub>
 
