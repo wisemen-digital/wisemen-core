@@ -5,6 +5,19 @@
 
 
 
+
+
+## 0.2.0
+<sub>2026-08-26</sub>
+
+- *(minor)* Updated dependency `@wisemen/opentelemetry` v0.3.0
+
+## 0.1.0
+<sub>2026-08-25</sub>
+
+- [#1589](https://github.com/wisemen-digital/wisemen-core/pull/1589)  *(minor)* Thanks [@AhmedFatthy1040](https://github.com/AhmedFatthy1040)!
+  Support controlling where documents with missing values are placed when sorting, via an optional `missingValues` argument on `addSortOn`.
+
 ## 0.0.3
 <sub>2026-07-28</sub>
 

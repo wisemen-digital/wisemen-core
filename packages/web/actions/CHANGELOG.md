@@ -5,6 +5,13 @@
 
 
 
+
+## 0.3.0
+<sub>2026-08-25</sub>
+
+- [#1588](https://github.com/wisemen-digital/wisemen-core/pull/1588)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Add `tableSelection` to `ActionContext` and `useActionManagerStore`, shaped as `{ type: 'include' | 'exclude', items: string[] }`, so a data table's selection can be registered with the action manager. Adds `setTableSelection`/`clearTableSelection` to set and reset it.
+
 ## 0.2.4
 <sub>2026-08-05</sub>
 

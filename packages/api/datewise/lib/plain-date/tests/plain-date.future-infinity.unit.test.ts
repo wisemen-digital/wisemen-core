@@ -130,6 +130,23 @@ describe('FutureInfinityDate', () => {
     it('throws when accessing the ISO weekday', () => {
       expect(() => new FutureInfinityDate().isoWeekday()).toThrow()
     })
+
+    it('remains FutureInfinityDate when changing the ISO weekday', () => {
+      const date = new FutureInfinityDate()
+      const result = date.isoWeekday(7)
+
+      expect(result).toBe(date)
+      expect(result.isFutureInfinity()).toBe(true)
+    })
+
+    it('remains FutureInfinityDate for next and previous ISO weekday operations', () => {
+      const date = new FutureInfinityDate()
+
+      expect(date.nextIsoWeekday(1)).toBe(date)
+      expect(date.nextOrSameIsoWeekday(2)).toBe(date)
+      expect(date.previousIsoWeekday(3)).toBe(date)
+      expect(date.previousOrSameIsoWeekday(4)).toBe(date)
+    })
   })
 
   describe('isoWeek', () => {

@@ -9,6 +9,30 @@
 
 
 
+
+
+
+
+## 1.1.2
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
+## 1.1.1
+<sub>2026-08-25</sub>
+
+- [#1602](https://github.com/wisemen-digital/wisemen-core/pull/1602)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: type IsoWeekday constants as IsoWeekday
+
+## 1.1.0
+<sub>2026-08-25</sub>
+
+- [#1599](https://github.com/wisemen-digital/wisemen-core/pull/1599)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add ISO weekday navigation helpers
+
+## 1.0.20
+<sub>2026-08-24</sub>
+
+- [#1596](https://github.com/wisemen-digital/wisemen-core/pull/1596)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add isoWeekday method to change isoWeekday of timestamp and plaindate
+
 ## 1.0.19
 <sub>2026-08-12</sub>
 

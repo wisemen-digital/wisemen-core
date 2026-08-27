@@ -4,7 +4,8 @@ import { expect } from 'expect'
 import { createSearchParamsBuilder } from '../../params-builder/search-params.builder.js'
 import { FilterOperator } from '../../params-builder/enums/typesense-filter-options.enum.js'
 import { TypesenseJoinStrategy } from '../../params-builder/enums/typesense-join-strategy.enum.js'
-import { Typesense, type InferDocumentType, type InferSearchResultDocument } from '../../index.js'
+import { SortDirection } from '@wisemen/pagination'
+import { Typesense, TypesenseMissingValues, type InferDocumentType, type InferSearchResultDocument } from '../../index.js'
 
 export type Uuid<Brand extends string> = string
   & { readonly _brand: 'uuid' }
@@ -243,6 +244,24 @@ describe('typesenseCollection', () => {
       .build()
 
     expect(params.filter_by).toBe('name:Steve && age:>=18 && isActive:=true && (isActive:=true || name:hi)')
+  })
+
+  it('serializes sorting with and without missing value placement', () => {
+    const contacts = Typesense.collection('contacts', {
+      name: Typesense.string().sort(),
+      age: Typesense.int32().optional().sort(),
+      email: Typesense.string().optional().sort()
+    })
+
+    const params = createSearchParamsBuilder(contacts)
+      .addSortOn(contacts.name, SortDirection.ASC)
+      .addSortOn(contacts.age, SortDirection.DESC, TypesenseMissingValues.FIRST)
+      .addSortOn(contacts.email, SortDirection.ASC, TypesenseMissingValues.LAST)
+      .build()
+
+    expect(params.sort_by).toBe(
+      'name:asc,age(missing_values: first):desc,email(missing_values: last):asc'
+    )
   })
 
   it('serializes typed joins', () => {
