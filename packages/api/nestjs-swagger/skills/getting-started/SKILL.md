@@ -1,6 +1,6 @@
 ---
 name: getting-started
-description: Use when attaching Swagger UI and OpenAPI endpoints to a NestJS app with optional basic auth and OpenID Connect configuration through @wisemen/nestjs-swagger.
+description: Use when attaching Swagger UI endpoints or generating an OpenAPI document in a NestJS app through @wisemen/nestjs-swagger.
 ---
 
 # @wisemen/nestjs-swagger - Getting Started
@@ -55,6 +55,20 @@ await SwaggerModule.attachSwaggerEndpoints(app, {
 
 The package exposes the base docs route together with `/latest` and `/all`
 variants and their JSON endpoints.
+
+## Generate A Document
+
+Use `SwaggerModule.createDocument(...)` for build-time OpenAPI generation. It
+returns the complete document without attaching routes or performing OpenID
+Connect discovery, so client generation remains deterministic.
+
+```ts
+const document = SwaggerModule.createDocument(app, {
+  servers: ['https://api.example.com']
+}, {
+  version: '1.0'
+})
+```
 
 ## Configure OAuth2 Login
 

@@ -1,7 +1,8 @@
-import { DynamicModule, type INestApplication, Module, type ModuleMetadata } from '@nestjs/common'
+import { type DynamicModule, type INestApplication, Module, type ModuleMetadata } from '@nestjs/common'
+import type { OpenAPIObject } from '@nestjs/swagger'
 import { BasicAuthService, createBasicAuthRequestHandler } from '@wisemen/nestjs-auth'
 import { createSwaggerOauth2RedirectController, SwaggerOauth2RedirectControllerOptions } from './oauth2-redirect.controller.js'
-import { SwaggerConfig, SwaggerDocsOptions } from './swagger.options.js'
+import { SwaggerConfig, type SwaggerDocsOptions, type SwaggerDocumentOptions } from './swagger.options.js'
 import { SwaggerDocs } from './swagger.docs.js'
 
 export interface SwaggerModuleOptions extends Pick<ModuleMetadata, 'imports'> {
@@ -21,6 +22,16 @@ export class SwaggerModule {
         createSwaggerOauth2RedirectController(options?.oauth2RedirectController)
       ]
     }
+  }
+
+  static createDocument (
+    app: INestApplication<unknown>,
+    cfg: SwaggerDocsOptions,
+    options?: SwaggerDocumentOptions
+  ): OpenAPIObject {
+    const docs = new SwaggerDocs()
+
+    return docs.createDocument(app, new SwaggerConfig(cfg), options)
   }
 
   static async attachSwaggerEndpoints (
