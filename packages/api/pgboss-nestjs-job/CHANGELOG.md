@@ -1,5 +1,11 @@
 # @wisemen/pgboss-nestjs-job
 
+
+## 5.4.0
+<sub>2026-08-27</sub>
+
+- [#1625](https://github.com/wisemen-digital/wisemen-core/pull/1625)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add pgboss jobs api endpoints to view jobs
+
 ## 5.3.0
 <sub>2026-08-27</sub>
 
