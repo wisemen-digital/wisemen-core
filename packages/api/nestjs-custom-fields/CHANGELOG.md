@@ -6,6 +6,12 @@
 
 
 
+
+## 1.0.1
+<sub>2026-08-27</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.26
+
 ## 1.0.0
 <sub>2026-08-26</sub>
 
