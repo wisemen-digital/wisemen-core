@@ -1,19 +1,39 @@
 import assert from 'assert'
 import { Rate } from './rate/rate.js'
 
-export type QuantityConstructor<U extends string, Q extends Quantity<U, Q>> = {
+export interface Comparable {
+  valueOf(): number
+  isEqualTo (other: Comparable): boolean
+  isLessThan (other: Comparable): boolean
+  isLessThanOrEqualTo (other: Comparable): boolean
+  isMoreThan (other: Comparable): boolean
+  isMoreThanOrEqualTo (other: Comparable): boolean
+}
+
+export interface Quantity<U extends string = string> {
+  value: number
+  unit: U
+  asNumber(unit?: U): number
+}
+
+export type QuantityConstructor<U extends string, Q extends Quantity<U>> = {
   new(quantity: Q): Q
   new(value: number, unit: U): Q
   new(value: 0): Q
   new(s: string): Q
 }
 
-export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
+export abstract class BaseQuantity<
+  U extends string, 
+  Q extends BaseQuantity<U, Q, D>, 
+  D extends BaseQuantity<U, D, D>
+> implements Quantity<U>, Comparable {
+  protected abstract getQuantity (): QuantityConstructor<U, Q>
+  protected abstract getDelta (): QuantityConstructor<U, D>
   protected abstract getBaseUnit (): U
   protected abstract getUnits (): readonly U[]
   protected abstract convertValueToBaseUnit (value: number, fromUnit: U): number
   protected abstract convertBaseUnitValueTo (value: number, toUnit: U): number
-
 
   readonly value: number
   readonly unit: U
@@ -23,7 +43,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   constructor (value: 0)
   constructor (s: string)
   constructor (quantityOrValue: Q | number | string, unit?: U) {
-    if (quantityOrValue instanceof Quantity) {
+    if (this.isQuantity(quantityOrValue)) {
       this.value = quantityOrValue.value
       this.unit = quantityOrValue.unit
     } else if (quantityOrValue === 0) {
@@ -40,12 +60,31 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
     }
   }
 
-  private construct (quantityOrValue: Q | number, unit?: U): Q {
-    const prototype = Object.getPrototypeOf(this) as { constructor: QuantityConstructor<U, Q> }
-    const Constructor = prototype.constructor
+  protected isQuantity(quantityOrValue: unknown): quantityOrValue is Q {
+    return quantityOrValue instanceof this.getQuantity()
+  }
 
-    if (quantityOrValue instanceof Quantity) {
-      return new Constructor(quantityOrValue)
+  protected isDelta(quantityOrValue: unknown): quantityOrValue is D {
+    return quantityOrValue instanceof this.getDelta()
+  }
+
+  protected constructQuantity (quantityOrValue: Q | number, unit?: U): Q {
+    const Constructor = this.getQuantity()
+
+    if (this.isQuantity(quantityOrValue)) {
+      return quantityOrValue
+    } else {
+      assert(unit !== undefined, 'Unit must be provided when constructing from a numeric value')
+
+      return new Constructor(quantityOrValue, unit)
+    }
+  }
+
+  protected constructDelta (quantityOrValue: D | number, unit?: U): D {
+    const Constructor = this.getDelta()
+
+    if (this.isDelta(quantityOrValue)) {
+      return quantityOrValue
     } else {
       assert(unit !== undefined, 'Unit must be provided when constructing from a numeric value')
 
@@ -57,7 +96,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   to (unit: U): Q {
     const value = this.convertBaseUnitValueTo(this.valueOf(), unit)
 
-    return this.construct(value, unit)
+    return this.constructQuantity(value, unit)
   }
 
   /** Returns the numeric value of the quantity in the specified unit */
@@ -69,7 +108,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   isEqualTo (value: number, unit: U): boolean
   isEqualTo (quantity: Q): boolean
   isEqualTo (quantityOrValue: Q | number, unit?: U): boolean {
-    const other = this.construct(quantityOrValue, unit)
+    const other = this.constructQuantity(quantityOrValue, unit)
 
     return this.valueOf() === other.valueOf()
   }
@@ -78,7 +117,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   isLessThan (value: number, unit: U): boolean
   isLessThan (quantity: Q): boolean
   isLessThan (quantityOrValue: Q | number, unit?: U): boolean {
-    const other = this.construct(quantityOrValue, unit)
+    const other = this.constructQuantity(quantityOrValue, unit)
 
     return this.valueOf() < other.valueOf()
   }
@@ -87,7 +126,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   isLessThanOrEqualTo (value: number, unit: U): boolean
   isLessThanOrEqualTo (quantity: Q): boolean
   isLessThanOrEqualTo (quantityOrValue: Q | number, unit?: U): boolean {
-    const other = this.construct(quantityOrValue, unit)
+    const other = this.constructQuantity(quantityOrValue, unit)
 
     return this.valueOf() <= other.valueOf()
   }
@@ -96,7 +135,7 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   isMoreThan (value: number, unit: U): boolean
   isMoreThan (quantity: Q): boolean
   isMoreThan (quantityOrValue: Q | number, unit?: U): boolean {
-    const other = this.construct(quantityOrValue, unit)
+    const other = this.constructQuantity(quantityOrValue, unit)
 
     return this.valueOf() > other.valueOf()
   }
@@ -105,50 +144,36 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   isMoreThanOrEqualTo (value: number, unit: U): boolean
   isMoreThanOrEqualTo (quantity: Q): boolean
   isMoreThanOrEqualTo (quantityOrValue: Q | number, unit?: U): boolean {
-    const other = this.construct(quantityOrValue, unit)
+    const other = this.constructQuantity(quantityOrValue, unit)
 
     return this.valueOf() >= other.valueOf()
   }
 
   /** Creates a new quantity by adding the current quantity to another quantity */
   add (value: number, unit: U): Q
-  add (quantity: Q): Q
-  add (quantityOrValue: Q | number, unit?: U): Q {
-    const other = this.construct(quantityOrValue, unit)
+  add (quantity: D): Q
+  add (quantityOrValue: D | number, unit?: U): Q {
+    const other = this.constructDelta(quantityOrValue, unit)
 
-    return this.construct(this.valueOf() + other.valueOf(), this.getBaseUnit()).to(this.unit)
+    return this.constructQuantity(this.valueOf() + other.valueOf(), this.getBaseUnit()).to(this.unit)
   }
 
   /** Creates a new quantity by subtracting another quantity from the current quantity */
   subtract (value: number, unit: U): Q
-  subtract (quantity: Q): Q
-  subtract (quantityOrValue: Q | number, unit?: U): Q {
-    const other = this.construct(quantityOrValue, unit)
+  subtract (quantity: Q): D
+  subtract (quantity: D): Q
+  subtract (quantityOrValue: Q | D | number, unit?: U): Q | D {
+    let other: Q | D
 
-    return this.construct(this.valueOf() - other.valueOf(), this.getBaseUnit()).to(this.unit)
-  }
+    if (this.isDelta(quantityOrValue)){
+      other = this.constructDelta(quantityOrValue, unit)
 
-  /** Creates a new quantity by multiplying the current quantity with the specified factor */
-  multiply (factor: number): Q
-  multiply (rate: Rate): Q
-  multiply (factorOrRate: number | Rate): Q {
-    const factor = factorOrRate instanceof Rate ? factorOrRate.asDecimal() : factorOrRate
-    return this.construct(this.valueOf() * factor, this.getBaseUnit()).to(this.unit)
-  }
+      return this.constructQuantity(this.valueOf() - other.valueOf(), this.getBaseUnit()).to(this.unit)
+    }
+    else {
+      other = this.constructQuantity(quantityOrValue, unit)
 
-  /** Creates a new quantity by dividing the current quantity by the specified divisor */
-  divide (divisor: number): Q
-  divide (rate: Rate): Q
-  divide (value: number, unit: U): number
-  divide (quantity: Q): number
-  divide (divisor: number | Q | Rate, unit?: U): Q | number {
-    if (divisor instanceof Quantity || (typeof divisor === 'number' && unit !== undefined)) {
-      const other = this.construct(divisor, unit)
-
-      return this.valueOf() / other.valueOf()
-    } else {
-      const factor = divisor instanceof Rate ? divisor.asDecimal() : divisor
-      return this.construct(this.valueOf() / factor, this.getBaseUnit()).to(this.unit)
+      return this.constructDelta(this.valueOf() - other.valueOf(), this.getBaseUnit()).to(this.unit)
     }
   }
 
@@ -157,24 +182,24 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   modulo (value: number, unit: U): Q
   modulo (quantity: Q): Q
   modulo (quantityOrValue: Q | number, unit?: U): Q {
-    const other = this.construct(quantityOrValue, unit)
+    const other = this.constructQuantity(quantityOrValue, unit)
 
-    return this.construct(this.valueOf() % other.valueOf(), this.getBaseUnit()).to(this.unit)
+    return this.constructQuantity(this.valueOf() % other.valueOf(), this.getBaseUnit()).to(this.unit)
   }
 
   /** Ceils the value to the nearest integer for the current unit */
   ceil (): Q {
-    return this.construct(Math.ceil(this.value), this.unit)
+    return this.constructQuantity(Math.ceil(this.value), this.unit)
   }
 
   /** Rounds the value half up to the nearest integer for the current unit */
   round (): Q {
-    return this.construct(Math.round(this.value), this.unit)
+    return this.constructQuantity(Math.round(this.value), this.unit)
   }
 
   /** Floors the value to the nearest integer for the current unit */
   floor (): Q {
-    return this.construct(Math.floor(this.value), this.unit)
+    return this.constructQuantity(Math.floor(this.value), this.unit)
   }
 
   /** Checks whether the value is an integer for the current unit */
@@ -211,25 +236,25 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
   }
 
   /** Returns the maximum quantity from the provided quantities */
-  static max<U extends string, Q extends Quantity<U, Q>> (
+  static max<Q extends Comparable> (
     ...quantities: Q[]
   ): Q {
     return quantities.reduce((max, quantity) =>
-      quantity.valueOf() > max.valueOf() ? quantity : max
+      quantity.isMoreThan(max) ? quantity : max
     )
   }
 
   /** Returns the minimum quantity from the provided quantities */
-  static min<U extends string, Q extends Quantity<U, Q>> (
+  static min<Q extends Comparable> (
     ...quantities: Q[]
   ): Q {
     return quantities.reduce((min, quantity) =>
-      quantity.valueOf() < min.valueOf() ? quantity : min
+      quantity.isLessThan(min) ? quantity : min
     )
   }
 
   protected parseString (s: string, units: readonly U[]): { value: number, unit: U } {
-    const unitsPattern = units.map(unit => Quantity.escapeRegex(unit)).join('|')
+    const unitsPattern = units.map(unit => BaseQuantity.escapeRegex(unit)).join('|')
     const pattern = new RegExp(`^(?<amount>[+-]?(?:\\d+\\.?\\d*|\\.\\d+)(?:e[+-]?\\d+)?)(?<unit>${unitsPattern})$`, 'u')
     const match = pattern.exec(s)
     const amount = match?.groups?.amount
@@ -244,5 +269,35 @@ export abstract class Quantity<U extends string, Q extends Quantity<U, Q>> {
 
   private static escapeRegex (value: string): string {
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  }
+}
+
+export abstract class ScalableQuantity<
+  U extends string, 
+  Q extends BaseQuantity<U, Q, D>, 
+  D extends BaseQuantity<U, D, D>
+> extends BaseQuantity<U, Q, D> {
+  /** Creates a new quantity by multiplying the current quantity with the specified factor */
+  multiply (factor: number): Q
+  multiply (rate: Rate): Q
+  multiply (factorOrRate: number | Rate): Q {
+    const factor = factorOrRate instanceof Rate ? factorOrRate.asDecimal() : factorOrRate
+    return this.constructQuantity(this.valueOf() * factor, this.getBaseUnit()).to(this.unit)
+  }
+
+  /** Creates a new quantity by dividing the current quantity by the specified divisor */
+  divide (divisor: number): Q
+  divide (rate: Rate): Q
+  divide (value: number, unit: U): number
+  divide (quantity: Q): number
+  divide (divisor: number | Q | Rate, unit?: U): Q | number {
+    if (divisor instanceof BaseQuantity || (typeof divisor === 'number' && unit !== undefined)) {
+      const other = this.constructQuantity(divisor, unit)
+
+      return this.valueOf() / other.valueOf()
+    } else {
+      const factor = divisor instanceof Rate ? divisor.asDecimal() : divisor
+      return this.constructQuantity(this.valueOf() / factor, this.getBaseUnit()).to(this.unit)
+    }
   }
 }

@@ -4,7 +4,7 @@ import { Current } from './current.js'
 
 export function CurrentColumn (
   storeAsUnit: CurrentUnit,
-  options?: QuantityColumnOptions<CurrentUnit, Current>
+  options?: QuantityColumnOptions<Current>
 ) {
   return QuantityColumn(Current, storeAsUnit, options)
 }

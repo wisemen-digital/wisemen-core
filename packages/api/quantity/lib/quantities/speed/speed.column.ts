@@ -4,7 +4,7 @@ import { Speed } from './speed.js'
 
 export function SpeedColumn (
   storeAsUnit: SpeedUnit,
-  options?: QuantityColumnOptions<SpeedUnit, Speed>
+  options?: QuantityColumnOptions<Speed>
 ) {
   return QuantityColumn(Speed, storeAsUnit, options)
 }

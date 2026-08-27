@@ -4,7 +4,7 @@ import { Voltage } from './voltage.js'
 
 export function VoltageColumn (
   storeAsUnit: VoltageUnit,
-  options?: QuantityColumnOptions<VoltageUnit, Voltage>
+  options?: QuantityColumnOptions<Voltage>
 ) {
   return QuantityColumn(Voltage, storeAsUnit, options)
 }

@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { SpeedUnit } from './speed-unit.enum.js'
 
 const SPEED_MULTIPLIERS: Record<SpeedUnit, number> = {
@@ -15,7 +15,15 @@ const SPEED_MULTIPLIERS: Record<SpeedUnit, number> = {
   [SpeedUnit.MICROMETER_PER_SECOND]: 1e-6
 }
 
-export class Speed extends Quantity<SpeedUnit, Speed> {
+export class Speed extends ScalableQuantity<SpeedUnit, Speed, Speed> {
+  protected getQuantity() {
+    return Speed
+  }
+
+  protected getDelta() {
+    return Speed
+  }
+
   protected getBaseUnit () {
     return SpeedUnit.METER_PER_SECOND
   }
