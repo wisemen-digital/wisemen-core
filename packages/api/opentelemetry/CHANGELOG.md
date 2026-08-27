@@ -7,6 +7,12 @@
 
 
 
+
+## 0.3.1
+<sub>2026-08-27</sub>
+
+- [#1621](https://github.com/wisemen-digital/wisemen-core/pull/1621)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add an optional `shouldExportSpan` callback to filter completed spans before they are queued for export.
+
 ## 0.3.0
 <sub>2026-08-26</sub>
 
