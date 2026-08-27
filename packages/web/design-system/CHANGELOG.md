@@ -36,6 +36,14 @@
 
 
 
+
+## 1.22.2
+<sub>2026-08-27</sub>
+
+- [#1623](https://github.com/wisemen-digital/wisemen-core/pull/1623)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Addition of event based file download for files without urls
+- [#1627](https://github.com/wisemen-digital/wisemen-core/pull/1627)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed DataTableMobileCard rendering a bottom border on the last row.
+- [#1627](https://github.com/wisemen-digital/wisemen-core/pull/1627)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the TopBar title wrapping onto multiple lines on mobile instead of filling available space.
+
 ## 1.22.1
 <sub>2026-08-27</sub>
 
