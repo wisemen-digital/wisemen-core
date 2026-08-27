@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 
 
+
+## 0.3.0
+<sub>2026-08-27</sub>
+
+- [#1629](https://github.com/wisemen-digital/wisemen-core/pull/1629)  *(minor)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add deterministic build-time OpenAPI document generation without attaching Swagger endpoints
+
 ## 0.2.1
 <sub>2026-08-27</sub>
 

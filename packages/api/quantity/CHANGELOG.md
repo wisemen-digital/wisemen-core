@@ -6,6 +6,12 @@
 
 
 
+
+## 0.11.1
+<sub>2026-08-27</sub>
+
+- [#1630](https://github.com/wisemen-digital/wisemen-core/pull/1630)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add inter quantity calculations
+
 ## 0.11.0
 <sub>2026-08-27</sub>
 
