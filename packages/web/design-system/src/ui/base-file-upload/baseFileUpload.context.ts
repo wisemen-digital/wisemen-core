@@ -6,12 +6,15 @@ import type { BaseFileUploadProps } from '@/ui/base-file-upload/baseFileUpload.p
 import type {
   BaseFileUploadError,
   BaseFileUploadItem,
+  BaseFileUploadItemSuccess,
 } from '@/ui/base-file-upload/baseFileUpload.type'
 
 interface BaseFileUploadContext extends PropsToComputed<Omit<BaseFileUploadProps, 'preprocess'>> {
+  hasDownloadListener: ComputedRef<boolean>
   isMultiple: ComputedRef<boolean>
   preprocess: ((file: File) => Promise<File>) | null
   onError: (item: BaseFileUploadItem, error: string | BaseFileUploadError) => void
+  onDownload: (item: BaseFileUploadItemSuccess) => void
   onFilesSelected: (files: File[]) => void
   onRemoveFileUploadItem: (item: BaseFileUploadItem) => void
   onReplaceFileUploadItem: (item: BaseFileUploadItem, file: File) => void
