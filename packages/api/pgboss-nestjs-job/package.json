@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pgboss-nestjs-job",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "publishConfig": {
     "access": "public"
   },
@@ -30,18 +30,25 @@
   },
   "dependencies": {
     "pg-boss": "catalog:backend",
+    "@wisemen/pagination": "workspace:^",
     "@wisemen/nestjs-provider-explorer": "workspace:^"
   },
   "peerDependencies": {
+    "@nestjs/swagger": "catalog:backend-peer",
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/decorators": "workspace:^",
     "@wisemen/nestjs-typeorm": "workspace:^",
     "@wisemen/opentelemetry": "workspace:^",
+    "@wisemen/validators": "workspace:^",
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
     "colors": "catalog:backend-peer",
     "rxjs": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",
-    "class-transformer": "catalog:backend-peer"
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer"
   },
   "devDependencies": {
     "@wisemen/eslint-config-nestjs": "workspace:^",

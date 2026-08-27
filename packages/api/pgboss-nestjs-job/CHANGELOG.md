@@ -1,5 +1,10 @@
 # @wisemen/pgboss-nestjs-job
 
+## 5.3.0
+<sub>2026-08-27</sub>
+
+- Add a configurable API module for monitoring PgBoss jobs.
+
 
 
 

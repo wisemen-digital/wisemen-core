@@ -2,6 +2,34 @@
 
 This package provides NestJS integration for PgBoss job queuing and processing.
 
+## Job Monitoring API
+
+Register `JobsApiModule.forRootAsync(...)` in an HTTP-facing module to expose
+the `GET /jobs` and `GET /jobs/:jobId` monitoring endpoints. Queue names are
+static because they define request validation and Swagger metadata; resolve the
+application datasource through dependency injection.
+
+```ts
+import { Module } from '@nestjs/common'
+import { DataSource } from 'typeorm'
+import { JobsApiModule } from '@wisemen/pgboss-nestjs-job'
+
+@Module({
+  imports: [
+    JobsApiModule.forRootAsync({
+      queueNames: ['system', 'notifications'],
+      inject: [DataSource],
+      useFactory: (dataSource: DataSource) => ({ dataSource })
+    })
+  ]
+})
+export class ApiModule {}
+```
+
+Use `controllers.index` and `controllers.detail` to configure a route, Swagger
+tag/version, disable an endpoint, or provide application-specific decorators
+such as permissions.
+
 ## Metrics
 
 Register `PgbossMetricsModule` in the application that exposes metrics. Provide the queues
