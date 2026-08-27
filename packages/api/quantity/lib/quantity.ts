@@ -278,18 +278,20 @@ export abstract class ScalableQuantity<
   D extends BaseQuantity<U, D, D>
 > extends BaseQuantity<U, Q, D> {
   /** Creates a new quantity by multiplying the current quantity with the specified factor */
-  multiply (factor: number): Q
+  multiply (scalar: number): Q
   multiply (rate: Rate): Q
-  multiply (factorOrRate: number | Rate): Q {
-    const factor = factorOrRate instanceof Rate ? factorOrRate.asDecimal() : factorOrRate
+  multiply (multiplier: number | Rate): Q
+  multiply (multiplier: number | Rate): Q {
+    const factor = multiplier instanceof Rate ? multiplier.asDecimal() : multiplier
     return this.constructQuantity(this.valueOf() * factor, this.getBaseUnit()).to(this.unit)
   }
 
   /** Creates a new quantity by dividing the current quantity by the specified divisor */
-  divide (divisor: number): Q
+  divide (scalar: number): Q
   divide (rate: Rate): Q
   divide (value: number, unit: U): number
   divide (quantity: Q): number
+  divide (divisor: number | Q | Rate, unit?: U): Q | number
   divide (divisor: number | Q | Rate, unit?: U): Q | number {
     if (divisor instanceof BaseQuantity || (typeof divisor === 'number' && unit !== undefined)) {
       const other = this.constructQuantity(divisor, unit)

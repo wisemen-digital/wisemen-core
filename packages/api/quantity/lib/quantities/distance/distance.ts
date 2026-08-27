@@ -1,3 +1,7 @@
+import { Duration } from '../../quantities/duration/duration.js'
+import { SpeedUnit } from '../../quantities/speed/speed-unit.enum.js'
+import { Speed } from '../../quantities/speed/speed.js'
+import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { DistanceUnit } from './distance-unit.enum.js'
 
@@ -54,4 +58,16 @@ export class Distance extends ScalableQuantity<DistanceUnit, Distance, Distance>
   }
 
   static ZERO = new Distance(0, DistanceUnit.METER)
+
+  override divide(divisor: number): Distance
+  override divide(rate: Rate): Distance
+  override divide(value: number, unit: DistanceUnit): number
+  override divide(quantity: Distance): number
+  override divide(quantity: Duration): Speed
+  override divide(divisor: number | Rate | Distance | Duration, unit?: DistanceUnit): Distance | Speed | number {
+    if (divisor instanceof Duration) {
+      return new Speed(this.valueOf() / divisor.valueOf(), SpeedUnit.METER_PER_SECOND)
+    }
+    return super.divide(divisor, unit)
+  }
 }

@@ -1,3 +1,7 @@
+import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
+import { Distance } from '../../quantities/distance/distance.js'
+import { Speed } from '../../quantities/speed/speed.js'
+import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { DurationUnit } from './duration-unit.enum.js'
 
@@ -62,4 +66,14 @@ export class Duration extends ScalableQuantity<DurationUnit, Duration, Duration>
   }
 
   static ZERO = new Duration(0, DurationUnit.SECONDS)
+    
+  override multiply(factor: number): Duration
+  override multiply(rate: Rate): Duration 
+  override multiply(speed: Speed): Distance
+  override multiply(multiplier: number | Rate | Speed): Duration | Distance {
+    if (multiplier instanceof Speed) {
+      return new Distance(this.valueOf() * multiplier.valueOf(), DistanceUnit.METER)
+    }
+    return super.multiply(multiplier)
+  }
 }

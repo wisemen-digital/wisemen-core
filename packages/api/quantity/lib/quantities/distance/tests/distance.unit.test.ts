@@ -2,6 +2,9 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { Distance } from '../distance.js'
 import { DistanceUnit } from '../distance-unit.enum.js'
+import { Duration } from '../../duration/duration.js'
+import { DurationUnit } from '../../duration/duration-unit.enum.js'
+import { SpeedUnit } from '../../speed/speed-unit.enum.js'
 
 void describe('Distance class', () => {
   void describe('Distance calculations', () => {
@@ -32,6 +35,16 @@ void describe('Distance class', () => {
       expect(r1.isEqualTo(50, DistanceUnit.CENTIMETER)).toBe(true)
       expect(r2).toBe(4)
       expect(r3).toBe(2)
+    })
+  
+    void describe('cross quantity calculations', () => {
+      void it('divides distances by durations into speeds with converted units', () => {
+        const distance = new Distance(10, DistanceUnit.KILOMETER)
+        const duration = new Duration(2, DurationUnit.HOURS)
+        const speed = distance.divide(duration)
+
+        expect(speed.isEqualTo(5, SpeedUnit.KILOMETER_PER_HOUR)).toBe(true)
+      })
     })
   })
 
