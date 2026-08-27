@@ -1,3 +1,7 @@
+import { Duration } from '../../quantities/duration/duration.js'
+import { EnergyUnit } from '../../quantities/energy/energy-unit.enum.js'
+import { Energy } from '../../quantities/energy/energy.js'
+import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { PowerUnit } from './power-unit.enum.js'
 
@@ -57,4 +61,14 @@ export class Power extends ScalableQuantity<PowerUnit, Power, Power> {
   }
 
   static ZERO = new Power(0, PowerUnit.WATT)
+
+  override multiply(factor: number): Power
+  override multiply(rate: Rate): Power 
+  override multiply(duration: Duration): Energy
+  override multiply(multiplier: number | Rate | Duration): Power | Energy {
+    if (multiplier instanceof Duration) {
+      return new Energy(this.valueOf() * multiplier.valueOf(), EnergyUnit.JOULE)
+    }
+    return super.multiply(multiplier)
+  }
 }
