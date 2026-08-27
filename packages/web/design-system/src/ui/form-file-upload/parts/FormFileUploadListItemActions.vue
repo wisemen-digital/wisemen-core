@@ -6,8 +6,8 @@ import {
 } from '@wisemen/vue-core-icons'
 import { useI18n } from 'vue-i18n'
 
-import type { BaseFileUploadItem } from '@/ui/base-file-upload'
 import {
+  UIBaseFileUploadItemDownload,
   UIBaseFileUploadItemRemove,
   UIBaseFileUploadItemReplace,
 } from '@/ui/base-file-upload'
@@ -15,28 +15,11 @@ import { useInjectBaseFileUploadContext } from '@/ui/base-file-upload/baseFileUp
 import { UIIconButton } from '@/ui/button'
 import { UIRowLayout } from '@/ui/row-layout'
 
-const props = defineProps<{
-  item: BaseFileUploadItem
-}>()
-
 const i18n = useI18n()
 
 const {
   isDisabled,
 } = useInjectBaseFileUploadContext()
-
-function downloadFile(): void {
-  if (props.item.url === null) {
-    return
-  }
-
-  const link = document.createElement('a')
-
-  link.href = props.item.url
-  link.download = props.item.name
-
-  link.click()
-}
 </script>
 
 <template>
@@ -50,14 +33,14 @@ function downloadFile(): void {
     "
     gap="xs"
   >
-    <UIIconButton
-      v-if="props.item.url !== null"
-      :icon="Download01Icon"
-      :label="i18n.t('component.form_file_upload.action.download')"
-      variant="tertiary"
-      size="sm"
-      @click="downloadFile"
-    />
+    <UIBaseFileUploadItemDownload>
+      <UIIconButton
+        :icon="Download01Icon"
+        :label="i18n.t('component.form_file_upload.action.download')"
+        variant="tertiary"
+        size="sm"
+      />
+    </UIBaseFileUploadItemDownload>
 
     <UIBaseFileUploadItemReplace>
       <UIIconButton

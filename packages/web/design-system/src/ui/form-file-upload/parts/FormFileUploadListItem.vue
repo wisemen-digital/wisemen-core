@@ -36,7 +36,6 @@ const props = defineProps<{
       <FormFileUploadListItemActions
         v-else-if="props.item.status === BaseFileUploadStatus.SUCCESS
           || props.item.status === BaseFileUploadStatus.ERROR"
-        :item="props.item"
       />
     </UIRowLayout>
   </UIBaseFileUploadItem>
