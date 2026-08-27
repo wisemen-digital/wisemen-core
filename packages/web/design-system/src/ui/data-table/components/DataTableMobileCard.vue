@@ -41,6 +41,7 @@ export interface DataTableMobileCardCell {
 
 const props = withDefaults(defineProps<{
   isExpanded: boolean
+  isLast?: boolean
   isSelectable?: boolean
   isSelected?: boolean
   hiddenCells: DataTableMobileCardCell[]
@@ -54,6 +55,7 @@ const props = withDefaults(defineProps<{
   subComponent?: Component | null
   onClick?: DataTableRowClick | null
 }>(), {
+  isLast: false,
   isSelectable: false,
   isSelected: false,
   inlineActions: () => [],
@@ -82,7 +84,11 @@ const hasFooter = computed<boolean>(() => props.onClick !== null || allActions.v
 </script>
 
 <template>
-  <div class="border-b border-secondary">
+  <div
+    :class="{
+      'border-b border-secondary': !props.isLast,
+    }"
+  >
     <div
       :class="{
         'hover:bg-primary-hover': !props.isExpanded,
