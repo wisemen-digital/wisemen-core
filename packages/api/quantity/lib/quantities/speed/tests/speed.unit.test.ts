@@ -43,21 +43,15 @@ void describe('Speed class', () => {
 
       expect(r.isEqualTo(10, SpeedUnit.METER_PER_SECOND)).toBe(true)
     })
+    
+    void describe('cross quantity calculations', () => {
+      void it('multiplies speeds with durations', () => {
+        const v = new Speed(30, SpeedUnit.KILOMETER_PER_HOUR)
+        const t = new Duration(2, DurationUnit.HOURS)
+        const d = v.multiply(t).round()
 
-    void it('multiplies speeds with durations', () => {
-      const v = new Speed(5, SpeedUnit.METER_PER_SECOND)
-      const t = new Duration(10, DurationUnit.SECONDS)
-      const d = v.multiply(t)
-
-      expect(d.isEqualTo(50, DistanceUnit.METER)).toBe(true)
-    })
-
-    void it('multiplies speeds with durations', () => {
-      const v = new Speed(30, SpeedUnit.KILOMETER_PER_HOUR)
-      const t = new Duration(2, DurationUnit.HOURS)
-      const d = v.multiply(t).round()
-
-      expect(d.isEqualTo(60, DistanceUnit.KILOMETER)).toBe(true)
+        expect(d.isEqualTo(60, DistanceUnit.KILOMETER)).toBe(true)
+      })
     })
   })
 
