@@ -84,6 +84,7 @@
   "component.form_dialog.unsaved_changes": "Je hebt niet-opgeslagen wijzigingen",
   "component.form_file_upload.action.add_files": "Bestanden toevoegen",
   "component.form_file_upload.action.delete": "Verwijderen",
+  "component.form_file_upload.action.download": "Downloaden",
   "component.form_file_upload.action.hide_clipboard_suggestion": "Suggestie verbergen",
   "component.form_file_upload.action.replace": "Vervangen",
   "component.form_file_upload.action.upload": "Uploaden",
