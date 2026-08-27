@@ -79,7 +79,7 @@ const {
       <TopBarCommandMenuSearch />
     </div>
 
-    <div class="flex h-full flex-1 items-center justify-end">
+    <div class="flex h-full shrink-0 items-center justify-end">
       <slot name="actions" />
       <DashboardPageDetailPaneToggle v-if="hasDetailPane && !isToggleHidden" />
     </div>

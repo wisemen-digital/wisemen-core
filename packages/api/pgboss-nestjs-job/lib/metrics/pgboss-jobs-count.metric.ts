@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { type Attributes, metrics, type ObservableResult } from '@opentelemetry/api'
 import { PG_BOSS_METRICS_MODULE_OPTIONS, type PgbossMetricsModuleOptions } from './pgboss-metrics.module-options.js'
-import { JobState } from '../persistence/job-state.enum.js'
+import { JobState } from '../api/job-state.enum.js'
 
 type QueueJobCount = {
   name: string
