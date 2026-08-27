@@ -86,15 +86,16 @@ const errorLabels = computed<FormFileUploadErrorLabels>(() => ({
   preprocessingFailed: i18n.t('component.form_file_upload.error.preprocessing_failed'),
   uploadFailed: i18n.t('component.form_file_upload.error.upload_failed'),
 }))
-const downloadListeners = computed<Record<string, (file: BaseFileInfo) => void>>(() => {
-  if (instance?.vnode.props?.onDownload === undefined) {
-    return {} as Record<string, (file: BaseFileInfo) => void>
-  }
 
-  return {
-    download: (file) => emit('download', file),
-  }
-})
+function forwardDownload(file: BaseFileInfo): void {
+  emit('download', file)
+}
+
+const downloadListeners = instance?.vnode.props?.onDownload === undefined
+  ? {}
+  : {
+      download: forwardDownload,
+    }
 
 function onFilesRejected(files: BaseFileUploadRejectedFile[]): void {
   for (const file of files) {

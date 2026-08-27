@@ -6,14 +6,9 @@ import { useInjectBaseFileUploadContext } from '@/ui/base-file-upload/baseFileUp
 import { useInjectBaseFileUploadItemContext } from '@/ui/base-file-upload/baseFileUploadItem.context'
 import { BaseFileUploadStatus } from '@/ui/base-file-upload/baseFileUpload.type'
 
-const {
-  hasDownloadListener,
-  onDownload,
-} = useInjectBaseFileUploadContext()
+const { hasDownloadListener, onDownload } = useInjectBaseFileUploadContext()
 
-const {
-  item,
-} = useInjectBaseFileUploadItemContext()
+const { item } = useInjectBaseFileUploadItemContext()
 
 const canDownload = computed<boolean>(() => {
   return item.value.status === BaseFileUploadStatus.SUCCESS

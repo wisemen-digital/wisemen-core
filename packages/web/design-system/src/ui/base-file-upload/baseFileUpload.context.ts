@@ -13,8 +13,8 @@ interface BaseFileUploadContext extends PropsToComputed<Omit<BaseFileUploadProps
   hasDownloadListener: ComputedRef<boolean>
   isMultiple: ComputedRef<boolean>
   preprocess: ((file: File) => Promise<File>) | null
-  onError: (item: BaseFileUploadItem, error: string | BaseFileUploadError) => void
   onDownload: (item: BaseFileUploadItemSuccess) => void
+  onError: (item: BaseFileUploadItem, error: string | BaseFileUploadError) => void
   onFilesSelected: (files: File[]) => void
   onRemoveFileUploadItem: (item: BaseFileUploadItem) => void
   onReplaceFileUploadItem: (item: BaseFileUploadItem, file: File) => void
