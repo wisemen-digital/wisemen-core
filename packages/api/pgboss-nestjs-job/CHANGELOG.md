@@ -6,6 +6,13 @@
 
 
 
+
+## 5.2.0
+<sub>2026-08-27</sub>
+
+- [#1613](https://github.com/wisemen-digital/wisemen-core/pull/1613)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Add configurable PgBoss metrics module
+- [#1613](https://github.com/wisemen-digital/wisemen-core/pull/1613)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add pgboss otel metrics
+
 ## 5.1.0
 <sub>2026-08-26</sub>
 
