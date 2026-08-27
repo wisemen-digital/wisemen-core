@@ -2,6 +2,7 @@ import { NodeSDK } from '@opentelemetry/sdk-node'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
 import { BatchSpanProcessor, BufferConfig } from '@opentelemetry/sdk-trace-base'
+import { FilteringSpanProcessor, SpanExportFilter } from './filtering-span-processor.js'
 
 export interface OpentelemetryTracingConfig {
   serviceName: string
@@ -10,6 +11,8 @@ export interface OpentelemetryTracingConfig {
   env?: string
   buffer?: BufferConfig
   attributes?: Record<string, string>
+  /** Return false to prevent a completed span from being queued for export. */
+  shouldExportSpan?: SpanExportFilter
 }
 
 export function configureOpentelemetryTracing (config: OpentelemetryTracingConfig): NodeSDK | null {
@@ -22,16 +25,22 @@ export function configureOpentelemetryTracing (config: OpentelemetryTracingConfi
     headers: config.headers
   })
 
+  const batchSpanProcessor = new BatchSpanProcessor(traceExporter, {
+    maxQueueSize: config.buffer?.maxQueueSize ?? 2048,
+    scheduledDelayMillis: config.buffer?.scheduledDelayMillis ?? 5000,
+    exportTimeoutMillis: config.buffer?.exportTimeoutMillis ?? 30000,
+    maxExportBatchSize: config.buffer?.maxExportBatchSize ?? 512
+  })
+
+  const spanProcessor = config.shouldExportSpan == null
+    ? batchSpanProcessor
+    : new FilteringSpanProcessor(batchSpanProcessor, config.shouldExportSpan)
+
   const sdk = new NodeSDK({
     traceExporter,
     autoDetectResources: false,
     spanProcessors: [
-      new BatchSpanProcessor(traceExporter, {
-        maxQueueSize: config.buffer?.maxQueueSize ?? 2048,
-        scheduledDelayMillis: config.buffer?.scheduledDelayMillis ?? 5000,
-        exportTimeoutMillis: config.buffer?.exportTimeoutMillis ?? 30000,
-        maxExportBatchSize: config.buffer?.maxExportBatchSize ?? 512
-      }),
+      spanProcessor,
     ],
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
