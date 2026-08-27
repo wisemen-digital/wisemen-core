@@ -81,7 +81,7 @@ export class S3 extends FileStorage {
       Bucket: this.bucketName,
       Key: key,
       ContentType: mimeType,
-      ACL: isPublic === undefined ? 'public-read' : 'private'
+      ACL: isPublic === true ? 'public-read' : 'private'
     })
 
     return await getSignedUrl(this.client, command, {
@@ -143,7 +143,7 @@ export class S3 extends FileStorage {
       Bucket: this.bucketName,
       Key: key,
       Body: content,
-      ACL: isPublic === undefined ? 'public-read' : 'private'
+      ACL: isPublic === true ? 'public-read' : 'private'
     })
 
     await this.client.send(command, {
@@ -187,7 +187,7 @@ export class S3 extends FileStorage {
         Bucket: this.bucketName,
         Key: key,
         Body: stream,
-        ACL: isPublic === undefined ? 'public-read' : 'private'
+        ACL: isPublic === true ? 'public-read' : 'private'
       },
       queueSize: 10,
       leavePartsOnError: false
