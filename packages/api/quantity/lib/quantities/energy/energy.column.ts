@@ -4,7 +4,7 @@ import { EnergyUnit } from './energy-unit.enum.js'
 
 export function EnergyColumn (
   storeAsUnit: EnergyUnit,
-  options?: QuantityColumnOptions<EnergyUnit, Energy>
+  options?: QuantityColumnOptions<Energy>
 ) {
   return QuantityColumn(Energy, storeAsUnit, options)
 }

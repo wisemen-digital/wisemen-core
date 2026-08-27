@@ -1,8 +1,8 @@
 import { ValidatorConstraintInterface, ValidationArguments } from 'class-validator'
 import { QuantityDto } from '../quantity.dto.js'
-import { Quantity } from '../quantity.js'
+import { Comparable, Quantity } from '../quantity.js'
 
-export class MaxQuantityValidator<U extends string, Q extends Quantity<U, Q>>
+export class MaxQuantityValidator<Q extends Quantity & Comparable>
 implements ValidatorConstraintInterface {
   constructor (
     private max: Q

@@ -1,20 +1,20 @@
 import { ClassConstructor, Type } from 'class-transformer'
 import { applyDecorators } from '@nestjs/common'
 import { IsObject, ValidateBy, ValidateNested, ValidationOptions } from 'class-validator'
-import { Quantity } from '../quantity.js'
+import { Comparable, Quantity } from '../quantity.js'
 import { QuantityDto } from '../quantity.dto.js'
 import { MinQuantityValidator } from './min-quantity.validator.js'
 import { MaxQuantityValidator } from './max-quantity.validator.js'
 
-export interface IsQuantityOptions<U extends string, Q extends Quantity<U, Q>>
+export interface IsQuantityOptions<Q extends Quantity & Comparable>
   extends ValidationOptions {
   min?: Q
   max?: Q
 }
 
-export function IsQuantity<U extends string, Q extends Quantity<U, Q>> (
+export function IsQuantity<Q extends Quantity & Comparable> (
   quantityClass: ClassConstructor<QuantityDto<Q>>,
-  options?: IsQuantityOptions<U, Q>
+  options?: IsQuantityOptions<Q>
 ): PropertyDecorator {
   const decorators = [
     Type(() => quantityClass),

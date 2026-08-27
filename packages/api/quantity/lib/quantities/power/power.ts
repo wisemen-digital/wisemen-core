@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { PowerUnit } from './power-unit.enum.js'
 
 const POWER_MULTIPLIERS: Record<PowerUnit, number> = {
@@ -31,7 +31,15 @@ const POWER_MULTIPLIERS: Record<PowerUnit, number> = {
   [PowerUnit.QUETTAWATT]: 1e30
 }
 
-export class Power extends Quantity<PowerUnit, Power> {
+export class Power extends ScalableQuantity<PowerUnit, Power, Power> {
+  protected getQuantity() {
+    return Power
+  }
+
+  protected getDelta() {
+    return Power
+  }
+
   protected getBaseUnit () {
     return PowerUnit.WATT
   }

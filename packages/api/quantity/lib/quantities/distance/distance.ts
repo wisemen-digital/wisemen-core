@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { DistanceUnit } from './distance-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DistanceUnit, number> = {
@@ -20,7 +20,15 @@ const DISTANCE_MULTIPLIERS: Record<DistanceUnit, number> = {
   [DistanceUnit.MILES]: 1609.34
 }
 
-export class Distance extends Quantity<DistanceUnit, Distance> {
+export class Distance extends ScalableQuantity<DistanceUnit, Distance, Distance> {
+  protected getQuantity() {
+    return Distance
+  }
+
+  protected getDelta() {
+    return Distance
+  }
+
   protected getBaseUnit () {
     return DistanceUnit.METER
   }

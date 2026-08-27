@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { CurrentUnit } from './current-unit.enum.js'
 
 export const CURRENT_MULTIPLIERS: Record<CurrentUnit, number> = {
@@ -31,7 +31,15 @@ export const CURRENT_MULTIPLIERS: Record<CurrentUnit, number> = {
   [CurrentUnit.QUETTAAMPERE]: 1e30
 }
 
-export class Current extends Quantity<CurrentUnit, Current> {
+export class Current extends ScalableQuantity<CurrentUnit, Current, Current> {
+  protected getQuantity() {
+    return Current
+  }
+
+  protected getDelta() {
+    return Current
+  }
+
   protected getBaseUnit () {
     return CurrentUnit.AMPERE
   }

@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { DurationUnit } from './duration-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
@@ -11,7 +11,15 @@ const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
   [DurationUnit.DAYS]: 3600 * 24
 }
 
-export class Duration extends Quantity<DurationUnit, Duration> {
+export class Duration extends ScalableQuantity<DurationUnit, Duration, Duration> {
+  protected getQuantity() {
+    return Duration
+  }
+
+  protected getDelta() {
+    return Duration
+  }
+
   protected getBaseUnit () {
     return DurationUnit.SECONDS
   }

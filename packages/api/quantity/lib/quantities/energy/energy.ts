@@ -1,4 +1,4 @@
-import { Quantity } from '../../quantity.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { EnergyUnit } from './energy-unit.enum.js'
 
 const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
@@ -47,7 +47,15 @@ const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.KILOCALORIE]: 4184
 }
 
-export class Energy extends Quantity<EnergyUnit, Energy> {
+export class Energy extends ScalableQuantity<EnergyUnit, Energy, Energy> {
+  protected getQuantity() {
+    return Energy
+  }
+
+  protected getDelta() {
+    return Energy
+  }
+
   protected getBaseUnit () {
     return EnergyUnit.JOULE
   }
