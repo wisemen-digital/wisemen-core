@@ -18,6 +18,7 @@ export class IntegrationTestSetup {
     await dataSource.query('SELECT pg_advisory_lock(12346)')
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "date_time_range"')
       await dataSource.query(`
         DO $$
         BEGIN

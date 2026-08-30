@@ -1099,10 +1099,10 @@ describe('DateTimeRange unit tests', () => {
 
     it('throws if ranges are not adjacent', () => {
       const now = timestamp()
-      const range1 = new DateTimeRange(now, now.add(1, 'second'))
+      const range12 = new DateTimeRange(now, now.add(1, 'second'))
       const range2 = new DateTimeRange(now.add(3, 'second'), now.add(4, 'second'))
 
-      expect(() => range1.merge(range2)).toThrow('cannot merge non adjacent date time ranges')
+      expect(() => range12.merge(range2)).toThrow('cannot merge non adjacent date time ranges')
     })
   })
 

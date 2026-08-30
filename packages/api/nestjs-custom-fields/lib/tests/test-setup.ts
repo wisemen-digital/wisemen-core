@@ -14,6 +14,7 @@ export class IntegrationTestSetup {
     await dataSource.query('SELECT pg_advisory_lock(12345)')
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "nestjs_custom_fields"')
       await dataSource.synchronize(true)
     } finally {
       await dataSource.query('SELECT pg_advisory_unlock(12345)')

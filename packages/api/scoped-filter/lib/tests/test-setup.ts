@@ -14,6 +14,7 @@ export class IntegrationTestSetup {
     await dataSource.query('SELECT pg_advisory_lock(12345)')
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "scoped_filter"')
       await dataSource.query(getMigrationQuery())
       await dataSource.synchronize(true)
     } finally {

@@ -13,3 +13,33 @@ jobs:
     with:
       test-timeout: 10
     secrets: inherit
+
+  api-packages-tests:
+    name: Test changed API packages
+    if: github.event.pull_request.draft == false && github.head_ref != 'changeset-release/main'
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      TURBO_API: https://cache.turbo.internal.appwi.se
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ github.event.repository.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Test changed API packages
+        run: pnpm turbo run test --filter='{./packages/api/**}...[origin/main]'
