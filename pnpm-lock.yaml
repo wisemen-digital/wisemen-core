@@ -3063,6 +3063,9 @@ importers:
       dayjs:
         specifier: catalog:backend-peer
         version: 1.11.21
+      libphonenumber-js:
+        specifier: catalog:general
+        version: 1.13.7
     devDependencies:
       '@types/node':
         specifier: catalog:backend
@@ -3070,6 +3073,9 @@ importers:
       '@wisemen/eslint-config-nestjs':
         specifier: workspace:*
         version: link:../eslint-config-nestjs
+      class-transformer:
+        specifier: catalog:backend
+        version: 0.5.1
       eslint:
         specifier: catalog:lint-api
         version: 10.2.1(jiti@2.7.0)
