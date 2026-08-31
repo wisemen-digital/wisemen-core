@@ -10,13 +10,13 @@ export class IntegrationTestSetup {
       await dataSource.initialize()
     }
 
-    await dataSource.query('SELECT pg_advisory_lock(12345)')
+    await dataSource.query("SELECT pg_advisory_lock(hashtext('nestjs_typeorm_operators'))")
 
     try {
       await dataSource.query('CREATE SCHEMA IF NOT EXISTS "nestjs_typeorm_operators"')
       await dataSource.synchronize(true)
     } finally {
-      await dataSource.query('SELECT pg_advisory_unlock(12345)')
+      await dataSource.query("SELECT pg_advisory_unlock(hashtext('nestjs_typeorm_operators'))")
     }
 
     this.queryRunner = dataSource.createQueryRunner()
