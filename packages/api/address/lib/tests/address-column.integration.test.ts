@@ -8,6 +8,7 @@ import { AddressTest } from './sql/address-test.entity.js'
 describe('AddressColumn', () => {
   before(async () => {
     await dataSource.initialize()
+    await dataSource.query('CREATE SCHEMA IF NOT EXISTS "address"')
     await dataSource.synchronize(true)
   })
 

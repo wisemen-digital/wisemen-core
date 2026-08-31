@@ -10,12 +10,13 @@ export class IntegrationTestSetup {
       await dataSource.initialize()
     }
 
-    await dataSource.query('SELECT pg_advisory_lock(12345)')
+    await dataSource.query("SELECT pg_advisory_lock(hashtext('csv'))")
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "csv"')
       await dataSource.synchronize(true)
     } finally {
-      await dataSource.query('SELECT pg_advisory_unlock(12345)')
+      await dataSource.query("SELECT pg_advisory_unlock(hashtext('csv'))")
     }
 
     this.queryRunner = dataSource.createQueryRunner()

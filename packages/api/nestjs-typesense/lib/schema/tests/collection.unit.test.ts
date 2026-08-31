@@ -144,7 +144,7 @@ describe('typesenseCollection', () => {
       name: Typesense.string().sort().infix(),
       country: Typesense.string().optional().index(false),
       isActive: Typesense.bool().facet(),
-      userId: Typesense.string().reference(users.id)
+      userId: Typesense.string().facet().reference(users.id)
     })
 
     expect(Typesense.collectionSchema(contacts)).toEqual({
