@@ -56,4 +56,4 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Test changed API packages
-        run: pnpm turbo run test --force --filter='{./packages/api/**}...[origin/main]'
+        run: pnpm turbo run test --filter='{./packages/api/**}...[origin/main]'
