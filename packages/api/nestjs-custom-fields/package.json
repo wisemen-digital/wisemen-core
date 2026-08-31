@@ -24,7 +24,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",
-    "test": "node --test ./dist/**/*.test.js",
+    "test": "node --env-file=.env.test --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { Any, Repository } from 'typeorm'
+import { Any, IsNull, Repository } from 'typeorm'
 import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.entity.js'
 import { InjectRepository } from '@wisemen/nestjs-typeorm'
 
@@ -27,7 +27,7 @@ export class CustomFieldDefinitionsRepository {
     return this.repository.find({
       where: {
         entityType: isArray ? Any(entityType) : entityType,
-        tenantUuid: options?.tenantUuid
+        tenantUuid: options?.tenantUuid ?? IsNull()
       },
       order: {
         key: 'ASC'

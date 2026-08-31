@@ -15,9 +15,10 @@ export class IntegrationTestSetup {
       await dataSource.initialize()
     }
 
-    await dataSource.query('SELECT pg_advisory_lock(12346)')
+    await dataSource.query("SELECT pg_advisory_lock(hashtext('date_time_range'))")
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "date_time_range"')
       await dataSource.query(`
         DO $$
         BEGIN
@@ -37,7 +38,7 @@ export class IntegrationTestSetup {
      `)
       await dataSource.synchronize(true)
     } finally {
-      await dataSource.query('SELECT pg_advisory_unlock(12346)')
+      await dataSource.query("SELECT pg_advisory_unlock(hashtext('date_time_range'))")
     }
 
     this.queryRunner = dataSource.createQueryRunner()
