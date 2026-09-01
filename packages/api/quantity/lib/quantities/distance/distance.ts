@@ -8,7 +8,7 @@ import { Speed } from '../../quantities/speed/speed.js'
 import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { DistanceUnit } from './distance-unit.enum.js'
-import { DurationUnit } from '#src/quantities/duration/duration-unit.enum.js'
+import { DurationUnit } from '../duration/duration-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DistanceUnit, number> = {
   [DistanceUnit.METER]: 1,

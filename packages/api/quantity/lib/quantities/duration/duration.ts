@@ -4,9 +4,9 @@ import { Speed } from '../../quantities/speed/speed.js'
 import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { DurationUnit } from './duration-unit.enum.js'
-import { Power } from '#src/quantities/power/power.js'
-import { Energy } from '#src/quantities/energy/energy.js'
-import { EnergyUnit } from '#src/quantities/energy/energy-unit.enum.js'
+import { Power } from '../power/power.js'
+import { Energy } from '../energy/energy.js'
+import { EnergyUnit } from '../energy/energy-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
   [DurationUnit.SECONDS]: 1,

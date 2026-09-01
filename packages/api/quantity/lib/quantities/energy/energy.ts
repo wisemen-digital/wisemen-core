@@ -4,7 +4,7 @@ import { Power } from '../../quantities/power/power.js'
 import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { EnergyUnit } from './energy-unit.enum.js'
-import { DurationUnit } from '#src/quantities/duration/duration-unit.enum.js'
+import { DurationUnit } from '../duration/duration-unit.enum.js'
 
 const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.JOULE]: 1,
