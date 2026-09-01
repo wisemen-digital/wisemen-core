@@ -1,9 +1,9 @@
-import { Distance } from '../../quantities/distance/distance.js'
-import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
-import { Volume } from '../../quantities/volume/volume.js'
-import { VolumeUnit } from '../../quantities/volume/volume-unit.enum.js'
-import { Rate } from '../../rate/rate.js'
-import { ScalableQuantity } from '../../quantity.js'
+import { Distance } from '#lib/quantities/distance/distance.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { Volume } from '#lib/quantities/volume/volume.js'
+import { VolumeUnit } from '#lib/quantities/volume/volume-unit.enum.js'
+import { Rate } from '#lib/rate/rate.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { AreaUnit } from './area-unit.enum.js'
 
 const AREA_MULTIPLIERS: Record<AreaUnit, number> = {

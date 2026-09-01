@@ -1,4 +1,4 @@
-import { QuantityColumn, QuantityColumnOptions } from '../../quantity.column.js'
+import { QuantityColumn, QuantityColumnOptions } from '#lib/quantity.column.js'
 import { DistanceUnit } from './distance-unit.enum.js'
 import { Distance } from './distance.js'
 

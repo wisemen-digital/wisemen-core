@@ -1,4 +1,4 @@
-import { ScalableQuantity } from '../../quantity.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { VoltageUnit } from './voltage-unit.enum.js'
 
 const VOLTAGE_MULTIPLIERS: Record<VoltageUnit, number> = {

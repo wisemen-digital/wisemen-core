@@ -1,8 +1,8 @@
 import { ClassConstructor, Type } from 'class-transformer'
 import { applyDecorators } from '@nestjs/common'
 import { IsObject, ValidateBy, ValidateNested, ValidationOptions } from 'class-validator'
-import { Comparable, Quantity } from '../quantity.js'
-import { QuantityDto } from '../quantity.dto.js'
+import { Comparable, Quantity } from '#lib/quantity.js'
+import { QuantityDto } from '#lib/quantity.dto.js'
 import { MinQuantityValidator } from './min-quantity.validator.js'
 import { MaxQuantityValidator } from './max-quantity.validator.js'
 

@@ -1,10 +1,10 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Energy } from '../energy.js'
-import { EnergyUnit } from '../energy-unit.enum.js'
-import { Duration } from '../../duration/duration.js'
-import { DurationUnit } from '../../duration/duration-unit.enum.js'
-import { PowerUnit } from '../../power/power-unit.enum.js'
+import { Energy } from '#lib/quantities/energy/energy.js'
+import { EnergyUnit } from '#lib/quantities/energy/energy-unit.enum.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { DurationUnit } from '#lib/quantities/duration/duration-unit.enum.js'
+import { PowerUnit } from '#lib/quantities/power/power-unit.enum.js'
 
 void describe('Energy class', () => {
   void describe('Energy parsing', () => {

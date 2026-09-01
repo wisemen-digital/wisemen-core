@@ -1,8 +1,8 @@
-import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
-import { Distance } from '../../quantities/distance/distance.js'
-import { Duration } from '../../quantities/duration/duration.js'
-import { Rate } from '../../rate/rate.js'
-import { ScalableQuantity } from '../../quantity.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { Distance } from '#lib/quantities/distance/distance.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { Rate } from '#lib/rate/rate.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { SpeedUnit } from './speed-unit.enum.js'
 
 const SPEED_MULTIPLIERS: Record<SpeedUnit, number> = {

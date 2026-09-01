@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Type } from 'class-transformer'
 import { IsEnum, IsNumber } from 'class-validator'
-import { QuantityDto } from '../../quantity.dto.js'
+import { QuantityDto } from '#lib/quantity.dto.js'
 import { Area } from './area.js'
 import { AreaUnit, AreaUnitApiProperty } from './area-unit.enum.js'
 

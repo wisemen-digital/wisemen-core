@@ -1,10 +1,10 @@
-import { Duration } from '../../quantities/duration/duration.js'
-import { PowerUnit } from '../../quantities/power/power-unit.enum.js'
-import { Power } from '../../quantities/power/power.js'
-import { Rate } from '../../rate/rate.js'
-import { ScalableQuantity } from '../../quantity.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { PowerUnit } from '#lib/quantities/power/power-unit.enum.js'
+import { Power } from '#lib/quantities/power/power.js'
+import { Rate } from '#lib/rate/rate.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { EnergyUnit } from './energy-unit.enum.js'
-import { DurationUnit } from '../duration/duration-unit.enum.js'
+import { DurationUnit } from '#lib/quantities/duration/duration-unit.enum.js'
 
 const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.JOULE]: 1,

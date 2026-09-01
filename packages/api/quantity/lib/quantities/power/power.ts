@@ -1,8 +1,8 @@
-import { Duration } from '../../quantities/duration/duration.js'
-import { EnergyUnit } from '../../quantities/energy/energy-unit.enum.js'
-import { Energy } from '../../quantities/energy/energy.js'
-import { Rate } from '../../rate/rate.js'
-import { ScalableQuantity } from '../../quantity.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { EnergyUnit } from '#lib/quantities/energy/energy-unit.enum.js'
+import { Energy } from '#lib/quantities/energy/energy.js'
+import { Rate } from '#lib/rate/rate.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { PowerUnit } from './power-unit.enum.js'
 
 const POWER_MULTIPLIERS: Record<PowerUnit, number> = {
