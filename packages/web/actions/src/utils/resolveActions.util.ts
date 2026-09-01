@@ -551,6 +551,47 @@ export function resolveSearchSubActionsConfig(action: Action, ctx: ActionContext
     : action.searchSubActionsConfig ?? null
 }
 
+/**
+ * Resolves the custom empty-state message configured on a sub-action's parent,
+ * if any. Returns `null` when the parent has no `searchSubActionsConfig` or no
+ * message for the current state (no query vs. active search query) — callers
+ * should fall back to a generic default in that case.
+ */
+export function resolveSubActionsEmptyStateMessage(
+  parentAction: Action | null | undefined,
+  ctx: ActionContext,
+): string | null {
+  if (parentAction == null) {
+    return null
+  }
+
+  const config = resolveSearchSubActionsConfig(parentAction, ctx)
+
+  if (config === null) {
+    return null
+  }
+
+  const query = ctx.searchInput.trim()
+
+  if (query.length > 0) {
+    const message = config.noResultsMessage
+
+    if (message === undefined) {
+      return null
+    }
+
+    return typeof message === 'function' ? message(query) : message
+  }
+
+  const message = config.emptyMessage
+
+  if (message === undefined) {
+    return null
+  }
+
+  return typeof message === 'function' ? message() : message
+}
+
 export function resolveActionPreview(action: Action, ctx: ActionContext): Component | null {
   return typeof action.preview === 'function' ? action.preview(ctx) : null
 }
