@@ -38,6 +38,13 @@
 
 
 
+
+## 1.22.4
+<sub>2026-09-01</sub>
+
+- [#1638](https://github.com/wisemen-digital/wisemen-core/pull/1638)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Exported BaseHeader from the design system and fixed its title/subtitle layout to stretch evenly to the left icon's height, with the subtitle bottom-aligned.
+
 ## 1.22.3
 <sub>2026-08-27</sub>
 

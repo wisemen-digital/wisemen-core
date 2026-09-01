@@ -7,6 +7,13 @@
 
 
 
+
+## 1.3.0
+<sub>2026-09-01</sub>
+
+- [#1633](https://github.com/wisemen-digital/wisemen-core/pull/1633)  *(minor)* Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)! - Add `createAndUpsert` for creating and upserting entities without recursive relation type errors.
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
 ## 1.2.5
 <sub>2026-08-27</sub>
 
