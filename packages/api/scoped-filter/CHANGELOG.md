@@ -9,6 +9,12 @@
 
 
 
+
+## 1.0.8
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
 ## 1.0.7
 <sub>2026-07-31</sub>
 
