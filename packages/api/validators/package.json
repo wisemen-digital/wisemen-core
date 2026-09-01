@@ -23,6 +23,7 @@
     "release": "pnpx release-it"
   },
   "peerDependencies": {
+    "class-transformer": "catalog:backend-peer",
     "class-validator": "catalog:backend-peer",
     "dayjs": "catalog:backend-peer"
   },
@@ -31,6 +32,7 @@
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
+    "class-transformer": "catalog:backend",
     "expect": "catalog:test",
     "@types/node": "catalog:backend",
     "typescript": "catalog:peer"
@@ -43,6 +45,7 @@
     "directory": "packages/validators"
   },
   "dependencies": {
-    "@wisemen/time": "workspace:*"
+    "@wisemen/time": "workspace:^",
+    "libphonenumber-js": "catalog:general"
   }
 }
