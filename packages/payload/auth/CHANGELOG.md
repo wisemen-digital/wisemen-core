@@ -8,6 +8,18 @@
 
 
 
+
+
+## 0.3.0
+<sub>2026-08-24</sub>
+
+- [#1594](https://github.com/wisemen-digital/wisemen-core/pull/1594)  *(minor)* Thanks [@Robbe95](https://github.com/Robbe95)! - Access control handled in the payload-core-auth package
+
+## 0.2.3
+<sub>2026-08-12</sub>
+
+- [#1579](https://github.com/wisemen-digital/wisemen-core/pull/1579)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolved security vulnerabilities by updating axios, typeorm, next.js, and @hey-api/openapi-ts to patched versions
+
 ## 0.2.2
 <sub>2026-08-05</sub>
 

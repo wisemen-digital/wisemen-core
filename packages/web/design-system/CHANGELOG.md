@@ -32,6 +32,46 @@
 
 
 
+
+
+
+
+
+
+## 1.22.3
+<sub>2026-08-27</sub>
+
+- [#1628](https://github.com/wisemen-digital/wisemen-core/pull/1628)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the TopBar actions area claiming half the header width even when empty, starving the title of space on mobile.
+
+## 1.22.2
+<sub>2026-08-27</sub>
+
+- [#1623](https://github.com/wisemen-digital/wisemen-core/pull/1623)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Addition of event based file download for files without urls
+- [#1627](https://github.com/wisemen-digital/wisemen-core/pull/1627)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed DataTableMobileCard rendering a bottom border on the last row.
+- [#1627](https://github.com/wisemen-digital/wisemen-core/pull/1627)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the TopBar title wrapping onto multiple lines on mobile instead of filling available space.
+
+## 1.22.1
+<sub>2026-08-27</sub>
+
+- [#1617](https://github.com/wisemen-digital/wisemen-core/pull/1617)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Addition of download button on Form File Upload
+
+## 1.22.0
+<sub>2026-08-25</sub>
+
+- [#1588](https://github.com/wisemen-digital/wisemen-core/pull/1588)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Added DataTable: a TanStack Table-based data table with fixed-width columns, drag-resize, sticky/pinned columns, row selection, grouping, infinite scroll, and a container-query-driven mobile card list.
+
+## 1.21.0
+<sub>2026-08-12</sub>
+
+- [#1562](https://github.com/wisemen-digital/wisemen-core/pull/1562)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Added `UISegmentedControl`/`UISegmentedControlItem` (single-select, with an animated sliding highlight) and `UISegmentedControlGroup`/`UISegmentedControlGroupItem` (multi-select), a pill-shaped alternative to `RadioGroup`/`CheckboxGroup` with optional secondary description text per item.
+
+## 1.20.2
+<sub>2026-08-07</sub>
+
+- [#1559](https://github.com/wisemen-digital/wisemen-core/pull/1559)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed Dialog closing at the same time as a nested open Popover/Autocomplete on outside click, which caused a visible position jump when the popover was near a viewport edge.
+
 ## 1.20.1
 <sub>2026-08-06</sub>
 

@@ -1,4 +1,8 @@
-import { Quantity } from '../../quantity.js'
+import { Duration } from '../../quantities/duration/duration.js'
+import { SpeedUnit } from '../../quantities/speed/speed-unit.enum.js'
+import { Speed } from '../../quantities/speed/speed.js'
+import { Rate } from '../../rate/rate.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { DistanceUnit } from './distance-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DistanceUnit, number> = {
@@ -20,7 +24,15 @@ const DISTANCE_MULTIPLIERS: Record<DistanceUnit, number> = {
   [DistanceUnit.MILES]: 1609.34
 }
 
-export class Distance extends Quantity<DistanceUnit, Distance> {
+export class Distance extends ScalableQuantity<DistanceUnit, Distance, Distance> {
+  protected getQuantity() {
+    return Distance
+  }
+
+  protected getDelta() {
+    return Distance
+  }
+
   protected getBaseUnit () {
     return DistanceUnit.METER
   }
@@ -46,4 +58,16 @@ export class Distance extends Quantity<DistanceUnit, Distance> {
   }
 
   static ZERO = new Distance(0, DistanceUnit.METER)
+
+  override divide(divisor: number): Distance
+  override divide(rate: Rate): Distance
+  override divide(value: number, unit: DistanceUnit): number
+  override divide(quantity: Distance): number
+  override divide(quantity: Duration): Speed
+  override divide(divisor: number | Rate | Distance | Duration, unit?: DistanceUnit): Distance | Speed | number {
+    if (divisor instanceof Duration) {
+      return new Speed(this.valueOf() / divisor.valueOf(), SpeedUnit.METER_PER_SECOND)
+    }
+    return super.divide(divisor, unit)
+  }
 }

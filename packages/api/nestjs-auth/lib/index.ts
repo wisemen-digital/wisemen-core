@@ -8,6 +8,8 @@ export {
   type BasicAuthCredential,
   type BasicAuthDefinitions,
   BasicAuth,
+  BasicAuthService,
   BasicAuthModule,
-  createBasicAuthMiddleware
+  createBasicAuthMiddleware,
+  createBasicAuthRequestHandler
 } from "./basic/index.js"

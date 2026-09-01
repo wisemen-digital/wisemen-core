@@ -1,4 +1,8 @@
-import { Quantity } from '../../quantity.js'
+import { Duration } from '../../quantities/duration/duration.js'
+import { PowerUnit } from '../../quantities/power/power-unit.enum.js'
+import { Power } from '../../quantities/power/power.js'
+import { Rate } from '../../rate/rate.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { EnergyUnit } from './energy-unit.enum.js'
 
 const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
@@ -47,7 +51,15 @@ const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.KILOCALORIE]: 4184
 }
 
-export class Energy extends Quantity<EnergyUnit, Energy> {
+export class Energy extends ScalableQuantity<EnergyUnit, Energy, Energy> {
+  protected getQuantity() {
+    return Energy
+  }
+
+  protected getDelta() {
+    return Energy
+  }
+
   protected getBaseUnit () {
     return EnergyUnit.JOULE
   }
@@ -65,4 +77,16 @@ export class Energy extends Quantity<EnergyUnit, Energy> {
   }
 
   static ZERO = new Energy(0, EnergyUnit.JOULE)
+
+  override divide(divisor: number): Energy
+  override divide(rate: Rate): Energy
+  override divide(value: number, unit: EnergyUnit): number
+  override divide(quantity: Energy): number
+  override divide(quantity: Duration): Power
+  override divide(divisor: number | Rate | Energy | Duration, unit?: EnergyUnit): Energy | Power | number {
+    if (divisor instanceof Duration) {
+      return new Power(this.valueOf() / divisor.valueOf(), PowerUnit.WATT)
+    }
+    return super.divide(divisor, unit)
+  }
 }

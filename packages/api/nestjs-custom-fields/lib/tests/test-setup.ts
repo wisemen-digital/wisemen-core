@@ -11,12 +11,13 @@ export class IntegrationTestSetup {
       await dataSource.initialize()
     }
 
-    await dataSource.query('SELECT pg_advisory_lock(12345)')
+    await dataSource.query("SELECT pg_advisory_lock(hashtext('nestjs_custom_fields'))")
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "nestjs_custom_fields"')
       await dataSource.synchronize(true)
     } finally {
-      await dataSource.query('SELECT pg_advisory_unlock(12345)')
+      await dataSource.query("SELECT pg_advisory_unlock(hashtext('nestjs_custom_fields'))")
     }
 
     this.queryRunner = dataSource.createQueryRunner()

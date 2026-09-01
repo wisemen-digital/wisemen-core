@@ -1,4 +1,8 @@
-import { Quantity } from '../../quantity.js'
+import { Duration } from '../../quantities/duration/duration.js'
+import { EnergyUnit } from '../../quantities/energy/energy-unit.enum.js'
+import { Energy } from '../../quantities/energy/energy.js'
+import { Rate } from '../../rate/rate.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { PowerUnit } from './power-unit.enum.js'
 
 const POWER_MULTIPLIERS: Record<PowerUnit, number> = {
@@ -31,7 +35,15 @@ const POWER_MULTIPLIERS: Record<PowerUnit, number> = {
   [PowerUnit.QUETTAWATT]: 1e30
 }
 
-export class Power extends Quantity<PowerUnit, Power> {
+export class Power extends ScalableQuantity<PowerUnit, Power, Power> {
+  protected getQuantity() {
+    return Power
+  }
+
+  protected getDelta() {
+    return Power
+  }
+
   protected getBaseUnit () {
     return PowerUnit.WATT
   }
@@ -49,4 +61,14 @@ export class Power extends Quantity<PowerUnit, Power> {
   }
 
   static ZERO = new Power(0, PowerUnit.WATT)
+
+  override multiply(factor: number): Power
+  override multiply(rate: Rate): Power 
+  override multiply(duration: Duration): Energy
+  override multiply(multiplier: number | Rate | Duration): Power | Energy {
+    if (multiplier instanceof Duration) {
+      return new Energy(this.valueOf() * multiplier.valueOf(), EnergyUnit.JOULE)
+    }
+    return super.multiply(multiplier)
+  }
 }

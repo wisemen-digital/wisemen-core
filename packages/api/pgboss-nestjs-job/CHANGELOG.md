@@ -1,9 +1,33 @@
 # @wisemen/pgboss-nestjs-job
 
 
+## 5.4.0
+<sub>2026-08-27</sub>
+
+- [#1625](https://github.com/wisemen-digital/wisemen-core/pull/1625)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add pgboss jobs api endpoints to view jobs
+
+## 5.3.0
+<sub>2026-08-27</sub>
+
+- Add a configurable API module for monitoring PgBoss jobs.
 
 
 
+
+
+
+
+
+## 5.2.0
+<sub>2026-08-27</sub>
+
+- [#1613](https://github.com/wisemen-digital/wisemen-core/pull/1613)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Add configurable PgBoss metrics module
+- [#1613](https://github.com/wisemen-digital/wisemen-core/pull/1613)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add pgboss otel metrics
+
+## 5.1.0
+<sub>2026-08-26</sub>
+
+- *(minor)* Updated dependency `@wisemen/opentelemetry` v0.3.0
 
 ## 5.0.3
 <sub>2026-08-02</sub>

@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "1.20.1",
+  "version": "1.22.3",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -54,6 +54,7 @@
   },
   "peerDependencies": {
     "@internationalized/date": "catalog:date",
+    "@tanstack/vue-table": "catalog:",
     "@tanstack/vue-virtual": "^3.0.0",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
@@ -98,6 +99,7 @@
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
     "@tanstack/vue-hotkeys": "catalog:",
+    "@tanstack/vue-table": "catalog:",
     "@tanstack/vue-virtual": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",

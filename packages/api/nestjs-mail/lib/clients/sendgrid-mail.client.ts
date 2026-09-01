@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common'
 import { MailApiError } from '../errors/mail-api.error.js'
 import type { SendGridMailClientOptions } from '../modules/mail.module-options.js'
-import { MailClient, type SendMailOptions } from './mail.client.js'
+import { MailClient, type SendMailOptions, type SentMail } from './mail.client.js'
 
 interface SendGridEmailAddress {
   email: string
@@ -85,7 +85,7 @@ export class SendGridMailClient extends MailClient {
     this.defaultFrom = options.defaultFrom
   }
 
-  async sendMail (options: SendMailOptions): Promise<void> {
+  async sendMail (options: SendMailOptions): Promise<SentMail[]> {
     const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
       headers: this.headers,
@@ -96,6 +96,15 @@ export class SendGridMailClient extends MailClient {
       const body = await response.text()
       throw new MailApiError('SendGrid', response.status, body)
     }
+
+    
+    /** @link https://www.twilio.com/docs/sendgrid/glossary/x-message-id */
+    const messageId = response.headers.get('x-message-id')
+    if (messageId === null) {
+      throw new Error('SendGrid did not return an x-message-id header')
+    }
+
+    return [{ id: messageId, recipients: this.getRecipients(options) }]
   }
 
   private buildPayload (options: SendMailOptions): SendGridMailSendRequest {

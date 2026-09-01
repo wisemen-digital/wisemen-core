@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-mail",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "publishConfig": {
     "access": "public"
   },
@@ -28,7 +28,7 @@
     "@wisemen/pgboss-nestjs-job": "workspace:^"
   },
   "dependencies": {
-    "mailpit-api": "^2.0.0"
+    "mailpit-api": "^2.1.0"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",

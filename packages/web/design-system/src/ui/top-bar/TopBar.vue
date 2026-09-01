@@ -24,21 +24,21 @@ const {
 
 <template>
   <div class="flex shrink-0 items-center px-xl pb-md">
-    <div class="flex flex-1 items-center">
-      <DashboardPageHeaderSidebarToggle />
+    <div class="flex min-w-0 flex-1 items-center">
+      <DashboardPageHeaderSidebarToggle class="shrink-0" />
 
       <Separator
         v-if="breadcrumbs.length > 0 || title !== null"
-        class="ml-sm h-4"
+        class="ml-sm h-4 shrink-0"
         orientation="vertical"
       />
 
       <template v-if="showNavigationArrowsInTopBar">
-        <TopBarNavigationArrows class="ml-sm" />
+        <TopBarNavigationArrows class="ml-sm shrink-0" />
 
         <Separator
           v-if="breadcrumbs.length > 0 || title !== null"
-          class="ml-sm h-4"
+          class="ml-sm h-4 shrink-0"
           orientation="vertical"
         />
       </template>
@@ -46,7 +46,7 @@ const {
       <template v-if="breadcrumbs.length > 0">
         <h1
           class="
-            ml-lg text-xs text-primary
+            ml-lg min-w-0 flex-1 text-xs text-primary
             md:sr-only
           "
         >
@@ -56,7 +56,7 @@ const {
         <DashboardPageHeaderBreadcrumbs
           :breadcrumbs="breadcrumbs"
           class="
-            ml-lg hidden
+            ml-lg hidden min-w-0 flex-1
             md:flex
           "
         />
@@ -64,7 +64,7 @@ const {
 
       <h1
         v-else-if="title !== null"
-        class="ml-lg text-xs text-primary"
+        class="ml-lg min-w-0 flex-1 text-xs text-primary"
       >
         {{ title }}
       </h1>
@@ -79,7 +79,7 @@ const {
       <TopBarCommandMenuSearch />
     </div>
 
-    <div class="flex h-full flex-1 items-center justify-end">
+    <div class="flex h-full shrink-0 items-center justify-end">
       <slot name="actions" />
       <DashboardPageDetailPaneToggle v-if="hasDetailPane && !isToggleHidden" />
     </div>

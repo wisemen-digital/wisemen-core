@@ -5,6 +5,24 @@
 
 
 
+
+
+
+## 0.3.1
+<sub>2026-08-27</sub>
+
+- [#1621](https://github.com/wisemen-digital/wisemen-core/pull/1621)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add an optional `shouldExportSpan` callback to filter completed spans before they are queued for export.
+
+## 0.3.0
+<sub>2026-08-26</sub>
+
+- [#1610](https://github.com/wisemen-digital/wisemen-core/pull/1610)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added explicit OpenTelemetry tracing, metrics, and SigNoz exporter configuration helpers.
+
+## 0.2.8
+<sub>2026-08-07</sub>
+
+- [#1563](https://github.com/wisemen-digital/wisemen-core/pull/1563)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - release @wisemen/nestjs-throttler
+
 ## 0.2.7
 <sub>2026-07-29</sub>
 
