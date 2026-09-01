@@ -3055,7 +3055,7 @@ importers:
   packages/api/validators:
     dependencies:
       '@wisemen/time':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../time
       class-validator:
         specifier: catalog:backend-peer

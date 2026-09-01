@@ -45,7 +45,7 @@
     "directory": "packages/validators"
   },
   "dependencies": {
-    "@wisemen/time": "workspace:*",
+    "@wisemen/time": "workspace:^",
     "libphonenumber-js": "catalog:general"
   }
 }
