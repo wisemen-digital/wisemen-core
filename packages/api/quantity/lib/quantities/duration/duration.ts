@@ -4,6 +4,9 @@ import { Speed } from '../../quantities/speed/speed.js'
 import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { DurationUnit } from './duration-unit.enum.js'
+import { Power } from '#src/quantities/power/power.js'
+import { Energy } from '#src/quantities/energy/energy.js'
+import { EnergyUnit } from '#src/quantities/energy/energy-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
   [DurationUnit.SECONDS]: 1,
@@ -70,9 +73,13 @@ export class Duration extends ScalableQuantity<DurationUnit, Duration, Duration>
   override multiply(factor: number): Duration
   override multiply(rate: Rate): Duration 
   override multiply(speed: Speed): Distance
-  override multiply(multiplier: number | Rate | Speed): Duration | Distance {
+  override multiply(power: Power): Energy
+  override multiply(multiplier: number | Rate | Speed | Power): Duration | Distance | Energy {
     if (multiplier instanceof Speed) {
       return new Distance(this.valueOf() * multiplier.valueOf(), DistanceUnit.METER)
+    }
+    if (multiplier instanceof Power) {
+      return new Energy(this.valueOf() * multiplier.valueOf(), EnergyUnit.JOULE)
     }
     return super.multiply(multiplier)
   }
