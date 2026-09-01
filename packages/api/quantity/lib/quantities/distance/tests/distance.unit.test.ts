@@ -55,6 +55,20 @@ void describe('Distance class', () => {
 
       expect(result.isEqualTo(1, VolumeUnit.CUBIC_METER)).toBe(true)
     })
+
+    void it('squares distances into areas', () => {
+      const distance = new Distance(50, DistanceUnit.CENTIMETER)
+      const result = distance.square()
+
+      expect(result.isEqualTo(0.25, AreaUnit.SQUARE_METER)).toBe(true)
+    })
+
+    void it('cubes distances into volumes', () => {
+      const distance = new Distance(2, DistanceUnit.METER)
+      const result = distance.cube()
+
+      expect(result.isEqualTo(8, VolumeUnit.CUBIC_METER)).toBe(true)
+    })
   
     void describe('cross quantity calculations', () => {
       void it('divides distances by durations into speeds with converted units', () => {

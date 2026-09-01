@@ -62,6 +62,14 @@ export class Distance extends ScalableQuantity<DistanceUnit, Distance, Distance>
     return this.asNumber(DistanceUnit.KILOMETER)
   }
 
+  square (): Area {
+    return this.multiply(this)
+  }
+
+  cube (): Volume {
+    return this.square().multiply(this)
+  }
+
   static ZERO = new Distance(0, DistanceUnit.METER)
 
   override multiply(distance: Distance): Area
