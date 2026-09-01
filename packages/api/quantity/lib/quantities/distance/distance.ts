@@ -1,3 +1,5 @@
+import { Area } from '../../quantities/area/area.js'
+import { AreaUnit } from '../../quantities/area/area-unit.enum.js'
 import { Duration } from '../../quantities/duration/duration.js'
 import { SpeedUnit } from '../../quantities/speed/speed-unit.enum.js'
 import { Speed } from '../../quantities/speed/speed.js'
@@ -59,6 +61,17 @@ export class Distance extends ScalableQuantity<DistanceUnit, Distance, Distance>
   }
 
   static ZERO = new Distance(0, DistanceUnit.METER)
+
+  override multiply(distance: Distance): Area
+  override multiply(scalar: number): Distance
+  override multiply(rate: Rate): Distance
+  override multiply(multiplier: number | Rate | Distance): Distance | Area {
+    if (multiplier instanceof Distance) {
+      return new Area(this.valueOf() * multiplier.valueOf(), AreaUnit.SQUARE_METER)
+    }
+
+    return super.multiply(multiplier)
+  }
 
   override divide(divisor: number): Distance
   override divide(rate: Rate): Distance

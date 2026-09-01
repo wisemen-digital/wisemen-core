@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
+import { AreaUnit } from '../../area/area-unit.enum.js'
 import { Distance } from '../distance.js'
 import { DistanceUnit } from '../distance-unit.enum.js'
 import { Duration } from '../../duration/duration.js'
@@ -35,6 +36,14 @@ void describe('Distance class', () => {
       expect(r1.isEqualTo(50, DistanceUnit.CENTIMETER)).toBe(true)
       expect(r2).toBe(4)
       expect(r3).toBe(2)
+    })
+
+    void it('multiplies distances into areas', () => {
+      const width = new Distance(5, DistanceUnit.METER)
+      const height = new Distance(200, DistanceUnit.CENTIMETER)
+      const area = width.multiply(height)
+
+      expect(area.isEqualTo(10, AreaUnit.SQUARE_METER)).toBe(true)
     })
   
     void describe('cross quantity calculations', () => {
