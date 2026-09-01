@@ -1,6 +1,12 @@
 # @wisemen/pgboss-nestjs-job
 
 
+
+## 5.4.1
+<sub>2026-09-01</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.27
+
 ## 5.4.0
 <sub>2026-08-27</sub>
 
