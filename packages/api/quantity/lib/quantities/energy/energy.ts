@@ -79,7 +79,7 @@ export class Energy extends ScalableQuantity<EnergyUnit, Energy, Energy> {
 
   static ZERO = new Energy(0, EnergyUnit.JOULE)
 
-  override divide(divisor: number): Energy
+  override divide(scalar: number): Energy
   override divide(rate: Rate): Energy
   override divide(value: number, unit: EnergyUnit): number
   override divide(energy: Energy): number

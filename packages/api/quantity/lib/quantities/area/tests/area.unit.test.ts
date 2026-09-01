@@ -2,6 +2,7 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { Distance } from '../../distance/distance.js'
 import { DistanceUnit } from '../../distance/distance-unit.enum.js'
+import { VolumeUnit } from '../../volume/volume-unit.enum.js'
 import { Area } from '../area.js'
 import { AreaUnit } from '../area-unit.enum.js'
 
@@ -21,6 +22,14 @@ void describe('Area class', () => {
       const result = area.divide(distance)
 
       expect(result.isEqualTo(200, DistanceUnit.METER)).toBe(true)
+    })
+
+    void it('multiplies areas by distances into volumes', () => {
+      const area = new Area(2, AreaUnit.SQUARE_METER)
+      const distance = new Distance(50, DistanceUnit.CENTIMETER)
+      const result = area.multiply(distance)
+
+      expect(result.isEqualTo(1, VolumeUnit.CUBIC_METER)).toBe(true)
     })
   })
 

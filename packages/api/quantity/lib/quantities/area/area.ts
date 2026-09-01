@@ -1,5 +1,7 @@
 import { Distance } from '../../quantities/distance/distance.js'
 import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
+import { Volume } from '../../quantities/volume/volume.js'
+import { VolumeUnit } from '../../quantities/volume/volume-unit.enum.js'
 import { Rate } from '../../rate/rate.js'
 import { ScalableQuantity } from '../../quantity.js'
 import { AreaUnit } from './area-unit.enum.js'
@@ -56,7 +58,18 @@ export class Area extends ScalableQuantity<AreaUnit, Area, Area> {
 
   static ZERO = new Area(0, AreaUnit.SQUARE_METER)
 
-  override divide (divisor: number): Area
+  override multiply (distance: Distance): Volume
+  override multiply (scalar: number): Area
+  override multiply (rate: Rate): Area
+  override multiply (multiplier: number | Rate | Distance): Area | Volume {
+    if (multiplier instanceof Distance) {
+      return new Volume(this.valueOf() * multiplier.valueOf(), VolumeUnit.CUBIC_METER)
+    }
+
+    return super.multiply(multiplier)
+  }
+
+  override divide (scalar: number): Area
   override divide (rate: Rate): Area
   override divide (value: number, unit: AreaUnit): number
   override divide (area: Area): number

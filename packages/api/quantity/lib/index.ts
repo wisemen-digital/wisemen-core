@@ -1,4 +1,5 @@
 export { Area, AreaUnit, AreaDto, AreaDtoBuilder, AreaUnitApiProperty, IsArea, AreaColumn } from './quantities/area/index.js'
+export { Volume, VolumeUnit, VolumeDto, VolumeDtoBuilder, VolumeUnitApiProperty, IsVolume, VolumeColumn } from './quantities/volume/index.js'
 export { Current, CurrentUnit, CurrentDto, CurrentDtoBuilder, CurrentUnitApiProperty, IsCurrent, CurrentColumn } from './quantities/current/index.js'
 export { Distance, DistanceUnit, DistanceDto, DistanceDtoBuilder, DistanceUnitApiProperty, IsDistance, DistanceColumn } from './quantities/distance/index.js'
 export { Duration, DurationUnit, DurationDto, DurationDtoBuilder, DurationUnitApiProperty, IsDuration, DurationColumn } from './quantities/duration/index.js'

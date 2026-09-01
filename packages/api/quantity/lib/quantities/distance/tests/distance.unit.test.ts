@@ -1,11 +1,13 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
+import { Area } from '../../area/area.js'
 import { AreaUnit } from '../../area/area-unit.enum.js'
 import { Distance } from '../distance.js'
 import { DistanceUnit } from '../distance-unit.enum.js'
 import { Duration } from '../../duration/duration.js'
 import { DurationUnit } from '../../duration/duration-unit.enum.js'
 import { SpeedUnit } from '../../speed/speed-unit.enum.js'
+import { VolumeUnit } from '../../volume/volume-unit.enum.js'
 
 void describe('Distance class', () => {
   void describe('Distance calculations', () => {
@@ -44,6 +46,14 @@ void describe('Distance class', () => {
       const area = width.multiply(height)
 
       expect(area.isEqualTo(10, AreaUnit.SQUARE_METER)).toBe(true)
+    })
+
+    void it('multiplies distances by areas into volumes', () => {
+      const distance = new Distance(2, DistanceUnit.METER)
+      const area = new Area(5000, AreaUnit.SQUARE_CENTIMETER)
+      const result = distance.multiply(area)
+
+      expect(result.isEqualTo(1, VolumeUnit.CUBIC_METER)).toBe(true)
     })
   
     void describe('cross quantity calculations', () => {
