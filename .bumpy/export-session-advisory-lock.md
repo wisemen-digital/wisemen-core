@@ -2,4 +2,5 @@
 "@wisemen/nestjs-typeorm": minor
 ---
 
-Export PostgreSQL session advisory locks
+Added PostgreSQL session-level advisory locks with blocking, non-blocking,
+exclusive, shared, single-key, and two-key support.

@@ -37,28 +37,50 @@ export class CreateUserUseCase {
 
 ### Run work exclusively across application instances with a PostgreSQL advisory lock
 
-Use `sessionAdvisoryLock` for work that only one database session may perform at
-a time, such as a scheduled import or cronjobs. It does not wait for a contended lock.
+Use `advisoryLock` for work that application instances must coordinate,
+such as a scheduled import or cron job. It supports blocking and non-blocking
+acquisition, exclusive and shared locks, and PostgreSQL's one- and two-key lock
+forms.
+
+Call it as `advisoryLock(dataSource, acquisition, mode, key, callback)` for a
+single key, or `advisoryLock(dataSource, acquisition, mode,
+namespace, key, callback)` for two keys.
 
 ```ts
-import { sessionAdvisoryLock } from '@wisemen/nestjs-typeorm'
+import { tryAdvisoryLock } from '@wisemen/nestjs-typeorm'
 
-const result = await sessionAdvisoryLock(this.dataSource, 42_001, async () => {
-  await this.importUsers()
-  return 'imported'
-})
+const result = await tryAdvisoryLock(
+  this.dataSource,
+  'exclusive',
+  42_001,
+  async () => {
+    await this.importUsers()
+    return 'imported'
+  }
+)
 
-if (result === null) {
+if (!result.acquired) {
   // Another instance is already doing this work.
   return
 }
+
+console.log(result.value)
 ```
 
-The callback is called only when the lock is acquired. The lock is released
-after the callback completes or throws. Use a stable safe-integer key that is
-unique to the operation, since advisory locks use a database-wide key space.
-Do not use `null` as the callback result when the caller needs to distinguish a
-successful result from lock contention.
+`tryAdvisoryLock` always uses non-blocking acquisition. The callback runs only
+when the lock is acquired. A contended lock returns `{ acquired: false }`; a
+successful callback returns `{ acquired: true, value }`, so `null` and
+`undefined` are safe callback values. Use `advisoryLock` with `'blocking'` to
+wait for the lock and return the callback value directly.
+
+Use `tryAdvisoryLock(dataSource, mode, key, callback)` for a non-blocking
+single-key lock, or `tryAdvisoryLock(dataSource, mode, namespace, key,
+callback)` for its two-key form. `advisoryLock` accepts the acquisition strategy
+as its second argument and the lock mode as its third. Use `'shared'` when
+concurrent holders may share the lock. Pass `namespace` and `key` as separate
+arguments for PostgreSQL's two-key form. Both keys must be signed 32-bit
+integers, and this form has a distinct key space from the single-key form. The
+lock is released after the callback completes or throws.
 
 ### Perform readonly queries through separate readonly connection. Use when use case does not modify any data.
 
