@@ -141,6 +141,25 @@ describe('Monetary validator tests', () => {
 
       expect(errors).toHaveLength(0)
     })
+
+    it('returns nested precision validation errors when precision is not an integer', async () => {
+      const dto = plainToInstance(MinTest, {
+        foo: {
+          amount: 1,
+          currency: Currency.EUR,
+          precision: 'x'
+        }
+      })
+
+      const errors = await validate(dto, {
+        whitelist: true,
+        forbidNonWhitelisted: true
+      })
+
+      expect(errors).toHaveLength(1)
+      expect(errors[0].children?.[0].property).toBe('precision')
+      expect(errors[0].children?.[0].constraints).toHaveProperty('isInt')
+    })
   })
 
   describe('IsMonetaryMaxAmountValidator', () => {
@@ -201,6 +220,25 @@ describe('Monetary validator tests', () => {
       })
 
       expect(errors).toHaveLength(0)
+    })
+
+    it('returns nested precision validation errors when precision is not an integer', async () => {
+      const dto = plainToInstance(MaxTest, {
+        foo: {
+          amount: 1,
+          currency: Currency.EUR,
+          precision: 'x'
+        }
+      })
+
+      const errors = await validate(dto, {
+        whitelist: true,
+        forbidNonWhitelisted: true
+      })
+
+      expect(errors).toHaveLength(1)
+      expect(errors[0].children?.[0].property).toBe('precision')
+      expect(errors[0].children?.[0].constraints).toHaveProperty('isInt')
     })
   })
 })

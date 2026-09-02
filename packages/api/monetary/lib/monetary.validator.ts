@@ -37,6 +37,16 @@ export function IsMonetary (options?: IsMonetaryOptions): PropertyDecorator {
   )
 }
 
+function isComparableMonetaryDto (value: MonetaryDto<Currency> | null | undefined): value is MonetaryDto<Currency> {
+  if (value == null) {
+    return false
+  }
+
+  return Number.isInteger(value.amount)
+    && typeof value.currency === 'string'
+    && Number.isInteger(value.precision)
+}
+
 class IsMonetaryCurrencyValidator implements ValidatorConstraintInterface {
   constructor (
     private allowedCurrencies?: Set<Currency>
@@ -87,12 +97,19 @@ class IsMonetaryMinValidator implements ValidatorConstraintInterface {
     if (this.min === undefined) {
       return true
     }
+    if (!isComparableMonetaryDto(monetaryDto)) {
+      return true
+    }
 
     return new Monetary(monetaryDto) >= this.min
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (!isComparableMonetaryDto(validationArguments?.value)) {
+      return `Monetary amount must be >= ${this.min?.toString()}`
+    }
+     
     const monetary = new Monetary(validationArguments?.value)
     return `Monetary ${monetary.toString()} must be >= ${this.min?.toString()}`
   }
@@ -110,12 +127,19 @@ class IsMonetaryMaxValidator implements ValidatorConstraintInterface {
     if (this.max === undefined) {
       return true
     }
+    if (!isComparableMonetaryDto(monetaryDto)) {
+      return true
+    }
 
     return new Monetary(monetaryDto) <= this.max
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (!isComparableMonetaryDto(validationArguments?.value)) {
+      return `Monetary amount must be <= ${this.max?.toString()}`
+    }
+     
     const monetary = new Monetary(validationArguments?.value)
     return `Monetary ${monetary.toString()} must be <= ${this.max?.toString()}`
   }
