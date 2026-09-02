@@ -25,10 +25,9 @@
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "@nestjs/core": "catalog:backend-peer"
-  },
-  "dependencies": {
-    "@permify/permify-node": "catalog:backend"
+    "@nestjs/core": "catalog:backend-peer",
+    "@wisemen/pgboss-nestjs-job": "workspace:^",
+    "@permify/permify-node": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",

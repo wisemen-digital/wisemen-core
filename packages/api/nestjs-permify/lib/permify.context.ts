@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-
 interface PermifyContextValue {
   /** The permify tenant id*/
   tenantId: string

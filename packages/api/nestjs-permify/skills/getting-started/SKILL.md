@@ -1,230 +1,152 @@
 ---
 name: getting-started
-description: Use when defining Typesense collections, collectors, and search queries in NestJS APIs.
+description: Use when configuring Permify authorization checks or queued Permify schema and tuple writes in a NestJS API.
 ---
 
-# @wisemen/nestjs-typesense - Getting Started
+# @wisemen/nestjs-permify - Getting Started
 
-Use `TypesenseModule.forRootAsync(...)` to register the client, define typed
-collections with `Typesense.collection(...)`, implement a
-`@RegisterTypesenseCollector(...)` provider to transform entities into search
-documents, and query through `TypesenseClient` with
-`Typesense.createSearchParamsBuilder(...)`.
+Use this package to create and inject a configured Permify gRPC client, perform
+context-aware permission checks, and process schema or tuple writes through
+pg-boss jobs.
 
-## Register The Module
+## Configure Permify Once
 
-Wrap the package module in a local app module and point `collectionsGlob` at
-the compiled `*.typesense-collection.js` files.
+Register `PermifyModule.forRootAsync(...)` in a module that your application
+can import wherever it needs authorization. Its factory returns the gRPC client
+configuration and optional client interceptors. The configuration passed as
+`client` must include the Permify endpoint and TLS settings.
 
 ```ts
-import { join } from 'node:path'
-import { Module } from '@nestjs/common'
+import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { TypesenseModule } from '@wisemen/nestjs-typesense'
+import {
+  createPermifyAccessTokenInterceptor,
+  PermifyModule
+} from '@wisemen/nestjs-permify'
 
+@Global()
 @Module({
-  imports: [TypesenseModule.forRootAsync({
-    inject: [ConfigService],
-    useFactory: (cfg: ConfigService) => ({
-      nodes: [{
-        host: cfg.getOrThrow('TYPESENSE_HOST'),
-        port: 8108,
-        protocol: 'http'
-      }],
-      apiKey: cfg.getOrThrow('TYPESENSE_KEY'),
-      collectionsGlob: join(process.cwd(), 'dist', '**', 'typesense', '**', '*.typesense-collection.js')
+  imports: [
+    PermifyModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        client: {
+          endpoint: config.getOrThrow('PERMIFY_ENDPOINT'),
+          insecure: true,
+          cert: null,
+          certChain: null,
+          pk: null,
+          interceptors: [
+            createPermifyAccessTokenInterceptor(config.getOrThrow('PERMIFY_TOKEN'))
+          ]
+        },
+        checkDepth: 20,
+        queueName: 'permify'
+      })
     })
-  })],
-  exports: [TypesenseModule]
+  ],
+  exports: [PermifyModule]
 })
-export class TypesenseClientModule {}
+export class AppPermifyModule {}
 ```
 
-If you keep collections in `src/**/typesense/*.typesense-collection.ts`, the
-default glob already matches the compiled files. Override `collectionsGlob`
-only when your app uses a different layout.
+Use the TLS values required by the deployed Permify endpoint; `insecure: true`
+is suitable only for a non-TLS connection. `queueName` assigns the pg-boss
+queue for schema and tuple write jobs.
 
-## Define A Collection
+## Perform Permission Checks
 
-Define one exported collection object per searchable document shape. Use
-`InferDocumentType<typeof Collection>` to derive the Typesense document type.
-
-```ts
-import { Typesense, type InferDocumentType } from '@wisemen/nestjs-typesense'
-
-export const ContactCollection = Typesense.collection('contact', {
-  id: Typesense.string().brand<ContactUuid>(),
-  isActive: Typesense.bool().optional(),
-  name: Typesense.string().sort().infix(),
-  email: Typesense.string().sort().optional(),
-  phone: Typesense.string().sort().optional(),
-  country: Typesense.string().optional(),
-  city: Typesense.string().optional(),
-  postalCode: Typesense.string().optional(),
-  streetName: Typesense.string().optional(),
-  streetNumber: Typesense.string().optional(),
-  unit: Typesense.string().optional(),
-  coordinates: Typesense.geopoint().optional()
-})
-
-export type ContactCollection = typeof ContactCollection
-export type TypesenseContact = InferDocumentType<typeof ContactCollection>
-```
-
-Use field flags deliberately:
-
-- `sort()` is required before `addSortOn(...)`.
-- `facet()` is required before `groupBy(...)`.
-- `infix()` enables infix search for that field.
-- `optional()` marks nullable or omitted document fields.
-- `reference(...)` links collections for join queries.
-
-Use `Typesense.createGeopoint(...)` and `Typesense.parseGeopoint(...)` when
-mapping coordinate values to and from geopoint fields.
-
-## Register A Collector
-
-Collectors are the bridge between your persistence model and Typesense
-documents. Register one provider per collection with
-`@RegisterTypesenseCollector(...)`.
+`Permify` reads the tenant and user from `PermifyContext`. Set that context at
+the request boundary before invoking `Permify.check(...)`.
 
 ```ts
-import { MoreThanOrEqual } from 'typeorm'
-import { AnyOrIgnore, InjectRepository, TypeOrmRepository } from '@wisemen/nestjs-typeorm'
-import { RegisterTypesenseCollector, Typesense, type TypesenseCollector } from '@wisemen/nestjs-typesense'
-import { Contact } from '#src/app/contact/entities/contact.entity.js'
+import { Injectable, NestMiddleware } from '@nestjs/common'
+import { PermifyContext } from '@wisemen/nestjs-permify'
 
-@RegisterTypesenseCollector(ContactCollection)
-export class ContactTypesenseCollector implements TypesenseCollector<ContactCollection> {
-  static readonly BATCH_SIZE = 10_000
+@Injectable()
+export class PermifyContextMiddleware implements NestMiddleware {
+  constructor (private permifyContext: PermifyContext) {}
 
-  constructor (
-    @InjectRepository(Contact) private contactRepository: TypeOrmRepository<Contact>
-  ) {}
-
-  transform (contacts: Contact[]): TypesenseContact[] {
-    return contacts.map(contact => ({
-      id: contact.uuid,
-      name: (contact.firstName ?? '') + ' ' + (contact.lastName ?? ''),
-      email: contact.email ?? undefined,
-      phone: contact.phone ?? undefined,
-      country: contact.address?.country ?? undefined,
-      city: contact.address?.city ?? undefined,
-      postalCode: contact.address?.postalCode ?? undefined,
-      streetName: contact.address?.streetName ?? undefined,
-      streetNumber: contact.address?.streetNumber ?? undefined,
-      unit: contact.address?.unit ?? undefined,
-      coordinates: Typesense.createGeopoint(contact.address?.coordinates),
-      isActive: contact.isActive ?? undefined
-    }))
-  }
-
-  fetch (uuids?: ContactUuid[]): AsyncGenerator<Contact[], void, void> {
-    return this.contactRepository.findByInBatches({
-      uuid: AnyOrIgnore(uuids)
-    }, ContactTypesenseCollector.BATCH_SIZE)
-  }
-
-  fetchChanged (since: Date): AsyncGenerator<Contact[], void, void> {
-    return this.contactRepository.findByInBatches({
-      updatedAt: MoreThanOrEqual(since)
-    }, ContactTypesenseCollector.BATCH_SIZE)
-  }
-
-  async* fetchRemoved (since: Date): AsyncGenerator<ContactUuid[], void, void> {
-    const contacts = this.contactRepository.findInBatches({
-      select: { uuid: true },
-      where: { deletedAt: MoreThanOrEqual(since) },
-      withDeleted: true
-    }, ContactTypesenseCollector.BATCH_SIZE)
-
-    for await (const batch of contacts) {
-      yield batch.map(contact => contact.uuid)
-    }
+  use (_request: unknown, _response: unknown, next: () => void): void {
+    this.permifyContext.run({
+      tenantId: 't1',
+      userId: 'user-123'
+    }, next)
   }
 }
 ```
 
-`import(...)` uses `fetch(...)`, `importChanged(...)` uses `fetchChanged(...)`,
-and `deleteRemoved(...)` uses `fetchRemoved(...)`. Keep these methods batch
-oriented and return ids from `fetchRemoved(...)`, not full entities.
-
-## Query A Collection
-
-Inject `TypesenseClient`, build typed query params, then call `search(...)`.
+Inject `Permify` into application services and check a permission against an
+entity. Keep tenant and authenticated-user resolution in application code; this
+package only carries those values through the request.
 
 ```ts
 import { Injectable } from '@nestjs/common'
-import { Typesense, TypesenseClient } from '@wisemen/nestjs-typesense'
-import { FilterOperator } from '@wisemen/nestjs-typesense/dist/params-builder/enums/typesense-filter-options.enum.js'
+import { Permify } from '@wisemen/nestjs-permify'
 
 @Injectable()
-export class ViewContactIndexUseCase {
-  constructor (
-    private typesense: TypesenseClient
-  ) {}
+export class ViewDocumentUseCase {
+  constructor (private permify: Permify) {}
 
-  async execute (query: ViewContactIndexQuery): Promise<ViewContactIndexResponse> {
-    const pb = Typesense.createSearchParamsBuilder(ContactCollection)
-      .withQuery(query.search)
-      .withLimit(query.pagination?.limit)
-      .withOffset(query.pagination?.offset)
-
-    if (query.filter?.isActive != null) {
-      pb.addFilterOn(
-        ContactCollection.isActive,
-        FilterOperator.EQUALS,
-        toBoolean(query.filter.isActive)
-      )
-    }
-
-    pb.addSearchOn(ContactCollection.name)
-      .addSearchOn(ContactCollection.email)
-      .addSearchOn(ContactCollection.phone)
-      .addSearchOn(ContactCollection.city)
-      .addSearchOn(ContactCollection.country)
-
-    if (query.sort != null) {
-      for (const sort of query.sort) {
-        if (sort.key === ViewContactIndexSortQueryKey.NAME) {
-          pb.addSortOn(ContactCollection.name, sort.order)
-        }
-      }
-    }
-
-    const result = await this.typesense.search(ContactCollection, pb.build())
-
-    return new ViewContactIndexResponse(result)
+  async execute (documentId: string): Promise<boolean> {
+    return await this.permify.check('view', 'document', documentId)
   }
 }
 ```
 
-The builder enforces field capabilities at compile time:
+## Queue Schema And Tuple Writes
 
-- `addSearchOn(...)` only accepts indexed fields.
-- `addFilterOn(...)` only accepts indexed fields and valid operators.
-- `addSortOn(...)` only accepts fields marked with `sort()`.
-- `groupBy(...)` only accepts fields marked with `facet()`.
+`PermifyQueueModule.forRootAsync(...)` intentionally requires the configured
+`PermifyClient` in its factory result. Import the module that provides the
+client, inject `PermifyClient`, and pass it through as `permifyClient`. This
+keeps queue workers tied to the same Permify configuration as the API.
 
-For cross-collection queries, use `innerJoin(...)`, `leftJoin(...)`, or
-`inverseJoin(...)` on fields declared with `reference(...)`.
+```ts
+import { Module } from '@nestjs/common'
+import {
+  PermifyClient,
+  PermifyQueueModule
+} from '@wisemen/nestjs-permify'
+import { AppPermifyModule } from './app-permify.module.js'
 
-## Import And Sync Documents
+@Module({
+  imports: [
+    PermifyQueueModule.forRootAsync({
+      imports: [AppPermifyModule],
+      inject: [PermifyClient],
+      useFactory: (permifyClient: PermifyClient) => ({
+        permifyClient
+      })
+    })
+  ]
+})
+export class AppPermifyQueueModule {}
+```
 
-Use `TypesenseClient` methods according to the data you already have:
+Schedule `WritePermifyTuplesJob` for `client.data.write(...)` payloads and
+`WritePermifySchemaJob` for `client.schema.write(...)` payloads. Use the
+application's `PgBossScheduler` to schedule the job; do not call the Permify
+client directly when the write should be handled asynchronously.
 
-- `import(collectionName, uuids?)`: fetch entities through the registered
-  collector and upsert them.
-- `importChanged(collectionName, since)`: reindex changed entities since a
-  timestamp.
-- `deleteRemoved(collectionName, since)`: remove deleted document ids reported
-  by the collector.
-- `importManually(collectionName, entities)`: transform already loaded entities
-  with the collector and upsert them.
-- `addDocuments(collectionOrName, documents)`: upsert already transformed
-  Typesense documents.
-- `truncateCollection(collectionOrName)`: remove every document from the
-  collection.
+```ts
+import { Injectable } from '@nestjs/common'
+import { PgBossScheduler } from '@wisemen/pgboss-nestjs-job'
+import { WritePermifyTuplesJob } from '@wisemen/nestjs-permify'
 
-In application code, trigger synchronization from domain events or jobs rather
-than from controllers directly.
+@Injectable()
+export class GrantDocumentAccessUseCase {
+  constructor (private jobScheduler: PgBossScheduler) {}
+
+  async execute (): Promise<void> {
+    await this.jobScheduler.scheduleJob(new WritePermifyTuplesJob({
+      tenantId: 't1',
+      metadata: { schemaVersion: 'schema-version' },
+      tuples: [],
+      attributes: []
+    }))
+  }
+}
+```
+
+The pg-boss worker must import the queue module so it discovers and executes
+the registered job handlers.

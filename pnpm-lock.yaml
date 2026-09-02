@@ -184,6 +184,9 @@ catalogs:
     '@opentelemetry/api-logs':
       specifier: 0.217.0
       version: 0.217.0
+    '@permify/permify-node':
+      specifier: 1.7.3
+      version: 1.7.3
     '@sentry/node':
       specifier: ^10.47.0
       version: 10.47.0
@@ -2242,6 +2245,43 @@ importers:
       eslint:
         specifier: catalog:lint-api
         version: 10.2.1(jiti@2.7.0)
+      oxlint:
+        specifier: catalog:lint-api
+        version: 1.59.0(oxlint-tsgolint@0.20.0)
+      oxlint-tsgolint:
+        specifier: catalog:lint-api
+        version: 0.20.0
+      typescript:
+        specifier: catalog:peer
+        version: 5.9.3
+
+  packages/api/nestjs-permify:
+    dependencies:
+      '@nestjs/common':
+        specifier: catalog:backend-peer
+        version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/core':
+        specifier: catalog:backend-peer
+        version: 11.1.28(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.28)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@permify/permify-node':
+        specifier: catalog:backend-peer
+        version: 1.7.3
+      '@wisemen/pgboss-nestjs-job':
+        specifier: workspace:^
+        version: link:../pgboss-nestjs-job
+    devDependencies:
+      '@types/node':
+        specifier: catalog:backend
+        version: 25.3.0
+      '@wisemen/eslint-config-nestjs':
+        specifier: workspace:*
+        version: link:../eslint-config-nestjs
+      eslint:
+        specifier: catalog:lint-api
+        version: 10.2.1(jiti@2.7.0)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
@@ -5845,6 +5885,9 @@ packages:
   '@borewit/text-codec@0.2.1':
     resolution: {integrity: sha512-k7vvKPbf7J2fZ5klGRD9AeKfUvojuZIQ3BT5u7Jfv+puwXkUBUT5PVyMDfJZpy30CBDXGMgw7fguK/lpOMBvgw==}
 
+  '@bufbuild/protobuf@2.14.0':
+    resolution: {integrity: sha512-C3UGsiCwSprE2NKIIFA3hCDlpXTMCAXRZuEVp88L1GY36Y41+rYL5fryE+nOFhp4p4JPQvdV8PQ4DWgHgeTE+w==}
+
   '@chromatic-com/storybook@5.0.2':
     resolution: {integrity: sha512-uLd5gyvcz8q83GI0rYWjml45ryO3ZJwZLretLEZvWFJ3UlFk5C5Km9cwRcKZgZp0F3zYwbb8nEe6PJdgA1eKxg==}
     engines: {node: '>=20.0.0', yarn: '>=1.22.18'}
@@ -8747,6 +8790,9 @@ packages:
       react: ^19.0.1 || ^19.1.2 || ^19.2.1
       react-dom: 19.2.7
 
+  '@permify/permify-node@1.7.3':
+    resolution: {integrity: sha512-Tj6LREOh7sK4jo6F+1s4b8YdkK6T+pz/YM8rhinJSwd1r2Og1dEjUfcuEZsKuzKcvT6i0clld8kJO1aDRWIyYw==}
+
   '@phun-ky/typeof@1.2.8':
     resolution: {integrity: sha512-7J6ca1tK0duM2BgVB+CuFMh3idlIVASOP2QvOCbNWDc6JnvjtKa9nufPoJQQ4xrwBonwgT1TIhRRcEtzdVgWsA==}
     engines: {node: ^20.9.0 || >=22.0.0, npm: '>=10.8.2'}
@@ -10733,6 +10779,9 @@ packages:
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
+
+  abort-controller-x@0.5.0:
+    resolution: {integrity: sha512-yTt9CI0x+nRfX6BFMenEGP8ooPvErGH6AbFz20C2IeOLIlDsrw/VHpgne3GsCEuTA410IiFiaLVFKmgM4bKEPQ==}
 
   abstract-logging@2.0.1:
     resolution: {integrity: sha512-2BjRTZxTPvheOvGbBslFSYOUkr+SjPtOnrLP33f+VIWLzezQpZcqVg7ja3L4dBXmzzgwT+a029jRx5PCi3JuiA==}
@@ -14241,6 +14290,12 @@ packages:
       sass:
         optional: true
 
+  nice-grpc-common@2.0.4:
+    resolution: {integrity: sha512-gOEXlD6ShXZMZ8k+49wm/bA2j1+3IKbEFV9WYREJcvZV4kM5L1KkILYTX9VYBzZF2OuYCe1wp8c82bQkvR0fHw==}
+
+  nice-grpc@2.1.17:
+    resolution: {integrity: sha512-pu9xYPlWSeqoYQOCqb2ftQqZi/P2DaI70PSuwnxvoyIRiilaOVtktyPe6LmuXegWB4Ic1sPuDGCnCCASbwzK0w==}
+
   nice-try@1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
 
@@ -15907,6 +15962,9 @@ packages:
   ts-dedent@2.2.0:
     resolution: {integrity: sha512-q5W7tVM71e2xjHZTlgfTDoPF/SmqKG5hddq9SzR49CH2hayqRKJtQ4mtRlSxKaJlR/+9rEM+mnBHf7I2/BQcpQ==}
     engines: {node: '>=6.10'}
+
+  ts-error@1.0.6:
+    resolution: {integrity: sha512-tLJxacIQUM82IR7JO1UUkKlYuUTmoY9HBJAmNWFzheSlDS5SPMcNIepejHJa4BpPQLAcbRhRf3GDJzyj6rbKvA==}
 
   ts-essentials@10.0.3:
     resolution: {integrity: sha512-/FrVAZ76JLTWxJOERk04fm8hYENDo0PWSP3YLQKxevLwWtxemGcl5JJEzN4iqfDlRve0ckyfFaOBu4xbNH/wZw==}
@@ -18297,6 +18355,8 @@ snapshots:
       citty: 0.1.6
 
   '@borewit/text-codec@0.2.1': {}
+
+  '@bufbuild/protobuf@2.14.0': {}
 
   '@chromatic-com/storybook@5.0.2(storybook@10.3.0(@testing-library/dom@10.4.1)(prettier@3.9.6)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))':
     dependencies:
@@ -21450,6 +21510,14 @@ snapshots:
       - supports-color
       - typescript
 
+  '@permify/permify-node@1.7.3':
+    dependencies:
+      '@bufbuild/protobuf': 2.14.0
+      '@grpc/grpc-js': 1.14.4
+      long: 5.3.2
+      nice-grpc: 2.1.17
+      nice-grpc-common: 2.0.4
+
   '@phun-ky/typeof@1.2.8': {}
 
   '@pinojs/redact@0.4.0': {}
@@ -23797,6 +23865,8 @@ snapshots:
       - supports-color
 
   abbrev@2.0.0: {}
+
+  abort-controller-x@0.5.0: {}
 
   abstract-logging@2.0.1: {}
 
@@ -27818,6 +27888,16 @@ snapshots:
       - '@types/node'
       - babel-plugin-macros
 
+  nice-grpc-common@2.0.4:
+    dependencies:
+      ts-error: 1.0.6
+
+  nice-grpc@2.1.17:
+    dependencies:
+      '@grpc/grpc-js': 1.14.4
+      abort-controller-x: 0.5.0
+      nice-grpc-common: 2.0.4
+
   nice-try@1.0.5: {}
 
   node-addon-api@7.1.1:
@@ -29831,6 +29911,8 @@ snapshots:
       typescript: 5.9.3
 
   ts-dedent@2.2.0: {}
+
+  ts-error@1.0.6: {}
 
   ts-essentials@10.0.3(typescript@5.9.3):
     optionalDependencies:

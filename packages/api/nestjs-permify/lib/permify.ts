@@ -50,7 +50,8 @@ export class Permify {
    * when access is not allowed.
    */
   async checkOrFail (permission: string, entity: string, id: string): Promise<void> {
-    if(!this.check(permission, entity, id)) {
+    const canAccess = await this.check(permission, entity, id)
+    if(!canAccess) {
       throw new NotFoundException() 
     }
   }

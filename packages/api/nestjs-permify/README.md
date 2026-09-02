@@ -1,230 +1,134 @@
-# @wisemen/nestjs-feature-flags
+# @wisemen/nestjs-permify
 
-Feature flags for NestJS applications backed by OpenFeature and Go Feature
-Flag.
+NestJS integration for [Permify](https://permify.co/). It provides a configured
+gRPC client, a request-scoped authorization context, a small permission-check
+service, and pg-boss jobs for asynchronous schema and tuple writes.
 
-## Overview
+## Install
 
-This package provides:
-
-- typed flag definitions via `createFlag(...)`
-- NestJS module registration through `FeatureFlagModule`
-- flag evaluation through `FeatureFlags`
-- request-scoped evaluation context through `FeatureFlagContext`
-- boolean route guards through `RequireFlag(...)`
-- config synchronization through `FeatureFlags.synchronizeConfig(...)`
-- test overrides through `FeatureFlagsStub`
-
-## Define Flags
-
-Define flags in exported `*.flag.ts` files so they can be discovered by the
-module `flagsGlob`.
-
-```ts
-import { createFlag } from '@wisemen/nestjs-feature-flags'
-
-export const SearchCollectionsFlag = createFlag({
-  type: 'boolean',
-  defaultValue: true,
-  name: 'global_search'
-})
+```bash
+pnpm add @wisemen/nestjs-permify @permify/permify-node
 ```
 
-```ts
-import { createFlag } from '@wisemen/nestjs-feature-flags'
-import { MailProvider } from '#src/modules/mail/enums/mail-provider.enum.js'
+For queued writes, also configure `@wisemen/pgboss-nestjs-job` in the
+application's worker and scheduler.
 
-export const MailProviderFlag = createFlag({
-  type: 'string',
-  enum: MailProvider,
-  defaultValue: MailProvider.SCALEWAY,
-  name: 'mail_provider'
-})
-```
+## Configure The Client
 
-## Register The Module
-
-Wrap the package module in a local app module so the rest of the application
-imports a single feature-flag module.
+Register `PermifyModule` once and re-export it from an application module.
 
 ```ts
-import { join } from 'node:path'
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
-  EvaluationType,
-  FeatureFlagModule as FlagModule,
-  type FeatureFlagModuleOptions
-} from '@wisemen/nestjs-feature-flags'
-import { SyncFeatureFlagConfigModule } from '#src/modules/feature-flag/use-cases/sync-feature-flag-config/sync-feature-flag-config.module.js'
+  createPermifyAccessTokenInterceptor,
+  PermifyModule
+} from '@wisemen/nestjs-permify'
 
 @Global()
 @Module({
   imports: [
-    SyncFeatureFlagConfigModule,
-    FlagModule.forRootAsync({
+    PermifyModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (cfg: ConfigService): FeatureFlagModuleOptions => {
-        const endpoint = cfg.get<string>('GO_FEATURE_FLAG_URI')?.trim()
-        const flagsGlob = join(process.cwd(), 'dist', '**', '*.flag.js')
-
-        if (endpoint === undefined) {
-          return { flagsGlob }
-        }
-
-        return {
-          flagsGlob,
-          defaultProvider: {
-            apiKey: cfg.get<string>('GO_FEATURE_FLAG_API_KEY')?.trim(),
-            endpoint,
-            evaluationType: EvaluationType.InProcess,
-            flagChangePollingIntervalMs: 30_000
-          }
-        }
-      }
+      useFactory: (config: ConfigService) => ({
+        client: {
+          endpoint: config.getOrThrow('PERMIFY_ENDPOINT'),
+          insecure: true,
+          cert: null,
+          certChain: null,
+          pk: null,
+          interceptors: [
+            createPermifyAccessTokenInterceptor(config.getOrThrow('PERMIFY_TOKEN'))
+          ]
+        },
+        checkDepth: 20,
+        queueName: 'permify'
+      })
     })
   ],
-  exports: [FlagModule]
+  exports: [PermifyModule]
 })
-export class FeatureFlagModule {}
+export class AppPermifyModule {}
 ```
 
-If `defaultProvider` is omitted, flag evaluation falls back to the default
-values defined in code.
+Set `insecure`, `cert`, `certChain`, and `pk` for the TLS mode required by the
+Permify endpoint. `checkDepth` defaults to `20`. `queueName` is the pg-boss
+queue assigned to the schema and tuple write jobs.
 
-## Register The TypeORM Entity
+## Check Permissions
 
-If the application synchronizes flag config into the database, include
-`FeatureFlagEntity` in the datasource entities.
-
-```ts
-import { FeatureFlagEntity } from '@wisemen/nestjs-feature-flags'
-
-entities: ['dist/src/**/*.entity.js', FeatureFlagEntity]
-```
-
-## Set Request Context
-
-Set the OpenFeature transaction context once in middleware, then evaluate flags
-later without passing a context object around.
+Set the current tenant and user in `PermifyContext` at the request boundary,
+then inject `Permify` into a service.
 
 ```ts
-import { Injectable, type NestMiddleware } from '@nestjs/common'
-import type { FastifyReply, FastifyRequest } from 'fastify'
-import { FeatureFlagContext } from '@wisemen/nestjs-feature-flags'
-import { AuthorizationResolver } from '#src/modules/auth/services/authorization-resolver.js'
-import { AuthContext } from '#src/modules/auth/auth.context.js'
+import { Injectable, NestMiddleware } from '@nestjs/common'
+import { Permify, PermifyContext } from '@wisemen/nestjs-permify'
 
 @Injectable()
-export class AuthMiddleware implements NestMiddleware {
-  constructor(
-    private authContext: AuthContext,
-    private flagContext: FeatureFlagContext,
-    private authResolver: AuthorizationResolver
-  ) {}
+export class PermifyContextMiddleware implements NestMiddleware {
+  constructor (private permifyContext: PermifyContext) {}
 
-  async use(req: FastifyRequest, _res: FastifyReply, next: () => void): Promise<void> {
-    const auth = await this.authResolver.fromAuthorization(req.headers.authorization)
-    const cb = () => this.flagContext.run({ userUuid: auth.userUuid }, next)
-
-    this.authContext.runWithAuthorization(auth, cb)
+  use (_request: unknown, _response: unknown, next: () => void): void {
+    this.permifyContext.run({ tenantId: 't1', userId: 'user-123' }, next)
   }
 }
-```
-
-## Evaluate Flags
-
-After the middleware sets the context, inject `FeatureFlags` and call `get(...)`
-directly.
-
-```ts
-import { ConfigService } from '@nestjs/config'
-import { FeatureFlags } from '@wisemen/nestjs-feature-flags'
-import { MailProvider } from '#src/modules/mail/enums/mail-provider.enum.js'
-import { MailProviderFlag } from './mail-provider.flag.js'
-
-export async function mailClientFactory(
-  cfg: ConfigService,
-  flags: FeatureFlags
-): Promise<MailClient> {
-  const provider = await flags.get(MailProviderFlag)
-
-  switch (provider) {
-    case MailProvider.SCALEWAY:
-      return new ScalewayMailClient(cfg)
-    case MailProvider.SEND_GRID:
-      return new SendGridMailClient(cfg)
-    default:
-      exhaustiveCheck(provider)
-  }
-}
-```
-
-You can also pass an explicit evaluation context to `get(...)` when needed.
-
-## Guard Controllers
-
-```ts
-import { Controller, Get } from '@nestjs/common'
-import { RequireFlag } from '@wisemen/nestjs-feature-flags'
-import { SearchCollectionsFlag } from './search-collections.flag.js'
-
-@Controller('search-collections')
-export class SearchCollectionsController {
-  @Get()
-  @RequireFlag(SearchCollectionsFlag)
-  async index(): Promise<void> {}
-}
-```
-
-`RequireFlag(...)` only accepts boolean flags.
-
-## Synchronize Flag Config
-
-Use `FeatureFlags.synchronizeConfig(...)` from an app use case or scheduled job
-to upsert the registered flag definitions into the feature flag store.
-
-```ts
-import { Injectable } from '@nestjs/common'
-import { FeatureFlags } from '@wisemen/nestjs-feature-flags'
-import { DataSource } from 'typeorm'
 
 @Injectable()
-export class SyncFeatureFlagConfigUseCase {
-  constructor(
-    private dataSource: DataSource,
-    private flags: FeatureFlags
-  ) {}
+export class ViewDocumentUseCase {
+  constructor (private permify: Permify) {}
 
-  async execute(): Promise<void> {
-    await this.flags.synchronizeConfig(this.dataSource)
+  async execute (documentId: string): Promise<boolean> {
+    return await this.permify.check('view', 'document', documentId)
   }
 }
 ```
 
-## Test Overrides
+## Queue Writes
 
-Create one `FeatureFlagsStub` from the Nest application container and expose it
-through test setup.
-
-```ts
-import { FeatureFlags, FeatureFlagsStub } from '@wisemen/nestjs-feature-flags'
-
-export class TestSetup {
-  private flagsStub: FeatureFlagsStub
-
-  private async initialize(): Promise<void> {
-    const flags = this.app.get(FeatureFlags, { strict: false })
-    this.flagsStub = new FeatureFlagsStub(flags)
-  }
-
-  get flags(): FeatureFlagsStub {
-    return this.flagsStub
-  }
-}
-```
+The queue module requires the exact configured `PermifyClient`. Import the
+module that exports it, inject the client into the async factory, and return it.
 
 ```ts
-setup.flags.mockFlag(SearchCollectionsFlag, true)
-setup.flags.mockFlag(MailProviderFlag, MailProvider.SEND_GRID)
+import { Module } from '@nestjs/common'
+import { PermifyClient, PermifyQueueModule } from '@wisemen/nestjs-permify'
+import { AppPermifyModule } from './app-permify.module.js'
+
+@Module({
+  imports: [
+    PermifyQueueModule.forRootAsync({
+      imports: [AppPermifyModule],
+      inject: [PermifyClient],
+      useFactory: (permifyClient: PermifyClient) => ({
+        permifyClient
+      })
+    })
+  ]
+})
+export class AppPermifyQueueModule {}
 ```
+
+Schedule the exported jobs through `PgBossScheduler`:
+
+```ts
+import { PgBossScheduler } from '@wisemen/pgboss-nestjs-job'
+import {
+  WritePermifySchemaJob,
+  WritePermifyTuplesJob
+} from '@wisemen/nestjs-permify'
+
+await jobScheduler.scheduleJob(new WritePermifySchemaJob({
+  tenantId: 't1',
+  schema: 'entity user {}'
+}))
+
+await jobScheduler.scheduleJob(new WritePermifyTuplesJob({
+  tenantId: 't1',
+  metadata: { schemaVersion: 'schema-version' },
+  tuples: [],
+  attributes: []
+}))
+```
+
+`WritePermifySchemaJob` calls `client.schema.write(...)`; `WritePermifyTuplesJob`
+calls `client.data.write(...)`. Import the queue module into the pg-boss worker
+application so its handlers are discovered.
