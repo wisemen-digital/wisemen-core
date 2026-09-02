@@ -1,5 +1,5 @@
 ---
-"@wisemen/monetary": minor
+"@wisemen/monetary": major
 ---
 
 monetary validator accept monetary class instance for min and max instead of number
