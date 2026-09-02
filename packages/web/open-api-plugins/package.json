@@ -1,7 +1,7 @@
 {
   "name": "@wisemen/open-api-plugins",
   "type": "module",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "OpenAPI plugins for code generation",
   "license": "SEE LICENSE IN LICENSE.md",
   "homepage": "https://github.com/wisemen-digital/wisemen-core",

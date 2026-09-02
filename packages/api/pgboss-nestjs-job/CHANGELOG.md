@@ -1,5 +1,66 @@
 # @wisemen/pgboss-nestjs-job
 
+
+
+## 5.4.1
+<sub>2026-09-01</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.27
+
+## 5.4.0
+<sub>2026-08-27</sub>
+
+- [#1625](https://github.com/wisemen-digital/wisemen-core/pull/1625)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add pgboss jobs api endpoints to view jobs
+
+## 5.3.0
+<sub>2026-08-27</sub>
+
+- Add a configurable API module for monitoring PgBoss jobs.
+
+
+
+
+
+
+
+
+## 5.2.0
+<sub>2026-08-27</sub>
+
+- [#1613](https://github.com/wisemen-digital/wisemen-core/pull/1613)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Add configurable PgBoss metrics module
+- [#1613](https://github.com/wisemen-digital/wisemen-core/pull/1613)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add pgboss otel metrics
+
+## 5.1.0
+<sub>2026-08-26</sub>
+
+- *(minor)* Updated dependency `@wisemen/opentelemetry` v0.3.0
+
+## 5.0.3
+<sub>2026-08-02</sub>
+
+- [#1539](https://github.com/wisemen-digital/wisemen-core/pull/1539)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: allow multiple types of queues to be inserted in one scheduler context
+
+## 5.0.2
+<sub>2026-07-28</sub>
+
+- [#1506](https://github.com/wisemen-digital/wisemen-core/pull/1506)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: remove sentry dependency and move internal packages to peer dependency
+
+## 5.0.1
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 5.0.0
+<sub>2026-07-24</sub>
+
+- [#1490](https://github.com/wisemen-digital/wisemen-core/pull/1490)  *(major)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove serializable constraint from base job data
+- [#1490](https://github.com/wisemen-digital/wisemen-core/pull/1490)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: remove base job data
+
+## 4.0.10
+<sub>2026-07-13</sub>
+
+- [#1417](https://github.com/wisemen-digital/wisemen-core/pull/1417)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added a shared NestJS provider explorer package and migrated existing packages to use it.
+
 ## 4.0.9
 
 ### Patch Changes

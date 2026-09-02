@@ -1,5 +1,53 @@
 # @wisemen/opentelemetry
 
+
+
+
+
+
+
+
+
+## 0.3.1
+<sub>2026-08-27</sub>
+
+- [#1621](https://github.com/wisemen-digital/wisemen-core/pull/1621)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add an optional `shouldExportSpan` callback to filter completed spans before they are queued for export.
+
+## 0.3.0
+<sub>2026-08-26</sub>
+
+- [#1610](https://github.com/wisemen-digital/wisemen-core/pull/1610)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Added explicit OpenTelemetry tracing, metrics, and SigNoz exporter configuration helpers.
+
+## 0.2.8
+<sub>2026-08-07</sub>
+
+- [#1563](https://github.com/wisemen-digital/wisemen-core/pull/1563)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - release @wisemen/nestjs-throttler
+
+## 0.2.7
+<sub>2026-07-29</sub>
+
+- [#1519](https://github.com/wisemen-digital/wisemen-core/pull/1519)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added correct semantic convention and added more error options
+
+## 0.2.6
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.2.5
+<sub>2026-07-23</sub>
+
+- [#1477](https://github.com/wisemen-digital/wisemen-core/pull/1477)  *(patch)* Thanks [@daanpersoons](https://github.com/daanpersoons)! - drop Redis key from span name to prevent cardinality explosion
+
+## 0.2.4
+<sub>2026-07-17</sub>
+
+- [#1399](https://github.com/wisemen-digital/wisemen-core/pull/1399)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add Nestjs otel logger
+
+## 0.2.3
+<sub>2026-06-30</sub>
+
+- [#1332](https://github.com/wisemen-digital/wisemen-core/pull/1332)  *(patch)* Thanks [@sander-coemans](https://github.com/sander-coemans)! - Added UniciInstrumentation for requests using fetch api
+
 ## 0.2.2
 
 ### Patch Changes

@@ -126,8 +126,8 @@ export const badgeVariants = tv({
     {
       class: {
         base: `
-          border-gray-400
-          dark:border-gray-600
+          border-gray-200
+          dark:border-gray-800
         `,
         dot: 'bg-gray-500',
         icon: `
@@ -139,8 +139,8 @@ export const badgeVariants = tv({
           dark:text-gray-300
         `,
         separator: `
-          bg-gray-400
-          dark:bg-gray-600
+          bg-gray-200
+          dark:bg-gray-800
         `,
       },
       color: 'gray',
@@ -159,11 +159,17 @@ export const badgeVariants = tv({
     },
     {
       class: {
-        base: `border-fg-primary/5 bg-fg-primary/5`,
-        dot: 'bg-fg-primary/85',
-        icon: `text-fg-primary/85`,
-        label: `text-fg-primary/85`,
-        separator: `bg-fg-primary/85`,
+        base: `
+          border-fg-secondary/4 bg-fg-secondary/4
+          dark:border-fg-secondary/5 dark:bg-fg-secondary/5
+        `,
+        dot: 'bg-fg-secondary/85',
+        icon: `text-fg-secondary/85`,
+        label: `text-fg-secondary/85`,
+        separator: `
+          bg-fg-secondary/4
+          dark:bg-fg-secondary/5
+        `,
       },
       color: 'gray',
       variant: 'translucent',
@@ -464,6 +470,41 @@ export const badgeVariants = tv({
       variant: 'translucent',
     },
 
+    // neutral — same look across all variants
+    {
+      class: {
+        base: 'border-secondary bg-primary',
+        dot: 'bg-fg-secondary',
+        icon: 'text-primary',
+        label: 'text-primary',
+        separator: 'bg-secondary',
+      },
+      color: 'neutral',
+      variant: 'outline',
+    },
+    {
+      class: {
+        base: 'border-secondary bg-primary',
+        dot: 'bg-fg-secondary',
+        icon: 'text-primary',
+        label: 'text-primary',
+        separator: 'bg-secondary',
+      },
+      color: 'neutral',
+      variant: 'solid',
+    },
+    {
+      class: {
+        base: 'border-secondary bg-primary',
+        dot: 'bg-fg-secondary',
+        icon: 'text-primary',
+        label: 'text-primary',
+        separator: 'bg-secondary',
+      },
+      color: 'neutral',
+      variant: 'translucent',
+    },
+
     // warning
     {
       class: {
@@ -526,11 +567,14 @@ export const badgeVariants = tv({
   slots: {
     actionsButton: '',
     actionsIcon: '',
-    base: 'group inline-flex items-center gap-sm overflow-hidden border',
+    base: `
+      group inline-flex items-center gap-sm overflow-hidden border
+      data-disabled:pointer-events-none data-disabled:opacity-50
+    `,
     dot: 'rounded-full',
     icon: '',
     label: 'font-medium',
-    separator: 'mx-xs',
+    separator: '',
   },
   variants: {
     size: {
@@ -541,6 +585,7 @@ export const badgeVariants = tv({
         dot: 'size-1.5',
         icon: 'size-4',
         label: 'text-xs',
+        separator: 'mx-xs',
       },
       md: {
         actionsButton: 'mr-xs p-xxs',
@@ -549,6 +594,7 @@ export const badgeVariants = tv({
         dot: 'size-1.5',
         icon: 'size-3',
         label: 'text-xxs',
+        separator: 'mx-xs',
       },
       sm: {
         actionsButton: 'mr-xxs p-xxs',
@@ -557,6 +603,7 @@ export const badgeVariants = tv({
         dot: 'size-1',
         icon: 'size-3',
         label: 'text-xxs',
+        separator: 'mx-none',
       },
     },
 
@@ -566,6 +613,7 @@ export const badgeVariants = tv({
       error: {},
       gray: {},
       moss: {},
+      neutral: {},
       pink: {},
       purple: {},
       success: {},
@@ -592,3 +640,52 @@ export const badgeVariants = tv({
 })
 
 export type BadgeVariants = ReturnType<typeof badgeVariants>
+
+/**
+ * A standalone icon color variant, kept separate from `badgeVariants` because its
+ * `color`/`variant` compound variants would always win over an `icon` slot class set by a
+ * plain variant axis (tailwind-variants applies compound variants after variants). Mirrors
+ * `dotVariants` in `ui/dot/dot.style.ts`: a flat `color` axis with no compound variants to fight.
+ */
+export const badgeIconVariants = tv({
+  variants: {
+    color: {
+      blue: `
+        text-blue-400
+        dark:text-blue-500
+      `,
+      brand: `
+        text-brand-400
+        dark:text-brand-500
+      `,
+      error: `
+        text-error-400
+        dark:text-error-500
+      `,
+      gray: 'text-fg-secondary/85',
+      moss: `
+        text-moss-400
+        dark:text-moss-500
+      `,
+      neutral: 'text-primary',
+      pink: `
+        text-pink-400
+        dark:text-pink-500
+      `,
+      purple: `
+        text-purple-400
+        dark:text-purple-500
+      `,
+      success: `
+        text-success-400
+        dark:text-success-500
+      `,
+      warning: `
+        text-warning-400
+        dark:text-warning-500
+      `,
+    },
+  },
+})
+
+export type BadgeIconVariants = ReturnType<typeof badgeIconVariants>

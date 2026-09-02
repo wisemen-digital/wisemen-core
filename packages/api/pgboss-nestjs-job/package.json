@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/pgboss-nestjs-job",
-  "version": "4.0.9",
+  "version": "5.4.1",
   "publishConfig": {
     "access": "public"
   },
@@ -30,21 +30,28 @@
   },
   "dependencies": {
     "pg-boss": "catalog:backend",
-    "@wisemen/nestjs-typeorm": "workspace:*",
-    "@wisemen/opentelemetry": "workspace:*"
+    "@wisemen/pagination": "workspace:^",
+    "@wisemen/nestjs-provider-explorer": "workspace:^"
   },
   "peerDependencies": {
+    "@nestjs/swagger": "catalog:backend-peer",
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/decorators": "workspace:^",
+    "@wisemen/nestjs-typeorm": "workspace:^",
+    "@wisemen/opentelemetry": "workspace:^",
+    "@wisemen/validators": "workspace:^",
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
-    "@sentry/nestjs": "catalog:backend-peer",
     "colors": "catalog:backend-peer",
     "rxjs": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",
-    "class-transformer": "catalog:backend-peer"
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
+    "reflect-metadata": "catalog:backend-peer"
   },
   "devDependencies": {
-    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@wisemen/eslint-config-nestjs": "workspace:^",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",

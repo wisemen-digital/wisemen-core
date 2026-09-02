@@ -22,14 +22,31 @@ import {
 import { useI18n } from 'vue-i18n'
 
 import type { TableColumnSize } from '@/ui/table/types/table.type'
-import { TableUtil } from '@/ui/table/utils/table.util'
+import {
+  CHECKBOX_COLUMN_WIDTH,
+  TableUtil,
+} from '@/ui/table/utils/table.util'
 
-function buildManualTemplate(widths: number[], fittingIndex: number | null): string {
+function sizeToPixels(size: TableColumnSize['max'] | TableColumnSize['min'], role: 'max' | 'min'): number {
+  if (size === 'min-content' || size === 'auto') {
+    return role === 'min' ? 0 : Infinity
+  }
+
+  if (size.endsWith('rem')) {
+    return Number.parseFloat(size) * Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+  }
+
+  return role === 'min' ? 0 : Infinity
+}
+
+function buildManualTemplate(widths: number[], fittingIndex: number | null, hasCheckboxColumn: boolean): string {
   const columns = widths
     .map((w, i) => (i === fittingIndex ? 'max-content' : `${w}px`))
     .join(' ')
 
-  return `${columns} minmax(min-content, auto) min-content`
+  const base = `${columns} minmax(min-content, auto) min-content`
+
+  return hasCheckboxColumn ? `${CHECKBOX_COLUMN_WIDTH} ${base}` : base
 }
 
 export function useTableColumnWidths(
@@ -38,6 +55,9 @@ export function useTableColumnWidths(
   isInitialized: ComputedRef<boolean>,
   actionGroup: ComputedRef<ActionGroup | null>,
   isColumnResizeDisabled: ComputedRef<boolean>,
+  isSelectable: ComputedRef<boolean>,
+  hasActiveSearch: ComputedRef<boolean>,
+  activeFilterCount: ComputedRef<number>,
 ) {
   const frozenTemplate = ref<string | null>(null)
   const manualWidths = ref<number[] | null>(null)
@@ -50,14 +70,14 @@ export function useTableColumnWidths(
 
   const gridTemplateColumns = computed<string>(() => {
     if (manualWidths.value !== null) {
-      return buildManualTemplate(manualWidths.value, fittingColumnIndex.value)
+      return buildManualTemplate(manualWidths.value, fittingColumnIndex.value, isSelectable.value)
     }
 
     return frozenTemplate.value ?? buildFluidTemplate()
   })
 
   function buildFluidTemplate(): string {
-    return TableUtil.columnSizesToGridTemplateColumns(columnSizes.value, true)
+    return TableUtil.columnSizesToGridTemplateColumns(columnSizes.value, true, isSelectable.value)
   }
 
   watch([
@@ -72,7 +92,36 @@ export function useTableColumnWidths(
       return
     }
 
-    captureComputedTemplate(el)
+    // Immediately apply max-content so the first render uses header widths instead
+    // of the narrow fluid template, preventing the "truncated → expands" flash.
+    const headerCells = getResizableHeaderCells()
+
+    if (headerCells.length > 0) {
+      const totalCells = headerCells.length + 2
+
+      frozenTemplate.value = Array.from({
+        length: totalCells,
+      }).fill('max-content').join(' ')
+    }
+
+    // Defer the final measurement to the next macrotask so the virtual scroller's
+    // ResizeObserver has time to measure the container and render visible rows.
+    // The frozenTemplate above ensures no truncation during this brief wait.
+    setTimeout(() => {
+      if (isInitialized.value && gridEl.value !== null) {
+        fitAllColumnsToContent(getResizableHeaderCells())
+      }
+    }, 0)
+  }, {
+    flush: 'post',
+  })
+
+  watch([
+    hasActiveSearch,
+    activeFilterCount,
+  ], () => {
+    manualWidths.value = null
+    frozenTemplate.value = null
   })
 
   let lastContainerWidth = 0
@@ -109,11 +158,25 @@ export function useTableColumnWidths(
     resizingColumnIndex.value = null
   })
 
+  function clampWidth(columnIndex: number, width: number): number {
+    const size = columnSizes.value[columnIndex]
+
+    if (size === undefined) {
+      return width
+    }
+
+    const min = sizeToPixels(size.min, 'min')
+    const max = sizeToPixels(size.max, 'max')
+
+    return Math.min(max, Math.max(min, width))
+  }
+
   function snapshotWidths(cellEl: HTMLElement): number[] {
     const siblings = Array.from(cellEl.parentElement?.children ?? []) as HTMLElement[]
+    const start = isSelectable.value ? 1 : 0
 
     return siblings
-      .slice(0, columnSizes.value.length - 1)
+      .slice(start, start + columnSizes.value.length - 1)
       .map((el) => el.getBoundingClientRect().width)
   }
 
@@ -132,7 +195,7 @@ export function useTableColumnWidths(
     }
 
     const delta = e.clientX - resizeStartX.value
-    const updatedWidth = Math.max(50, resizeStartWidth.value + delta)
+    const updatedWidth = clampWidth(resizingColumnIndex.value, resizeStartWidth.value + delta)
     const updated = [
       ...manualWidths.value,
     ]
@@ -158,7 +221,7 @@ export function useTableColumnWidths(
       ...manualWidths.value,
     ]
 
-    updated[columnIndex] = width
+    updated[columnIndex] = clampWidth(columnIndex, width)
     manualWidths.value = updated
     fittingColumnIndex.value = null
   }
@@ -176,9 +239,9 @@ export function useTableColumnWidths(
       length: totalCells,
     }).fill('max-content').join(' ')
 
-    const measuredWidths = headerCells.map((cell) => cell.getBoundingClientRect().width)
+    const measuredWidths = headerCells.map((cell, i) => clampWidth(i, cell.getBoundingClientRect().width))
 
-    el.style.gridTemplateColumns = buildManualTemplate(measuredWidths, null)
+    el.style.gridTemplateColumns = buildManualTemplate(measuredWidths, null, isSelectable.value)
     manualWidths.value = measuredWidths
   }
 
@@ -199,7 +262,9 @@ export function useTableColumnWidths(
       return []
     }
 
-    return Array.from(headerRow.children).slice(0, columnSizes.value.length - 1) as HTMLElement[]
+    const start = isSelectable.value ? 1 : 0
+
+    return Array.from(headerRow.children).slice(start, start + columnSizes.value.length - 1) as HTMLElement[]
   }
 
   const autoFitColumnsAction: Action = createAction({

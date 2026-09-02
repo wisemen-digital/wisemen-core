@@ -101,6 +101,87 @@ describe('PlainDate manipulation', () => {
       expect(new DayjsPlainDate('2024-01-01').add(1, 'week').isSame(new DayjsPlainDate('2024-01-08'))).toBe(true)
     })
 
+    it('startOf isoWeek returns the monday of the same ISO week', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const startOfIsoWeek = date.startOf('isoWeek')
+
+      expect(startOfIsoWeek.isSame(new DayjsPlainDate('2024-12-30'))).toBe(true)
+      expect(startOfIsoWeek.isoWeekday()).toBe(1)
+      expect(startOfIsoWeek.isoWeek()).toBe(date.isoWeek())
+    })
+
+    it('endOf isoWeek returns the sunday of the same ISO week', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const endOfIsoWeek = date.endOf('isoWeek')
+
+      expect(endOfIsoWeek.isSame(new DayjsPlainDate('2025-01-05'))).toBe(true)
+      expect(endOfIsoWeek.isoWeekday()).toBe(7)
+      expect(endOfIsoWeek.isoWeek()).toBe(date.isoWeek())
+    })
+
+    it('isoWeekday(day) changes the date to the requested ISO weekday within the same ISO week', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const monday = date.isoWeekday(1)
+      const sunday = date.isoWeekday(7)
+
+      expect(monday.isSame(new DayjsPlainDate('2024-12-30'))).toBe(true)
+      expect(sunday.isSame(new DayjsPlainDate('2025-01-05'))).toBe(true)
+      expect(monday.isoWeek()).toBe(date.isoWeek())
+      expect(sunday.isoWeek()).toBe(date.isoWeek())
+      expect(date.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
+    it('nextIsoWeekday(day) returns the next occurrence of the requested ISO weekday', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const friday = date.nextIsoWeekday(5)
+      const wednesday = date.nextIsoWeekday(3)
+
+      expect(friday.isSame(new DayjsPlainDate('2025-01-03'))).toBe(true)
+      expect(wednesday.isSame(new DayjsPlainDate('2025-01-08'))).toBe(true)
+      expect(date.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
+    it('nextOrSameIsoWeekday(day) keeps the same date when already on the requested ISO weekday', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const friday = date.nextOrSameIsoWeekday(5)
+      const wednesday = date.nextOrSameIsoWeekday(3)
+
+      expect(friday.isSame(new DayjsPlainDate('2025-01-03'))).toBe(true)
+      expect(wednesday.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+      expect(date.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
+    it('previousIsoWeekday(day) returns the previous occurrence of the requested ISO weekday', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const monday = date.previousIsoWeekday(1)
+      const wednesday = date.previousIsoWeekday(3)
+
+      expect(monday.isSame(new DayjsPlainDate('2024-12-30'))).toBe(true)
+      expect(wednesday.isSame(new DayjsPlainDate('2024-12-25'))).toBe(true)
+      expect(date.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
+    it('previousOrSameIsoWeekday(day) keeps the same date when already on the requested ISO weekday', () => {
+      const date = new DayjsPlainDate('2025-01-01')
+      const monday = date.previousOrSameIsoWeekday(1)
+      const wednesday = date.previousOrSameIsoWeekday(3)
+
+      expect(monday.isSame(new DayjsPlainDate('2024-12-30'))).toBe(true)
+      expect(wednesday.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+      expect(date.isSame(new DayjsPlainDate('2025-01-01'))).toBe(true)
+    })
+
+    it('startOf and endOf isoWeek keep ISO week boundaries across year changes', () => {
+      const date = new DayjsPlainDate('2025-12-31')
+      const startOfIsoWeek = date.startOf('isoWeek')
+      const endOfIsoWeek = date.endOf('isoWeek')
+
+      expect(startOfIsoWeek.isSame(new DayjsPlainDate('2025-12-29'))).toBe(true)
+      expect(endOfIsoWeek.isSame(new DayjsPlainDate('2026-01-04'))).toBe(true)
+      expect(startOfIsoWeek.isoWeek()).toBe(1)
+      expect(endOfIsoWeek.isoWeek()).toBe(1)
+    })
+
     it('Increasing the week overflows to the next month', () => {
       const endOfMonth = new DayjsPlainDate(dayjs().startOf('year').endOf('month'))
       const nextMonth = endOfMonth.add(1, 'week')

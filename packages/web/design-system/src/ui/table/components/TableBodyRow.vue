@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { createAction } from '@wisemen/vue-core-actions'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { RouteLocationRaw } from 'vue-router'
@@ -11,15 +12,20 @@ import TableBodyRowActionsCell from '@/ui/table/components/TableBodyRowActionsCe
 import TableSubgrid from '@/ui/table/components/TableSubgrid.vue'
 import { useInjectTableContext } from '@/ui/table/context/table.context'
 import { useProvideTableBodyRowContext } from '@/ui/table/context/tableBodyRow.context'
+import { useInjectTableSelectionContext } from '@/ui/table/context/tableSelection.context'
 
 const props = withDefaults(defineProps<{
   actionModel?: RegisteredActionContext['models'][number] | null
   ariaLabel?: string | null
+  itemKey?: string | null
   link?: RouteLocationRaw | null
+  onRowClick?: (() => void) | null
 }>(), {
   actionModel: null,
   ariaLabel: null,
+  itemKey: null,
   link: null,
+  onRowClick: null,
 })
 
 const i18n = useI18n()
@@ -28,19 +34,40 @@ const {
   isGroupingEnabled, actions,
 } = useInjectTableContext()
 
+const {
+  isSelectable, toggleItem,
+} = useInjectTableSelectionContext()
+
+const toggleSelectionAction = createAction({
+  id: 'table-row-toggle-selection',
+  isApplicable: (ctx) => isSelectable.value
+    && props.itemKey !== null
+    && ctx.menuType === undefined,
+  name: () => i18n.t('component.table.row.toggle_selection_action.name'),
+  execute: () => {
+    if (props.itemKey != null) {
+      toggleItem(props.itemKey)
+    }
+  },
+  keyboardShortcut: {
+    key: 'X',
+  },
+})
+
 useProvideTableBodyRowContext({
   link: computed(() => props.link),
+  onClick: computed(() => props.onRowClick),
 })
 </script>
 
 <template>
   <UIActionContextMenu
     :actions="actions"
-    :current-context-only="true"
+    :is-current-context-only="true"
     :models="props.actionModel === null ? [] : [props.actionModel]"
   >
     <UIActionFocus
-      :actions="actions"
+      :actions="[...actions, toggleSelectionAction]"
       :models="props.actionModel === null ? [] : [props.actionModel]"
     >
       <TableSubgrid
@@ -67,6 +94,19 @@ useProvideTableBodyRowContext({
           :to="link"
           :aria-label="ariaLabel ?? i18n.t('component.table.row.view_details_label')"
           class="pointer-events-none absolute inset-0 z-0 outline-none"
+        />
+
+        <!--
+          Row-level click handler: keyboard tab stop, mirrors the link above.
+          pointer-events-none so it never intercepts mouse clicks (per-cell overlays handle those).
+          Must be first in DOM so it's first in tab order.
+        -->
+        <button
+          v-else-if="onRowClick !== null"
+          :aria-label="ariaLabel ?? i18n.t('component.table.row.view_details_label')"
+          class="pointer-events-none absolute inset-0 z-0 outline-none"
+          type="button"
+          @click="onRowClick"
         />
 
         <slot />

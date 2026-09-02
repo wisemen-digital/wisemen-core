@@ -1,0 +1,68 @@
+{
+  "name": "@wisemen/payload-core-seeder",
+  "version": "0.1.5",
+  "private": false,
+  "description": "PayloadCMS seeding with locales",
+  "keywords": [
+    "payload",
+    "payloadcms",
+    "plugin",
+    "seed",
+    "seeding",
+    "fixtures"
+  ],
+  "sideEffects": false,
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/payload/seeder"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "typings": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "prepack": "pnpm build",
+    "cleanup": "rimraf dist/ node_modules/ .turbo/",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": "catalog:payload-peer",
+    "payload": "catalog:payload-peer",
+    "react": "catalog:payload-peer",
+    "react-dom": "catalog:payload-peer"
+  },
+  "devDependencies": {
+    "@payloadcms/ui": "catalog:payload",
+    "@types/node": "catalog:backend",
+    "@types/react": "catalog:payload",
+    "@wisemen/eslint-config-vue": "workspace:*",
+    "eslint": "catalog:lint-web",
+    "payload": "catalog:payload",
+    "react": "catalog:payload",
+    "react-dom": "19.2.7",
+    "rimraf": "catalog:build",
+    "tsdown": "catalog:build",
+    "typescript": "catalog:build",
+    "vitest": "catalog:test"
+  }
+}

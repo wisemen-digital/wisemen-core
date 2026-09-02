@@ -74,6 +74,10 @@ const presets = computed<Preset[]>(() => {
     days: 1,
   })
 
+  const tomorrow = today.add({
+    days: 1,
+  })
+
   return [
     {
       key: 'today',
@@ -89,6 +93,14 @@ const presets = computed<Preset[]>(() => {
       range: {
         from: yesterday,
         until: yesterday,
+      },
+    },
+    {
+      key: 'tomorrow',
+      label: i18n.t('component.date_range_picker.preset.tomorrow'),
+      range: {
+        from: tomorrow,
+        until: tomorrow,
       },
     },
     {

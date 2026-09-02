@@ -8,16 +8,22 @@ import type { NatsMessageHandlerFunction } from '#src/message-handler/nats-messa
 import { CloudEvent } from '#src/cloud-event/cloud-event.js'
 
 type CloudEventKey = string
+const DEFAULT_MAX_IN_FLIGHT = 1
 
 export class NatsConsumption {
   private fallbackHandler: NatsMessageHandlerFunction | undefined
   private cloudEventHandlers: Map<CloudEventKey, NatsMessageHandlerFunction> = new Map()
   private messages: ConsumerMessages | undefined
+  private maxInFlight: number
 
   constructor (
-    private readonly consumerInfo: ConsumerInfo,
-    private readonly consumer: Consumer
-  ) {}
+    private consumerInfo: ConsumerInfo,
+    private consumer: Consumer,
+    private nakBackoff?: number,
+    options?: { maxInFlight?: number }
+  ) {
+    this.maxInFlight = options?.maxInFlight ?? DEFAULT_MAX_IN_FLIGHT
+  }
 
   addCloudEventHandler (
     eventOptions: CloudEventHandlerOptions,
@@ -62,11 +68,19 @@ export class NatsConsumption {
 
   async listen (): Promise<void> {
     this.messages = await this.consumer.consume()
+    const inFlight = new Set<Promise<void>>()
 
     for await (const message of this.messages) {
-      // Handle messages one by one
-      await this.handleMessage(message)
+      const handler = this.handleMessage(message)
+      inFlight.add(handler)
+      void handler.finally(() => inFlight.delete(handler))
+
+      if(inFlight.size >= this.maxInFlight) {
+        await Promise.race(inFlight) // wait for one handler to complete
+      } 
     }
+
+    await Promise.allSettled(inFlight)
   }
 
   async close (): Promise<void> {
@@ -90,7 +104,7 @@ export class NatsConsumption {
         `NATS consumer ${this.consumerInfo.name}`
       )
       captureException(error)
-      message.nak()
+      message.nak(this.nakBackoff)
     }
   }
 

@@ -1,5 +1,29 @@
 # @wisemen/time
 
+
+
+
+
+## 0.0.36
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
+## 0.0.35
+<sub>2026-08-12</sub>
+
+- [#1579](https://github.com/wisemen-digital/wisemen-core/pull/1579)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolved security vulnerabilities by updating axios, typeorm, next.js, and @hey-api/openapi-ts to patched versions
+
+## 0.0.34
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.0.33
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
 ## 0.0.32
 
 ### Patch Changes

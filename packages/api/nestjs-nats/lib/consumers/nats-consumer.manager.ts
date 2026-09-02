@@ -8,6 +8,8 @@ export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
   name: string
   connectionOptions: NamedConnectionOptions
   streamName: string
+  nakBackoff?: number
+  maxInFlight?: number
 }
 
 export class NatsConsumerManager {
@@ -25,11 +27,20 @@ export class NatsConsumerManager {
     const connection = await this.connectionManager.connect(config.connectionOptions)
     const subject = config.filter_subject?.replaceAll(/:[\w]+/g, '*')
     const parsedConfig = { ...config, filter_subject: subject }
-    const { streamName, name: _name, connectionOptions: _opts, ...consumerConfig } = parsedConfig
+    
+    const {
+      streamName,
+      name: _name,
+      connectionOptions: _opts,
+      nakBackoff,
+      maxInFlight,
+      ...consumerConfig
+    } = parsedConfig
+
     const manager = await jetstreamManager(connection)
     const consumerInfo = await this.registerConsumer(streamName, consumerConfig, manager)
     const consumer = await jetstream(connection).consumers.get(config.streamName, consumerInfo.name)
-    const consumption = new NatsConsumption(consumerInfo, consumer)
+    const consumption = new NatsConsumption(consumerInfo, consumer, nakBackoff, { maxInFlight })
 
     Logger.log(`Registered consumer ${consumerInfo.name} on stream ${config.streamName}`, 'NATS')
 

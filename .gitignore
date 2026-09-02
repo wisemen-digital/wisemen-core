@@ -13,6 +13,7 @@ dist
 **/.vitepress/cache
 **/*/.mjs
 .turbo
+.pnpm-store
 
 # Editor directories and files
 .vscode/*
@@ -27,3 +28,12 @@ static
 **/static
 
 **/.eslintcache
+.temp
+.context
+
+# AI/agent working notes
+**/CONTEXT.md
+**/docs/adr/
+
+# Scratch playground for testing component combos, never committed
+**/src/_sandbox/

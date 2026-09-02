@@ -1,0 +1,66 @@
+name: PR Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches: ["main"]
+
+concurrency:
+  group: pkg-pr-new-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  publish-preview:
+    name: Publish Preview Packages
+    if: github.event.pull_request.draft == false && github.head_ref != 'bumpy/version-packages'
+    runs-on: ubuntu-latest
+    permissions: {}
+    env:
+      TURBO_API: https://cache.turbo.internal.appwi.se
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ github.event.repository.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Get changed packages
+        id: changed
+        run: |
+          pnpm turbo run build --filter='...[origin/main]' --dry=json > dry-run.json
+
+          # Publish only packages selected by the filter. The task graph also
+          # contains build dependencies, which pkg-pr-new should not publish.
+          PACKAGES=$(jq -r '[.packages[] as $package | select($package != "//") | .tasks[] | select(.package == $package) | .directory] | unique | .[]' dry-run.json)
+
+          echo "packages<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$PACKAGES" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Build packages
+        if: steps.changed.outputs.packages != ''
+        run: pnpm turbo run build --filter='...[origin/main]'
+
+      - name: Publish PR previews
+        if: steps.changed.outputs.packages != ''
+        run: |
+          PKGS=$(echo "${{ steps.changed.outputs.packages }}" | tr '\n' ' ')
+          pnpm exec pkg-pr-new publish \
+            --compact \
+            --comment=update \
+            --commentWithSha \
+            --packageManager=pnpm \
+            $PKGS

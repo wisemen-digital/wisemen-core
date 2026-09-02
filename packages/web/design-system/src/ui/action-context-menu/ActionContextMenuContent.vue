@@ -63,8 +63,10 @@ const isFilterVisible = computed<boolean>(
     ),
 )
 
-useEventListener('keydown', () => {
-  userHasTyped.value = true
+useEventListener('keydown', (e) => {
+  if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    userHasTyped.value = true
+  }
 })
 </script>
 
@@ -127,7 +129,7 @@ useEventListener('keydown', () => {
               :action="action"
               :context="context"
               :preview="preview"
-              :close-on-select="parentAction?.multiSelectSubActions !== true"
+              :is-closed-on-select="parentAction?.multiSelectSubActions !== true"
             />
           </UIContextMenuGroup>
         </template>

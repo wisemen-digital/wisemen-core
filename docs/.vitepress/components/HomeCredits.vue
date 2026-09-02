@@ -2,7 +2,7 @@
 import { VPTeamMembers } from 'vitepress/theme'
 
 // @ts-expect-error this works trust me
-import Wisemen from '/packages/formango/assets/wisemen.svg'
+import Wisemen from '/web/packages/formango/assets/wisemen.svg'
 
 const members = [
   {

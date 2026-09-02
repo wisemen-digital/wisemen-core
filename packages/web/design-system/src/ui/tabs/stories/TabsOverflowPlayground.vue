@@ -17,10 +17,8 @@ import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 
 const props = withDefaults(defineProps<{
-  isAdaptive?: boolean
   variant?: TabsVariant
 }>(), {
-  isAdaptive: false,
   variant: 'underline',
 })
 
@@ -29,49 +27,95 @@ const selectedTab = ref<string>('tab1')
 
 <template>
   <div
-    :class="{ 'resize-x rounded-md border border-dashed border-tertiary p-2': props.isAdaptive }"
-    class="flex w-80 flex-col gap-4 overflow-auto"
+    data-testid="tabs-overflow-container"
+    class="
+      flex w-80 resize-x flex-col gap-4 overflow-auto rounded-md border
+      border-dashed border-tertiary p-2
+    "
   >
     <Tabs
       v-model="selectedTab"
-      :is-adaptive="props.isAdaptive"
       :variant="props.variant"
     >
       <TabsList>
         <TabsItem
-          :icon="User01Icon"
+          :config="{
+            left: {
+              icon: User01Icon,
+              type: 'icon',
+            },
+          }"
           label="General"
           value="tab1"
         />
         <TabsItem
-          :icon="Inbox02Icon"
-          :count="12"
+          :config="{
+            left: {
+              icon: Inbox02Icon,
+              type: 'icon',
+            },
+            indicator: {
+              value: 12,
+              type: 'count',
+            },
+          }"
           label="Members"
           value="tab2"
         />
         <TabsItem
-          :icon="Users01Icon"
+          :config="{
+            left: {
+              icon: Users01Icon,
+              type: 'icon',
+            },
+          }"
           label="Teams"
           value="tab3"
         />
         <TabsItem
-          :icon="File05Icon"
-          :count="5"
+          :config="{
+            left: {
+              icon: File05Icon,
+              type: 'icon',
+            },
+            indicator: {
+              value: 5,
+              type: 'count',
+            },
+          }"
           label="Documents"
           value="tab4"
         />
         <TabsItem
-          :icon="CalendarIcon"
+          :config="{
+            left: {
+              icon: CalendarIcon,
+              type: 'icon',
+            },
+          }"
           label="Calendar"
           value="tab5"
         />
         <TabsItem
-          :icon="LifeBuoy01Icon"
+          :config="{
+            left: {
+              icon: LifeBuoy01Icon,
+              type: 'icon',
+            },
+          }"
           label="Support"
           value="tab6"
         />
         <TabsItem
-          :icon="Settings01Icon"
+          :config="{
+            left: {
+              icon: Settings01Icon,
+              type: 'icon',
+            },
+            indicator: {
+              type: 'dot',
+            },
+          }"
           label="Settings"
           value="tab7"
         />

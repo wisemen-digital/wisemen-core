@@ -28,7 +28,7 @@ useHotkey('F', () => {
     v-model:is-open="isOpen"
     :parent-action="action"
     :popover-collision-padding="10"
-    :current-context-only="false"
+    :is-current-context-only="false"
     popover-align="start"
     popover-side="bottom"
   >

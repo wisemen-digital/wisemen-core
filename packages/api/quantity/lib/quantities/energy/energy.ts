@@ -1,5 +1,10 @@
-import { Quantity } from '../../quantity.js'
+import { Duration } from '../../quantities/duration/duration.js'
+import { PowerUnit } from '../../quantities/power/power-unit.enum.js'
+import { Power } from '../../quantities/power/power.js'
+import { Rate } from '../../rate/rate.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { EnergyUnit } from './energy-unit.enum.js'
+import { DurationUnit } from '../duration/duration-unit.enum.js'
 
 const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.JOULE]: 1,
@@ -40,12 +45,28 @@ const ENERGY_MULTIPLIERS: Record<EnergyUnit, number> = {
   [EnergyUnit.ZETTAWATT_HOUR]: 3600 * 1e21,
   [EnergyUnit.YOTTAWATT_HOUR]: 3600 * 1e24,
   [EnergyUnit.RONNAWATT_HOUR]: 3600 * 1e27,
-  [EnergyUnit.QUETTAWATT_HOUR]: 3600 * 1e30
+  [EnergyUnit.QUETTAWATT_HOUR]: 3600 * 1e30,
+
+  // Thermochemical calorie: 1 cal = 4.184 J
+  [EnergyUnit.CALORIE]: 4.184,
+  [EnergyUnit.KILOCALORIE]: 4184
 }
 
-export class Energy extends Quantity<EnergyUnit, Energy> {
+export class Energy extends ScalableQuantity<EnergyUnit, Energy, Energy> {
+  protected getQuantity() {
+    return Energy
+  }
+
+  protected getDelta() {
+    return Energy
+  }
+
   protected getBaseUnit () {
     return EnergyUnit.JOULE
+  }
+
+  protected getUnits (): readonly EnergyUnit[] {
+    return Object.values(EnergyUnit)
   }
 
   protected convertValueToBaseUnit (value: number, unit: EnergyUnit): number {
@@ -57,4 +78,20 @@ export class Energy extends Quantity<EnergyUnit, Energy> {
   }
 
   static ZERO = new Energy(0, EnergyUnit.JOULE)
+
+  override divide(scalar: number): Energy
+  override divide(rate: Rate): Energy
+  override divide(value: number, unit: EnergyUnit): number
+  override divide(energy: Energy): number
+  override divide(duration: Duration): Power
+  override divide(power: Power): Duration
+  override divide(divisor: number | Rate | Energy | Duration | Power, unit?: EnergyUnit): Energy | Power | Duration | number {
+    if (divisor instanceof Duration) {
+      return new Power(this.valueOf() / divisor.valueOf(), PowerUnit.WATT)
+    }
+    if (divisor instanceof Power) {
+      return new Duration(this.valueOf() / divisor.valueOf(), DurationUnit.SECONDS)
+    }
+    return super.divide(divisor, unit)
+  }
 }

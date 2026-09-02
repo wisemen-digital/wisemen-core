@@ -4,7 +4,11 @@ import type {
 } from '@storybook/vue3-vite'
 
 import TableGroupedPlayground from './TableGroupedPlayground.vue'
+import TableInfiniteScrollPlayground from './TableInfiniteScrollPlayground.vue'
 import TablePlayground from './TablePlayground.vue'
+import TableRowClickPlayground from './TableRowClickPlayground.vue'
+import TableSelectionGroupedPlayground from './TableSelectionGroupedPlayground.vue'
+import TableSelectionPlayground from './TableSelectionPlayground.vue'
 import TableSortingPlayground from './TableSortingPlayground.vue'
 
 const meta = {
@@ -13,14 +17,14 @@ const meta = {
     hasActiveSearch: {
       control: 'boolean',
     },
+    isColumnResizeDisabled: {
+      control: 'boolean',
+    },
     isLoading: {
       control: 'boolean',
     },
     activeFilterCount: {
       control: 'number',
-    },
-    disableColumnResize: {
-      control: 'boolean',
     },
     variant: {
       control: 'select',
@@ -43,9 +47,9 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -53,9 +57,9 @@ export const Default: Story = {
 export const Contained: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'contained',
   },
 }
@@ -63,9 +67,9 @@ export const Contained: Story = {
 export const Loading: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: true,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -73,9 +77,9 @@ export const Loading: Story = {
 export const WithActiveSearch: Story = {
   args: {
     hasActiveSearch: true,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 0,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -83,9 +87,9 @@ export const WithActiveSearch: Story = {
 export const WithActiveFilters: Story = {
   args: {
     hasActiveSearch: false,
+    isColumnResizeDisabled: false,
     isLoading: false,
     activeFilterCount: 3,
-    disableColumnResize: false,
     variant: 'full-page',
   },
 }
@@ -121,5 +125,73 @@ export const Grouped: Story = {
       }
     },
     template: '<TableGroupedPlayground v-bind="args" />',
+  }),
+}
+
+export const Selection: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableSelectionPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableSelectionPlayground v-bind="args" />',
+  }),
+}
+
+export const SelectionGrouped: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableSelectionGroupedPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableSelectionGroupedPlayground v-bind="args" />',
+  }),
+}
+
+export const InfiniteScroll: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableInfiniteScrollPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableInfiniteScrollPlayground v-bind="args" />',
+  }),
+}
+
+export const RowClick: Story = {
+  args: {
+    variant: 'full-page',
+  },
+  render: (args) => ({
+    components: {
+      TableRowClickPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<TableRowClickPlayground v-bind="args" />',
   }),
 }

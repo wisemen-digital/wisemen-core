@@ -1,4 +1,4 @@
-import type { Readable } from 'stream'
+import type { Readable, Writable } from 'stream'
 
 export abstract class FileStorage {
   abstract createTemporaryUploadUrl (
@@ -34,6 +34,11 @@ export abstract class FileStorage {
   abstract download (
     key: string
   ): Promise<Buffer>
+
+  abstract createUploadWritable(
+    key: string,
+    isPublic?: boolean
+  ): Writable
 
   abstract uploadStream (
     key: string,

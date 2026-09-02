@@ -9,6 +9,15 @@ import Playground from '@/ui/dashboard-page/stories/DashboardPagePlayground.vue'
 
 const meta = {
   title: 'Components/Dashboard Page',
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: [
+        'default',
+        'branded',
+      ],
+    },
+  },
   tags: [
     'autodocs',
   ],
@@ -19,7 +28,11 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Default: Story = {}
+export const Default: Story = {
+  args: {
+    variant: 'default',
+  },
+}
 
 export const CenteredPage: Story = {
   render: () => ({

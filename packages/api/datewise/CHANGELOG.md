@@ -1,6 +1,90 @@
 # @wisemen/datewise
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 1.2.1
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 1.2.0
+<sub>2026-08-27</sub>
+
+- *(minor)* Updated dependency `@wisemen/quantity` v0.11.0
+
+## 1.1.2
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
+## 1.1.1
+<sub>2026-08-25</sub>
+
+- [#1602](https://github.com/wisemen-digital/wisemen-core/pull/1602)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: type IsoWeekday constants as IsoWeekday
+
+## 1.1.0
+<sub>2026-08-25</sub>
+
+- [#1599](https://github.com/wisemen-digital/wisemen-core/pull/1599)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add ISO weekday navigation helpers
+
+## 1.0.20
+<sub>2026-08-24</sub>
+
+- [#1596](https://github.com/wisemen-digital/wisemen-core/pull/1596)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add isoWeekday method to change isoWeekday of timestamp and plaindate
+
+## 1.0.19
+<sub>2026-08-12</sub>
+
+- [#1582](https://github.com/wisemen-digital/wisemen-core/pull/1582)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - move wisemen dependencies to peer dependencies
+
+## 1.0.18
+<sub>2026-08-12</sub>
+
+- [#1581](https://github.com/wisemen-digital/wisemen-core/pull/1581)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: use @PlainDateApiProperty on date range dto
+
+## 1.0.17
+<sub>2026-07-29</sub>
+
+- [#1520](https://github.com/wisemen-digital/wisemen-core/pull/1520)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Replace toString() in transformer with toISOString()
+
+## 1.0.16
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 1.0.15
+<sub>2026-07-14</sub>
+
+- [#1430](https://github.com/wisemen-digital/wisemen-core/pull/1430)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add weekdays methods
+
+## 1.0.14
+<sub>2026-07-04</sub>
+
+- [#1365](https://github.com/wisemen-digital/wisemen-core/pull/1365)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Export TimestampTransformer
+
+## 1.0.13
+<sub>2026-06-25</sub>
+
+- [#1310](https://github.com/wisemen-digital/wisemen-core/pull/1310)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added isoWeekParity
+
+## 1.0.12
+<sub>2026-06-23</sub>
+
+- [#1287](https://github.com/wisemen-digital/wisemen-core/pull/1287)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add isoWeek support for startOf() and endOf() on PlainDate
+
 ## 1.0.11
 <sub>2026-06-11</sub>
 

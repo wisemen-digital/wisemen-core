@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ChevronDownIcon } from '@wisemen/vue-core-icons'
-import type { CountryCode } from 'libphonenumber-js'
+import examples from 'libphonenumber-js/examples.mobile.json'
+import type { CountryCode } from 'libphonenumber-js/max'
 import {
   AsYouType,
   formatIncompletePhoneNumber,
@@ -9,8 +10,7 @@ import {
   getExampleNumber,
   parsePhoneNumberFromString,
   validatePhoneNumberLength,
-} from 'libphonenumber-js'
-import examples from 'libphonenumber-js/examples.mobile.json'
+} from 'libphonenumber-js/max'
 import { useFilter } from 'reka-ui'
 import {
   computed,
@@ -289,6 +289,7 @@ defineExpose({
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />

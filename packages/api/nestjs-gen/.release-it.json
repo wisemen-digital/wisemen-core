@@ -1,0 +1,23 @@
+{
+  "git": {
+    "tagName": "${version}",
+    "commitMessage": "Release ${tagName}",
+    "tagAnnotation": "Release ${tagName}"
+  },
+  "npm": {
+    "publishArgs": [
+      "--access",
+      "public"
+    ]
+  },
+  "github": {
+    "release": true
+  },
+  "plugins": {
+    "@release-it/keep-a-changelog": {
+      "filename": "CHANGELOG.md",
+      "head": "main",
+      "addVersionUrl": true
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useRouteQuery } from '@vueuse/router'
 import type {
   Action,
   ActionGroup,
@@ -6,13 +7,17 @@ import {
   createAction,
   useTemporaryActions,
 } from '@wisemen/vue-core-actions'
-import type { PlainDateRange } from '@wisemen/vue-core-dates'
+import type {
+  PlainDate,
+  PlainDateRange,
+} from '@wisemen/vue-core-dates'
 import { useOverlay } from '@wisemen/vue-core-design-system'
 import {
   FilterLinesIcon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
 import SuperJSON from 'superjson'
+import { Temporal } from 'temporal-polyfill'
 import type {
   Component,
   ComputedRef,
@@ -26,14 +31,64 @@ import {
 } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import FiltersDialogDateFilter from '@/components/FiltersDialogDateFilter.vue'
 import FiltersDialogDateRangeFilter from '@/components/FiltersDialogDateRangeFilter.vue'
 import FiltersDialogNumberFilter from '@/components/FiltersDialogNumberFilter.vue'
 import { useProvideFiltersContext } from '@/context/filters.context'
 
 export type SelectFilterValue = number | string | Record<string, any>
 
+export enum MultiSelectFilterOperator {
+  EXCLUDES = 'excludes',
+  INCLUDES = 'includes',
+}
+
+export enum DateFilterOperator {
+  AFTER = 'after',
+  BEFORE = 'before',
+  IS = 'is',
+  IS_NOT = 'is_not',
+}
+
+export enum DateRangeFilterOperator {
+  IS_BETWEEN = 'is_between',
+  IS_NOT_BETWEEN = 'is_not_between',
+}
+
+export enum NumberFilterOperator {
+  EQUALS = 'equals',
+  GREATER_THAN_OR_EQUALS = 'greater_than_or_equals',
+  LESS_THAN_OR_EQUALS = 'less_than_or_equals',
+  NOT_EQUALS = 'not_equals',
+}
+
+export interface MultiSelectFilterValue<TValue = SelectFilterValue> {
+  operator: MultiSelectFilterOperator
+  value: TValue[]
+}
+
+export interface DateFilterValue {
+  operator: DateFilterOperator
+  value: PlainDate | null
+}
+
+export interface DateRangeFilterValue {
+  operator: DateRangeFilterOperator
+  value: PlainDateRange
+}
+
+export interface NumberFilterValue {
+  operator: NumberFilterOperator
+  value: number | null
+}
+
 interface BaseFilter<TKey extends string> {
-  isStatic?: boolean
+  isPersistent?: boolean
+  /**
+   * Renders the operator as a static label instead of an interactive dropdown.
+   * Use when the backend only supports a single operator.
+   */
+  disableOperators?: boolean
   icon?: Component
   key: TKey
   label: string
@@ -41,6 +96,7 @@ interface BaseFilter<TKey extends string> {
 
 export enum FilterType {
   BOOLEAN = 'boolean',
+  DATE = 'date',
   DATE_RANGE = 'date-range',
   MULTI_AUTOCOMPLETE = 'multi-autocomplete',
   MULTI_SELECT = 'multi-select',
@@ -71,7 +127,12 @@ export interface MultiSelectFilter<
   TKey extends string = string,
   TValue extends SelectFilterValue = SelectFilterValue,
 > extends BaseFilter<TKey>, BaseSelectFilter<TValue> {
-  defaultValue?: TValue[]
+  defaultValue?: MultiSelectFilterValue<TValue>
+  /**
+   * Plural label for the selected item type, shown when 2+ values are selected.
+   * E.g. "users" → "3 users". When omitted, falls back to "3 selected".
+   */
+  itemLabel?: string
   type: FilterType.MULTI_SELECT
 }
 
@@ -79,20 +140,31 @@ export interface MultiAutocompleteFilter<
   TKey extends string = string,
   TValue extends SelectFilterValue = SelectFilterValue,
 > extends BaseFilter<TKey>, BaseAutocompleteFilter<TValue> {
-  defaultValue?: TValue[]
+  defaultValue?: MultiSelectFilterValue<TValue>
+  /**
+   * Plural label for the selected item type, shown when 2+ values are selected.
+   * E.g. "users" → "3 users". When omitted, falls back to "3 selected".
+   */
+  itemLabel?: string
   type: FilterType.MULTI_AUTOCOMPLETE
 }
 
 export interface BooleanFilter<TKey extends string = string> extends BaseFilter<TKey> {
-  badgeLabel?: string
-  canBeToggled: boolean
   defaultValue?: boolean | null
   /**
-   * Used to show e.g. "User is disabled" or "Project is active"
+   * The state label shown after the operator, e.g. "active" → "User is active" / "User is not active".
    */
   entityLabel: string
-  falseLabel: string
-  trueLabel: string
+  /**
+   * Label for the `false` state operator. Defaults to "is not".
+   * Override when "is not" reads unnaturally, e.g. `"has no"` → "Parking spot has no charger".
+   */
+  falseOperatorLabel?: string
+  /**
+   * Label for the `true` state operator. Defaults to "is".
+   * Override when "is" reads unnaturally, e.g. `"has"` → "Parking spot has charger".
+   */
+  trueOperatorLabel?: string
   type: FilterType.BOOLEAN
 }
 
@@ -101,7 +173,7 @@ export interface NumberFilter<TKey extends string = string> extends BaseFilter<T
    * Unit to be used when not supported by Intl.NumberFormat
    */
   customUnit?: string
-  defaultValue?: number | null
+  defaultValue?: NumberFilterValue
   formatOptions?: Intl.NumberFormatOptions
   max?: number
   min?: number
@@ -110,8 +182,13 @@ export interface NumberFilter<TKey extends string = string> extends BaseFilter<T
   type: FilterType.NUMBER
 }
 
+export interface DateFilter<TKey extends string = string> extends BaseFilter<TKey> {
+  defaultValue?: DateFilterValue
+  type: FilterType.DATE
+}
+
 export interface DateRangeFilter<TKey extends string = string> extends BaseFilter<TKey> {
-  defaultValue?: PlainDateRange
+  defaultValue?: DateRangeFilterValue
   type: FilterType.DATE_RANGE
 }
 
@@ -157,6 +234,15 @@ export function createNumberFilter<const TKey extends string>(
   }
 }
 
+export function createDateFilter<const TKey extends string>(
+  options: Omit<DateFilter<TKey>, 'type'>,
+): DateFilter<TKey> {
+  return {
+    ...options,
+    type: FilterType.DATE,
+  }
+}
+
 export function createDateRangeFilter<const TKey extends string>(
   options: Omit<DateRangeFilter<TKey>, 'type'>,
 ): DateRangeFilter<TKey> {
@@ -168,6 +254,7 @@ export function createDateRangeFilter<const TKey extends string>(
 
 export type Filter
   = | BooleanFilter
+    | DateFilter<string>
     | DateRangeFilter<string>
     | MultiAutocompleteFilter<string, any>
     | MultiSelectFilter<string, any>
@@ -187,6 +274,13 @@ export type FilterValues<TF extends readonly Filter[]> = {
 interface Options<TFilters extends Filter[]> {
   actionGroup: ActionGroup
   filters: TFilters
+  /**
+   * Persists filter values in the URL query string, so they survive a page refresh or a shared link.
+   * Pass `true` to use the default query key (`'filters'`), or a string to use a custom key
+   * (e.g. to avoid a collision when a page has multiple `useFilters` instances).
+   * Disabled by default.
+   */
+  persistInUrl?: boolean | string
 }
 
 interface UseFiltersReturn<TFilters extends Filter[]> {
@@ -194,7 +288,7 @@ interface UseFiltersReturn<TFilters extends Filter[]> {
   actionGroup: ActionGroup
   activeFilters: ComputedRef<FilterWithAction<Filter>[]>
   clearAll: () => void
-  clearFilter: (key: string, onlyIfEmpty?: boolean, onlyIfNotStatic?: boolean) => void
+  clearFilter: (key: string, onlyIfEmpty?: boolean) => void
   setOpenFilter: (filterKey: string | null) => void
   values: Ref<FilterValues<TFilters>, any>
 }
@@ -211,6 +305,16 @@ function isItemWithPagination(value: unknown): value is {
     && 'pagination' in value
 }
 
+const DEFAULT_ROUTE_QUERY_KEY = 'filters'
+
+function base64Encode(value: string): string {
+  return btoa(value)
+}
+
+function base64Decode(value: string): string {
+  return atob(value)
+}
+
 export function useFilters<TFilters extends Filter[]>(
   options: Options<TFilters>,
 ): UseFiltersReturn<TFilters> {
@@ -218,11 +322,21 @@ export function useFilters<TFilters extends Filter[]>(
   const overlay = useOverlay()
 
   const numberFilterDialog = overlay.create(FiltersDialogNumberFilter)
+  const dateFilterDialog = overlay.create(FiltersDialogDateFilter)
   const dateRangeFilterDialog = overlay.create(FiltersDialogDateRangeFilter)
 
   const id = useId()
 
-  const values = ref<FilterValues<TFilters>>(getDefaultValues())
+  const persistInUrl = options.persistInUrl ?? false
+  const routeQueryKey = typeof persistInUrl === 'string' ? persistInUrl : DEFAULT_ROUTE_QUERY_KEY
+
+  const routeQuery = persistInUrl === false
+    ? null
+    : useRouteQuery<string | null>(routeQueryKey, null, {
+        mode: 'replace',
+      })
+
+  const values = ref<FilterValues<TFilters>>(getInitialValues())
   const openFilterKey = ref<FilterKeys<TFilters> | null>(null)
 
   // Tracks the keys of currently active filters. Used to determine the order of the active filters.
@@ -253,7 +367,8 @@ export function useFilters<TFilters extends Filter[]>(
                 ? maybeOptions.items
                 : maybeOptions) as any[]
 
-              const selectedValues = values.value[filter.key] as SelectFilterValue[]
+              const filterValue = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
+              const selectedValues = filterValue.value
               const isFirstPage = ctx.getPaginationOffsetForSubActionId(filter.key) === null
               const uniqueOptions = isFirstPage
                 ? [
@@ -270,33 +385,38 @@ export function useFilters<TFilters extends Filter[]>(
                 id: SuperJSON.stringify(option),
                 name: filter.displayFn(option),
                 execute: () => {
-                  const filterValues = values.value[filter.key] as SelectFilterValue[]
+                  const current = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
+                  const currentValues = current.value
 
-                  const isOptionSelected = filterValues.some(
+                  const isOptionSelected = currentValues.some(
                     (selectedOption) => SuperJSON.stringify(selectedOption) === SuperJSON.stringify(option),
                   )
 
                   if (isOptionSelected) {
-                    values.value[filter.key] = filterValues.filter(
-                      (selectedOption) => SuperJSON.stringify(selectedOption) !== SuperJSON.stringify(option),
-                    )
+                    values.value[filter.key] = {
+                      ...current,
+                      value: currentValues.filter(
+                        (selectedOption) => SuperJSON.stringify(selectedOption) !== SuperJSON.stringify(option),
+                      ),
+                    }
                   }
                   else {
-                    values.value[filter.key] = [
-                      ...filterValues,
-                      option,
-                    ]
+                    values.value[filter.key] = {
+                      ...current,
+                      value: [
+                        ...currentValues,
+                        option,
+                      ],
+                    }
                   }
                 },
                 parentScoreInfluence: 'direct',
                 selected: () => {
-                  const filterValues = values.value[filter.key] as SelectFilterValue[]
+                  const current = values.value[filter.key] as MultiSelectFilterValue<SelectFilterValue>
 
-                  const isOptionSelected = filterValues.some(
+                  return current.value.some(
                     (selectedOption) => SuperJSON.stringify(selectedOption) === SuperJSON.stringify(option),
                   )
-
-                  return isOptionSelected
                 },
                 skipFilterScoring: filter.type === FilterType.MULTI_AUTOCOMPLETE && !selectedValues.some((value) => (
                   SuperJSON.stringify(value) === SuperJSON.stringify(option)
@@ -321,7 +441,7 @@ export function useFilters<TFilters extends Filter[]>(
         return {
           action: createAction({
             id: filter.key,
-            name: filter.label,
+            name: filter.entityLabel,
             disabledReason: () => values.value[filter.key] === null ? null : i18n.t('component.filters.boolean_filter_already_active'),
             execute: () => {
               values.value[filter.key] = true
@@ -356,6 +476,27 @@ export function useFilters<TFilters extends Filter[]>(
           }),
           key: filter.key,
         }
+      case FilterType.DATE:
+        return {
+          action: createAction({
+            id: filter.key,
+            name: filter.label,
+            execute: () => {
+              dateFilterDialog.open({
+                filter,
+                initialValue: values.value[filter.key] as DateFilterValue,
+                onSubmit: (value) => {
+                  values.value[filter.key] = value
+                  dateFilterDialog.close()
+                },
+              })
+            },
+            group: options.actionGroup,
+            icon: () => filter.icon ?? null,
+            parentScoreInfluence: 'none',
+          }),
+          key: filter.key,
+        }
       case FilterType.DATE_RANGE:
         return {
           action: createAction({
@@ -364,7 +505,7 @@ export function useFilters<TFilters extends Filter[]>(
             execute: () => {
               dateRangeFilterDialog.open({
                 filter,
-                initialValue: values.value[filter.key],
+                initialValue: values.value[filter.key] as DateRangeFilterValue,
                 onSubmit: (value) => {
                   values.value[filter.key] = value
                   dateRangeFilterDialog.close()
@@ -441,10 +582,18 @@ export function useFilters<TFilters extends Filter[]>(
 
   // Filters that are currently active (either have non-default values or are open)
   const activeFilters = computed<FilterWithAction<Filter>[]>(
-    () => Array.from(activeFiltersKeys.value).map(getFilterByKey).map((filter) => ({
-      ...filter,
-      action: getFilterActionByKey(filter.key),
-    })),
+    () => Array.from(activeFiltersKeys.value)
+      .map(getFilterByKey)
+      .map((filter) => ({
+        ...filter,
+        action: getFilterActionByKey(filter.key),
+      }))
+      .sort((a, b) => {
+        const aWeight = a.isPersistent === true ? 0 : 1
+        const bWeight = b.isPersistent === true ? 0 : 1
+
+        return aWeight - bWeight
+      }),
   )
 
   // Watches filter values and updates the set of active filter keys accordingly.
@@ -462,15 +611,25 @@ export function useFilters<TFilters extends Filter[]>(
     immediate: true,
   })
 
+  // Keeps the URL query string in sync with the filter values, when `persistInUrl` is enabled.
+  if (routeQuery !== null) {
+    watch(values, (newValues) => {
+      routeQuery.value = serializeValues(newValues)
+    }, {
+      deep: true,
+    })
+  }
+
   /**
    * Determines whether a filter is considered "active."
    * A filter is active if its current value differs from its default or if it is currently open.
    * @param key The key of the filter to check.
    */
   function isFilterActive(key: FilterKeys<TFilters>): boolean {
+    const filter = getFilterByKey(key)
     const isFilterOpen = openFilterKey.value === key
 
-    return isFilterOpen || !isFilterEmpty(key)
+    return filter.isPersistent === true || isFilterOpen || !isFilterEmpty(key)
   }
 
   /**
@@ -485,13 +644,18 @@ export function useFilters<TFilters extends Filter[]>(
     switch (filter.type) {
       case FilterType.MULTI_SELECT:
       case FilterType.MULTI_AUTOCOMPLETE:
-        return value.length === 0
+        return (value as MultiSelectFilterValue).value.length === 0
       case FilterType.BOOLEAN:
         return value === null
+      case FilterType.DATE:
+        return (value as DateFilterValue).value === null
       case FilterType.NUMBER:
-        return value === null
-      case FilterType.DATE_RANGE:
-        return value.from === null || value.until === null
+        return (value as NumberFilterValue).value === null
+      case FilterType.DATE_RANGE: {
+        const rangeValue = (value as DateRangeFilterValue).value
+
+        return rangeValue.from === null || rangeValue.until === null
+      }
     }
   }
 
@@ -501,6 +665,124 @@ export function useFilters<TFilters extends Filter[]>(
 
       return acc
     }, {} as FilterValues<TFilters>)
+  }
+
+  /**
+   * Builds the initial filter values, restoring them from the URL query string when
+   * `persistInUrl` is enabled and the URL already contains a persisted state.
+   */
+  function getInitialValues(): FilterValues<TFilters> {
+    const defaultValues = getDefaultValues()
+
+    if (routeQuery === null || routeQuery.value === null) {
+      return defaultValues
+    }
+
+    const persistedValues = deserializeValues(routeQuery.value)
+
+    if (persistedValues === null) {
+      return defaultValues
+    }
+
+    return {
+      ...defaultValues,
+      ...persistedValues,
+    }
+  }
+
+  /**
+   * Serializes the current filter values into a URL-safe string.
+   */
+  function serializeValues(currentValues: FilterValues<TFilters>): string {
+    const serializable: Record<string, unknown> = {}
+
+    for (const filter of options.filters) {
+      serializable[filter.key] = serializeFilterValue(
+        filter,
+        (currentValues as Record<string, unknown>)[filter.key],
+      )
+    }
+
+    return base64Encode(JSON.stringify(serializable))
+  }
+
+  /**
+   * Restores filter values previously serialized by `serializeValues`.
+   * Returns null when the string can't be parsed (e.g. a tampered or stale URL).
+   */
+  function deserializeValues(raw: string): FilterValues<TFilters> | null {
+    try {
+      const parsed = JSON.parse(base64Decode(raw)) as Record<string, unknown>
+      const result: Record<string, unknown> = {}
+
+      for (const filter of options.filters) {
+        if (!(filter.key in parsed)) {
+          continue
+        }
+
+        result[filter.key] = deserializeFilterValue(filter, parsed[filter.key])
+      }
+
+      return result as FilterValues<TFilters>
+    }
+    catch {
+      return null
+    }
+  }
+
+  /**
+   * Converts a filter value to a JSON-safe representation.
+   * Only Date and DateRange filters need conversion, since their `PlainDate` values
+   * don't round-trip through `JSON.parse` on their own.
+   */
+  function serializeFilterValue(filter: Filter, value: unknown): unknown {
+    switch (filter.type) {
+      case FilterType.DATE: {
+        const dateValue = value as DateFilterValue
+
+        return {
+          operator: dateValue.operator,
+          value: dateValue.value?.toString() ?? null,
+        }
+      }
+      case FilterType.DATE_RANGE: {
+        const rangeValue = value as DateRangeFilterValue
+
+        return {
+          operator: rangeValue.operator,
+          value: {
+            from: rangeValue.value.from?.toString() ?? null,
+            until: rangeValue.value.until?.toString() ?? null,
+          },
+        }
+      }
+      default:
+        return value
+    }
+  }
+
+  /**
+   * Restores a filter value from its JSON-safe representation, reviving `PlainDate` values
+   * for Date and DateRange filters.
+   */
+  function deserializeFilterValue(filter: Filter, value: any): unknown {
+    switch (filter.type) {
+      case FilterType.DATE:
+        return {
+          operator: value.operator,
+          value: value.value === null ? null : Temporal.PlainDate.from(value.value),
+        }
+      case FilterType.DATE_RANGE:
+        return {
+          operator: value.operator,
+          value: {
+            from: value.value.from === null ? null : Temporal.PlainDate.from(value.value.from),
+            until: value.value.until === null ? null : Temporal.PlainDate.from(value.value.until),
+          },
+        }
+      default:
+        return value
+    }
   }
 
   /**
@@ -514,16 +796,30 @@ export function useFilters<TFilters extends Filter[]>(
     switch (filter.type) {
       case FilterType.MULTI_SELECT:
       case FilterType.MULTI_AUTOCOMPLETE:
-        return []
+        return {
+          operator: MultiSelectFilterOperator.INCLUDES,
+          value: [],
+        } satisfies MultiSelectFilterValue
       case FilterType.BOOLEAN:
         return null
       case FilterType.NUMBER:
-        return null
+        return {
+          operator: NumberFilterOperator.EQUALS,
+          value: null,
+        } satisfies NumberFilterValue
+      case FilterType.DATE:
+        return {
+          operator: DateFilterOperator.IS,
+          value: null,
+        } satisfies DateFilterValue
       case FilterType.DATE_RANGE:
         return {
-          from: null,
-          until: null,
-        }
+          operator: DateRangeFilterOperator.IS_BETWEEN,
+          value: {
+            from: null,
+            until: null,
+          },
+        } satisfies DateRangeFilterValue
     }
   }
 
@@ -550,15 +846,14 @@ export function useFilters<TFilters extends Filter[]>(
    * @param key The key of the filter to clear.
    * @param onlyIfEmpty If true, the filter is only cleared if it is currently empty. False by default.
    */
-  function clearFilter(key: string, onlyIfEmpty = false, onlyIfNotStatic = false): void {
-    const isEmpty = isFilterEmpty(key)
+  function clearFilter(key: string, onlyIfEmpty = false): void {
     const filter = getFilterByKey(key)
 
-    if (onlyIfEmpty && !isEmpty) {
+    if (filter.isPersistent === true) {
       return
     }
 
-    if (onlyIfNotStatic && filter.isStatic === true) {
+    if (onlyIfEmpty && !isFilterEmpty(key)) {
       return
     }
 
@@ -567,10 +862,13 @@ export function useFilters<TFilters extends Filter[]>(
   }
 
   function clearAll(): void {
-    activeFiltersKeys.value.clear()
-
     for (const filter of options.filters) {
+      if (filter.isPersistent === true) {
+        continue
+      }
+
       values.value[filter.key] = getFallbackValue(filter.key)
+      activeFiltersKeys.value.delete(filter.key)
     }
   }
 

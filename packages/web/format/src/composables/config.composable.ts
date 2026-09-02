@@ -16,7 +16,7 @@ export interface DataFormatConfig {
 const DEFAULT_LOCALE: Locale
   = typeof navigator !== 'undefined'
     ? navigator.language
-    : Intl.DateTimeFormat().resolvedOptions().locale
+    : new Intl.DateTimeFormat().resolvedOptions().locale
 
 const DEFAULT_CONFIG: DataFormatConfig = {
   locale: DEFAULT_LOCALE,

@@ -1,0 +1,62 @@
+---
+title: WEB Stack
+layout: home
+
+hero:
+  name: "WEB Stack"
+  tagline: "A collection of reusable web packages from wisemen.digital."
+
+features:
+  - title: ⚡ Actions
+    details: "@wisemen/vue-core-actions — Command menus, keyboard shortcuts, and context-aware action dispatch."
+    link: /web/packages/actions/pages/getting-started/installation
+  - title: 🔗 API Utils
+    details: "@wisemen/vue-core-api-utils — Utilities and composables for API interactions."
+    link: /web/packages/api-utils/pages/getting-started/installation
+  - title: 📅 Dates
+    details: "@wisemen/vue-core-dates — Temporal-based date utilities with formatting, time zones, and DTO transformers."
+    link: /web/packages/dates/pages/getting-started/installation
+  - title: 🎨 Design System
+    details: "@wisemen/vue-core-design-system — Vue 3 component library for building consistent user interfaces."
+    link: /web/packages/design-system/pages/getting-started/installation
+  - title: 🔍 Filters
+    details: "@wisemen/vue-core-filters — Type-safe, actions-integrated filters with built-in UI for list views."
+    link: /web/packages/filters/pages/getting-started/installation
+  - title: 🗂️ Custom Views
+    details: "@wisemen/vue-core-custom-views — Saved, named views for list and table pages with URL sync and pluggable state adapters."
+    link: /web/packages/custom-views/pages/getting-started/installation
+  - title: 🔤 Format
+    details: "@wisemen/vue-core-format — Locale-aware formatting for strings, numbers, and sensitive values."
+    link: /web/packages/format/pages/getting-started/installation
+  - title: 📝 Forms (Formango)
+    details: "formango — Lightweight, fully typed form state management and validation."
+    link: /web/packages/formango/guide/getting-started
+  - title: 🌍 I18n Factory
+    details: "@wisemen/vue-core-i18n-factory — Flexible and extensible internationalization setup."
+    link: /web/packages/i18n-factory/pages/getting-started/installation
+  - title: ✅ Linting
+    details: "@wisemen/eslint-config-vue — Shared ESLint configuration for Vue projects."
+    link: /web/packages/eslint/pages/getting-started/installation
+  - title: 🔐 Permissions
+    details: "@wisemen/vue-core-permissions — Type-safe permission checks."
+    link: /web/packages/permissions/pages/getting-started/installation
+  - title: ⚙️ Preferences
+    details: "@wisemen/vue-core-preferences — Ready-made preferences modal."
+    link: /web/packages/preferences/pages/getting-started/installation
+  - title: 📊 Telemetry
+    details: "@wisemen/vue-core-telemetry — OpenTelemetry integration for monitoring and tracing."
+    link: /web/packages/telemetry/pages/getting-started/installation
+  - title: 📘 Type Utils
+    details: "@wisemen/vue-core-type-utils — Essential TypeScript utility types."
+    link: /web/packages/type-utils/pages/getting-started/installation
+  - title: 🛠️ Utils
+    details: "@wisemen/vue-core-utils — Helpers for arrays, strings, numbers, UUIDs, and logging."
+    link: /web/packages/utils/pages/getting-started/installation
+  - title: ⚙️ Vue Core Configs
+    details: "@wisemen/vue-core-configs — Pre-configured setups for Vite, API generation, queries, and more."
+    link: /web/packages/configs/pages/getting-started/installation
+  - title: 📱 Zod Validation
+    details: "@wisemen/vue-core-zod-validation — Reusable Zod schemas with localized validation messages."
+    link: /web/packages/zod-validation/pages/getting-started/installation
+
+---

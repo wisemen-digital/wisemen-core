@@ -1,5 +1,42 @@
 # @wisemen/app-container
 
+
+
+
+
+
+
+## 6.0.1
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
+## 6.0.0
+<sub>2026-07-28</sub>
+
+- [#1503](https://github.com/wisemen-digital/wisemen-core/pull/1503)  *(major)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Change fastify container to INestApplicationContext
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 5.0.0
+<sub>2026-07-27</sub>
+
+- [#1500](https://github.com/wisemen-digital/wisemen-core/pull/1500)  *(major)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: app initialisation happens after bootstrap callback
+
+## 4.1.3
+<sub>2026-07-10</sub>
+
+- [#1410](https://github.com/wisemen-digital/wisemen-core/pull/1410)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: bump dependencies to resolve version mismatches
+
+## 4.1.2
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
+## 4.1.1
+<sub>2026-06-16</sub>
+
+- [#1270](https://github.com/wisemen-digital/wisemen-core/pull/1270)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add getting started skill for app-container package
+
 ## 4.1.0
 
 ### Minor Changes

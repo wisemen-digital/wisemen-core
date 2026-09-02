@@ -6,17 +6,19 @@ import {
   PopoverRoot as RekaPopoverRoot,
   PopoverTrigger as RekaPopoverTrigger,
 } from 'reka-ui'
+import { computed } from 'vue'
 
 import { POPPER_PROPS_DEFAULTS } from '@/types/popper.type'
+import { useRegisterAsDialogNestedLayer } from '@/ui/dialog/dialogNestedLayer.composable'
 import type { PopoverProps } from '@/ui/popover/popover.props'
 import PopoverArrow from '@/ui/popover/PopoverArrow.vue'
 import ThemeProvider from '@/ui/theme-provider/ThemeProvider.vue'
 
 const props = withDefaults(defineProps<PopoverProps>(), {
   ...POPPER_PROPS_DEFAULTS,
-  disableSideFlip: false,
-  disableUpdateOnLayoutShift: false,
-  prioritizePosition: false,
+  isPrioritizedPosition: false,
+  isSideFlipDisabled: false,
+  isUpdateOnLayoutShiftDisabled: false,
 })
 
 const emit = defineEmits<{
@@ -25,11 +27,22 @@ const emit = defineEmits<{
   focusOutside: [event: CustomEvent]
   interactOutside: [event: CustomEvent]
 }>()
+const isPrioritizedPosition = computed<boolean>(
+  () => props.isPrioritizedPosition || props.prioritizePosition === true,
+)
+const isSideFlipDisabled = computed<boolean>(
+  () => props.isSideFlipDisabled || props.disableSideFlip === true,
+)
+const isUpdateOnLayoutShiftDisabled = computed<boolean>(
+  () => props.isUpdateOnLayoutShiftDisabled || props.disableUpdateOnLayoutShift === true,
+)
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,
   required: false,
 })
+
+useRegisterAsDialogNestedLayer(isOpen)
 
 function onEscapeKeyDown(event: KeyboardEvent): void {
   emit('escapeKeyDown', event)
@@ -75,10 +88,10 @@ function onAutoFocusOnClose(event: Event): void {
             'w-(--reka-popover-trigger-width)': props.popoverWidth === 'anchor-width',
             'w-(--reka-popover-content-available-width)': props.popoverWidth === 'available-width',
           }"
-          :prioritize-position="props.prioritizePosition"
+          :prioritize-position="isPrioritizedPosition"
           :data-animation="props.popoverAnimationName ?? 'popover-default'"
-          :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-          :side-flip="!props.disableSideFlip"
+          :disable-update-on-layout-shift="isUpdateOnLayoutShiftDisabled"
+          :side-flip="!isSideFlipDisabled"
           position-strategy="absolute"
           sticky="always"
           class="

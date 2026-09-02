@@ -1,5 +1,12 @@
-import { Quantity } from '../../quantity.js'
+import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
+import { Distance } from '../../quantities/distance/distance.js'
+import { Speed } from '../../quantities/speed/speed.js'
+import { Rate } from '../../rate/rate.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { DurationUnit } from './duration-unit.enum.js'
+import { Power } from '../power/power.js'
+import { Energy } from '../energy/energy.js'
+import { EnergyUnit } from '../energy/energy-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
   [DurationUnit.SECONDS]: 1,
@@ -11,9 +18,21 @@ const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
   [DurationUnit.DAYS]: 3600 * 24
 }
 
-export class Duration extends Quantity<DurationUnit, Duration> {
+export class Duration extends ScalableQuantity<DurationUnit, Duration, Duration> {
+  protected getQuantity() {
+    return Duration
+  }
+
+  protected getDelta() {
+    return Duration
+  }
+
   protected getBaseUnit () {
     return DurationUnit.SECONDS
+  }
+
+  protected getUnits (): readonly DurationUnit[] {
+    return Object.values(DurationUnit)
   }
 
   protected convertValueToBaseUnit (value: number, unit: DurationUnit): number {
@@ -50,4 +69,18 @@ export class Duration extends Quantity<DurationUnit, Duration> {
   }
 
   static ZERO = new Duration(0, DurationUnit.SECONDS)
+    
+  override multiply(factor: number): Duration
+  override multiply(rate: Rate): Duration 
+  override multiply(speed: Speed): Distance
+  override multiply(power: Power): Energy
+  override multiply(multiplier: number | Rate | Speed | Power): Duration | Distance | Energy {
+    if (multiplier instanceof Speed) {
+      return new Distance(this.valueOf() * multiplier.valueOf(), DistanceUnit.METER)
+    }
+    if (multiplier instanceof Power) {
+      return new Energy(this.valueOf() * multiplier.valueOf(), EnergyUnit.JOULE)
+    }
+    return super.multiply(multiplier)
+  }
 }

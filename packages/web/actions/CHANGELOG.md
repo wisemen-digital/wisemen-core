@@ -1,6 +1,37 @@
 # @wisemen/vue-core-actions
 
 
+
+
+
+
+
+## 0.3.0
+<sub>2026-08-25</sub>
+
+- [#1588](https://github.com/wisemen-digital/wisemen-core/pull/1588)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Add `tableSelection` to `ActionContext` and `useActionManagerStore`, shaped as `{ type: 'include' | 'exclude', items: string[] }`, so a data table's selection can be registered with the action manager. Adds `setTableSelection`/`clearTableSelection` to set and reset it.
+
+## 0.2.4
+<sub>2026-08-05</sub>
+
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+
+## 0.2.3
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+
+## 0.2.2
+<sub>2026-07-14</sub>
+
+- [#1423](https://github.com/wisemen-digital/wisemen-core/pull/1423)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Reduce debounce from 200ms to 80ms for menus
+
+## 0.2.1
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
 ## 0.2.0
 <sub>2026-06-08</sub>
 

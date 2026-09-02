@@ -13,20 +13,33 @@ import ActionDropdownMenuContent from '@/ui/action-dropdown-menu/ActionDropdownM
 import type { DropdownMenuProps } from '@/ui/dropdown-menu/dropdownMenu.props'
 import { UIDropdownMenu } from '@/ui/dropdown-menu/index'
 
-const props = defineProps<DropdownMenuProps & {
+const props = withDefaults(defineProps<DropdownMenuProps & {
+  isCurrentContextOnly?: boolean
   actions?: Action[]
-  currentContextOnly: boolean
+  /**
+   * @deprecated Use `isCurrentContextOnly` instead.
+   */
+  currentContextOnly?: boolean
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
-}>()
+}>(), {
+  isCurrentContextOnly: undefined,
+  currentContextOnly: undefined,
+})
 
 const isOpen = defineModel<boolean>('isOpen', {
   default: false,
   required: false,
 })
 
-if (!props.currentContextOnly) {
+if (props.isCurrentContextOnly === undefined && props.currentContextOnly === undefined) {
+  console.error('ActionDropdownMenu: either `isCurrentContextOnly` or the deprecated `currentContextOnly` prop must be provided.')
+}
+
+const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
+
+if (!isCurrentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
 }
@@ -53,6 +66,7 @@ const hasApplicableActions = computed<boolean>(() => {
     v-if="hasApplicableActions"
     v-bind="props"
     v-model:is-open="isOpen"
+    :is-adaptive-content-width="true"
   >
     <template #trigger>
       <slot />

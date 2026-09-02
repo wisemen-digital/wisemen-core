@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { ModuleRef } from '@nestjs/core'
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper.js'
-import { ProvidersExplorer } from '../providers/providers-explorer.js'
+import { ProviderExplorer } from '@wisemen/nestjs-provider-explorer'
 import { AllowBouncer, PgbossBouncer } from './pgboss-bouncer.js'
 import { getPgbossBouncerQueueName, isPgbossBouncer } from './pgboss-bouncer.decorator.js'
 
@@ -12,7 +12,7 @@ export class PgbossBouncerRegistry {
 
   constructor (
     private moduleRef: ModuleRef,
-    private providerExplorer: ProvidersExplorer
+    private providerExplorer: ProviderExplorer
   ) {}
 
   onModuleInit () {

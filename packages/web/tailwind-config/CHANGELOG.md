@@ -1,6 +1,30 @@
 # @wisemen/vue-core-tailwind-config
 
 
+
+
+
+
+## 0.1.2
+<sub>2026-07-17</sub>
+
+- [#1464](https://github.com/wisemen-digital/wisemen-core/pull/1464)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed branded sidebar/topbar colors not updating instantly when toggling between light and dark mode.
+
+## 0.1.1
+<sub>2026-07-15</sub>
+
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dark mode variables to branded css class and only check via css
+
+## 0.1.0
+<sub>2026-07-08</sub>
+
+- [#1340](https://github.com/wisemen-digital/wisemen-core/pull/1340)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add `variant="branded"` prop to `UIMainLayout` — applies a deep brand gradient to the sidebar and topbar while leaving the main content area unaffected. Introduces a new `.branded` CSS theme class in `@wisemen/vue-core-tailwind-config` that maps all semantic color tokens to brand-scale values.
+
+## 0.0.6
+<sub>2026-07-02</sub>
+
+- [#1342](https://github.com/wisemen-digital/wisemen-core/pull/1342)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Resolve issue where nested @light and @dark wouldn't behave as expected
+
 ## 0.0.5
 <sub>2026-06-08</sub>
 

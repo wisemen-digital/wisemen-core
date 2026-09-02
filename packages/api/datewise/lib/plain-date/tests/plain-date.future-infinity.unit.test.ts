@@ -112,15 +112,52 @@ describe('FutureInfinityDate', () => {
     })
   })
 
+  describe('weekday helpers', () => {
+    it('throws when accessing weekday helpers', () => {
+      const date = new FutureInfinityDate()
+
+      expect(() => date.isMonday()).toThrow()
+      expect(() => date.isTuesday()).toThrow()
+      expect(() => date.isWednesday()).toThrow()
+      expect(() => date.isThursday()).toThrow()
+      expect(() => date.isFriday()).toThrow()
+      expect(() => date.isSaturday()).toThrow()
+      expect(() => date.isSunday()).toThrow()
+    })
+  })
+
   describe('isoWeekday', () => {
     it('throws when accessing the ISO weekday', () => {
       expect(() => new FutureInfinityDate().isoWeekday()).toThrow()
+    })
+
+    it('remains FutureInfinityDate when changing the ISO weekday', () => {
+      const date = new FutureInfinityDate()
+      const result = date.isoWeekday(7)
+
+      expect(result).toBe(date)
+      expect(result.isFutureInfinity()).toBe(true)
+    })
+
+    it('remains FutureInfinityDate for next and previous ISO weekday operations', () => {
+      const date = new FutureInfinityDate()
+
+      expect(date.nextIsoWeekday(1)).toBe(date)
+      expect(date.nextOrSameIsoWeekday(2)).toBe(date)
+      expect(date.previousIsoWeekday(3)).toBe(date)
+      expect(date.previousOrSameIsoWeekday(4)).toBe(date)
     })
   })
 
   describe('isoWeek', () => {
     it('throws when accessing the ISO week', () => {
       expect(() => new FutureInfinityDate().isoWeek()).toThrow()
+    })
+  })
+
+  describe('isoWeekParity', () => {
+    it('throws when accessing the ISO week parity', () => {
+      expect(() => new FutureInfinityDate().isoWeekParity()).toThrow()
     })
   })
 

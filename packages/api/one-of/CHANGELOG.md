@@ -1,5 +1,17 @@
 # @wisemen/one-of
 
+
+
+## 0.0.17
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.0.16
+<sub>2026-06-17</sub>
+
+- [#1275](https://github.com/wisemen-digital/wisemen-core/pull/1275)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1142): add one-of agent skill
+
 ## 0.0.15
 
 ### Patch Changes

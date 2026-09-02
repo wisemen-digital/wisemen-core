@@ -6,8 +6,20 @@
   "packageManager": "pnpm@11.4.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "workspaces": [
-    "packages/**"
+    "docs",
+    "packages/*/*"
   ],
+  "fledgling": {
+    "provider": "github",
+    "workflow": "release.yml",
+    "permissions": "publish",
+    "ignore": [
+      "docs-next",
+      "@appwise/express-dto-router",
+      "@appwise/transformer",
+      "formango"
+    ]
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo watch dev",
@@ -34,10 +46,12 @@
     "@commitlint/cli": "catalog:tooling",
     "@commitlint/config-conventional": "catalog:tooling",
     "@varlock/bumpy": "catalog:tooling",
+    "fledgling": "catalog:build",
     "husky": "catalog:build",
+    "pkg-pr-new": "^0.0.75",
     "rimraf": "catalog:build",
     "turbo": "catalog:build",
-    "vitest": "catalog:test",
-    "typescript": "catalog:build"
+    "typescript": "catalog:build",
+    "vitest": "catalog:test"
   }
 }

@@ -12,6 +12,16 @@ export interface NatsConsumerConfig extends Omit<ConsumerConfig, 'callback'> {
   /** The NATS connection class decorated with `@NatsConnection` */
   connection: ClassConstructor<unknown>
   streamName: string
+  /** The backoff interval for NAK (negative acknowledgment) messages in milliseconds */
+  nakBackoff?: number
+  /**
+   * Maximum number of messages this consumer instance may process concurrently.
+   *
+   * Defaults to `1`, which preserves sequential processing.
+   * When this is increased, set `max_ack_pending` to at least the same value.
+   * Must be > 0.
+   */
+  maxInFlight?: number
 }
 
 export type NatsConsumerConfigFunction = (configService: ConfigService) => NatsConsumerConfig
@@ -49,6 +59,7 @@ export function getNatsConsumerConfig (
   const consumerConfig = configFn(config)
   const name = consumerConfig.name ?? target.name
   const connectionOptions = getNatsConnectionOptions(consumerConfig.connection, config)
+  const { connection: _connection, ...configWithoutConnection } = consumerConfig
 
-  return { ...consumerConfig, name, connectionOptions }
+  return { ...configWithoutConnection, name, connectionOptions }
 }

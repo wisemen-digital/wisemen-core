@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/scoped-filter",
-  "version": "0.0.5",
+  "version": "1.0.8",
   "publishConfig": {
     "access": "public"
   },
@@ -25,6 +25,10 @@
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
+  "dependencies": {
+    "@wisemen/datewise": "workspace:^",
+    "@wisemen/validators": "workspace:^"
+  },
   "peerDependencies": {
     "@nestjs/swagger": "catalog:backend-peer",
     "class-transformer": "catalog:backend-peer",
@@ -39,7 +43,8 @@
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "pg": "catalog:backend"
   },
   "author": "Wisemen",
   "contributors": [],

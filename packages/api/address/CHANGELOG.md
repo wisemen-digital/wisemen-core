@@ -1,5 +1,41 @@
 # @wisemen/address
 
+
+
+
+
+
+
+## 0.5.2
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 0.5.1
+<sub>2026-08-27</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.26
+
+## 0.5.0
+<sub>2026-07-29</sub>
+
+- [#1517](https://github.com/wisemen-digital/wisemen-core/pull/1517)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add AddressResponse.from factory
+
+## 0.4.8
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.4.7
+<sub>2026-07-10</sub>
+
+- [#1410](https://github.com/wisemen-digital/wisemen-core/pull/1410)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: bump dependencies to resolve version mismatches
+
+## 0.4.6
+<sub>2026-06-16</sub>
+
+- [#1266](https://github.com/wisemen-digital/wisemen-core/pull/1266)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - add getting started skill for address package
+
 ## 0.4.5
 
 ### Patch Changes

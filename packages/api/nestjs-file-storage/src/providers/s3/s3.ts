@@ -1,4 +1,4 @@
-import { Readable } from 'stream'
+import { Readable, Writable } from 'stream'
 import { Injectable } from '@nestjs/common'
 import { DeleteObjectCommand, GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { Upload } from '@aws-sdk/lib-storage'
@@ -7,6 +7,7 @@ import { validateSync } from 'class-validator'
 import { plainToClass } from 'class-transformer'
 import { S3Config } from '#src/providers/s3/s3.config.js'
 import { S3_DOWNLOAD_URL_EXPIRES_S, S3_UPLOAD_EXPIRES_MS, S3_UPLOAD_URL_EXPIRES_S } from '#src/providers/s3/s3.constants.js'
+import { createUploadWritable } from '#src/providers/create-upload-writable.js'
 import { FileIndex, FileStorage } from '#src/providers/file-storage-provider.js'
 
 @Injectable()
@@ -61,8 +62,7 @@ export class S3 extends FileStorage {
     // ❌ Rejects keys starting with ./
     // ❌ Rejects any path segment exactly . or ..
 
-    // eslint-disable-next-line no-useless-escape
-    const regex = /^(?!\.\/)(?!\.{1,2}$)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[A-Za-z0-9!\-_.\*'()\/]{1,1024}$/
+    const regex = /^(?!\.\/)(?!\.{1,2}$)(?!.*(?:^|\/)\.{1,2}(?:\/|$))[A-Za-z0-9!\-_.*'()/]{1,1024}$/
 
     if (!regex.test(key)) {
       throw new Error(`Invalid S3 key: ${key}`)
@@ -73,7 +73,7 @@ export class S3 extends FileStorage {
     key: string,
     mimeType: string,
     expiresInSeconds?: number,
-    isPublic?: boolean
+    isPublic: boolean = false
   ): Promise<string> {
     this.validateKey(key)
 
@@ -81,7 +81,7 @@ export class S3 extends FileStorage {
       Bucket: this.bucketName,
       Key: key,
       ContentType: mimeType,
-      ACL: isPublic === undefined ? 'public-read' : 'private'
+      ACL: isPublic ? 'public-read' : 'private'
     })
 
     return await getSignedUrl(this.client, command, {
@@ -136,14 +136,14 @@ export class S3 extends FileStorage {
     return `${this._config.endpoint}/${this.bucketName}/${key}`
   }
 
-  public async upload (key: string, content: Buffer, isPublic?: boolean): Promise<void> {
+  public async upload (key: string, content: Buffer, isPublic: boolean = false): Promise<void> {
     this.validateKey(key)
 
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
       Body: content,
-      ACL: isPublic === undefined ? 'public-read' : 'private'
+      ACL: isPublic ? 'public-read' : 'private'
     })
 
     await this.client.send(command, {
@@ -170,7 +170,15 @@ export class S3 extends FileStorage {
     return Buffer.from(chunks)
   }
 
-  public async uploadStream (key: string, stream: Readable, isPublic?: boolean): Promise<void> {
+  public createUploadWritable (key: string, isPublic?: boolean): Writable {
+    this.validateKey(key)
+
+    return createUploadWritable(async stream => {
+      await this.uploadStream(key, stream, isPublic)
+    })
+  }
+
+  public async uploadStream (key: string, stream: Readable, isPublic: boolean = false): Promise<void> {
     this.validateKey(key)
 
     const parallelUploads = new Upload({
@@ -179,7 +187,7 @@ export class S3 extends FileStorage {
         Bucket: this.bucketName,
         Key: key,
         Body: stream,
-        ACL: isPublic === undefined ? 'public-read' : 'private'
+        ACL: isPublic ? 'public-read' : 'private'
       },
       queueSize: 10,
       leavePartsOnError: false

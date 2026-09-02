@@ -15,8 +15,17 @@ export type AutocompleteDisplayFn<TValue extends AutocompleteValue> = (
   item: NonNullable<TValue>,
 ) => string
 
+export type AutocompleteGetItemKeyFn<TValue extends AutocompleteValue> = (
+  item: NonNullable<TValue>,
+) => number | string
+
 export interface AutocompleteProps<TValue extends AutocompleteValue>
   extends Input, AutocompleteInput, InputWrapper, Omit<FieldWrapper, 'iconRight'>, PopoverProps {
+  /**
+   * Whether to hide the chevron trigger icon on the right side of the autocomplete.
+   * @default true
+   */
+  isTriggerHidden?: boolean
   /**
    * Function to display the item label.
    */
@@ -27,6 +36,11 @@ export interface AutocompleteProps<TValue extends AutocompleteValue>
    * @default null
    */
   getItemConfig?: ((value: NonNullable<TValue>) => MenuItemConfig | null) | null
+  /**
+   * Returns a stable, unique key for an item. Defaults to `JSON.stringify(value)` when not provided.
+   * @default null
+   */
+  getItemKey?: AutocompleteGetItemKeyFn<TValue> | null
   /**
    * The items to display in the autocomplete dropdown.
    */
@@ -48,7 +62,15 @@ export interface AutocompleteProps<TValue extends AutocompleteValue>
 export type AutocompleteContentProps<TValue extends AutocompleteValue> = Pick<
   AutocompleteProps<TValue>,
   | 'displayFn'
+  | 'getItemKey'
   | 'isLoading'
   | 'items'
   | 'searchMode'
-> & PopoverProps
+> & Partial<PopoverProps> & {
+  /**
+   * When true, renders inline inside a `ResponsiveDrawer` instead of a positioned popover,
+   * and renders its own search input at the top of the list.
+   * @default false
+   */
+  isMobileDrawer?: boolean
+}

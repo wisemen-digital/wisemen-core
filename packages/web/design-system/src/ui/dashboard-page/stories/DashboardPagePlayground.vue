@@ -13,8 +13,8 @@ import {
   Rows01Icon,
   Settings01Icon,
   Trash01Icon,
+  User01Icon,
 } from '@wisemen/vue-core-icons'
-import type { Component } from 'vue'
 import {
   computed,
   ref,
@@ -30,6 +30,13 @@ import DashboardPageActions from '@/ui/dashboard-page/content/DashboardPageActio
 import DashboardPageContent from '@/ui/dashboard-page/content/DashboardPageContent.vue'
 import type { PageBreadcrumb } from '@/ui/dashboard-page/dashboardPage.type'
 import DashboardPage from '@/ui/dashboard-page/DashboardPage.vue'
+import DashboardPageDetailPaneCloseButton from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneCloseButton.vue'
+import DashboardPageDetailPaneFooter from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneFooter.vue'
+import DashboardPageDetailPaneHeader from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneHeader.vue'
+import DashboardPageDetailPaneTabs from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabs.vue'
+import DashboardPageDetailPaneTabsContent from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabsContent.vue'
+import DashboardPageDetailPaneTabsList from '@/ui/dashboard-page/detail-pane/DashboardPageDetailPaneTabsList.vue'
+import type { MainLayoutVariant } from '@/ui/layout/index'
 import MainContent from '@/ui/layout/MainContent.vue'
 import MainLayout from '@/ui/layout/MainLayout.vue'
 import { UIRowLayout } from '@/ui/row-layout'
@@ -42,20 +49,22 @@ import MainSidebarHeaderReturnToApp from '@/ui/sidebar/components/MainSidebarHea
 import MainSidebarNavigationGroup from '@/ui/sidebar/components/MainSidebarNavigationGroup.vue'
 import MainSidebarNavigationLink from '@/ui/sidebar/components/MainSidebarNavigationLink.vue'
 import MainSidebar from '@/ui/sidebar/MainSidebar.vue'
+import type { DashboardSidebarNavLink } from '@/ui/sidebar/types/mainSidebar.type'
+import { UITabsItem } from '@/ui/tabs'
 import Tabs from '@/ui/tabs/Tabs.vue'
 import TabsItem from '@/ui/tabs/TabsItem.vue'
 import TabsList from '@/ui/tabs/TabsList.vue'
 import { UIText } from '@/ui/text/index'
 
+const props = withDefaults(defineProps<{
+  variant?: MainLayoutVariant
+}>(), {
+  variant: 'default',
+})
+
 interface NavigationGroup {
   label: string
-  links: NavigationItem[]
-}
-
-interface NavigationItem {
-  name: string
-  icon: Component
-  to: any
+  links: DashboardSidebarNavLink[]
 }
 
 const navigation = computed<NavigationGroup[]>(() => ([
@@ -63,18 +72,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Main',
     links: [
       {
-        name: 'Dashboard',
         icon: BarChartSquare02Icon,
+        label: 'Dashboard',
         to: {
           path: '/',
         },
+        type: 'link',
       },
       {
-        name: 'Projects',
         icon: Rows01Icon,
+        label: 'Projects',
         to: {
           path: '/projects',
         },
+        type: 'link',
       },
     ],
   },
@@ -82,18 +93,20 @@ const navigation = computed<NavigationGroup[]>(() => ([
     label: 'Other',
     links: [
       {
-        name: 'Documents',
         icon: File05Icon,
+        label: 'Documents',
         to: {
           path: '/documents',
         },
+        type: 'link',
       },
       {
-        name: 'Calendar',
         icon: CalendarIcon,
+        label: 'Calendar',
         to: {
           path: '/calendar',
         },
+        type: 'link',
       },
     ],
   },
@@ -104,18 +117,20 @@ const footerNavigation = computed<NavigationGroup[]>(() => ([
     label: '',
     links: [
       {
-        name: 'Support',
         icon: LifeBuoy01Icon,
+        label: 'Support',
         to: {
           path: '/support',
         },
+        type: 'link',
       },
       {
-        name: 'Settings',
         icon: Settings01Icon,
+        label: 'Settings',
         to: {
           path: '/settings',
         },
+        type: 'link',
       },
     ],
   },
@@ -137,6 +152,7 @@ const breadcrumbs = computed<PageBreadcrumb[]>(() => ([
 ]))
 
 const tabsModelValue = ref<string>('tab1')
+const detailPaneTab = ref<string>('info')
 
 const exampleAction = createAction({
   id: 'example',
@@ -153,6 +169,7 @@ const exampleAction = createAction({
     "
   >
     <MainLayout
+      :variant="props.variant"
       class="h-[80dvh]!"
     >
       <MainSidebar
@@ -182,10 +199,8 @@ const exampleAction = createAction({
           >
             <MainSidebarNavigationLink
               v-for="link in group.links"
-              :key="link.name"
-              :to="link.to"
-              :icon="link.icon"
-              :label="link.name"
+              :key="link.label"
+              v-bind="link"
             />
           </MainSidebarNavigationGroup>
         </template>
@@ -199,10 +214,8 @@ const exampleAction = createAction({
           >
             <MainSidebarNavigationLink
               v-for="link in group.links"
-              :key="link.name"
-              :to="link.to"
-              :icon="link.icon"
-              :label="link.name"
+              :key="link.label"
+              v-bind="link"
             />
           </MainSidebarNavigationGroup>
           <MainSidebarFooterAccountCard
@@ -227,7 +240,7 @@ const exampleAction = createAction({
           :is-detail-pane-open="true"
           :breadcrumbs="breadcrumbs"
           :detail-pane="{
-            variant: 'full-height-inline',
+            variant: 'bordered-inline',
             storage: {
               key: 'detail-pane',
               strategy: 'localStorage',
@@ -321,15 +334,67 @@ const exampleAction = createAction({
           </DashboardPageContent>
 
           <template #detail-pane>
-            <div class="flex h-full flex-col gap-lg p-lg">
-              <h2 class="text-sm font-medium text-primary">
-                Detail Pane
-              </h2>
+            <DashboardPageDetailPaneHeader
+              :left="{
+                icon: User01Icon,
+                type: 'featured-icon',
+              }"
+              title="Detail Pane"
+            >
+              <template #actions>
+                <DashboardPageDetailPaneCloseButton />
+              </template>
+              <template #subtitle>
+                <UIText
+                  text="What a nice pane"
+                  class="text-xs text-tertiary"
+                />
+              </template>
+            </DashboardPageDetailPaneHeader>
 
-              <p class="text-sm text-secondary">
-                This is the detail pane content. It slides in from the right.
-              </p>
-            </div>
+            <DashboardPageDetailPaneTabs v-model="detailPaneTab">
+              <DashboardPageDetailPaneTabsList>
+                <UITabsItem
+                  label="Info"
+                  value="info"
+                />
+                <UITabsItem
+                  label="History"
+                  value="history"
+                />
+              </DashboardPageDetailPaneTabsList>
+
+              <DashboardPageDetailPaneTabsContent value="info">
+                <ColumnLayout class="p-lg">
+                  <div
+                    v-for="n in 20"
+                    :key="n"
+                    class="rounded-lg border border-secondary p-lg"
+                  >
+                    <p class="text-sm text-secondary">
+                      Info item {{ n }}
+                    </p>
+                  </div>
+                </ColumnLayout>
+              </DashboardPageDetailPaneTabsContent>
+
+              <DashboardPageDetailPaneTabsContent value="history">
+                <ColumnLayout class="p-lg">
+                  <p class="text-sm text-secondary">
+                    History content
+                  </p>
+                </ColumnLayout>
+              </DashboardPageDetailPaneTabsContent>
+            </DashboardPageDetailPaneTabs>
+
+            <DashboardPageDetailPaneFooter>
+              <UIRowLayout justify="end">
+                <UIButton
+                  label="Save"
+                  size="md"
+                />
+              </UIRowLayout>
+            </DashboardPageDetailPaneFooter>
           </template>
         </DashboardPage>
       </MainContent>

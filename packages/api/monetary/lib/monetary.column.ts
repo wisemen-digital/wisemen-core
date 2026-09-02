@@ -12,6 +12,7 @@ export type MonetaryOptions = {
 export interface MonetaryJSON {
   amount: number
   currency: Currency
+  precision?: number
 }
 
 /** Stores the amount and currency as jsonb */
@@ -47,12 +48,12 @@ export class MoneyTypeOrmTransformer implements ValueTransformer {
       return null
     }
 
-    const precision = this.getPrecisionFor(monetary.currency)
+    const precision = monetary.precision ?? this.getPrecisionFor(monetary.currency)
 
     return new Monetary(monetary.amount, monetary.currency, precision)
   }
 
-  to (monetary: Monetary | null | undefined): MonetaryJSON | null | undefined {
+  to (monetary: Monetary | null | undefined, includePrecision: boolean = false): MonetaryJSON | null | undefined {
     if (monetary === undefined || monetary === null) {
       return monetary
     }
@@ -71,7 +72,8 @@ export class MoneyTypeOrmTransformer implements ValueTransformer {
 
     return {
       amount: normalizedMonetary.amount,
-      currency: normalizedMonetary.currency
+      currency: normalizedMonetary.currency,
+      precision: includePrecision ? precision : undefined
     }
   }
 

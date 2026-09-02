@@ -1,5 +1,29 @@
 # @wisemen/csv
 
+
+
+
+
+## 1.0.1
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 1.0.0
+<sub>2026-07-24</sub>
+
+- [#1462](https://github.com/wisemen-digital/wisemen-core/pull/1462)  *(major)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: rework csv stream to a Transform
+
+## 0.2.0
+<sub>2026-06-29</sub>
+
+- [#1256](https://github.com/wisemen-digital/wisemen-core/pull/1256)  *(minor)* Thanks [@G0maa](https://github.com/G0maa)! - feat: RFC escaping of values
+
+## 0.1.1
+<sub>2026-06-16</sub>
+
+- [#1272](https://github.com/wisemen-digital/wisemen-core/pull/1272)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat(tbn-1128): add CSV agent skill
+
 ## 0.1.0
 
 ### Minor Changes

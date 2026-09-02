@@ -8,6 +8,7 @@ import {
 import {
   computed,
   onBeforeUnmount,
+  ref,
   watch,
 } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -27,10 +28,13 @@ import { useSelectLocalSearch } from '@/ui/select/selectLocalSearch.composable'
 import SelectOption from '@/ui/select/SelectOption.vue'
 import { UISeparator } from '@/ui/separator'
 import { UIText } from '@/ui/text'
+import { isMobileDevice } from '@/utils/device.util'
 
 const props = withDefaults(defineProps<SelectContentProps<TValue>>(), {
   hasVirtualScroll: false,
   isLoading: false,
+  isMobileDrawer: false,
+  getItemKey: null,
   limit: null,
   search: null,
 })
@@ -70,6 +74,14 @@ const {
 const isSearchEmpty = computed<boolean>(() =>
   props.search === 'local' ? localSearch.value === '' : search.value === '')
 
+// Reka-UI's `auto-focus` prop doesn't work, so this is a somewhat hacky workaround to prevent auto-focus
+// on mobile devices
+const isFilterInputDisabled = ref<boolean>(isMobileDevice())
+
+setTimeout(() => {
+  isFilterInputDisabled.value = false
+}, 0)
+
 const {
   createDisplayItemList, displayItems,
 } = useSelectDisplayItems<TValue>(
@@ -77,6 +89,7 @@ const {
   isSearchEmpty,
   isMultiple(modelValue.value),
   props.displayFn,
+  props.getItemKey,
 )
 
 const filterModelValue = computed<string>(() => props.search === 'local' ? localSearch.value : search.value)
@@ -147,11 +160,13 @@ onBeforeUnmount(() => {
     :highlight-on-hover="true"
     :multiple="isMultiple(modelValue)"
     :selection-behavior="isMultiple(modelValue) ? 'toggle' : 'replace'"
-    :class="props.contentWidthClass"
-    class="
-      flex max-h-[min(var(--reka-popover-content-available-height),32rem)]
-      flex-col overflow-hidden
-    "
+    :class="[
+      props.contentWidthClass,
+      props.isMobileDrawer
+        ? 'max-h-full'
+        : 'max-h-[min(var(--reka-popover-content-available-height),32rem)]',
+    ]"
+    class="flex min-h-0 flex-col overflow-hidden"
   >
     <div
       v-if="props.search !== null"
@@ -160,6 +175,7 @@ onBeforeUnmount(() => {
       <RekaListboxFilter
         :model-value="filterModelValue"
         :placeholder="i18n.t('component.autocomplete.search_placeholder')"
+        :disabled="isFilterInputDisabled"
         class="
           h-7 w-full rounded-sm bg-secondary px-md text-xs text-primary
           outline-none

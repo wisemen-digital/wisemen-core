@@ -9,6 +9,7 @@ export { default as UIMainSidebarNavigationGroups } from './components/MainSideb
 export { default as UIMainSidebarNavigationLink } from './components/MainSidebarNavigationLink.vue'
 export { default as UIMainSidebarNavigationLinkBadge } from './components/MainSidebarNavigationLinkBadge.vue'
 export { default as UIMainSidebarNavigationLinkStatusDot } from './components/MainSidebarNavigationLinkStatusDot.vue'
+export { default as UIMainSidebarNavigationSubItemCount } from './components/MainSidebarNavigationSubItemCount.vue'
 export { useMainSidebar } from './mainSidebar.composable'
 export type { MainSidebarProps as UIMainSidebarProps } from './mainSidebar.props'
 export { default as UIMainSidebar } from './MainSidebar.vue'
@@ -16,4 +17,5 @@ export type {
   MainSidebarCollapsedVariant as UIMainSidebarCollapsedVariant,
   DashboardSidebarGroup as UIMainSidebarGroup,
   DashboardSidebarNavLink as UIMainSidebarNavLink,
+  DashboardSidebarNavSubItem as UIMainSidebarNavSubItem,
 } from './types/mainSidebar.type'

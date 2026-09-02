@@ -26,6 +26,7 @@ interface UseTabs {
 }
 
 export function useTabs(options: UseTabsOptions): UseTabs {
+  const SCROLL_AMOUNT = 200
   const scrollContainerRef = ref<HTMLElement | null>(null)
 
   const isScrolledHorizontally = ref<boolean>(false)
@@ -55,7 +56,7 @@ export function useTabs(options: UseTabsOptions): UseTabs {
 
     scrollContainerRef.value.scrollTo({
       behavior: 'smooth',
-      left: scrollContainerRef.value.scrollLeft - 200,
+      left: scrollContainerRef.value.scrollLeft - SCROLL_AMOUNT,
     })
   }
 
@@ -66,7 +67,7 @@ export function useTabs(options: UseTabsOptions): UseTabs {
 
     scrollContainerRef.value.scrollTo({
       behavior: 'smooth',
-      left: scrollContainerRef.value.scrollLeft + 200,
+      left: scrollContainerRef.value.scrollLeft + SCROLL_AMOUNT,
     })
   }
 
@@ -81,26 +82,26 @@ export function useTabs(options: UseTabsOptions): UseTabs {
       return
     }
 
-    const activeTabRect = activeTab.getBoundingClientRect()
-    const scrollContainerRect = scrollContainerRef.value.getBoundingClientRect()
+    const PADDING = 48
+    const container = scrollContainerRef.value
+    const tabRect = activeTab.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
 
-    const isClipped = activeTabRect.left < scrollContainerRect.left
-      || activeTabRect.right > scrollContainerRect.right
+    const tabLeft = tabRect.left - containerRect.left + container.scrollLeft
+    const tabRight = tabLeft + tabRect.width
 
-    if (!isClipped) {
-      return
+    if (tabLeft < container.scrollLeft + PADDING) {
+      container.scrollTo({
+        behavior: 'smooth',
+        left: tabLeft - PADDING,
+      })
     }
-
-    const targetScrollLeft = activeTabRect.left
-      - scrollContainerRect.left
-      + scrollContainerRef.value.scrollLeft
-      - (scrollContainerRect.width / 2)
-      + (activeTabRect.width / 2)
-
-    scrollContainerRef.value.scrollTo({
-      behavior: 'smooth',
-      left: targetScrollLeft,
-    })
+    else if (tabRight > container.scrollLeft + container.clientWidth - PADDING) {
+      container.scrollTo({
+        behavior: 'smooth',
+        left: tabRight + PADDING - container.clientWidth,
+      })
+    }
   }
 
   let resizeObserver: ResizeObserver | null = null

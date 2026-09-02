@@ -4,6 +4,7 @@ import {
   Motion,
   MotionConfig,
 } from 'motion-v'
+import { computed } from 'vue'
 
 import { INPUT_FIELD_DEFAULTS } from '@/types/input.type'
 import type { FieldWrapperProps } from '@/ui/field-wrapper/fieldWrapper.props'
@@ -16,10 +17,12 @@ import { UIRowLayout } from '@/ui/row-layout/index'
 const props = withDefaults(defineProps<FieldWrapperProps>(), {
   ...INPUT_FIELD_DEFAULTS,
   isError: false,
+  isWrapped: false,
   gap: 'none',
   size: 'md',
-  wrap: false,
 })
+
+const isWrapped = computed<boolean>(() => props.isWrapped || props.wrap === true)
 </script>
 
 <template>
@@ -29,15 +32,15 @@ const props = withDefaults(defineProps<FieldWrapperProps>(), {
     :data-readonly="props.isReadonly || undefined"
     :data-interactive="(!props.isDisabled && !props.isReadonly) || undefined"
     :class="{
-      'h-8': !props.wrap && props.size === 'md',
-      'h-7': !props.wrap && props.size === 'sm',
-      'min-h-8 flex-wrap px-xs py-1.25': props.wrap && props.size === 'md',
-      'min-h-7 flex-wrap px-xs py-0.75': props.wrap && props.size === 'sm',
+      'h-8': !isWrapped && props.size === 'md',
+      'h-7': !isWrapped && props.size === 'sm',
+      'min-h-8 flex-wrap px-xs py-1.25': isWrapped && props.size === 'md',
+      'min-h-7 flex-wrap px-xs py-0.75': isWrapped && props.size === 'sm',
     }"
     :gap="props.gap"
     class="
-      group/field-wrapper relative rounded-md border border-secondary bg-primary
-      outline outline-transparent duration-100
+      group/field-wrapper relative isolate rounded-md border border-secondary
+      bg-primary outline outline-transparent duration-100
       data-disabled:cursor-not-allowed data-disabled:border-disabled-subtle
       data-disabled:bg-disabled-subtle data-disabled:text-disabled
       data-error:border-error

@@ -1,5 +1,36 @@
 # @wisemen/nestjs-file-storage
 
+
+
+
+
+## 0.4.0
+<sub>2026-08-27</sub>
+
+- [#1618](https://github.com/wisemen-digital/wisemen-core/pull/1618)  *(minor)* Thanks [@Holo-xy](https://github.com/Holo-xy)!
+  Fix inverted `isPublic` check in the S3 provider's ACL resolution
+
+  `createTemporaryUploadUrl`, `upload` and `uploadStream` compared `isPublic === undefined`, so omitting the parameter uploaded objects as `public-read` while passing `isPublic: true` uploaded them as `private` — the exact opposite of the intent.
+
+  `isPublic` now defaults to `false` and is used directly: objects are only `public-read` when `isPublic: true` is passed, and `private` otherwise.
+
+  **Behaviour change:** uploads that relied on the previous (accidental) public default are now private. Pass `isPublic: true` where public objects are required.
+
+## 0.3.3
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
+## 0.3.2
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.3.1
+<sub>2026-07-24</sub>
+
+- [#1463](https://github.com/wisemen-digital/wisemen-core/pull/1463)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add createUploadWritable on file storage
+
 ## 0.3.0
 
 ### Minor Changes

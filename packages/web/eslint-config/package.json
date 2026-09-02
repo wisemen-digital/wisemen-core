@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "2.1.4",
+  "version": "2.1.6",
   "description": "Eslint config for Vue.js projects",
   "author": "Wisemen",
   "license": "SEE LICENSE IN LICENSE.md",
@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@antfu/eslint-config": "catalog:lint-web",
+    "@eslint/compat": "catalog:lint-web",
     "@eslint/eslintrc": "catalog:lint-web",
     "@intlify/eslint-plugin-vue-i18n": "catalog:lint-web",
     "@typescript-eslint/parser": "catalog:lint-web",
@@ -73,6 +74,7 @@
     "tailwindcss": "catalog:style",
     "tsdown": "catalog:build",
     "typescript": "catalog:build",
-    "vitest": "catalog:test"
+    "vitest": "catalog:test",
+    "eslint": "catalog:lint-web"
   }
 }

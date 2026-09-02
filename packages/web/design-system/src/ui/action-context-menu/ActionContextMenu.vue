@@ -9,26 +9,42 @@ import type { RegisteredActionContext } from '@/register'
 import ActionContextMenuContent from '@/ui/action-context-menu/ActionContextMenuContent.vue'
 import { UIContextMenu } from '@/ui/context-menu/index'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  isCurrentContextOnly?: boolean
   actions?: Action[]
-  currentContextOnly: boolean
+  /**
+   * @deprecated Use `isCurrentContextOnly` instead.
+   */
+  currentContextOnly?: boolean
   metadata?: RegisteredActionContext['metadata']
   models?: RegisteredActionContext['models']
   parentAction?: Action
-}>()
+}>(), {
+  isCurrentContextOnly: undefined,
+  currentContextOnly: undefined,
+})
 
 const emit = defineEmits<{
   open: []
 }>()
 
-if (!props.currentContextOnly) {
+if (props.isCurrentContextOnly === undefined && props.currentContextOnly === undefined) {
+  console.error('ActionContextMenu: either `isCurrentContextOnly` or the deprecated `currentContextOnly` prop must be provided.')
+}
+
+const isCurrentContextOnly = props.isCurrentContextOnly || props.currentContextOnly === true
+
+if (!isCurrentContextOnly) {
   useTemporaryActions(props.actions ?? [], GroupPriority.VIEW)
   useTemporaryActions(props.parentAction ?? [], GroupPriority.VIEW)
 }
 </script>
 
 <template>
-  <UIContextMenu @open="emit('open')">
+  <UIContextMenu
+    :is-adaptive-content-width="true"
+    @open="emit('open')"
+  >
     <template #trigger>
       <slot />
     </template>

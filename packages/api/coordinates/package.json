@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/coordinates",
-  "version": "0.0.31",
+  "version": "0.1.3",
   "publishConfig": {
     "access": "public"
   },
@@ -11,7 +11,8 @@
     "#src/*": "./dist/*"
   },
   "files": [
-    "dist/"
+    "dist/",
+    "skills"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",

@@ -6,6 +6,8 @@ import { PlainDateUnit, DiffPlainDateUnit, ReachablePlainDateUnit } from './plai
 import { PlainDateObject } from './plain-date-object.js'
 import { PlainDate, PlainDateInput } from './plain-date.js'
 import { factory } from './plain-date.factory.js'
+import { IsoWeekParity } from './iso-week-parity.js'
+import { IsoWeekday } from '#src/common/iso-weekday.js'
 
 export class FutureInfinityDate implements PlainDate {
   isSame (otherDate: PlainDateInput, _unit?: PlainDateUnit): boolean {
@@ -160,12 +162,66 @@ export class FutureInfinityDate implements PlainDate {
     throw new Error('cannot access day of week of +infinity')
   }
 
-  isoWeekday (): number {
+  isMonday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isTuesday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isWednesday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isThursday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isFriday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isSaturday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isSunday (): boolean {
+    throw new Error('cannot access day of week of +infinity')
+  }
+
+  isoWeekday(): IsoWeekday
+  isoWeekday(day: IsoWeekday): this
+  isoWeekday (day?: IsoWeekday): IsoWeekday  | this {
+    if(day !== undefined) {
+      return this
+    }
+    
     throw new Error('cannot access ISO weekday of +infinity')
+  }
+
+  nextIsoWeekday (_day: IsoWeekday): this {
+    return this
+  }
+
+  nextOrSameIsoWeekday (_day: IsoWeekday): this {
+    return this
+  }
+
+  previousIsoWeekday (_day: IsoWeekday): this {
+    return this
+  }
+
+  previousOrSameIsoWeekday (_day: IsoWeekday): this {
+    return this
   }
 
   isoWeek (): number {
     throw new Error('cannot access ISO week of +infinity')
+  }
+
+  isoWeekParity (): IsoWeekParity {
+    throw new Error('cannot access ISO week parity of +infinity')
   }
 
   toDate (): Date {

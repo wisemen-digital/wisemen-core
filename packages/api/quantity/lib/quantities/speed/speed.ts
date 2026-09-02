@@ -1,4 +1,8 @@
-import { Quantity } from '../../quantity.js'
+import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
+import { Distance } from '../../quantities/distance/distance.js'
+import { Duration } from '../../quantities/duration/duration.js'
+import { Rate } from '../../rate/rate.js'
+import { ScalableQuantity } from '../../quantity.js'
 import { SpeedUnit } from './speed-unit.enum.js'
 
 const SPEED_MULTIPLIERS: Record<SpeedUnit, number> = {
@@ -15,9 +19,21 @@ const SPEED_MULTIPLIERS: Record<SpeedUnit, number> = {
   [SpeedUnit.MICROMETER_PER_SECOND]: 1e-6
 }
 
-export class Speed extends Quantity<SpeedUnit, Speed> {
+export class Speed extends ScalableQuantity<SpeedUnit, Speed, Speed> {
+  protected getQuantity() {
+    return Speed
+  }
+
+  protected getDelta() {
+    return Speed
+  }
+
   protected getBaseUnit () {
     return SpeedUnit.METER_PER_SECOND
+  }
+
+  protected getUnits (): readonly SpeedUnit[] {
+    return Object.values(SpeedUnit)
   }
 
   protected convertValueToBaseUnit (value: number, fromUnit: SpeedUnit): number {
@@ -29,4 +45,14 @@ export class Speed extends Quantity<SpeedUnit, Speed> {
   }
 
   static ZERO = new Speed(0, SpeedUnit.METER_PER_SECOND)
+
+  override multiply(factor: number): Speed
+  override multiply(rate: Rate): Speed 
+  override multiply(duration: Duration): Distance
+  override multiply(multiplier: number | Rate | Duration): Speed | Distance {
+    if (multiplier instanceof Duration) {
+      return new Distance(this.valueOf() * multiplier.valueOf(), DistanceUnit.METER)
+    }
+    return super.multiply(multiplier)
+  }
 }

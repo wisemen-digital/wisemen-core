@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router'
 
 import type { ActionModel } from '#types/actionModel.type.ts'
+import type { TableSelectionState } from '#types/tableSelection.type.ts'
 
 /**
  * Contextual information available to actions during execution or evaluation.
@@ -51,11 +52,16 @@ export interface ActionContext<
   allModels: TModelMap[keyof TModelMap][]
 
   /**
+   * Clears the current data table selection, if any table is registering its
+   * selection with the action manager.
+   */
+  clearTableSelection: () => void
+
+  /**
    * Models that currently have keyboard or UI focus.
    * A subset of {@link allModels}.
    */
   focusedModels: TModelMap[keyof TModelMap][]
-
   /**
    * The keyboard event that triggered the current action, if any.
    * Absent when the action was triggered through a non-keyboard interaction.
@@ -97,11 +103,23 @@ export interface ActionContext<
   searchInput: string
 
   /**
+   * Models that are currently selected
+   * A subset of {@link allModels}.
+   */
+  selectedModels: TModelMap[keyof TModelMap][]
+
+  /**
    * Pagination offsets from previous `subActions` calls, keyed by action id.
    * Set by the host menu when triggering a "load more" scroll event.
    * Prefer `getPaginationOffsetForSubActionId` over reading this directly.
    */
   subActionsMeta?: Record<string, number | null>
+
+  /**
+   * The current selection state of a data table, if a table is registering its
+   * selection with the action manager. `null` when no table selection is active.
+   */
+  tableSelection: TableSelectionState | null
 
   /**
    * Returns the targeted model filtered to only those matching the given model type.

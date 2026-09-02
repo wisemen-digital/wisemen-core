@@ -53,7 +53,7 @@ const label = computed<string>(() => (isOpen.value
     :keyboard-shortcut="toggleDetailPaneAction.keyboardShortcut"
   >
     <ActionTrigger
-      :current-context-only="false"
+      :is-current-context-only="false"
       :action="toggleDetailPaneAction"
       :group-priority="GroupPriority.NAVIGATION"
     >

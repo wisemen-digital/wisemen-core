@@ -2,6 +2,9 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import { Speed } from '../speed.js'
 import { SpeedUnit } from '../speed-unit.enum.js'
+import { Duration } from '../../duration/duration.js'
+import { DurationUnit } from '../../duration/duration-unit.enum.js'
+import { DistanceUnit } from '../../distance/distance-unit.enum.js'
 
 void describe('Speed class', () => {
   void describe('Speed calculations', () => {
@@ -34,11 +37,21 @@ void describe('Speed class', () => {
       expect(r3).toBe(2)
     })
 
-    void it('multiplies speeds', () => {
+    void it('multiplies speeds with scalars', () => {
       const s1 = new Speed(5, SpeedUnit.METER_PER_SECOND)
       const r: Speed = s1.multiply(2)
 
       expect(r.isEqualTo(10, SpeedUnit.METER_PER_SECOND)).toBe(true)
+    })
+    
+    void describe('cross quantity calculations', () => {
+      void it('multiplies speeds with durations', () => {
+        const v = new Speed(30, SpeedUnit.KILOMETER_PER_HOUR)
+        const t = new Duration(2, DurationUnit.HOURS)
+        const d = v.multiply(t).round()
+
+        expect(d.isEqualTo(60, DistanceUnit.KILOMETER)).toBe(true)
+      })
     })
   })
 
@@ -161,6 +174,15 @@ void describe('Speed class', () => {
         value: 10,
         unit: SpeedUnit.METER_PER_SECOND
       })
+    })
+  })
+
+  void describe('Speed parsing', () => {
+    void it('parses speed strings', () => {
+      const speed = new Speed('36km/h')
+
+      expect(speed.value).toBe(36)
+      expect(speed.unit).toBe(SpeedUnit.KILOMETER_PER_HOUR)
     })
   })
 })

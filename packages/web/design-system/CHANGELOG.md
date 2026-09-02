@@ -5,6 +5,342 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 1.22.4
+<sub>2026-09-01</sub>
+
+- [#1638](https://github.com/wisemen-digital/wisemen-core/pull/1638)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Exported BaseHeader from the design system and fixed its title/subtitle layout to stretch evenly to the left icon's height, with the subtitle bottom-aligned.
+
+## 1.22.3
+<sub>2026-08-27</sub>
+
+- [#1628](https://github.com/wisemen-digital/wisemen-core/pull/1628)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the TopBar actions area claiming half the header width even when empty, starving the title of space on mobile.
+
+## 1.22.2
+<sub>2026-08-27</sub>
+
+- [#1623](https://github.com/wisemen-digital/wisemen-core/pull/1623)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Addition of event based file download for files without urls
+- [#1627](https://github.com/wisemen-digital/wisemen-core/pull/1627)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed DataTableMobileCard rendering a bottom border on the last row.
+- [#1627](https://github.com/wisemen-digital/wisemen-core/pull/1627)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the TopBar title wrapping onto multiple lines on mobile instead of filling available space.
+
+## 1.22.1
+<sub>2026-08-27</sub>
+
+- [#1617](https://github.com/wisemen-digital/wisemen-core/pull/1617)  *(patch)* Thanks [@NickBanken](https://github.com/NickBanken)! - Addition of download button on Form File Upload
+
+## 1.22.0
+<sub>2026-08-25</sub>
+
+- [#1588](https://github.com/wisemen-digital/wisemen-core/pull/1588)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Added DataTable: a TanStack Table-based data table with fixed-width columns, drag-resize, sticky/pinned columns, row selection, grouping, infinite scroll, and a container-query-driven mobile card list.
+
+## 1.21.0
+<sub>2026-08-12</sub>
+
+- [#1562](https://github.com/wisemen-digital/wisemen-core/pull/1562)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Added `UISegmentedControl`/`UISegmentedControlItem` (single-select, with an animated sliding highlight) and `UISegmentedControlGroup`/`UISegmentedControlGroupItem` (multi-select), a pill-shaped alternative to `RadioGroup`/`CheckboxGroup` with optional secondary description text per item.
+
+## 1.20.2
+<sub>2026-08-07</sub>
+
+- [#1559](https://github.com/wisemen-digital/wisemen-core/pull/1559)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed Dialog closing at the same time as a nested open Popover/Autocomplete on outside click, which caused a visible position jump when the popover was near a viewport edge.
+
+## 1.20.1
+<sub>2026-08-06</sub>
+
+- [#1556](https://github.com/wisemen-digital/wisemen-core/pull/1556)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed NumberField not parsing unit, percent, or currency formatted values, causing edits to revert on blur.
+
+## 1.20.0
+<sub>2026-08-05</sub>
+
+- [#1547](https://github.com/wisemen-digital/wisemen-core/pull/1547)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - `DetailListGroupItem` now supports a `horizontalValueAlignment` prop (`start` | `end`) to align the value to the end of the row when laid out horizontally
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+- [#1549](https://github.com/wisemen-digital/wisemen-core/pull/1549)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fixed `Badge` separator spacing to scale with size instead of always using a fixed margin
+
+## 1.19.1
+<sub>2026-08-04</sub>
+
+- [#1404](https://github.com/wisemen-digital/wisemen-core/pull/1404)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Improve scoring algorithm
+- [#1527](https://github.com/wisemen-digital/wisemen-core/pull/1527)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Breadcrumbs and global search are not hidden in the top bar for a improved mobile experience
+
+## 1.19.0
+<sub>2026-08-03</sub>
+
+- [#1531](https://github.com/wisemen-digital/wisemen-core/pull/1531)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make select and autocomplete popovers responsive on mobile. The popover will become a bottom drawer with the options
+
+## 1.18.1
+<sub>2026-07-31</sub>
+
+- [#1534](https://github.com/wisemen-digital/wisemen-core/pull/1534)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker and date range picker opening on a fully-disabled month when today's date (or the current value) falls before minDate or after maxDate; the calendar now opens clamped to the nearest selectable date.
+
+## 1.18.0
+<sub>2026-07-31</sub>
+
+- [#1496](https://github.com/wisemen-digital/wisemen-core/pull/1496)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added a `config` prop to `TabsItem`/`TabsRouterLinkItem` for left content and a right-side indicator (count badge or dot, e.g. to flag a tab with a form error), matching `MenuItemConfig`'s API shape. The existing `icon`/`count` props are deprecated but still work.
+- [#1497](https://github.com/wisemen-digital/wisemen-core/pull/1497)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the detail pane's bordered variants clipping the sticky header and footer backgrounds to square corners instead of the pane's rounded border.
+- [#1498](https://github.com/wisemen-digital/wisemen-core/pull/1498)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the date picker calendar opening on the current month instead of the month of the bound value.
+- [#1499](https://github.com/wisemen-digital/wisemen-core/pull/1499)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the Switch component shrinking when placed in a flex container with limited space.
+
+## 1.17.0
+<sub>2026-07-27</sub>
+
+- [#1494](https://github.com/wisemen-digital/wisemen-core/pull/1494)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added badge/count and status dot support to main sidebar navigation sub-items.
+
+## 1.16.0
+<sub>2026-07-17</sub>
+
+- [#1458](https://github.com/wisemen-digital/wisemen-core/pull/1458)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added Badge left config, isDisabled and iconColor props, a neutral color, and deprecated the outline variant and the icon/dot/avatar props.
+- [#1460](https://github.com/wisemen-digital/wisemen-core/pull/1460)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Added a 'Tomorrow' preset to the date range field.
+- [#1459](https://github.com/wisemen-digital/wisemen-core/pull/1459)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed NumberField incorrectly parsing values like "0,11111" as thousands instead of decimals.
+- [#1460](https://github.com/wisemen-digital/wisemen-core/pull/1460)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed the dialog close button and header/footer separators never rendering due to a broken deprecated-prop fallback.
+- [#1464](https://github.com/wisemen-digital/wisemen-core/pull/1464)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fixed branded MainLayout showing no background in dark mode.
+
+## 1.15.1
+<sub>2026-07-17</sub>
+
+- [#1457](https://github.com/wisemen-digital/wisemen-core/pull/1457)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix isCurrentContextOnly and currentContextOnly props both being required
+
+## 1.15.0
+<sub>2026-07-16</sub>
+
+- [#1455](https://github.com/wisemen-digital/wisemen-core/pull/1455)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a onRowClick prop to the table component. to make rows have a click handler
+- [#1439](https://github.com/wisemen-digital/wisemen-core/pull/1439)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Made today's date bold in the date picker and date range picker calendar grids, so it stays visually distinguishable from custom day dots.
+- [#1444](https://github.com/wisemen-digital/wisemen-core/pull/1444)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make sure the data in the table fetches the next page when the table is bigger then the content
+- [#1452](https://github.com/wisemen-digital/wisemen-core/pull/1452)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a shrink-0 to the primitive children of the badge truncate component
+
+## 1.14.2
+<sub>2026-07-15</sub>
+
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Made FormFieldGroup stretch its columns to fill the available width instead of leaving them at their content size.
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Handle the system apearance correctly in the branded sidebar
+- [#1448](https://github.com/wisemen-digital/wisemen-core/pull/1448)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add dark mode variables to branded css class and only check via css
+
+## 1.14.1
+<sub>2026-07-14</sub>
+
+- [#1431](https://github.com/wisemen-digital/wisemen-core/pull/1431)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Hide the overlfow-x in the main sidebar
+- [#1431](https://github.com/wisemen-digital/wisemen-core/pull/1431)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Invert check for missing type in `mainSidebarNavigationLink`
+
+## 1.14.0
+<sub>2026-07-14</sub>
+
+- [#1418](https://github.com/wisemen-digital/wisemen-core/pull/1418)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - UIDropdownMenu, UIContextMenu: Content can now grow past its min-width to fit larger items. While open,
+  it remembers the widest size it has rendered at so it never shrinks back
+  down and shifts the layout; this resets each time the menu is reopened. This requires `is-adaptive-content-width: true`
+- [#1409](https://github.com/wisemen-digital/wisemen-core/pull/1409)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Fix `FormDialog` and `DialogChin` issues:
+  - Pressing Esc on a dirty `FormDialog` now shows the unsaved-changes confirmation chin instead of discarding changes immediately; pressing Esc again closes the dialog and discards the changes
+  - Fixed a height jump/chop in the dialog chin's open animation, most noticeable when it opened at the same time as a form field's error message
+  - Closing a `FormDialog` with unsaved changes no longer marks every form field as touched, so validation errors no longer appear on fields the user never interacted with
+- [#1413](https://github.com/wisemen-digital/wisemen-core/pull/1413)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove unsude component from sidebar
+- [#1419](https://github.com/wisemen-digital/wisemen-core/pull/1419)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix dropdown/context menus not keeping an item highlighted while navigating via keyboard. Items loaded in asynchronously, or a list filtered down to zero results and then cleared, could end up with nothing highlighted. The first item is now kept highlighted for as long as the menu stays open and the user is driving it via keyboard, including once a search/filter kicks in on a menu that was opened with the mouse.
+
+## 1.13.0
+<sub>2026-07-08</sub>
+
+- [#1383](https://github.com/wisemen-digital/wisemen-core/pull/1383)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - feat(select,autocomplete): add `isTriggerHidden` prop to hide the chevron trigger icon. Defaults to `true` for `Autocomplete`.
+- [#1349](https://github.com/wisemen-digital/wisemen-core/pull/1349)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Normalize all boolean prop names to `is*` / `has*` prefix convention
+  Old prop names are still supported but marked as `@deprecated` — they will be removed in a future major release. Update your usage when convenient; no immediate migration required.
+  ### `show*` → `has*`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `Dialog` | `showCloseButton` | `hasCloseButton` |
+  | `DialogFooter` | `showSeparator` | `hasSeparator` |
+  | `DialogHeader` | `showSeparator` | `hasSeparator` |
+  | `DashboardPageDetailPaneFooter` | `showSeparator` | `hasSeparator` |
+  | `DashboardPageDetailPaneHeader` | `showSeparator` | `hasSeparator` |
+  | `DateRangePicker` | `showPresets` | `hasPresets` |
+  | `NumberField` | `showControls` | `hasControls` |
+  ### `hide*` → `is*Hidden`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `DialogHeader` | `hideDescription` | `isDescriptionHidden` |
+  ### `disable*` / `prevent*` → `is*Disabled`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `ContextMenu` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
+  | `DropdownMenu` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
+  | `DropdownMenu` | `fixedContentPosition` | `isContentPositionFixed` |
+  | `Popover` | `disableUpdateOnLayoutShift` | `isUpdateOnLayoutShiftDisabled` |
+  | `Popover` | `disableSideFlip` | `isSideFlipDisabled` |
+  | `Text` | `disableTooltip` | `isTooltipDisabled` |
+  | `Tooltip` / `ActionTooltip` | `disableCloseOnTriggerClick` | `isCloseOnTriggerClickDisabled` |
+  | `Tooltip` | `disableHoverableContent` | `isHoverableContentDisabled` |
+  | `DialogFooterButton` | `disableAutoFocus` | `isAutoFocusDisabled` |
+  | `Table` | `disableColumnResize` | `isColumnResizeDisabled` |
+  | `TableScrollContainer` | `disableScroll` | `isScrollDisabled` |
+  | `FormSubmitButton` | `disableKeyboardShortcut` | `isKeyboardShortcutDisabled` |
+  | `Dialog` | `preventClickOutside` | `isClickOutsideDisabled` |
+  | `Dialog` | `preventEsc` | `isEscDisabled` |
+  ### Other verb/noun patterns → `is*` / `has*`
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `SkeletonItem` | `animate` | `isAnimated` |
+  | `DatePicker` | `fixedWeeks` | `hasFixedWeeks` |
+  | `FieldWrapper` | `wrap` | `isWrapped` |
+  | `TimeField` | `stepSnapping` | `hasStepSnapping` |
+  | `KeyboardShortcut` / `KeyboardShortcutKey` | `enableKeyHoldVisualization` | `isKeyHoldVisualizationEnabled` |
+  | `Select` | `keepDropdownOpenOnSelect` | `isDropdownKeptOpenOnSelect` |
+  | `ActionContextMenu` / `ActionDropdownMenu` / `ActionTrigger` | `currentContextOnly` | `isCurrentContextOnly` |
+  | `ContextMenu` / `DropdownMenu` / `Popover` | `prioritizePosition` | `isPrioritizedPosition` |
+  ### `no*` → inverted `is*`
+  | Component | Old prop (deprecated) | New prop | Note |
+  |---|---|---|---|
+  | `BadgeGroup` | `noWrap` | `isWrapped` | **Logic inverted** — `:no-wrap="true"` becomes `:is-wrapped="false"`. The new prop defaults to `true`. |
+  ### Type field renames
+  | Type | Old field (deprecated) | New field |
+  |---|---|---|
+  | `Toast` | `dismissible` | `isDismissible` |
+  | `TableColumn` | `centerHeaderContent` | `isCenteredHeaderContent` |
+  | `TableGroupedData` / `TableSubGroupedData` | `defaultOpen` | `isOpenByDefault` |
+- [#1349](https://github.com/wisemen-digital/wisemen-core/pull/1349)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Normalize additional boolean prop names to `is*`/`has*` convention, filling gaps missed by the initial normalization pass.
+  Old prop names are still supported but marked as `@deprecated` — they will be removed in a future major release.
+  | Component | Old prop (deprecated) | New prop |
+  |---|---|---|
+  | `TextField` / `TextareaField` / `NumberField` / `Select` / `Autocomplete` / `TagsField` / `DateField` / `TimeField` / `DateRangeField` / `PhoneNumberField` / `FormFileUpload` / `Checkbox` / `Switch` / `RadioGroup` (via shared `InputWrapper` type) | `hideErrorMessage` | `isErrorMessageHidden` |
+  | `MainSidebarNavigationSubItem` | `noIndent` | `isIndented` (inverted, defaults to `true`) |
+  | `FormDialog` / `Form` | `promptOnUnsavedChanges` | `isUnsavedChangesPromptEnabled` |
+  | `FormDialog` | `renderOwnFormComponent` | `hasOwnFormComponent` |
+  | `TagsField` | `addOnBlur` | `isAddedOnBlur` |
+  | `TagsField` | `addOnPaste` | `isAddedOnPaste` |
+  | `TagsField` | `addOnTab` | `isAddedOnTab` |
+  | `TagsField` | `allowDuplicate` | `isDuplicateAllowed` |
+
+## 1.12.0
+<sub>2026-07-08</sub>
+
+- [#1340](https://github.com/wisemen-digital/wisemen-core/pull/1340)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add `variant="branded"` prop to `UIMainLayout` — applies a deep brand gradient to the sidebar and topbar while leaving the main content area unaffected. Introduces a new `.branded` CSS theme class in `@wisemen/vue-core-tailwind-config` that maps all semantic color tokens to brand-scale values.
+- [#1348](https://github.com/wisemen-digital/wisemen-core/pull/1348)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add an optional tooltip description for the table header
+- [#1313](https://github.com/wisemen-digital/wisemen-core/pull/1313)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - `DashboardSidebarNavLink` is now the union of two explicit shapes, both exported from `@wisemen/vue-core-design-system`:
+  - **`SidebarNavLinkItem`** — a link that navigates directly to a route. Requires `to`, has no `subItems`.
+  - **`SidebarNavSubItemsItem`** — a link that expands into sub-items. Requires `subItems`, has no `to`.
+  Each shape also accepts an optional `type` discriminator (`'link'` or `'sub-items'`) for clearer intent and stricter narrowing, but it is not required — existing nav link objects keep working as-is:
+  ```ts
+  const links: DashboardSidebarNavLink[] = [
+    { type: 'link', label: 'Dashboard', icon: DashboardIcon, to: { path: '/' } },
+    { type: 'sub-items', label: 'Reports', icon: ReportsIcon, subItems: [...] },
+  ]
+  ```
+- [#1378](https://github.com/wisemen-digital/wisemen-core/pull/1378)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a `getDayConfig` prop to `DateField`, `DateRangeField`, `DatePicker`, and `DateRangePicker` to mark specific calendar days with a colored dot (e.g. birthdays or holidays)
+- [#1345](https://github.com/wisemen-digital/wisemen-core/pull/1345)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove shadow from the text area field
+- [#1346](https://github.com/wisemen-digital/wisemen-core/pull/1346)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - The vertical spacing between the title and the description of the dialog header will be 'xxs' instead of 'md'
+- [#1352](https://github.com/wisemen-digital/wisemen-core/pull/1352)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Make the chevron in the select fully clickable
+- [#1370](https://github.com/wisemen-digital/wisemen-core/pull/1370)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Change copy of unsaved changes dialog chin
+
+## 1.11.1
+<sub>2026-07-06</sub>
+
+- [#1371](https://github.com/wisemen-digital/wisemen-core/pull/1371)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add an optional `getItemKey` prop to `UIAutocomplete` and `UISelect` for supplying a stable, unique key per item (defaults to `JSON.stringify(value)` when not provided).
+  Also fixes `UISelect`: dropdown items were previously keyed with a random string regenerated on every render, so Vue tore down and recreated every option on any items/search/selection change instead of patching them. Item identity (for selected/non-selected matching) is now derived consistently from the same key.
+
+## 1.11.0
+<sub>2026-07-03</sub>
+
+- [#1351](https://github.com/wisemen-digital/wisemen-core/pull/1351)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add "Discard changes" and "Keep editing" action buttons to the default unsaved-changes chin in `UIFormDialog`
+
+## 1.10.1
+<sub>2026-07-02</sub>
+
+- [#1347](https://github.com/wisemen-digital/wisemen-core/pull/1347)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Return early if document is not defined in reduced motion composable to support ssr / ssg
+
+## 1.10.0
+<sub>2026-07-01</sub>
+
+- [#1194](https://github.com/wisemen-digital/wisemen-core/pull/1194)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: add `is-selectable` prop to select one, more or all rows
+- [#1181](https://github.com/wisemen-digital/wisemen-core/pull/1181)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix Button and IconButton styling inconsistencies
+- [#1339](https://github.com/wisemen-digital/wisemen-core/pull/1339)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Align tooltip border radius with other radii
+- [#1341](https://github.com/wisemen-digital/wisemen-core/pull/1341)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix min and max table column width
+
+## 1.9.1
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
+## 1.9.0
+<sub>2026-06-30</sub>
+
+- [#1324](https://github.com/wisemen-digital/wisemen-core/pull/1324)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - DropdownMenu: add `fixedContentPosition` prop
+- [#1329](https://github.com/wisemen-digital/wisemen-core/pull/1329)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add exports for chin types
+
+## 1.8.0
+<sub>2026-06-30</sub>
+
+- [#1249](https://github.com/wisemen-digital/wisemen-core/pull/1249)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add a built in unsaved changes pop-up in the form dialogs using the dialog chin
+- [#1260](https://github.com/wisemen-digital/wisemen-core/pull/1260)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Added libphonenumber-js max + bumped the dependency
+- [#1311](https://github.com/wisemen-digital/wisemen-core/pull/1311)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add horizontal scroll to tabs when overflowing
+- [#1327](https://github.com/wisemen-digital/wisemen-core/pull/1327)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for the `useDialogChin`
+
+## 1.7.1
+<sub>2026-06-25</sub>
+
+- [#1309](https://github.com/wisemen-digital/wisemen-core/pull/1309)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Badge: improve gray outline and translucent styling
+
+## 1.7.0
+<sub>2026-06-23</sub>
+
+- [#1245](https://github.com/wisemen-digital/wisemen-core/pull/1245)  *(minor)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add sticky header, footer, body and tabs components for `DashboardPageDetailPane`
+  New components:
+  - `UIDashboardPageDetailPaneHeader` — sticky header built on `UIBaseHeader`, separator fades when scrolled to top, auto-hides separator when tabs are present
+  - `UIDashboardPageDetailPaneFooter` — sticky footer with a default slot, separator fades when scrolled to bottom
+  - `UIDashboardPageDetailPaneBody` — scrollable body, connects scroll tracking to header/footer separators
+  - `UIDashboardPageDetailPaneTabs` — compound tabs root (`underline` variant, full-width, with padding by default)
+  - `UIDashboardPageDetailPaneTabsList` — sticky tabs list bar
+  - `UIDashboardPageDetailPaneTabsContent` — scrollable tab content panel, connects scroll tracking per active tab
+- [#1303](https://github.com/wisemen-digital/wisemen-core/pull/1303)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix issues where table columns are truncated
+- [#1304](https://github.com/wisemen-digital/wisemen-core/pull/1304)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: Hide empty state illustration for contained variant
+- [#1305](https://github.com/wisemen-digital/wisemen-core/pull/1305)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Table: fix issue where for the contained variant a 1px border would be visual when empty
+
+## 1.6.1
+<sub>2026-06-18</sub>
+
+- [#1292](https://github.com/wisemen-digital/wisemen-core/pull/1292)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Add export for keyboard shortcut type
+
+## 1.6.0
+<sub>2026-06-17</sub>
+
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add UIFormFileUpload with shared file-reference DTOs and transformers, Storybook coverage, translations, and improved base file-upload adapter/disabled handling.
+- [#1146](https://github.com/wisemen-digital/wisemen-core/pull/1146)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)! - Add new BaseFileUpload component
+
+## 1.5.1
+<sub>2026-06-16</sub>
+
+- [#1267](https://github.com/wisemen-digital/wisemen-core/pull/1267)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Remove enter and exit animation from dropdown menu sub content and context menu sub content
+- [#1269](https://github.com/wisemen-digital/wisemen-core/pull/1269)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Remove the broken adaptive overflow behavior from Tabs and RouterLinkTabs, keeping tabs scrollable instead.
+- [#1262](https://github.com/wisemen-digital/wisemen-core/pull/1262)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: move @wisemen/ngen to wisemen-core repo
+
 ## 1.5.0
 <sub>2026-06-12</sub>
 

@@ -40,6 +40,7 @@ export type ChinAction = ChinButtonAction | ChinIconButtonAction | ChinLinkActio
 export interface ChinConfig {
   icon?: Component
   primaryAction?: ChinAction
+  pulseKey?: number | string | null
   secondaryAction?: ChinAction
   text?: string
   variant?: 'default' | 'error'

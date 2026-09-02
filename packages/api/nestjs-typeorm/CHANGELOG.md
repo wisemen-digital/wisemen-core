@@ -1,5 +1,55 @@
 # @wisemen/nestjs-typeorm
 
+
+
+
+
+
+
+
+
+## 1.3.0
+<sub>2026-09-01</sub>
+
+- [#1633](https://github.com/wisemen-digital/wisemen-core/pull/1633)  *(minor)* Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)! - Add `createAndUpsert` for creating and upserting entities without recursive relation type errors.
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 1.2.5
+<sub>2026-08-27</sub>
+
+- [#1630](https://github.com/wisemen-digital/wisemen-core/pull/1630)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add inter quantity calculations
+
+## 1.2.4
+<sub>2026-08-27</sub>
+
+- [#1626](https://github.com/wisemen-digital/wisemen-core/pull/1626)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add delta class to disable addition and multiplication with temperature
+
+## 1.2.3
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 1.2.2
+<sub>2026-07-22</sub>
+
+- [#1471](https://github.com/wisemen-digital/wisemen-core/pull/1471)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: expose insert types
+
+## 1.2.1
+<sub>2026-07-15</sub>
+
+- [#1435](https://github.com/wisemen-digital/wisemen-core/pull/1435)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add entitymanager to readonly callback
+
+## 1.2.0
+<sub>2026-07-08</sub>
+
+- [#1217](https://github.com/wisemen-digital/wisemen-core/pull/1217)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add support for embedded and relations with insert type
+- [#1217](https://github.com/wisemen-digital/wisemen-core/pull/1217)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add support for embbeded and relations on entityInsert type
+
+## 1.1.2
+<sub>2026-06-25</sub>
+
+- [#1314](https://github.com/wisemen-digital/wisemen-core/pull/1314)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Add custom data types before initializing datasource
+
 ## 1.1.1
 
 ### Patch Changes

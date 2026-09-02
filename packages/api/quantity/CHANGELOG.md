@@ -1,6 +1,42 @@
 # @wisemen/quantity
 
 
+
+
+
+
+
+
+## 0.11.1
+<sub>2026-08-27</sub>
+
+- [#1630](https://github.com/wisemen-digital/wisemen-core/pull/1630)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add inter quantity calculations
+
+## 0.11.0
+<sub>2026-08-27</sub>
+
+- [#1626](https://github.com/wisemen-digital/wisemen-core/pull/1626)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add delta class to disable addition and multiplication with temperature
+
+## 0.10.0
+<sub>2026-08-05</sub>
+
+- [#1550](https://github.com/wisemen-digital/wisemen-core/pull/1550)  *(minor)* Thanks [@DanneD-Wisemen](https://github.com/DanneD-Wisemen)! - Add calorie units to the `Energy` quantity: `CALORIE` (`cal`) and `KILOCALORIE` (`kcal`), using the thermochemical calorie (1 cal = 4.184 J). Joules were already supported.
+
+## 0.9.3
+<sub>2026-07-31</sub>
+
+- [#1486](https://github.com/wisemen-digital/wisemen-core/pull/1486)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add support for parsing strings
+
+## 0.9.2
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.9.1
+<sub>2026-06-17</sub>
+
+- [#1265](https://github.com/wisemen-digital/wisemen-core/pull/1265)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - quantity add skill.md for ai agents
+
 ## 0.9.0
 <sub>2026-06-08</sub>
 

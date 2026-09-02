@@ -3,7 +3,9 @@ import {
   computed,
   watch,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+import { useIsMobileViewport } from '@/composables/isMobileViewport.composable'
 import {
   AUTOCOMPLETE_INPUT_DEFAULTS,
   INPUT_DEFAULTS,
@@ -11,7 +13,10 @@ import {
   INPUT_META_DEFAULTS,
   omit,
 } from '@/types/input.type'
+import type { PopoverProps } from '@/ui/popover/popover.props'
 import Popover from '@/ui/popover/Popover.vue'
+import type { ResponsiveDrawerProps } from '@/ui/responsive-drawer/responsiveDrawer.props'
+import ResponsiveDrawer from '@/ui/responsive-drawer/ResponsiveDrawer.vue'
 import { useSelectDropdown } from '@/ui/select/composables/selectDropdown.composable'
 import { useSelectValue } from '@/ui/select/composables/selectValue.composable'
 import type { SelectProps } from '@/ui/select/select.props'
@@ -25,7 +30,11 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   ...INPUT_META_DEFAULTS,
   ...omit(INPUT_FIELD_DEFAULTS, 'iconRight'),
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  isDropdownKeptOpenOnSelect: null,
+  isPrioritizedPosition: true,
+  isSideFlipDisabled: true,
   disableSideFlip: true,
+  getItemKey: null,
   keepDropdownOpenOnSelect: null,
   limit: null,
   popoverAlign: 'center',
@@ -33,7 +42,6 @@ const props = withDefaults(defineProps<SelectProps<TValue>>(), {
   popoverSide: 'bottom',
   popoverSideOffset: 4,
   popoverWidth: 'anchor-width',
-  prioritizePosition: true,
   search: null,
   size: 'md',
 })
@@ -56,12 +64,57 @@ const {
   isDropdownVisible, onTriggerKeyDown,
 } = useSelectDropdown()
 
+const i18n = useI18n()
+
+const isMobileDrawer = useIsMobileViewport()
+
+type SelectPopoverProps = Pick<
+  PopoverProps,
+  | 'isPopoverArrowVisible'
+  | 'isPrioritizedPosition'
+  | 'isSideFlipDisabled'
+  | 'isUpdateOnLayoutShiftDisabled'
+  | 'popoverAlign'
+  | 'popoverAlignOffset'
+  | 'popoverAnchorReferenceElement'
+  | 'popoverAnimationName'
+  | 'popoverCollisionPadding'
+  | 'popoverContainerElement'
+  | 'popoverSide'
+  | 'popoverSideOffset'
+  | 'popoverWidth'
+>
+
+const popoverProps = computed<SelectPopoverProps>(() => ({
+  isPopoverArrowVisible: props.isPopoverArrowVisible,
+  isPrioritizedPosition: props.isPrioritizedPosition,
+  isSideFlipDisabled: props.isSideFlipDisabled,
+  isUpdateOnLayoutShiftDisabled: props.isUpdateOnLayoutShiftDisabled,
+  popoverAlign: props.popoverAlign,
+  popoverAlignOffset: props.popoverAlignOffset,
+  popoverAnchorReferenceElement: props.popoverAnchorReferenceElement,
+  popoverAnimationName: props.popoverAnimationName,
+  popoverCollisionPadding: props.popoverCollisionPadding,
+  popoverContainerElement: props.popoverContainerElement,
+  popoverSide: props.popoverSide,
+  popoverSideOffset: 4,
+  popoverWidth: props.popoverWidth,
+}))
+
+const drawerProps = computed<ResponsiveDrawerProps>(() => ({
+  title: i18n.t('component.select.dropdown_title'),
+}))
+
+const isDropdownKeptOpenOnSelect = computed<boolean | null>(
+  () => props.isDropdownKeptOpenOnSelect ?? props.keepDropdownOpenOnSelect ?? null,
+)
+
 function onSelectOption(): void {
-  if (props.keepDropdownOpenOnSelect === true) {
+  if (isDropdownKeptOpenOnSelect.value === true) {
     return
   }
 
-  if (props.keepDropdownOpenOnSelect === false) {
+  if (isDropdownKeptOpenOnSelect.value === false) {
     isDropdownVisible.value = false
 
     return
@@ -92,21 +145,10 @@ useProvideSelectContext({
 </script>
 
 <template>
-  <Popover
+  <component
+    :is="isMobileDrawer ? ResponsiveDrawer : Popover"
     v-model:is-open="isDropdownVisible"
-    :popover-side-offset="4"
-    :popover-animation-name="props.popoverAnimationName"
-    :popover-align="props.popoverAlign"
-    :popover-align-offset="props.popoverAlignOffset"
-    :popover-anchor-reference-element="props.popoverAnchorReferenceElement"
-    :popover-collision-padding="props.popoverCollisionPadding"
-    :popover-container-element="props.popoverContainerElement"
-    :popover-side="props.popoverSide"
-    :popover-width="props.popoverWidth"
-    :is-popover-arrow-visible="props.isPopoverArrowVisible"
-    :disable-update-on-layout-shift="props.disableUpdateOnLayoutShift"
-    :prioritize-position="props.prioritizePosition"
-    :disable-side-flip="props.disableSideFlip"
+    v-bind="isMobileDrawer ? drawerProps : popoverProps"
     @keydown="onTriggerKeyDown"
   >
     <template #trigger>
@@ -123,13 +165,15 @@ useProvideSelectContext({
         :is-loading="props.isLoading"
         :search="props.search"
         :display-fn="props.displayFn"
+        :get-item-key="props.getItemKey"
         :items="props.items"
         :limit="props.limit"
         :has-virtual-scroll="props.hasVirtualScroll"
         :content-width-class="props.contentWidthClass"
+        :is-mobile-drawer="isMobileDrawer"
         @next-page="emit('nextPage')"
         @update:search="emit('update:search', $event)"
       />
     </template>
-  </Popover>
+  </component>
 </template>

@@ -1,5 +1,33 @@
 # @wisemen/coordinates
 
+
+
+
+
+## 0.1.3
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 0.1.2
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.1.1
+<sub>2026-06-25</sub>
+
+- [#1276](https://github.com/wisemen-digital/wisemen-core/pull/1276)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: reformat imports in skill
+
+## 0.1.0
+<sub>2026-06-16</sub>
+
+- [#1268](https://github.com/wisemen-digital/wisemen-core/pull/1268)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - rename `CoordinatesCommand.toCoordinates()` and `CoordinatesQuery.toCoordinates()` to
+  `parse()`, add `CoordinatesResponse.from(...)` for nullable response mapping, and
+  update the coordinates skill example to use the new API.
+  Migration: replace `dto.toCoordinates()` and `query.toCoordinates()` with
+  `dto.parse()` and `query.parse()`.
+
 ## 0.0.31
 
 ### Patch Changes

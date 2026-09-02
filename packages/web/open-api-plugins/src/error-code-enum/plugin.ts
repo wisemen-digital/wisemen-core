@@ -15,7 +15,6 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
   })
   const errorCodeValues: string[] = []
 
-  // eslint-disable-next-line unicorn/no-array-for-each
   plugin.forEach('schema', ({
     schema,
   }) => {

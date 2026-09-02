@@ -4,7 +4,7 @@
     "access": "public"
   },
   "type": "module",
-  "version": "1.5.0",
+  "version": "1.22.4",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
@@ -54,12 +54,13 @@
   },
   "peerDependencies": {
     "@internationalized/date": "catalog:date",
+    "@tanstack/vue-table": "catalog:",
     "@tanstack/vue-virtual": "^3.0.0",
     "@vueuse/core": "catalog:vue",
     "@vueuse/router": "catalog:vue",
     "@wisemen/vue-core-actions": "workspace:^",
     "@wisemen/vue-core-dates": "workspace:^",
-    "formango": "catalog:peer",
+    "formango": "workspace:^",
     "motion-v": "catalog:peer",
     "pinia": "catalog:vue",
     "reka-ui": "catalog:peer",
@@ -74,6 +75,7 @@
   "dependencies": {
     "@tailwindcss/vite": "catalog:vite",
     "@wisemen/vue-core-api-utils": "workspace:*",
+    "blurhash": "catalog:general",
     "@wisemen/vue-core-icons": "workspace:*",
     "@wisemen/vue-core-utils": "workspace:*",
     "@wisemen/vue-core-dates": "workspace:*",
@@ -97,6 +99,7 @@
     "@storybook/vue3": "catalog:storybook",
     "@storybook/vue3-vite": "catalog:storybook",
     "@tanstack/vue-hotkeys": "catalog:",
+    "@tanstack/vue-table": "catalog:",
     "@tanstack/vue-virtual": "catalog:",
     "@types/node": "catalog:types",
     "@vitejs/plugin-vue": "catalog:vite",
@@ -109,7 +112,7 @@
     "@wisemen/vue-core-tailwind-config": "workspace:*",
     "eslint": "catalog:lint-web",
     "eslint-plugin-storybook": "catalog:storybook",
-    "formango": "catalog:peer",
+    "formango": "workspace:*",
     "jsdom": "catalog:test",
     "motion-v": "catalog:peer",
     "pinia": "catalog:vue",

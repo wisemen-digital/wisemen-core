@@ -7,31 +7,39 @@ import {
   ref,
 } from 'vue'
 
-import type { DisplayFn } from '@/ui/select/select.props'
+import type {
+  DisplayFn,
+  GetItemKeyFn,
+} from '@/ui/select/select.props'
 import type {
   SelectItem,
   SelectOptionItem,
   SelectValue,
 } from '@/ui/select/select.type'
 
-type DisplayItem<TValue extends SelectValue | SelectValue[]> = SelectItem<TValue> & { key: string }
-
-function generateKey(): string {
-  return Math.random().toString(36).substring(2, 15)
-}
+type DisplayItem<TValue extends SelectValue> = SelectItem<TValue> & { key: string }
 
 export function useSelectDisplayItems<TValue extends SelectValue>(
   selectedOptions: Ref<SelectOptionItem<TValue>[]>,
   isSearchEmpty: ComputedRef<boolean>,
   isMultiple: boolean,
   displayFn: DisplayFn<TValue>,
+  getItemKey?: GetItemKeyFn<TValue> | null,
 ) {
   const displayItems = ref<DisplayItem<NonNullable<TValue>>[]>([]) as Ref<DisplayItem<NonNullable<TValue>>[]>
+
+  function keyFor(value: NonNullable<TValue>): string {
+    return getItemKey?.(value as any)?.toString() ?? JSON.stringify(value)
+  }
+
+  function isSameOption(a: NonNullable<TValue>, b: NonNullable<TValue>): boolean {
+    return keyFor(a) === keyFor(b)
+  }
 
   const selectedOptionsWithKey = computed<DisplayItem<TValue>[]>(
     () => selectedOptions.value.map((option) => ({
       ...option,
-      key: generateKey(),
+      key: `option-${keyFor(option.value as NonNullable<TValue>)}`,
     }))
       .sort((a, b) => {
         const aLabel = displayFn(a.value as any)
@@ -48,28 +56,29 @@ export function useSelectDisplayItems<TValue extends SelectValue>(
           return true
         }
 
-        return !selectedOptions.value.some(
-          (selectedOption) => JSON.stringify(selectedOption.value) === JSON.stringify(item.value),
-        )
+        return !selectedOptions.value.some((selectedOption) => isSameOption(
+          selectedOption.value as NonNullable<TValue>,
+          item.value as NonNullable<TValue>,
+        ))
       })
-      .map((item) => {
+      .map((item, index) => {
         if (item.type !== 'option') {
           return {
             ...item,
-            key: generateKey(),
+            key: `sep-${index}`,
           }
         }
 
         return {
           ...item,
-          key: generateKey(),
+          key: `option-${keyFor(item.value as NonNullable<TValue>)}`,
         }
       })
   }
 
-  function createSeparatorItem(): DisplayItem<TValue> {
+  function createSeparatorItem(index: number): DisplayItem<TValue> {
     return {
-      key: generateKey(),
+      key: `sep-${index}`,
       type: 'separator',
     }
   }
@@ -80,12 +89,14 @@ export function useSelectDisplayItems<TValue extends SelectValue>(
         return 0
       }
 
-      const aIsSelected = selectedOptions.value.some(
-        (selectedOption) => JSON.stringify(selectedOption.value) === JSON.stringify(a.value),
-      )
-      const bIsSelected = selectedOptions.value.some(
-        (selectedOption) => JSON.stringify(selectedOption.value) === JSON.stringify(b.value),
-      )
+      const aIsSelected = selectedOptions.value.some((selectedOption) => isSameOption(
+        selectedOption.value as NonNullable<TValue>,
+        a.value as NonNullable<TValue>,
+      ))
+      const bIsSelected = selectedOptions.value.some((selectedOption) => isSameOption(
+        selectedOption.value as NonNullable<TValue>,
+        b.value as NonNullable<TValue>,
+      ))
 
       if (aIsSelected && !bIsSelected) {
         return -1
@@ -114,7 +125,7 @@ export function useSelectDisplayItems<TValue extends SelectValue>(
     if (shouldGroup) {
       displayItems.value = [
         ...selectedOptionsWithKey.value,
-        createSeparatorItem(),
+        createSeparatorItem(-1),
         ...nonSelectedItems,
       ] as DisplayItem<NonNullable<TValue>>[]
 
@@ -134,17 +145,17 @@ export function useSelectDisplayItems<TValue extends SelectValue>(
       relevantItems = visibleItems
     }
 
-    const itemsToDisplay = relevantItems.map((item) => {
+    const itemsToDisplay = relevantItems.map((item, index) => {
       if (item.type !== 'option') {
         return {
           ...item,
-          key: generateKey(),
+          key: `sep-${index}`,
         }
       }
 
       return {
         ...item,
-        key: generateKey(),
+        key: `option-${keyFor(item.value as NonNullable<TValue>)}`,
       }
     })
 

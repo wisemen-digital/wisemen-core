@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/csv",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "lint:oxlint": "oxlint --type-aware lib",
@@ -18,7 +19,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "npm run clean && npm run build",
-    "test": "node --test dist/**/*.test.js",
+    "test": "node --env-file=.env.test --experimental-test-isolation=none --test dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -29,7 +30,10 @@
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "expect": "catalog:test",
-    "typescript": "catalog:peer"
+    "pg": "catalog:backend",
+    "typeorm": "catalog:backend",
+    "typescript": "catalog:peer",
+    "pg-query-stream": "catalog:backend"
   },
   "author": "Maarten Sijmkens",
   "license": "SEE LICENSE IN LICENSE.md",

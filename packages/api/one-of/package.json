@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/one-of",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "publishConfig": {
     "access": "public"
   },
@@ -8,7 +8,8 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "files": [
-    "dist/"
+    "dist/",
+    "skills/"
   ],
   "scripts": {
     "prebuild": "rm -rf ./dist",

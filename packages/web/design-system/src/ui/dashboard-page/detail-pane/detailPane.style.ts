@@ -2,6 +2,8 @@ import { tv } from '@/libs/tailwindVariants.lib'
 
 export const createDetailPaneStyle = tv({
   slots: {
+    body: 'flex-1 overflow-y-auto',
+    content: 'flex h-full flex-col overflow-hidden',
     pane: 'absolute z-4 max-w-full bg-primary',
     resizeHandle: `
       group absolute -left-2 z-10 flex w-4 cursor-col-resize items-center
@@ -20,6 +22,7 @@ export const createDetailPaneStyle = tv({
   variants: {
     variant: {
       'bordered-inline': {
+        content: 'rounded-lg',
         pane: `
           inset-y-2 right-2 rounded-lg border border-secondary shadow-floating
           max-md:inset-2! max-md:w-auto!
@@ -27,6 +30,7 @@ export const createDetailPaneStyle = tv({
         resizeHandle: '-inset-y-2',
       },
       'bordered-overlay': {
+        content: 'rounded-lg',
         pane: `
           inset-y-2 right-2 rounded-lg border border-secondary shadow-floating
           max-md:inset-2! max-md:w-auto!

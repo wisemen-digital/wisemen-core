@@ -1,5 +1,7 @@
 import { AsyncAPIInfo, AsyncAPIOperation, AsyncAPIParameter } from './async-api.types.js'
 
+export type AsyncApiMessageClass = (new (...arguments_: never[]) => object) & { name: string }
+
 type ExtractParams<T>
   = T extends `{${infer Param}}.${infer Rest}`
     ? { [K in Param]: string } & ExtractParams<Rest>
@@ -13,8 +15,7 @@ export type AsyncAPIChannelParameters<Address> = {
 
 export type AsyncAPIOperationDefinition
   = Omit<AsyncAPIOperation, 'messages' | 'channel' | 'reply'>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    & { messages?: Function[] }
+    & { messages?: AsyncApiMessageClass[] }
 
 export type AsyncAPIChannelDefinition<Address extends string> = {
   address: Address

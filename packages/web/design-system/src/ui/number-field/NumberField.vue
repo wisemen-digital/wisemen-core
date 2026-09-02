@@ -44,10 +44,10 @@ const props = withDefaults(defineProps<NumberFieldProps>(), {
   ...INPUT_META_DEFAULTS,
   ...INPUT_FIELD_DEFAULTS,
   ...AUTOCOMPLETE_INPUT_DEFAULTS,
+  hasControls: false,
   formatOptions: null,
   max: null,
   min: null,
-  showControls: false,
   step: 1,
 })
 
@@ -60,12 +60,23 @@ const DECIMAL_SEPARATOR_REGEX = /[\s.,`](?=\d+$)/
 const SEPARATOR_REGEX = /[.,]/g
 const NON_DIGIT_REGEX = /\D/g
 
+// Part types produced by Intl.NumberFormat#formatToParts that are not part of the numeric value itself,
+// e.g. the "min" in "15 min", the "%" in "13%", or the "$" in "$1,234.50" and their surrounding literals.
+const DECORATION_PART_TYPES = new Set<Intl.NumberFormatPartTypes>([
+  'currency',
+  'literal',
+  'percentSign',
+  'unit',
+])
+
 const modelValue = defineModel<number | null>({
   required: true,
 })
 
+const hasControls = computed<boolean>(() => props.hasControls || props.showControls === true)
+
 const numberFieldStyle = computed<NumberFieldStyle>(() => createNumberFieldStyle({
-  showControls: props.showControls,
+  hasControls: hasControls.value,
 }))
 
 // Since reka-ui's NumberField component only updates the modelValue on blur or enter key press,
@@ -126,6 +137,33 @@ function parseIntlNumber(value: string, locale: string): number {
   return Number(normalized)
 }
 
+/**
+ * Strips the non-numeric decoration (unit, percent sign, currency symbol and their
+ * surrounding literals) that Intl.NumberFormat adds around the number for the given
+ * formatOptions, so the remaining string can be handed to the plain-decimal parsing logic.
+ * @param value the formatted string value, e.g. "15 min", "13%" or "$1,234.50"
+ * @param locale the locale used to format the value
+ * @param formatOptions the formatOptions used to format the value
+ * @returns the value with unit/percent/currency decoration removed
+ */
+function stripFormatDecorations(value: string, locale: string, formatOptions: Intl.NumberFormatOptions | null): string {
+  if (!formatOptions || formatOptions.style === 'decimal' || !formatOptions.style) {
+    return value
+  }
+
+  const parts = new Intl.NumberFormat(locale, formatOptions).formatToParts(12_345.6)
+
+  let stripped = value
+
+  for (const part of parts) {
+    if (DECORATION_PART_TYPES.has(part.type) && part.value.trim() !== '') {
+      stripped = stripped.replaceAll(part.value, '')
+    }
+  }
+
+  return stripped.trim()
+}
+
 function onInput(event: InputEvent): void {
   isEditing.value = true
 
@@ -138,10 +176,20 @@ function onInput(event: InputEvent): void {
     return
   }
 
-  const valueAsNumber = formatNumberDecimalSeparators(value)
+  const strippedValue = stripFormatDecorations(value, effectiveLocale.value, props.formatOptions)
+
+  if (strippedValue === '') {
+    return
+  }
+
+  let valueAsNumber = formatNumberDecimalSeparators(strippedValue)
 
   if (Number.isNaN(valueAsNumber)) {
     return
+  }
+
+  if (props.formatOptions?.style === 'percent') {
+    valueAsNumber /= 100
   }
 
   modelValue.value = valueAsNumber
@@ -181,6 +229,11 @@ function formatNumberDecimalSeparators(value: string): number {
   if (allSeparators.length > 1) {
     // Same separator appears multiple times → must be thousands
     return Number(value.replaceAll(sep, ''))
+  }
+
+  if (value.startsWith(`0${sep}`)) {
+    // Leading "0" before the separator → always decimal (e.g. "0,11111")
+    return Number(value.replace(sep, '.'))
   }
 
   // Single separator: check digits after it
@@ -225,6 +278,7 @@ watch(copiedModelValue, () => {
     :for="id"
     :help-text="props.helpText"
     :hide-error-message="props.hideErrorMessage"
+    :is-error-message-hidden="props.isErrorMessageHidden"
   >
     <template #label-left>
       <slot name="label-left" />
@@ -262,7 +316,7 @@ watch(copiedModelValue, () => {
         <template #left>
           <slot name="left">
             <UIRowLayout
-              v-if="props.showControls"
+              v-if="hasControls"
               :class="numberFieldStyle.leftControl()"
               align="center"
             >
@@ -283,7 +337,7 @@ watch(copiedModelValue, () => {
         <template #right>
           <slot name="right">
             <UIRowLayout
-              v-if="props.showControls"
+              v-if="hasControls"
               :class="numberFieldStyle.rightControl()"
               align="center"
             >

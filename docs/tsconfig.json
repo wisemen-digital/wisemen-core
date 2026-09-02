@@ -17,13 +17,16 @@
     "types": [
       "node"
     ],
+    "noEmit": true,
+    "rootDir": ".",
     "allowJs": true,
     "strict": true,
     "declaration": false,
     "outDir": "dist",
     "sourceMap": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowImportingTsExtensions": true
   },
   "files": [
     "eslint.config.ts"

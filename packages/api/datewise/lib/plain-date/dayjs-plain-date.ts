@@ -9,8 +9,16 @@ import { InvalidPlainDate } from './invalid-date.js'
 import { PlainDateUnit, DiffPlainDateUnit, ReachablePlainDateUnit } from './plain-date.units.js'
 import { PlainDateObject } from './plain-date-object.js'
 import { PlainDate, PlainDateInput } from './plain-date.js'
+import { IsoWeekParity, getIsoWeekParity } from './iso-week-parity.js'
 import { factory } from './plain-date.factory.js'
 import { plainDate } from './plain-date.fn.js'
+import {
+  getNextIsoWeekDate,
+  getNextOrSameIsoWeekDate,
+  getPreviousIsoWeekDate,
+  getPreviousOrSameIsoWeekDate,
+  IsoWeekday
+} from '#src/common/iso-weekday.js'
 
 export class DayjsPlainDate implements PlainDate {
   private date: dayjs.Dayjs
@@ -257,12 +265,68 @@ export class DayjsPlainDate implements PlainDate {
     return this.date.day()
   }
 
-  isoWeekday (): number {
-    return this.date.isoWeekday()
+  isMonday (): boolean {
+    return this.isoWeekday() === 1
+  }
+
+  isTuesday (): boolean {
+    return this.isoWeekday() === 2
+  }
+
+  isWednesday (): boolean {
+    return this.isoWeekday() === 3
+  }
+
+  isThursday (): boolean {
+    return this.isoWeekday() === 4
+  }
+
+  isFriday (): boolean {
+    return this.isoWeekday() === 5
+  }
+
+  isSaturday (): boolean {
+    return this.isoWeekday() === 6
+  }
+
+  isSunday (): boolean {
+    return this.isoWeekday() === 7
+  }
+
+
+
+  isoWeekday (): IsoWeekday
+  isoWeekday (day: IsoWeekday): PlainDate
+  isoWeekday (day?: IsoWeekday): IsoWeekday | PlainDate{
+    if(day !== undefined) {
+      return new DayjsPlainDate(this.date.isoWeekday(day))
+    }
+    
+    return this.date.isoWeekday() as IsoWeekday
+  }
+
+  nextIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getNextIsoWeekDate(this.date, day))
+  }
+
+  nextOrSameIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getNextOrSameIsoWeekDate(this.date, day))
+  }
+
+  previousIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getPreviousIsoWeekDate(this.date, day))
+  }
+
+  previousOrSameIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getPreviousOrSameIsoWeekDate(this.date, day))
   }
 
   isoWeek (): number {
     return this.date.isoWeek()
+  }
+
+  isoWeekParity (): IsoWeekParity {
+    return getIsoWeekParity(this.date.isoWeek())
   }
 
   isInfinity (): boolean {

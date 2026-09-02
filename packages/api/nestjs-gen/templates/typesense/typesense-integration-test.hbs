@@ -1,0 +1,31 @@
+import { after, before, describe, it } from 'node:test'
+import { expect } from 'expect'
+import { generateUuid } from '#src/utils/types/uuid.js'
+import { TestBench } from '#test/setup/test-bench.js'
+import { MigrateCollectionsUseCase } from '#src/modules/typesense/use-cases/migrate-collections/migrate-collections.use-case.js'
+import { TypesenseCollectionName } from '#src/modules/typesense/collections/typesense-collection-name.enum.js'
+import { TypesenseCollectionService } from '#src/modules/typesense/services/typesense-collection.service.js'
+import { TestSetup } from '#test/setup/test-setup.js'
+
+describe('{{ describeName }}', () => {
+  let setup: TestSetup
+
+  before(async () => {
+    setup = await TestBench.setupEndToEndTest()
+  })
+
+  after(async () => await setup.teardown())
+
+  it('{{ migrateTestName }}', async () => {
+    const migrator = setup.app.get(MigrateCollectionsUseCase, { strict: false })
+    const promise = migrator.execute(true, [TypesenseCollectionName.{{ collectionName }}])
+    await expect(promise).resolves.not.toThrow()
+  })
+
+  it('{{ importTestName }}', async () => {
+    const importer = setup.app.get(TypesenseCollectionService, { strict: false })
+    const promise = importer.import(TypesenseCollectionName.{{ collectionName }}, [generateUuid()])
+
+    await expect(promise).resolves.not.toThrow()
+  })
+})

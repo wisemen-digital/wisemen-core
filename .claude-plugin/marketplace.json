@@ -1,0 +1,14 @@
+{
+  "name": "vue-core-local",
+  "description": "Local marketplace for plugins shipped by this repo's own npm dependencies",
+  "owner": {
+    "name": "Wisemen"
+  },
+  "plugins": [
+    {
+      "name": "bumpy",
+      "source": "./node_modules/@varlock/bumpy",
+      "description": "Create bumpy bump files (.bumpy/*.md) for versioning and changelogs via the add-change skill"
+    }
+  ]
+}

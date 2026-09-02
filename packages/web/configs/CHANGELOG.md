@@ -1,5 +1,29 @@
 # @wisemen/vue-core-configs Changelog
 
+
+
+
+
+## 0.0.8
+<sub>2026-08-12</sub>
+
+- [#1579](https://github.com/wisemen-digital/wisemen-core/pull/1579)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolved security vulnerabilities by updating axios, typeorm, next.js, and @hey-api/openapi-ts to patched versions
+
+## 0.0.7
+<sub>2026-08-05</sub>
+
+- [#1546](https://github.com/wisemen-digital/wisemen-core/pull/1546)  *(patch)* Thanks [@Robbe95](https://github.com/Robbe95)! - Bumped linter dependencies + adapter rules to usecases of company
+
+## 0.0.6
+<sub>2026-07-10</sub>
+
+- [#1402](https://github.com/wisemen-digital/wisemen-core/pull/1402)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: resolve vulnerabilities
+
+## 0.0.5
+<sub>2026-06-30</sub>
+
+- [#1321](https://github.com/wisemen-digital/wisemen-core/pull/1321)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - chore: bump dependencies to resolve vulnerabilities
+
 ## 0.0.4
 
 ### Patch Changes

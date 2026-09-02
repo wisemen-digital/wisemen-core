@@ -4,7 +4,7 @@ description: >
   UITabs provides value-based tabbed navigation, while UITabsRouterLink provides
   route-based tabbed navigation integrated with Vue Router. Both support three
   visual variants, horizontal and vertical orientations, full-width mode, and
-  adaptive overflow.
+  scrollable overflow.
 type: component
 library: vue-core-design-system
 category: navigation
@@ -19,13 +19,13 @@ exports:
 
 # UITabs
 
-Tabbed navigation with value-based and router-link modes, three visual variants, adaptive overflow, and vertical/horizontal orientations.
+Tabbed navigation with value-based and router-link modes, three visual variants, scrollable overflow, and vertical/horizontal orientations.
 
 ## When to Use
 
 - Switching between content panels within a page section (value-based mode with `UITabs`)
 - Route-based tab navigation where each tab maps to a named route (with `UITabsRouterLink`)
-- When tabs may overflow the container and need adaptive collapsing into a dropdown
+- When tabs may overflow the container and need horizontal scrolling
 
 **Use instead:** For top-level app navigation, use `UISidebar`. For breadcrumb-style hierarchical navigation, use `UIBreadcrumbs`.
 
@@ -78,4 +78,3 @@ For full API details, read the props files. For usage examples, read the playgro
 
 - [sidebar](../sidebar/SKILL.md) -- For top-level app navigation
 - [breadcrumbs](../breadcrumbs/SKILL.md) -- For hierarchical page location
-- [adaptive-content](../adaptive-content/SKILL.md) -- Used internally for tab overflow

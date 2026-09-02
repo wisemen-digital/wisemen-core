@@ -6,6 +6,7 @@ import { DayjsPlainDate } from '../dayjs-plain-date.js'
 import { FutureInfinityDate } from '../future-infinity-date.js'
 import { PastInfinityDate } from '../past-infinity-date.js'
 import { plainDate } from '../plain-date.fn.js'
+import { IsoWeekParity } from '../iso-week-parity.js'
 
 describe('PlainDate accessors', () => {
   before(() => initDayjs())
@@ -24,12 +25,46 @@ describe('PlainDate accessors', () => {
 
   })
 
+  describe('weekday helpers', () => {
+    it('matches each ISO weekday helper', () => {
+      const monday = factory().startOf('isoWeek')
+      const tuesday = monday.add(1, 'day')
+      const wednesday = monday.add(2, 'day')
+      const thursday = monday.add(3, 'day')
+      const friday = monday.add(4, 'day')
+      const saturday = monday.add(5, 'day')
+      const sunday = monday.add(6, 'day')
+
+      expect(monday.isMonday()).toBe(true)
+      expect(tuesday.isTuesday()).toBe(true)
+      expect(wednesday.isWednesday()).toBe(true)
+      expect(thursday.isThursday()).toBe(true)
+      expect(friday.isFriday()).toBe(true)
+      expect(saturday.isSaturday()).toBe(true)
+      expect(sunday.isSunday()).toBe(true)
+    })
+  })
+
   describe('isoWeek', () => {
     it('returns the ISO week number', () => {
       expect(factory('2025-01-01').isoWeek()).toBe(1)
       expect(factory('2025-12-28').isoWeek()).toBe(52)
       expect(factory('2025-12-29').isoWeek()).toBe(1)
     })
+
+  })
+
+  describe('isoWeekParity', () => {
+    it('returns ODD for an odd ISO week number', () => {
+      expect(factory('2025-01-01').isoWeekParity()).toBe(IsoWeekParity.ODD) // week 1
+      expect(factory('2025-01-13').isoWeekParity()).toBe(IsoWeekParity.ODD) // week 3
+    })
+
+    it('returns EVEN for an even ISO week number', () => {
+      expect(factory('2025-01-06').isoWeekParity()).toBe(IsoWeekParity.EVEN) // week 2
+      expect(factory('2025-01-20').isoWeekParity()).toBe(IsoWeekParity.EVEN) // week 4
+    })
+
   })
 
   describe('isoWeekday', () => {

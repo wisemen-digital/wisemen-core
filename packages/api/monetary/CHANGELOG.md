@@ -1,5 +1,48 @@
 # @wisemen/monetary
 
+
+
+
+
+
+
+
+## 0.5.6
+<sub>2026-07-29</sub>
+
+- [#1516](https://github.com/wisemen-digital/wisemen-core/pull/1516)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - fix: remove @wisemen/nestjs-typeorm dependency
+
+## 0.5.5
+<sub>2026-07-28</sub>
+
+- [#1512](https://github.com/wisemen-digital/wisemen-core/pull/1512)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - feat: add default type argument on monetary dto
+
+## 0.5.4
+<sub>2026-07-28</sub>
+
+- [#1505](https://github.com/wisemen-digital/wisemen-core/pull/1505)  *(patch)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)! - Updated the shared NestJS dependency catalog across affected API packages and fixed compatibility with newer `@nestjs/swagger` releases.
+
+## 0.5.3
+<sub>2026-07-14</sub>
+
+- [#1430](https://github.com/wisemen-digital/wisemen-core/pull/1430)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add currency column
+- [#1434](https://github.com/wisemen-digital/wisemen-core/pull/1434)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add @Type() in MonetaryDto for filtering
+
+## 0.5.2
+<sub>2026-07-04</sub>
+
+- [#1364](https://github.com/wisemen-digital/wisemen-core/pull/1364)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Add optional persistence of precision on monetary column
+
+## 0.5.1
+<sub>2026-06-17</sub>
+
+- [#1279](https://github.com/wisemen-digital/wisemen-core/pull/1279)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Monetary add SKILL.md for AI agents
+
+## 0.5.0
+<sub>2026-06-16</sub>
+
+- [#1062](https://github.com/wisemen-digital/wisemen-core/pull/1062)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - add monetary utils factory function
+
 ## 0.4.7
 
 ### Patch Changes

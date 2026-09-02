@@ -11,10 +11,15 @@ import {
 import NumberFieldFormPlayground from './NumberFieldFormPlayground.vue'
 import NumberFieldPlayground from './NumberFieldPlayground.vue'
 import NumberFieldStatesPlayground from './NumberFieldStatesPlayground.vue'
+import NumberFieldUnitPlayground from './NumberFieldUnitPlayground.vue'
 
 const meta = {
   title: 'Components/NumberField',
   argTypes: {
+    hasControls: {
+      control: 'boolean',
+      description: 'Whether to display increment and decrement controls',
+    },
     isDisabled: {
       control: 'boolean',
       description: 'Whether the input is disabled',
@@ -62,10 +67,6 @@ const meta = {
       control: 'text',
       description: 'The placeholder text of the input',
     },
-    showControls: {
-      control: 'boolean',
-      description: 'Whether to display increment and decrement controls',
-    },
     step: {
       control: 'number',
       description: 'The increment and decrement step for the number input',
@@ -100,8 +101,8 @@ export const Default: Story = {
 
 export const WithControls: Story = {
   args: {
+    hasControls: true,
     label: 'Number Field',
-    showControls: true,
     step: 1,
   },
 }
@@ -148,5 +149,34 @@ export const FormExample: Story = {
       }
     },
     template: '<NumberFieldFormPlayground v-bind="args" />',
+  }),
+}
+
+export const UnitFormatting: Story = {
+  play: async ({
+    canvasElement,
+  }) => {
+    const canvas = within(canvasElement)
+
+    const input = canvas.getByLabelText('Flexibility')
+
+    await expect(input).toHaveValue('0 min')
+
+    await userEvent.clear(input)
+    await userEvent.type(input, '15')
+    await userEvent.tab()
+
+    await expect(input).toHaveValue('15 min')
+  },
+  render: (args) => ({
+    components: {
+      NumberFieldUnitPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<NumberFieldUnitPlayground v-bind="args" />',
   }),
 }

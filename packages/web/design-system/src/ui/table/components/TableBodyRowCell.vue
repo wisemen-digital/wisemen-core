@@ -8,13 +8,16 @@ import { useInjectTableGroupContext } from '@/ui/table/context/tableGroup.contex
 import { useInjectTableSubGroupContext } from '@/ui/table/context/tableSubGroup.context'
 
 const {
-  isScrolledFromLeft, variant,
+  isScrolledFromLeft,
+  isSelectable,
+  variant,
 } = useInjectTableContext()
 
 const {
-  link,
+  link, onClick,
 } = useInjectTableBodyRowContext({
   link: computed(() => null),
+  onClick: computed(() => null),
 })
 
 const {
@@ -31,10 +34,18 @@ const {
 
 const firstCellPaddingLeft = computed<string>(() => {
   if (isSubGroup) {
+    if (isSelectable.value) {
+      return 'first-of-type:pl-15'
+    }
+
     return 'first-of-type:pl-15'
   }
 
   if (isGroup) {
+    if (isSelectable.value) {
+      return 'first-of-type:pl-10'
+    }
+
     return 'first-of-type:pl-10'
   }
 
@@ -62,6 +73,14 @@ const firstCellPaddingLeft = computed<string>(() => {
       :to="link"
       tabindex="-1"
       class="absolute inset-0 z-0"
+    />
+
+    <button
+      v-else-if="onClick !== null"
+      tabindex="-1"
+      class="absolute inset-0 z-0"
+      type="button"
+      @click="onClick"
     />
 
     <div
