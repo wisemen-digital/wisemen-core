@@ -43,14 +43,14 @@ export class PermifyModule {
         {
           provide: PermifyClient,
           inject: [PERMIFY_CONFIG],
-          useFactory: async (options: PermifyOptions) => {
+          useFactory: (options: PermifyOptions) => {
             return grpc.newClient(options.client, ...options.client.interceptors)
           }
         },
         {
           provide: PermifyDepth,
           inject: [PERMIFY_CONFIG],
-          useFactory: async (options: PermifyOptions) => {
+          useFactory: (options: PermifyOptions) => {
             return options.checkDepth ?? 20
           }
         },
