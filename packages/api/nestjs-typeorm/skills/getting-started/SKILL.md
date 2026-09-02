@@ -35,6 +35,31 @@ export class CreateUserUseCase {
 
 `transaction()` uses AsyncLocalStorage to proxy all repository calls through the transaction's entity manager.
 
+### Run work exclusively across application instances with a PostgreSQL advisory lock
+
+Use `sessionAdvisoryLock` for work that only one database session may perform at
+a time, such as a scheduled import or cronjobs. It does not wait for a contended lock.
+
+```ts
+import { sessionAdvisoryLock } from '@wisemen/nestjs-typeorm'
+
+const result = await sessionAdvisoryLock(this.dataSource, 42_001, async () => {
+  await this.importUsers()
+  return 'imported'
+})
+
+if (result === null) {
+  // Another instance is already doing this work.
+  return
+}
+```
+
+The callback is called only when the lock is acquired. The lock is released
+after the callback completes or throws. Use a stable safe-integer key that is
+unique to the operation, since advisory locks use a database-wide key space.
+Do not use `null` as the callback result when the caller needs to distinguish a
+successful result from lock contention.
+
 ### Perform readonly queries through separate readonly connection. Use when use case does not modify any data.
 
 ```ts

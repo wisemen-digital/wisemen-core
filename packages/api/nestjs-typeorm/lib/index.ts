@@ -13,7 +13,8 @@ export {
   transaction,
   createTransactionManagerProxy,
   readonly,
-  createReadonlyManagerProxy
+  createReadonlyManagerProxy,
+  sessionAdvisoryLock
 } from './extensions/index.js'
 export { AnyOrIgnore, AndOrIgnore } from './operators/index.js'
 export { SnakeNamingStrategy } from './naming/index.js'
