@@ -8,8 +8,22 @@ import { useInjectPreferencesContext } from '#context/preferences.context'
 import type { PreferencesSection } from '#types/preferences.type'
 
 const {
-  activeItem, activeView,
+  activeTabId,
+  activeItem,
+  activeView,
 } = useInjectPreferencesContext()
+
+const scopedSections = computed<PreferencesSection[]>(() => {
+  const tabs = activeView.value.tabs
+
+  if (tabs === undefined || tabs.length === 0) {
+    return activeView.value.sections
+  }
+
+  const activeTab = tabs.find((tab) => tab.id === activeTabId.value)
+
+  return activeTab?.sections ?? tabs[0]!.sections
+})
 
 const filteredSections = computed<PreferencesSection[]>(() => {
   if (activeItem.value.type === 'section') {
@@ -18,11 +32,11 @@ const filteredSections = computed<PreferencesSection[]>(() => {
     })
   }
 
-  return activeView.value.sections
+  return scopedSections.value
 })
 
 const hiddenSectionCount = computed<number>(() => {
-  return activeView.value.sections.length - filteredSections.value.length
+  return scopedSections.value.length - filteredSections.value.length
 })
 </script>
 

@@ -46,6 +46,7 @@ const i18n = useI18n()
 
 const searchTerm = ref<string>('')
 const isSidebarVisible = ref<boolean>(false)
+const activeTabId = ref<string | null>(null)
 
 const {
   activeItem,
@@ -142,7 +143,42 @@ watch(activeViewId, (viewId) => {
   emit('update:activeView', viewId)
 })
 
+watch([
+  activeView,
+  activeItem,
+], ([
+  view,
+  item,
+]) => {
+  const tabs = view.tabs
+
+  if (tabs === undefined || tabs.length === 0) {
+    activeTabId.value = null
+
+    return
+  }
+  if (item.type === 'section') {
+    const tabForSection = tabs.find((tab) => tab.sections.some(
+      (section) => section.id === item.id,
+    ))
+
+    if (tabForSection !== undefined) {
+      activeTabId.value = tabForSection.id
+
+      return
+    }
+  }
+  const isActiveTabValid = tabs.some((tab) => tab.id === activeTabId.value)
+
+  if (!isActiveTabValid) {
+    activeTabId.value = tabs[0]!.id
+  }
+}, {
+  immediate: true,
+})
+
 useProvidePreferencesContext({
+  activeTabId,
   isSidebarVisible,
   activeItem,
   activeView,
