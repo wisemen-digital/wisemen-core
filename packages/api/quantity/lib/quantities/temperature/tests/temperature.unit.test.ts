@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Temperature, TemperatureDelta } from '../temperature.js'
-import { TemperatureUnit } from '../temperature-unit.enum.js'
+import { Temperature, TemperatureDelta } from '#lib/quantities/temperature/temperature.js'
+import { TemperatureUnit } from '#lib/quantities/temperature/temperature-unit.enum.js'
 
 void describe('Temperature class', () => {
   void describe('Temperature parsing', () => {

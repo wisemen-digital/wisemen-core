@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsEnum, IsNumber } from 'class-validator'
 import { Type } from 'class-transformer'
-import { QuantityDto } from '../../quantity.dto.js'
+import { QuantityDto } from '#lib/quantity.dto.js'
 import { Speed } from './speed.js'
 import { SpeedUnit, SpeedUnitApiProperty } from './speed-unit.enum.js'
 

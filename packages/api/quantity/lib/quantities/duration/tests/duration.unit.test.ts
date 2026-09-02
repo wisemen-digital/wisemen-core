@@ -1,10 +1,10 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Duration } from '../duration.js'
-import { DurationUnit } from '../duration-unit.enum.js'
-import { DistanceUnit } from '../../distance/distance-unit.enum.js'
-import { Speed } from '../../speed/speed.js'
-import { SpeedUnit } from '../../speed/speed-unit.enum.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { DurationUnit } from '#lib/quantities/duration/duration-unit.enum.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { Speed } from '#lib/quantities/speed/speed.js'
+import { SpeedUnit } from '#lib/quantities/speed/speed-unit.enum.js'
 
 describe('Duration unit tests', () => {
   describe('milliseconds', () => {

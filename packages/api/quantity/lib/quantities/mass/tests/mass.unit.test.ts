@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Mass } from '../mass.js'
-import { MassUnit } from '../mass-unit.enum.js'
+import { Mass } from '#lib/quantities/mass/mass.js'
+import { MassUnit } from '#lib/quantities/mass/mass-unit.enum.js'
 
 void describe('Mass class', () => {
   void describe('Mass calculations', () => {

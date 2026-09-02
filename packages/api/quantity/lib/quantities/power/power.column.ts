@@ -1,4 +1,4 @@
-import { QuantityColumn, QuantityColumnOptions } from '../../quantity.column.js'
+import { QuantityColumn, QuantityColumnOptions } from '#lib/quantity.column.js'
 import { PowerUnit } from './power-unit.enum.js'
 import { Power } from './power.js'
 

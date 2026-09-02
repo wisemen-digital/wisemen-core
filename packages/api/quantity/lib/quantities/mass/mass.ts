@@ -1,4 +1,4 @@
-import { ScalableQuantity } from '../../quantity.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { MassUnit } from './mass-unit.enum.js'
 
 const MASS_MULTIPLIERS: Record<MassUnit, number> = {

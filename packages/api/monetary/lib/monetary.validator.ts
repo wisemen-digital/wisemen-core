@@ -4,12 +4,13 @@ import { ValidationArguments } from 'class-validator/types/validation/Validation
 import { Type } from 'class-transformer'
 import { Currency } from './currency.enum.js'
 import { MonetaryDto } from './monetary.dto.js'
+import { Monetary } from './monetary.js'
 
 export interface IsMonetaryOptions {
   maxPrecision?: number
   allowedCurrencies?: Set<Currency>
-  minAmount?: number
-  maxAmount?: number
+  min?: Monetary
+  max?: Monetary
 }
 
 export function IsMonetary (options?: IsMonetaryOptions): PropertyDecorator {
@@ -26,14 +27,24 @@ export function IsMonetary (options?: IsMonetaryOptions): PropertyDecorator {
       validator: new IsMonetaryPrecisionValidator(options?.maxPrecision ?? Infinity)
     }),
     ValidateBy({
-      name: 'IsMonetaryMinAmount',
-      validator: new IsMonetaryMinAmountValidator(options?.minAmount)
+      name: 'IsMonetaryMin',
+      validator: new IsMonetaryMinValidator(options?.min)
     }),
     ValidateBy({
-      name: 'IsMonetaryMaxAmount',
-      validator: new IsMonetaryMaxAmountValidator(options?.maxAmount)
+      name: 'IsMonetaryMax',
+      validator: new IsMonetaryMaxValidator(options?.max)
     })
   )
+}
+
+function isComparableMonetaryDto (value: MonetaryDto<Currency> | null | undefined): value is MonetaryDto<Currency> {
+  if (value == null) {
+    return false
+  }
+
+  return Number.isInteger(value.amount)
+    && typeof value.currency === 'string'
+    && Number.isInteger(value.precision)
 }
 
 class IsMonetaryCurrencyValidator implements ValidatorConstraintInterface {
@@ -51,7 +62,8 @@ class IsMonetaryCurrencyValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
-    return `Monetary currency ${validationArguments?.value} is not allowed`
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    return `Monetary currency ${validationArguments?.value?.currency} is not allowed`
   }
 }
 
@@ -73,47 +85,62 @@ class IsMonetaryPrecisionValidator implements ValidatorConstraintInterface {
     return `Monetary precision ${validationArguments?.value?.precision} must be <= ${this.maxPrecision}`
   }
 }
-class IsMonetaryMinAmountValidator implements ValidatorConstraintInterface {
+class IsMonetaryMinValidator implements ValidatorConstraintInterface {
   constructor (
-    private lowestAmount?: number
+    private min?: Monetary
   ) {}
 
   validate (monetaryDto: MonetaryDto<Currency> | null | undefined): boolean {
     if (monetaryDto == null) {
       return false
     }
-    if (this.lowestAmount === undefined) {
+    if (this.min === undefined) {
+      return true
+    }
+    if (!isComparableMonetaryDto(monetaryDto)) {
       return true
     }
 
-    return monetaryDto.amount >= this.lowestAmount
+    return new Monetary(monetaryDto) >= this.min
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    return `Monetary amount ${validationArguments?.value?.amount} must be >= ${this.lowestAmount}`
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (!isComparableMonetaryDto(validationArguments?.value)) {
+      return `Monetary amount must be >= ${this.min?.toString()}`
+    }
+     
+    const monetary = new Monetary(validationArguments?.value)
+    return `Monetary ${monetary.toString()} must be >= ${this.min?.toString()}`
   }
 }
 
-class IsMonetaryMaxAmountValidator implements ValidatorConstraintInterface {
+class IsMonetaryMaxValidator implements ValidatorConstraintInterface {
   constructor (
-    private highestAmount?: number
+    private max?: Monetary
   ) {}
 
   validate (monetaryDto: MonetaryDto<Currency> | null | undefined): boolean {
     if (monetaryDto == null) {
       return false
     }
-
-    if (this.highestAmount === undefined) {
+    if (this.max === undefined) {
+      return true
+    }
+    if (!isComparableMonetaryDto(monetaryDto)) {
       return true
     }
 
-    return monetaryDto.amount <= this.highestAmount
+    return new Monetary(monetaryDto) <= this.max
   }
 
   defaultMessage (validationArguments?: ValidationArguments): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    return `Monetary amount ${validationArguments?.value?.amount} must be <= ${this.highestAmount}`
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    if (!isComparableMonetaryDto(validationArguments?.value)) {
+      return `Monetary amount must be <= ${this.max?.toString()}`
+    }
+     
+    const monetary = new Monetary(validationArguments?.value)
+    return `Monetary ${monetary.toString()} must be <= ${this.max?.toString()}`
   }
 }

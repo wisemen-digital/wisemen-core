@@ -1,10 +1,10 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Speed } from '../speed.js'
-import { SpeedUnit } from '../speed-unit.enum.js'
-import { Duration } from '../../duration/duration.js'
-import { DurationUnit } from '../../duration/duration-unit.enum.js'
-import { DistanceUnit } from '../../distance/distance-unit.enum.js'
+import { Speed } from '#lib/quantities/speed/speed.js'
+import { SpeedUnit } from '#lib/quantities/speed/speed-unit.enum.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { DurationUnit } from '#lib/quantities/duration/duration-unit.enum.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
 
 void describe('Speed class', () => {
   void describe('Speed calculations', () => {
