@@ -1,4 +1,4 @@
-import { BaseQuantity, ScalableQuantity } from '../../quantity.js'
+import { BaseQuantity, ScalableQuantity } from '#lib/quantity.js'
 import { TemperatureUnit } from './temperature-unit.enum.js'
 
 export class TemperatureDelta extends ScalableQuantity<TemperatureUnit, TemperatureDelta, TemperatureDelta> {

@@ -1,4 +1,4 @@
-import { ScalableQuantity } from '../../quantity.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { CurrentUnit } from './current-unit.enum.js'
 
 export const CURRENT_MULTIPLIERS: Record<CurrentUnit, number> = {

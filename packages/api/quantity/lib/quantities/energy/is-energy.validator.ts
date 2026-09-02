@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common'
-import { IsQuantity, IsQuantityOptions } from '../../validators/is-quantity.decorator.js'
+import { IsQuantity, IsQuantityOptions } from '#lib/validators/is-quantity.decorator.js'
 import { EnergyDto } from './energy.dto.js'
 import { Energy } from './energy.js'
 

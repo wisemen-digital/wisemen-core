@@ -1,12 +1,12 @@
-import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
-import { Distance } from '../../quantities/distance/distance.js'
-import { Speed } from '../../quantities/speed/speed.js'
-import { Rate } from '../../rate/rate.js'
-import { ScalableQuantity } from '../../quantity.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { Distance } from '#lib/quantities/distance/distance.js'
+import { Speed } from '#lib/quantities/speed/speed.js'
+import { Rate } from '#lib/rate/rate.js'
+import { ScalableQuantity } from '#lib/quantity.js'
 import { DurationUnit } from './duration-unit.enum.js'
-import { Power } from '../power/power.js'
-import { Energy } from '../energy/energy.js'
-import { EnergyUnit } from '../energy/energy-unit.enum.js'
+import { Power } from '#lib/quantities/power/power.js'
+import { Energy } from '#lib/quantities/energy/energy.js'
+import { EnergyUnit } from '#lib/quantities/energy/energy-unit.enum.js'
 
 const DISTANCE_MULTIPLIERS: Record<DurationUnit, number> = {
   [DurationUnit.SECONDS]: 1,

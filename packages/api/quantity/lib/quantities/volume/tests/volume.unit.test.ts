@@ -1,11 +1,11 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Area } from '../../area/area.js'
-import { AreaUnit } from '../../area/area-unit.enum.js'
-import { Distance } from '../../distance/distance.js'
-import { DistanceUnit } from '../../distance/distance-unit.enum.js'
-import { Volume } from '../volume.js'
-import { VolumeUnit } from '../volume-unit.enum.js'
+import { Area } from '#lib/quantities/area/area.js'
+import { AreaUnit } from '#lib/quantities/area/area-unit.enum.js'
+import { Distance } from '#lib/quantities/distance/distance.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { Volume } from '#lib/quantities/volume/volume.js'
+import { VolumeUnit } from '#lib/quantities/volume/volume-unit.enum.js'
 
 void describe('Volume class', () => {
   void describe('Volume calculations', () => {

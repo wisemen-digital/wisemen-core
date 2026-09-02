@@ -1,13 +1,13 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Area } from '../../area/area.js'
-import { AreaUnit } from '../../area/area-unit.enum.js'
-import { Distance } from '../distance.js'
-import { DistanceUnit } from '../distance-unit.enum.js'
-import { Duration } from '../../duration/duration.js'
-import { DurationUnit } from '../../duration/duration-unit.enum.js'
-import { SpeedUnit } from '../../speed/speed-unit.enum.js'
-import { VolumeUnit } from '../../volume/volume-unit.enum.js'
+import { Area } from '#lib/quantities/area/area.js'
+import { AreaUnit } from '#lib/quantities/area/area-unit.enum.js'
+import { Distance } from '#lib/quantities/distance/distance.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { Duration } from '#lib/quantities/duration/duration.js'
+import { DurationUnit } from '#lib/quantities/duration/duration-unit.enum.js'
+import { SpeedUnit } from '#lib/quantities/speed/speed-unit.enum.js'
+import { VolumeUnit } from '#lib/quantities/volume/volume-unit.enum.js'
 
 void describe('Distance class', () => {
   void describe('Distance calculations', () => {

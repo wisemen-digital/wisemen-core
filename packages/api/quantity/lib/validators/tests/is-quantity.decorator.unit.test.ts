@@ -2,10 +2,10 @@ import { describe, it } from 'node:test'
 import { plainToInstance } from 'class-transformer'
 import { validate } from 'class-validator'
 import { expect } from 'expect'
-import { Distance } from '../../quantities/distance/distance.js'
-import { DistanceUnit } from '../../quantities/distance/distance-unit.enum.js'
-import { DistanceDto } from '../../quantities/distance/distance.dto.js'
-import { IsQuantity } from '../is-quantity.decorator.js'
+import { Distance } from '#lib/quantities/distance/distance.js'
+import { DistanceUnit } from '#lib/quantities/distance/distance-unit.enum.js'
+import { DistanceDto } from '#lib/quantities/distance/distance.dto.js'
+import { IsQuantity } from '#lib/validators/is-quantity.decorator.js'
 
 describe('is quantity decorator tests', () => {
   describe('min option', () => {
