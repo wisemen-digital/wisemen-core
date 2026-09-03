@@ -39,6 +39,13 @@
 
 
 
+
+## 1.22.5
+<sub>2026-09-03</sub>
+
+- [#1648](https://github.com/wisemen-digital/wisemen-core/pull/1648)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Fixed DataTable empty/error state overlay being clipped when wrapped in a shorter, content-sized container instead of scrolling.
+
 ## 1.22.4
 <sub>2026-09-01</sub>
 
