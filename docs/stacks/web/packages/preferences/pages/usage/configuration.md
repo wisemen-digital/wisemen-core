@@ -222,6 +222,48 @@ function useMyCustomView(sections: PreferencesSection[]): PreferencesView {
 }
 ```
 
+### Grouping sections into tabs
+
+When a view has too many sections to show on a single page, group them into `tabs`. The header renders a tab strip and the content area only shows the active tab's sections:
+
+```typescript
+import type { PreferencesView } from '@wisemen/vue-core-preferences'
+
+const generalView: PreferencesView = {
+  id: 'general',
+  title: 'General',
+  icon: markRaw(SomeIcon),
+  // `sections` must stay the flattened union of every tab's sections —
+  // search, deep-linking, and `SectionIdFromConfig` read from this array.
+  sections: [
+    appearance,
+    displayZoom,
+    navigationArrows,
+    toastAutoClose,
+  ],
+  tabs: [
+    {
+      id: 'behavior',
+      title: 'Behavior',
+      sections: [
+        appearance,
+        displayZoom,
+      ],
+    },
+    {
+      id: 'notifications',
+      title: 'Notifications',
+      sections: [
+        navigationArrows,
+        toastAutoClose,
+      ],
+    },
+  ],
+}
+```
+
+Deep-linking to a section (`dialog.open('general', 'toast-auto-close')`) or matching it through search automatically activates the tab that contains it.
+
 ## 4. Create the dialog
 
 Call `useCreatePreferencesDialog` with your config to get a type-safe dialog instance:
@@ -305,6 +347,13 @@ interface PreferencesView {
   title: string | ComputedRef<string>
   description?: string | ComputedRef<string>
   icon: Raw<Component>
+  sections: PreferencesSection[]   // flattened union of every tab's sections, if `tabs` is set
+  tabs?: PreferencesViewTab[]
+}
+
+interface PreferencesViewTab {
+  id: string
+  title: string | ComputedRef<string>
   sections: PreferencesSection[]
 }
 
