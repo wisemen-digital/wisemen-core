@@ -101,7 +101,7 @@ describe('advisoryLock and tryAdvisoryLock', () => {
     const lock = createDataSource([])
 
     const result = await advisoryLock(lock.dataSource, 'blocking', 'shared', 10, () => {
-      Promise.resolve('completed')
+      return Promise.resolve('completed')
     })
 
     assert.equal(result, 'completed')
