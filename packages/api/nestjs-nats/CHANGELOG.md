@@ -11,6 +11,12 @@
 
 
 
+
+## 1.3.3
+<sub>2026-09-03</sub>
+
+- [#1643](https://github.com/wisemen-digital/wisemen-core/pull/1643)  *(patch)* Thanks [@YuHangHuu](https://github.com/YuHangHuu)! - Log the failed connection name for easier debugging
+
 ## 1.3.2
 <sub>2026-08-26</sub>
 

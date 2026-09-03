@@ -8,6 +8,14 @@
 
 
 
+
+## 1.4.0
+<sub>2026-09-03</sub>
+
+- [#1646](https://github.com/wisemen-digital/wisemen-core/pull/1646)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)!
+  Added PostgreSQL session-level advisory locks with blocking, non-blocking,
+  exclusive, shared, single-key, and two-key support.
+
 ## 1.3.0
 <sub>2026-09-01</sub>
 

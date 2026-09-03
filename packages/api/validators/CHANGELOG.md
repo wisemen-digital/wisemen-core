@@ -4,6 +4,12 @@
 
 
 
+
+## 0.0.28
+<sub>2026-09-03</sub>
+
+- [#1635](https://github.com/wisemen-digital/wisemen-core/pull/1635)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added @IsPhoneNumber()
+
 ## 0.0.27
 <sub>2026-09-01</sub>
 

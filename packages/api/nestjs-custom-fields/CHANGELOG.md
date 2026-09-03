@@ -8,6 +8,12 @@
 
 
 
+
+## 1.0.3
+<sub>2026-09-03</sub>
+
+- *(patch)* Updated dependency `@wisemen/monetary` v1.0.0
+
 ## 1.0.2
 <sub>2026-09-01</sub>
 

@@ -15,6 +15,12 @@
 
 
 
+
+## 1.3.0
+<sub>2026-09-03</sub>
+
+- *(minor)* Updated dependency `@wisemen/quantity` v0.12.0
+
 ## 1.2.1
 <sub>2026-09-01</sub>
 
