@@ -16,7 +16,7 @@ jobs:
 
   api-packages-tests:
     name: Test changed API packages
-    if: github.event.pull_request.draft == false && github.head_ref != 'changeset-release/main'
+    if: github.event.pull_request.draft == false && github.head_ref != 'changeset-release/main' && github.head_ref != 'bumpy/version-packages'
     runs-on: ubuntu-latest
     permissions: {}
     env:
