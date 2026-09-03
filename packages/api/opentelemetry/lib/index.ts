@@ -6,6 +6,6 @@ export { startOpentelemetryTracing, type OpentelemetryTracingConfig, } from './t
 export { startOpentelemetryMetrics, type OpentelemetryMetricsConfig, } from './metrics.js'
 export { type TraceContextCarrier } from './context.js'
 export { OpenTelemetryLogger, type LogRecord, type OpentelemetryLoggingConfig } from './logging.js'
-export { captureException } from './exception.js'
+export { captureException } from './capture-exception.js'
 export { OtelLoggerModule } from './nestjs-logger/otel-logger.module.js'
 export { NestjsOtelLogger } from './nestjs-logger/otel-logger.service.js'

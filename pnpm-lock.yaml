@@ -669,6 +669,9 @@ catalogs:
       specifier: 2.7.1
       version: 2.7.1
   test:
+    '@types/sinon':
+      specifier: 22.0.0
+      version: 22.0.0
     '@vitest/browser-playwright':
       specifier: 4.1.10
       version: 4.1.10
@@ -2473,6 +2476,9 @@ importers:
       '@types/node':
         specifier: catalog:backend
         version: 25.3.0
+      '@types/sinon':
+        specifier: catalog:test
+        version: 22.0.0
       '@wisemen/eslint-config-nestjs':
         specifier: workspace:*
         version: link:../eslint-config-nestjs
@@ -2488,6 +2494,9 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      sinon:
+        specifier: catalog:test
+        version: 22.0.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3

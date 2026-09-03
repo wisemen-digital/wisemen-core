@@ -13,7 +13,17 @@ export {
   transaction,
   createTransactionManagerProxy,
   readonly,
-  createReadonlyManagerProxy
+  createReadonlyManagerProxy,
+  advisoryLock,
+  tryAdvisoryLock
+} from './extensions/index.js'
+export type {
+  BlockingSessionAdvisoryLockOptions,
+  NonBlockingSessionAdvisoryLockOptions,
+  SessionAdvisoryLockAcquisition,
+  SessionAdvisoryLockKey,
+  SessionAdvisoryLockMode,
+  SessionAdvisoryLockResult
 } from './extensions/index.js'
 export { AnyOrIgnore, AndOrIgnore } from './operators/index.js'
 export { SnakeNamingStrategy } from './naming/index.js'
