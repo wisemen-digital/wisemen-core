@@ -66,6 +66,60 @@ initializeLogging({
 Use the same `slowRequest.durationMs` across comparable runtimes when you want
 their slow-event views to be comparable.
 
+## Hourly S3 audit archive
+
+Create an S3 audit drain and pass it to `initializeLogging()`. It uses Evlog's
+audit filter, so it receives only events emitted through Evlog's audit helpers;
+normal application logs continue to go to stdout.
+
+```ts
+import {
+  createS3AuditDrain,
+  initializeLogging,
+} from '@wisemen/payload-core-observability'
+
+const auditDrain = createS3AuditDrain({
+  bucket: process.env.AUDIT_S3_BUCKET!,
+  endpoint: process.env.AUDIT_S3_ENDPOINT,
+  environment: process.env.NODE_ENV ?? 'development',
+  podName: process.env.HOSTNAME,
+  service: 'cms',
+})
+
+initializeLogging({
+  auditDrain,
+  service: 'cms',
+})
+
+process.once('SIGTERM', () => void auditDrain.flush())
+process.once('SIGINT', () => void auditDrain.flush())
+```
+
+The drain uploads compressed NDJSON about once per hour for each pod at
+`audit/<environment>/<date>-<hour>-<pod>-<batch>.ndjson.gz`. Every
+object gets a unique key, so replicas never coordinate through a shared file.
+It retries uploads five times. The `maxBatchSize` safety ceiling defaults to
+100,000 events; reaching it creates an extra object instead of dropping audits.
+
+## Payload admin audit
+
+Add the Payload audit plugin to record CMS/API operations in the S3 audit
+archive. It covers collection creates, updates, deletes, and reads; global
+updates and reads; and collection-auth logins/logouts. Unauthenticated HTTP
+requests are recorded with `actor: { type: 'api', id: 'anonymous' }`; local
+API calls from workers, seeders, and hooks are excluded by default. Events do
+not include document values or diffs.
+
+```ts
+import { payloadAdminAudit } from '@wisemen/payload-core-observability'
+
+export default buildConfig({
+  plugins: [
+    payloadAdminAudit(),
+  ],
+})
+```
+
 ## Redaction and bounded values
 
 Evlog applies the package's redaction configuration to nested fields matching:

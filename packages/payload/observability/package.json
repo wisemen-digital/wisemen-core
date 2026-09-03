@@ -35,6 +35,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1023.0",
     "@opentelemetry/api": "^1.9.1",
     "@opentelemetry/exporter-trace-otlp-http": "^0.221.0",
     "@opentelemetry/instrumentation-http": "^0.221.0",
@@ -47,7 +48,7 @@
   "peerDependencies": {
     "@orpc/otel": "^1.15.0",
     "@orpc/server": "^1.15.0",
-    "payload": "catalog:payload-peer"
+    "payload": "^3.0.0"
   },
   "devDependencies": {
     "@orpc/otel": "^1.15.0",
