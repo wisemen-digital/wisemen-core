@@ -18,6 +18,8 @@
     "prebuild": "rm -rf ./dist",
     "clean": "rm -rf ./dist",
     "build": "tsc",
+    "pretest": "pnpm clean && pnpm run build",
+    "test": "node --env-file=.env.test --enable-source-maps --experimental-test-isolation=none --test ./**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -41,6 +43,7 @@
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
     "@types/node": "catalog:backend",
+    "expect": "catalog:test",
     "typescript": "catalog:peer"
   }
 }
