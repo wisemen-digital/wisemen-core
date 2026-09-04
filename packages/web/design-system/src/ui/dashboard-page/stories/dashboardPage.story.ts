@@ -5,6 +5,7 @@ import type {
 
 import CenteredPagePlayground from '@/ui/dashboard-page/stories/DashboardCenteredPagePlayground.vue'
 import CenteredPageScrollablePlayground from '@/ui/dashboard-page/stories/DashboardCenteredPageScrollablePlayground.vue'
+import LongTitlePlayground from '@/ui/dashboard-page/stories/DashboardPageLongTitlePlayground.vue'
 import Playground from '@/ui/dashboard-page/stories/DashboardPagePlayground.vue'
 
 const meta = {
@@ -49,5 +50,14 @@ export const CenteredPageScrollable: Story = {
       CenteredPageScrollablePlayground,
     },
     template: '<CenteredPageScrollablePlayground />',
+  }),
+}
+
+export const LongTitle: Story = {
+  render: () => ({
+    components: {
+      LongTitlePlayground,
+    },
+    template: '<LongTitlePlayground />',
   }),
 }
