@@ -40,6 +40,13 @@
 
 
 
+
+## 1.22.6
+<sub>2026-09-04</sub>
+
+- [#1647](https://github.com/wisemen-digital/wisemen-core/pull/1647)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Fixed the top bar's title/breadcrumbs overlapping the global search on narrow screens, actions no longer misaligned when search is hidden, and truncated titles now show a tooltip with the full text.
+
 ## 1.22.5
 <sub>2026-09-03</sub>
 
