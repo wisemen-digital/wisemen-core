@@ -34,19 +34,11 @@ Two incidental fixes fall out of this:
 `capture-exception.ts` also now imports `getOtelTracer` from `./get-otel-tracer.js` rather than the `./index.js`
 barrel, which removes an import cycle that adding the decorator's import would otherwise have deepened.
 
-### ⚠️ This renames an attribute your dashboards and alerts may query
-
-Nothing in consumer code has to change — this is a drop-in bump. But anything reading `exceptions.message` will
-go blank for spans produced by these three paths. Make queries tolerant of both before upgrading:
-
-```sql
-coalesce(nullIf(attributes_string['exception.message'], ''),
-         attributes_string['exceptions.message'])
-```
+Nothing in consumer code has to change — this is a drop-in bump.
 
 Released as `minor` rather than `major` deliberately: there is no API change and no consumer code to migrate, and
 a major bump on `nestjs-nats` / `pgboss-nestjs-job` would discourage exactly the adoption this fix needs. The
-observable change is the attribute name, which the snippet above absorbs.
+only observable change is the attribute name.
 
 ⚠️ `bumpy status` shows the `minor` on `@wisemen/opentelemetry` (0.3.1 → 0.4.0) pulling dependency-only minor
 bumps into `nestjs-domain-events`, `nestjs-http-exception-filter`, `nestjs-swagger`, `nestjs-typesense`,
