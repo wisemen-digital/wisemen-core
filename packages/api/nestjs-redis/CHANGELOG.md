@@ -4,6 +4,12 @@
 
 
 
+
+## 1.0.5
+<sub>2026-09-04</sub>
+
+- [#1651](https://github.com/wisemen-digital/wisemen-core/pull/1651)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added fix for no-op (zero length) putCachedValues. Also added test-suite.
+
 ## 1.0.4
 <sub>2026-07-29</sub>
 
