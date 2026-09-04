@@ -2307,6 +2307,9 @@ importers:
       eslint:
         specifier: catalog:lint-api
         version: 10.2.1(jiti@2.7.0)
+      expect:
+        specifier: catalog:test
+        version: 30.4.1
       oxlint:
         specifier: catalog:lint-api
         version: 1.59.0(oxlint-tsgolint@0.20.0)
