@@ -1,4 +1,5 @@
 import { ClientRequest, IncomingMessage } from 'http'
+import { createRequire } from 'node:module'
 import { Instrumentation, registerInstrumentations } from '@opentelemetry/instrumentation'
 import { AwsInstrumentation } from '@opentelemetry/instrumentation-aws-sdk'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
@@ -8,6 +9,16 @@ import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis'
 import { ExpressInstrumentation, ExpressLayerType } from '@opentelemetry/instrumentation-express'
 import { UndiciInstrumentation, UndiciRequest } from '@opentelemetry/instrumentation-undici'
 import { Span } from '@opentelemetry/api'
+
+const requireCjs = createRequire(import.meta.url)
+
+const MODULES_LOADED_BEFORE_REGISTRATION = ['http', 'https']
+
+function patchModulesLoadedBeforeRegistration (): void {
+  for (const moduleName of MODULES_LOADED_BEFORE_REGISTRATION) {
+    requireCjs(moduleName)
+  }
+}
 
 export function registerInstrumentation (
   extraInstrumentations: Instrumentation[] = []
@@ -64,4 +75,6 @@ export function registerInstrumentation (
       ...extraInstrumentations
     ]
   })
+
+  patchModulesLoadedBeforeRegistration()
 }
