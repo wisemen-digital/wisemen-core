@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useKeyHold } from '@tanstack/vue-hotkeys'
+import { useLocalStorage } from '@vueuse/core'
 import type {
   Action,
   NavFrame,
@@ -64,6 +65,7 @@ const isShiftKeyHeld = useKeyHold('Shift')
 
 const navStack = ref<NavFrame[]>([])
 const searchInput = ref('')
+const isGroupingDisabled = useLocalStorage<boolean>('command-menu-grouping-disabled', false)
 
 const {
   isLoadingActions,
@@ -72,6 +74,7 @@ const {
   resolvedActions,
   subActionsMetaMap,
 } = useCommandMenuActions({
+  isGroupingDisabled: computed(() => isGroupingDisabled.value),
   actionsSnapshot,
   focusedModelsSnapshot,
   listboxContentRef: listboxContentRef as any,
@@ -107,7 +110,22 @@ const {
   hasNavigated, isBouncing,
 } = useCommandMenuAnimation(isOpen, () => navStack.value.length)
 
-const groups = computed(() => buildCommandMenuGroups(resolvedActions.value, buildContext()))
+const groups = computed(() => {
+  if (isGroupingDisabled.value) {
+    return [
+      {
+        category: null,
+        icon: null,
+        items: resolvedActions.value,
+        key: 'flat',
+        label: 'Results',
+        showIfOnlyGroup: true,
+      },
+    ]
+  }
+
+  return buildCommandMenuGroups(resolvedActions.value, buildContext())
+})
 
 if (props.action !== undefined) {
   activateAction(props.action)
@@ -156,6 +174,17 @@ function onUpdateIsOpen(value: boolean): void {
   if (!value) {
     emit('close')
   }
+}
+
+function onSearchKeyDown(event: KeyboardEvent): void {
+  if (event.key === 'Tab') {
+    event.preventDefault()
+    isGroupingDisabled.value = !isGroupingDisabled.value
+
+    return
+  }
+
+  onKeyDown(event)
 }
 </script>
 
@@ -218,7 +247,7 @@ function onUpdateIsOpen(value: boolean): void {
             v-model="searchInput"
             :placeholder="placeholder"
             class="block w-full p-lg text-xs text-secondary outline-none"
-            @keydown="onKeyDown"
+            @keydown="onSearchKeyDown"
           />
         </div>
 
