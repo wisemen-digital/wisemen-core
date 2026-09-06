@@ -1,12 +1,23 @@
 ---
 name: getting-started
-description: Use when parsing comma-separated env vars, coercing boolean config values, generating branded UUIDs, or asserting exhaustive TypeScript switches with @wisemen/nestjs-common.
+description: Use when constructing values from nullable inputs, parsing comma-separated env vars, coercing boolean config values, generating branded UUIDs, or asserting exhaustive TypeScript switches with @wisemen/nestjs-common.
 ---
 
 # @wisemen/nestjs-common - Getting Started
 
 Use these helpers instead of rewriting small config and type-safety utilities in
 each backend package.
+
+## Construct From Nullable Inputs
+
+Use `constructIfNotNull(...)` to pass a non-nullish value to a single-argument
+constructor. Both `null` and `undefined` inputs are normalized to `null`.
+
+```ts
+import { constructIfNotNull } from '@wisemen/nestjs-common'
+
+const expiresAt = constructIfNotNull(Date, command.expiresAt)
+```
 
 ## Parse Environment Lists
 
