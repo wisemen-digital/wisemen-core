@@ -1,10 +1,12 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  entry: {
-    'bin/seed': 'src/bin/seed.ts',
-    'index': 'src/index.ts',
-  },
+  entry: [
+    'src/index.ts',
+    'src/client.ts',
+    'src/server.ts',
+    'src/bin/seed.ts',
+  ],
   external: [
     '@payloadcms/ui',
     'payload',
