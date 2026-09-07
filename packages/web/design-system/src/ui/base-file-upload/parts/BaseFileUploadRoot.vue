@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   computed,
+  getCurrentInstance,
   ref,
 } from 'vue'
 
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<BaseFileUploadProps>(), {
 })
 
 const emit = defineEmits<{
+  download: [file: BaseFileInfo]
   filesRejected: [files: BaseFileUploadRejectedFile[]]
 }>()
 
@@ -39,6 +41,8 @@ const modelValue = defineModel<BaseFileInfo[] | (BaseFileInfo | null)>({
   required: true,
 })
 const isMultiple = computed<boolean>(() => Array.isArray(modelValue.value))
+const instance = getCurrentInstance()
+const hasDownloadListener = computed<boolean>(() => instance?.vnode.props?.onDownload !== undefined)
 
 // For simplicity and consistency, the modelValue will always be normalized to an array.
 const delegatedModelValue = computed<BaseFileUploadItemSuccess[]>({
@@ -169,6 +173,17 @@ function onFilesSelected(files: File[]): void {
   }
 }
 
+function onDownload(item: BaseFileUploadItemSuccess): void {
+  emit('download', {
+    uuid: item.uuid,
+    name: item.name,
+    blurHash: item.blurHash,
+    mimeType: item.mimeType,
+    order: item.order,
+    url: item.url,
+  })
+}
+
 function updateInternalItem(
   key: string,
   updatedItem: Partial<BaseFileUploadItem>,
@@ -263,8 +278,10 @@ function onReplaceFileUploadItem(item: BaseFileUploadItem, file: File): void {
 
 useProvideBaseFileUploadContext({
   ...toComputedRefs(props),
+  hasDownloadListener,
   isMultiple,
   preprocess: props.preprocess,
+  onDownload,
   onError,
   onFilesSelected,
   onRemoveFileUploadItem,

@@ -9,6 +9,12 @@
 
 
 
+
+## 1.1.0
+<sub>2026-08-25</sub>
+
+- *(minor)* Updated dependency `@wisemen/vue-core-actions` v0.3.0
+
 ## 1.0.4
 <sub>2026-08-05</sub>
 

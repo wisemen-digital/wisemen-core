@@ -6,6 +6,25 @@
 
 
 
+
+## 10.1.0
+<sub>2026-08-13</sub>
+
+- [#1584](https://github.com/wisemen-digital/wisemen-core/pull/1584)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)!
+  Add an opt-in `persistInUrl` option to `useFilters`, so filter values can be synced to a URL query string and survive a page refresh or a shared link.
+
+  ```typescript
+  useFilters({
+    actionGroup: { /* ... */ },
+    filters: [ /* ... */ ],
+    persistInUrl: true, // or a custom query key, e.g. 'contact-filters'
+  })
+  ```
+
+  Disabled by default — existing `useFilters` calls are unaffected.
+- [#1586](https://github.com/wisemen-digital/wisemen-core/pull/1586)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)!
+  Enable fixed weeks on the date picker in `FiltersDialogDateFilter` so the calendar always renders 6 rows, preventing layout shift when navigating between months.
+
 ## 10.0.3
 <sub>2026-08-05</sub>
 

@@ -1,5 +1,5 @@
 export { createMailClient, mailClientFactory } from './clients/mail-client.factory.js'
-export { MailClient, MailFileExtension, type MailAttachment, type SendMailOptions } from './clients/mail.client.js'
+export { MailClient, MailFileExtension, type MailAttachment, type SendMailOptions, type SentMail } from './clients/mail.client.js'
 export { MailPitMailClient } from './clients/mailpit-mail.client.js'
 export { MockMailClient } from './clients/mock-mail.client.js'
 export { ScalewayMailClient } from './clients/scaleway-mail.client.js'

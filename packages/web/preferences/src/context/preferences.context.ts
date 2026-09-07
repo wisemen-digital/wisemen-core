@@ -12,6 +12,7 @@ import type {
 } from '#types/preferences.type'
 
 interface PreferencesContext extends PreferencesHistory {
+  activeTabId: Ref<string | null>
   isSidebarVisible: Ref<boolean>
   activeView: ComputedRef<PreferencesView>
   config: ComputedRef<PreferencesConfig>

@@ -1,14 +1,13 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsPlainDate } from '../plain-date/index.js'
+import { IsPlainDate, PlainDateApiProperty } from '../plain-date/index.js'
 import { DateRange } from './date-range.js'
 import { InclusivityString } from '../common/inclusivity.js'
 
 export class DateRangeDto {
-  @ApiProperty({ format: 'date' })
+  @PlainDateApiProperty()
   @IsPlainDate()
   startDate: string
 
-  @ApiProperty({ format: 'date' })
+  @PlainDateApiProperty()
   @IsPlainDate()
   endDate: string
 

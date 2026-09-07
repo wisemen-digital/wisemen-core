@@ -22,8 +22,21 @@ export interface SendMailOptions {
   replyTo?: string
 }
 
+export interface SentMail {
+  /** Provider-specific identifier used to track the sent email. */
+  id: string
+  /** Addresses represented by this provider identifier. */
+  recipients: string[]
+}
+
 export abstract class MailClient {
-  abstract sendMail (sendMailOptions: SendMailOptions): Promise<void>
+  abstract sendMail (sendMailOptions: SendMailOptions): Promise<SentMail[]>
+
+  protected getRecipients (options: SendMailOptions): string[] {
+    return [options.to, options.cc, options.bcc]
+      .filter((recipients): recipients is string | string[] => recipients !== undefined)
+      .flat()
+  }
 
   protected getMimeTypeForAttachmentExt (ext: MailFileExtension): string {
     switch (ext) {

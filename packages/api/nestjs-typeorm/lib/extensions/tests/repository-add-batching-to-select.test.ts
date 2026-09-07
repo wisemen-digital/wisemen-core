@@ -7,6 +7,7 @@ import { TypeOrmRepository } from '#src/extensions/repository.js'
 describe('Repository find in batches test', () => {
   before(async () => {
     await dataSource.initialize()
+    await dataSource.query('CREATE SCHEMA IF NOT EXISTS "nestjs_typeorm_extensions"')
     await dataSource.synchronize(true)
   })
 

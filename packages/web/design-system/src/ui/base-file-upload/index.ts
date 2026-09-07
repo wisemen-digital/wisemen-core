@@ -22,6 +22,7 @@ export { default as UIBaseFileUploadClipboardUpload } from '@/ui/base-file-uploa
 export { default as UIBaseFileUploadDropzone } from '@/ui/base-file-upload/parts/BaseFileUploadDropzone.vue'
 export { default as UIBaseFileUploadItem } from '@/ui/base-file-upload/parts/BaseFileUploadItem.vue'
 export { default as UIBaseFileUploadItemCancel } from '@/ui/base-file-upload/parts/BaseFileUploadItemCancel.vue'
+export { default as UIBaseFileUploadItemDownload } from '@/ui/base-file-upload/parts/BaseFileUploadItemDownload.vue'
 export { default as UIBaseFileUploadItemRemove } from '@/ui/base-file-upload/parts/BaseFileUploadItemRemove.vue'
 export { default as UIBaseFileUploadItemReplace } from '@/ui/base-file-upload/parts/BaseFileUploadItemReplace.vue'
 export { default as UIBaseFileUploadRoot } from '@/ui/base-file-upload/parts/BaseFileUploadRoot.vue'

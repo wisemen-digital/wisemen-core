@@ -28,5 +28,6 @@ export { CustomFieldType, CustomFieldTypeApiProperty, CustomFieldTypeColumn } fr
 export { CustomFieldDefinition } from './typeorm/custom-field-definition.entity.js'
 export { CustomFieldChoiceColumn } from './typeorm/custom-field-choice.column.js'
 export { CustomFieldValueColumn } from './typeorm/custom-field-value.column.js'
+export { CustomFieldValueTransformer } from './typeorm/custom-field-value.column.js'
 export { CustomFieldValueValidationError } from './validators/custom-field-value-validation.error.js'
 export { validateCustomFieldValue, validateCustomFieldValues } from './validators/custom-field-value.validator.js'

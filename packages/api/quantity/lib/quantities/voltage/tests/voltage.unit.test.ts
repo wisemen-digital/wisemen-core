@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import { expect } from 'expect'
-import { Voltage } from '../voltage.js'
-import { VoltageUnit } from '../voltage-unit.enum.js'
+import { Voltage } from '#lib/quantities/voltage/voltage.js'
+import { VoltageUnit } from '#lib/quantities/voltage/voltage-unit.enum.js'
 
 void describe('Voltage class', () => {
   void describe('Voltage calculations', () => {

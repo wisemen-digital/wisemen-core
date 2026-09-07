@@ -209,6 +209,16 @@ The builder enforces field capabilities at compile time:
 For cross-collection queries, use `innerJoin(...)`, `leftJoin(...)`, or
 `inverseJoin(...)` on fields declared with `reference(...)`.
 
+Control where `null`/missing values land in a sort with the optional
+`missingValues` argument, backed by Typesense's `missing_values` sort
+modifier:
+
+```ts
+import { TypesenseMissingValues } from '@wisemen/nestjs-typesense'
+
+pb.addSortOn(ContactCollection.name, sort.order, TypesenseMissingValues.LAST)
+```
+
 ## Import And Sync Documents
 
 Use `TypesenseClient` methods according to the data you already have:

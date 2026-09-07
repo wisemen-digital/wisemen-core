@@ -6,6 +6,7 @@ import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-http'
 import { SeverityNumber, type Logger } from '@opentelemetry/api-logs'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { getOtelServiceName } from './get-otel-service-name.js'
+import { createOtelHeaders, OtelAuth } from './headers.js'
 
 export interface LogRecord {
   context: string
@@ -15,9 +16,9 @@ export interface LogRecord {
 
 export interface OpentelemetryLoggingConfig {
   serviceName: string
-  headers?: Record<string, string>
+  auth?: OtelAuth
   url?: string
-  env?: string
+  env: string
   config?: {
     concurrencyLimit?: number
     loggerName?: string
@@ -44,7 +45,7 @@ export class OpenTelemetryLogger {
 
     const logExporter = new OTLPLogExporter({
       url: this.config.url,
-      headers: this.config.headers,
+      headers: createOtelHeaders(this.config.auth),
       concurrencyLimit: this.config.config?.concurrencyLimit ?? 1
     })
 
@@ -103,7 +104,7 @@ export class OpenTelemetryLogger {
       timestamp: Date.now(),
       body: JSON.stringify(record.body),
       attributes: {
-        env: this.config.env ?? process.env.NODE_ENV,
+        env: this.config.env,
         host: this.hostname,
         context: record.context,
         ...record.attributes

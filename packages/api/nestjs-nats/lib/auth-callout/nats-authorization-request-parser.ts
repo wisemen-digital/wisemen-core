@@ -21,8 +21,8 @@ export class NatsAuthorizationRequestParser {
       throw new Error('Missing user nkey')
     }
 
-    if (requestClaim.nats.server_id?.name === undefined) {
-      throw new Error('Missing server id name')
+    if (requestClaim.nats.server_id?.id === undefined) {
+      throw new Error('Missing server id')
     }
 
     if (requestClaim.nats.connect_opts?.auth_token === undefined) {
@@ -31,7 +31,7 @@ export class NatsAuthorizationRequestParser {
 
     return {
       userNkey: requestClaim.nats.user_nkey,
-      serverNkey: requestClaim.nats.server_id.name,
+      serverNkey: requestClaim.nats.server_id.id,
       authToken: requestClaim.nats.connect_opts.auth_token,
       clientName: requestClaim.nats.client_info?.name ?? 'unknown',
       xKey: msg.headers?.get('Nats-Server-Xkey')

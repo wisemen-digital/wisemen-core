@@ -6,7 +6,7 @@ description: Custom class-validator decorators for NestJS DTOs. Use when validat
 ## Import
 
 ```ts
-import { IsUndefinable, IsNullable, } from '@wisemen/validators'
+import { IsUndefinable, IsNullable, IsPhoneNumber } from '@wisemen/validators'
 ```
 
 ## Common validators
@@ -45,6 +45,29 @@ export class PaymentDto {
 }
 ```
 
+### Phone numbers
+
+Normalizes and validates a phone number in one step: it rewrites the incoming value to E.164
+format (e.g. `+32485233648`) before validating it, so messy user input gets cleaned up
+automatically as long as `ValidationPipe` has `transform: true` enabled (the Nest default when
+using `app.useGlobalPipes(new ValidationPipe())` with `transform: true`, or per-controller).
+
+```ts
+export class UpdateContactCommand {
+  @IsPhoneNumber()
+  phone: string
+}
+```
+
+Pass `defaultCountry` to parse numbers written in local/national format (no leading `+`):
+
+```ts
+export class UpdateContactCommand {
+  @IsPhoneNumber({ defaultCountry: 'BE' })
+  phone: string
+}
+```
+
 ## Available validators
 
 - `IsUndefinable` - Skip validation when undefined
@@ -70,3 +93,4 @@ export class PaymentDto {
 - `StartsWith` - String starts with value
 - `IsRrn` - Belgian RRN validation
 - `IsPluxeeCustomerId` - Pluxee customer ID
+- `IsPhoneNumber` - Normalizes to E.164 and validates a phone number

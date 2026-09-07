@@ -11,6 +11,7 @@ import {
 import NumberFieldFormPlayground from './NumberFieldFormPlayground.vue'
 import NumberFieldPlayground from './NumberFieldPlayground.vue'
 import NumberFieldStatesPlayground from './NumberFieldStatesPlayground.vue'
+import NumberFieldUnitPlayground from './NumberFieldUnitPlayground.vue'
 
 const meta = {
   title: 'Components/NumberField',
@@ -148,5 +149,34 @@ export const FormExample: Story = {
       }
     },
     template: '<NumberFieldFormPlayground v-bind="args" />',
+  }),
+}
+
+export const UnitFormatting: Story = {
+  play: async ({
+    canvasElement,
+  }) => {
+    const canvas = within(canvasElement)
+
+    const input = canvas.getByLabelText('Flexibility')
+
+    await expect(input).toHaveValue('0 min')
+
+    await userEvent.clear(input)
+    await userEvent.type(input, '15')
+    await userEvent.tab()
+
+    await expect(input).toHaveValue('15 min')
+  },
+  render: (args) => ({
+    components: {
+      NumberFieldUnitPlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: '<NumberFieldUnitPlayground v-bind="args" />',
   }),
 }

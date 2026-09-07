@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { shallowRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { UIActionTooltip } from '@/ui/action-tooltip'
@@ -16,6 +17,18 @@ const i18n = useI18n()
 const {
   isItemSelected, toggleItem,
 } = useInjectTableSelectionContext()
+
+// Captured on the click's capture phase — fires before the checkbox's own click handling
+// resolves into `update:model-value` — so the shift state is available by the time we toggle.
+const isShiftKeyPressed = shallowRef<boolean>(false)
+
+function onClickCapture(event: MouseEvent): void {
+  isShiftKeyPressed.value = event.shiftKey
+}
+
+function onToggle(): void {
+  toggleItem(props.itemKey, isShiftKeyPressed.value)
+}
 </script>
 
 <template>
@@ -31,7 +44,8 @@ const {
           :model-value="isItemSelected(props.itemKey)"
           :label="i18n.t('component.table.row.toggle_selection_action.name')"
           is-label-hidden
-          @update:model-value="toggleItem(props.itemKey)"
+          @click.capture="onClickCapture"
+          @update:model-value="onToggle"
         />
       </TableBodyRowCellInteractiveElement>
     </UIActionTooltip>

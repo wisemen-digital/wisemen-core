@@ -9,6 +9,7 @@ import {
 import PreferencesHighlightWord from '#components/PreferencesHighlightWord.vue'
 import { useInjectPreferencesContext } from '#context/preferences.context'
 import type { PreferencesView } from '#types/preferences.type'
+import { getViewSections } from '#utils/getViewSections.util'
 
 const props = defineProps<{
   view: PreferencesView
@@ -19,7 +20,7 @@ const {
 } = useInjectPreferencesContext()
 
 const isSectionOfViewActive = computed<boolean>(() => {
-  return props.view.sections.some((section) => section.id === activeItem.value.id)
+  return getViewSections(props.view).some((section) => section.id === activeItem.value.id)
 })
 </script>
 

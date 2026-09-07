@@ -2,6 +2,18 @@
 
 
 
+
+
+## 0.0.36
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
+## 0.0.35
+<sub>2026-08-12</sub>
+
+- [#1579](https://github.com/wisemen-digital/wisemen-core/pull/1579)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolved security vulnerabilities by updating axios, typeorm, next.js, and @hey-api/openapi-ts to patched versions
+
 ## 0.0.34
 <sub>2026-07-28</sub>
 

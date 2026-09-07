@@ -1,7 +1,7 @@
 import { applyDecorators } from '@nestjs/common'
 import { Type } from 'class-transformer'
 import { IsObject, ValidateNested, ValidationOptions } from 'class-validator'
-import { RateDto } from '../rate.dto.js'
+import { RateDto } from '#lib/rate/rate.dto.js'
 
 export function IsRate (
   options?: ValidationOptions

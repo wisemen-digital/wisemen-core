@@ -5,6 +5,25 @@
 
 
 
+
+
+
+## 0.12.0
+<sub>2026-09-03</sub>
+
+- [#1639](https://github.com/wisemen-digital/wisemen-core/pull/1639)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Added `Area` and `Volume` quantities with derived distance arithmetic.
+- [#1639](https://github.com/wisemen-digital/wisemen-core/pull/1639)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Added distance square and cube helpers for areas and volumes.
+
+## 0.11.1
+<sub>2026-08-27</sub>
+
+- [#1630](https://github.com/wisemen-digital/wisemen-core/pull/1630)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add inter quantity calculations
+
+## 0.11.0
+<sub>2026-08-27</sub>
+
+- [#1626](https://github.com/wisemen-digital/wisemen-core/pull/1626)  *(minor)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add delta class to disable addition and multiplication with temperature
+
 ## 0.10.0
 <sub>2026-08-05</sub>
 

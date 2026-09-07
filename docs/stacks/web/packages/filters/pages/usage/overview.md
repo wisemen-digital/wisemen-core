@@ -62,6 +62,34 @@ export interface ContactIndexQueryParams extends WithSearchQuery, WithFilterQuer
 
 The keys and types in the `WithFilterQuery` generic must match the `key` and value type of each filter in `useFilters`. For example, a `createBooleanFilter({ key: 'isActive' })` produces a `boolean | null` value, so the query params type has `isActive: boolean | null`.
 
+## Persisting filters in the URL
+
+Pass `persistInUrl` to sync filter values to a URL query string, so they survive a page refresh or a shared link:
+
+```typescript
+export function useContactOverviewFilters() {
+  return useFilters({
+    actionGroup: { /* ... */ },
+    filters: [ /* ... */ ],
+    persistInUrl: true, // stored under the `filters` query key
+  })
+}
+```
+
+Pass a string instead of `true` to use a custom query key — useful when a page has multiple `useFilters` instances, or to avoid a key collision:
+
+```typescript
+useFilters({
+  actionGroup: { /* ... */ },
+  filters: [ /* ... */ ],
+  persistInUrl: 'contact-filters',
+})
+```
+
+`persistInUrl` is disabled by default, so existing `useFilters` calls are unaffected. It only syncs local changes into the URL — it doesn't also read the URL again while the page is open, so navigating with the browser's back/forward buttons won't restore a previous filter state.
+
+> If you use `@wisemen/vue-core-custom-views`, disable `persistInUrl` — custom views owns the URL state for all its adapters via `?view-state`, and running both at once causes conflicts.
+
 ## Context
 
 `useFilters` automatically provides a **filters context** to all descendant components. `UIFiltersActive` and `UIFiltersDropdownMenu` read from this context, so they just need to be placed somewhere inside the same component tree — no props required.

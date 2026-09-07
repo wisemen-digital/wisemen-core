@@ -8,6 +8,13 @@ import { MODULE_OPTIONS_TOKEN } from './http-exception-filter.module-definition.
 import { resolveHttpExceptionFilterModuleOptions } from './http-exception-filter.module-options.js'
 import type { HttpExceptionFilterModuleOptions } from './http-exception-filter.module-options.js'
 
+interface HttpError extends Error {
+  code: string
+  status: string,
+  detail?: string,
+  meta?: object
+}
+
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor (
@@ -63,7 +70,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
       return new JsonApiError(HttpStatus.NOT_FOUND, [{ code: 'not_found', status: '404' }])
     }
 
+    if (this.hasHttpErrorFields(error)) {
+      return this.mapErrorToJsonApiError(error)
+    } 
+
     return new InternalServerApiError(error.message).toJsonApiError()
+  }
+
+  private hasHttpErrorFields(error: Error): error is HttpError {
+    return Object.hasOwn(error, 'code') && Object.hasOwn(error, 'status')
   }
 
   private mapHttpExceptionToJsonApiError (exception: HttpException): JsonApiError {
@@ -73,6 +88,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
         status: exception.getStatus().toString(),
         code: exception.name,
         detail: exception.message
+      }]
+    )
+  }
+
+  private mapErrorToJsonApiError (error: HttpError): JsonApiError {
+    return new JsonApiError(
+      Number(error.status),
+      [{
+        status: error.status,
+        code: error.code,
+        detail: error.detail,
+        meta: error.meta
       }]
     )
   }

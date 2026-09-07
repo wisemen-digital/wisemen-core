@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm'
 export const dataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URI,
+  schema: 'address',
   ssl: false,
   extra: { max: 50 },
   logging: false,

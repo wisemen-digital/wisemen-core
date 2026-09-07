@@ -38,11 +38,14 @@ function makeCtx(overrides: Partial<ActionContext> = {}): ActionContext {
     hasTargetedModelsOfType: () => false,
     isRouteActive: () => false,
     allModels: [],
+    clearTableSelection: (): void => {},
     focusedModels: [],
     metadata: {},
     models: [],
     router: {} as unknown as Router,
     searchInput: '',
+    selectedModels: [],
+    tableSelection: null,
     targetedModelOfType: () => null,
     targetedModelOfTypeOrThrow: (): never => {
       throw new Error('not stubbed in test context')

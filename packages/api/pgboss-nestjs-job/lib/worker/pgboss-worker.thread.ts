@@ -1,5 +1,5 @@
 import { captureException, getOtelTracer } from '@wisemen/opentelemetry'
-import { propagation, context, SpanStatusCode, Context, trace } from '@opentelemetry/api'
+import { propagation, context, Context, trace } from '@opentelemetry/api'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
 import { TraceContextCarrier } from '../jobs/trace-context-carrier.js'
@@ -58,18 +58,7 @@ export class PgBossWorkerThread {
       } catch (e) {
         const executionTime = Date.now() - startedAt
 
-        span.recordException(e as Error)
-        span.setStatus({ code: SpanStatusCode.ERROR })
-
-        if (e instanceof Error) {
-          span.setAttribute('exceptions.message', e.message)
-          span.setAttribute('exception.stacktrace', e.stack ?? '')
-
-          const prototype = Object.getPrototypeOf(e) as { constructor: { name: string } }
-          const className = prototype.constructor.name as string | undefined
-
-          span.setAttribute('exception.type', className ?? e.name)
-        }
+        captureException(e)
 
         span.addEvent('job.failed', {
           'job.execution_time': executionTime,

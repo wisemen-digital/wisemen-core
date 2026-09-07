@@ -29,7 +29,13 @@ payloadTranslatePlugin({
 
 - Empty text is returned unchanged.
 - Locale codes are normalized before being sent to DeepL.
-- The adapter posts the source text as a single-item translation batch.
+- Queued strings for the same source and target locale are combined into a single request,
+  up to a conservative 127 KiB JSON body limit.
+- Batch requests are sent one at a time, with a 500ms minimum interval between calls. When
+  DeepL rate-limits a request, the interval is increased and retries use exponential
+  backoff; a `Retry-After` response header is honored when present.
+- The throttle is shared by adapters using the same DeepL endpoint and API key, including
+  consecutive translation runs for different locales.
 
 ## Fields
 
