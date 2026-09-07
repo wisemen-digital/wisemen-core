@@ -59,7 +59,7 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
 
   plugin.node($.enum(apiErrorCodeSymbol, (enumNode) => {
     for (const value of errorCodeValues) {
-      enumNode.member(toEnumMemberName(value), value)
+      enumNode.member(toEnumMemberName(value), $.literal(value))
     }
   }).export())
 }
