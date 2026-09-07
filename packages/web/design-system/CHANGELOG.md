@@ -41,6 +41,12 @@
 
 
 
+
+## 1.22.7
+<sub>2026-09-07</sub>
+
+- [#1658](https://github.com/wisemen-digital/wisemen-core/pull/1658)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Reduced the size of EmptyState illustrations so they no longer dominate the layout.
+
 ## 1.22.6
 <sub>2026-09-04</sub>
 
