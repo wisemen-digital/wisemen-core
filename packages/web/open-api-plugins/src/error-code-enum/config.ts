@@ -4,13 +4,12 @@ import { handler } from './plugin'
 import type { ErrorCodeEnumPlugin } from './types'
 
 export const defaultConfig: ErrorCodeEnumPlugin['Config'] = {
-  name: 'error-code-enum-plugin',
+  name: 'apiErrorCode',
   config: {},
   dependencies: [
     '@hey-api/typescript',
   ],
   handler,
-  output: 'apiErrorCode',
 }
 
 /**

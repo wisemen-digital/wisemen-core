@@ -1,5 +1,5 @@
 import type { IR } from '@hey-api/openapi-ts'
-import * as ts from 'typescript'
+import { $ } from '@hey-api/openapi-ts'
 
 import type { ErrorCodeEnumPlugin } from './types'
 
@@ -46,10 +46,6 @@ export function getBackendErrorCodes(schemas: Iterable<IR.SchemaObject>): string
 export const handler: ErrorCodeEnumPlugin['Handler'] = ({
   plugin,
 }) => {
-  const file = plugin.createFile({
-    id: plugin.name,
-    path: plugin.output,
-  })
   const schemas: IR.SchemaObject[] = []
 
   plugin.forEach('schema', ({
@@ -59,49 +55,11 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
   })
 
   const errorCodeValues = getBackendErrorCodes(schemas)
+  const apiErrorCodeSymbol = plugin.symbol('ApiErrorCode')
 
-  const errorCodeConstNode = ts.factory.createVariableStatement(
-    [
-      ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
-    ],
-    ts.factory.createVariableDeclarationList(
-      [
-        ts.factory.createVariableDeclaration(
-          ts.factory.createIdentifier('apiErrorCode'),
-          undefined,
-          undefined,
-          ts.factory.createAsExpression(
-            ts.factory.createObjectLiteralExpression(
-              errorCodeValues.map((value) => {
-                return ts.factory.createPropertyAssignment(
-                  ts.factory.createIdentifier(toEnumMemberName(value)),
-                  ts.factory.createStringLiteral(value),
-                )
-              }),
-              true,
-            ),
-            ts.factory.createTypeReferenceNode('const'),
-          ),
-        ),
-      ],
-      ts.NodeFlags.Const,
-    ),
-  )
-
-  const errorCodeEnumNode = ts.factory.createEnumDeclaration(
-    [
-      ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
-    ],
-    ts.factory.createIdentifier('ApiErrorCode'),
-    errorCodeValues.map((value) => {
-      return ts.factory.createEnumMember(
-        ts.factory.createIdentifier(toEnumMemberName(value)),
-        ts.factory.createStringLiteral(value),
-      )
-    }),
-  )
-
-  file.add(errorCodeEnumNode)
-  file.add(errorCodeConstNode)
-  file.add('export type ApiErrorCodeType = (typeof apiErrorCode)[keyof typeof apiErrorCode];')
+  plugin.node($.enum(apiErrorCodeSymbol, (enumNode) => {
+    for (const value of errorCodeValues) {
+      enumNode.member(toEnumMemberName(value), value)
+    }
+  }).export())
 }
