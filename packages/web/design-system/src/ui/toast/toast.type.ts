@@ -6,6 +6,15 @@ import type { LinkProps as UILinkProps } from '@/ui/button/link/link.props'
 
 export type ToastAutoClose = 'all-except-errors' | 'always' | 'never'
 
+/**
+ * Resolves a backend error code to a project-owned translation key.
+ *
+ * Define this resolver from an exhaustive map of the generated API error
+ * enum so TypeScript reports newly added backend error codes without a
+ * translation.
+ */
+export type ApiErrorTranslationResolver<TCode extends string> = (code: TCode) => string | undefined
+
 export type ToastVariant = 'error' | 'info' | 'loading' | 'warning'
 export type ToastPosition = 'bottom-right' | 'top-right'
 

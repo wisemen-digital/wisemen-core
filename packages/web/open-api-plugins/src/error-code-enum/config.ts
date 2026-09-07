@@ -5,9 +5,7 @@ import type { ErrorCodeEnumPlugin } from './types'
 
 export const defaultConfig: ErrorCodeEnumPlugin['Config'] = {
   name: 'error-code-enum-plugin',
-  config: {
-    myOption: false, // implements default value from types
-  },
+  config: {},
   dependencies: [
     '@hey-api/typescript',
   ],

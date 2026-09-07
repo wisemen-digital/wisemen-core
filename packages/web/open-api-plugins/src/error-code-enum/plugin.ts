@@ -1,9 +1,46 @@
+import type { IR } from '@hey-api/openapi-ts'
 import * as ts from 'typescript'
 
 import type { ErrorCodeEnumPlugin } from './types'
 
 const ERROR_STATUS_CODE_REGEX = /^[45]/
-const HYPHEN_REGEX = /-/g
+const NON_IDENTIFIER_CHARACTER_REGEX = /[^A-Z0-9_$]/g
+
+function getStringConstants(schema: IR.SchemaObject | undefined): string[] {
+  if (typeof schema?.const === 'string') {
+    return [
+      schema.const,
+    ]
+  }
+
+  return schema?.items?.flatMap(getStringConstants) ?? []
+}
+
+function toEnumMemberName(value: string): string {
+  const identifier = value.toUpperCase().replace(NON_IDENTIFIER_CHARACTER_REGEX, '_')
+
+  return /^\d/.test(identifier) ? `_${identifier}` : identifier
+}
+
+export function getBackendErrorCodes(schemas: Iterable<IR.SchemaObject>): string[] {
+  const errorCodeValues = new Set<string>()
+
+  for (const schema of schemas) {
+    const statuses = getStringConstants(schema.properties?.status)
+
+    if (!statuses.some((status) => ERROR_STATUS_CODE_REGEX.test(status))) {
+      continue
+    }
+
+    for (const code of getStringConstants(schema.properties?.code)) {
+      errorCodeValues.add(code)
+    }
+  }
+
+  return [
+    ...errorCodeValues,
+  ].sort()
+}
 
 // eslint-disable-next-line func-style
 export const handler: ErrorCodeEnumPlugin['Handler'] = ({
@@ -13,19 +50,15 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
     id: plugin.name,
     path: plugin.output,
   })
-  const errorCodeValues: string[] = []
+  const schemas: IR.SchemaObject[] = []
 
   plugin.forEach('schema', ({
     schema,
   }) => {
-    const errorStatus = schema?.properties?.status?.items?.[0]?.const as string
-
-    if (errorStatus && ERROR_STATUS_CODE_REGEX.test(errorStatus)) {
-      errorCodeValues.push(
-        schema?.properties?.code?.items?.[0]?.const as string ?? 'unknown',
-      )
-    }
+    schemas.push(schema)
   })
+
+  const errorCodeValues = getBackendErrorCodes(schemas)
 
   const errorCodeConstNode = ts.factory.createVariableStatement(
     [
@@ -41,7 +74,7 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
             ts.factory.createObjectLiteralExpression(
               errorCodeValues.map((value) => {
                 return ts.factory.createPropertyAssignment(
-                  ts.factory.createIdentifier(value.toUpperCase().replace(HYPHEN_REGEX, '_')),
+                  ts.factory.createIdentifier(toEnumMemberName(value)),
                   ts.factory.createStringLiteral(value),
                 )
               }),
@@ -62,7 +95,7 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
     ts.factory.createIdentifier('ApiErrorCode'),
     errorCodeValues.map((value) => {
       return ts.factory.createEnumMember(
-        ts.factory.createIdentifier(value.toUpperCase().replace(HYPHEN_REGEX, '_')),
+        ts.factory.createIdentifier(toEnumMemberName(value)),
         ts.factory.createStringLiteral(value),
       )
     }),
@@ -70,5 +103,5 @@ export const handler: ErrorCodeEnumPlugin['Handler'] = ({
 
   file.add(errorCodeEnumNode)
   file.add(errorCodeConstNode)
-  file.add(`export type ApiErrorCodeType = typeof apiErrorCode;`)
+  file.add('export type ApiErrorCodeType = (typeof apiErrorCode)[keyof typeof apiErrorCode];')
 }
