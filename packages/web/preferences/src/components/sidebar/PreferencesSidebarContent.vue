@@ -8,6 +8,7 @@ import PreferencesSidebarNoResults from '#components/sidebar/PreferencesSidebarN
 import PreferencesSidebarSectionItem from '#components/sidebar/PreferencesSidebarSectionItem.vue'
 import PreferencesSidebarViewItem from '#components/sidebar/PreferencesSidebarViewItem.vue'
 import { useInjectPreferencesContext } from '#context/preferences.context'
+import { getViewSections } from '#utils/getViewSections.util'
 
 const {
   config,
@@ -16,11 +17,11 @@ const {
 } = useInjectPreferencesContext()
 
 function viewHasMultipleSections(viewId: string): boolean {
-  const views = config.value.categories
+  const view = config.value.categories
     .flatMap((category) => category.views)
     .find((view) => view.id === viewId)!
 
-  return views.sections.length > 1
+  return getViewSections(view).length > 1
 }
 </script>
 
@@ -41,11 +42,11 @@ function viewHasMultipleSections(viewId: string): boolean {
           <ul
             v-if="searchTerm.trim().length > 0
               && viewHasMultipleSections(view.id)
-              && view.sections.length > 0"
+              && getViewSections(view).length > 0"
             class="flex w-full flex-col gap-y-xxs pl-[2.3rem]"
           >
             <PreferencesSidebarSectionItem
-              v-for="section of view.sections"
+              v-for="section of getViewSections(view)"
               :key="toValue(section.title)"
               :section="section"
             />

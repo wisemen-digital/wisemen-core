@@ -29,6 +29,7 @@ import type {
   ViewIdFromConfig,
 } from '#types/preferences.type'
 import type { PreferencesProps } from '#types/preferencesDialog.props'
+import { getViewSections } from '#utils/getViewSections.util'
 
 const props = defineProps<PreferencesProps<TConfig>>()
 
@@ -46,6 +47,7 @@ const i18n = useI18n()
 
 const searchTerm = ref<string>('')
 const isSidebarVisible = ref<boolean>(false)
+const activeTabId = ref<string | null>(null)
 
 const {
   activeItem,
@@ -73,7 +75,7 @@ const activeView = computed<PreferencesView>(() => {
     return views.find((view) => view.id === activeItem.value.id)!
   }
 
-  return views.find((view) => view.sections.some(
+  return views.find((view) => getViewSections(view).some(
     (section) => section.id === activeItem.value.id,
   ))!
 })
@@ -96,7 +98,7 @@ const filteredCategories = computed<PreferencesCategory[]>(() => {
     .map((category) => {
       const filteredViews = category.views
         .map((view) => {
-          const matchingSections = view.sections.filter((section) => {
+          const matchingSections = getViewSections(view).filter((section) => {
             const titleMatch = toValue(section.title).toLowerCase().includes(searchTerm.value.toLowerCase())
             const descriptionMatch = toValue(section.description).toLowerCase().includes(searchTerm.value.toLowerCase())
 
@@ -142,7 +144,46 @@ watch(activeViewId, (viewId) => {
   emit('update:activeView', viewId)
 })
 
+watch([
+  activeView,
+  activeItem,
+], ([
+  view,
+  item,
+], [
+  previousView,
+]) => {
+  const tabs = view.tabs
+
+  if (tabs === undefined || tabs.length === 0) {
+    activeTabId.value = null
+
+    return
+  }
+  if (item.type === 'section') {
+    const tabForSection = tabs.find((tab) => tab.sections.some(
+      (section) => section.id === item.id,
+    ))
+
+    if (tabForSection !== undefined) {
+      activeTabId.value = tabForSection.id
+
+      return
+    }
+  }
+
+  const didViewChange = previousView === undefined || previousView.id !== view.id
+  const isActiveTabValid = !didViewChange && tabs.some((tab) => tab.id === activeTabId.value)
+
+  if (!isActiveTabValid) {
+    activeTabId.value = tabs[0]!.id
+  }
+}, {
+  immediate: true,
+})
+
 useProvidePreferencesContext({
+  activeTabId,
   isSidebarVisible,
   activeItem,
   activeView,
