@@ -1,7 +1,6 @@
 import type { Endpoint } from 'payload'
 
 import { isAllowed } from '#_kit'
-import { runSeed } from '#engine/run'
 import {
   SeedRunError,
   SeedValidationError,
@@ -31,6 +30,9 @@ export function createSeedEndpoint(options: ResolvedSeedOptions): Endpoint {
       }
 
       try {
+        const {
+          runSeed,
+        } = await import('#engine/run')
         const result = await runSeed({
           definitions: options.definitions,
           options,

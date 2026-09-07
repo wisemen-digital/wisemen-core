@@ -7,7 +7,19 @@ export type { SeedAccessOptions } from './types'
 
 // The typed view of `config.custom.payloadSeed` — resolve the configured paths from a script.
 export { defineSeed } from './defineSeed'
-export { seed } from './engine/run'
+/**
+ * Loads the file-system-backed seed runner only when it is invoked.
+ *
+ * Payload imports its configuration into the admin RSC graph. Keeping this
+ * boundary dynamic prevents Node-only file helpers from entering that graph.
+ */
+export async function seed(...args: Parameters<typeof import('./engine/run').seed>) {
+  const {
+    seed: runSeed,
+  } = await import('./engine/run')
+
+  return runSeed(...args)
+}
 export {
   SeedRunError, SeedValidationError,
 } from './engine/validate'
