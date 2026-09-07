@@ -70,6 +70,7 @@ const menuAutoHighlight = useMenuAutoHighlight()
             z-50 min-w-48 origin-(--reka-context-menu-content-transform-origin)
             will-change-[transform,opacity]
           "
+          @close-auto-focus="menuAutoHighlight.onCloseAutoFocus"
           @open-auto-focus="menuAutoHighlight.onOpenAutoFocus"
         >
           <div

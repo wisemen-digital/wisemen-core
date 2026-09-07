@@ -1,4 +1,4 @@
-import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, ObjectType, QueryDeepPartialEntity, Repository } from 'typeorm'
+import { And, DeepPartial, type EntityManager, type EntityTarget, Equal, FindOneOptions, FindOperator, FindOptionsOrder, FindOptionsSelect, FindOptionsWhere, LessThan, MoreThan, ObjectLiteral, ObjectType, QueryDeepPartialEntity, Repository, type UpsertOptions } from 'typeorm'
 import { createTransactionManagerProxy } from './transaction.js'
 import { createReadonlyManagerProxy } from './readonly.js'
 
@@ -38,6 +38,46 @@ export class TypeOrmRepository<T extends ObjectLiteral> extends Repository <T> {
 
       return entity
     }
+  }
+
+  /**
+   * Upsert counterpart of {@link createAndInsert}.
+   *
+   * `upsert` takes `QueryDeepPartialEntity<T>`, which recurses through every relation of `T`. On a
+   * large, cyclic entity graph TypeScript exhausts its comparison budget and rejects a perfectly
+   * valid entity. Taking `DeepPartial<T> | T` here keeps that type off the call site.
+   */
+  async createAndUpsert (
+    entityLike: DeepPartial<T> | T,
+    conflictPathsOrOptions: string[] | UpsertOptions<T>
+  ): Promise<T>
+  async createAndUpsert (
+    entityLike: Array<DeepPartial<T> | T>,
+    conflictPathsOrOptions: string[] | UpsertOptions<T>
+  ): Promise<T[]>
+  async createAndUpsert (
+    entityLike: DeepPartial<T> | T | Array<DeepPartial<T> | T>,
+    conflictPathsOrOptions: string[] | UpsertOptions<T>
+  ): Promise<T | T[]> {
+    const EntityClass = this.target as ObjectType<T>
+
+    if (Array.isArray(entityLike)) {
+      const entities = entityLike.map(item =>
+        item instanceof EntityClass ? item as T : this.create(item as DeepPartial<T>)
+      )
+
+      await this.upsert(entities as QueryDeepPartialEntity<T>[], conflictPathsOrOptions)
+
+      return entities
+    }
+
+    const entity = entityLike instanceof EntityClass
+      ? entityLike as T
+      : this.create(entityLike)
+
+    await this.upsert(entity as QueryDeepPartialEntity<T>, conflictPathsOrOptions)
+
+    return entity
   }
 
   async findNextBatch (

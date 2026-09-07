@@ -1,6 +1,6 @@
 {
   "name": "@wisemen/nestjs-handlebars",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -24,7 +24,7 @@
     "@nestjs/common": "catalog:backend-peer"
   },
   "dependencies": {
-    "handlebars": "^4.7.8"
+    "handlebars": "^4.7.9"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",

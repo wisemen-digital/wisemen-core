@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 
 
+
+## 0.2.0
+<sub>2026-09-01</sub>
+
+- [#1637](https://github.com/wisemen-digital/wisemen-core/pull/1637)  *(minor)* Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)!
+  Export `RedisThrottlerStorage` from the package root, so consumers no longer need to import the internal `dist/redis-throttler.storage.js` subpath.
+
 ## 0.1.1
 <sub>2026-08-10</sub>
 

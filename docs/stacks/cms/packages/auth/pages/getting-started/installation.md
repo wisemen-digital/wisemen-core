@@ -43,6 +43,7 @@ const payloadAuth = createPayloadAuthPlugin({
     authServiceUser: process.env.AUTH_SERVICE_USER!,
     cmsBaseUrl: process.env.CMS_BASE_URL!,
   }),
+  isAllowedPrivateAccess: ({ user }) => user != null && user.role === 'admin',
   isUserAllowed: (user) => user.role === 'admin',
   tenantCollectionSlug: 'tenants',
   userCollectionSlug: 'users',
@@ -61,6 +62,128 @@ export default buildConfig({
   ],
 })
 ```
+
+## Collection access
+
+Configure `isAllowedPrivateAccess` once when creating the auth plugin. It is
+the default policy for managing protected data and for CMS access to reusable
+collection policies. Keep this rule narrow: an admin-only rule is a good
+starting point.
+
+```ts
+const payloadAuth = createPayloadAuthPlugin({
+  // ...
+  isAllowedPrivateAccess: ({ user }) => user != null && user.role === 'admin',
+})
+```
+
+Use the configured policies directly in collection definitions:
+
+```ts
+import { AccessControl } from '@wisemen/payload-core-auth'
+
+export const publicPageCollection = {
+  slug: 'pages',
+  access: AccessControl.publicCollection,
+}
+
+export const internalNoteCollection = {
+  slug: 'internal-notes',
+  access: AccessControl.privateCollection,
+}
+
+export const contactSubmissionCollection = {
+  slug: 'contact-submissions',
+  access: AccessControl.formCollection,
+}
+```
+
+| Policy | Public create | Public read | CMS and data management |
+| --- | --- | --- | --- |
+| `publicCollection` | No | Yes | `isAllowedPrivateAccess` |
+| `privateCollection` | No | No | `isAllowedPrivateAccess` |
+| `formCollection` | Yes | No | `isAllowedPrivateAccess` |
+
+`formCollection` is deliberately create-only for anonymous visitors. It never
+allows public reads, updates, deletes, version reads, or unlocks, so form
+submissions cannot be exposed by accidentally choosing a public policy.
+
+### Custom roles and scoped rules
+
+The Payload plugin binds each policy to the collection's configured `slug`.
+Every rule receives that typed collection slug along with the user. Use
+`customCollection` when a collection has a role-specific policy. Every
+operation is explicit; an omitted operation is denied. Rules may return a
+boolean or a Payload `Where` clause to scope access to matching documents.
+
+```ts
+import type { AccessControlContext } from '@wisemen/payload-core-auth'
+import { AccessControl } from '@wisemen/payload-core-auth'
+
+const canManageContent = ({ user }: AccessControlContext<User, string>) =>
+  user?.role === 'admin' || user?.role === 'editor'
+
+const canReadFormSubmissions = ({ user }: AccessControlContext<User, string>) =>
+  user?.role === 'admin' || user?.role === 'submissions-viewer'
+
+export const articleCollection = {
+  slug: 'articles',
+  access: AccessControl.customCollection({
+    admin: canManageContent,
+    create: canManageContent,
+    delete: canManageContent,
+    read: () => true,
+    readVersions: canManageContent,
+    unlock: canManageContent,
+    update: canManageContent,
+  }),
+}
+
+export const contactSubmissionCollection = {
+  slug: 'contact-submissions',
+  access: AccessControl.customCollection({
+    admin: canReadFormSubmissions,
+    create: () => true,
+    delete: canReadFormSubmissions,
+    read: canReadFormSubmissions,
+    readVersions: canReadFormSubmissions,
+    update: canReadFormSubmissions,
+  }),
+}
+```
+
+## Payload Nuxt template
+
+In the Payload Nuxt template, configure the shared rule in
+`apps/cms/src/plugins/auth.plugin.ts`. The template's user roles are `admin`,
+`editor`, and `submissions-viewer`; start with `admin` for private access and
+use `customCollection` where editors or submission viewers need more access.
+
+```ts
+import { isAdmin } from '@repo/utils'
+
+export const payloadAuth = createPayloadAuthPlugin<User>({
+  // provider, user collection, tenant collection, and other auth options
+  isAllowedPrivateAccess: ({ user }) => user != null && isAdmin(user),
+  isUserAllowed: (user) => isAdmin(user)
+    || user.role === 'editor'
+    || user.role === 'submissions-viewer',
+})
+```
+
+Replace the template's bespoke helpers in
+`apps/cms/src/modules/auth/utils/collectionAccess.util.ts` incrementally:
+
+- import `AccessControl` from `@wisemen/payload-core-auth` in collection files;
+- use `AccessControl.publicCollection` for
+  admin-managed public data;
+- use `AccessControl.privateCollection` for
+  admin-only data;
+- use `AccessControl.formCollection` for public forms that only
+  administrators should manage;
+- use `AccessControl.customCollection(...)` for content editors and
+  submission viewers, keeping their permitted operations visible beside the
+  collection.
 
 ## What it adds to your collection
 

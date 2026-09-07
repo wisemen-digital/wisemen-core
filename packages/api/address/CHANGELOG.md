@@ -4,6 +4,24 @@
 
 
 
+
+
+
+## 0.5.3
+<sub>2026-09-03</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.28
+
+## 0.5.2
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 0.5.1
+<sub>2026-08-27</sub>
+
+- *(patch)* Updated dependency `@wisemen/validators` v0.0.26
+
 ## 0.5.0
 <sub>2026-07-29</sub>
 

@@ -9,6 +9,12 @@
 
 
 
+
+## 0.3.0
+<sub>2026-08-24</sub>
+
+- [#1594](https://github.com/wisemen-digital/wisemen-core/pull/1594)  *(minor)* Thanks [@Robbe95](https://github.com/Robbe95)! - Access control handled in the payload-core-auth package
+
 ## 0.2.3
 <sub>2026-08-12</sub>
 

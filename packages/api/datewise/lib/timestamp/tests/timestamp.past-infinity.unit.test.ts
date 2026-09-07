@@ -8,6 +8,29 @@ import { initDayjs } from '../../common/init-dayjs.js'
 describe('PastInfinity timestamp', () => {
   before(() => initDayjs())
 
+  describe('isoWeekday', () => {
+    it('throws when accessing the ISO weekday', () => {
+      expect(() => new PastInfinity().isoWeekday()).toThrow()
+    })
+
+    it('remains PastInfinity when changing the ISO weekday', () => {
+      const pastInfinity = new PastInfinity()
+      const result = pastInfinity.isoWeekday(1)
+
+      expect(result).toBe(pastInfinity)
+      expect(result.isPastInfinity()).toBe(true)
+    })
+
+    it('remains PastInfinity for next and previous ISO weekday operations', () => {
+      const pastInfinity = new PastInfinity()
+
+      expect(pastInfinity.nextIsoWeekday(1)).toBe(pastInfinity)
+      expect(pastInfinity.nextOrSameIsoWeekday(2)).toBe(pastInfinity)
+      expect(pastInfinity.previousIsoWeekday(3)).toBe(pastInfinity)
+      expect(pastInfinity.previousOrSameIsoWeekday(4)).toBe(pastInfinity)
+    })
+  })
+
   describe('until', () => {
     it('returns zero duration when compared to itself', () => {
       const pastInfinity = new PastInfinity()

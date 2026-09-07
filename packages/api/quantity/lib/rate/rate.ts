@@ -1,4 +1,4 @@
-import { exhaustiveCheck } from "../exhaustive-check.js"
+import { exhaustiveCheck } from "#lib/exhaustive-check.js"
 import { RateScale } from "./rate-scale.enum.js"
 
 export class Rate {

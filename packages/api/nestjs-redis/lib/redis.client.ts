@@ -82,6 +82,10 @@ export class RedisClient implements OnModuleInit, OnModuleDestroy {
   }
 
   async getCachedValues<T> (keys: string[]): Promise<Array<T | null>> {
+    if (keys.length === 0) {
+      return []
+    }
+
     const results = await this.performAndCatch(() => this.client.mGet(keys))
 
     return results?.map(value => (value != null ? JSON.parse(value) as T : null))
@@ -94,6 +98,10 @@ export class RedisClient implements OnModuleInit, OnModuleDestroy {
 
   async putCachedValues<T> (keys: string[], values: T[], ttl = this.ttl): Promise<void> {
     assert(keys.length === values.length, `putCachedValues expects 'keys' and 'values' to have the same length, but received keys.length=${keys.length}, values.length=${values.length}`)
+
+    if (keys.length === 0) {
+      return
+    }
 
     await this.perform(() => {
       const args = keys.flatMap((key, index) => [key, JSON.stringify(values[index])])

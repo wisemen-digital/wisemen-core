@@ -10,6 +10,7 @@ import {
 } from 'motion-v'
 import {
   computed,
+  getCurrentInstance,
   useAttrs,
   useId,
 } from 'vue'
@@ -64,11 +65,16 @@ const props = withDefaults(defineProps<FormFileUploadProps>(), {
   preprocess: null,
 })
 
+const emit = defineEmits<{
+  download: [file: BaseFileInfo]
+}>()
+
 const modelValue = defineModel<TValue>({
   required: true,
 })
 
 const attrs = useAttrs()
+const instance = getCurrentInstance()
 const i18n = useI18n()
 const id = props.id ?? useId()
 const toast = useToast()
@@ -80,6 +86,16 @@ const errorLabels = computed<FormFileUploadErrorLabels>(() => ({
   preprocessingFailed: i18n.t('component.form_file_upload.error.preprocessing_failed'),
   uploadFailed: i18n.t('component.form_file_upload.error.upload_failed'),
 }))
+
+function forwardDownload(file: BaseFileInfo): void {
+  emit('download', file)
+}
+
+const downloadListeners = instance?.vnode.props?.onDownload === undefined
+  ? {}
+  : {
+      download: forwardDownload,
+    }
 
 function onFilesRejected(files: BaseFileUploadRejectedFile[]): void {
   for (const file of files) {
@@ -112,6 +128,7 @@ function fileToUrl(file: File): string {
       :is-public="props.isPublic"
       :is-valid-file="props.isValidFile"
       :preprocess="props.preprocess"
+      v-on="downloadListeners"
       @files-rejected="onFilesRejected"
     >
       <UIInputWrapper

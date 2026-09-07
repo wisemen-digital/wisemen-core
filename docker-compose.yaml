@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgis/postgis:16-3.5-alpine
     platform: linux/amd64
-    container_name: postgres-development
+    container_name: postgres-wisemen-core
     ports:
       - '5432:5432'
     volumes:
@@ -11,6 +11,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: test_db
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-wisemen-core
+    ports:
+      - '6379:6379'
 
 volumes:
   postgres-data:

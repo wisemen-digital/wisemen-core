@@ -11,13 +11,14 @@ export class IntegrationTestSetup {
       await dataSource.initialize()
     }
 
-    await dataSource.query('SELECT pg_advisory_lock(12345)')
+    await dataSource.query("SELECT pg_advisory_lock(hashtext('scoped_filter'))")
 
     try {
+      await dataSource.query('CREATE SCHEMA IF NOT EXISTS "scoped_filter"')
       await dataSource.query(getMigrationQuery())
       await dataSource.synchronize(true)
     } finally {
-      await dataSource.query('SELECT pg_advisory_unlock(12345)')
+      await dataSource.query("SELECT pg_advisory_unlock(hashtext('scoped_filter'))")
     }
 
     this.queryRunner = dataSource.createQueryRunner()

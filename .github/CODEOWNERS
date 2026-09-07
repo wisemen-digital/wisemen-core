@@ -7,6 +7,9 @@
 # API packages
 /packages/api/ @jorenvandeweyer @PauwelsPieter @maartensijmkens @Kobe-Kwanten
 
+# Devops packages
+/packages/dev-ops/ @djbe @daanpersoons @jorenvandeweyer @Kobe-Kwanten @SebastiaanVanspauwen @senne-vanreusel
+
 # Web packages
 /packages/web/ @NickBanken @JeffreyNijs @maltsavkiryl @Blocken-Jordy @JeroenVanC @Robbe95 @wouterlms
 

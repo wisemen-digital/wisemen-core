@@ -7,6 +7,7 @@ auth and OpenID Connect support.
 
 - `SwaggerModule.forRoot()` to register the OAuth2 redirect controller
 - `SwaggerModule.attachSwaggerEndpoints(...)` to attach Swagger UI and JSON docs
+- `SwaggerModule.createDocument(...)` to create an OpenAPI document without attaching routes
 - optional docs protection through `@wisemen/nestjs-auth`
 - optional OpenID Connect discovery for OAuth2 authorization code flows
 
@@ -56,6 +57,20 @@ await SwaggerModule.attachSwaggerEndpoints(app, {
 
 With that setup, the package registers the main Swagger UI route together with
 versioned docs endpoints such as `/api/docs/latest` and `/api/docs/all`.
+
+## Generate an OpenAPI document
+
+Use `createDocument` for build-time tasks such as generating an API client.
+It does not attach routes or fetch OpenID Connect metadata, which keeps builds
+deterministic. Pass already-resolved metadata explicitly when it is required.
+
+```ts
+const document = SwaggerModule.createDocument(app, {
+  servers: ['https://api.example.com']
+}, {
+  version: '1.0'
+})
+```
 
 ## OpenID Connect Notes
 

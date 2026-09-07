@@ -12,6 +12,13 @@ import { PlainDate, PlainDateInput } from './plain-date.js'
 import { IsoWeekParity, getIsoWeekParity } from './iso-week-parity.js'
 import { factory } from './plain-date.factory.js'
 import { plainDate } from './plain-date.fn.js'
+import {
+  getNextIsoWeekDate,
+  getNextOrSameIsoWeekDate,
+  getPreviousIsoWeekDate,
+  getPreviousOrSameIsoWeekDate,
+  IsoWeekday
+} from '#src/common/iso-weekday.js'
 
 export class DayjsPlainDate implements PlainDate {
   private date: dayjs.Dayjs
@@ -286,8 +293,32 @@ export class DayjsPlainDate implements PlainDate {
     return this.isoWeekday() === 7
   }
 
-  isoWeekday (): number {
-    return this.date.isoWeekday()
+
+
+  isoWeekday (): IsoWeekday
+  isoWeekday (day: IsoWeekday): PlainDate
+  isoWeekday (day?: IsoWeekday): IsoWeekday | PlainDate{
+    if(day !== undefined) {
+      return new DayjsPlainDate(this.date.isoWeekday(day))
+    }
+    
+    return this.date.isoWeekday() as IsoWeekday
+  }
+
+  nextIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getNextIsoWeekDate(this.date, day))
+  }
+
+  nextOrSameIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getNextOrSameIsoWeekDate(this.date, day))
+  }
+
+  previousIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getPreviousIsoWeekDate(this.date, day))
+  }
+
+  previousOrSameIsoWeekday (day: IsoWeekday): PlainDate {
+    return new DayjsPlainDate(getPreviousOrSameIsoWeekDate(this.date, day))
   }
 
   isoWeek (): number {

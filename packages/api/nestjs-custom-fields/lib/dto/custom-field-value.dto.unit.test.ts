@@ -14,6 +14,7 @@ describe('TimestampCustomFieldValueDto', () => {
   it('rejects a timestamp value without an explicit timezone', async () => {
     const dto = new TimestampCustomFieldValueDto()
 
+    dto.type = CustomFieldType.TIMESTAMP
     dto.definitionUuid = generateUuid()
     dto.value = '2026-01-01T12:00:00'
 
@@ -25,6 +26,7 @@ describe('TimestampCustomFieldValueDto', () => {
   it('accepts a timestamp value with a Z timezone', async () => {
     const dto = new TimestampCustomFieldValueDto()
 
+    dto.type = CustomFieldType.TIMESTAMP
     dto.definitionUuid = generateUuid()
     dto.value = '2026-01-01T12:00:00.000Z'
 

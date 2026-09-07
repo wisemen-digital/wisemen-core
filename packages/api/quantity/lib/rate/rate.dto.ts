@@ -3,7 +3,7 @@ import { IsNumber, IsEnum } from 'class-validator'
 import { Type } from 'class-transformer'
 import { Rate } from './rate.js'
 import { RateScale, RateScaleApiProperty } from './rate-scale.enum.js'
-import { exhaustiveCheck } from '../exhaustive-check.js'
+import { exhaustiveCheck } from '#lib/exhaustive-check.js'
 
 export class RateDto {
   @ApiProperty({ type: Number })

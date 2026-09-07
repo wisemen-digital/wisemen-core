@@ -1,5 +1,5 @@
 import { ColumnOptions } from 'typeorm'
-import { QuantityColumn } from '../../quantity.column.js'
+import { QuantityColumn } from '#lib/quantity.column.js'
 import { Temperature } from './temperature.js'
 import { TemperatureUnit } from './temperature-unit.enum.js'
 

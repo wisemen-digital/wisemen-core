@@ -2,10 +2,12 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 import { NodeSDK } from '@opentelemetry/sdk-node'
+import { createOtelHeaders, OtelAuth } from './headers.js'
 
 export interface OpentelemetryMetricsConfig {
+  enabled: boolean,
   serviceName: string
-  headers?: Record<string, string>
+  auth?: OtelAuth
   url?: string
   env?: string
   config?: {
@@ -15,23 +17,26 @@ export interface OpentelemetryMetricsConfig {
   attributes?: Record<string, string>
 }
 
-export function configureOpentelemetryMetrics (
-  config: OpentelemetryMetricsConfig
-): NodeSDK | null {
+
+export function startOpentelemetryMetrics (config: OpentelemetryMetricsConfig): void {
+  if (!config.enabled) {
+    return
+  }
+
   if (config.url == null || config.url === '') {
-    return null
+    return
   }
 
   const metricReader = new PeriodicExportingMetricReader({
     exporter: new OTLPMetricExporter({
       url: config.url,
-      headers: config.headers
+      headers: createOtelHeaders(config.auth)
     }),
     exportIntervalMillis: config.config?.exportIntervalMillis ?? 30000,
     exportTimeoutMillis: config.config?.exportTimeoutMillis ?? 10000
   })
 
-  return new NodeSDK({
+  const sdk = new NodeSDK({
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
       'deployment.environment': config.env,
@@ -39,4 +44,6 @@ export function configureOpentelemetryMetrics (
     }),
     metricReader
   })
+
+  sdk.start()
 }

@@ -14,6 +14,7 @@
       "#context/*": ["./src/context/*"],
       "#sections/*": ["./src/sections/*"],
       "#types/*": ["./src/types/*"],
+      "#utils/*": ["./src/utils/*"],
       "#views/*": ["./src/views/*"],
       "@/*": ["./src/*"]
     },

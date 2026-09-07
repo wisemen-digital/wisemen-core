@@ -6,6 +6,7 @@ import type { Ref } from 'vue'
 import { ref } from 'vue'
 
 export interface UseMenuAutoHighlightReturn {
+  onCloseAutoFocus: (event: Event) => void
   onOpenAutoFocus: (event: Event) => void
 }
 
@@ -145,6 +146,10 @@ function watchForFirstItem(container: HTMLElement, isUsingKeyboard: Ref<boolean>
  */
 export function useMenuAutoHighlight(): UseMenuAutoHighlightReturn {
   const isUsingKeyboard = useIsUsingKeyboard()
+  // Snapshotted at open time rather than read live at close time: closing via Escape is
+  // itself a keydown, which would otherwise flip `isUsingKeyboard` to true just before
+  // `onCloseAutoFocus` fires and make every close look keyboard-driven.
+  let wasOpenedViaKeyboard = false
 
   function onOpenAutoFocus(event: Event): void {
     const container = event.target
@@ -153,12 +158,26 @@ export function useMenuAutoHighlight(): UseMenuAutoHighlightReturn {
       return
     }
 
+    wasOpenedViaKeyboard = isUsingKeyboard.value
+
     event.preventDefault()
     focusDeferred(container)
     watchForFirstItem(container, isUsingKeyboard)
   }
 
+  // Reka UI returns focus to the trigger element on close by default, which is correct
+  // behaviour for a keyboard-opened menu but not for one opened by right-click: the trigger
+  // (eg. a DataTable row's own invisible tab-stop button) was never focused by the user to
+  // begin with, so snapping focus onto it just paints a phantom focus ring. Only let Reka's
+  // default happen when the menu was actually opened via keyboard.
+  function onCloseAutoFocus(event: Event): void {
+    if (!wasOpenedViaKeyboard) {
+      event.preventDefault()
+    }
+  }
+
   return {
+    onCloseAutoFocus,
     onOpenAutoFocus,
   }
 }

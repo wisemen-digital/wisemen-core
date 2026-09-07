@@ -1,4 +1,6 @@
 
+import type { OpenIdConnectOptions } from './open-id-connect-options.js'
+
 export interface SwaggerDocsOptions {
   /**
    * Applies a `@wisemen/nestjs-auth` basic auth middleware set.
@@ -52,15 +54,29 @@ export interface SwaggerDocsOptions {
   additionalScopes?: Record<string, string>
 }
 
+export interface SwaggerDocumentOptions {
+  /**
+   * Version written to the OpenAPI document metadata.
+   * Defaults to `1.0`.
+   */
+  version?: string
+
+  /**
+   * Already-resolved OpenID Connect metadata to include in the document.
+   * Document generation never performs network requests.
+   */
+  openIdConnect?: OpenIdConnectOptions
+}
+
 export class SwaggerConfig {
   readonly route: string
   readonly oidcUrl: string | undefined
   readonly oidcTimeout: number
   readonly redirectServer: string | undefined
   readonly servers: string[]
-  readonly additionalScopes: Record<string,string> | undefined
+  readonly additionalScopes: Record<string, string> | undefined
 
-  constructor(options: SwaggerDocsOptions) {
+  constructor (options: SwaggerDocsOptions) {
     this.route = options.route ?? '/api/docs'
     this.oidcUrl = options.oidcUrl
     this.oidcTimeout = options.oidcTimeout ?? 5000 //ms

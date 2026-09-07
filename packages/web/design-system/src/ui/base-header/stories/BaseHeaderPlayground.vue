@@ -96,7 +96,6 @@ const left = computed<BaseHeaderLeftConfig | null>(() => {
       >
         <UIRowLayout
           gap="sm"
-          class="mt-1"
         >
           <UIBadge
             color="brand"

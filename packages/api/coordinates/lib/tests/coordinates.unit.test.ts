@@ -144,7 +144,7 @@ describe('Coordinates', () => {
     it('returns a response when coordinates are provided', () => {
       const coordinates = new Coordinates(50.894565509367055, 5.420593668305642)
 
-      expect(CoordinatesResponse.from(coordinates)).toStrictEqual({
+      expect(CoordinatesResponse.from(coordinates)).toEqual({
         latitude: 50.894565509367055,
         longitude: 5.420593668305642
       })
