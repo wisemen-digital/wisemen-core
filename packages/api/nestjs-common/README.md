@@ -8,17 +8,21 @@ Small shared TypeScript helpers used across Wisemen NestJS packages.
 - `toBoolean(...)` for strict boolean coercion
 - `Uuid<Brand>` and `generateUuid<Brand>()` for branded UUID strings
 - `exhaustiveCheck(...)` for unreachable branches in exhaustive switches
+- `constructIfNotNull(...)` for constructing values from nullable inputs
 
 ## Usage
 
 ```ts
 import {
+  constructIfNotNull,
   exhaustiveCheck,
   generateUuid,
   parseEnvList,
   toBoolean,
   type Uuid
 } from '@wisemen/nestjs-common'
+
+const expiresAt = constructIfNotNull(Date, process.env.EXPIRES_AT)
 
 const allowedOrigins = parseEnvList(process.env.CORS_ALLOWED_ORIGINS)
 const enableDocs = toBoolean(process.env.ENABLE_DOCS ?? 'false')
