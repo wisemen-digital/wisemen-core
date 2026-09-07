@@ -225,7 +225,7 @@ describe('Time class', () => {
     })
 
     it('When creating a time with a date, it creates the correct time', () => {
-      const date = new Date(2024, 0, 1, 10, 13, 42)
+      const date = dayjs.tz('2024-01-01 10:13:42', 'Europe/Brussels').toDate()
       const time = new Time(date)
 
       expect(time.getHours()).toBe(10)
