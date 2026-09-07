@@ -91,6 +91,7 @@ export class InvoicePdfService {
 		await this.pdfClient.generatePdfFromUrl({
 			url,
 			uploadUrl,
+			waitForSelector: '#pdf-ready',
 			fileName: 'invoice.pdf',
 			inline: false
 		})
@@ -118,6 +119,7 @@ export class InvoicePdfService {
 
 - `url: string`
 - `uploadUrl: string`
+- `waitForSelector: string`
 - `inline?: boolean`
 - `fileName?: string`
 - `options?: Api2PdfLayoutOptions`
@@ -126,6 +128,7 @@ export class InvoicePdfService {
 
 ## Notes
 
+- URL generation uses `WaitForSelector` with the required `waitForSelector` value. The page should contain a matching element, such as `id="pdf-ready"`, when its content is ready to render.
 - The module always uses custom storage upload mode (`useCustomStorage: true`) and performs a `PUT` to `uploadUrl`.
 - For the API2PDF provider, the client sends `Authorization: <apiKey>` to `baseUrl`.
 - The mock provider resolves successfully without external calls.
