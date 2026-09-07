@@ -125,7 +125,7 @@ describe('JwtVerifier unit tests', () => {
   })
 
   it('creates a named provider definition for forRoot', () => {
-    const moduleDefinition = JwtVerifierModule.forRoot({
+    const moduleDefinition = JwtVerifierModule.register({
       audiences: [FIRST_AUDIENCE],
       issuer: ISSUER,
       jwksEndpoint: ISSUER + '/oauth/v2/keys',
@@ -140,7 +140,7 @@ describe('JwtVerifier unit tests', () => {
   })
 
   it('creates a named provider definition for forRootAsync', () => {
-    const moduleDefinition = JwtVerifierModule.forRootAsync({
+    const moduleDefinition = JwtVerifierModule.registerAsync({
       imports: [],
       inject: [],
       name: 'portal',

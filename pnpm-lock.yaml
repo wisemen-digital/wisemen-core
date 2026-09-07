@@ -1696,18 +1696,45 @@ importers:
       '@wisemen/api-error':
         specifier: workspace:^
         version: link:../api-error
+      '@wisemen/nestjs-common':
+        specifier: workspace:^
+        version: link:../nestjs-common
+      '@wisemen/nestjs-domain-events':
+        specifier: workspace:^
+        version: link:../nestjs-domain-events
+      '@wisemen/nestjs-jwt-verifier':
+        specifier: workspace:^
+        version: link:../nestjs-jwt-verifier
+      '@wisemen/nestjs-redis':
+        specifier: workspace:^
+        version: link:../nestjs-redis
+      '@wisemen/nestjs-typeorm':
+        specifier: workspace:^
+        version: link:../nestjs-typeorm
+      '@wisemen/opentelemetry':
+        specifier: workspace:^
+        version: link:../opentelemetry
       fastify:
         specifier: catalog:backend-peer
         version: 5.10.0
+      redis:
+        specifier: catalog:backend
+        version: 5.12.1(@opentelemetry/api@1.9.1)
       reflect-metadata:
         specifier: catalog:backend-peer
         version: 0.2.2
+      typeorm:
+        specifier: catalog:backend-peer
+        version: 1.1.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.12.1(@opentelemetry/api@1.9.1))
     devDependencies:
       '@types/node':
         specifier: catalog:backend
         version: 25.3.0
+      '@types/sinon':
+        specifier: catalog:test
+        version: 22.0.0
       '@wisemen/eslint-config-nestjs':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../eslint-config-nestjs
       eslint:
         specifier: catalog:lint-api
@@ -1721,6 +1748,9 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      sinon:
+        specifier: catalog:test
+        version: 22.0.0
       typescript:
         specifier: catalog:peer
         version: 5.9.3
