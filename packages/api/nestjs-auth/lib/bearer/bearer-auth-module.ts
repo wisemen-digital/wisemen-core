@@ -21,6 +21,8 @@ import { getOidcAuthenticatorToken, getOidcTrustToken, getOidcTrustVerifierToken
 import { StaticOidcAuthenticator } from './oidc/static-oidc/static-oidc-authenticator.js'
 import { getAuthenticatorToken } from './authenticator/authenticator.tokens.js'
 import { BearerAuthContext } from './bearer-auth.context.js'
+import { BearerAuthMiddleware } from './middleware/bearer-auth.middleware.js'
+import { getMiddlewareToken } from './middleware/middleware.tokens.js'
 
 export const AUTH_CONFIG = 'wisemen.auth-config'
 export const DOMAIN_EVENT_EMITTER = 'wisemen.auth-domain-event-emitter'
@@ -204,18 +206,31 @@ export class BearerAuthModule {
             dynamicOidcAuthenticator: DynamicOidcAuthenticator
           ): Authenticator => new Authenticator(apiKeyAuthenticator, dynamicOidcAuthenticator)
         },
+        {
+          provide: BearerAuthMiddleware,
+          inject: [Authenticator, BearerAuthContext],
+          useFactory: (
+            authenticator: Authenticator,
+            context: BearerAuthContext
+          // oxlint-disable-next-line typescript/no-unsafe-function-type
+          ): Function => {
+            const instance = new BearerAuthMiddleware(authenticator, context)
+            return instance.use.bind(instance)
+          }
+        },
         ...options.oidcTrustProviders,
         ...options.oidcAuthenticatorProviders,
-        ...options.authenticatorProviders
+        ...options.authenticatorProviders,
+        ...options.oidcTrustIds.map(id => this.createMiddlewareProvider(id))
       ],
       exports: [
         ApiKeyAuthenticator,
         Authenticator,
         DynamicOidcAuthenticator,
         BearerAuthContext,
-        ...options.oidcTrustIds.flatMap(id => [
-          getAuthenticatorToken(id)
-        ])
+        BearerAuthMiddleware,
+        ...options.oidcTrustIds.flatMap(id => [getAuthenticatorToken(id)]),
+        ...options.oidcTrustIds.flatMap(id => [getMiddlewareToken(id)])
       ]
     }
   }
@@ -271,6 +286,21 @@ export class BearerAuthModule {
         apiKeyAuthenticator: ApiKeyAuthenticator,
         oidcAuthenticator: StaticOidcAuthenticator
       ): Authenticator => new Authenticator(apiKeyAuthenticator, oidcAuthenticator)
+    }
+  }
+
+  private static createMiddlewareProvider (id: OidcTrustId): Provider {
+    return {
+      provide: getMiddlewareToken(id),
+      inject: [getOidcAuthenticatorToken(id), BearerAuthContext],
+      useFactory: (
+        authenticator: Authenticator,
+        authContext: BearerAuthContext
+      // oxlint-disable-next-line typescript/no-unsafe-function-type
+      ): Function => {
+        const instance = new BearerAuthMiddleware(authenticator, authContext)
+        return instance.use.bind(instance)
+      }
     }
   }
 
