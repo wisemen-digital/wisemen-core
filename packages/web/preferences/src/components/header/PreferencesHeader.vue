@@ -11,8 +11,19 @@ import PreferencesHeaderControls from '#components/header/PreferencesHeaderContr
 import { useInjectPreferencesContext } from '#context/preferences.context'
 
 const {
-  activeTabId, activeView,
+  activeTabId,
+  activeItem,
+  activeView,
+  onShowView,
 } = useInjectPreferencesContext()
+
+function onTabChange(tabId: string): void {
+  activeTabId.value = tabId
+
+  if (activeItem.value.type === 'section') {
+    onShowView(activeView.value.id)
+  }
+}
 </script>
 
 <template>
@@ -33,8 +44,9 @@ const {
         class="ml-3xl"
       >
         <UITabs
-          v-model="activeTabId"
+          :model-value="activeTabId"
           variant="button-border"
+          @update:model-value="onTabChange"
         >
           <UITabsList>
             <UITabsItem

@@ -29,6 +29,7 @@ import type {
   ViewIdFromConfig,
 } from '#types/preferences.type'
 import type { PreferencesProps } from '#types/preferencesDialog.props'
+import { getViewSections } from '#utils/getViewSections.util'
 
 const props = defineProps<PreferencesProps<TConfig>>()
 
@@ -74,7 +75,7 @@ const activeView = computed<PreferencesView>(() => {
     return views.find((view) => view.id === activeItem.value.id)!
   }
 
-  return views.find((view) => view.sections.some(
+  return views.find((view) => getViewSections(view).some(
     (section) => section.id === activeItem.value.id,
   ))!
 })
@@ -97,7 +98,7 @@ const filteredCategories = computed<PreferencesCategory[]>(() => {
     .map((category) => {
       const filteredViews = category.views
         .map((view) => {
-          const matchingSections = view.sections.filter((section) => {
+          const matchingSections = getViewSections(view).filter((section) => {
             const titleMatch = toValue(section.title).toLowerCase().includes(searchTerm.value.toLowerCase())
             const descriptionMatch = toValue(section.description).toLowerCase().includes(searchTerm.value.toLowerCase())
 
@@ -149,6 +150,8 @@ watch([
 ], ([
   view,
   item,
+], [
+  previousView,
 ]) => {
   const tabs = view.tabs
 
@@ -168,7 +171,9 @@ watch([
       return
     }
   }
-  const isActiveTabValid = tabs.some((tab) => tab.id === activeTabId.value)
+
+  const didViewChange = previousView === undefined || previousView.id !== view.id
+  const isActiveTabValid = !didViewChange && tabs.some((tab) => tab.id === activeTabId.value)
 
   if (!isActiveTabValid) {
     activeTabId.value = tabs[0]!.id

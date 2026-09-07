@@ -24,14 +24,14 @@ export interface PreferencesView {
   description?: string | ComputedRef<string>
   icon: Raw<Component>
   /**
-   * Flat list of all sections belonging to this view. When `tabs` is set, this must be the
-   * flattened union of every tab's sections — search, deep-linking, and `SectionIdFromConfig`
-   * all read from this array rather than from `tabs`.
+   * Flat list of all sections belonging to this view. Optional when `tabs` is set — the
+   * flattened union of every tab's sections is used instead.
    */
-  sections: PreferencesSection[]
+  sections?: PreferencesSection[]
   /**
    * Optional tabs grouping this view's sections. When present, the header renders a tab strip
-   * and the content area only shows the active tab's sections.
+   * and the content area only shows the active tab's sections. If `sections` is omitted, it is
+   * derived by flattening every tab's sections.
    */
   tabs?: PreferencesViewTab[]
 }
@@ -49,7 +49,11 @@ export interface PreferencesConfig {
 export type ViewIdFromConfig<T extends PreferencesConfig>
   = T['categories'][number]['views'][number]['id']
 
+type SectionIdFromView<TView extends PreferencesView>
+  = | NonNullable<TView['sections']>[number]['id']
+    | NonNullable<TView['tabs']>[number]['sections'][number]['id']
+
 export type SectionIdFromConfig<
   T extends PreferencesConfig,
   TViewId extends ViewIdFromConfig<T> = ViewIdFromConfig<T>,
-> = Extract<T['categories'][number]['views'][number], { id: TViewId }>['sections'][number]['id']
+> = SectionIdFromView<Extract<T['categories'][number]['views'][number], { id: TViewId }>>

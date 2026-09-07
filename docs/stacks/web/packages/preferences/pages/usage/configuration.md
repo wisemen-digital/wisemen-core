@@ -233,14 +233,6 @@ const generalView: PreferencesView = {
   id: 'general',
   title: 'General',
   icon: markRaw(SomeIcon),
-  // `sections` must stay the flattened union of every tab's sections —
-  // search, deep-linking, and `SectionIdFromConfig` read from this array.
-  sections: [
-    appearance,
-    displayZoom,
-    navigationArrows,
-    toastAutoClose,
-  ],
   tabs: [
     {
       id: 'behavior',
@@ -261,8 +253,6 @@ const generalView: PreferencesView = {
   ],
 }
 ```
-
-Deep-linking to a section (`dialog.open('general', 'toast-auto-close')`) or matching it through search automatically activates the tab that contains it.
 
 ## 4. Create the dialog
 
@@ -347,7 +337,7 @@ interface PreferencesView {
   title: string | ComputedRef<string>
   description?: string | ComputedRef<string>
   icon: Raw<Component>
-  sections: PreferencesSection[]   // flattened union of every tab's sections, if `tabs` is set
+  sections?: PreferencesSection[]  // optional if `tabs` is set — derived by flattening every tab's sections
   tabs?: PreferencesViewTab[]
 }
 

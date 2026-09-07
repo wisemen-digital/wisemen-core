@@ -6,6 +6,7 @@ import PreferencesHiddenSectionsBanner from '#components/content/PreferencesHidd
 import PreferencesSectionProvider from '#components/content/PreferencesSectionProvider.vue'
 import { useInjectPreferencesContext } from '#context/preferences.context'
 import type { PreferencesSection } from '#types/preferences.type'
+import { getViewSections } from '#utils/getViewSections.util'
 
 const {
   activeTabId,
@@ -17,7 +18,7 @@ const scopedSections = computed<PreferencesSection[]>(() => {
   const tabs = activeView.value.tabs
 
   if (tabs === undefined || tabs.length === 0) {
-    return activeView.value.sections
+    return getViewSections(activeView.value)
   }
 
   const activeTab = tabs.find((tab) => tab.id === activeTabId.value)
@@ -27,7 +28,7 @@ const scopedSections = computed<PreferencesSection[]>(() => {
 
 const filteredSections = computed<PreferencesSection[]>(() => {
   if (activeItem.value.type === 'section') {
-    return activeView.value.sections.filter((section) => {
+    return getViewSections(activeView.value).filter((section) => {
       return section.id === activeItem.value.id
     })
   }
