@@ -129,10 +129,7 @@ export function useToast() {
     })
   }
 
-  function apiError<TCode extends string>(
-    error: unknown,
-    getTranslationKey?: ApiErrorTranslationResolver<TCode>,
-  ): void {
+  function apiError(error: unknown): void {
     if (!ApiErrorUtil.isExpectedApiError(error)) {
       show({
         icon: AlertCircleIcon,
@@ -153,9 +150,10 @@ export function useToast() {
       return
     }
 
-    const translationResolver = getTranslationKey
-      ?? configContext.apiErrorTranslationResolver.value as ApiErrorTranslationResolver<TCode> | null
-    const translationKey = translationResolver?.(firstError.code as TCode)
+    const translationResolver = (
+      configContext.apiErrorTranslationResolver.value
+    ) as ApiErrorTranslationResolver<string> | null
+    const translationKey = translationResolver?.(firstError.code)
     let message = firstError.detail || i18n.t('component.toast.unexpected_error.message')
 
     if (translationKey !== undefined) {
