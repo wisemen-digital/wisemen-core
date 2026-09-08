@@ -2,7 +2,8 @@ import { exhaustiveCheck } from '../utils/exhaustive-check.js'
 
 export enum MailFileExtension {
   PDF = 'pdf',
-  CSV = 'csv'
+  CSV = 'csv',
+  XLSX = "xlsx"
 }
 
 export interface MailAttachment {
@@ -44,6 +45,8 @@ export abstract class MailClient {
         return 'text/csv'
       case MailFileExtension.PDF:
         return 'application/pdf'
+      case MailFileExtension.XLSX:
+        return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       default:
         exhaustiveCheck(ext)
     }
