@@ -7,7 +7,7 @@ A TypeScript package for generating AsyncAPI v3.0.0 documentation for NestJS app
 - **AsyncAPI v3.0.0 Types**: Complete TypeScript type definitions for AsyncAPI specification
 - **Channel Definitions**: Type-safe channel definitions with parameter extraction
 - **YAML Generation**: Automatically generate AsyncAPI YAML specifications from your code
-- **HTML Documentation**: Generate beautiful HTML documentation using AsyncAPI templates
+- **HTML Documentation**: Generate standalone HTML with property types, required status, descriptions, schemas and examples
 - **NestJS Integration**: Seamlessly integrates with NestJS decorators and DTOs
 - **Schema Generation**: Automatic schema generation from TypeScript classes using NestJS Swagger decorators
 
@@ -90,11 +90,8 @@ Generate beautiful HTML documentation from your YAML specification:
 ```typescript
 import { generateAsyncAPIHTML } from '@wisemen/nestjs-async-api'
 
-await generateAsyncAPIHTML(
-  yaml,                    // AsyncAPI YAML string
-  './docs',                // Output directory
-  'async-api.html'         // Output filename
-)
+const html = generateAsyncAPIHTML(yaml)
+// Write the returned HTML string to your documentation output file.
 ```
 
 ## Integration with NestJS
@@ -115,6 +112,26 @@ export class UserNotificationEvent {
   timestamp: Date
 }
 ```
+
+## Nullable properties
+
+Use Swagger's `nullable: true` together with an explicit type:
+
+```typescript
+@ApiProperty({ type: String, format: 'uuid', nullable: true })
+currentTestExerciseUuid: string | null
+```
+
+The YAML generator converts this to `type: [string, 'null']`, as required by
+AsyncAPI's JSON Schema format. Nullable enums, references and composed schemas
+use an `anyOf` union with `{ type: 'null' }` so their other constraints remain intact.
+Nested properties and array items are converted too.
+
+HTML property tables display nullable types as `string (uuid) | null` alongside
+the required status and description. Required and nullable are independent: a
+required nullable property must be present, but its value can be `null`.
+Expandable schemas expose nested definitions and constraints. Existing YAML
+using Swagger's `nullable` keyword is also supported by the HTML renderer.
 
 ## License
 
