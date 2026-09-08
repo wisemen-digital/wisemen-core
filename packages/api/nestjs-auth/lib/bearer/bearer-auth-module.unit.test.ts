@@ -11,6 +11,7 @@ import { getAuthenticatorToken } from './authenticator/authenticator.tokens.js'
 import { IdentityAuthCache } from './oidc/identity/identity-auth-cache.js'
 import { IdentityRepository } from './oidc/identity/identity-repository.js'
 import { DynamicOidcAuthenticator } from './oidc/dynamic-oidc/dynamic-oidc-authenticator.js'
+import { BearerAuthService } from './bearer-auth.service.js'
 import { OidcIdentityAuthenticator } from './oidc/identity/oidc-identity-authenticator.js'
 import { getOidcAuthenticatorToken, getOidcTrustToken, getOidcTrustVerifierToken } from './oidc/oidc-trust.tokens.js'
 
@@ -36,6 +37,8 @@ describe('BearerAuthModule', () => {
       }
     })
     expect(moduleDefinition.exports).toContain(Authenticator)
+    expect(moduleDefinition.providers).toContain(BearerAuthService)
+    expect(moduleDefinition.exports).toContain(BearerAuthService)
     expect(findProvider(moduleDefinition.providers, Authenticator)).toMatchObject({
       inject: [ApiKeyAuthenticator, DynamicOidcAuthenticator],
       provide: Authenticator

@@ -1,6 +1,7 @@
 import { createJwtVerifier, decodeJwtPayload, InvalidOrExpiredTokenError, type JwtVerifier } from '@wisemen/nestjs-jwt-verifier'
 import { DynamicOidcTrust } from './dynamic-oidc-trust.entity.js'
 import type { DynamicOidcTrustRepository } from './dynamic-oidc-trust.repository.js'
+import type { OidcTrustUuid } from '../oidc-trust.uuid.js'
 
 export const DEFAULT_DYNAMIC_OIDC_TRUST_CACHE_TTL_IN_SECONDS = 300
 
@@ -49,6 +50,15 @@ export class DynamicOidcTrustResolver {
     this.cacheTrust(resolvedTrust)
 
     return resolvedTrust
+  }
+
+  /** Clears cached verifier entries belonging to one dynamic OIDC trust. */
+  clearTrustCache (id: OidcTrustUuid): void {
+    for (const [cacheKey, cachedTrust] of this.cache.entries()) {
+      if (cachedTrust.trust.id === id) {
+        this.cache.delete(cacheKey)
+      }
+    }
   }
 
   private getCachedTrust (

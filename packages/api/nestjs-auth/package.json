@@ -26,6 +26,10 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "@nestjs/typeorm": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
     "reflect-metadata": "catalog:backend-peer",
     "fastify": "catalog:backend-peer",
     "typeorm": "catalog:backend-peer",

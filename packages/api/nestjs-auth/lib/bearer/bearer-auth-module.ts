@@ -23,10 +23,18 @@ import { getAuthenticatorToken } from './authenticator/authenticator.tokens.js'
 import { BearerAuthContext } from './bearer-auth.context.js'
 import { BearerAuthMiddleware } from './middleware/bearer-auth.middleware.js'
 import { getMiddlewareToken } from './middleware/middleware.tokens.js'
+import { BearerAuthService } from './bearer-auth.service.js'
+import {
+  AUTH_CONFIG,
+  DOMAIN_EVENT_EMITTER,
+  DYNAMIC_OIDC_TRUST_CACHE_TTL_IN_SECONDS
+} from './bearer-auth.tokens.js'
 
-export const AUTH_CONFIG = 'wisemen.auth-config'
-export const DOMAIN_EVENT_EMITTER = 'wisemen.auth-domain-event-emitter'
-export const DYNAMIC_OIDC_TRUST_CACHE_TTL_IN_SECONDS = 'wisemen.dynamic-oidc-trust-cache-ttl-in-seconds'
+export {
+  AUTH_CONFIG,
+  DOMAIN_EVENT_EMITTER,
+  DYNAMIC_OIDC_TRUST_CACHE_TTL_IN_SECONDS
+} from './bearer-auth.tokens.js'
 
 @Module({})
 export class BearerAuthModule {
@@ -156,6 +164,7 @@ export class BearerAuthModule {
         IdentityAuthCache,
         IdentityRepository,
         BearerAuthContext,
+        BearerAuthService,
         DynamicOidcTrustRepository,
         {
           provide: OidcIdentityAuthenticator,
@@ -228,6 +237,7 @@ export class BearerAuthModule {
         Authenticator,
         DynamicOidcAuthenticator,
         BearerAuthContext,
+        BearerAuthService,
         BearerAuthMiddleware,
         ...options.oidcTrustIds.flatMap(id => [getAuthenticatorToken(id)]),
         ...options.oidcTrustIds.flatMap(id => [getMiddlewareToken(id)])
