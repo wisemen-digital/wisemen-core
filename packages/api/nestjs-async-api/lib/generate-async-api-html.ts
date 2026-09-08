@@ -1,4 +1,5 @@
 import YAML from 'yaml'
+import { normalizeSchema } from './normalize-schema.js'
 import type {
   AsyncAPIDocument,
   AsyncAPIMessage,
@@ -265,15 +266,7 @@ function renderLinkedList (items: string[], prefix: string, emptyLabel: string):
   }
 
   const links = items
-    .map((item) => {
-      if (prefix === 'message') {
-        const eventRef = `/api/async-api/${encodeURIComponent(item)}`
-
-        return `<a href="${escapeHTML(eventRef)}">${escapeHTML(item)}</a>`
-      }
-
-      return `<a href="#${toAnchorId(prefix, item)}">${escapeHTML(item)}</a>`
-    })
+    .map(item => `<a href="#${toAnchorId(prefix, item)}">${escapeHTML(item)}</a>`)
     .join(', ')
 
   return `<p class="links">${links}</p>`
@@ -315,10 +308,6 @@ function resolveSchemaRef (
     return { schema, refName: schemaName }
   }
 
-  const nextSeen = new Set(seenRefs)
-
-  nextSeen.add(schemaName)
-
   return { schema: resolved, refName: schemaName, circular: false }
 }
 
@@ -333,11 +322,19 @@ function schemaToExample (
     return `[Circular:${resolved.refName}]`
   }
 
+  if (resolved.refName !== undefined) {
+    seenRefs = new Set(seenRefs).add(resolved.refName)
+  }
+
   if (!isRecord(resolved.schema)) {
     return resolved.schema
   }
 
   const record = resolved.schema
+
+  if ('$ref' in record) {
+    return resolved.schema === schema ? record.$ref : schemaToExample(record, schemaEntries, seenRefs)
+  }
 
   if (record.example !== undefined) {
     return record.example
@@ -363,7 +360,11 @@ function schemaToExample (
     return schemaToExample(record.allOf[0], schemaEntries, seenRefs)
   }
 
-  if (record.type === 'array') {
+  const type: unknown = Array.isArray(record.type)
+    ? record.type.find(value => value !== 'null') ?? 'null'
+    : record.type
+
+  if (type === 'array') {
     const itemExample = record.items !== undefined
       ? schemaToExample(record.items, schemaEntries, seenRefs)
       : null
@@ -371,7 +372,7 @@ function schemaToExample (
     return [itemExample]
   }
 
-  if (record.type === 'object' || isRecord(record.properties)) {
+  if (type === 'object' || isRecord(record.properties)) {
     const properties = isRecord(record.properties) ? record.properties : {}
     const example: UnknownRecord = {}
 
@@ -392,32 +393,96 @@ function schemaToExample (
     return example
   }
 
-  if (record.type === 'integer' || record.type === 'number') {
+  if (type === 'integer' || type === 'number') {
     return 0
   }
 
-  if (record.type === 'boolean') {
+  if (type === 'boolean') {
     return false
   }
 
-  if (record.type === 'string') {
+  if (type === 'string') {
     return 'string'
   }
 
   return null
 }
 
+function schemaTypeLabel (schema: unknown): string {
+  if (!isRecord(schema)) {
+    return schema === false ? 'never' : 'any'
+  }
+
+  if (typeof schema.$ref === 'string') {
+    return resolveSchemaNameFromRef(schema.$ref) ?? schema.$ref
+  }
+
+  for (const keyword of ['anyOf', 'oneOf', 'allOf']) {
+    const variants = schema[keyword]
+
+    if (Array.isArray(variants)) {
+      const separator = keyword === 'allOf' ? ' & ' : ' | '
+
+      return variants.map(schemaTypeLabel).join(separator)
+    }
+  }
+
+  if (Array.isArray(schema.type)) {
+    return schema.type.map((type: unknown) => schemaTypeLabel({ ...schema, type })).join(' | ')
+  }
+
+  if (schema.type === 'array') {
+    return `Array<${schemaTypeLabel(schema.items)}>`
+  }
+
+  const type = typeof schema.type === 'string' ? schema.type : 'any'
+
+  return typeof schema.format === 'string' && type !== 'null' ? `${type} (${schema.format})` : type
+}
+
+function renderSchemaProperties (schema: unknown, schemaEntries: SchemaEntries): string {
+  const resolved = resolveSchemaRef(schema, schemaEntries, new Set()).schema
+
+  if (!isRecord(resolved) || !isRecord(resolved.properties)) {
+    return ''
+  }
+
+  const required = Array.isArray(resolved.required) ? resolved.required : []
+  const rows = Object.entries(resolved.properties).map(([name, property]) => {
+    const description = isRecord(property) ? property.description : undefined
+
+    return `<tr>
+      <td><code>${escapeHTML(name)}</code></td>
+      <td><code>${escapeHTML(schemaTypeLabel(property))}</code></td>
+      <td>${required.includes(name) ? 'Yes' : 'No'}</td>
+      <td>${escapeHTML(description)}</td>
+    </tr>`
+  }).join('')
+
+  return `<h4>Properties</h4>
+    <p class="muted">Types containing null allow null values. Required properties must be present.</p>
+    <div class="schema-properties"><table>
+      <thead><tr><th>Property</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`
+}
+
 function renderSchemaView (
   schema: unknown,
   schemaEntries: SchemaEntries
 ): string {
+  schema = normalizeSchema(schema)
   const seenRefs = new Set<string>()
   const example = schemaToExample(schema, schemaEntries, seenRefs)
 
   return `
     <div class="schema-block">
+      ${renderSchemaProperties(schema, schemaEntries)}
       <h4>Example</h4>
       ${valueToCodeBlock(example)}
+      <details><summary>Schema</summary>
+        ${valueToCodeBlock(resolveSchemaRef(schema, schemaEntries, new Set()).schema)}
+      </details>
     </div>
   `
 }
@@ -485,6 +550,10 @@ export function generateAsyncAPIHTML (
   yaml: string
 ): string {
   const document = parseAsyncApiDocument(yaml)
+
+  for (const [name, schema] of Object.entries(document.components?.schemas ?? {})) {
+    document.components!.schemas![name] = normalizeSchema(schema) as UnknownRecord
+  }
   const info = document.info
   const lookups = buildLookups(document)
 
@@ -602,7 +671,7 @@ export function generateAsyncAPIHTML (
 
   const messageBlocks = lookups.messages.map((message) => {
     const messageSchema = message.schemaName ?? ''
-    const eventRef = `/api/async-api/${encodeURIComponent(message.name)}`
+    const eventRef = `#${toAnchorId('message', message.name)}`
 
     return `
     <details class="item" id="${toAnchorId('message', message.name)}" data-message-name="${escapeHTML(message.name)}">
@@ -610,7 +679,7 @@ export function generateAsyncAPIHTML (
         <span class="title">${escapeHTML(message.name)}</span>
         ${messageSchema !== '' ? `<span class="muted">Schema: ${escapeHTML(messageSchema)}</span>` : ''}
       </summary>
-      <p><strong>Ref:</strong> <a href="${escapeHTML(eventRef)}">${escapeHTML(eventRef)}</a></p>
+      <p class="event-ref"><strong>Ref:</strong> <a href="${escapeHTML(eventRef)}">${escapeHTML(eventRef)}</a></p>
       <div class="detail-grid">
         <div>
           <h4>Schema</h4>
@@ -736,7 +805,7 @@ export function generateAsyncAPIHTML (
     summary {
       cursor: pointer;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
       gap: 12px;
       font-weight: 600;
@@ -746,7 +815,28 @@ export function generateAsyncAPIHTML (
       display: none;
     }
 
+    summary::before {
+      content: '';
+      width: 0.45em;
+      height: 0.45em;
+      flex: 0 0 auto;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(-45deg);
+    }
+
+    details[open] > summary::before {
+      transform: rotate(45deg);
+    }
+
+    summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
     .title {
+      flex: 1;
       font-size: 1.1rem;
     }
 
@@ -812,6 +902,27 @@ export function generateAsyncAPIHTML (
 
     .event-ref a:hover {
       text-decoration: underline;
+    }
+
+    .schema-block > h4:not(:first-child),
+    .schema-block > details {
+      margin-top: 24px;
+    }
+
+    .schema-properties {
+      overflow-x: auto;
+    }
+
+    .schema-properties table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .schema-properties th, .schema-properties td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
     }
 
     pre {
