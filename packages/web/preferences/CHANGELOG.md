@@ -7,6 +7,12 @@
 
 
 
+
+## 1.3.0
+<sub>2026-09-08</sub>
+
+- [#1644](https://github.com/wisemen-digital/wisemen-core/pull/1644)  *(minor)* Thanks [@ahmad-kashkoush-ext](https://github.com/ahmad-kashkoush-ext)! - Added support for tabbed views in the preferences dialog.
+
 ## 1.2.3
 <sub>2026-08-05</sub>
 

@@ -4,6 +4,12 @@
 
 
 
+
+## 0.3.0
+<sub>2026-09-08</sub>
+
+- [#1665](https://github.com/wisemen-digital/wisemen-core/pull/1665)  *(minor)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Add XLSX mail extension option
+
 ## 0.2.1
 <sub>2026-08-27</sub>
 
