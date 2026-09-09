@@ -1,6 +1,6 @@
-import { jwtVerify, type JWTPayload as RawPayload, type JWTVerifyGetKey } from 'jose'
+import { createRemoteJWKSet, decodeJwt, jwtVerify, type JWTPayload as RawPayload, type JWTVerifyGetKey } from 'jose'
 import { InvalidOrExpiredTokenError } from './errors/invalid-or-expired-token.error.js'
-import type { JwtVerifierOptions } from './jwt-verifier.module-options.js'
+import { resolveJwtVerifierOptions, type JwtVerifierOptions } from './jwt-verifier.module-options.js'
 
 export type JWTPayload = Pick<RawPayload, 
   | 'iss' 
@@ -33,5 +33,32 @@ export class JwtVerifier {
 
       throw error
     }
+  }
+}
+
+/**
+ * Creates a verifier backed by the configured remote JWKS endpoint.
+ *
+ * Use this when a verifier must be resolved at runtime rather than registered
+ * as a static Nest provider.
+ */
+export function createJwtVerifier (options: JwtVerifierOptions): JwtVerifier {
+  const resolvedOptions = resolveJwtVerifierOptions(options)
+  const jwkSet = createRemoteJWKSet(new URL(resolvedOptions.jwksEndpoint))
+
+  return new JwtVerifier(resolvedOptions, jwkSet)
+}
+
+/**
+ * Decodes an unverified token only for selecting a candidate verifier.
+ *
+ * Callers must verify the original token with the selected verifier before
+ * trusting any returned claims.
+ */
+export function decodeJwtPayload<TToken extends JWTPayload = JWTPayload> (token: string): TToken {
+  try {
+    return decodeJwt(token) as TToken
+  } catch {
+    throw new InvalidOrExpiredTokenError()
   }
 }
