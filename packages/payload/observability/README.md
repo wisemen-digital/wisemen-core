@@ -32,6 +32,82 @@ export default withJobLogging(tasks, 'task')
 and `limitLoggingValue()` only bounds size and depth before values are attached
 to an event.
 
+## Hourly audit archive in S3
+
+`createS3AuditDrain()` uses Evlog's `auditOnly()` helper, so it archives only
+events created with Evlog audit helpers. It keeps normal logs on stdout and
+writes a gzipped NDJSON object per pod per hour at
+`audit/<environment>/<date>-<hour>-<pod>-<batch>.ndjson.gz`. Keys are
+unique, so multiple Kubernetes replicas never append to or overwrite the same
+object. The object has no HTTP `Content-Encoding` header, so downloading it
+from an S3 console preserves a valid `.gz` file. It is served as an attachment
+with `application/gzip` so browsers do not treat it as plain NDJSON.
+
+```ts
+import {
+  createS3AuditDrain,
+  initializeLogging,
+} from '@wisemen/payload-core-observability'
+
+const auditDrain = createS3AuditDrain({
+  bucket: process.env.AUDIT_S3_BUCKET!,
+  endpoint: process.env.AUDIT_S3_ENDPOINT,
+  environment: process.env.NODE_ENV ?? 'development',
+  podName: process.env.HOSTNAME,
+  service: 'cms',
+})
+
+initializeLogging({
+  auditDrain,
+  service: 'cms',
+})
+
+process.once('SIGTERM', () => void auditDrain.flush())
+process.once('SIGINT', () => void auditDrain.flush())
+```
+
+The drain retries failed uploads five times. `maxBatchSize` defaults to
+100,000: it is a safety limit, so exceptionally busy pods create an extra
+object rather than losing audit events.
+
+## Payload admin audit plugin
+
+Add `payloadAdminAudit()` to the Payload plugin list to record successful
+admin/API operations. It covers collection creates, updates, deletes, and
+reads; global updates and reads; and collection-auth logins/logouts.
+Unauthenticated HTTP requests are included with
+`actor: { type: 'api', id: 'anonymous' }`; local API calls from workers,
+seeders, and hooks are excluded by default. Audit events intentionally do not
+include document values or diffs. Set `includeReads: false` if read volume is
+not useful for your audit policy.
+
+```ts
+import { payloadAdminAudit } from '@wisemen/payload-core-observability'
+
+export default buildConfig({
+  plugins: [
+    payloadAdminAudit(),
+  ],
+})
+```
+
+The plugin emits Evlog audit events, so it works with `createS3AuditDrain()`
+through the `auditDrain` option above.
+
+The Payload plugin binds the request actor before each Payload operation. A
+custom audit in any hook can therefore use the normal application logger
+without handling users or anonymous callers.
+
+```ts
+const log = createApplicationLogger()
+
+log.audit({
+  action: 'page.publish',
+  target: { type: 'pages', id: String(doc.id) },
+})
+log.emit()
+```
+
 ## Application events
 
 Use `createApplicationLogger()` for an application-level event. It creates a
