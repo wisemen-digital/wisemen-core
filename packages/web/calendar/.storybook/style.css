@@ -1,0 +1,5 @@
+@import '../src/index.css';
+@import './theme.css';
+
+/* Tailwind only scans this package's own source by default; a real consuming app's build covers design-system's classes, but Storybook needs it added explicitly. */
+@source '../node_modules/@wisemen/vue-core-design-system/src';
