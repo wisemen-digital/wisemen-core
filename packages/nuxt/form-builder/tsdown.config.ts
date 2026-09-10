@@ -1,20 +1,22 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
+  dts: false,
   entry: [
     'src/index.ts',
-    'src/client.ts',
-    'src/server.ts',
-    'src/bin/seed.ts',
   ],
   external: [
-    '@payloadcms/ui',
-    'payload',
-    'react',
-    'react-dom',
+    '@wisemen/payload-core-form-builder',
+    '@nuxt/ui',
+    '@vueuse/core',
+    'formango',
+    'motion-v',
+    'vue',
+    'zod',
   ],
   format: [
     'esm',
   ],
+  fromVite: true,
   shims: true,
 })
