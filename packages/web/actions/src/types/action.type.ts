@@ -32,6 +32,11 @@ export interface ActionAvatar {
 
 export interface SearchSubActionsConfig {
   /*
+   * Message shown instead of the sub-action list when it has no items and no
+   * search query is active. Falls back to a generic message when omitted.
+   */
+  emptyMessage?: (() => string) | string
+  /*
    * Maximum sub-action results returned during search lifting. Default: 10.
   */
   maxResults?: number
@@ -39,6 +44,12 @@ export interface SearchSubActionsConfig {
    * Minimum characters required before sub-actions are searched. Default: 0.
    */
   minLength?: number
+  /*
+   * Message shown when a search query yields no matching sub-actions.
+   * Receives the current (trimmed) search query. Falls back to a generic
+   * message when omitted.
+   */
+  noResultsMessage?: ((query: string) => string) | string
   /*
    * Placeholder text for the sub-action search input.
    */

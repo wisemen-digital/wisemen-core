@@ -17,6 +17,7 @@ import {
   resolveActionName,
   resolveActionValue,
   resolveSearchSubActionsConfig,
+  resolveSubActionsEmptyStateMessage,
 } from '#utils/resolveActions.util.ts'
 
 interface UseCommandMenuNavigationOptions {
@@ -84,6 +85,10 @@ export function useCommandMenuNavigation({
 
     return maybePlaceholderFn
   })
+
+  const emptyStateMessage = computed<string | null>(
+    () => resolveSubActionsEmptyStateMessage(currentParent.value, buildContext()),
+  )
 
   const {
     preview, onKeyDown: onPreviewKeyDown,
@@ -169,6 +174,7 @@ export function useCommandMenuNavigation({
     activateAction,
     breadcrumbs,
     currentParent,
+    emptyStateMessage,
     placeholder,
     preview,
     restoreParentFrame,

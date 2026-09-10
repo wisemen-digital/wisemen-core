@@ -89,6 +89,7 @@ const {
   activateAction,
   breadcrumbs,
   currentParent,
+  emptyStateMessage,
   placeholder,
   preview,
   onKeyDown,
@@ -220,7 +221,7 @@ function onSearchKeyDown(event: KeyboardEvent): void {
         class="flex flex-col overflow-hidden"
         @highlight="(payload) => highlightedActionId = (payload?.value as string) ?? null"
       >
-        <div class="relative flex items-center border-b border-secondary">
+        <div class="relative flex items-center">
           <UIRowLayout
             v-if="breadcrumbs.length > 0 && currentParent?.forceAsRootMenu !== true"
             as="ul"
@@ -255,7 +256,7 @@ function onSearchKeyDown(event: KeyboardEvent): void {
           :class="{
             'grid-cols-2': preview !== null,
           }"
-          class="grid"
+          class="grid border-t border-secondary"
         >
           <ListboxContent
             :key="resolvedActions.map((a) => a.id).join('')"
@@ -312,7 +313,9 @@ function onSearchKeyDown(event: KeyboardEvent): void {
 
             <UIText
               v-else
-              :text="i18n.t('component.command_menu.no_results', { query: searchInput })"
+              :text="emptyStateMessage ?? (searchInput.trim().length > 0
+                ? i18n.t('component.command_menu.no_results', { query: searchInput })
+                : i18n.t('component.command_menu.no_actions'))"
               class="flex p-lg text-xs text-tertiary"
             />
           </ListboxContent>
