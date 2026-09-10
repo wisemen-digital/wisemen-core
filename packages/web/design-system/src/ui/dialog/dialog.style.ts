@@ -14,13 +14,14 @@ export const createDialogStyle = tv({
       sm:top-0 sm:rounded-[calc(1rem+5px)]
     `,
     content: `
-      group/dialog flex max-h-[90vh] w-full flex-col overflow-hidden
-      rounded-t-[calc(1rem+5px)] rounded-b-none border-t-[5px] border-r-[5px]
-      border-l-[5px] border-transparent bg-primary bg-clip-padding
+      group/dialog flex max-h-[calc(90vh-env(safe-area-inset-bottom)-3.75rem)]
+      w-full flex-col overflow-hidden rounded-t-[calc(1rem+5px)] rounded-b-none
+      border-t-[5px] border-r-[5px] border-l-[5px] border-transparent bg-primary
+      bg-clip-padding
       sm:max-h-[85vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
     `,
     contentWrapper: `
-      fixed inset-x-0 bottom-0 flex w-full flex-col
+      fixed inset-x-0 bottom-[env(safe-area-inset-bottom)] flex w-full flex-col
       will-change-[transform,opacity] outline-none
       sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:-translate-1/2
     `,
@@ -37,8 +38,8 @@ export const createDialogStyle = tv({
     size: {
       'full-screen': {
         content: `
-          h-[90vh]
-          sm:max-h-[90vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
+          h-[calc(90vh-env(safe-area-inset-bottom)-3.75rem)]
+          sm:h-auto sm:max-h-[90vh] sm:rounded-[calc(1rem+5px)] sm:border-[5px]
         `,
         contentWrapper: `sm:max-w-[90vw]`,
       },
