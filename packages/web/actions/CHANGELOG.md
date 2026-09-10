@@ -6,6 +6,13 @@
 
 
 
+
+## 0.4.0
+<sub>2026-09-10</sub>
+
+- [#1590](https://github.com/wisemen-digital/wisemen-core/pull/1590)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)!
+  Add a way to flatten the command menu's grouped results into a single ungrouped list. Press Tab in the search input to toggle it; the preference persists across sessions via localStorage.
+
 ## 0.3.0
 <sub>2026-08-25</sub>
 

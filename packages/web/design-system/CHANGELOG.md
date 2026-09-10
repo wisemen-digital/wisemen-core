@@ -42,6 +42,18 @@
 
 
 
+
+## 1.23.0
+<sub>2026-09-10</sub>
+
+- [#1590](https://github.com/wisemen-digital/wisemen-core/pull/1590)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)!
+  Add a way to flatten the command menu's grouped results into a single ungrouped list. Press Tab in the search input to toggle it; the preference persists across sessions via localStorage.
+- [#1667](https://github.com/wisemen-digital/wisemen-core/pull/1667)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Show correct keyboard shortcut for "Return to app"
+- [#1671](https://github.com/wisemen-digital/wisemen-core/pull/1671)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Fixed the mobile bottom-drawer Dialog getting its chin cut off by the viewport edge — the drawer now reserves space for the device safe-area inset and for a two-line chin.
+- [#1672](https://github.com/wisemen-digital/wisemen-core/pull/1672)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix DateRangePicker fixed weeks
+- [#1673](https://github.com/wisemen-digital/wisemen-core/pull/1673)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix: DatePicker fixed weeks
+
 ## 1.22.7
 <sub>2026-09-07</sub>
 
