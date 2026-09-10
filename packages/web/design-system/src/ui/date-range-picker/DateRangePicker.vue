@@ -72,11 +72,11 @@ useProvideDateRangeFieldContext({
       :locale="locale"
       :number-of-months="isSingleMonth ? 1 : 2"
       :close-on-select="false"
+      :fixed-weeks="true"
       @update:model-value="onDraftValueUpdate"
     >
       <RekaDateRangePickerCalendar
         v-slot="{ weekDays, grid }"
-        :fixed-weeks="true"
         class="flex flex-col gap-lg overflow-hidden bg-primary"
         weekday-format="short"
       >
