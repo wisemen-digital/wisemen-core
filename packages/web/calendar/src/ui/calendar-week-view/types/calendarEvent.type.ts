@@ -14,7 +14,19 @@ export interface CalendarEvent<TMeta = Record<string, unknown>> {
   occurrenceId?: string
   title?: string
   allDay?: boolean
+  /**
+   * Overrides `interactions.drag` for this event, in both directions.
+   * Ignored when `readOnly` is set.
+   */
+  draggable?: boolean
   end: Temporal.ZonedDateTime
+  /** Excluded from drag and resize regardless of `interactions`. */
+  readOnly?: boolean
+  /**
+   * Overrides `interactions.resize` for this event, in both directions.
+   * Ignored when `readOnly` is set.
+   */
+  resizable?: boolean
   start: Temporal.ZonedDateTime
   meta: TMeta
 }

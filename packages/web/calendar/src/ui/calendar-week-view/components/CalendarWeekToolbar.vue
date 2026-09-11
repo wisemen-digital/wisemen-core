@@ -2,6 +2,8 @@
 import {
   UIButton,
   UIIconButton,
+  UIRowLayout,
+  UIText,
 } from '@wisemen/vue-core-design-system'
 import {
   ChevronLeftIcon,
@@ -45,10 +47,11 @@ const dateRangeLabel = computed<string>(() => {
 </script>
 
 <template>
-  <div
+  <UIRowLayout
+    gap="lg"
     class="
-      flex h-(--wui-calendar-toolbar-height,3rem) shrink-0 items-center gap-3
-      border-b border-gray-200 px-3
+      h-(--wui-calendar-toolbar-height,3rem) shrink-0 border-b border-gray-200
+      px-3
     "
   >
     <UIButton
@@ -58,7 +61,7 @@ const dateRangeLabel = computed<string>(() => {
       @click="emit('today')"
     />
 
-    <div class="flex items-center">
+    <UIRowLayout gap="none">
       <UIIconButton
         :icon="ChevronLeftIcon"
         label="Previous week"
@@ -74,10 +77,11 @@ const dateRangeLabel = computed<string>(() => {
         size="sm"
         @click="emit('next')"
       />
-    </div>
+    </UIRowLayout>
 
-    <span class="text-sm font-semibold text-gray-900">
-      {{ dateRangeLabel }}
-    </span>
-  </div>
+    <UIText
+      :text="dateRangeLabel"
+      class="text-sm font-semibold text-gray-900"
+    />
+  </UIRowLayout>
 </template>

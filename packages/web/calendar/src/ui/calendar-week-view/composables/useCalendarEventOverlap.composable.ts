@@ -1,89 +1,85 @@
-import { Temporal } from 'temporal-polyfill'
 import type {
   ComputedRef,
   Ref,
 } from 'vue'
 import { computed } from 'vue'
 
-import type { CalendarEvent } from '@/ui/calendar-week-view/types/calendarEvent.type'
+import type { CalendarSegment } from '@/ui/calendar-week-view/types/calendarSegment.type'
 
-export interface CalendarEventLayout<TMeta = Record<string, unknown>> {
+export interface CalendarSegmentLayout<TMeta = Record<string, unknown>> {
   columnCount: number
   columnIndex: number
-  event: CalendarEvent<TMeta>
+  segment: CalendarSegment<TMeta>
 }
 
-function eventsOverlap(a: {
-  end: Temporal.ZonedDateTime
-  start: Temporal.ZonedDateTime
-}, b: {
-  end: Temporal.ZonedDateTime
-  start: Temporal.ZonedDateTime
-}): boolean {
-  return Temporal.ZonedDateTime.compare(a.start, b.end) < 0
-    && Temporal.ZonedDateTime.compare(b.start, a.end) < 0
+function segmentsOverlap(
+  a: Pick<CalendarSegment, 'endMin' | 'startMin'>,
+  b: Pick<CalendarSegment, 'endMin' | 'startMin'>,
+): boolean {
+  return a.startMin < b.endMin && b.startMin < a.endMin
 }
 
 /**
  * ADR 0005: a fresh, deliberately simple greedy layout — not the
- * taxi-hendriks algorithm. Events are grouped into overlap clusters
+ * taxi-hendriks algorithm. Segments are grouped into overlap clusters
  * (connected via any pairwise time overlap), then each cluster is split
  * into equal-width columns via first-fit-by-start-time column assignment.
+ *
+ * Operates on segments rather than events so a cross-midnight event packs
+ * against its neighbours on each day independently.
  */
-export function layoutOverlappingEvents<TMeta = Record<string, unknown>>(
-  events: CalendarEvent<TMeta>[],
-): CalendarEventLayout<TMeta>[] {
-  const sortedEvents = [
-    ...events,
-  ].sort(
-    (a, b) => Temporal.ZonedDateTime.compare(a.start, b.start),
-  )
+export function layoutOverlappingSegments<TMeta = Record<string, unknown>>(
+  segments: CalendarSegment<TMeta>[],
+): CalendarSegmentLayout<TMeta>[] {
+  const sortedSegments = [
+    ...segments,
+  ].sort((a, b) => a.startMin - b.startMin)
 
-  const clusters: CalendarEvent<TMeta>[][] = []
+  const clusters: CalendarSegment<TMeta>[][] = []
 
-  for (const event of sortedEvents) {
+  for (const segment of sortedSegments) {
     const overlappingCluster = clusters.find((cluster) => cluster.some(
-      (clusterEvent) => eventsOverlap(clusterEvent, event),
+      (clusterSegment) => segmentsOverlap(clusterSegment, segment),
     ))
 
     if (overlappingCluster !== undefined) {
-      overlappingCluster.push(event)
+      overlappingCluster.push(segment)
     }
     else {
       clusters.push([
-        event,
+        segment,
       ])
     }
   }
 
-  const layouts: CalendarEventLayout<TMeta>[] = []
+  const layouts: CalendarSegmentLayout<TMeta>[] = []
 
   for (const cluster of clusters) {
-    const columnEndTimes: Temporal.ZonedDateTime[] = []
-    const eventColumnIndices = new Map<CalendarEvent<TMeta>, number>()
+    const columnEndMinutes: number[] = []
+    const segmentColumnIndices = new Map<CalendarSegment<TMeta>, number>()
 
-    for (const event of cluster) {
-      const freeColumnIndex = columnEndTimes.findIndex(
-        (columnEndTime) => Temporal.ZonedDateTime.compare(columnEndTime, event.start) <= 0,
+    for (const segment of cluster) {
+      const freeColumnIndex = columnEndMinutes.findIndex(
+        (columnEndMin) => columnEndMin <= segment.startMin,
       )
 
       if (freeColumnIndex === -1) {
-        columnEndTimes.push(event.end)
-        eventColumnIndices.set(event, columnEndTimes.length - 1)
+        columnEndMinutes.push(segment.endMin)
+        segmentColumnIndices.set(segment, columnEndMinutes.length - 1)
       }
       else {
-        columnEndTimes[freeColumnIndex] = event.end
-        eventColumnIndices.set(event, freeColumnIndex)
+        columnEndMinutes[freeColumnIndex] = segment.endMin
+        segmentColumnIndices.set(segment, freeColumnIndex)
       }
     }
 
-    const columnCount = columnEndTimes.length
+    const columnCount = columnEndMinutes.length
 
-    for (const event of cluster) {
+    for (const segment of cluster) {
       layouts.push({
         columnCount,
-        columnIndex: eventColumnIndices.get(event)!,
-        event,
+        columnIndex: segmentColumnIndices.get(segment)!,
+        segment,
       })
     }
   }
@@ -92,12 +88,12 @@ export function layoutOverlappingEvents<TMeta = Record<string, unknown>>(
 }
 
 export function useCalendarEventOverlap<TMeta = Record<string, unknown>>(
-  dayEvents: Ref<CalendarEvent<TMeta>[]>,
+  daySegments: Ref<CalendarSegment<TMeta>[]>,
 ): {
-  layouts: ComputedRef<CalendarEventLayout<TMeta>[]>
+  layouts: ComputedRef<CalendarSegmentLayout<TMeta>[]>
 } {
-  const layouts = computed<CalendarEventLayout<TMeta>[]>(
-    () => layoutOverlappingEvents(dayEvents.value),
+  const layouts = computed<CalendarSegmentLayout<TMeta>[]>(
+    () => layoutOverlappingSegments(daySegments.value),
   )
 
   return {

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { UIText } from '@wisemen/vue-core-design-system'
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -25,11 +26,10 @@ function formatHourLabel(hour: number): string {
       :key="hour"
       class="relative h-(--wui-calendar-hour-height,64px)"
     >
-      <span
+      <UIText
+        :text="formatHourLabel(hour)"
         class="absolute top-0 right-2 -translate-y-1/2 text-xs text-gray-400"
-      >
-        {{ formatHourLabel(hour) }}
-      </span>
+      />
     </div>
   </div>
 </template>
