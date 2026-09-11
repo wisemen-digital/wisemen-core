@@ -10,6 +10,7 @@ import { toast as toastState } from 'vue-sonner'
 
 import { useInjectConfigContext } from '@/ui/config-provider'
 import type {
+  ApiErrorTranslationResolver,
   PromiseToast,
   Toast,
   ToastAutoClose,
@@ -149,9 +150,21 @@ export function useToast() {
       return
     }
 
+    const translationResolver = (
+      configContext.apiErrorTranslationResolver.value
+    ) as ApiErrorTranslationResolver<string> | null
+    const translationKey = translationResolver?.(firstError.code)
+    let message = firstError.detail || i18n.t('component.toast.unexpected_error.message')
+
+    if (translationKey !== undefined) {
+      // The application owns an exhaustive, typed error-code translation map.
+      // eslint-disable-next-line @intlify/vue-i18n/no-dynamic-keys
+      message = i18n.t(translationKey)
+    }
+
     show({
       icon: AlertCircleIcon,
-      message: firstError.detail,
+      message,
       variant: 'error',
     })
   }
