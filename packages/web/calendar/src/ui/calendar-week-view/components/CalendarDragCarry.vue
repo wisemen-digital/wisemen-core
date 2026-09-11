@@ -1,4 +1,10 @@
 <script setup lang="ts" generic="TMeta = Record<string, unknown>">
+import {
+  UIColumnLayout,
+  UIRowLayout,
+  UIText,
+} from '@wisemen/vue-core-design-system'
+
 import type { CalendarEvent } from '@/ui/calendar-week-view/types/calendarEvent.type'
 
 const props = defineProps<{
@@ -27,16 +33,17 @@ const props = defineProps<{
 
     No transition of any kind: anything that eases here trails the pointer.
   -->
-  <div
+  <Component
+    :is="props.isAllDay ? UIRowLayout : UIColumnLayout"
+    :align="props.isAllDay ? 'center' : 'start'"
+    :gap="props.isAllDay ? 'xs' : 'none'"
     :data-drop-invalid="props.isValid ? undefined : ''"
     :style="{
       height: `${props.carry.height}px`,
       width: `${props.carry.width}px`,
       transform: `translate3d(${Math.round(props.carry.x)}px, ${Math.round(props.carry.y)}px, 0)`,
     }"
-    :class="props.isAllDay
-      ? 'flex items-center gap-1 font-medium'
-      : 'flex flex-col items-start py-1'"
+    :class="props.isAllDay ? 'font-medium' : 'py-1'"
     class="
       pointer-events-none fixed top-0 left-0 z-100 overflow-hidden rounded-md
       border border-blue-200/60 bg-blue-50 px-1.5 text-left text-xs
@@ -63,9 +70,10 @@ const props = defineProps<{
         class="size-1.5 shrink-0 rounded-full bg-blue-500"
       />
 
-      <span class="block w-full truncate font-medium">
-        {{ props.event.title ?? 'Untitled event' }}
-      </span>
+      <UIText
+        :text="props.event.title ?? 'Untitled event'"
+        class="w-full font-medium"
+      />
     </slot>
-  </div>
+  </Component>
 </template>

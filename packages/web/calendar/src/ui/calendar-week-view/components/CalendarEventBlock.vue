@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="TMeta = Record<string, unknown>">
+import { UIText } from '@wisemen/vue-core-design-system'
+
 import type { CalendarEvent } from '@/ui/calendar-week-view/types/calendarEvent.type'
 
 const props = defineProps<{
@@ -94,9 +96,10 @@ function onResizePointerDown(
       :is-ghost="false"
       :is-start="props.isStart"
     >
-      <span class="block w-full truncate font-medium">
-        {{ props.event.title ?? 'Untitled event' }}
-      </span>
+      <UIText
+        :text="props.event.title ?? 'Untitled event'"
+        class="w-full font-medium"
+      />
     </slot>
 
     <template v-if="props.isResizable">

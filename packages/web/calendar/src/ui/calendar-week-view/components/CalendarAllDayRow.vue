@@ -1,4 +1,8 @@
 <script setup lang="ts" generic="TMeta = Record<string, unknown>">
+import {
+  UIRowLayout,
+  UIText,
+} from '@wisemen/vue-core-design-system'
 import type { Temporal } from 'temporal-polyfill'
 import { computed } from 'vue'
 
@@ -127,12 +131,24 @@ function onSlotClick(day: Temporal.PlainDate, nativeEvent: MouseEvent): void {
     The day cells behind the bars are grid cells, not controls — see the same
     note in CalendarDayColumn. Keyboard equivalents arrive with Phase 6.
   -->
-  <div class="flex min-h-8 shrink-0 items-stretch border-b border-gray-200">
-    <div class="flex w-16 shrink-0 items-start justify-end pt-1 pr-2">
-      <span class="text-xs text-gray-400">All day</span>
-    </div>
+  <UIRowLayout
+    align="start"
+    gap="none"
+    class="min-h-8 shrink-0 border-b border-gray-200"
+  >
+    <UIRowLayout
+      align="start"
+      justify="end"
+      gap="none"
+      class="w-16 shrink-0 pt-1 pr-2"
+    >
+      <UIText
+        text="All day"
+        class="text-xs text-gray-400"
+      />
+    </UIRowLayout>
 
-    <div class="relative grow border-l border-gray-100">
+    <div class="relative grow self-stretch border-l border-gray-100">
       <div class="absolute inset-0 grid grid-cols-7">
         <div
           v-for="day in props.weekDays"
@@ -149,7 +165,7 @@ function onSlotClick(day: Temporal.PlainDate, nativeEvent: MouseEvent): void {
         :style="{ gridTemplateRows: `repeat(${laneCount}, minmax(0, 1fr))` }"
         class="relative grid grid-cols-7 gap-y-0.5 p-1"
       >
-        <button
+        <UIRowLayout
           v-for="bar in bars"
           :key="bar.event.id"
           :style="{
@@ -161,18 +177,20 @@ function onSlotClick(day: Temporal.PlainDate, nativeEvent: MouseEvent): void {
             bar.isStart ? 'ml-px rounded-l-md' : '',
             bar.isEnd ? 'mr-px rounded-r-md' : '',
           ]"
+          as="button"
+          gap="xs"
           type="button"
           class="
-            group/bar relative flex h-5 items-center gap-1 truncate border
-            border-blue-200/60 bg-blue-50 px-1.5 text-left text-xs font-medium
-            text-blue-900
+            group/bar relative h-5 truncate border border-blue-200/60 bg-blue-50
+            px-1.5 text-left text-xs font-medium text-blue-900
             hover:bg-blue-100
           "
           @click="onEventClick(bar.event, $event)"
           @pointerdown="onEventPointerDown(bar.event, $event)"
         >
           <span class="size-1.5 shrink-0 rounded-full bg-blue-500" />
-          <span class="truncate">{{ bar.event.title ?? 'Untitled event' }}</span>
+
+          <UIText :text="bar.event.title ?? 'Untitled event'" />
 
           <template v-if="editabilityFor(bar.event).isResizable">
             <span
@@ -203,7 +221,7 @@ function onSlotClick(day: Temporal.PlainDate, nativeEvent: MouseEvent): void {
               @pointerdown="onResizePointerDown(bar.event, $event, 'resize-end')"
             />
           </template>
-        </button>
+        </UIRowLayout>
 
         <div
           v-if="ghostBar !== null && props.ghost !== null"
@@ -220,5 +238,5 @@ function onSlotClick(day: Temporal.PlainDate, nativeEvent: MouseEvent): void {
         />
       </div>
     </div>
-  </div>
+  </UIRowLayout>
 </template>

@@ -1,4 +1,8 @@
 <script setup lang="ts" generic="TMeta = Record<string, unknown>">
+import {
+  UIColumnLayout,
+  UIRowLayout,
+} from '@wisemen/vue-core-design-system'
 import { Temporal } from 'temporal-polyfill'
 import {
   computed,
@@ -58,7 +62,13 @@ defineSlots<{
 }>()
 
 const gridElement = useTemplateRef<HTMLElement>('grid')
-const scrollElement = useTemplateRef<HTMLElement>('scroll')
+
+/**
+ * The scroll container is a UIColumnLayout, so the template ref holds a
+ * component instance rather than the node auto-scroll needs to drive.
+ */
+const scrollLayout = useTemplateRef<{ $el: HTMLElement } | null>('scroll')
+const scrollElement = computed<HTMLElement | null>(() => scrollLayout.value?.$el ?? null)
 
 const currentDateRef = computed(() => props.currentDate)
 const firstDayOfWeekRef = computed(() => props.firstDayOfWeek)
@@ -327,11 +337,10 @@ function onToday(): void {
 </script>
 
 <template>
-  <div
-    class="
-      flex h-full flex-col overflow-hidden rounded-lg border border-gray-200
-      bg-white
-    "
+  <UIColumnLayout
+    align="stretch"
+    gap="none"
+    class="h-full overflow-hidden rounded-lg border border-gray-200 bg-white"
   >
     <CalendarWeekToolbar
       :week-days="weekDays"
@@ -340,9 +349,11 @@ function onToday(): void {
       @today="onToday"
     />
 
-    <div
+    <UIColumnLayout
       ref="scroll"
-      class="flex grow flex-col overflow-y-auto"
+      align="stretch"
+      gap="none"
+      class="grow overflow-y-auto"
     >
       <div class="sticky top-0 z-10 bg-white">
         <CalendarWeekHeader
@@ -362,7 +373,11 @@ function onToday(): void {
         />
       </div>
 
-      <div class="flex grow">
+      <UIRowLayout
+        align="start"
+        gap="none"
+        class="grow"
+      >
         <CalendarHourLabels
           :start-hour="props.startHour"
           :end-hour="props.endHour"
@@ -401,8 +416,8 @@ function onToday(): void {
             </template>
           </CalendarDayColumn>
         </div>
-      </div>
-    </div>
+      </UIRowLayout>
+    </UIColumnLayout>
 
     <CalendarDragCarry
       v-if="carryState !== null && dragState !== null && dragState.kind === 'move'"
@@ -421,5 +436,5 @@ function onToday(): void {
         />
       </template>
     </CalendarDragCarry>
-  </div>
+  </UIColumnLayout>
 </template>

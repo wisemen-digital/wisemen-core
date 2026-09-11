@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import {
+  UIRowLayout,
+  UIText,
+} from '@wisemen/vue-core-design-system'
 import type { Temporal } from 'temporal-polyfill'
 import { computed } from 'vue'
 
@@ -25,20 +29,20 @@ function formatTimeLabel(zonedDateTime: Temporal.ZonedDateTime): string {
 </script>
 
 <template>
-  <div
+  <UIRowLayout
     :style="{ top: `${topOffsetPercentage}%` }"
-    class="pointer-events-none absolute inset-x-0 z-10 flex items-center"
+    gap="none"
+    class="pointer-events-none absolute inset-x-0 z-10"
   >
-    <span
+    <UIText
+      :text="formatTimeLabel(props.currentZonedDateTime)"
       class="
         -ml-14 w-12 shrink-0 text-right text-[10px] font-medium text-error-500
       "
-    >
-      {{ formatTimeLabel(props.currentZonedDateTime) }}
-    </span>
+    />
 
     <div class="h-px w-full bg-error-500">
       <div class="-mt-0.75 size-1.75 rounded-full bg-error-500" />
     </div>
-  </div>
+  </UIRowLayout>
 </template>

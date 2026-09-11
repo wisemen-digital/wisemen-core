@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import {
+  UIColumnLayout,
+  UIRowLayout,
+  UIText,
+} from '@wisemen/vue-core-design-system'
 import { Temporal } from 'temporal-polyfill'
 
 const props = defineProps<{
@@ -18,33 +23,36 @@ function formatDayName(date: Temporal.PlainDate): string {
 </script>
 
 <template>
-  <div
+  <UIRowLayout
+    gap="none"
     class="
-      flex h-(--wui-calendar-header-height,3rem) shrink-0 items-center border-b
-      border-gray-200
+      h-(--wui-calendar-header-height,3rem) shrink-0 border-b border-gray-200
     "
   >
     <div class="w-16 shrink-0" />
 
     <div class="grid grow grid-cols-7">
-      <div
+      <UIColumnLayout
         v-for="day in props.weekDays"
         :key="day.toString()"
-        class="flex flex-col items-center justify-center py-1"
+        align="center"
+        justify="center"
+        gap="none"
+        class="py-1"
       >
-        <span class="text-xs font-medium text-gray-500 uppercase">
-          {{ formatDayName(day) }}
-        </span>
+        <UIText
+          :text="formatDayName(day)"
+          class="text-xs font-medium text-gray-500 uppercase"
+        />
 
-        <span
+        <UIText
+          :text="day.day.toString()"
           :class="isSameDate(day, props.today) ? 'text-blue-600' : `
             text-gray-900
           `"
           class="text-sm font-semibold"
-        >
-          {{ day.day }}
-        </span>
-      </div>
+        />
+      </UIColumnLayout>
     </div>
-  </div>
+  </UIRowLayout>
 </template>
