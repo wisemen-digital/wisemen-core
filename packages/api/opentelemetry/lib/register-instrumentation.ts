@@ -30,6 +30,9 @@ export function registerInstrumentation (
 
             span.updateName(`${request.method} ${incomingRoute}`)
           }
+        },
+        headersToSpanAttributes: {
+          server: { requestHeaders: ['origin'] }
         }
       }),
       new ExpressInstrumentation({
