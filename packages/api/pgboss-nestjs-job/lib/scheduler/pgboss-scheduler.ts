@@ -5,8 +5,8 @@ import { ConnectionOptions } from 'pg-boss'
 import { EntityManager } from 'typeorm'
 import { createTransactionManagerProxy, InjectEntityManager } from '@wisemen/nestjs-typeorm'
 import { Reflector } from '@nestjs/core'
-import { Trace } from '@wisemen/opentelemetry'
-import { propagation, context } from '@opentelemetry/api'
+import { captureException, getOtelTracer } from '@wisemen/opentelemetry'
+import { propagation, context, SpanKind } from '@opentelemetry/api'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { BaseJob } from '../jobs/base-job.js'
 import { PGBOSS_JOB_HANDLER, PGBOSS_QUEUE_NAME } from '../jobs/job.decorator.js'
@@ -33,31 +33,56 @@ export class PgBossScheduler {
     await this.scheduleJobs([job])
   }
 
-  @Trace()
   async scheduleJobs<T extends BaseJob> (jobs: T[]): Promise<void> {
-    const outputTraceContext: TraceContextCarrier = {}
-
-    propagation.inject(context.active(), outputTraceContext)
-
-    const serializedJobs = jobs.map(job => this.serializeJob(job, outputTraceContext))
-
-    const storedJobs = this.jobStorage.getStore()
-
-    if (storedJobs !== undefined) {
-
-      for (const job of serializedJobs) {
-        const queueJobs = storedJobs.get(job.name)
-        if (queueJobs === undefined) {
-          storedJobs.set(job.name, [job])
-        } else {
-          queueJobs.push(job)
-        }
-      }
-
+    if (jobs.length === 0) {
       return
     }
 
-    await this.insertJobs(serializedJobs)
+    const queue = this.reflector.get<string>(PGBOSS_QUEUE_NAME, jobs[0].constructor)
+    const tracer = getOtelTracer()
+
+    await tracer.startActiveSpan(`send ${queue}`, {
+      kind: SpanKind.PRODUCER,
+      attributes: {
+        'messaging.system': 'pg_boss',
+        'messaging.destination.name': queue,
+        'messaging.operation.name': 'send',
+        'messaging.operation.type': 'send',
+        'messaging.batch.message_count': jobs.length
+      }
+    }, async (span) => {
+      try {
+        const outputTraceContext: TraceContextCarrier = {}
+
+        propagation.inject(context.active(), outputTraceContext)
+
+        const serializedJobs = jobs.map(job => this.serializeJob(job, outputTraceContext))
+
+        const storedJobs = this.jobStorage.getStore()
+
+        if (storedJobs !== undefined) {
+
+          for (const job of serializedJobs) {
+            const queueJobs = storedJobs.get(job.name)
+            if (queueJobs === undefined) {
+              storedJobs.set(job.name, [job])
+            } else {
+              queueJobs.push(job)
+            }
+          }
+
+          return
+        }
+
+        await this.insertJobs(serializedJobs)
+      } catch (error) {
+        captureException(error)
+
+        throw error
+      } finally {
+        span.end()
+      }
+    })
   }
 
   /**
