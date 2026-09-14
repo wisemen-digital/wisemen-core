@@ -1,8 +1,9 @@
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { BatchSpanProcessor, BufferConfig } from '@opentelemetry/sdk-trace-base'
+import { BatchSpanProcessor, BufferConfig, SpanProcessor } from '@opentelemetry/sdk-trace-base'
 import { FilteringSpanProcessor, SpanExportFilter } from './filtering-span-processor.js'
+import { isKnownNoiseSpan } from './noise-span-filter.js'
 import { registerInstrumentation } from './register-instrumentation.js'
 import { createOtelHeaders, OtelAuth } from './headers.js'
 
@@ -16,8 +17,39 @@ export interface OpentelemetryTracingConfig {
   attributes?: Record<string, string>
   /** Return false to prevent a completed span from being queued for export. */
   shouldExportSpan?: SpanExportFilter
+  /** Drop known no-information spans such as Redis keepalive pings. Defaults to true. */
+  filterKnownNoiseSpans?: boolean
+  /** Truncate span attribute values to this many characters. Defaults to 2048. */
+  attributeValueLengthLimit?: number
 }
 
+
+// Bulk INSERT statements reach ~190 KB, which costs far more than it is worth.
+const DEFAULT_ATTRIBUTE_VALUE_LENGTH_LIMIT = 2048
+
+function buildSpanProcessor (
+  batchSpanProcessor: BatchSpanProcessor,
+  config: OpentelemetryTracingConfig
+): SpanProcessor {
+  const filters: SpanExportFilter[] = []
+
+  if (config.filterKnownNoiseSpans ?? true) {
+    filters.push(span => !isKnownNoiseSpan(span))
+  }
+
+  if (config.shouldExportSpan != null) {
+    filters.push(config.shouldExportSpan)
+  }
+
+  if (filters.length === 0) {
+    return batchSpanProcessor
+  }
+
+  return new FilteringSpanProcessor(
+    batchSpanProcessor,
+    span => filters.every(filter => filter(span))
+  )
+}
 
 export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): void {
   if (!config.enabled) {
@@ -42,9 +74,7 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
     maxExportBatchSize: config.buffer?.maxExportBatchSize ?? 512
   })
 
-  const spanProcessor = config.shouldExportSpan == null
-    ? batchSpanProcessor
-    : new FilteringSpanProcessor(batchSpanProcessor, config.shouldExportSpan)
+  const spanProcessor = buildSpanProcessor(batchSpanProcessor, config)
 
   const sdk = new NodeSDK({
     traceExporter,
@@ -52,6 +82,9 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
     spanProcessors: [
       spanProcessor,
     ],
+    spanLimits: {
+      attributeValueLengthLimit: config.attributeValueLengthLimit ?? DEFAULT_ATTRIBUTE_VALUE_LENGTH_LIMIT
+    },
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
       'deployment.environment': config.env,

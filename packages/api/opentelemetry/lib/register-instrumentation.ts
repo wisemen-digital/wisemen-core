@@ -20,6 +20,11 @@ export function registerInstrumentation (
         ignoreConnectSpans: true,
       }),
       new HttpInstrumentation({
+        ignoreIncomingRequestHook: (request: IncomingMessage): boolean => {
+          const path = request.url?.split('?')[0]
+
+          return path === '/health' || path === '/ready'
+        },
         requestHook: (span: Span, request: ClientRequest | IncomingMessage): void => {
           if (request instanceof ClientRequest) {
             const outgoingRoute = (request.host ?? '') + (request.path?.split('?')[0] ?? '')
