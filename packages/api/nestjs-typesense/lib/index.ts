@@ -34,6 +34,7 @@ export type { TypesenseCollection, TypesenseCollectionName } from './schema/coll
 export type { InferDocumentType } from './schema/document.js'
 export type { InferDocumentFromFields } from './schema/document.js'
 export type { ApplyInverseJoin, ApplyReferenceJoin, InferSearchResultDocument, TypesenseSearchParams } from './params-builder/search-result.types.js'
+export { TypesenseMissingValues } from './params-builder/enums/typesense-missing-values.enum.js'
 export {
   typesenseFieldConfig,
   TypesenseFieldBuilder

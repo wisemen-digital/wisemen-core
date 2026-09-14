@@ -5,6 +5,33 @@
 
 
 
+
+
+
+
+## 1.4.0
+<sub>2026-09-03</sub>
+
+- [#1646](https://github.com/wisemen-digital/wisemen-core/pull/1646)  *(minor)* Thanks [@Kobe-Kwanten](https://github.com/Kobe-Kwanten)!
+  Added PostgreSQL session-level advisory locks with blocking, non-blocking,
+  exclusive, shared, single-key, and two-key support.
+
+## 1.3.0
+<sub>2026-09-01</sub>
+
+- [#1633](https://github.com/wisemen-digital/wisemen-core/pull/1633)  *(minor)* Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)! - Add `createAndUpsert` for creating and upserting entities without recursive relation type errors.
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 1.2.5
+<sub>2026-08-27</sub>
+
+- [#1630](https://github.com/wisemen-digital/wisemen-core/pull/1630)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add inter quantity calculations
+
+## 1.2.4
+<sub>2026-08-27</sub>
+
+- [#1626](https://github.com/wisemen-digital/wisemen-core/pull/1626)  *(patch)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)! - Quantity add delta class to disable addition and multiplication with temperature
+
 ## 1.2.3
 <sub>2026-07-28</sub>
 

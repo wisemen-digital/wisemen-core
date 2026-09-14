@@ -2,6 +2,7 @@
 import type { SortDirection } from '@wisemen/pagination'
 import { FilterOperator } from './enums/typesense-filter-options.enum.js'
 import { TypesenseOperationMode } from './enums/typesense-operation-mode.enum.js'
+import type { TypesenseMissingValues } from './enums/typesense-missing-values.enum.js'
 import { TypesenseLogicOperator } from './enums/typesense-logic-operator.enum.js'
 import { TypesenseFilterParamsBuilder } from './filter-params.builder.js'
 import { TypesenseJoinType } from './enums/typesense-join-type.enum.js'
@@ -179,9 +180,14 @@ export class TypesenseSearchParamsBuilder<
 
   addSortOn<TField extends CollectionField<TCollection>> (
     sortField: TField & SortFieldConstraint<TField>,
-    direction: SortDirection
+    direction: SortDirection,
+    missingValues?: TypesenseMissingValues
   ): this {
-    this.sorting.push(`${sortField.name}:${direction}`)
+    const field = missingValues != null
+      ? `${sortField.name}(missing_values: ${missingValues})`
+      : sortField.name
+
+    this.sorting.push(`${field}:${direction}`)
     return this
   }
 

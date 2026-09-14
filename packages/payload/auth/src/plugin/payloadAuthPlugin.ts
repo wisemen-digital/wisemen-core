@@ -2,6 +2,11 @@
 import type { Plugin } from 'payload'
 
 import { createPayloadCollectionAuth } from '#plugin/payloadCollectionAuth.ts'
+import {
+  AccessControl,
+  initializeAccessControl,
+  resolveAccessControl,
+} from '#shared/accessControl.ts'
 import type {
   BaseUserRecordWithId,
   CreatePayloadAuthPluginParams,
@@ -22,7 +27,11 @@ function mergePublicAuthConfig(
   }
 }
 
-export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
+export function createPayloadAuthPlugin<
+  TUser extends BaseUserRecordWithId,
+  TCollectionSlug extends string = string,
+>({
+  isAllowedPrivateAccess,
   isUserAllowed,
   authConfig,
   canLogin,
@@ -35,7 +44,9 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   tokenRefreshBufferMs,
   userCollectionSlug,
   verificationUrlTemplate,
-}: CreatePayloadAuthPluginParams<TUser>): PayloadAuthPluginResult {
+}: CreatePayloadAuthPluginParams<TUser, TCollectionSlug>): PayloadAuthPluginResult {
+  initializeAccessControl(isAllowedPrivateAccess)
+
   const strategy = provider.createStrategy({
     isUserAllowed,
     canLogin,
@@ -62,6 +73,7 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
   const publicAuth = provider.getPublicConfig()
 
   return {
+    accessControl: AccessControl,
     auth: publicAuth,
     createCollectionAuth: (overrides) => createPayloadCollectionAuth({
       ...authConfig,
@@ -80,7 +92,11 @@ export function createPayloadAuthPlugin<TUser extends BaseUserRecordWithId>({
         tokenRefreshBufferMs,
       })
     },
-    plugin: (): Plugin => (incomingConfig) => incomingConfig,
+    plugin: (): Plugin => (incomingConfig) => {
+      resolveAccessControl(incomingConfig.collections)
+
+      return incomingConfig
+    },
     strategy,
     userHook,
   }

@@ -37,7 +37,7 @@ export class NatsConnectionManager {
       return connection
     } catch (error) {
       if (error instanceof AuthorizationError) {
-        throw new Error('Failed to connect to nats', { cause: error })
+        throw new Error(`Failed to connect to nats connection ${connectionOptions.name}`, { cause: error })
       } else {
         throw error
       }

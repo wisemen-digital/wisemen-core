@@ -1,14 +1,14 @@
 import { Column, ColumnOptions, ValueTransformer } from 'typeorm'
 import { Quantity, QuantityConstructor } from './quantity.js'
 
-export type QuantityColumnOptions<U extends string, Q extends Quantity<U, Q>>
+export type QuantityColumnOptions<Q extends Quantity>
   = Omit<ColumnOptions, 'type' | 'transformer' | 'default'> & { default?: Q }
 
-export function QuantityColumn<U extends string, Q extends Quantity<U, Q>> (
+export function QuantityColumn<U extends string, Q extends Quantity<U>> (
   // eslint-disable-next-line @typescript-eslint/naming-convention
   QuantityConstructor: QuantityConstructor<U, Q>,
   storeAsUnit: U,
-  options?: QuantityColumnOptions<U, Q>
+  options?: QuantityColumnOptions<Q>
 ): PropertyDecorator {
   const transformer = new QuantityTypeOrmTransformer(QuantityConstructor, storeAsUnit)
 
@@ -20,7 +20,7 @@ export function QuantityColumn<U extends string, Q extends Quantity<U, Q>> (
   })
 }
 
-export class QuantityTypeOrmTransformer<U extends string, Q extends Quantity<U, Q>>
+export class QuantityTypeOrmTransformer<U extends string, Q extends Quantity<U>>
 implements ValueTransformer {
   constructor (
     // eslint-disable-next-line @typescript-eslint/naming-convention

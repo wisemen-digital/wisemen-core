@@ -7,6 +7,20 @@
 
 
 
+
+## 1.0.0
+<sub>2026-09-03</sub>
+
+- [#1283](https://github.com/wisemen-digital/wisemen-core/pull/1283)  *(major)* Thanks [@maartensijmkens](https://github.com/maartensijmkens)!
+  monetary validator accept monetary class instance for min and max instead of number
+
+  Migration:
+  - Replace `minAmount` with `min` and `maxAmount` with `max` in `IsMonetary` validation.
+  - Use Monetary values instead of numbers. 
+  - Try to infer currency and precision from context.
+
+  E.g `@IsMonetary({ maxAmount: 10_00 })` becomes `@IsMonetary({ max: new Monetary(10_00, Currency.EUR, 2) })`.
+
 ## 0.5.6
 <sub>2026-07-29</sub>
 

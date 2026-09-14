@@ -5,11 +5,12 @@ import { ScopedFilterTest } from './scoped-filter-test.entity.js'
 export const dataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URI,
+  schema: 'scoped_filter',
   ssl: false,
   extra: { max: 50 },
   logging: false,
   synchronize: false,
-  migrationsRun: true,
+  migrationsRun: false,
   entities: [ScopedFilterTest, FilterConditionsTest],
   invalidWhereValuesBehavior: {
     null: 'throw',

@@ -8,6 +8,7 @@ import {
 import { useIsSelectorVisible } from '#composables/isSelectorVisible.composable.ts'
 import type { RegisteredActionContext } from '#register'
 import type { Action } from '#types/action.type.ts'
+import type { TableSelectionState } from '#types/tableSelection.type.ts'
 
 interface ActionContextOptions {
   keyboardEvent?: KeyboardEvent
@@ -49,6 +50,8 @@ function dedupeModels(models: RegisteredActionContext['models']): RegisteredActi
 export const useActionManagerStore = defineStore('actionManager', () => {
   const focusedModels = ref<RegisteredActionContext['models']>([])
   const viewModels = ref<RegisteredActionContext['models']>([])
+  const selectedModels = ref<RegisteredActionContext['models']>([])
+  const tableSelection = ref<TableSelectionState | null>(null)
   const metadata = ref<RegisteredActionContext['metadata']>({} as RegisteredActionContext['metadata'])
   const router = useRouter()
   const route = useRoute<any>()
@@ -78,9 +81,25 @@ export const useActionManagerStore = defineStore('actionManager', () => {
     viewModels.value = models
   }
 
+  function setSelectedModels(models: RegisteredActionContext['models']): void {
+    selectedModels.value = models
+  }
+
+  function setTableSelection(selection: TableSelectionState | null): void {
+    tableSelection.value = selection
+  }
+
+  function clearTableSelection(): void {
+    tableSelection.value = {
+      items: [],
+      type: 'include',
+    }
+  }
+
   function actionContext(options: ActionContextOptions): RegisteredActionContext {
     const allModels = dedupeModels([
       ...(options.models ?? []),
+      ...selectedModels.value,
       ...viewModels.value,
       ...focusedModels.value,
     ])
@@ -102,6 +121,7 @@ export const useActionManagerStore = defineStore('actionManager', () => {
         return route.name === routeName
       },
       allModels,
+      clearTableSelection,
       focusedModels: focusedModels.value,
       keyboardEvent: options.keyboardEvent,
       menuType: options.menuType,
@@ -109,7 +129,9 @@ export const useActionManagerStore = defineStore('actionManager', () => {
       models: options.models ?? [],
       router,
       searchInput: options.searchInput ?? '',
+      selectedModels: selectedModels.value,
       subActionsMeta: options.subActionsMeta,
+      tableSelection: tableSelection.value,
       targetedModelOfType: (type: any) => allModels.find((m) => (m as any).modelName === type) ?? null,
       targetedModelOfTypeOrThrow: (type: any): any => {
         const model = allModels.find((m) => (m as any).modelName === type) ?? null
@@ -126,12 +148,17 @@ export const useActionManagerStore = defineStore('actionManager', () => {
 
   return {
     actionContext,
+    clearTableSelection,
     executeAction,
     focusedModels,
     metadata,
     registerMetadata,
+    selectedModels,
     setFocusedModels,
+    setSelectedModels,
+    setTableSelection,
     setViewModels,
+    tableSelection,
     unregisterMetadata,
     viewModels,
   }

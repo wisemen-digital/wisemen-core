@@ -2,6 +2,24 @@
 
 
 
+
+
+
+## 0.0.28
+<sub>2026-09-03</sub>
+
+- [#1635](https://github.com/wisemen-digital/wisemen-core/pull/1635)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Added @IsPhoneNumber()
+
+## 0.0.27
+<sub>2026-09-01</sub>
+
+- [#1634](https://github.com/wisemen-digital/wisemen-core/pull/1634)  *(patch)* Thanks [@SebastiaanVanspauwen](https://github.com/SebastiaanVanspauwen)! - Updated test
+
+## 0.0.26
+<sub>2026-08-27</sub>
+
+- [#1615](https://github.com/wisemen-digital/wisemen-core/pull/1615)  *(patch)* Thanks [@app/ernest-app](https://github.com/app/ernest-app)! - Resolve npm vulnerabilities (handlebars, mailpit-api, js-yaml, dayjs, fastify, @typescript-eslint/parser)
+
 ## 0.0.25
 <sub>2026-07-05</sub>
 

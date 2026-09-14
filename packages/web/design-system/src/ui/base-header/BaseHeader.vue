@@ -27,8 +27,8 @@ const hasSubtitle = computed<boolean>(() => {
 
 <template>
   <UIRowLayout
+    :align="hasSubtitle ? 'stretch' : 'center'"
     :gap="hasSubtitle ? 'xl' : 'lg'"
-    align="center"
   >
     <template v-if="props.left !== null">
       <Component
@@ -38,14 +38,15 @@ const hasSubtitle = computed<boolean>(() => {
           'size-6': hasSubtitle,
           'size-4': !hasSubtitle,
         }"
-        class="shrink-0 text-tertiary"
+        class="shrink-0 self-center text-tertiary"
       />
 
       <UIFeaturedIcon
         v-else-if="props.left.type === 'featured-icon'"
         :icon="props.left.icon"
-        :size="hasSubtitle ? 'lg' : 'md'"
+        :size="hasSubtitle ? 'xl' : 'md'"
         :color="props.left.color ?? 'gray'"
+        class="self-center"
         variant="outline"
       />
 
@@ -55,13 +56,13 @@ const hasSubtitle = computed<boolean>(() => {
         :src="props.left.src ?? null"
         :logo-alt="props.left.imageAlt ?? null"
         :size="hasSubtitle ? 'md' : 'sm'"
-        class="shrink-0"
+        class="shrink-0 self-center"
       />
 
       <UIDot
         v-else-if="props.left.type === 'dot'"
         :color="props.left.color ?? 'gray'"
-        class="shrink-0"
+        class="shrink-0 self-center"
       />
 
       <UILogo
@@ -69,7 +70,7 @@ const hasSubtitle = computed<boolean>(() => {
         :src="props.left.src"
         :alt="props.left.alt"
         :size="hasSubtitle ? 'md' : 'sm'"
-        class="shrink-0"
+        class="shrink-0 self-center"
       />
     </template>
 
@@ -80,7 +81,7 @@ const hasSubtitle = computed<boolean>(() => {
       <UIRowLayout
         align="center"
         gap="sm"
-        class="min-w-0"
+        class="min-h-0 min-w-0 flex-1"
       >
         <UIText
           :text="props.title"
@@ -90,13 +91,15 @@ const hasSubtitle = computed<boolean>(() => {
         <slot name="title-end" />
       </UIRowLayout>
 
-      <slot name="subtitle" />
+      <div class="flex min-h-0 flex-1 items-end">
+        <slot name="subtitle" />
+      </div>
     </UIColumnLayout>
 
     <UIRowLayout
       v-if="$slots.actions"
       gap="sm"
-      class="shrink-0"
+      class="shrink-0 self-center"
     >
       <slot name="actions" />
     </UIRowLayout>

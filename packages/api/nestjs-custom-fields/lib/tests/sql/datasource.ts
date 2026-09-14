@@ -4,6 +4,7 @@ import { CustomFieldDefinition } from '#src/typeorm/custom-field-definition.enti
 export const dataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URI,
+  schema: 'nestjs_custom_fields',
   ssl: false,
   extra: { max: 50 },
   logging: false,

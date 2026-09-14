@@ -8,31 +8,39 @@ import { Column, ColumnOptions, type ValueTransformer } from 'typeorm'
 const EMPTY_CURRENCY_LIST = {} as Record<Currency, never>
 const PERSIST_PRECISION = true
 
-interface CustomFieldValueColumnTransformers {
-  plainDateTransformer: PlainDateTransformer
-  timestampTransformer: TimestampTransformer
-}
-
 export function CustomFieldValueColumn(options?: Omit<ColumnOptions, 'type' | 'transformer'>): PropertyDecorator {
   return Column({
     ...options,
     type: 'jsonb',
-    transformer: new CustomFieldValueTransformer({
-      plainDateTransformer: PlainDateTransformer.getInstance(),
-      timestampTransformer: new TimestampTransformer()
-    })
+    transformer: new CustomFieldValueTransformer()
   })
 }
 
-class CustomFieldValueTransformer implements ValueTransformer {
+export class CustomFieldValueTransformer implements ValueTransformer {
   private plainDateTransformer: PlainDateTransformer
   private timestampTransformer: TimestampTransformer
 
-  constructor(transformers: CustomFieldValueColumnTransformers) {
-    this.plainDateTransformer = transformers.plainDateTransformer
-    this.timestampTransformer = transformers.timestampTransformer
+  constructor() {
+    this.plainDateTransformer = PlainDateTransformer.getInstance()
+    this.timestampTransformer = new TimestampTransformer()
   }
 
+  from(value: null): null
+  from(value: undefined): undefined
+  from(value: CustomFieldColumnValue): CustomFieldValue
+  from(value: CustomFieldColumnValue | null): CustomFieldValue | null
+  from(value: CustomFieldColumnValue | undefined): CustomFieldValue | undefined
+  from(
+    value: CustomFieldColumnValue | null | undefined
+  ): CustomFieldValue | null | undefined
+  from(value: CustomFieldColumnValue[]): CustomFieldValue[]
+  from(value: CustomFieldColumnValue[] | null): CustomFieldValue[] | null
+  from(
+    value: CustomFieldColumnValue[] | undefined
+  ): CustomFieldValue[] | undefined
+  from(
+    value: CustomFieldColumnValue[] | null | undefined
+  ): CustomFieldValue[] | null | undefined
   from(
     value: CustomFieldColumnValue | CustomFieldColumnValue[] | null | undefined
   ): CustomFieldValue | CustomFieldValue[] | null | undefined {
@@ -47,6 +55,20 @@ class CustomFieldValueTransformer implements ValueTransformer {
     return this.parseCustomFieldValue(value)
   }
 
+  to(value: null): null
+  to(value: undefined): undefined
+  to(value: CustomFieldValue): CustomFieldColumnValue
+  to(value: CustomFieldValue | null): CustomFieldColumnValue | null
+  to(value: CustomFieldValue | undefined): CustomFieldColumnValue | undefined
+  to(
+    value: CustomFieldValue | null | undefined
+  ): CustomFieldColumnValue | null | undefined
+  to(value: CustomFieldValue[]): CustomFieldColumnValue[]
+  to(value: CustomFieldValue[] | null): CustomFieldColumnValue[] | null
+  to(value: CustomFieldValue[] | undefined): CustomFieldColumnValue[] | undefined
+  to(
+    value: CustomFieldValue[] | null | undefined
+  ): CustomFieldColumnValue[] | null | undefined
   to(
     value: CustomFieldValue | CustomFieldValue[] | null | undefined
   ): CustomFieldColumnValue | CustomFieldColumnValue[] | null | undefined {

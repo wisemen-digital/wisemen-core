@@ -28,4 +28,14 @@ describe('IsRRN Decorator', () => {
 
     expect(errors.length).toBe(0)
   })
+
+  it('Should throw validator errors for rrn with the wrong length', async () => {
+    const testInstance = new TestClass()
+
+    testInstance.rrn = '880626845'
+
+    const errors = await validate(testInstance)
+
+    expect(errors.length).toBe(1)
+  })
 })

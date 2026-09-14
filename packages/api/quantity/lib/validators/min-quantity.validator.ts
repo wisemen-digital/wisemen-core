@@ -1,8 +1,8 @@
 import { ValidatorConstraintInterface, ValidationArguments } from 'class-validator'
-import { QuantityDto } from '../quantity.dto.js'
-import { Quantity } from '../quantity.js'
+import { QuantityDto } from '#lib/quantity.dto.js'
+import { Comparable, Quantity } from '#lib/quantity.js'
 
-export class MinQuantityValidator<U extends string, Q extends Quantity<U, Q>>
+export class MinQuantityValidator<Q extends Quantity & Comparable>
 implements ValidatorConstraintInterface {
   constructor (
     private min: Q

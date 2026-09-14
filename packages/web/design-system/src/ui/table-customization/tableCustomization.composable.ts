@@ -12,9 +12,20 @@ import { useOverlay } from '@/ui/dialog/index'
 import type { TableColumn } from '@/ui/table/types/table.type'
 import TableCustomizationDialog from '@/ui/table-customization/TableCustomizationDialog.vue'
 
+/**
+ * The only shape `TableCustomizationDialog.vue` actually reads off a column — shared so both
+ * `useTableCustomizeColumns` (old `Table`, `TableColumn`) and `useDataTableCustomizeColumns`
+ * (new `DataTable`, `DataTableColumn`) can drive the same dialog without casting either column
+ * type through `unknown`.
+ */
+export interface TableCustomizationColumn {
+  headerLabel: string
+  key: string
+}
+
 export interface TableColumnState {
   isVisible: boolean
-  column: TableColumn<unknown>
+  column: TableCustomizationColumn
 }
 
 interface UseTableCustomizeColumnsOptions<T, TKey extends string> {

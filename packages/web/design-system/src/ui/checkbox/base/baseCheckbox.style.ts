@@ -15,9 +15,16 @@ export const createBaseCheckboxStyle = tv({
       group-disabled/checkbox:group-data-[state=checked]/checkbox:bg-disabled-subtle
       group-data-invalid/checkbox:group-data-[state=checked]/checkbox:border-error
       group-data-invalid/checkbox:group-data-[state=checked]/checkbox:bg-error-solid
+      group-data-[state=indeterminate]/checkbox:border-brand-600
+      group-data-[state=indeterminate]/checkbox:bg-brand-solid
+      group-data-[state=indeterminate]/checkbox:group-disabled/checkbox:border-disabled
+      group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:bg-disabled-subtle
+      group-data-invalid/checkbox:group-data-[state=indeterminate]/checkbox:border-error
+      group-data-invalid/checkbox:group-data-[state=indeterminate]/checkbox:bg-error-solid
       group-data-invalid/checkbox:group-data-[state=unchecked]/checkbox:border-error
       not-group-disabled/checkbox:hover:border-primary
       not-group-disabled/checkbox:group-data-[state=checked]/checkbox:hover:border-brand-600
+      not-group-disabled/checkbox:group-data-[state=indeterminate]/checkbox:hover:border-brand-600
       disabled:border-disabled
     `,
     indicator: `
@@ -25,7 +32,7 @@ export const createBaseCheckboxStyle = tv({
       group-disabled/checkbox:text-fg-disabled-subtle
     `,
     root: `
-      group/checkbox flex items-center justify-start outline-none
+      group/checkbox touch-hitbox flex items-center justify-start outline-none
       disabled:cursor-not-allowed
     `,
   },

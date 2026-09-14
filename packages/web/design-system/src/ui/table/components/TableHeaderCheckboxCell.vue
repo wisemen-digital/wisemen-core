@@ -17,7 +17,7 @@ const {
 <template>
   <TableHeaderCellBase>
     <BaseCheckbox
-      :model-value="isAllSelected || isIndeterminate"
+      :model-value="isAllSelected"
       :is-indeterminate="isIndeterminate && !isAllSelected"
       :is-label-hidden="true"
       :label="i18n.t('component.table.header.select_all_label')"

@@ -4,6 +4,12 @@
 
 
 
+
+## 1.0.0
+<sub>2026-09-14</sub>
+
+- [#1661](https://github.com/wisemen-digital/wisemen-core/pull/1661)  *(major)* Thanks [@ViktorLadang](https://github.com/ViktorLadang)! - Replaced WaitForNavigation with WaitForSelector
+
 ## 0.2.4
 <sub>2026-08-12</sub>
 

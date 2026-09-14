@@ -1,14 +1,27 @@
-import { HttpStatus, INestApplication, Logger } from '@nestjs/common'
+import { HttpStatus, type INestApplication, Logger } from '@nestjs/common'
 import { SwaggerConfig } from './swagger.options.js'
-import { DocumentBuilder, getSchemaPath, OpenAPIObject, SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger'
+import type { SwaggerDocumentOptions } from './swagger.options.js'
+import { DocumentBuilder, getSchemaPath, type OpenAPIObject, type SwaggerCustomOptions, SwaggerModule } from '@nestjs/swagger'
 import { captureException } from '@wisemen/opentelemetry'
 import { error } from 'console'
 import { InternalServerApiError } from '@wisemen/api-error'
-import { OpenIdConnectOptions as OidcConfig } from './open-id-connect-options.js'
-import { OpenApiDocument } from './open-api-document.js'
+import type { OpenIdConnectOptions as OidcConfig } from './open-id-connect-options.js'
+import type { OpenApiDocument } from './open-api-document.js'
 import { SWAGGER_HTTP_METHODS } from './constants.js'
 
+interface SwaggerDocumentBuildOptions extends SwaggerDocumentOptions {
+  isPathScanningDisabled?: boolean
+}
+
 export class SwaggerDocs {
+  createDocument (
+    app: INestApplication,
+    cfg: SwaggerConfig,
+    options: SwaggerDocumentOptions = {}
+  ): OpenAPIObject {
+    return this.buildDocument(app, cfg, options)
+  }
+
   async register (onApp: INestApplication, cfg: SwaggerConfig): Promise<void> {
     try {
       await this.tryRegister(onApp, cfg)
@@ -29,13 +42,11 @@ export class SwaggerDocs {
       { url: `${cfg.route}/all-json`, name: 'All' }
     ]
 
-    const document = this.buildApiDocumentation('1.0', cfg, oidcConfig)
     const customOptions = this.buildSwaggerCustomOptions(defaultScopes, `${cfg.route}-json`, cfg, urls)
 
-    const swaggerDoc = SwaggerModule.createDocument(onApp, document, {
-      operationIdFactory: this.createSwaggerOperationId,
-      extraModels: [InternalServerApiError],
-      include: []
+    const swaggerDoc = this.buildDocument(onApp, cfg, {
+      isPathScanningDisabled: true,
+      openIdConnect: oidcConfig
     })
 
     SwaggerModule.setup(cfg.route, onApp, swaggerDoc, customOptions)
@@ -73,10 +84,9 @@ export class SwaggerDocs {
   ) {
     const defaultScopes = oidcConfig?.scopes_supported ?? []
     const customOptions = this.buildSwaggerCustomOptions(defaultScopes, `${path}-json`, cfg)
-    const documentation = this.buildApiDocumentation(version, cfg, oidcConfig)
-    const document = SwaggerModule.createDocument(app, documentation, {
-      operationIdFactory: this.createSwaggerOperationId,
-      extraModels: [InternalServerApiError]
+    const document = this.buildDocument(app, cfg, {
+      version,
+      openIdConnect: oidcConfig
     })
 
     if (removeDeprecated) {
@@ -105,27 +115,6 @@ export class SwaggerDocs {
     SwaggerModule.setup(cfg.route, onApp, document)
   }
 
-
-  private createSwaggerOperationId (
-    this: void, 
-    controller: string, 
-    _method: string, 
-    version?: string
-  ): string {
-    let opId = controller.replace('Controller', '')
-
-    if (version !== undefined) {
-      const lowerCaseVersion = version.toLowerCase()
-      const versionWithoutPrefix = lowerCaseVersion.startsWith('v')
-        ? lowerCaseVersion.slice(1)
-        : lowerCaseVersion
-
-      opId += `V${versionWithoutPrefix.toUpperCase()}`
-    }
-
-    return opId
-  }
-
   private buildSwaggerCustomOptions (
     defaultScopes: string[],
     documentUrl: string,
@@ -151,6 +140,24 @@ export class SwaggerDocs {
         }
       }
     }
+  }
+
+  private buildDocument (
+    app: INestApplication,
+    cfg: SwaggerConfig,
+    options: SwaggerDocumentBuildOptions
+  ): OpenAPIObject {
+    const documentation = this.buildApiDocumentation(
+      options.version ?? '1.0',
+      cfg,
+      options.openIdConnect
+    )
+
+    return SwaggerModule.createDocument(app, documentation, {
+      operationIdFactory: createSwaggerOperationId,
+      extraModels: [InternalServerApiError],
+      include: options.isPathScanningDisabled === true ? [] : undefined
+    })
   }
 
   private buildApiDocumentation (
@@ -228,4 +235,25 @@ export class SwaggerDocs {
       }
     }
   }
+}
+
+function createSwaggerOperationId (
+  controller: string,
+  _method: string,
+  version?: string
+): string {
+  let operationId = controller.replace('Controller', '')
+
+  if (version === undefined) {
+    return operationId
+  }
+
+  const normalizedVersion = version.toLowerCase()
+  const versionWithoutPrefix = normalizedVersion.startsWith('v')
+    ? normalizedVersion.slice(1)
+    : normalizedVersion
+
+  operationId += `V${versionWithoutPrefix.toUpperCase()}`
+
+  return operationId
 }

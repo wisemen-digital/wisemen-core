@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import {
+  Download01Icon,
   RefreshCcw02Icon,
   Trash01Icon,
 } from '@wisemen/vue-core-icons'
 import { useI18n } from 'vue-i18n'
 
 import {
+  UIBaseFileUploadItemDownload,
   UIBaseFileUploadItemRemove,
   UIBaseFileUploadItemReplace,
 } from '@/ui/base-file-upload'
@@ -31,6 +33,15 @@ const {
     "
     gap="xs"
   >
+    <UIBaseFileUploadItemDownload>
+      <UIIconButton
+        :icon="Download01Icon"
+        :label="i18n.t('component.form_file_upload.action.download')"
+        variant="tertiary"
+        size="sm"
+      />
+    </UIBaseFileUploadItemDownload>
+
     <UIBaseFileUploadItemReplace>
       <UIIconButton
         :icon="RefreshCcw02Icon"

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import {
+  setIsAuthenticated,
+  useActionShortcuts,
+} from '@wisemen/vue-core-actions'
+
 import type { HourCycle } from '@/types/hourCycle.type'
 import type {
   Address,
@@ -15,6 +20,9 @@ defineProps<{
   locale?: string
   theme?: string
 }>()
+
+useActionShortcuts()
+setIsAuthenticated(true)
 
 const mockAddressAutocompleteAdapter: AddressAutocompleteAdapter = {
   async getAddressByPlaceId(placeId: string): Promise<Address> {

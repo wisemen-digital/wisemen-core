@@ -95,25 +95,25 @@ describe('ViewCustomFieldDefinitionsRepository integration', () => {
 
     expect(response).toHaveLength(2)
     expect(response.map(item => item.key)).toEqual(['priority', 'reference'])
-    expect(response).toEqual([
+    expect(response).toMatchObject([
       {
         uuid: priorityDefinition.uuid,
         tenantUuid: null,
         entityType: 'ticket',
         key: 'priority',
-        label: [{ locale: 'en', value: 'Priority' }],
-        description: [{ locale: 'en', value: 'Ticket priority' }],
+        label: new LocalizedString([{ locale: 'en', value: 'Priority' }]),
+        description: new LocalizedString([{ locale: 'en', value: 'Ticket priority' }]),
         type: CustomFieldType.MULTI_SELECT,
         isRequired: true,
         choices: [
           {
             value: 'high',
-            label: [{ locale: 'en', value: 'High' }],
+            label: new LocalizedString([{ locale: 'en', value: 'High' }]),
             order: 2
           },
           {
             value: 'low',
-            label: [{ locale: 'en', value: 'Low' }],
+            label: new LocalizedString([{ locale: 'en', value: 'Low' }]),
             order: 1
           }
         ],
@@ -128,7 +128,7 @@ describe('ViewCustomFieldDefinitionsRepository integration', () => {
         tenantUuid: null,
         entityType: 'ticket',
         key: 'reference',
-        label: [{ locale: 'en', value: 'Reference' }],
+        label: new LocalizedString([{ locale: 'en', value: 'Reference' }]),
         description: null,
         type: CustomFieldType.TEXT,
         isRequired: false,

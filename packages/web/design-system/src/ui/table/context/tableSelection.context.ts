@@ -11,7 +11,7 @@ interface TableSelectionContext {
   isSelectable: ComputedRef<boolean>
   toggleAll: () => void
   toggleGroup: (items: unknown[]) => void
-  toggleItem: (key: string) => void
+  toggleItem: (key: string, isRangeSelect?: boolean) => void
 }
 
 export const [

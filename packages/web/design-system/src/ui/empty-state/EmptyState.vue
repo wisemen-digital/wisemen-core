@@ -34,10 +34,15 @@ const ILLUSTRATION_MAP = {
     justify="center"
     gap="2xl"
   >
-    <Component
-      :is="ILLUSTRATION_MAP[props.illustration]"
+    <div
       v-if="props.illustration !== null"
-    />
+      class="
+        w-25
+        [&>svg]:h-auto [&>svg]:w-full
+      "
+    >
+      <Component :is="ILLUSTRATION_MAP[props.illustration]" />
+    </div>
     <div
       v-else-if="props.icon !== null"
       class="
