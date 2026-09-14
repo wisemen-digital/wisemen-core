@@ -16,7 +16,7 @@ or an empty `url` turns each pipeline into a no-op.
 
 ```ts
 import {
-  startOpentelemetryTracing
+  startOpentelemetryTracing,
   startOpentelemetryMetrics
 } from '@wisemen/opentelemetry'
 
@@ -48,7 +48,14 @@ startOpentelemetryMetrics({
 
 `startOpentelemetryTracing(...)` registers the package's default HTTP, Nest,
 Express, Postgres, Redis, AWS SDK, and Undici instrumentations before starting
-the Node SDK.
+the Node SDK. Built-in trace volume reduction suppresses health checks,
+Better Stack heartbeat requests, and successful PostgreSQL transaction-control
+spans, while routine PostgreSQL SQL text is replaced by a
+low-cardinality query summary. Slow and failed PostgreSQL spans retain their
+full SQL text.
+
+Built-in trace volume reduction runs before `shouldExportSpan`, so the callback
+observes the attributes that will be exported.
 
 Use `registerInstrumentation(...)` directly only when the application needs to
 add extra OpenTelemetry instrumentations beyond that default set.
