@@ -1,0 +1,75 @@
+{
+  "name": "@wisemen/nestjs-push",
+  "version": "0.0.1",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "author": "Wisemen",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./fcm": {
+      "types": "./dist/fcm/index.d.ts",
+      "import": "./dist/fcm/index.js"
+    },
+    "./fcm/testing": {
+      "types": "./dist/fcm/testing/index.d.ts",
+      "import": "./dist/fcm/testing/index.js"
+    },
+    "./testing": {
+      "types": "./dist/testing/index.d.ts",
+      "import": "./dist/testing/index.js"
+    },
+    "./skills/*": "./skills/*"
+  },
+  "files": [
+    "dist/",
+    "skills/",
+    "CONTEXT.md"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist",
+    "build": "tsc",
+    "pretest": "pnpm clean && pnpm build",
+    "test": "node --env-file=.env.test --enable-source-maps --experimental-test-isolation=none --test './dist/**/*.test.js'",
+    "lint:oxlint": "oxlint --type-aware lib",
+    "lint:eslint": "eslint lib",
+    "lint": "pnpm lint:oxlint && pnpm lint:eslint",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "catalog:backend-peer",
+    "@wisemen/nestjs-typeorm": "workspace:^",
+    "firebase-admin": "catalog:backend-peer",
+    "typeorm": "catalog:backend-peer"
+  },
+  "peerDependenciesMeta": {
+    "firebase-admin": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@nestjs/common": "catalog:backend",
+    "@types/node": "catalog:backend",
+    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@wisemen/nestjs-tests": "workspace:*",
+    "@wisemen/nestjs-typeorm": "workspace:*",
+    "eslint": "catalog:lint-api",
+    "expect": "catalog:test",
+    "firebase-admin": "catalog:backend",
+    "oxlint": "catalog:lint-api",
+    "oxlint-tsgolint": "catalog:lint-api",
+    "pg": "catalog:backend",
+    "typeorm": "catalog:backend-peer",
+    "typescript": "catalog:peer"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wisemen-digital/wisemen-core",
+    "directory": "packages/api/nestjs-push"
+  }
+}
