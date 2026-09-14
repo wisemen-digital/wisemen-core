@@ -76,7 +76,6 @@ useProvideDatePickerContext({
     >
       <RekaDatePickerCalendar
         v-slot="{ weekDays, grid }"
-        :fixed-weeks="false"
         class="flex flex-col gap-lg overflow-hidden bg-primary p-2xl px-3xl"
         weekday-format="short"
       >
