@@ -13,6 +13,8 @@ catalog:
   superjson: "2.2.6"
   vue-component-type-helpers: ^0.0.0
   vue-draggable-plus: ^0.6.1
+  "@nuxt/ui": ">=4.0.0"
+
 
 catalogs:
   backend:

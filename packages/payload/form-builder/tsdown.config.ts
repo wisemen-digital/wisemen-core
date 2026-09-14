@@ -3,15 +3,17 @@ import { defineConfig } from 'tsdown'
 export default defineConfig({
   entry: [
     'src/index.ts',
-    'src/client.ts',
-    'src/server.ts',
-    'src/bin/seed.ts',
+    'src/admin/index.ts',
+    'src/seeders/contactForm.seed.ts',
   ],
   external: [
     '@payloadcms/ui',
+    '@wisemen/payload-core-seeder',
+    '@wisemen/payload-core-utils',
+    '@orpc/contract',
     'payload',
     'react',
-    'react-dom',
+    'zod',
   ],
   format: [
     'esm',

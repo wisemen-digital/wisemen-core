@@ -7,7 +7,17 @@ export type { SeedAccessOptions } from './types'
 
 // The typed view of `config.custom.payloadSeed` — resolve the configured paths from a script.
 export { defineSeed } from './defineSeed'
-export { seed } from './engine/run'
+/**
+ * @deprecated Import `seed` from `@wisemen/payload-core-seeder/server` instead.
+ * This lazy wrapper remains configuration-safe for existing consumers.
+ */
+export async function seed(...args: Parameters<typeof import('./engine/run').seed>) {
+  const {
+    seed: runSeed,
+  } = await import('./engine/run')
+
+  return runSeed(...args)
+}
 export {
   SeedRunError, SeedValidationError,
 } from './engine/validate'
