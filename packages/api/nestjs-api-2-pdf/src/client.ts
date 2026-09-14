@@ -36,8 +36,8 @@ export class Api2PdfClient {
       fileName: options.fileName,
       extraHTTPHeaders: options.extraHTTPHeaders,
       options: {
-        puppeteerWaitForMethod: 'WaitForNavigation',
-        puppeteerWaitForValue: 'networkidle0',
+        puppeteerWaitForMethod: 'WaitForSelector',
+        puppeteerWaitForValue: options.waitForSelector,
         ...options.options
       },
       useCustomStorage: true,
