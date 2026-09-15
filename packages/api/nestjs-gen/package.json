@@ -11,7 +11,7 @@
     "clean": "rimraf ./dist",
     "build": "tsc && shx cp -r templates dist/templates",
     "plop": "cross-env NODE_OPTIONS='--import=tsx' plop --plopfile=src/plopfile.ts",
-    "test": "pnpm build && pnpm node dist/src/main.js",
+    "start": "pnpm build && pnpm node dist/src/main.js",
     "release": "pnpx release-it",
     "lint": "eslint --cache"
   },

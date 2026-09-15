@@ -35,24 +35,14 @@ export function useContext<TContext>(contextName: string) {
   ] as const
 }
 
-type IsFunction<T> = T extends (...args: any[]) => any ? true : false
-
 export type PropsToComputed<T> = {
-  [K in keyof Required<T>]: IsFunction<Exclude<T[K], undefined>> extends true
-    ? T[K]
-    : ComputedRef<Exclude<T[K], undefined>>;
+  [K in keyof Required<T>]: ComputedRef<Exclude<T[K], undefined>>;
 }
 
 export function toComputedRefs<T>(props: T): PropsToComputed<T> {
   const computedRefs: Partial<PropsToComputed<T>> = {}
 
   for (const key in props) {
-    if (typeof props[key] === 'function') {
-      computedRefs[key] = props[key] as any
-
-      continue
-    }
-
     computedRefs[key] = computed<any>(
       () => props[key as keyof T] as T[Extract<keyof T, string>],
     ) as any
