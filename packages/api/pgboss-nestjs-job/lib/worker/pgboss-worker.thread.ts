@@ -1,5 +1,12 @@
 import { captureException, getOtelTracer } from '@wisemen/opentelemetry'
-import { propagation, context, Context, trace } from '@opentelemetry/api'
+import {
+  propagation,
+  context,
+  trace,
+  ROOT_CONTEXT,
+  SpanKind,
+  isSpanContextValid
+} from '@opentelemetry/api'
 import { PgBossClient } from '../client/pgboss-client.js'
 import { JobRegistry } from '../jobs/job.registry.js'
 import { TraceContextCarrier } from '../jobs/trace-context-carrier.js'
@@ -30,21 +37,31 @@ export class PgBossWorkerThread {
     const tracer = getOtelTracer()
     const inputTraceContext: TraceContextCarrier = job.data.traceContext ?? {}
 
-    const parentContext: Context = propagation.extract(context.active(), inputTraceContext)
+    const extractedContext = propagation.extract(ROOT_CONTEXT, inputTraceContext)
+    const producerSpanContext = trace.getSpanContext(extractedContext)
+    const links = producerSpanContext !== undefined && isSpanContextValid(producerSpanContext)
+      ? [{ context: producerSpanContext }]
+      : []
 
     const span = tracer.startSpan(
       `${job.data.className}`,
       {
+        kind: SpanKind.CONSUMER,
+        links,
         attributes: {
+          'messaging.system': 'pg_boss',
+          'messaging.destination.name': job.name,
+          'messaging.operation.name': 'process',
+          'messaging.operation.type': 'process',
           'job.name': job.data.className,
           'job.queue': job.name,
           'job.id': job.id
         }
       },
-      parentContext
+      ROOT_CONTEXT
     )
 
-    const result = await context.with(trace.setSpan(context.active(), span), async () => {
+    const result = await context.with(trace.setSpan(ROOT_CONTEXT, span), async () => {
       try {
         const jobInstance = await this.jobRegistry.get(job.data.className)
         const result = await jobInstance.run(job.data.classData)

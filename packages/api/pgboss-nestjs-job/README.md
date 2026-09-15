@@ -2,6 +2,25 @@
 
 This package provides NestJS integration for PgBoss job queuing and processing.
 
+## Tracing
+
+Scheduling jobs creates a `PRODUCER` span named `send <queue>`. Its W3C trace
+context is stored in the existing serialized job payload. Processing a job
+starts a new root `CONSUMER` span named after the job class and links it to the
+propagated producer context:
+
+```text
+producer trace:  ... -> send <queue>
+                           |
+                           | span link
+                           v
+consumer trace:        <JobClass> -> handler/database spans
+```
+
+Each job execution therefore has an independent trace ID. Jobs queued without
+trace context, or with invalid trace context, still start an unlinked root
+consumer span.
+
 ## Job Monitoring API
 
 Register `JobsApiModule.forRootAsync(...)` in an HTTP-facing module to expose
