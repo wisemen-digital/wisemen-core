@@ -26,18 +26,32 @@
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
     "@nestjs/core": "catalog:backend-peer",
+    "@nestjs/swagger": "catalog:backend-peer",
+    "@nestjs/typeorm": "catalog:backend-peer",
+    "class-transformer": "catalog:backend-peer",
+    "class-validator": "catalog:backend-peer",
     "reflect-metadata": "catalog:backend-peer",
     "fastify": "catalog:backend-peer",
-    "@wisemen/api-error": "workspace:^"
+    "typeorm": "catalog:backend-peer",
+    "redis": "catalog:backend",
+    "@wisemen/api-error": "workspace:^",
+    "@wisemen/nestjs-common": "workspace:^",
+    "@wisemen/nestjs-domain-events": "workspace:^",
+    "@wisemen/nestjs-typeorm": "workspace:^",
+    "@wisemen/nestjs-redis": "workspace:^",
+    "@wisemen/nestjs-jwt-verifier": "workspace:^",
+    "@wisemen/opentelemetry": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
-    "@wisemen/eslint-config-nestjs": "workspace:*",
+    "@types/sinon": "catalog:test",
+    "@wisemen/eslint-config-nestjs": "workspace:^",
     "eslint": "catalog:lint-api",
     "expect": "catalog:test",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "sinon": "catalog:test"
   },
   "author": "Kobe Kwanten",
   "license": "SEE LICENSE IN LICENSE.md",
