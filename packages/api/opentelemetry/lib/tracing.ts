@@ -1,10 +1,11 @@
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { resourceFromAttributes } from '@opentelemetry/resources'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http'
-import { BatchSpanProcessor, BufferConfig } from '@opentelemetry/sdk-trace-base'
+import { BatchSpanProcessor, BufferConfig, type SpanProcessor } from '@opentelemetry/sdk-trace-base'
 import { FilteringSpanProcessor, SpanExportFilter } from './filtering-span-processor.js'
 import { registerInstrumentation } from './register-instrumentation.js'
 import { createOtelHeaders, OtelAuth } from './headers.js'
+import { TraceVolumeReductionSpanProcessor } from './trace-volume-reduction-span-processor.js'
 
 export interface OpentelemetryTracingConfig {
   enabled: boolean
@@ -17,7 +18,6 @@ export interface OpentelemetryTracingConfig {
   /** Return false to prevent a completed span from being queued for export. */
   shouldExportSpan?: SpanExportFilter
 }
-
 
 export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): void {
   if (!config.enabled) {
@@ -42,15 +42,16 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
     maxExportBatchSize: config.buffer?.maxExportBatchSize ?? 512
   })
 
-  const spanProcessor = config.shouldExportSpan == null
+  const exportSpanProcessor: SpanProcessor = config.shouldExportSpan == null
     ? batchSpanProcessor
     : new FilteringSpanProcessor(batchSpanProcessor, config.shouldExportSpan)
+  const spanProcessor = new TraceVolumeReductionSpanProcessor(exportSpanProcessor)
 
   const sdk = new NodeSDK({
     traceExporter,
     autoDetectResources: false,
     spanProcessors: [
-      spanProcessor,
+      spanProcessor
     ],
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
@@ -61,4 +62,3 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
 
   sdk.start()
 }
-
