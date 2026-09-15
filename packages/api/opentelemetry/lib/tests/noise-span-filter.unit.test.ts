@@ -9,63 +9,67 @@ function spanNamed (name: string, attributes?: Attributes): ReadableSpan {
 }
 
 describe('isKnownNoiseSpan', () => {
-  describe('by db attributes', () => {
-    it('matches a ping regardless of the span name', () => {
-      const span = spanNamed('whatever-the-hook-named-it', {
-        'db.statement': 'PING ',
-        'db.system': 'redis'
-      })
-
-      assert.strictEqual(isKnownNoiseSpan(span), true)
+  it('matches a ping regardless of the span name', () => {
+    const span = spanNamed('whatever-the-hook-named-it', {
+      'db.statement': 'PING ',
+      'db.system': 'redis'
     })
 
-    it('matches the stable semantic convention attribute names', () => {
-      const span = spanNamed('redis-PING', {
-        'db.query.text': 'PING',
-        'db.system.name': 'redis'
-      })
-
-      assert.strictEqual(isKnownNoiseSpan(span), true)
-    })
-
-    it('keeps other redis commands', () => {
-      const span = spanNamed('[Redis] GET', {
-        'db.statement': 'GET user-session',
-        'db.system': 'redis'
-      })
-
-      assert.strictEqual(isKnownNoiseSpan(span), false)
-    })
-
-    it('ignores a ping statement from another database system', () => {
-      const span = spanNamed('pg.query:PING', {
-        'db.statement': 'PING',
-        'db.system': 'postgresql'
-      })
-
-      assert.strictEqual(isKnownNoiseSpan(span), false)
-    })
+    assert.strictEqual(isKnownNoiseSpan(span), true)
   })
 
-  describe('by span name, when db attributes are absent', () => {
-    it('matches the redis ping span emitted by the current response hook', () => {
-      assert.strictEqual(isKnownNoiseSpan(spanNamed('[Redis] PING')), true)
+  it('matches the raw instrumentation name used without a response hook', () => {
+    const span = spanNamed('redis-PING', { 'db.statement': 'PING ', 'db.system': 'redis' })
+
+    assert.strictEqual(isKnownNoiseSpan(span), true)
+  })
+
+  it('matches the stable semantic convention attribute names', () => {
+    const span = spanNamed('redis-PING', {
+      'db.query.text': 'PING',
+      'db.system.name': 'redis'
     })
 
-    it('matches the trailing space left by older response hooks', () => {
-      assert.strictEqual(isKnownNoiseSpan(spanNamed('[Redis] PING ')), true)
+    assert.strictEqual(isKnownNoiseSpan(span), true)
+  })
+
+  it('keeps other redis commands', () => {
+    const span = spanNamed('[Redis] GET', {
+      'db.statement': 'GET user-session',
+      'db.system': 'redis'
     })
 
-    it('matches the raw instrumentation name used without a response hook', () => {
-      assert.strictEqual(isKnownNoiseSpan(spanNamed('redis-PING')), true)
+    assert.strictEqual(isKnownNoiseSpan(span), false)
+  })
+
+  it('matches the connect span, which carries no statement', () => {
+    const span = spanNamed('redis-connect', { 'db.system': 'redis' })
+
+    assert.strictEqual(isKnownNoiseSpan(span), true)
+  })
+
+  it('matches the connect span on the stable system attribute', () => {
+    const span = spanNamed('redis-connect', { 'db.system.name': 'redis' })
+
+    assert.strictEqual(isKnownNoiseSpan(span), true)
+  })
+
+  it('keeps a postgres span carrying no statement', () => {
+    const span = spanNamed('connect', { 'db.system': 'postgresql' })
+
+    assert.strictEqual(isKnownNoiseSpan(span), false)
+  })
+
+  it('ignores a ping statement from another database system', () => {
+    const span = spanNamed('pg.query:PING', {
+      'db.statement': 'PING',
+      'db.system': 'postgresql'
     })
 
-    it('keeps other redis commands', () => {
-      assert.strictEqual(isKnownNoiseSpan(spanNamed('[Redis] GET')), false)
-    })
+    assert.strictEqual(isKnownNoiseSpan(span), false)
+  })
 
-    it('keeps spans whose name merely contains a noise name', () => {
-      assert.strictEqual(isKnownNoiseSpan(spanNamed('[Redis] PING user-session')), false)
-    })
+  it('keeps spans carrying no attributes', () => {
+    assert.strictEqual(isKnownNoiseSpan(spanNamed('[Redis] PING')), false)
   })
 })
