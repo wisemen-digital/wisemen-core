@@ -66,4 +66,4 @@ jobs:
 
       - name: Test changed API packages
         # API package pretest hooks clean dist, which can race with dependent package builds.
-        run: pnpm turbo run test --force --concurrency=1 --filter='{./packages/api/**}...[origin/main]'
+        run: pnpm turbo run test --concurrency=1 --filter='{./packages/api/**}...[origin/main]'
