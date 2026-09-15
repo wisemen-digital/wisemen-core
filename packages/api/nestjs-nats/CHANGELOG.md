@@ -13,6 +13,12 @@
 
 
 
+
+## 1.4.1
+<sub>2026-09-15</sub>
+
+- *(patch)* Updated dependency `@wisemen/opentelemetry` v0.5.0
+
 ## 1.4.0
 <sub>2026-09-04</sub>
 
