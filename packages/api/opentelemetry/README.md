@@ -39,11 +39,11 @@ Trace volume reduction is built in. It:
 - suppresses outgoing HTTP and Undici requests to `uptime.betterstack.com`;
 - drops successful PostgreSQL `START`, `COMMIT`, `SAVEPOINT`, `RELEASE`, and
   `ROLLBACK` spans;
-- replaces SQL text on successful PostgreSQL queries faster than 500 ms with a
-  low-cardinality `db.query.summary` generated from the query's PostgreSQL AST.
+- replaces the SQL text on every PostgreSQL span with a low-cardinality
+  `db.query.summary` generated from the query's PostgreSQL AST.
 
-Slow and failed PostgreSQL spans keep their SQL text. Unsupported SQL never
-affects query execution: the parser omits the summary, and routine SQL text is
+SQL text is never exported, not even for slow or failed queries. Unsupported SQL
+never affects query execution: the parser omits the summary, and the SQL text is
 still removed at export time. A summary contains only ordered operations and
 relation names; `db.collection.name` is set only when one relation is
 unambiguous.

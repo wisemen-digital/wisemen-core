@@ -55,7 +55,7 @@ function createSpan (options: {
 }
 
 describe('TraceVolumeReductionSpanProcessor', () => {
-  it('removes legacy and stable SQL text from routine PostgreSQL spans', () => {
+  it('removes legacy and stable SQL text from PostgreSQL spans', () => {
     const delegate = new RecordingSpanProcessor()
     const processor = new TraceVolumeReductionSpanProcessor(delegate)
     const span = createSpan({
@@ -73,15 +73,21 @@ describe('TraceVolumeReductionSpanProcessor', () => {
     assert.deepEqual(span.attributes, { 'db.query.summary': 'SELECT payment' })
   })
 
-  it('retains SQL at the slow-query threshold and on errors', () => {
+  it('removes SQL text from slow and failed PostgreSQL spans too', () => {
     const delegate = new RecordingSpanProcessor()
     const processor = new TraceVolumeReductionSpanProcessor(delegate)
     const slowSpan = createSpan({
-      attributes: { 'db.statement': 'SELECT * FROM payment' },
-      durationMilliseconds: 500
+      attributes: {
+        'db.statement': 'SELECT * FROM payment',
+        'db.query.summary': 'SELECT payment'
+      },
+      durationMilliseconds: 5000
     })
     const errorSpan = createSpan({
-      attributes: { 'db.query.text': 'SELECT * FROM payment' },
+      attributes: {
+        'db.query.text': 'SELECT * FROM payment',
+        'db.query.summary': 'SELECT payment'
+      },
       durationMilliseconds: 10,
       isError: true
     })
@@ -90,8 +96,8 @@ describe('TraceVolumeReductionSpanProcessor', () => {
     processor.onEnd(errorSpan)
 
     assert.deepEqual(delegate.endedSpans, [slowSpan, errorSpan])
-    assert.equal(slowSpan.attributes['db.statement'], 'SELECT * FROM payment')
-    assert.equal(errorSpan.attributes['db.query.text'], 'SELECT * FROM payment')
+    assert.deepEqual(slowSpan.attributes, { 'db.query.summary': 'SELECT payment' })
+    assert.deepEqual(errorSpan.attributes, { 'db.query.summary': 'SELECT payment' })
   })
 
   it('drops successful transaction-control spans from stable or legacy attributes', () => {
@@ -107,18 +113,18 @@ describe('TraceVolumeReductionSpanProcessor', () => {
     assert.deepEqual(delegate.endedSpans, [])
   })
 
-  it('retains failed transaction-control spans', () => {
+  it('retains failed transaction-control spans without their SQL text', () => {
     const delegate = new RecordingSpanProcessor()
     const processor = new TraceVolumeReductionSpanProcessor(delegate)
     const span = createSpan({
-      attributes: { 'db.statement': 'COMMIT' },
+      attributes: { 'db.statement': 'COMMIT', 'db.operation.name': 'COMMIT' },
       isError: true
     })
 
     processor.onEnd(span)
 
     assert.deepEqual(delegate.endedSpans, [span])
-    assert.equal(span.attributes['db.statement'], 'COMMIT')
+    assert.deepEqual(span.attributes, { 'db.operation.name': 'COMMIT' })
   })
 
   it('drops redis keepalive pings from any instrumentation scope', () => {

@@ -50,9 +50,9 @@ startOpentelemetryMetrics({
 Express, Postgres, Redis, AWS SDK, and Undici instrumentations before starting
 the Node SDK. Built-in trace volume reduction suppresses health checks,
 Better Stack heartbeat requests, and successful PostgreSQL transaction-control
-spans, while routine PostgreSQL SQL text is replaced by a
-low-cardinality query summary. Slow and failed PostgreSQL spans retain their
-full SQL text.
+spans, while PostgreSQL SQL text is always replaced by a
+low-cardinality query summary. SQL text is never exported, not even for slow or
+failed queries.
 
 Built-in trace volume reduction runs before `shouldExportSpan`, so the callback
 observes the attributes that will be exported.

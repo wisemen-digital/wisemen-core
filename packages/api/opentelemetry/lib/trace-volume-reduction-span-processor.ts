@@ -4,7 +4,6 @@ import type { ReadableSpan, Span, SpanProcessor } from '@opentelemetry/sdk-trace
 import { isKnownNoiseSpan } from './noise-span-filter.js'
 
 const POSTGRES_INSTRUMENTATION_SCOPE = '@opentelemetry/instrumentation-pg'
-const SLOW_QUERY_THRESHOLD_MILLISECONDS = 500
 const SQL_ATTRIBUTE_NAMES = ['db.statement', 'db.query.text'] as const
 const TRANSACTION_OPERATIONS = new Set([
   'COMMIT',
@@ -48,9 +47,7 @@ export class TraceVolumeReductionSpanProcessor implements SpanProcessor {
         return
       }
 
-      if (!isError && getDurationMilliseconds(span) < SLOW_QUERY_THRESHOLD_MILLISECONDS) {
-        removeSqlText(span.attributes)
-      }
+      removeSqlText(span.attributes)
 
       this.spanProcessor.onEnd(span)
     } catch (error) {
@@ -62,10 +59,6 @@ export class TraceVolumeReductionSpanProcessor implements SpanProcessor {
   shutdown (): Promise<void> {
     return this.spanProcessor.shutdown()
   }
-}
-
-function getDurationMilliseconds (span: ReadableSpan): number {
-  return span.duration[0] * 1000 + span.duration[1] / 1_000_000
 }
 
 function getOperation (attributes: Attributes): string | undefined {
