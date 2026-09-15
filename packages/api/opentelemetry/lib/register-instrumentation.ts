@@ -12,6 +12,13 @@ import { SqlQuerySummarizer } from './sql-query-summarizer.js'
 
 const sqlQuerySummarizer = new SqlQuerySummarizer()
 
+const IGNORED_REQUEST_PATHS = new Set([
+  '/',
+  '/api',
+  '/health',
+  '/ready'
+])
+
 export function registerInstrumentation (
   extraInstrumentations: Instrumentation[] = []
 ): void {
@@ -97,7 +104,7 @@ export function addPostgresQuerySummary (span: Span, request: PgRequestHookInfor
 export function shouldIgnoreIncomingRequest (request: IncomingMessage): boolean {
   const path = request.url?.split('?', 1)[0]
 
-  return path === '/health' || path === '/ready'
+  return path !== undefined && IGNORED_REQUEST_PATHS.has(path)
 }
 
 export function shouldIgnoreOutgoingRequest (request: RequestOptions): boolean {

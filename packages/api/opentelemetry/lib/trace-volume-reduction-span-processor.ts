@@ -1,6 +1,7 @@
 import { type Context, diag, SpanStatusCode } from '@opentelemetry/api'
 import type { Attributes } from '@opentelemetry/api'
 import type { ReadableSpan, Span, SpanProcessor } from '@opentelemetry/sdk-trace-base'
+import { isKnownNoiseSpan } from './noise-span-filter.js'
 
 const POSTGRES_INSTRUMENTATION_SCOPE = '@opentelemetry/instrumentation-pg'
 const SLOW_QUERY_THRESHOLD_MILLISECONDS = 500
@@ -30,6 +31,10 @@ export class TraceVolumeReductionSpanProcessor implements SpanProcessor {
 
   onEnd (span: ReadableSpan): void {
     try {
+      if (isKnownNoiseSpan(span)) {
+        return
+      }
+
       if (!isPostgresSpan(span)) {
         this.spanProcessor.onEnd(span)
 

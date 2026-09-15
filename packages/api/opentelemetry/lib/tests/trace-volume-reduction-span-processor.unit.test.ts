@@ -121,6 +121,23 @@ describe('TraceVolumeReductionSpanProcessor', () => {
     assert.equal(span.attributes['db.statement'], 'COMMIT')
   })
 
+  it('drops redis keepalive pings from any instrumentation scope', () => {
+    const delegate = new RecordingSpanProcessor()
+    const processor = new TraceVolumeReductionSpanProcessor(delegate)
+    const keptSpan = createSpan({
+      attributes: { 'db.statement': 'GET user-session', 'db.system': 'redis' },
+      scope: '@opentelemetry/instrumentation-redis'
+    })
+
+    processor.onEnd(createSpan({
+      attributes: { 'db.statement': 'PING ', 'db.system': 'redis' },
+      scope: '@opentelemetry/instrumentation-redis'
+    }))
+    processor.onEnd(keptSpan)
+
+    assert.deepEqual(delegate.endedSpans, [keptSpan])
+  })
+
   it('does not change spans from other instrumentations', () => {
     const delegate = new RecordingSpanProcessor()
     const processor = new TraceVolumeReductionSpanProcessor(delegate)
