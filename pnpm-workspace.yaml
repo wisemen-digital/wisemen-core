@@ -81,6 +81,7 @@ catalogs:
     "pg": "8.20.0"
     "pg-boss": "12.15.0"
     "pg-query-stream": "4.16.0"
+    "pgsql-ast-parser": "12.0.2"
     "qs": ">=6.15.2"
     react: ^0.0.0
     "redis": "^5.12.1"

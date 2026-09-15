@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+
+## 0.8.6
+<sub>2026-09-15</sub>
+
+- [#1424](https://github.com/wisemen-digital/wisemen-core/pull/1424)  *(patch)* Thanks [@jonasbeckers](https://github.com/jonasbeckers)! - Added skills to ngen
+
 ## 0.8.5
 <sub>2026-07-31</sub>
 
