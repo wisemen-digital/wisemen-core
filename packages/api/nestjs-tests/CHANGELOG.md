@@ -9,6 +9,12 @@
 
 
 
+
+## 1.0.0
+<sub>2026-09-16</sub>
+
+- *(major)* Updated dependency `@wisemen/nestjs-domain-events` v1.0.0
+
 ## 0.3.0
 <sub>2026-09-15</sub>
 
