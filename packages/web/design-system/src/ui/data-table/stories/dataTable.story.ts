@@ -22,42 +22,65 @@ const meta = {
   argTypes: {
     hasCellTypes: {
       control: 'boolean',
+      description: 'Adds every built-in cell type to the base columns.',
     },
     hasRowActions: {
       control: 'boolean',
+      description: 'Adds inline and overflow actions to each row.',
     },
     hasSubComponent: {
       control: 'boolean',
+      description: 'Lets active rows expand to reveal extra content.',
     },
     isFirstColumnSticky: {
       control: 'boolean',
+      description: 'Keeps the first data column visible while scrolling horizontally.',
     },
     isForcedLoading: {
       control: 'boolean',
+      description: 'Shows the initial loading skeleton instead of table data.',
     },
     isLastColumnSticky: {
       control: 'boolean',
+      description: 'Keeps the last data column visible while scrolling horizontally.',
     },
     isNarrow: {
       control: 'boolean',
+      description: 'Constrains the table to demonstrate its mobile card layout.',
     },
     isSelectable: {
       control: 'boolean',
+      description: 'Adds row-selection controls and the selection action bar.',
     },
     isSimulatingCustomEmptyState: {
       control: 'boolean',
+      description: 'Uses a custom empty-state title, description, and illustration.',
     },
     isSimulatingEmpty: {
       control: 'boolean',
+      description: 'Removes all rows to show the empty state.',
     },
     isSimulatingError: {
       control: 'boolean',
+      description: 'Replaces the row area with the error state.',
     },
     isSimulatingInfiniteScroll: {
       control: 'boolean',
+      description: 'Loads mock rows in pages as the table is scrolled.',
+    },
+    filterExample: {
+      control: 'select',
+      description: 'Renders one filter category through the table filter API.',
+      options: [
+        null,
+        'boolean',
+        'multi-select',
+        'multi-autocomplete',
+      ],
     },
     groupBy: {
       control: 'select',
+      description: 'Groups rows by one or two table columns.',
       options: [
         null,
         'department',
@@ -67,10 +90,12 @@ const meta = {
     },
     stickyLeftColumnKeys: {
       control: 'check',
+      description: 'Pins the selected columns to the left edge.',
       options: STICKY_COLUMN_KEY_OPTIONS,
     },
     stickyRightColumnKeys: {
       control: 'check',
+      description: 'Pins the selected columns to the right edge.',
       options: STICKY_COLUMN_KEY_OPTIONS,
     },
     variant: {
@@ -125,6 +150,72 @@ export const StickyColumns: Story = {
     isSimulatingEmpty: false,
     isSimulatingError: false,
     isSimulatingInfiniteScroll: false,
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'contained',
+  },
+}
+
+// A Boolean filter toggles directly on the Status header and uses project-owned state.
+export const BooleanFilter: Story = {
+  args: {
+    hasCellTypes: false,
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: false,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    filterExample: 'boolean',
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'contained',
+  },
+}
+
+// A Multi Select filter opens a project-owned dialog from the Department header.
+export const MultiSelectFilter: Story = {
+  args: {
+    hasCellTypes: false,
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: false,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    filterExample: 'multi-select',
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'contained',
+  },
+}
+
+// A Multi Autocomplete filter uses a searchable project-owned dialog from the Manager header.
+export const MultiAutocompleteFilter: Story = {
+  args: {
+    hasCellTypes: false,
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: false,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    filterExample: 'multi-autocomplete',
     groupBy: null,
     stickyLeftColumnKeys: [],
     stickyRightColumnKeys: [],

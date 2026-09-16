@@ -19,6 +19,7 @@ import {
 import { useSort } from '@/composables/sort.composable'
 import type { Address } from '@/ui/address-autocomplete/addressAutocomplete.type'
 import type { BadgeColor } from '@/ui/badge/badge.props'
+import { UIButton } from '@/ui/button'
 import UIDataTable from '@/ui/data-table/components/DataTable.vue'
 import type {
   DataTableEmptyStateConfig,
@@ -39,8 +40,18 @@ import {
   createDataTableTextCell,
   createDataTableTimestampCell,
 } from '@/ui/data-table/types/dataTableColumn.type'
+import type { DataTableFilters } from '@/ui/data-table/types/dataTableFilter.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
 import { createDataTableRowActionClick } from '@/ui/data-table/types/dataTableRowConfig.type'
+import {
+  UIDialog,
+  UIDialogBody,
+  UIDialogHeader,
+} from '@/ui/dialog'
+import {
+  createSelectOptions,
+  UISelect,
+} from '@/ui/select'
 
 interface User {
   id: string
@@ -63,6 +74,12 @@ interface User {
     label: string
   }[]
 }
+
+type FilterExample
+  = | 'boolean'
+    | 'multi-autocomplete'
+    | 'multi-select'
+    | null
 
 const props = withDefaults(defineProps<{
   // Adds `cellTypeColumns` (Currency, Boolean, LongText, BadgeGroup, ContactInfo, Location) on
@@ -88,6 +105,9 @@ const props = withDefaults(defineProps<{
   // 200-item mock dataset on a short delay, simulating a real paginated fetch — exercises
   // `onNextPage`/`isFetchingNextPage` end to end instead of just their static visual states.
   isSimulatingInfiniteScroll?: boolean
+  // Renders one filter category through DataTable's decoupled `filters` prop and `filter-click`
+  // event — used by the filter example stories.
+  filterExample?: FilterExample
   groupBy?: 'department' | 'department+status' | 'status' | null
   // Pins the named columns left/right by key (`DataTableColumn.isSticky`), independent of
   // `isFirstColumnSticky`/`isLastColumnSticky` — demonstrates any combination of columns
@@ -111,6 +131,7 @@ const props = withDefaults(defineProps<{
   isSimulatingEmpty: false,
   isSimulatingError: false,
   isSimulatingInfiniteScroll: false,
+  filterExample: null,
   groupBy: null,
   stickyLeftColumnKeys: () => [],
   stickyRightColumnKeys: () => [],
@@ -235,6 +256,9 @@ const DEPARTMENTS = [
   'Marketing',
   'Support',
 ]
+const MANAGERS = Array.from({
+  length: 12,
+}, (_, index) => `Manager ${index + 1}`)
 const ADDRESSES: Address[] = [
   {
     placeId: 'mock-antwerp',
@@ -333,7 +357,7 @@ const data: User[] = Array.from({
   contactName: CONTACT_NAMES[i % CONTACT_NAMES.length]!,
   department: DEPARTMENTS[i % DEPARTMENTS.length]!,
   email: `user${i + 1}@example.com`,
-  manager: `Manager ${(i % 12) + 1}`,
+  manager: MANAGERS[i % MANAGERS.length]!,
   phoneNumber: `+32 4${String(70 + (i % 20)).padStart(2, '0')} ${String(100_000 + i).slice(-6)}`,
   // eslint-disable-next-line no-nested-ternary
   role: i % 3 === 0 ? 'Admin' : (i % 3 === 1 ? 'Editor' : 'Viewer'),
@@ -376,6 +400,103 @@ const sortedData = computed<User[]>(() => {
   return data.toSorted((a, b) => direction * String(a[activeSort.key]).localeCompare(String(b[activeSort.key])))
 })
 
+const selectedDepartments = shallowRef<string[]>([])
+const selectedManagers = shallowRef<string[]>([])
+const isStatusFilterActive = shallowRef<boolean>(false)
+const isFilterDialogOpen = shallowRef<boolean>(false)
+const openFilterExample = shallowRef<Exclude<FilterExample, 'boolean' | null> | null>(null)
+
+const filteredData = computed<User[]>(() => sortedData.value.filter((item) => {
+  if (props.filterExample === 'boolean' && isStatusFilterActive.value && item.status !== 'active') {
+    return false
+  }
+
+  if (props.filterExample === 'multi-select'
+    && selectedDepartments.value.length > 0
+    && !selectedDepartments.value.includes(item.department)) {
+    return false
+  }
+
+  if (props.filterExample === 'multi-autocomplete'
+    && selectedManagers.value.length > 0
+    && !selectedManagers.value.includes(item.manager)) {
+    return false
+  }
+
+  return true
+}))
+
+const tableFilters = computed<DataTableFilters>(() => {
+  switch (props.filterExample) {
+    case 'boolean':
+      return {
+        status: {
+          isActive: isStatusFilterActive.value,
+          label: 'Show active users',
+        },
+      }
+    case 'multi-select':
+      return {
+        department: {
+          isActive: selectedDepartments.value.length > 0,
+          label: 'Filter by department',
+        },
+      }
+    case 'multi-autocomplete':
+      return {
+        manager: {
+          isActive: selectedManagers.value.length > 0,
+          label: 'Filter by manager',
+        },
+      }
+    default:
+      return {}
+  }
+})
+
+function onFilterClick(columnKey: string): void {
+  if (props.filterExample === 'boolean' && columnKey === 'status') {
+    isStatusFilterActive.value = !isStatusFilterActive.value
+
+    return
+  }
+
+  const filterByColumnKey: Partial<Record<string, Exclude<FilterExample, 'boolean' | null>>> = {
+    department: 'multi-select',
+    manager: 'multi-autocomplete',
+  }
+  const filterExample = filterByColumnKey[columnKey]
+
+  if (filterExample === undefined || filterExample !== props.filterExample) {
+    return
+  }
+
+  openFilterExample.value = filterExample
+  isFilterDialogOpen.value = true
+}
+
+const filterDialogTitle = computed<string>(() => {
+  switch (openFilterExample.value) {
+    case 'multi-select':
+      return 'Filter by department'
+    case 'multi-autocomplete':
+      return 'Filter by manager'
+    default:
+      return ''
+  }
+})
+
+function clearOpenFilter(): void {
+  switch (openFilterExample.value) {
+    case 'multi-select':
+      selectedDepartments.value = []
+
+      return
+    case 'multi-autocomplete':
+      selectedManagers.value = []
+  }
+}
+
 const INFINITE_SCROLL_PAGE_SIZE = 30
 const INFINITE_SCROLL_FETCH_DELAY_MS = 600
 
@@ -387,7 +508,9 @@ const visibleData = computed<User[]>(() => {
     return []
   }
 
-  return props.isSimulatingInfiniteScroll ? sortedData.value.slice(0, loadedCount.value) : sortedData.value
+  return props.isSimulatingInfiniteScroll
+    ? filteredData.value.slice(0, loadedCount.value)
+    : filteredData.value
 })
 
 const error = computed<ApiError | null>(() => (props.isSimulatingError ? new Error('Failed to load users.') : null))
@@ -406,7 +529,7 @@ function onNextPage(): void {
   if (
     !props.isSimulatingInfiniteScroll
     || isFetchingNextPage.value
-    || loadedCount.value >= sortedData.value.length
+    || loadedCount.value >= filteredData.value.length
   ) {
     return
   }
@@ -414,7 +537,10 @@ function onNextPage(): void {
   isFetchingNextPage.value = true
 
   setTimeout(() => {
-    loadedCount.value = Math.min(loadedCount.value + INFINITE_SCROLL_PAGE_SIZE, sortedData.value.length)
+    loadedCount.value = Math.min(
+      loadedCount.value + INFINITE_SCROLL_PAGE_SIZE,
+      filteredData.value.length,
+    )
     isFetchingNextPage.value = false
   }, INFINITE_SCROLL_FETCH_DELAY_MS)
 }
@@ -617,6 +743,7 @@ function subComponent(item: User) {
       :data="visibleData"
       :empty-state="emptyState"
       :error="error"
+      :filters="tableFilters"
       :get-key="(item) => item.id"
       :group-by="groupByProp"
       :is-fetching-next-page="isFetchingNextPage"
@@ -630,9 +757,51 @@ function subComponent(item: User) {
       :selection-actions="selectionActions"
       :sort="sort"
       :sub-component="props.hasSubComponent ? subComponent : null"
-      :total-count="props.isSimulatingInfiniteScroll ? sortedData.length : null"
+      :total-count="props.isSimulatingInfiniteScroll ? filteredData.length : null"
       :variant="props.variant"
       class="min-h-0 flex-1"
+      @filter-click="onFilterClick"
     />
+
+    <UIDialog
+      v-model:is-open="isFilterDialogOpen"
+      size="xs"
+    >
+      <UIDialogHeader
+        :title="filterDialogTitle"
+        description="This editor is owned by the consuming project, not by DataTable."
+      />
+
+      <UIDialogBody>
+        <div class="flex flex-col gap-md">
+          <UISelect
+            v-if="openFilterExample === 'multi-select'"
+            v-model="selectedDepartments"
+            :display-fn="(department) => department"
+            :is-dropdown-kept-open-on-select="true"
+            :items="createSelectOptions(DEPARTMENTS)"
+            label="Departments"
+            placeholder="Choose departments"
+          />
+
+          <UISelect
+            v-else-if="openFilterExample === 'multi-autocomplete'"
+            v-model="selectedManagers"
+            :display-fn="(manager) => manager"
+            :is-dropdown-kept-open-on-select="true"
+            :items="createSelectOptions(MANAGERS)"
+            label="Managers"
+            placeholder="Search managers"
+            search="local"
+          />
+
+          <UIButton
+            label="Clear filter"
+            variant="secondary"
+            @click="clearOpenFilter"
+          />
+        </div>
+      </UIDialogBody>
+    </UIDialog>
   </div>
 </template>

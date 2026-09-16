@@ -22,6 +22,31 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   `createDataTableTimestampCell`, `createDataTableCustomCell`. This
   is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
   the factory keeps them in sync structurally.
+- **Column filters** — pass `filters`, keyed by column key, to show an icon beside a column's
+  sort control. DataTable owns the icon's appearance and active treatment, then emits
+  `filter-click` with the column key and trigger element. The consumer owns its filter editor,
+  filter state, pagination reset, and the filtered `data` passed back to the table. This mirrors
+  server-driven `sort`; DataTable never locally filters only the rows currently loaded:
+
+  ```vue
+  <UIDataTable
+    :columns="columns"
+    :data="data"
+    :filters="{
+      department: {
+        isActive: selectedDepartments.length > 0,
+        label: 'Filter by department',
+      },
+    }"
+    @filter-click="onFilterClick"
+  />
+
+  function onFilterClick(columnKey: string, trigger: HTMLElement): void {
+    if (columnKey === 'department') {
+      openDepartmentFilter({ anchor: trigger })
+    }
+  }
+  ```
 - **`variant`** — `'contained'` (default) wraps the desktop table in a rounded bordered card,
   matching the old `Table`'s default look, and sizes the table to its content up to its parent's
   height (`max-h-full`) — a short result set shrinks the table instead of stretching it to fill

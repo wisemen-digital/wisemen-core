@@ -5,6 +5,7 @@ import type { Component } from 'vue'
 import type { Sort } from '@/composables/sort.composable'
 import type { DataTableGroupBy } from '@/ui/data-table/composables/dataTable.composable'
 import type { DataTableColumn } from '@/ui/data-table/types/dataTableColumn.type'
+import type { DataTableFilters } from '@/ui/data-table/types/dataTableFilter.type'
 import type { DataTableRowConfig } from '@/ui/data-table/types/dataTableRowConfig.type'
 import type {
   EmptyStateAction,
@@ -94,6 +95,11 @@ export interface DataTableProps<TItem> {
    * consistent everywhere a DataTable is used.
    */
   error?: ApiError | null
+  /**
+   * Filter icons keyed by column key. When an icon is clicked, DataTable emits `filter-click`
+   * with the key and trigger element; the consumer opens its own editor and updates `data`.
+   */
+  filters?: DataTableFilters
   /**
    * Returns a stable, unique key for a row item. Used to track rows across re-renders.
    */
