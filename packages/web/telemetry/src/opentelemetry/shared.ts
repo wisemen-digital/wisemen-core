@@ -13,7 +13,7 @@ export function createTelemetryResource(
   return resourceFromAttributes({
     'deployment.build': options.buildNumber ?? 'unknown',
     'deployment.commit': options.commitHash ?? 'unknown',
-    'deployment.environment': options.environment ?? 'unknown',
+    'deployment.environment.name': options.environment ?? 'unknown',
     'deployment.timestamp': options.buildTimestamp ?? 'unknown',
     'service.name': options.serviceName,
     'service.version': options.serviceVersion ?? 'unknown',

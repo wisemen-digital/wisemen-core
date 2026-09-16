@@ -39,7 +39,7 @@ export function startOpentelemetryMetrics (config: OpentelemetryMetricsConfig): 
   const sdk = new NodeSDK({
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
-      'deployment.environment': config.env,
+      'deployment.environment.name': config.env,
       ...config.attributes
     }),
     metricReader,
