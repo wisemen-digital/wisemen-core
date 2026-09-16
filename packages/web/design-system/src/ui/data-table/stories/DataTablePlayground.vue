@@ -105,7 +105,7 @@ const props = withDefaults(defineProps<{
   // 200-item mock dataset on a short delay, simulating a real paginated fetch — exercises
   // `onNextPage`/`isFetchingNextPage` end to end instead of just their static visual states.
   isSimulatingInfiniteScroll?: boolean
-  // Renders one filter category through DataTable's decoupled `filters` prop and `filter-click`
+  // Renders filter categories through DataTable's decoupled `filters` prop and `filter-click`
   // event — used by the filter example stories.
   filterExample?: FilterExample
   groupBy?: 'department' | 'department+status' | 'status' | null
@@ -417,7 +417,7 @@ const filteredData = computed<User[]>(() => sortedData.value.filter((item) => {
     return false
   }
 
-  if (props.filterExample === 'multi-autocomplete'
+  if ((props.filterExample === 'multi-autocomplete' || props.filterExample === 'multi-select')
     && selectedManagers.value.length > 0
     && !selectedManagers.value.includes(item.manager)) {
     return false
@@ -440,6 +440,10 @@ const tableFilters = computed<DataTableFilters>(() => {
         department: {
           isActive: selectedDepartments.value.length > 0,
           label: 'Filter by department',
+        },
+        manager: {
+          isActive: selectedManagers.value.length > 0,
+          label: 'Filter by manager',
         },
       }
     case 'multi-autocomplete':
@@ -467,7 +471,10 @@ function onFilterClick(columnKey: string): void {
   }
   const filterExample = filterByColumnKey[columnKey]
 
-  if (filterExample === undefined || filterExample !== props.filterExample) {
+  const isAvailableForFilterExample = filterExample === props.filterExample
+    || (props.filterExample === 'multi-select' && filterExample === 'multi-autocomplete')
+
+  if (filterExample === undefined || !isAvailableForFilterExample) {
     return
   }
 

@@ -179,7 +179,8 @@ export const BooleanFilter: Story = {
   },
 }
 
-// A Multi Select filter opens a project-owned dialog from the Department header.
+// Multi Select and Multi Autocomplete filters can be used together from the Department and
+// Manager headers.
 export const MultiSelectFilter: Story = {
   args: {
     hasCellTypes: false,
