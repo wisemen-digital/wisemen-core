@@ -22,7 +22,7 @@ import {
 @Injectable()
 export class FirebaseMessagingGateway extends FirebaseMessagingGatewayPort implements OnModuleDestroy {
   private readonly logger = new Logger(FirebaseMessagingGateway.name)
-  private messaging: Messaging | null = null
+  private _messaging: Messaging | null = null
   private ownedApp: App | null = null
 
   constructor (
@@ -32,18 +32,18 @@ export class FirebaseMessagingGateway extends FirebaseMessagingGatewayPort imple
   }
 
   public async send (message: Message, dryRun = false): Promise<string> {
-    return await this.getMessaging().send(message, dryRun)
+    return await this.messaging.send(message, dryRun)
   }
 
   public async sendEachForMulticast (
     message: MulticastMessage,
     dryRun = false
   ): Promise<BatchResponse> {
-    return await this.getMessaging().sendEachForMulticast(message, dryRun)
+    return await this.messaging.sendEachForMulticast(message, dryRun)
   }
 
   public async onModuleDestroy (): Promise<void> {
-    this.messaging = null
+    this._messaging = null
 
     if (this.ownedApp !== null) {
       await deleteApp(this.ownedApp)
@@ -51,10 +51,10 @@ export class FirebaseMessagingGateway extends FirebaseMessagingGatewayPort imple
     }
   }
 
-  private getMessaging (): Messaging {
-    this.messaging ??= getMessaging(this.getApp())
+  private get messaging (): Messaging {
+    this._messaging ??= getMessaging(this.getApp())
 
-    return this.messaging
+    return this._messaging
   }
 
   private getApp (): App {

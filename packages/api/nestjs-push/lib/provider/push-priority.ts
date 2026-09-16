@@ -4,5 +4,3 @@ export const PushPriority = {
   MEDIUM: 5,
   HIGH: 10
 } as const
-
-export type PushPriorityValue = typeof PushPriority[keyof typeof PushPriority]

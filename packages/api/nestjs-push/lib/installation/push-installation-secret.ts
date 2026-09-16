@@ -1,6 +1,6 @@
 import { createHash, timingSafeEqual } from 'node:crypto'
 
-const SECRET_HASH_LENGTH_IN_BYTES = 32
+export const SECRET_HASH_LENGTH_IN_BYTES = 32
 
 /**
  * Hash an installation secret before storage.

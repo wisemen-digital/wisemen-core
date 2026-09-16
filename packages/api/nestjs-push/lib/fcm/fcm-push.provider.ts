@@ -16,7 +16,6 @@ import type {
   PushSendResult,
   PushTarget
 } from '../provider/push-provider.types.js'
-import { FCM_PROVIDER_NAME } from '../provider/push-provider.types.js'
 import { isRecipientErrorCategory, PushErrorCategory } from '../provider/push-error-category.js'
 import { PushPriority } from '../provider/push-priority.js'
 import { hashPushToken } from '../installation/push-token-hash.js'
@@ -35,7 +34,7 @@ export const FCM_MAX_CONCURRENT_BATCHES = 4
  */
 @Injectable()
 export class FcmPushProvider implements PushProvider {
-  public readonly name = FCM_PROVIDER_NAME
+  public readonly name = 'fcm'
 
   private readonly logger = new Logger(FcmPushProvider.name)
 

@@ -3,10 +3,11 @@ import { describe, it } from 'node:test'
 import { expect } from 'expect'
 import {
   hashInstallationSecret,
-  installationSecretMatches
+  installationSecretMatches,
+  SECRET_HASH_LENGTH_IN_BYTES
 } from './push-installation-secret.js'
 
-const secret = randomBytes(32).toString('hex')
+const secret = randomBytes(SECRET_HASH_LENGTH_IN_BYTES).toString('hex')
 
 describe('hashInstallationSecret', () => {
   it('never returns the secret itself', () => {

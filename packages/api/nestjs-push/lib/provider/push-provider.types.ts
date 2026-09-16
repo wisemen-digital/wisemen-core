@@ -1,5 +1,4 @@
 export type PushProviderName = string
-export const FCM_PROVIDER_NAME = 'fcm' as const
 export const PUSH_PROVIDER = Symbol('PUSH_PROVIDER')
 
 import type { PushErrorCategory } from '../provider/push-error-category.js'

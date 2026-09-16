@@ -163,15 +163,17 @@ export class PushInstallationRepository {
   private async findOneWithSecretHash (
     installations: TypeOrmRepository<PushInstallation>,
     command: UpsertPushInstallationCommand
-  ): Promise<PushInstallation | null> {
-    return await installations
-      .createQueryBuilder('installation')
-      .addSelect('installation.installationSecretHash')
-      .where('installation.appScope = :appScope', { appScope: command.appScope })
-      .andWhere('installation.installationId = :installationId', {
+  ): Promise<Pick<PushInstallation, 'uuid' | 'installationSecretHash'> | null> {
+    return await installations.findOne({
+      select: {
+        uuid: true,
+        installationSecretHash: true
+      },
+      where: {
+        appScope: command.appScope,
         installationId: command.installationId
-      })
-      .getOne()
+      }
+    })
   }
 
   /**
@@ -260,7 +262,7 @@ export class PushInstallationRepository {
    */
   private async updateOne (
     installations: TypeOrmRepository<PushInstallation>,
-    existing: PushInstallation,
+    existing: Pick<PushInstallation, 'uuid'>,
     command: UpsertPushInstallationCommand,
     tokenHash: string
   ): Promise<PushInstallation> {
