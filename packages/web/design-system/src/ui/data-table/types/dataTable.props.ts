@@ -95,10 +95,7 @@ export interface DataTableProps<TItem> {
    * consistent everywhere a DataTable is used.
    */
   error?: ApiError | null
-  /**
-   * Filter icons keyed by column key. When an icon is clicked, DataTable emits `filter-click`
-   * with the key and trigger element; the consumer opens its own editor and updates `data`.
-   */
+  /** Filter icons keyed by column key. Each filter opens its own editor and owns its query state. */
   filters?: DataTableFilters
   /**
    * Returns a stable, unique key for a row item. Used to track rows across re-renders.

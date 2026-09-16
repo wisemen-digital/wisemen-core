@@ -28,10 +28,6 @@ const props = defineProps<{
   label: string
 }>()
 
-const emit = defineEmits<{
-  filterClick: [columnKey: string, trigger: HTMLElement]
-}>()
-
 const {
   leftStickyBorderColumnId,
   leftStickyOffsetPxByColumnId,
@@ -144,7 +140,6 @@ const sortIcon = computed<Component | null>(() => {
     <DataTableHeaderFilter
       v-if="props.filter !== undefined"
       :filter="props.filter"
-      @click="emit('filterClick', props.columnKey, $event)"
     />
 
     <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->

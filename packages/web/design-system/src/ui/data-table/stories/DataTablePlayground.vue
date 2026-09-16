@@ -105,8 +105,8 @@ const props = withDefaults(defineProps<{
   // 200-item mock dataset on a short delay, simulating a real paginated fetch — exercises
   // `onNextPage`/`isFetchingNextPage` end to end instead of just their static visual states.
   isSimulatingInfiniteScroll?: boolean
-  // Renders filter categories through DataTable's decoupled `filters` prop and `filter-click`
-  // event — used by the filter example stories.
+  // Renders filter categories through DataTable's decoupled `filters` prop — used by the
+  // filter example stories.
   filterExample?: FilterExample
   groupBy?: 'department' | 'department+status' | 'status' | null
   // Pins the named columns left/right by key (`DataTableColumn.isSticky`), independent of
@@ -433,6 +433,7 @@ const tableFilters = computed<DataTableFilters>(() => {
         status: {
           isActive: isStatusFilterActive.value,
           label: 'Show active users',
+          open: () => onFilterClick('status'),
         },
       }
     case 'multi-select':
@@ -440,10 +441,12 @@ const tableFilters = computed<DataTableFilters>(() => {
         department: {
           isActive: selectedDepartments.value.length > 0,
           label: 'Filter by department',
+          open: () => onFilterClick('department'),
         },
         manager: {
           isActive: selectedManagers.value.length > 0,
           label: 'Filter by manager',
+          open: () => onFilterClick('manager'),
         },
       }
     case 'multi-autocomplete':
@@ -451,6 +454,7 @@ const tableFilters = computed<DataTableFilters>(() => {
         manager: {
           isActive: selectedManagers.value.length > 0,
           label: 'Filter by manager',
+          open: () => onFilterClick('manager'),
         },
       }
     default:
@@ -767,7 +771,6 @@ function subComponent(item: User) {
       :total-count="props.isSimulatingInfiniteScroll ? filteredData.length : null"
       :variant="props.variant"
       class="min-h-0 flex-1"
-      @filter-click="onFilterClick"
     />
 
     <UIDialog

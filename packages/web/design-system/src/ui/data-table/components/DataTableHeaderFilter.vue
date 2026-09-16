@@ -8,14 +8,8 @@ const props = defineProps<{
   filter: DataTableFilter
 }>()
 
-const emit = defineEmits<{
-  click: [trigger: HTMLElement]
-}>()
-
-function onClick(event: MouseEvent): void {
-  if (event.currentTarget instanceof HTMLElement) {
-    emit('click', event.currentTarget)
-  }
+function onClick(): void {
+  props.filter.open()
 }
 </script>
 

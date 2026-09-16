@@ -3,6 +3,7 @@ import {
   UIActionDropdownMenu,
   UIClickableElement,
 } from '@wisemen/vue-core-design-system'
+import { computed } from 'vue'
 
 import type {
   Filter,
@@ -15,31 +16,33 @@ const props = defineProps<{
 }>()
 
 const {
-  clearFilter, setOpenFilter,
+  isFilterOpen,
+  closeFilter,
+  setOpenFilter,
 } = useInjectFiltersContext()
 
-function onUpdateIsOpen(isOpen: boolean): void {
-  if (isOpen) {
-    setOpenFilter(props.filter.key)
-  }
-  else {
-    setOpenFilter(null)
+const isOpen = computed<boolean>({
+  get: () => isFilterOpen(props.filter.key),
+  set: (isOpen) => {
+    if (isOpen) {
+      setOpenFilter(props.filter.key)
 
-    if (props.filter.isPersistent !== true) {
-      clearFilter(props.filter.key, true)
+      return
     }
-  }
-}
+
+    closeFilter(props.filter.key)
+  },
+})
 </script>
 
 <template>
   <UIActionDropdownMenu
+    v-model:is-open="isOpen"
     :parent-action="props.filter.action"
     :is-current-context-only="true"
     :fixed-content-position="true"
     popover-align="start"
     popover-side="bottom"
-    @update:is-open="onUpdateIsOpen"
   >
     <UIClickableElement>
       <button

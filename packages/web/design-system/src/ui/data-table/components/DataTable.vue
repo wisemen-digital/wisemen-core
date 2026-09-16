@@ -66,10 +66,6 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   onNextPage: null,
 })
 
-const emit = defineEmits<{
-  filterClick: [columnKey: string, trigger: HTMLElement]
-}>()
-
 const i18n = useI18n()
 
 const emptyStateProps = computed<EmptyStateProps>(() => ({
@@ -398,10 +394,6 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
   }))
 })
 
-function onFilterClick(columnKey: string, trigger: HTMLElement): void {
-  emit('filterClick', columnKey, trigger)
-}
-
 // Matches the grid's actual track count — leading checkbox/expand and trailing actions tracks
 // (none of which are real TanStack columns) plus one per real column — so
 // `DataTableLoadingRows`'s subgrid rows span the full width instead of leaving empty tracks.
@@ -579,7 +571,6 @@ const hasDesktopOverlay = computed<boolean>(
               :header="column.header"
               :is-last-column-overall="columnIndex === visibleColumns.length - 1"
               :label="column.headerLabel"
-              @filter-click="onFilterClick"
             />
 
             <div

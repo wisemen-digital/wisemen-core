@@ -25,8 +25,24 @@ const props = defineProps<{
 const i18n = useI18n()
 
 const {
+  isFilterOpen,
+  closeFilter,
+  setOpenFilter,
   values,
 } = useInjectFiltersContext()
+
+const isOpen = computed<boolean>({
+  get: () => isFilterOpen(props.filter.key),
+  set: (isOpen) => {
+    if (isOpen) {
+      setOpenFilter(props.filter.key)
+
+      return
+    }
+
+    closeFilter(props.filter.key)
+  },
+})
 
 const currentValue = computed<boolean>(() => values.value[props.filter.key] as boolean)
 const radioValue = computed<string>(() => String(currentValue.value))
@@ -51,6 +67,7 @@ function onSelect(value: string): void {
     <FiltersActiveBadgePartSeparator />
 
     <UIDropdownMenu
+      v-model:is-open="isOpen"
       popover-side="bottom"
       popover-align="start"
       width-classes="w-32"
