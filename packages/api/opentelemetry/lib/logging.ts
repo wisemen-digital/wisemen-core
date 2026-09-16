@@ -53,7 +53,7 @@ export class OpenTelemetryLogger {
       processors: [new BatchLogRecordProcessor(logExporter)],
       resource: resourceFromAttributes({
         'service.name': this.config.serviceName,
-        'deployment.environment': this.config.env,
+        'deployment.environment.name': this.config.env,
         ...this.config.attributes
       })
     })

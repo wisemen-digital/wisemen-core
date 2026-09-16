@@ -57,7 +57,7 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
     ],
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
-      'deployment.environment': config.env,
+      'deployment.environment.name': config.env,
       ...config.attributes
     })
   })
