@@ -1,9 +1,6 @@
 import { DynamicModule } from '@nestjs/common'
 import { TypeOrmModule as TM, TypeOrmModuleAsyncOptions } from '@nestjs/typeorm'
-import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type.js'
-import { DataSource, DataSourceOptions } from 'typeorm'
-import { DEFAULT_DATA_SOURCE_NAME } from '@nestjs/typeorm/dist/typeorm.constants.js'
-import { EntitiesMetadataStorage } from '@nestjs/typeorm/dist/entities-metadata.storage.js'
+import { DataSource, DataSourceOptions, EntitySchema } from 'typeorm'
 import { ColumnType } from 'typeorm/browser'
 import { createTypeOrmProviders } from './create-providers.js'
 
@@ -13,15 +10,12 @@ export interface NestjsTypeOrmModuleAsyncOptions extends TypeOrmModuleAsyncOptio
 
 export class TypeOrmModule extends TM {
   static forFeature (
-    entities: EntityClassOrSchema[] = [],
-    dataSource:
-      | DataSource
-      | DataSourceOptions
-      | string = DEFAULT_DATA_SOURCE_NAME
+    entities: (Function | EntitySchema)[] = [],
+    dataSource?: DataSource | DataSourceOptions | string
   ): DynamicModule {
-    const providers = createTypeOrmProviders(entities, dataSource)
+    super.forFeature(entities, dataSource)
 
-    EntitiesMetadataStorage.addEntitiesByDataSource(dataSource, [...entities])
+    const providers = createTypeOrmProviders(entities, dataSource)
 
     return {
       module: TypeOrmModule,
