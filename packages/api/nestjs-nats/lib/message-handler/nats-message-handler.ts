@@ -3,8 +3,8 @@
 import type { JsMsg } from '@nats-io/jetstream'
 import type { Msg } from '@nats-io/transport-node'
 import type { Context } from '@opentelemetry/api'
-import { propagation, context, trace, SpanStatusCode } from '@opentelemetry/api'
-import { getOtelTracer, type TraceContextCarrier } from '@wisemen/opentelemetry'
+import { propagation, context, trace } from '@opentelemetry/api'
+import { captureException, getOtelTracer, type TraceContextCarrier } from '@wisemen/opentelemetry'
 import type { NatsParameter } from '#src/parameters/nats-parameter.js'
 
 export class NatsMessageHandlerFunction {
@@ -50,13 +50,7 @@ export class NatsMessageHandlerFunction {
 
         return await this.handler(...args)
       } catch (e) {
-        span.recordException(e as Error)
-        span.setStatus({ code: SpanStatusCode.ERROR })
-
-        if (e instanceof Error) {
-          span.setAttribute('exceptions.message', e.message)
-          span.setAttribute('exception.stacktrace', e.stack ?? '')
-        }
+        captureException(e)
 
         throw e
       } finally {

@@ -439,6 +439,52 @@ export const Empty: Story = {
   },
 }
 
+// Same empty state as `Empty`, but wrapped in a dashboard-widget-style card, the way a dashboard
+// grid embeds a `contained` table. The wrapper sizes itself to content (`h-fit`, not a hard
+// `overflow-hidden` height) so the table's own `min-h-64` floor determines the card's height
+// instead of being clipped by it — the empty-state overlay stays fully visible. A consumer that
+// hard-clips a shorter box from the outside defeats this: the overlay can only scroll within the
+// table's own bounds, not past an ancestor's clip.
+export const EmptyContained: Story = {
+  args: {
+    hasCellTypes: false,
+    hasRowActions: false,
+    hasSubComponent: false,
+    isFirstColumnSticky: false,
+    isForcedLoading: false,
+    isLastColumnSticky: false,
+    isNarrow: false,
+    isSelectable: false,
+    isSimulatingEmpty: true,
+    isSimulatingError: false,
+    isSimulatingInfiniteScroll: false,
+    groupBy: null,
+    stickyLeftColumnKeys: [],
+    stickyRightColumnKeys: [],
+    variant: 'contained',
+  },
+  render: (args) => ({
+    components: {
+      DataTablePlayground,
+    },
+    setup() {
+      return {
+        args,
+      }
+    },
+    template: `
+      <div class="flex h-fit max-w-2xl flex-col rounded-xl border border-secondary p-lg">
+        <p class="mb-lg shrink-0 text-sm font-semibold text-secondary">
+          Open issues &amp; preventive maintenance
+        </p>
+        <div class="flex flex-col [&>div]:h-auto">
+          <DataTablePlayground v-bind="args" />
+        </div>
+      </div>
+    `,
+  }),
+}
+
 // Overrides the default "No data" empty state via the `emptyState` prop (title, description,
 // illustration) — see `DataTablePlayground.vue`'s `emptyState` computed for the exact override.
 export const EmptyCustom: Story = {

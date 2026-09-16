@@ -438,7 +438,7 @@ const hasDesktopOverlay = computed<boolean>(
       v-if="props.error !== null"
       :error="props.error"
       class="
-        mx-auto h-full max-w-96 py-xl
+        mx-auto h-full max-w-96 overflow-y-auto py-xl
         @md/data-table:hidden
       "
     />
@@ -452,7 +452,7 @@ const hasDesktopOverlay = computed<boolean>(
       :primary-action="emptyStateProps.primaryAction"
       :secondary-action="emptyStateProps.secondaryAction"
       class="
-        mx-auto h-full max-w-96 py-xl
+        mx-auto h-full max-w-96 overflow-y-auto py-xl
         @md/data-table:hidden
       "
     />
@@ -501,8 +501,8 @@ const hasDesktopOverlay = computed<boolean>(
       <div
         v-if="hasDesktopOverlay"
         class="
-          absolute inset-x-0 top-10 bottom-0 z-10 flex items-center
-          justify-center bg-primary p-xl
+          absolute inset-x-0 top-10 bottom-0 z-10 flex items-center-safe
+          justify-center-safe overflow-y-auto bg-primary p-xl
         "
       >
         <UIErrorState

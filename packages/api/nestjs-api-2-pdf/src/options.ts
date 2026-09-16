@@ -53,6 +53,7 @@ export interface Api2PdfHtmlToPdfRequestOptions extends Omit<Api2PdfHtmlToPdfOpt
 export interface Api2PdfUrlToPdfOptions extends Api2PdfBasePdfOptions {
   url: string
   uploadUrl: string
+  waitForSelector: string
   /**
    * Validate if the passed url is reachable. If not, the api2pdf will not be called and generatePdfFromUrl will throw.
    * @default false
@@ -62,7 +63,7 @@ export interface Api2PdfUrlToPdfOptions extends Api2PdfBasePdfOptions {
   extraHTTPHeaders?: HttpHeaders
 }
 
-export interface Api2PdfUrlToPdfRequestOptions extends Omit<Api2PdfUrlToPdfOptions, 'uploadUrl' | 'storage'> {
+export interface Api2PdfUrlToPdfRequestOptions extends Omit<Api2PdfUrlToPdfOptions, 'uploadUrl' | 'storage' | 'waitForSelector'> {
   useCustomStorage: true
   storage: Api2PdfStorageOptions
 }

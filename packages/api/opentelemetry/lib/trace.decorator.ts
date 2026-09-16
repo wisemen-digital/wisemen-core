@@ -1,4 +1,5 @@
-import { Exception, Span, SpanStatusCode } from '@opentelemetry/api'
+import { Span } from '@opentelemetry/api'
+import { captureException } from './capture-exception.js'
 import { getOtelTracer } from './get-otel-tracer.js'
 import 'reflect-metadata'
 
@@ -22,18 +23,7 @@ export function Trace (): MethodDecorator {
         try {
           return await originalMethod.apply(this, args)
         } catch (err) {
-          span.recordException(err as Exception)
-          span.setStatus({ code: SpanStatusCode.ERROR })
-
-          if (err instanceof Error) {
-            span.setAttribute('exceptions.message', err.message)
-            span.setAttribute('exception.stacktrace', err.stack ?? '')
-
-            const prototype = Object.getPrototypeOf(err) as { constructor: { name: string } }
-            const className = prototype.constructor.name as string | undefined
-
-            span.setAttribute('exception.type', className ?? err.name)
-          }
+          captureException(err)
 
           throw err
         } finally {

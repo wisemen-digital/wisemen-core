@@ -39,6 +39,38 @@
 
 
 
+
+
+
+
+## 1.23.0
+<sub>2026-09-10</sub>
+
+- [#1590](https://github.com/wisemen-digital/wisemen-core/pull/1590)  *(minor)* Thanks [@wouterlms](https://github.com/wouterlms)!
+  Add a way to flatten the command menu's grouped results into a single ungrouped list. Press Tab in the search input to toggle it; the preference persists across sessions via localStorage.
+- [#1667](https://github.com/wisemen-digital/wisemen-core/pull/1667)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Show correct keyboard shortcut for "Return to app"
+- [#1671](https://github.com/wisemen-digital/wisemen-core/pull/1671)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Fixed the mobile bottom-drawer Dialog getting its chin cut off by the viewport edge — the drawer now reserves space for the device safe-area inset and for a two-line chin.
+- [#1672](https://github.com/wisemen-digital/wisemen-core/pull/1672)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix DateRangePicker fixed weeks
+- [#1673](https://github.com/wisemen-digital/wisemen-core/pull/1673)  *(patch)* Thanks [@wouterlms](https://github.com/wouterlms)! - Fix: DatePicker fixed weeks
+
+## 1.22.7
+<sub>2026-09-07</sub>
+
+- [#1658](https://github.com/wisemen-digital/wisemen-core/pull/1658)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)! - Reduced the size of EmptyState illustrations so they no longer dominate the layout.
+
+## 1.22.6
+<sub>2026-09-04</sub>
+
+- [#1647](https://github.com/wisemen-digital/wisemen-core/pull/1647)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Fixed the top bar's title/breadcrumbs overlapping the global search on narrow screens, actions no longer misaligned when search is hidden, and truncated titles now show a tooltip with the full text.
+
+## 1.22.5
+<sub>2026-09-03</sub>
+
+- [#1648](https://github.com/wisemen-digital/wisemen-core/pull/1648)  *(patch)* Thanks [@JeroenVanC](https://github.com/JeroenVanC)!
+  Fixed DataTable empty/error state overlay being clipped when wrapped in a shorter, content-sized container instead of scrolling.
+
 ## 1.22.4
 <sub>2026-09-01</sub>
 

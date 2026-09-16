@@ -12,5 +12,11 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: test_db
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis-wisemen-core
+    ports:
+      - '6379:6379'
+
 volumes:
   postgres-data:

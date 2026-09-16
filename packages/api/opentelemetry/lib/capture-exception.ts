@@ -1,5 +1,5 @@
 import { trace, SpanStatusCode, Exception, Span } from '@opentelemetry/api'
-import { getOtelTracer } from './index.js'
+import { getOtelTracer } from './get-otel-tracer.js'
 
 export function captureException (exception: unknown, message?: string): void {
   const activeSpan = trace.getActiveSpan()

@@ -57,6 +57,7 @@ export default defineConfig({
       '#context': resolve(projectRootDir, 'src/context'),
       '#sections': resolve(projectRootDir, 'src/sections'),
       '#types': resolve(projectRootDir, 'src/types'),
+      '#utils': resolve(projectRootDir, 'src/utils'),
       '#views': resolve(projectRootDir, 'src/views'),
       '@': resolve(projectRootDir, 'src'),
     },
