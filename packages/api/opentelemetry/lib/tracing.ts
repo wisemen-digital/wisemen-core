@@ -50,6 +50,8 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
   const sdk = new NodeSDK({
     traceExporter,
     autoDetectResources: false,
+    logRecordProcessors: [],
+    metricReaders: [],
     spanProcessors: [
       spanProcessor
     ],

@@ -42,7 +42,9 @@ export function startOpentelemetryMetrics (config: OpentelemetryMetricsConfig): 
       'deployment.environment': config.env,
       ...config.attributes
     }),
-    metricReader
+    metricReader,
+    logRecordProcessors: [],
+    spanProcessors: []
   })
 
   sdk.start()
