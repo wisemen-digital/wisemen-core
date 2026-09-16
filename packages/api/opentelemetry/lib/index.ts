@@ -2,6 +2,10 @@ export { getOtelServiceName } from './get-otel-service-name.js'
 export { getOtelTracer } from './get-otel-tracer.js'
 export { Trace } from './trace.decorator.js'
 export { registerInstrumentation } from './register-instrumentation.js'
+export {
+  NestLayerInstrumentation,
+  type NestLayerInstrumentationConfig
+} from './nest-layer-instrumentation.js'
 export { startOpentelemetryTracing, type OpentelemetryTracingConfig, } from './tracing.js'
 export { startOpentelemetryMetrics, type OpentelemetryMetricsConfig, } from './metrics.js'
 export { type TraceContextCarrier } from './context.js'

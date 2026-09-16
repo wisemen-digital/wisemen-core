@@ -6,6 +6,9 @@ settings:
 
 catalogs:
   backend:
+    '@fastify/otel':
+      specifier: 0.21.0
+      version: 0.21.0
     '@nats-io/jetstream':
       specifier: ^3.3.1
       version: 3.3.1
@@ -57,9 +60,6 @@ catalogs:
     '@opentelemetry/instrumentation-aws-sdk':
       specifier: 0.69.0
       version: 0.69.0
-    '@opentelemetry/instrumentation-express':
-      specifier: 0.62.0
-      version: 0.62.0
     '@opentelemetry/instrumentation-http':
       specifier: 0.217.0
       version: 0.217.0
@@ -138,6 +138,9 @@ catalogs:
     reflect-metadata:
       specifier: 0.2.2
       version: 0.2.2
+    rxjs:
+      specifier: 7.8.2
+      version: 7.8.2
     twilio:
       specifier: 5.13.1
       version: 5.13.1
@@ -2656,6 +2659,9 @@ importers:
 
   packages/api/opentelemetry:
     dependencies:
+      '@fastify/otel':
+        specifier: catalog:backend
+        version: 0.21.0(@opentelemetry/api@1.9.1)
       '@nestjs/common':
         specifier: catalog:backend-peer
         version: 11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -2680,9 +2686,6 @@ importers:
       '@opentelemetry/instrumentation-aws-sdk':
         specifier: catalog:backend
         version: 0.69.0(@opentelemetry/api@1.9.1)
-      '@opentelemetry/instrumentation-express':
-        specifier: catalog:backend
-        version: 0.62.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/instrumentation-http':
         specifier: catalog:backend
         version: 0.217.0(@opentelemetry/api@1.9.1)
@@ -2735,6 +2738,9 @@ importers:
       oxlint-tsgolint:
         specifier: catalog:lint-api
         version: 0.20.0
+      rxjs:
+        specifier: catalog:backend
+        version: 7.8.2
       typescript:
         specifier: catalog:peer
         version: 5.9.3
@@ -3315,7 +3321,7 @@ importers:
     devDependencies:
       '@orpc/otel':
         specifier: ^1.15.0
-        version: 1.15.0(@opentelemetry/api@1.9.1)(@opentelemetry/instrumentation@0.221.0(@opentelemetry/api@1.9.1))
+        version: 1.15.0(@opentelemetry/api@1.9.1)(@opentelemetry/instrumentation@0.222.0(@opentelemetry/api@1.9.1))
       '@orpc/server':
         specifier: ^1.15.0
         version: 1.15.0(@opentelemetry/api@1.9.1)(crossws@0.4.10(srvx@0.12.5))(ws@8.21.0)
@@ -6467,6 +6473,11 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.9.0
 
+  '@fastify/otel@0.21.0':
+    resolution: {integrity: sha512-eeb0YDpKk4Giv6kf7BoVoJ/rTYJokZvzmnMgidg1z/1vI2SE9CT0rfVRUfNu92iVavY1JUOicnKWxZH5GK7jsg==}
+    peerDependencies:
+      '@opentelemetry/api': ^1.9.0
+
   '@fastify/proxy-addr@5.1.0':
     resolution: {integrity: sha512-INS+6gh91cLUjB+PVHfu1UqcB76Sqtpyp7bnL+FYojhjygvOPA9ctiD/JDKsyD9Xgu4hUhCSJBPig/w7duNajw==}
 
@@ -7432,6 +7443,10 @@ packages:
     resolution: {integrity: sha512-OlanaW1vv7ufTqQ3/fPLI4arGt5ZoM+P8abOMki6uEYnpRazepSWDwDnnw+la7kE26SHVC18//SMccrDvLKOXQ==}
     engines: {node: '>=8.0.0'}
 
+  '@opentelemetry/api-logs@0.222.0':
+    resolution: {integrity: sha512-9mb1If+IF6u0ZVXkHQ6ogEae5HwA6ajIVUgpSDQyRASxft6BSXHvBvPooRle3yFN/fKnCdSOnuu0OC3PLcF6+g==}
+    engines: {node: '>=8.0.0'}
+
   '@opentelemetry/api@1.9.1':
     resolution: {integrity: sha512-gLyJlPHPZYdAk1JENA9LeHejZe1Ti77/pTeFm/nMXmQH/HFZlcS/O2XJB+L8fkbrNSqhdtlvjBVjxwUYanNH5Q==}
     engines: {node: '>=8.0.0'}
@@ -7846,6 +7861,12 @@ packages:
 
   '@opentelemetry/instrumentation@0.221.0':
     resolution: {integrity: sha512-cCk80Z/iRDf/5gfsKMB4f74LqVA5yKETB/9ojPzVW/6/f70iu89nJvGxsFCxx4XfSohaOofkU19kiYm84AiAlw==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/instrumentation@0.222.0':
+    resolution: {integrity: sha512-fhbRDuAgzPKpq1k5+hX3uS+3QAYNca0on0Ngot/R8dDsQtuFaADeZnG2uSgxABuvcI7S2phAaRhbct9jieeKZw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': ^1.3.0
@@ -19011,7 +19032,17 @@ snapshots:
       '@opentelemetry/core': 2.10.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/instrumentation': 0.212.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/semantic-conventions': 1.43.0
-      minimatch: 10.2.5
+      minimatch: 10.2.6
+    transitivePeerDependencies:
+      - supports-color
+
+  '@fastify/otel@0.21.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.10.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/instrumentation': 0.221.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/semantic-conventions': 1.43.0
+      minimatch: 10.2.6
     transitivePeerDependencies:
       - supports-color
 
@@ -19665,7 +19696,7 @@ snapshots:
       '@rushstack/terminal': 0.15.4(@types/node@24.8.1)
       '@rushstack/ts-command-line': 5.0.2(@types/node@24.8.1)
       lodash: 4.18.0
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       resolve: 1.22.12
       semver: 7.5.4
       source-map: 0.6.1
@@ -19683,7 +19714,7 @@ snapshots:
       '@rushstack/terminal': 0.15.4(@types/node@25.3.0)
       '@rushstack/ts-command-line': 5.0.2(@types/node@25.3.0)
       lodash: 4.18.0
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       resolve: 1.22.12
       semver: 7.5.4
       source-map: 0.6.1
@@ -20098,6 +20129,10 @@ snapshots:
       '@opentelemetry/api': 1.9.1
 
   '@opentelemetry/api-logs@0.221.0':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+
+  '@opentelemetry/api-logs@0.222.0':
     dependencies:
       '@opentelemetry/api': 1.9.1
 
@@ -20685,6 +20720,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@opentelemetry/instrumentation@0.222.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/api-logs': 0.222.0
+      import-in-the-middle: 3.0.0
+      require-in-the-middle: 8.0.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@opentelemetry/otlp-exporter-base@0.217.0(@opentelemetry/api@1.9.1)':
     dependencies:
       '@opentelemetry/api': 1.9.1
@@ -20992,10 +21036,10 @@ snapshots:
 
   '@orpc/interop@1.15.0': {}
 
-  '@orpc/otel@1.15.0(@opentelemetry/api@1.9.1)(@opentelemetry/instrumentation@0.221.0(@opentelemetry/api@1.9.1))':
+  '@orpc/otel@1.15.0(@opentelemetry/api@1.9.1)(@opentelemetry/instrumentation@0.222.0(@opentelemetry/api@1.9.1))':
     dependencies:
       '@opentelemetry/api': 1.9.1
-      '@opentelemetry/instrumentation': 0.221.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/instrumentation': 0.222.0(@opentelemetry/api@1.9.1)
       '@orpc/shared': 1.15.0(@opentelemetry/api@1.9.1)
 
   '@orpc/server@1.15.0(@opentelemetry/api@1.9.1)(crossws@0.4.10(srvx@0.12.5))(ws@8.21.0)':
@@ -22731,7 +22775,7 @@ snapshots:
 
   '@ts-morph/common@0.28.1':
     dependencies:
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       path-browserify: 1.0.1
       tinyglobby: 0.2.17
 
@@ -23232,7 +23276,7 @@ snapshots:
       '@typescript-eslint/types': 8.59.0
       '@typescript-eslint/visitor-keys': 8.59.0
       debug: 4.4.3
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       semver: 7.8.5
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -23247,7 +23291,7 @@ snapshots:
       '@typescript-eslint/types': 8.66.0
       '@typescript-eslint/visitor-keys': 8.66.0
       debug: 4.4.3
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       semver: 7.8.5
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -23698,7 +23742,7 @@ snapshots:
       '@vue/compiler-vue2': 2.7.16
       '@vue/shared': 3.5.27
       alien-signals: 0.4.14
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       muggle-string: 0.4.1
       path-browserify: 1.0.1
     optionalDependencies:
@@ -23711,7 +23755,7 @@ snapshots:
       '@vue/compiler-vue2': 2.7.16
       '@vue/shared': 3.5.27
       alien-signals: 1.0.13
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       muggle-string: 0.4.1
       path-browserify: 1.0.1
     optionalDependencies:
@@ -24815,7 +24859,7 @@ snapshots:
     dependencies:
       '@one-ini/wasm': 0.1.1
       commander: 10.0.1
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       semver: 7.8.5
 
   ee-first@1.1.1: {}
@@ -26115,7 +26159,7 @@ snapshots:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 3.4.3
-      minimatch: 10.2.5
+      minimatch: 10.2.6
       minipass: 7.1.3
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
