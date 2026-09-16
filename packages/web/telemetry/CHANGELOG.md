@@ -1,6 +1,12 @@
 # Changelog
 
 
+
+## 3.0.0
+<sub>2026-09-16</sub>
+
+- [#1687](https://github.com/wisemen-digital/wisemen-core/pull/1687)  *(major)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Replace depricated deployment attribute 'deployment.environment' to 'deployment.environment.name'
+
 ## 2.0.2
 <sub>2026-08-05</sub>
 
