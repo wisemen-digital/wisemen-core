@@ -5,10 +5,15 @@ import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core'
 import { PgInstrumentation, type PgRequestHookInformation } from '@opentelemetry/instrumentation-pg'
 import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis'
-import { ExpressInstrumentation, ExpressLayerType } from '@opentelemetry/instrumentation-express'
 import { UndiciInstrumentation, type UndiciRequest } from '@opentelemetry/instrumentation-undici'
+import {
+  FastifyOtelInstrumentation,
+  type FastifyOtelHookName,
+  type FastifyOtelLifecycleHookInfo
+} from '@fastify/otel'
 import type { Span } from '@opentelemetry/api'
 import { SqlQuerySummarizer } from './sql-query-summarizer.js'
+import { NestLayerInstrumentation } from './nest-layer-instrumentation.js'
 
 const sqlQuerySummarizer = new SqlQuerySummarizer()
 
@@ -18,6 +23,14 @@ const IGNORED_REQUEST_PATHS = new Set([
   '/health',
   '/ready'
 ])
+
+const FASTIFY_PLUGIN_CHAIN_SEPARATOR = ' -> '
+const INSTRUMENTED_FASTIFY_HOOKS: FastifyOtelHookName[] = [
+  'onRequest',
+  'preValidation',
+  'preHandler',
+  'onError'
+]
 
 export function registerInstrumentation (
   extraInstrumentations: Instrumentation[] = []
@@ -52,10 +65,15 @@ export function createDefaultInstrumentations (
         }
       }
     }),
-    new ExpressInstrumentation({
-      ignoreLayersType: [ExpressLayerType.MIDDLEWARE, ExpressLayerType.REQUEST_HANDLER]
+    new FastifyOtelInstrumentation({
+      registerOnInitialization: true,
+      instrumentHooks: INSTRUMENTED_FASTIFY_HOOKS,
+      instrumentHandler: true,
+      ignorePaths: shouldIgnoreFastifyRoute,
+      lifecycleHook: renameAnonymousFastifySpan
     }),
     new NestInstrumentation({}),
+    new NestLayerInstrumentation({}),
     new AwsInstrumentation({
       suppressInternalInstrumentation: true
     }),
@@ -99,6 +117,26 @@ export function addPostgresQuerySummary (span: Span, request: PgRequestHookInfor
     span.setAttribute('db.collection.name', result.collection)
   }
   span.updateName(result.summary)
+}
+
+export function renameAnonymousFastifySpan (
+  span: Span,
+  info: FastifyOtelLifecycleHookInfo
+): void {
+  if (info.handler == null || !info.handler.includes(FASTIFY_PLUGIN_CHAIN_SEPARATOR)) {
+    return
+  }
+
+  const route = (info.request as { routeOptions?: { url?: string } }).routeOptions?.url
+
+  span.updateName(`${info.hookName} - ${route ?? 'anonymous'}`)
+}
+
+export function shouldIgnoreFastifyRoute (routeOptions: { url: string }): boolean {
+  // Called per request with the raw url, so the query string is still attached.
+  const path = routeOptions.url.split('?', 1)[0]
+
+  return IGNORED_REQUEST_PATHS.has(path)
 }
 
 export function shouldIgnoreIncomingRequest (request: IncomingMessage): boolean {

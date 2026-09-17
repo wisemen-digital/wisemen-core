@@ -59,6 +59,7 @@ jobs:
         run: |
           PKGS=$(echo "${{ steps.changed.outputs.packages }}" | tr '\n' ' ')
           pnpm exec pkg-pr-new publish \
+            --pnpm \
             --compact \
             --comment=update \
             --commentWithSha \

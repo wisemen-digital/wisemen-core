@@ -3,10 +3,13 @@ import { describe, it } from 'node:test'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { PgInstrumentation } from '@opentelemetry/instrumentation-pg'
 import { UndiciInstrumentation } from '@opentelemetry/instrumentation-undici'
+import { FastifyOtelInstrumentation } from '@fastify/otel'
 import type { Span } from '@opentelemetry/api'
 import {
   addPostgresQuerySummary,
   createDefaultInstrumentations,
+  renameAnonymousFastifySpan,
+  shouldIgnoreFastifyRoute,
   shouldIgnoreIncomingRequest,
   shouldIgnoreOutgoingRequest,
   shouldIgnoreUndiciRequest
@@ -18,6 +21,41 @@ describe('trace-volume instrumentation hooks', () => {
     assert.equal(shouldIgnoreIncomingRequest({ url: '/ready?verbose=true' } as never), true)
     assert.equal(shouldIgnoreIncomingRequest({ url: '/healthz' } as never), false)
     assert.equal(shouldIgnoreIncomingRequest({ url: '/api/health' } as never), false)
+  })
+
+  it('ignores the same health routes for Fastify routes', () => {
+    assert.equal(shouldIgnoreFastifyRoute({ url: '/health' }), true)
+    assert.equal(shouldIgnoreFastifyRoute({ url: '/ready' }), true)
+    // Fastify passes the raw request url, query string included.
+    assert.equal(shouldIgnoreFastifyRoute({ url: '/health?verbose=true' }), true)
+    assert.equal(shouldIgnoreFastifyRoute({ url: '/healthz' }), false)
+    assert.equal(shouldIgnoreFastifyRoute({ url: '/api/health' }), false)
+  })
+
+  it('renames plugin-chain span names after the route, and leaves real names alone', () => {
+    const renamed: string[] = []
+    const span = { updateName (name: string) { renamed.push(name); return this } } as unknown as Span
+
+    renameAnonymousFastifySpan(span, {
+      hookName: 'handler',
+      handler: 'fastify -> @fastify/otel -> @fastify/middie',
+      request: { routeOptions: { url: '/api/v1/users' } }
+    } as never)
+    assert.deepEqual(renamed, ['handler - /api/v1/users'])
+
+    renameAnonymousFastifySpan(span, {
+      hookName: 'onRequest',
+      handler: 'fastify -> @fastify/cors',
+      request: {}
+    } as never)
+    assert.deepEqual(renamed.at(-1), 'onRequest - anonymous')
+
+    renameAnonymousFastifySpan(span, {
+      hookName: 'onRequest',
+      handler: 'runMiddie',
+      request: { routeOptions: { url: '/api/v1/users' } }
+    } as never)
+    assert.equal(renamed.length, 2, 'named handlers are left alone')
   })
 
   it('ignores the exact Better Stack hostname for HTTP and Undici', () => {
@@ -94,6 +132,18 @@ describe('trace-volume instrumentation hooks', () => {
     assert.equal(defaultHttp.getConfig().ignoreOutgoingRequestHook, shouldIgnoreOutgoingRequest)
     assert.equal(defaultPg.getConfig().requestHook, addPostgresQuerySummary)
     assert.equal(defaultUndici.getConfig().ignoreRequestHook, shouldIgnoreUndiciRequest)
+
+    const defaultFastify = defaults
+      .find(value => value instanceof FastifyOtelInstrumentation) as FastifyOtelInstrumentation
+
+    assert.equal(defaultFastify.getConfig().ignorePaths, shouldIgnoreFastifyRoute)
+    assert.equal(defaultFastify.getConfig().registerOnInitialization, true)
+    assert.deepEqual(
+      defaultFastify.getConfig().instrumentHooks,
+      ['onRequest', 'preValidation', 'preHandler', 'onError']
+    )
+    assert.equal(defaultFastify.getConfig().instrumentHandler, true)
+    assert.equal(defaultFastify.getConfig().lifecycleHook, renameAnonymousFastifySpan)
   })
 
   it('retains extra instrumentations', () => {

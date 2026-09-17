@@ -29,13 +29,13 @@
     "release": "pnpx release-it"
   },
   "dependencies": {
+    "@fastify/otel": "catalog:backend",
     "@opentelemetry/exporter-logs-otlp-http": "catalog:backend",
     "@opentelemetry/exporter-metrics-otlp-proto": "catalog:backend",
     "@opentelemetry/exporter-trace-otlp-http": "catalog:backend",
     "@opentelemetry/instrumentation": "catalog:backend",
     "@opentelemetry/instrumentation-aws-sdk": "catalog:backend",
     "@opentelemetry/instrumentation-http": "catalog:backend",
-    "@opentelemetry/instrumentation-express": "catalog:backend",
     "@opentelemetry/instrumentation-nestjs-core": "catalog:backend",
     "@opentelemetry/instrumentation-pg": "catalog:backend",
     "@opentelemetry/instrumentation-redis": "catalog:backend",
@@ -51,7 +51,8 @@
     "@nestjs/common": "catalog:backend-peer",
     "@opentelemetry/api": "catalog:backend-peer",
     "@opentelemetry/api-logs": "catalog:backend-peer",
-    "reflect-metadata": "catalog:backend-peer"
+    "reflect-metadata": "catalog:backend-peer",
+    "rxjs": "catalog:backend-peer"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -59,7 +60,8 @@
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "typescript": "catalog:peer"
+    "typescript": "catalog:peer",
+    "rxjs": "catalog:backend"
   },
   "author": "Kobe Kwanten",
   "contributors": [],
