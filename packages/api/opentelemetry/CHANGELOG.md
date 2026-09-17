@@ -10,6 +10,18 @@
 
 
 
+
+
+## 1.0.0
+<sub>2026-09-16</sub>
+
+- [#1687](https://github.com/wisemen-digital/wisemen-core/pull/1687)  *(major)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Replace depricated deployment attribute 'deployment.environment' to 'deployment.environment.name'
+
+## 0.5.1
+<sub>2026-09-16</sub>
+
+- [#1684](https://github.com/wisemen-digital/wisemen-core/pull/1684)  *(patch)* Thanks [@PauwelsPieter](https://github.com/PauwelsPieter)! - Prevent tracing bootstrap from claiming the global metrics provider
+
 ## 0.5.0
 <sub>2026-09-15</sub>
 

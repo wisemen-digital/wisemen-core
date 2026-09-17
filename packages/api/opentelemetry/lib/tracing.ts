@@ -50,12 +50,14 @@ export function startOpentelemetryTracing (config: OpentelemetryTracingConfig): 
   const sdk = new NodeSDK({
     traceExporter,
     autoDetectResources: false,
+    logRecordProcessors: [],
+    metricReaders: [],
     spanProcessors: [
       spanProcessor
     ],
     resource: resourceFromAttributes({
       'service.name': config.serviceName,
-      'deployment.environment': config.env,
+      'deployment.environment.name': config.env,
       ...config.attributes
     })
   })

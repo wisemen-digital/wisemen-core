@@ -14,6 +14,12 @@
 
 
 
+
+## 2.0.0
+<sub>2026-09-16</sub>
+
+- *(major)* Updated dependency `@wisemen/opentelemetry` v1.0.0, `@wisemen/pgboss-nestjs-job` v6.0.0
+
 ## 1.4.1
 <sub>2026-09-15</sub>
 
