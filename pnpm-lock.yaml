@@ -2426,9 +2426,6 @@ importers:
       '@nestjs/throttler':
         specifier: catalog:backend
         version: 6.5.0(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(reflect-metadata@0.2.2)
-      '@wisemen/nestjs-redis':
-        specifier: workspace:^
-        version: link:../nestjs-redis
     devDependencies:
       '@types/node':
         specifier: catalog:backend
