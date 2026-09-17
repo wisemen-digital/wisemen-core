@@ -8,6 +8,7 @@ import { pascalCase } from 'change-case'
 import { AsyncAPIDocument, AsyncApiRef, AsyncAPISchema } from './async-api.types.js'
 import { AsyncAPIChannelDefinition, AsyncAPIDefinition } from './async-api-definition.types.js'
 import { isChannel } from './create-channel.js'
+import { normalizeSchema } from './normalize-schema.js'
 
 export async function generateAsyncApiYaml (api: AsyncAPIDefinition): Promise<string> {
   const apiDocs: AsyncAPIDocument = {
@@ -89,6 +90,10 @@ export async function generateAsyncApiYaml (api: AsyncAPIDefinition): Promise<st
       parameters: channel.parameters,
       messages: channelMessages
     }
+  }
+
+  for (const [name, schema] of Object.entries(apiDocs.components!.schemas!)) {
+    apiDocs.components!.schemas![name] = normalizeSchema(schema) as AsyncAPISchema
   }
 
   return YAML.stringify(apiDocs)
