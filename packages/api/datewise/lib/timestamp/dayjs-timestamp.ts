@@ -228,7 +228,7 @@ export class DayjsTimestamp implements Timestamp {
   }
 
   toPlainDate (): PlainDate {
-    return plainDate(this)
+    return plainDate(this.format('YYYY-MM-DD'))
   }
 
   toPlainTime (): PlainTime {
