@@ -20,6 +20,7 @@ runs:
         # unable to find the binary.
         if ! pnpm exec danger --version >/dev/null 2>&1; then
           pnpm add --workspace-root @wisemen/danger
+          pnpm add --workspace-root --save-dev danger@$(pnpm view @wisemen/danger dependencies.danger)
         fi
     - name: Run Danger
       shell: bash
