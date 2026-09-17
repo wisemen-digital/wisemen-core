@@ -37,6 +37,11 @@ const {
 
 const allActions = computed<Action[]>(() => props.inlineActions.concat(props.moreActions))
 
+// A right-click menu with nothing in it serves no purpose — skip mounting the whole Reka
+// context-menu tree (trigger/portal/positioning) for rows with no configured actions at all,
+// e.g. tables that don't pass a `row` config to `UIDataTable`.
+const hasContextMenu = computed<boolean>(() => allActions.value.length > 0)
+
 // `full-page` has no container border to close off the table's bottom edge, so its last row
 // keeps its own bottom border — `contained`'s container border already does that job.
 const hasBottomBorder = computed<boolean>(() => !props.isLast || variant.value === 'full-page')
@@ -44,6 +49,7 @@ const hasBottomBorder = computed<boolean>(() => !props.isLast || variant.value =
 
 <template>
   <UIActionContextMenu
+    v-if="hasContextMenu"
     :actions="allActions"
     :is-current-context-only="true"
     :models="props.model === null ? [] : [props.model]"
@@ -85,4 +91,42 @@ const hasBottomBorder = computed<boolean>(() => !props.isLast || variant.value =
       </div>
     </UIActionFocus>
   </UIActionContextMenu>
+
+  <UIActionFocus
+    v-else
+    :actions="[...props.focusOnlyActions, ...allActions]"
+    :models="props.model === null ? [] : [props.model]"
+  >
+    <div
+      :class="{
+        'border-b border-secondary has-[[data-row-actions]_[data-state=open]]:border-secondary/25 data-[state=open]:border-secondary/25': hasBottomBorder,
+      }"
+      class="
+        group/row relative col-span-full grid grid-cols-subgrid bg-primary
+        transition-[filter,opacity] duration-150
+        group-has-[[data-context-menu-trigger][data-state=open]]/body:opacity-25
+        group-has-[[data-row-actions]_[data-state=open]]/body:opacity-25
+        has-[[data-row-actions]_[data-state=open]]:opacity-100
+        data-[state=open]:opacity-100!
+      "
+      role="row"
+    >
+      <!-- Row-level keyboard tab stop — mouse clicks go through DataTableCell's own catchers. -->
+      <DataTableRowClickCatcher
+        :is-row-level="true"
+        :aria-label="i18n.t('component.table.row.view_details_label')"
+        :click="props.onRowClick"
+        :model="props.model"
+      />
+
+      <slot />
+
+      <DataTableRowActionsCell
+        v-if="props.hasRowActions"
+        :inline-actions="props.inlineActions"
+        :model="props.model"
+        :more-actions="props.moreActions"
+      />
+    </div>
+  </UIActionFocus>
 </template>
