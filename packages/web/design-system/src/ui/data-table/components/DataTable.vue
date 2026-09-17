@@ -37,6 +37,7 @@ import type {
   DataTableProps,
 } from '@/ui/data-table/types/dataTable.props'
 import type { DataTableCell as DataTableCellDefinition } from '@/ui/data-table/types/dataTableCell.type'
+import type { DataTableFilter } from '@/ui/data-table/types/dataTableFilter.type'
 import type { DataTableRowViewModel } from '@/ui/data-table/types/dataTableRowViewModel.type'
 import { DataTableUtil } from '@/ui/data-table/utils/dataTable.util'
 import type { EmptyStateProps } from '@/ui/empty-state/emptyState.props'
@@ -53,6 +54,7 @@ const props = withDefaults(defineProps<DataTableProps<TItem>>(), {
   isSelectable: false,
   emptyState: () => ({}) satisfies DataTableEmptyStateConfig,
   error: null,
+  filters: () => ({}),
   groupBy: null,
   mobileCard: null,
   row: null,
@@ -367,6 +369,7 @@ const flatVirtualRowViewModels = computed<FlatVirtualRowViewModel[]>(
 
 interface VisibleColumn {
   id: string
+  filter: DataTableFilter | undefined
   header: Header<DataTableFeatures, TItem, unknown>
   headerLabel: string
 }
@@ -385,6 +388,7 @@ const visibleColumns = computed<VisibleColumn[]>(() => {
 
   return headersInVisualOrder.map((header) => ({
     id: header.column.id,
+    filter: props.filters[header.column.id],
     header,
     headerLabel: columnByKey.get(header.column.id)?.headerLabel ?? header.column.id,
   }))
@@ -563,6 +567,7 @@ const hasDesktopOverlay = computed<boolean>(
               v-for="(column, columnIndex) of visibleColumns"
               :key="column.id"
               :column-key="column.id"
+              :filter="column.filter"
               :header="column.header"
               :is-last-column-overall="columnIndex === visibleColumns.length - 1"
               :label="column.headerLabel"

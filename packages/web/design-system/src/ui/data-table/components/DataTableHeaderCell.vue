@@ -15,12 +15,15 @@ import {
 } from 'vue'
 
 import type { SortDirection } from '@/composables/sort.composable'
+import DataTableHeaderFilter from '@/ui/data-table/components/DataTableHeaderFilter.vue'
 import type { DataTableFeatures } from '@/ui/data-table/composables/dataTable.composable'
 import { useInjectDataTableContext } from '@/ui/data-table/context/dataTable.context'
+import type { DataTableFilter } from '@/ui/data-table/types/dataTableFilter.type'
 
 const props = defineProps<{
   isLastColumnOverall: boolean
   columnKey: string
+  filter?: DataTableFilter
   header: Header<DataTableFeatures, TItem, unknown>
   label: string
 }>()
@@ -133,6 +136,11 @@ const sortIcon = computed<Component | null>(() => {
         class="size-3 shrink-0"
       />
     </button>
+
+    <DataTableHeaderFilter
+      v-if="props.filter !== undefined"
+      :filter="props.filter"
+    />
 
     <!-- eslint-disable-next-line vuejs-accessibility/no-static-element-interactions -->
     <div

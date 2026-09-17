@@ -22,6 +22,48 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   `createDataTableTimestampCell`, `createDataTableCustomCell`. This
   is the *only* supported way to author a column — never hand-assemble `cell`/`cellType` yourself,
   the factory keeps them in sync structurally.
+- **Column filters** — pass `filters`, keyed by column key, to show an icon beside a column's
+  sort control. DataTable owns the icon's appearance and active treatment; each filter owns its
+  own `open` callback. The consumer owns its filter editor, filter state, pagination reset, and
+  the filtered `data` passed back to the table. This mirrors server-driven `sort`; DataTable
+  never locally filters only the rows currently loaded:
+
+  ```vue
+  <script setup lang="ts">
+  import { computed } from 'vue'
+  import type { DataTableFilters } from '@wisemen/vue-core-design-system'
+
+  const filters = useServiceRequestOverviewFilters(activeView)
+
+  const tableFilters = computed<DataTableFilters>(() => ({
+    priority: {
+      isActive: filters.isFilterActive('priorities'),
+      label: 'Priority',
+      open: (): void => filters.openFilter('priorities'),
+    },
+    status: {
+      isActive: filters.isFilterActive('statuses'),
+      label: 'Status',
+      open: (): void => filters.openFilter('statuses'),
+    },
+  }))
+  </script>
+
+  <template>
+    <ServiceRequestOverviewTable
+      :result="result"
+      :has-active-search="search.isActive.value"
+      :active-filter-count="filters.activeFilters.value.length"
+      :is-fetching-next-page="isFetchingNextPage"
+      :sort="sort"
+      :filters="tableFilters"
+      @clear-search="search.clear()"
+      @clear-filters="filters.clearAll()"
+      @fetch-next-page="fetchNextPage"
+      @open-filter="onOpenFilter"
+    />
+  </template>
+  ```
 - **`variant`** — `'contained'` (default) wraps the desktop table in a rounded bordered card,
   matching the old `Table`'s default look, and sizes the table to its content up to its parent's
   height (`max-h-full`) — a short result set shrinks the table instead of stretching it to fill

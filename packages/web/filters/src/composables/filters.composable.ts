@@ -25,6 +25,7 @@ import type {
 } from 'vue'
 import {
   computed,
+  nextTick,
   ref,
   useId,
   watch,
@@ -284,11 +285,19 @@ interface Options<TFilters extends Filter[]> {
 }
 
 interface UseFiltersReturn<TFilters extends Filter[]> {
+  /** Returns whether a filter is active, including while its editor is open. */
+  isFilterActive: (key: string) => boolean
+  /** Returns whether this filter's editor is the currently open editor. */
+  isFilterOpen: (key: string) => boolean
   action: Action
   actionGroup: ActionGroup
   activeFilters: ComputedRef<FilterWithAction<Filter>[]>
   clearAll: () => void
   clearFilter: (key: string, onlyIfEmpty?: boolean) => void
+  /** Closes the open editor and removes an empty, non-persistent filter. */
+  closeFilter: (key: string) => void
+  /** Opens a filter editor in `UIFiltersActive`. */
+  openFilter: (key: string) => void
   setOpenFilter: (filterKey: string | null) => void
   values: Ref<FilterValues<TFilters>, any>
 }
@@ -460,16 +469,7 @@ export function useFilters<TFilters extends Filter[]>(
           action: createAction({
             id: filter.key,
             name: filter.label,
-            execute: () => {
-              numberFilterDialog.open({
-                filter,
-                initialValue: values.value[filter.key],
-                onSubmit: (value) => {
-                  values.value[filter.key] = value
-                  numberFilterDialog.close()
-                },
-              })
-            },
+            execute: () => openFilter(filter.key),
             group: options.actionGroup,
             icon: () => filter.icon ?? null,
             parentScoreInfluence: 'none',
@@ -481,16 +481,7 @@ export function useFilters<TFilters extends Filter[]>(
           action: createAction({
             id: filter.key,
             name: filter.label,
-            execute: () => {
-              dateFilterDialog.open({
-                filter,
-                initialValue: values.value[filter.key] as DateFilterValue,
-                onSubmit: (value) => {
-                  values.value[filter.key] = value
-                  dateFilterDialog.close()
-                },
-              })
-            },
+            execute: () => openFilter(filter.key),
             group: options.actionGroup,
             icon: () => filter.icon ?? null,
             parentScoreInfluence: 'none',
@@ -502,16 +493,7 @@ export function useFilters<TFilters extends Filter[]>(
           action: createAction({
             id: filter.key,
             name: filter.label,
-            execute: () => {
-              dateRangeFilterDialog.open({
-                filter,
-                initialValue: values.value[filter.key] as DateRangeFilterValue,
-                onSubmit: (value) => {
-                  values.value[filter.key] = value
-                  dateRangeFilterDialog.close()
-                },
-              })
-            },
+            execute: () => openFilter(filter.key),
             group: options.actionGroup,
             icon: () => filter.icon ?? null,
             parentScoreInfluence: 'none',
@@ -625,7 +607,7 @@ export function useFilters<TFilters extends Filter[]>(
    * A filter is active if its current value differs from its default or if it is currently open.
    * @param key The key of the filter to check.
    */
-  function isFilterActive(key: FilterKeys<TFilters>): boolean {
+  function isFilterActive(key: string): boolean {
     const filter = getFilterByKey(key)
     const isFilterOpen = openFilterKey.value === key
 
@@ -637,7 +619,7 @@ export function useFilters<TFilters extends Filter[]>(
    * @param key The key of the filter to check.
    * @returns True if the filter is empty, false otherwise.
    */
-  function isFilterEmpty(key: FilterKeys<TFilters>): boolean {
+  function isFilterEmpty(key: string): boolean {
     const value = values.value[key]
     const filter = getFilterByKey(key)
 
@@ -828,16 +810,95 @@ export function useFilters<TFilters extends Filter[]>(
    * @param key The key of the filter to retrieve.
    * @returns The filter definition.
    */
-  function getFilterByKey(key: FilterKeys<TFilters>): Filter {
-    return options.filters.find((filter) => filter.key === key)!
+  function getFilterByKey(key: string): Filter {
+    const filter = options.filters.find((filter) => filter.key === key)
+
+    if (filter === undefined) {
+      throw new Error(`Unknown filter key: ${key}`)
+    }
+
+    return filter
   }
 
-  function getFilterActionByKey(key: FilterKeys<TFilters>): Action {
+  function getFilterActionByKey(key: string): Action {
     return filterActions.find((filter) => filter.key === key)!.action
   }
 
   function setOpenFilter(filterKey: string | null): void {
-    openFilterKey.value = filterKey
+    openFilterKey.value = filterKey as FilterKeys<TFilters> | null
+  }
+
+  function isFilterOpen(key: string): boolean {
+    return openFilterKey.value === key
+  }
+
+  /**
+   * Opens a filter in the active-filter UI. Dropdown-based filters are controlled by their
+   * active badge; dialog-based filters are opened here because their editor is an overlay.
+   */
+  function openFilter(key: string): void {
+    const filter = getFilterByKey(key)
+
+    activeFiltersKeys.value.add(filter.key as FilterKeys<TFilters>)
+
+    switch (filter.type) {
+      case FilterType.MULTI_SELECT:
+      case FilterType.MULTI_AUTOCOMPLETE:
+      case FilterType.BOOLEAN:
+        if (filter.disableOperators === true && values.value[filter.key] === null) {
+          values.value[filter.key] = true
+        }
+
+        // The badge is rendered after it becomes active. Defer opening its dropdown
+        // until the trigger exists so its position can be measured correctly.
+        nextTick(() => {
+          setOpenFilter(filter.key)
+        })
+
+        return
+      case FilterType.NUMBER:
+        setOpenFilter(filter.key)
+        void numberFilterDialog.open({
+          filter,
+          initialValue: values.value[filter.key] as NumberFilterValue,
+          onSubmit: (value) => {
+            values.value[filter.key] = value
+            numberFilterDialog.close()
+          },
+        }).then(() => closeFilter(filter.key))
+
+        return
+      case FilterType.DATE:
+        setOpenFilter(filter.key)
+        void dateFilterDialog.open({
+          filter,
+          initialValue: values.value[filter.key] as DateFilterValue,
+          onSubmit: (value) => {
+            values.value[filter.key] = value
+            dateFilterDialog.close()
+          },
+        }).then(() => closeFilter(filter.key))
+
+        return
+      case FilterType.DATE_RANGE:
+        setOpenFilter(filter.key)
+        void dateRangeFilterDialog.open({
+          filter,
+          initialValue: values.value[filter.key] as DateRangeFilterValue,
+          onSubmit: (value) => {
+            values.value[filter.key] = value
+            dateRangeFilterDialog.close()
+          },
+        }).then(() => closeFilter(filter.key))
+    }
+  }
+
+  function closeFilter(key: string): void {
+    if (isFilterOpen(key)) {
+      setOpenFilter(null)
+    }
+
+    clearFilter(key, true)
   }
 
   /**
@@ -857,11 +918,17 @@ export function useFilters<TFilters extends Filter[]>(
       return
     }
 
+    if (isFilterOpen(key)) {
+      setOpenFilter(null)
+    }
+
     values.value[key] = getFallbackValue(key)
     activeFiltersKeys.value.delete(key)
   }
 
   function clearAll(): void {
+    setOpenFilter(null)
+
     for (const filter of options.filters) {
       if (filter.isPersistent === true) {
         continue
@@ -875,11 +942,15 @@ export function useFilters<TFilters extends Filter[]>(
   useTemporaryActions(clearFiltersAction)
 
   const returnObj = {
+    isFilterActive,
+    isFilterOpen,
     action: addFilterAction,
     actionGroup: options.actionGroup,
     activeFilters,
     clearAll,
     clearFilter,
+    closeFilter,
+    openFilter,
     setOpenFilter,
     values: values as unknown as Ref<FilterValues<TFilters>, any>,
   }

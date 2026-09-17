@@ -86,6 +86,10 @@ export {
   defineDataTableColumns,
 } from './types/dataTableColumn.type'
 export type {
+  DataTableFilter,
+  DataTableFilters,
+} from './types/dataTableFilter.type'
+export type {
   DataTableRowClick,
   DataTableRowConfig,
 } from './types/dataTableRowConfig.type'
