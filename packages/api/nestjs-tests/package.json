@@ -11,7 +11,11 @@
     "#src/*": "./dist/*"
   },
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./postgres": {
+      "types": "./dist/postgres/index.d.ts",
+      "import": "./dist/postgres/index.js"
+    }
   },
   "files": [
     "dist/"
@@ -23,7 +27,7 @@
     "clean": "rm -rf ./dist",
     "build": "tsc",
     "pretest": "pnpm build",
-    "test": "node --test ./dist/lib/**/*.test.js",
+    "test": "node --env-file=.env.test --test ./dist/**/*.test.js",
     "prerelease": "npm run build",
     "release": "pnpx release-it"
   },
@@ -34,7 +38,7 @@
   },
   "peerDependencies": {
     "@wisemen/nestjs-domain-events": "workspace:^",
-    "typeorm": "catalog:backend-peer"
+    "typeorm": ">=0.3.31 <2"
   },
   "devDependencies": {
     "@types/node": "catalog:backend",
@@ -43,13 +47,15 @@
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
     "oxlint-tsgolint": "catalog:lint-api",
-    "typescript": "catalog:peer"
+    "pg": "catalog:backend",
+    "typescript": "catalog:peer",
+    "typeorm": "catalog:backend-peer"
   },
   "author": "Wisemen",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-nats"
+    "directory": "packages/api/nestjs-tests"
   }
 }
