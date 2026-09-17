@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 
 
+
+## 1.0.0
+<sub>2026-09-17</sub>
+
+- [#1690](https://github.com/wisemen-digital/wisemen-core/pull/1690)  *(major)* Thanks [@jorenvandeweyer](https://github.com/jorenvandeweyer)! - Support in-memory and pluggable throttler storage without a Redis dependency.
+
 ## 0.2.0
 <sub>2026-09-01</sub>
 
