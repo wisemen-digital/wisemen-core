@@ -1,22 +1,23 @@
 # @wisemen/nestjs-throttler
 
-Throttler module for NestJS applications. 
+Throttler module for NestJS applications.
 
-## Register Module 
+## Register with in-memory storage
+
+When no storage is configured, throttler state is kept in the application
+process. This is suitable for single-instance applications and as a local
+safeguard. Each process has its own limits and loses them when it restarts.
 
 ```ts
 import { Module } from '@nestjs/common'
-import { RedisClient } from '@wisemen/nestjs-redis'
 import { ApiThrottlerModule } from '@wisemen/nestjs-throttler'
-import { DefaultRedisModule } from '#src/modules/redis/default-redis.module.js'
 
 @Module({
   imports: [
-    ApiThrottlerModule.forRootAsync({
-      imports: [DefaultRedisModule], // <- a configured @wisemen/nestjs-redis module 
-      inject: [RedisClient],
-      useFactory: (redisClient: RedisClient) => {
-        return { redisClient, throttler: {} }
+    ApiThrottlerModule.forRoot({
+      throttler: {
+        limit: 120,
+        ttl: 60_000
       }
     })
   ],
@@ -25,6 +26,37 @@ import { DefaultRedisModule } from '#src/modules/redis/default-redis.module.js'
 export class DefaultApiThrottlerModule {}
 ```
 
+## Register with Redis storage
+
+Use shared storage when limits must apply across multiple application
+instances.
+
+```ts
+import { Module } from '@nestjs/common'
+import { RedisClient } from '@wisemen/nestjs-redis'
+import {
+  ApiThrottlerModule,
+  RedisThrottlerStorage
+} from '@wisemen/nestjs-throttler'
+import { DefaultRedisModule } from '#src/modules/redis/default-redis.module.js'
+
+@Module({
+  imports: [
+    ApiThrottlerModule.forRootAsync({
+      imports: [DefaultRedisModule], // <- a configured @wisemen/nestjs-redis module
+      inject: [RedisClient],
+      useFactory: (redisClient: RedisClient) => {
+        return {
+          storage: new RedisThrottlerStorage(redisClient),
+          throttler: {}
+        }
+      }
+    })
+  ],
+  exports: [ApiThrottlerModule]
+})
+export class DefaultApiThrottlerModule {}
+```
 
 ## Configure user aware throttlers
 

@@ -1,17 +1,26 @@
 import { Injectable } from '@nestjs/common'
 import type { ThrottlerStorage } from '@nestjs/throttler'
 import type { ThrottlerStorageRecord } from '@nestjs/throttler/dist/throttler-storage-record.interface.js'
-import { RedisClient } from '@wisemen/nestjs-redis'
 import { MILLIS_PER_SECOND } from './api-throttler.constant.js'
 
 type EvalResult = [number, number, number, number]
+
+export interface RedisThrottlerClientProvider {
+  client: {
+    scriptLoad: (script: string) => Promise<string>
+    evalSha: (
+      hash: string,
+      options: { keys: string[], arguments: string[] }
+    ) => Promise<unknown>
+  }
+}
 
 @Injectable()
 export class RedisThrottlerStorage implements ThrottlerStorage {
   private scriptHash?: string
   private scriptLoadPromise?: Promise<string>
 
-  constructor (private readonly redis: RedisClient) {
+  constructor (private readonly redis: RedisThrottlerClientProvider) {
   }
 
   async increment (

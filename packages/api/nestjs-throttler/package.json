@@ -25,8 +25,7 @@
   },
   "peerDependencies": {
     "@nestjs/common": "catalog:backend-peer",
-    "@nestjs/core": "catalog:backend-peer",
-    "@wisemen/nestjs-redis": "workspace:^"
+    "@nestjs/core": "catalog:backend-peer"
   },
   "dependencies": {
     "@nestjs/throttler": "catalog:backend"
@@ -46,6 +45,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/wisemen-digital/wisemen-core",
-    "directory": "packages/api/nestjs-jwt-verifier"
+    "directory": "packages/api/nestjs-throttler"
   }
 }
