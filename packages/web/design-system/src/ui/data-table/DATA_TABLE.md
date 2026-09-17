@@ -29,17 +29,40 @@ file is the condensed, decisions-only reference. Porting an existing `Table` ove
   never locally filters only the rows currently loaded:
 
   ```vue
-  <UIDataTable
-    :columns="columns"
-    :data="data"
-    :filters="{
-      department: {
-        isActive: selectedDepartments.length > 0,
-        label: 'Filter by department',
-        open: () => filters.openFilter('department'),
-      },
-    }"
-  />
+  <script setup lang="ts">
+  import { computed } from 'vue'
+  import type { DataTableFilters } from '@wisemen/vue-core-design-system'
+
+  const filters = useServiceRequestOverviewFilters(activeView)
+
+  const tableFilters = computed<DataTableFilters>(() => ({
+    priority: {
+      isActive: filters.isFilterActive('priorities'),
+      label: 'Priority',
+      open: (): void => filters.openFilter('priorities'),
+    },
+    status: {
+      isActive: filters.isFilterActive('statuses'),
+      label: 'Status',
+      open: (): void => filters.openFilter('statuses'),
+    },
+  }))
+  </script>
+
+  <template>
+    <ServiceRequestOverviewTable
+      :result="result"
+      :has-active-search="search.isActive.value"
+      :active-filter-count="filters.activeFilters.value.length"
+      :is-fetching-next-page="isFetchingNextPage"
+      :sort="sort"
+      :filters="tableFilters"
+      @clear-search="search.clear()"
+      @clear-filters="filters.clearAll()"
+      @fetch-next-page="fetchNextPage"
+      @open-filter="onOpenFilter"
+    />
+  </template>
   ```
 - **`variant`** — `'contained'` (default) wraps the desktop table in a rounded bordered card,
   matching the old `Table`'s default look, and sizes the table to its content up to its parent's
