@@ -43,6 +43,7 @@ const {
   isLoading,
   actionGroups,
   context,
+  emptyStateMessage,
   placeholder,
   preview,
   searchInput,
@@ -140,7 +141,9 @@ useEventListener('keydown', (e) => {
         class="flex px-lg py-md"
       >
         <UIText
-          :text="i18n.t('component.action_menu.no_matching_actions')"
+          :text="emptyStateMessage ?? (searchInput.trim().length > 0
+            ? i18n.t('component.action_menu.no_matching_actions')
+            : i18n.t('component.action_menu.no_actions'))"
           class="text-xs text-tertiary"
         />
       </div>

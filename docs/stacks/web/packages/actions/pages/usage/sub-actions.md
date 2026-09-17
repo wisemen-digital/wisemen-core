@@ -166,8 +166,14 @@ searchSubActionsConfig: {
   maxResults: 5,
   // Placeholder text in the search input when drilling into this action.
   placeholder: () => i18n.t('action.assign_user.search_placeholder'),
+  // Shown instead of the sub-action list when it has no items and no search query is active.
+  emptyMessage: () => i18n.t('action.assign_user.no_users'),
+  // Shown when a search query yields no matching sub-actions. Receives the trimmed query.
+  noResultsMessage: (query) => i18n.t('action.assign_user.no_users_found', { query }),
 }
 ```
+
+Both `emptyMessage` and `noResultsMessage` accept a plain `string` or a function, and both are optional — when omitted, the menu falls back to a generic "No actions available" / "No matching actions" message.
 
 ## `nameAsParent` — breadcrumb label
 

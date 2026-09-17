@@ -22,6 +22,7 @@ import { isPromise } from '#utils/isPromise.util'
 import {
   applicableActions,
   resolveSearchSubActionsConfig,
+  resolveSubActionsEmptyStateMessage,
 } from '#utils/resolveActions.util.ts'
 import {
   isSubActionsWithMeta,
@@ -92,6 +93,10 @@ export function useActionDropdownMenuContent({
 
     return maybePlaceholderFn
   })
+
+  const emptyStateMessage = computed<string | null>(
+    () => resolveSubActionsEmptyStateMessage(parentAction.value, context.value),
+  )
 
   async function refreshActions(): Promise<void> {
     const id = ++refreshId
@@ -253,6 +258,7 @@ export function useActionDropdownMenuContent({
     isLoading,
     actionGroups,
     context,
+    emptyStateMessage,
     placeholder,
     preview,
     searchInput,
