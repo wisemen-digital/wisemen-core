@@ -19,7 +19,7 @@ runs:
         # `danger` being linked as a direct dep, which left `pnpm exec danger`
         # unable to find the binary.
         if ! pnpm exec danger --version >/dev/null 2>&1; then
-          pnpm add danger @wisemen/danger
+          pnpm add --workspace-root danger @wisemen/danger
         fi
     - name: Run Danger
       shell: bash
