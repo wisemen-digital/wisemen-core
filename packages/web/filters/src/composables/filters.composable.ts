@@ -25,6 +25,7 @@ import type {
 } from 'vue'
 import {
   computed,
+  nextTick,
   ref,
   useId,
   watch,
@@ -839,7 +840,6 @@ export function useFilters<TFilters extends Filter[]>(
   function openFilter(key: string): void {
     const filter = getFilterByKey(key)
 
-    setOpenFilter(filter.key)
     activeFiltersKeys.value.add(filter.key as FilterKeys<TFilters>)
 
     switch (filter.type) {
@@ -850,8 +850,15 @@ export function useFilters<TFilters extends Filter[]>(
           values.value[filter.key] = true
         }
 
+        // The badge is rendered after it becomes active. Defer opening its dropdown
+        // until the trigger exists so its position can be measured correctly.
+        nextTick(() => {
+          setOpenFilter(filter.key)
+        })
+
         return
       case FilterType.NUMBER:
+        setOpenFilter(filter.key)
         void numberFilterDialog.open({
           filter,
           initialValue: values.value[filter.key] as NumberFilterValue,
@@ -863,6 +870,7 @@ export function useFilters<TFilters extends Filter[]>(
 
         return
       case FilterType.DATE:
+        setOpenFilter(filter.key)
         void dateFilterDialog.open({
           filter,
           initialValue: values.value[filter.key] as DateFilterValue,
@@ -874,6 +882,7 @@ export function useFilters<TFilters extends Filter[]>(
 
         return
       case FilterType.DATE_RANGE:
+        setOpenFilter(filter.key)
         void dateRangeFilterDialog.open({
           filter,
           initialValue: values.value[filter.key] as DateRangeFilterValue,
