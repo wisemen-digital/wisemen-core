@@ -298,7 +298,6 @@ interface UseFiltersReturn<TFilters extends Filter[]> {
   closeFilter: (key: string) => void
   /** Opens a filter editor in `UIFiltersActive`. */
   openFilter: (key: string) => void
-  /** @deprecated Use `openFilter` or `closeFilter` instead. */
   setOpenFilter: (filterKey: string | null) => void
   values: Ref<FilterValues<TFilters>, any>
 }
