@@ -2,7 +2,10 @@ import type { HourCycle } from '@/types/hourCycle.type'
 import type { NumberFormat } from '@/types/numberFormat.type'
 import type { AddressAutocompleteAdapter } from '@/ui/address-autocomplete/addressAutocomplete.type'
 import type { BaseFileUploadAdapter } from '@/ui/base-file-upload/baseFileUpload.type'
-import type { ToastAutoClose } from '@/ui/toast/toast.type'
+import type {
+  ApiErrorTranslationResolver,
+  ToastAutoClose,
+} from '@/ui/toast/toast.type'
 
 export interface ConfigProviderProps {
   /**
@@ -11,6 +14,15 @@ export interface ConfigProviderProps {
    * @default null
    */
   addressAutocompleteAdapter?: AddressAutocompleteAdapter | null
+  /**
+   * Resolves backend error codes to this application's translation keys.
+   * When omitted, API error toasts show the backend error detail instead.
+   *
+   * Define the resolver from an exhaustive map of the generated `ApiErrorCode`
+   * enum to make missing translations a TypeScript error.
+   * @default null
+   */
+  apiErrorTranslationResolver?: ApiErrorTranslationResolver<never> | null
   /**
    * Controls when toasts automatically dismiss themselves.
    *

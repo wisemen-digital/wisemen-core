@@ -1,16 +1,11 @@
-import type { DefinePlugin } from '@hey-api/openapi-ts'
+import type {
+  DefinePlugin,
+  Plugin,
+} from '@hey-api/openapi-ts'
 
-export interface ErrorCodeEnumConfig {
-  /**
-   * Plugin name. Must be unique.
-   */
-  name: 'error-code-enum-plugin'
-  /**
-   * Name of the generated file.
-   *
-   * @default 'my-plugin'
-   */
-  output?: string
-}
+export type ErrorCodeEnumConfig = {
+  name: 'apiErrorCode'
+} & Plugin.Hooks
+& Plugin.UserExports
 
 export type ErrorCodeEnumPlugin = DefinePlugin<ErrorCodeEnumConfig>

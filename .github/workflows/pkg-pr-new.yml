@@ -62,5 +62,6 @@ jobs:
             --compact \
             --comment=update \
             --commentWithSha \
+            --pnpm \
             --packageManager=pnpm \
             $PKGS

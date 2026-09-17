@@ -1,5 +1,6 @@
 export { useToast } from './toast.composable'
 export type {
+  ApiErrorTranslationResolver,
   Toast as UIToast,
   ToastAutoClose as UIToastAutoClose,
   ToastButtonAction as UIToastButtonAction,
