@@ -27,8 +27,12 @@ export { InjectAuthenticator, getAuthenticatorToken, InjectDynamicAuthenticator 
 export { InjectAuthMiddleware, InjectDynamicAuthMiddleware, getMiddlewareToken } from './bearer/middleware/middleware.tokens.js'
 export { resolveOidcTrust, selectOidcCustomClaims } from './bearer/oidc/index.js'
 export { DynamicOidcAuthenticator, DynamicOidcTrust, DynamicOidcTrustResolver } from './bearer/oidc/index.js'
-export { IdentityCreatedEvent } from './bearer/oidc/identity/identity-created.event.js'
+export {
+  IdentityCreatedEvent,
+  IdentityCreatedEventContent
+} from './bearer/oidc/identity/identity-created.event.js'
 export { Identity } from './bearer/oidc/identity/identity.entity.js'
+export { IdentityBuilder } from './bearer/oidc/identity/identity.entity.builder.js'
 export { ApiKey } from './bearer/api-key/api-key.entity.js'
 export {
   ApiKeyCreatedEvent,
@@ -45,6 +49,27 @@ export { ApiKeyUuid } from './bearer/api-key/api-key.uuid.js'
 export { IdentityUuid } from './bearer/oidc/identity/identity.uuid.js'
 export { OidcTrustUuid } from './bearer/oidc/oidc-trust.uuid.js'
 export { BearerAuthMiddleware } from './bearer/middleware/bearer-auth.middleware.js'
+export {
+  type AuthenticatedApiKey,
+  type AuthenticatedIdentity,
+  type AuthenticatedPrincipal
+} from './bearer/principal/auth-principal.js'
+export { ApiKeySecret } from './bearer/api-key/api-key-secret.js'
+export { API_KEY_PREFIX, SCHEMA_NAME } from './bearer/constants.js'
+export {
+  getOidcAuthenticatorToken,
+  getOidcTrustToken,
+  getOidcTrustVerifierToken,
+  InjectOidcAuthenticator,
+  InjectOidcTrust,
+  InjectOidcTrustVerifier
+} from './bearer/oidc/oidc-trust.tokens.js'
+export { IdentityNotFoundAfterCreationError } from './bearer/errors/identity-not-found-after-creation.error.js'
+export { InvalidAuthorizationHeaderFormatError } from './bearer/errors/invalid-authorization-header-format.error.js'
+export { InvalidOidcSubjectClaimError } from './bearer/errors/invalid-oidc-subject-claim.error.js'
+export { InvalidOrExpiredApiKeyError } from './bearer/errors/invalid-or-expired-api-key.error.js'
+export { NoAuthenticationContextError } from './bearer/errors/no-authentication-context.error.js'
+export { NoAuthorizationHeaderError } from './bearer/errors/no-authorization-header.error.js'
 export type {
   BearerAuthConfig ,
   BearerAuthModuleAsyncOptions,

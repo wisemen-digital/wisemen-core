@@ -124,7 +124,7 @@ describe('JwtVerifier unit tests', () => {
     expect(getJwtVerifierToken()).toBe(JwtVerifier)
   })
 
-  it('creates a named provider definition for forRoot', () => {
+  it('creates a named provider definition for register', () => {
     const moduleDefinition = JwtVerifierModule.register({
       audiences: [FIRST_AUDIENCE],
       issuer: ISSUER,
@@ -139,7 +139,7 @@ describe('JwtVerifier unit tests', () => {
     expect(verifierProvider).toBeDefined()
   })
 
-  it('creates a named provider definition for forRootAsync', () => {
+  it('creates a named provider definition for registerAsync', () => {
     const moduleDefinition = JwtVerifierModule.registerAsync({
       imports: [],
       inject: [],

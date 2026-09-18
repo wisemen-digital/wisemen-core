@@ -1,6 +1,5 @@
 import { Inject, InjectionToken } from '@nestjs/common'
 import type { OidcTrustId } from '../oidc/oidc-trust.js'
-import { getAuthenticatorToken } from '../authenticator/authenticator.tokens.js'
 import { BearerAuthMiddleware } from './bearer-auth.middleware.js'
 
 /**
@@ -14,7 +13,7 @@ export function getMiddlewareToken (id: OidcTrustId): InjectionToken {
  * Injects the middleware function for one static OIDC trust.
  */
 export function InjectAuthMiddleware (id: OidcTrustId): ParameterDecorator {
-  return Inject(getAuthenticatorToken(id))
+  return Inject(getMiddlewareToken(id))
 }
 
 /**

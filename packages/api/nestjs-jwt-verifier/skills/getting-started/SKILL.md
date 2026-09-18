@@ -5,7 +5,7 @@ description: Use when registering one or more shared JWT verifiers in a NestJS a
 
 # @wisemen/nestjs-jwt-verifier - Getting Started
 
-Use `JwtVerifierModule.forRoot(...)` or `JwtVerifierModule.forRootAsync(...)`
+Use `JwtVerifierModule.register(...)` or `JwtVerifierModule.registerAsync(...)`
 to register a shared JWT verifier that:
 
 - validates issuer and audience claims
@@ -28,7 +28,7 @@ import {
 
 @Module({
   imports: [
-    JwtVerifierModule.forRootAsync({
+    JwtVerifierModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService): JwtVerifierOptions => ({
@@ -42,14 +42,14 @@ import {
 export class AuthModule {}
 ```
 
-Use `forRoot(...)` when the values are already known statically.
+Use `register(...)` when the values are already known statically.
 
 ## Register Multiple Verifiers
 
 Use `name` when the application needs more than one verifier:
 
 ```ts
-JwtVerifierModule.forRootAsync({
+JwtVerifierModule.registerAsync({
   name: 'backoffice',
   imports: [ConfigModule],
   inject: [ConfigService],

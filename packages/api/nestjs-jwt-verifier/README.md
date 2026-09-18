@@ -6,7 +6,7 @@ more named verifier instances in Nest DI.
 
 ## Register A Verifier
 
-Use `JwtVerifierModule.forRootAsync(...)` when the verifier settings come from
+Use `JwtVerifierModule.registerAsync(...)` when the verifier settings come from
 `ConfigService` or another application-specific source.
 
 ```ts
@@ -20,7 +20,7 @@ import {
 
 @Module({
   imports: [
-    JwtVerifierModule.forRootAsync({
+    JwtVerifierModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService): JwtVerifierOptions => ({
@@ -34,7 +34,7 @@ import {
 export class AuthModule {}
 ```
 
-Use `forRoot(...)` when the values are already available statically.
+Use `register(...)` when the values are already available statically.
 
 ## Inject Multiple Verifiers
 
@@ -52,7 +52,7 @@ import {
 
 @Module({
   imports: [
-    JwtVerifierModule.forRootAsync({
+    JwtVerifierModule.registerAsync({
       name: 'backoffice',
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -62,7 +62,7 @@ import {
         jwksEndpoint: configService.getOrThrow('BACKOFFICE_AUTH_JWKS_ENDPOINT')
       })
     }),
-    JwtVerifierModule.forRootAsync({
+    JwtVerifierModule.registerAsync({
       name: 'portal',
       imports: [ConfigModule],
       inject: [ConfigService],

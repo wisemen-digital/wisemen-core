@@ -66,7 +66,7 @@ export class RedisClient implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleDestroy (): Promise<void> {
-    if (this._client !== undefined) {
+    if (this._client?.isOpen === true) {
       await this._client.close()
     }
   }

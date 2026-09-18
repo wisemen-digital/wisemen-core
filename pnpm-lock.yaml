@@ -1696,6 +1696,12 @@ importers:
       '@nestjs/core':
         specifier: catalog:backend-peer
         version: 11.1.28(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.28)(reflect-metadata@0.2.2)(rxjs@7.8.2)
+      '@nestjs/swagger':
+        specifier: catalog:backend-peer
+        version: 11.4.6(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)
+      '@nestjs/typeorm':
+        specifier: catalog:backend-peer
+        version: 11.0.3(@nestjs/common@11.1.28(class-transformer@0.5.1)(class-validator@0.15.1)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.28)(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@1.1.0(babel-plugin-macros@3.1.0)(pg-query-stream@4.16.0(pg@8.20.0))(pg@8.20.0)(redis@5.12.1(@opentelemetry/api@1.9.1)))
       '@wisemen/api-error':
         specifier: workspace:^
         version: link:../api-error
@@ -1717,6 +1723,12 @@ importers:
       '@wisemen/opentelemetry':
         specifier: workspace:^
         version: link:../opentelemetry
+      class-transformer:
+        specifier: catalog:backend-peer
+        version: 0.5.1
+      class-validator:
+        specifier: catalog:backend-peer
+        version: 0.15.1
       fastify:
         specifier: catalog:backend-peer
         version: 5.10.0

@@ -302,7 +302,7 @@ export class BearerAuthModule {
   private static createMiddlewareProvider (id: OidcTrustId): Provider {
     return {
       provide: getMiddlewareToken(id),
-      inject: [getOidcAuthenticatorToken(id), BearerAuthContext],
+      inject: [getAuthenticatorToken(id), BearerAuthContext],
       useFactory: (
         authenticator: Authenticator,
         authContext: BearerAuthContext

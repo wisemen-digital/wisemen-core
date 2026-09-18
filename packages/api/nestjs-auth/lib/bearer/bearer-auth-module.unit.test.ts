@@ -8,10 +8,12 @@ import { AUTH_CONFIG, BearerAuthModule, DOMAIN_EVENT_EMITTER } from './bearer-au
 import { ApiKeyAuthenticator } from './api-key/api-key-authenticator.js'
 import { Authenticator } from './authenticator/authenticator.js'
 import { getAuthenticatorToken } from './authenticator/authenticator.tokens.js'
+import { getMiddlewareToken } from './middleware/middleware.tokens.js'
 import { IdentityAuthCache } from './oidc/identity/identity-auth-cache.js'
 import { IdentityRepository } from './oidc/identity/identity-repository.js'
 import { DynamicOidcAuthenticator } from './oidc/dynamic-oidc/dynamic-oidc-authenticator.js'
 import { BearerAuthService } from './bearer-auth.service.js'
+import { BearerAuthContext } from './bearer-auth.context.js'
 import { OidcIdentityAuthenticator } from './oidc/identity/oidc-identity-authenticator.js'
 import { getOidcAuthenticatorToken, getOidcTrustToken, getOidcTrustVerifierToken } from './oidc/oidc-trust.tokens.js'
 
@@ -67,6 +69,33 @@ describe('BearerAuthModule', () => {
     expect(findProvider(moduleDefinition.providers, DOMAIN_EVENT_EMITTER)).toMatchObject({
       inject: [AUTH_CONFIG],
       provide: DOMAIN_EVENT_EMITTER
+    })
+  })
+
+  it('builds each static trust middleware on the authenticator that routes API keys', () => {
+    const moduleDefinition = BearerAuthModule.forRoot({
+      redisClient: {} as RedisClient,
+      domainEventEmitter: {} as DomainEventEmitter,
+      oidcTrusts: {
+        backoffice: {
+          audiences: ['backoffice-api'],
+          issuer: 'https://auth.example.test',
+          jwksEndpoint: 'https://auth.example.test/.well-known/jwks.json'
+        }
+      }
+    })
+
+    const middlewareToken = getMiddlewareToken('backoffice')
+
+    expect(moduleDefinition.exports).toContain(middlewareToken)
+
+    // The middleware receives the raw Authorization header, so it must inject the
+    // composed Authenticator, which strips the Bearer prefix and routes `ak_` tokens
+    // to the API-key authenticator. Injecting the OIDC authenticator directly would
+    // hand the verifier the literal "Bearer ..." string and break API keys entirely.
+    expect(findProvider(moduleDefinition.providers, middlewareToken)).toMatchObject({
+      inject: [getAuthenticatorToken('backoffice'), BearerAuthContext],
+      provide: middlewareToken
     })
   })
 })

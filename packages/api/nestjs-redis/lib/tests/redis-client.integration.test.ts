@@ -156,4 +156,22 @@ describe('RedisClient', () => {
       expect(released).toBe(false)
     })
   })
+
+  describe('onModuleDestroy', () => {
+    it('does not throw when the client was never initialized', async () => {
+      const neverInitializedClient = new RedisClient({ url: process.env.REDIS_URL ?? 'redis://localhost:6379' })
+
+      await expect(neverInitializedClient.onModuleDestroy()).resolves.toBeUndefined()
+    })
+
+
+    it('is safe to call twice on the same connected client', async () => {
+      const client = new RedisClient({ url: process.env.REDIS_URL ?? 'redis://localhost:6379' })
+
+      await client.onModuleInit()
+      await client.onModuleDestroy()
+
+      await expect(client.onModuleDestroy()).resolves.toBeUndefined()
+    })
+  })
 })
