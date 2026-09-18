@@ -11,7 +11,7 @@ import { TypesenseJoinParamsBuilder } from './join-params.builder.js'
 import type { TypesenseCollection, TypesenseCollectionName } from '../schema/collection.js'
 import { getTypesenseCollectionName } from '../schema/collection.js'
 import type { InferDocumentType } from '../schema/document.js'
-import { TYPESENSE_DEFAULT_OFFSET, TYPESENSE_DEFAULT_LIMIT } from '../typesense.constant.js'
+import { TYPESENSE_DEFAULT_OFFSET, TYPESENSE_DEFAULT_LIMIT, TYPESENSE_MAX_NUMBER_TYPOS } from '../typesense.constant.js'
 import type {
   CollectionField,
   FilterOperatorForField,
@@ -21,6 +21,7 @@ import type {
   SerializableFilterInputValue
 } from './filter.types.js'
 import type { ApplyInverseJoin, ApplyReferenceJoin, TypesenseSearchParams } from './search-result.types.js'
+import { TypesenseInvalidNumTyposError } from '../errors/typesense-invalid-num-typos.error.js'
 
 type FieldName<TField> =
   TField extends { name: infer TName extends string }
@@ -89,8 +90,8 @@ type InfixArgumentConstraint<TField> =
 
 type SearchOnArguments<TField> =
   TField extends { infix: true }
-    ? [infix?: TypesenseOperationMode]
-    : [] | [infix: InfixArgumentConstraint<TField>]
+    ? [infix?: TypesenseOperationMode, numTypos?: number]
+    : [infix?: InfixArgumentConstraint<TField>, numTypos?: number]
 
 export class TypesenseSearchParamsBuilder<
   TCollection extends TypesenseCollection,
@@ -106,6 +107,7 @@ export class TypesenseSearchParamsBuilder<
   private limit: number = TYPESENSE_DEFAULT_LIMIT
   private groupLimit?: number
   private infix: TypesenseOperationMode[] = []
+  private numOfTypos: number[] = []
 
   constructor (
     private collection: TCollection
@@ -133,10 +135,11 @@ export class TypesenseSearchParamsBuilder<
 
   addSearchOn<TField extends CollectionField<TCollection>> (
     field: TField & SearchFieldConstraint<TField>,
-    ...[infix]: SearchOnArguments<TField>
+    ...[infix, numTypos]: SearchOnArguments<TField>
   ): this {
     this.queries.push(field.name)
     this.infix.push((infix as TypesenseOperationMode | undefined) ?? TypesenseOperationMode.OFF)
+    this.numOfTypos.push(this.getNumTypos(numTypos))
     return this
   }
 
@@ -268,8 +271,21 @@ export class TypesenseSearchParamsBuilder<
       offset: this.offset,
       limit: this.limit,
       group_limit: groupLimit,
-      infix: this.infix
+      infix: this.infix,
+      num_typos: this.numOfTypos
     } as TypesenseSearchParams<TResult>
+  }
+
+  private getNumTypos (numTypos: number | undefined): number {
+    if (numTypos === undefined) {
+      return TYPESENSE_MAX_NUMBER_TYPOS
+    }
+
+    if (numTypos < 0 || numTypos > TYPESENSE_MAX_NUMBER_TYPOS) {
+      throw new TypesenseInvalidNumTyposError(numTypos, TYPESENSE_MAX_NUMBER_TYPOS)
+    }
+
+    return numTypos
   }
 
   private getOperator (options?: FilterOperator): string {
