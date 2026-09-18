@@ -16,6 +16,15 @@ export interface GoogleTranslateAdapterOptions {
 
 export const GOOGLE_TRANSLATE_ADAPTER_KEY = 'google'
 
+// The endpoint used without an API key is intended for the Google Translate
+// website, not server-to-server use. Keep requests deliberately conservative:
+// translating rich text otherwise creates a burst of concurrent requests.
+const INITIAL_FALLBACK_REQUEST_INTERVAL_MS = 250
+const INITIAL_FALLBACK_RETRY_DELAY_MS = 10_000
+const MAX_FALLBACK_RETRY_ATTEMPTS = 4
+const MAX_FALLBACK_RETRY_DELAY_MS = 30_000
+const GOOGLE_FALLBACK_REQUEST_THROTTLES = new Map<string, GoogleFallbackRequestThrottle>()
+
 export const GOOGLE_TRANSLATE_ADAPTER_FIELDS: Field[] = [
   {
     name: 'apiKey',
@@ -46,6 +55,7 @@ export class GoogleTranslateAdapter implements TranslationAdapter {
   private readonly apiKey?: string
   private readonly apiURL: string
   private readonly fallbackApiURL: string
+  private readonly fallbackRequestThrottle: GoogleFallbackRequestThrottle
 
   public constructor({
     apiKey,
@@ -59,6 +69,7 @@ export class GoogleTranslateAdapter implements TranslationAdapter {
     this.fallbackApiURL = typeof fallbackApiURL === 'string' && fallbackApiURL.trim().length > 0
       ? sanitizeUrlInput(fallbackApiURL)
       : 'https://translate.googleapis.com/translate_a/single'
+    this.fallbackRequestThrottle = getGoogleFallbackRequestThrottle(this.fallbackApiURL)
   }
 
   private normalizeLocaleForCloud(locale: string): string {
@@ -131,29 +142,48 @@ export class GoogleTranslateAdapter implements TranslationAdapter {
       tl: targetLocale,
     })
 
-    const response = await fetch(`${this.fallbackApiURL}?${query.toString()}`, {
-      method: 'GET',
-    })
+    for (let attempt = 0; attempt <= MAX_FALLBACK_RETRY_ATTEMPTS; attempt += 1) {
+      await this.fallbackRequestThrottle.waitForRequestSlot()
 
-    if (!response.ok) {
-      throw new Error(`Google Translate request failed with status ${response.status}.`)
+      const response = await fetch(`${this.fallbackApiURL}?${query.toString()}`, {
+        method: 'GET',
+      })
+
+      if (response.ok) {
+        const result = await response.json() as {
+          sentences?: {
+            trans?: string
+          }[]
+        }
+
+        const translatedText = result.sentences
+          ?.map((sentence) => sentence.trans ?? '')
+          .join('')
+
+        if (!translatedText) {
+          throw new Error('Google Translate response did not contain translated text.')
+        }
+
+        return translatedText
+      }
+
+      if ((response.status === 429 || response.status >= 500) && attempt < MAX_FALLBACK_RETRY_ATTEMPTS) {
+        const retryDelay = getRetryDelay(response.headers.get('retry-after'), attempt)
+
+        this.fallbackRequestThrottle.backOff(retryDelay)
+        await wait(retryDelay)
+
+        continue
+      }
+
+      const errorBody = await response.text().catch(() => '')
+      const errorDetails = errorBody ? `: ${errorBody}` : ''
+      const attempts = attempt + 1
+
+      throw new Error(`Google Translate request failed with status ${response.status} after ${attempts} attempt${attempts === 1 ? '' : 's'}${errorDetails}.`)
     }
 
-    const result = await response.json() as {
-      sentences?: {
-        trans?: string
-      }[]
-    }
-
-    const translatedText = result.sentences
-      ?.map((sentence) => sentence.trans ?? '')
-      .join('')
-
-    if (!translatedText) {
-      throw new Error('Google Translate response did not contain translated text.')
-    }
-
-    return translatedText
+    throw new Error('Google Translate request failed after retrying.')
   }
 
   public async translate({
@@ -190,6 +220,75 @@ export function createGoogleTranslateAdapter(options: GoogleTranslateAdapterOpti
 
 function sanitizeUrlInput(url: string): string {
   return url.replace(/\s+/g, '')
+}
+
+class GoogleFallbackRequestThrottle {
+  private blockedUntil = 0
+  private nextRequestAt = 0
+  private previousRequestSlot: Promise<void> = Promise.resolve()
+  private requestIntervalMs = INITIAL_FALLBACK_REQUEST_INTERVAL_MS
+
+  public backOff(interval: number): void {
+    this.blockedUntil = Math.max(this.blockedUntil, Date.now() + interval)
+    this.nextRequestAt = Math.max(this.nextRequestAt, this.blockedUntil)
+  }
+
+  public async waitForRequestSlot(): Promise<void> {
+    const previousRequestSlot = this.previousRequestSlot
+    let releaseRequestSlot: () => void
+
+    this.previousRequestSlot = new Promise((resolve) => {
+      releaseRequestSlot = resolve
+    })
+
+    await previousRequestSlot
+
+    const delay = Math.max(
+      this.blockedUntil - Date.now(),
+      this.nextRequestAt - Date.now(),
+      0,
+    )
+
+    if (delay > 0) {
+      await wait(delay)
+    }
+
+    this.nextRequestAt = Math.max(
+      this.blockedUntil,
+      Date.now() + this.requestIntervalMs,
+    )
+    releaseRequestSlot!()
+  }
+}
+
+function getGoogleFallbackRequestThrottle(apiURL: string): GoogleFallbackRequestThrottle {
+  const existingThrottle = GOOGLE_FALLBACK_REQUEST_THROTTLES.get(apiURL)
+
+  if (existingThrottle) {
+    return existingThrottle
+  }
+
+  const throttle = new GoogleFallbackRequestThrottle()
+
+  GOOGLE_FALLBACK_REQUEST_THROTTLES.set(apiURL, throttle)
+
+  return throttle
+}
+
+function getRetryDelay(retryAfter: string | null, attempt: number): number {
+  const retryAfterSeconds = retryAfter === null ? Number.NaN : Number(retryAfter)
+
+  if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0) {
+    return retryAfterSeconds * 1000
+  }
+
+  return Math.min(INITIAL_FALLBACK_RETRY_DELAY_MS * 2 ** attempt, MAX_FALLBACK_RETRY_DELAY_MS)
+}
+
+function wait(delay: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, delay)
+  })
 }
 
 export const googleTranslateAdapterDefinition: TranslationAdapterDefinition<GoogleTranslateAdapterOptions> = {
