@@ -21,7 +21,8 @@ export {
   isTypesenseCollector
 } from './collectors/typesense-collector.decorator.js'
 export type { TypesenseCollector } from './collectors/typesense-collector.js'
-export { TypesenseUnavailableError } from './client/typesense-unavailable.error.js'
+export { TypesenseUnavailableError } from './errors/typesense-unavailable.error.js'
+export { TypesenseInvalidNumTyposError } from './errors/typesense-invalid-num-typos.error.js'
 export { TypesenseClient } from './client/typesense.client.js'
 export {
   buildTypesenseCollection,
