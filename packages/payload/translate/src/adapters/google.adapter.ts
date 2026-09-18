@@ -20,7 +20,7 @@ export const GOOGLE_TRANSLATE_ADAPTER_KEY = 'google'
 // website, not server-to-server use. Keep requests deliberately conservative:
 // translating rich text otherwise creates a burst of concurrent requests.
 const INITIAL_FALLBACK_REQUEST_INTERVAL_MS = 250
-const INITIAL_FALLBACK_RETRY_DELAY_MS = 2000
+const INITIAL_FALLBACK_RETRY_DELAY_MS = 10_000
 const MAX_FALLBACK_RETRY_ATTEMPTS = 4
 const MAX_FALLBACK_RETRY_DELAY_MS = 30_000
 const GOOGLE_FALLBACK_REQUEST_THROTTLES = new Map<string, GoogleFallbackRequestThrottle>()
@@ -170,7 +170,7 @@ export class GoogleTranslateAdapter implements TranslationAdapter {
       if ((response.status === 429 || response.status >= 500) && attempt < MAX_FALLBACK_RETRY_ATTEMPTS) {
         const retryDelay = getRetryDelay(response.headers.get('retry-after'), attempt)
 
-        this.fallbackRequestThrottle.increaseRequestInterval(retryDelay)
+        this.fallbackRequestThrottle.backOff(retryDelay)
         await wait(retryDelay)
 
         continue
@@ -223,12 +223,15 @@ function sanitizeUrlInput(url: string): string {
 }
 
 class GoogleFallbackRequestThrottle {
+  private blockedUntil = 0
   private nextRequestAt = 0
   private previousRequestSlot: Promise<void> = Promise.resolve()
   private requestIntervalMs = INITIAL_FALLBACK_REQUEST_INTERVAL_MS
 
-  public increaseRequestInterval(interval: number): void {
+  public backOff(interval: number): void {
     this.requestIntervalMs = Math.max(this.requestIntervalMs, interval)
+    this.blockedUntil = Math.max(this.blockedUntil, Date.now() + interval)
+    this.nextRequestAt = Math.max(this.nextRequestAt, this.blockedUntil)
   }
 
   public async waitForRequestSlot(): Promise<void> {
@@ -241,13 +244,20 @@ class GoogleFallbackRequestThrottle {
 
     await previousRequestSlot
 
-    const delay = Math.max(this.nextRequestAt - Date.now(), 0)
+    const delay = Math.max(
+      this.blockedUntil - Date.now(),
+      this.nextRequestAt - Date.now(),
+      0,
+    )
 
     if (delay > 0) {
       await wait(delay)
     }
 
-    this.nextRequestAt = Date.now() + this.requestIntervalMs
+    this.nextRequestAt = Math.max(
+      this.blockedUntil,
+      Date.now() + this.requestIntervalMs,
+    )
     releaseRequestSlot!()
   }
 }
@@ -267,7 +277,7 @@ function getGoogleFallbackRequestThrottle(apiURL: string): GoogleFallbackRequest
 }
 
 function getRetryDelay(retryAfter: string | null, attempt: number): number {
-  const retryAfterSeconds = Number(retryAfter)
+  const retryAfterSeconds = retryAfter === null ? Number.NaN : Number(retryAfter)
 
   if (Number.isFinite(retryAfterSeconds) && retryAfterSeconds >= 0) {
     return retryAfterSeconds * 1000

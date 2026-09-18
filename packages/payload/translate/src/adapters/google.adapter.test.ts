@@ -18,7 +18,7 @@ describe('the Google translation adapter', () => {
     vi.useFakeTimers()
 
     const fetchMock = vi.fn()
-      .mockResolvedValueOnce(createErrorResponse(429, '1'))
+      .mockResolvedValueOnce(createErrorResponse(429))
       .mockResolvedValueOnce(createTranslationResponse('Translation'))
 
     vi.stubGlobal('fetch', fetchMock)
@@ -38,7 +38,11 @@ describe('the Google translation adapter', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1)
 
-    await vi.advanceTimersByTimeAsync(1500)
+    await vi.advanceTimersByTimeAsync(9999)
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+
+    await vi.advanceTimersByTimeAsync(1)
 
     await expect(translation).resolves.toBe('Translation')
     expect(fetchMock).toHaveBeenCalledTimes(2)
