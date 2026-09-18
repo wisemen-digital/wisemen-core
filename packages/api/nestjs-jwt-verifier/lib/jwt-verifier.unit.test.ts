@@ -124,8 +124,8 @@ describe('JwtVerifier unit tests', () => {
     expect(getJwtVerifierToken()).toBe(JwtVerifier)
   })
 
-  it('creates a named provider definition for forRoot', () => {
-    const moduleDefinition = JwtVerifierModule.forRoot({
+  it('creates a named provider definition for register', () => {
+    const moduleDefinition = JwtVerifierModule.register({
       audiences: [FIRST_AUDIENCE],
       issuer: ISSUER,
       jwksEndpoint: ISSUER + '/oauth/v2/keys',
@@ -139,8 +139,8 @@ describe('JwtVerifier unit tests', () => {
     expect(verifierProvider).toBeDefined()
   })
 
-  it('creates a named provider definition for forRootAsync', () => {
-    const moduleDefinition = JwtVerifierModule.forRootAsync({
+  it('creates a named provider definition for registerAsync', () => {
+    const moduleDefinition = JwtVerifierModule.registerAsync({
       imports: [],
       inject: [],
       name: 'portal',

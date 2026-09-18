@@ -9,3 +9,4 @@ export { OpenTelemetryLogger, type LogRecord, type OpentelemetryLoggingConfig } 
 export { captureException } from './capture-exception.js'
 export { OtelLoggerModule } from './nestjs-logger/otel-logger.module.js'
 export { NestjsOtelLogger } from './nestjs-logger/otel-logger.service.js'
+export { setActiveSpanAttributes } from './set-active-span-attributes.js'

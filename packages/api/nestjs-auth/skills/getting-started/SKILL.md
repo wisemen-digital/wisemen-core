@@ -1,14 +1,17 @@
 ---
 name: getting-started
-description: Use when marking NestJS routes as public or protecting controllers, handlers, and docs endpoints with shared basic auth from @wisemen/nestjs-auth.
+description: Use when marking NestJS routes as public with Public() or protecting controllers, handlers, and adapter-level routes with shared HTTP basic auth from @wisemen/nestjs-auth.
 ---
 
 # @wisemen/nestjs-auth - Getting Started
 
-Use this package for two separate concerns:
+This package covers four separate concerns. This skill covers the first two:
 
 - mark routes as public with `Public()`
 - protect routes with shared HTTP basic auth definitions
+
+For bearer tokens, API keys and OIDC trusts see the `bearer-auth` skill. For
+roles and permissions see the `rbac` skill.
 
 ## Mark Public Routes
 

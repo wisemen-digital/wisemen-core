@@ -1,4 +1,4 @@
-export { JwtVerifier, type JWTPayload } from './jwt-verifier.js'
+export { createJwtVerifier, decodeJwtPayload, JwtVerifier, type JWTPayload } from './jwt-verifier.js'
 export { JwtVerifierModule } from './jwt-verifier.module.js'
 export {
   DEFAULT_JWT_VERIFIER_NAME,
