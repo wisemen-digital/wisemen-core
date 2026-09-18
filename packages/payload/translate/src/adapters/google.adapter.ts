@@ -229,7 +229,6 @@ class GoogleFallbackRequestThrottle {
   private requestIntervalMs = INITIAL_FALLBACK_REQUEST_INTERVAL_MS
 
   public backOff(interval: number): void {
-    this.requestIntervalMs = Math.max(this.requestIntervalMs, interval)
     this.blockedUntil = Math.max(this.blockedUntil, Date.now() + interval)
     this.nextRequestAt = Math.max(this.nextRequestAt, this.blockedUntil)
   }
