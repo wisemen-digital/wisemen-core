@@ -4,7 +4,7 @@ import { expect } from 'expect'
 import { Typesense } from '../../index.js'
 import { FilterOperator } from '../../params-builder/enums/typesense-filter-options.enum.js'
 import { TYPESENSE_MAX_HITS } from '../../typesense.constant.js'
-import { createTestTypesenseClient, createTestTypesenseClientService } from '../../tests/fixtures/create-test-typesense-client.js'
+import { createTestTypesenseClientService } from '../../tests/fixtures/create-test-typesense-client.js'
 
 describe('TypesenseClient', () => {
   const products = Typesense.collection(`products_${randomUUID()}`, {
