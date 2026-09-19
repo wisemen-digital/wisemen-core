@@ -51,6 +51,9 @@
     "reflect-metadata": "catalog:backend-peer"
   },
   "devDependencies": {
+    "@opentelemetry/context-async-hooks": "catalog:backend",
+    "@opentelemetry/core": "catalog:backend",
+    "@opentelemetry/sdk-trace-base": "catalog:backend",
     "@wisemen/eslint-config-nestjs": "workspace:^",
     "eslint": "catalog:lint-api",
     "oxlint": "catalog:lint-api",
